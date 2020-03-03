@@ -45,7 +45,7 @@ class data_controller_views_argument_equality extends views_handler_argument {
 
         $operatorConfig = data_controller_get_operator_factory_instance();
         $supportedOperators = $operatorConfig->getSupportedOperators();
-        $operator_options = array();
+        $operator_options = [];
         foreach ($supportedOperators as $supportedName => $operatorDescription) {
             $operator_options[$supportedName] = $operatorDescription;
         }

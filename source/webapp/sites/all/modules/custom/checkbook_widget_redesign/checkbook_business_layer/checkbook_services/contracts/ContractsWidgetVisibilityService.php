@@ -10,7 +10,7 @@ class ContractsWidgetVisibilityService {
     /**
      * returns the view to be displayed
      * @param string $widget
-     * @return view name to be displayed
+     * @return string
      */
     static function getWidgetVisibility($widget) {
         $dashboard = RequestUtilities::get('dashboard');

@@ -1,0 +1,70 @@
+<?php
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (C) 2019 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+function checkbook_solr_menu()
+{
+  $items['solr_options'] = array(
+    'title' => '',
+    'page callback' => 'checkbook_print_solr_options_json',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK
+  );
+
+  return $items;
+}
+
+function checkbook_print_solr_options_json(string $data_source, string $domain, string $facet)
+{
+  $filters = drupal_get_query_parameters();
+  $data = checkbook_solr_options_labels($data_source, $domain, $facet, $filters);
+  if (isset($filters['term'])) {
+    if (!$data) {
+      $data = [['label' => 'No Matches Found', 'value' => '']];
+    }
+  }
+  drupal_json_output($data);
+  exit(0);
+}
+
+/**
+ * @param string $data_source
+ * @param string $domain
+ * @param string $facet
+ * @param array $filters
+ * @return array
+ */
+function checkbook_solr_options_labels(string $data_source, string $domain, string $facet, array $filters=[])
+{
+  $Guru = new CheckbookGuruOptionsLabels($data_source);
+  return $Guru->get_options($domain, $facet, $filters);
+}
+/**
+ * @param string $data_source
+ * @param string $domain
+ * @param string $facet
+ * @param array $filters
+ * @return array
+ */
+function checkbook_solr_options_attributes(string $data_source, string $domain, string $facet, array $filters=[])
+{
+  $Guru = new CheckbookGuruOptionsAttributes($data_source);
+  return $Guru->get_options($domain, $facet, $filters);
+}

@@ -2,7 +2,7 @@
 /**
  * This file is part of the Checkbook NYC financial transparency software.
  *
- * Copyright (C) 2012, 2013 New York City
+ * Copyright (C) 2019 New York City
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,15 +18,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$spending_parameter_mapping = _checkbook_smart_search_domain_fields('spending', $IsOge);
+$spending_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'spending');
+
+$isNycha = ('nycha' === $solr_datasource);
+$isEdc = ('edc' === $solr_datasource);
+$isOge = $isNycha || $isEdc;
 
 if ($spending_results['fiscal_year_id'] != '') {
   $fiscal_year_id = $spending_results['fiscal_year_id'][0];
 } else {
-  $fiscal_year_id = _getCurrentYearID();
+  $fiscal_year_id = CheckbookDateUtil::getCurrentFiscalYearId();
 }
 
-if ($IsOge) {
+if ($isOge) {
   $linkable_fields = array(
     "oge_agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . '/datasource/checkbook_oge' . "/year/" . _getFiscalYearID() . "/yeartype/B/agency/" . $spending_results["agency_id"],
     "vendor_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . '/datasource/checkbook_oge' . '/agency/' . $spending_results['agency_id'] . "/year/" . _getFiscalYearID() . "/yeartype/B/vendor/" . $spending_results["vendor_id"],
@@ -42,17 +46,17 @@ if ($IsOge) {
       "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
       "vendor_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/vendor/" . $spending_results["vendor_id"],
     );
-  } elseif ($spending_results['is_prime_or_sub'] == 'Yes' && SpendingUtil::getLatestMwbeCategoryBySpendingVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B') == '') {
+  } elseif (strtolower($spending_results['is_prime_or_sub']) == 'yes' && strtolower($spending_results['is_minority_vendor'])=='y') {
     $linkable_fields = array(
       "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
       "vendor_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/subvendor/" . $spending_results["vendor_id"] . "/dashboard/ss",
     );
-  } elseif ($spending_results['is_prime_or_sub'] == 'No' && SpendingUtil::getLatestMwbeCategoryBySpendingVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B') != '') {
+  } elseif (strtolower($spending_results['is_prime_or_sub']) == 'no' && strtolower($spending_results['is_minority_vendor'])=='y') {
     $linkable_fields = array(
       "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
       "vendor_name" => "/spending_landing/yeartype/B/year/" . $fiscal_year_id . "/category/" . $spending_results['spending_category_id'] . "/mwbe/2~3~4~5~9/dashboard/mp/vendor/" . $spending_results["vendor_id"],
     );
-  } elseif ($spending_results['is_prime_or_sub'] == 'Yes' && SpendingUtil::getLatestMwbeCategoryBySpendingVendorByTransactionYear($spending_results["vendor_id"], $fiscal_year_id, 'B') != '') {
+  } elseif (strtolower($spending_results['is_prime_or_sub']) == 'yes' && strtolower($spending_results['is_minority_vendor'])=='y') {
     $linkable_fields = array(
       "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
       "vendor_name" => "/spending_landing/yeartype/B/year/" . $fiscal_year_id . "/category/" . $spending_results['spending_category_id'] . "/mwbe/2~3~4~5~9/dashboard/ms/subvendor/" . $spending_results["vendor_id"],
@@ -65,7 +69,7 @@ if ($IsOge) {
   }
 }
 
-if (!$IsOge) {
+if (!$isOge) {
   $date_fields = array("check_eft_issued_date");
 }
 
@@ -73,7 +77,7 @@ $amount_fields = array("check_amount");
 $count = 1;
 $row = array();
 $rows = array();
-$spending_results["check_eft_issued_date"] = ($IsOge) ? "N/A" : $spending_results["check_eft_issued_date"];
+$spending_results["check_eft_issued_date"] = ($isOge) ? "N/A" : $spending_results["check_eft_issued_date"];
 
 if ($fiscal_year_id < 111) {
   $linkable_fields = array();
@@ -87,27 +91,27 @@ foreach ($spending_parameter_mapping as $key => $title) {
   }
 
   // highlighting (italics) search term
-  if (!empty($SearchTerm)) {
-    $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)), strlen($SearchTerm));
-    $value = str_ireplace($SearchTerm, '<em>' . $temp . '</em>', $value);
+  if (!empty($searchTerm)) {
+    $temp = substr($value, strpos(strtoupper($value), strtoupper($searchTerm)), strlen($searchTerm));
+    $value = str_ireplace($searchTerm, '<em>' . $temp . '</em>', $value);
   }
 
   if (array_key_exists($key, $linkable_fields)) {
     $value = "<a href='" . $linkable_fields[$key] . "'>" . $value . "</a>";
-  } else if (in_array($key, $date_fields)) {
-    $value = date("F j, Y", strtotime($value));
-  } else if (in_array($key, $amount_fields)) {
+  } else if (is_array($date_fields) && in_array($key, $date_fields)) {
+    $value = date("F j, Y", strtotime(substr($value, 0, 10)));
+  } else if (is_array($amount_fields) && in_array($key, $amount_fields)) {
     $value = custom_number_formatter_format($value, 2, '$');
   }
   if ($key == 'contract_number' && $spending_results['agreement_id']) {
     if ($spending_results['is_prime_or_sub'] == 'Yes') {
       $value = "<a class=\"new_window\" href=\"/contract_details"
-        . (($IsOge) ? '/datasource/checkbook_oge' : '')
+        . (($isOge) ? '/datasource/checkbook_oge' : '')
         . _checkbook_project_get_contract_url($spending_results['contract_number'], $spending_results['contract_original_agreement_id']) . '/newwindow">'
         . $value . "</a>";
     } else {
       $value = "<a class=\"new_window\" href=\"/contract_details"
-        . (($IsOge) ? '/datasource/checkbook_oge' : '')
+        . (($isOge) ? '/datasource/checkbook_oge' : '')
         . _checkbook_project_get_contract_url($spending_results['contract_number'], $spending_results['agreement_id']) . '/newwindow">'
         . $value . "</a>";
     }

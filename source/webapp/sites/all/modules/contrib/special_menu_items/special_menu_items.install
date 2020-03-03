@@ -1,7 +1,12 @@
 <?php
 
 /**
- * Implementation of hook_uninstall().
+ * @file
+ * Install, update and uninstall functions for the Special menu items module.
+ */
+
+/**
+ * Implements hook_uninstall().
  */
 function special_menu_items_uninstall() {
   variable_del('special_menu_items_nolink_tag');
@@ -11,11 +16,13 @@ function special_menu_items_uninstall() {
 }
 
 /**
- * "nolink" to <nolink> and "separator" to <separator>
+ * Implements hook_update_N().
+ *
+ * "nolink" to <nolink> and "separator" to <separator>.
  */
-function special_menu_items_update_7000(&$sandbox){
-  
-  //change "nolink" to <nolink>
+function special_menu_items_update_7000(&$sandbox) {
+
+  // Change "nolink" to <nolink>.
   db_update('menu_links')
     ->fields(array(
       'link_path' => '<nolink>',
@@ -23,16 +30,16 @@ function special_menu_items_update_7000(&$sandbox){
     ))
     ->condition('router_path', 'nolink', '=')
     ->execute();
-  
-  //change "separator" to <separator>
+
+  // Change "separator" to <separator>.
   db_update('menu_links')
-  ->fields(array(
-    'link_path' => '<separator>',
-    'router_path' => '<separator>',
-  ))
-  ->condition('router_path', 'separator', '=')
-  ->execute();
-  
-  //we don't need this variable anymore
+    ->fields(array(
+      'link_path' => '<separator>',
+      'router_path' => '<separator>',
+    ))
+    ->condition('router_path', 'separator', '=')
+    ->execute();
+
+  // We don't need this variable anymore.
   variable_del('special_menu_items_menu_item_link');
 }

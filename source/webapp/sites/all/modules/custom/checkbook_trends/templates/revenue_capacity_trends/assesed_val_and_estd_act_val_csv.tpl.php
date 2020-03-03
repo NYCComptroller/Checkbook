@@ -18,6 +18,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+$last_year = end($node->data)['fiscal_year'];
+reset($node->data);
+
 	$header = 'Fiscal year';
 
     $header .=  ",Class One" ;
@@ -77,4 +80,4 @@
 "Property in New York City is reassessed every year. The City assesses property at approximately 40 percent of Market Value for"
 " commercial and industrial property and 20 percent of Market Value for residential property."
 
-"Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year 2017."
+"Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year <?= $last_year ?>."

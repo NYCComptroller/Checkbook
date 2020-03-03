@@ -1,29 +1,32 @@
 <?php
 /*
- * This file is part of the Comparator package.
+ * This file is part of sebastian/comparator.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Comparator;
 
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**
- * @coversDefaultClass SebastianBergmann\Comparator\MockObjectComparator
- * @uses SebastianBergmann\Comparator\Comparator
- * @uses SebastianBergmann\Comparator\Factory
- * @uses SebastianBergmann\Comparator\ComparisonFailure
+ * @covers \SebastianBergmann\Comparator\MockObjectComparator<extended>
+ *
+ * @uses \SebastianBergmann\Comparator\Comparator
+ * @uses \SebastianBergmann\Comparator\Factory
+ * @uses \SebastianBergmann\Comparator\ComparisonFailure
  */
-class MockObjectComparatorTest extends TestCase
+final class MockObjectComparatorTest extends TestCase
 {
+    /**
+     * @var MockObjectComparator
+     */
     private $comparator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->comparator = new MockObjectComparator;
         $this->comparator->setFactory(new Factory);
@@ -35,9 +38,9 @@ class MockObjectComparatorTest extends TestCase
         $stdmock  = $this->createMock(stdClass::class);
 
         return [
-          [$testmock, $testmock],
-          [$stdmock, $stdmock],
-          [$stdmock, $testmock]
+            [$testmock, $testmock],
+            [$stdmock, $stdmock],
+            [$stdmock, $testmock]
         ];
     }
 
@@ -46,9 +49,9 @@ class MockObjectComparatorTest extends TestCase
         $stdmock = $this->createMock(stdClass::class);
 
         return [
-          [$stdmock, null],
-          [null, $stdmock],
-          [null, null]
+            [$stdmock, null],
+            [null, $stdmock],
+            [null, null]
         ];
     }
 
@@ -66,15 +69,15 @@ class MockObjectComparatorTest extends TestCase
         $object2 = $this->getMockBuilder(SampleClass::class)->setMethods(null)->setConstructorArgs([4, 8, 15])->getMock();
 
         return [
-          [$object1, $object1],
-          [$object1, $object2],
-          [$book1, $book1],
-          [$book1, $book2],
-          [
-            $this->getMockBuilder(Struct::class)->setMethods(null)->setConstructorArgs([2.3])->getMock(),
-            $this->getMockBuilder(Struct::class)->setMethods(null)->setConstructorArgs([2.5])->getMock(),
-            0.5
-          ]
+            [$object1, $object1],
+            [$object1, $object2],
+            [$book1, $book1],
+            [$book1, $book2],
+            [
+                $this->getMockBuilder(Struct::class)->setMethods(null)->setConstructorArgs([2.3])->getMock(),
+                $this->getMockBuilder(Struct::class)->setMethods(null)->setConstructorArgs([2.5])->getMock(),
+                0.5
+            ]
         ];
     }
 
@@ -100,28 +103,27 @@ class MockObjectComparatorTest extends TestCase
         $object2 = $this->getMockBuilder(SampleClass::class)->setMethods(null)->setConstructorArgs([16, 23, 42])->getMock();
 
         return [
-          [
-            $this->getMockBuilder(SampleClass::class)->setMethods(null)->setConstructorArgs([4, 8, 15])->getMock(),
-            $this->getMockBuilder(SampleClass::class)->setMethods(null)->setConstructorArgs([16, 23, 42])->getMock(),
-            $equalMessage
-          ],
-          [$object1, $object2, $equalMessage],
-          [$book1, $book2, $equalMessage],
-          [$book3, $book4, $typeMessage],
-          [
-            $this->getMockBuilder(Struct::class)->setMethods(null)->setConstructorArgs([2.3])->getMock(),
-            $this->getMockBuilder(Struct::class)->setMethods(null)->setConstructorArgs([4.2])->getMock(),
-            $equalMessage,
-            0.5
-          ]
+            [
+                $this->getMockBuilder(SampleClass::class)->setMethods(null)->setConstructorArgs([4, 8, 15])->getMock(),
+                $this->getMockBuilder(SampleClass::class)->setMethods(null)->setConstructorArgs([16, 23, 42])->getMock(),
+                $equalMessage
+            ],
+            [$object1, $object2, $equalMessage],
+            [$book1, $book2, $equalMessage],
+            [$book3, $book4, $typeMessage],
+            [
+                $this->getMockBuilder(Struct::class)->setMethods(null)->setConstructorArgs([2.3])->getMock(),
+                $this->getMockBuilder(Struct::class)->setMethods(null)->setConstructorArgs([4.2])->getMock(),
+                $equalMessage,
+                0.5
+            ]
         ];
     }
 
     /**
-     * @covers       ::accepts
      * @dataProvider acceptsSucceedsProvider
      */
-    public function testAcceptsSucceeds($expected, $actual)
+    public function testAcceptsSucceeds($expected, $actual): void
     {
         $this->assertTrue(
           $this->comparator->accepts($expected, $actual)
@@ -129,10 +131,9 @@ class MockObjectComparatorTest extends TestCase
     }
 
     /**
-     * @covers       ::accepts
      * @dataProvider acceptsFailsProvider
      */
-    public function testAcceptsFails($expected, $actual)
+    public function testAcceptsFails($expected, $actual): void
     {
         $this->assertFalse(
           $this->comparator->accepts($expected, $actual)
@@ -140,10 +141,9 @@ class MockObjectComparatorTest extends TestCase
     }
 
     /**
-     * @covers       ::assertEquals
      * @dataProvider assertEqualsSucceedsProvider
      */
-    public function testAssertEqualsSucceeds($expected, $actual, $delta = 0.0)
+    public function testAssertEqualsSucceeds($expected, $actual, $delta = 0.0): void
     {
         $exception = null;
 
@@ -156,10 +156,9 @@ class MockObjectComparatorTest extends TestCase
     }
 
     /**
-     * @covers       ::assertEquals
      * @dataProvider assertEqualsFailsProvider
      */
-    public function testAssertEqualsFails($expected, $actual, $message, $delta = 0.0)
+    public function testAssertEqualsFails($expected, $actual, $message, $delta = 0.0): void
     {
         $this->expectException(ComparisonFailure::class);
         $this->expectExceptionMessage($message);

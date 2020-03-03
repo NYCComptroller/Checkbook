@@ -1,1 +1,0 @@
-/usr/bin/nohup /bin/sh /usr/local/data-integration/kitchen.sh -file /home/gpadmin/POSTGRESQL/Checkbook_ogent/KETTLE_JOB/NYC_Master_PostgreSQL_OGE_OS.kjb -norep -level:Minimal > /usr/local/data-integration/NYCETLMaster_postgreSQL_OGE.out &

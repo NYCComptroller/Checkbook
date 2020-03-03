@@ -108,17 +108,18 @@
 
         $isAgencyPage = (strpos(current_path(),'payroll/agency_landing/') === 0);
         $pathParams = explode('/',drupal_get_path_alias(current_path()));
+        $data_source= RequestUtilities::_getUrlParamString('datasource');
 
         foreach ($node->data as $row){
             $categories[]=html_entity_decode($row['month_month_month_name'],ENT_QUOTES);
 
             $currentYearUrl = current_path() . '?expandBottomContURL=' . ($isAgencyPage
-                ? '/panel_html/payroll_agency_by_month_transactions/payroll/agencywide/monthly/transactions' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/month/' . $row['current_month_month']
-                : '/panel_html/payroll_by_month_nyc_transactions/payroll/monthly/transactions' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/month/' . $row['current_month_month']);
+                ? '/panel_html/payroll_agency_by_month_transactions/payroll/agencywide/monthly/transactions' . _checkbook_project_get_year_url_param_string() .$data_source. _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/month/' . $row['current_month_month']
+                : '/panel_html/payroll_by_month_nyc_transactions/payroll/monthly/transactions' . _checkbook_project_get_year_url_param_string() .$data_source. _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/month/' . $row['current_month_month']);
 
             $previousYearUrl = current_path() . '?expandBottomContURL=' . ($isAgencyPage
-                ? '/panel_html/payroll_agency_by_month_transactions/payroll/agencywide/monthly/transactions' . _checkbook_project_get_year_url_param_string(false, true) . _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/month/' . $row['previous_month_month']
-                : '/panel_html/payroll_by_month_nyc_transactions/payroll/monthly/transactions' . _checkbook_project_get_year_url_param_string(false, true) . _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/month/' . $row['previous_month_month']);
+                ? '/panel_html/payroll_agency_by_month_transactions/payroll/agencywide/monthly/transactions' . _checkbook_project_get_year_url_param_string(false, true) .$data_source. _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/month/' . $row['previous_month_month']
+                : '/panel_html/payroll_by_month_nyc_transactions/payroll/monthly/transactions' . _checkbook_project_get_year_url_param_string(false, true) .$data_source. _checkbook_project_get_url_param_string('agency') . _checkbook_project_get_url_param_string('title') . '/month/' . $row['previous_month_month']);
 
             if(abs($row['previous_total_gross_pay']) > 0)
                 $allZero = false;

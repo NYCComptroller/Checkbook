@@ -3,6 +3,14 @@
 <ruleset name="Drupal">
  <description>Drupal coding standard</description>
 
+ <rule ref="Internal.NoCodeFound">
+  <!-- Usually there is no code in txt or info files, so we suppress warnings about
+    PHP short tags and what not. -->
+  <exclude-pattern>*.txt</exclude-pattern>
+  <exclude-pattern>*.md</exclude-pattern>
+  <exclude-pattern>*.info</exclude-pattern>
+ </rule>
+
  <rule ref="Drupal.Commenting.FileComment">
   <!-- Do not run this sniff on txt files. -->
   <exclude-pattern>*.txt</exclude-pattern>
@@ -23,10 +31,6 @@
   <!-- Do not run this sniff on template files. -->
   <exclude-pattern>*.tpl.php</exclude-pattern>
  </rule>
- <rule ref="Drupal.Formatting.SpaceColon">
-  <!-- Do not run this sniff on template files. -->
-  <exclude-pattern>*.tpl.php</exclude-pattern>
- </rule>
  <rule ref="Drupal.WhiteSpace.ScopeClosingBrace">
   <!-- Do not run this sniff on template files. -->
   <exclude-pattern>*.tpl.php</exclude-pattern>
@@ -42,6 +46,7 @@
  <rule ref="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
  <rule ref="Generic.NamingConventions.ConstructorName" />
  <rule ref="Generic.NamingConventions.UpperCaseConstantName" />
+ <rule ref="Generic.PHP.DeprecatedFunctions" />
  <rule ref="Generic.PHP.DisallowShortOpenTag" />
  <rule ref="Generic.PHP.UpperCaseConstant" />
  <rule ref="Generic.WhiteSpace.DisallowTabIndent" />
@@ -179,6 +184,9 @@
  <rule ref="Squiz.ControlStructures.SwitchDeclaration.MissingDefault">
   <severity>0</severity>
  </rule>
+ <rule ref="Squiz.ControlStructures.SwitchDeclaration.SpacingAfterCase">
+  <severity>0</severity>
+ </rule>
  <rule ref="Squiz.ControlStructures.SwitchDeclaration.SpacingAfterDefaultBreak">
   <severity>0</severity>
  </rule>
@@ -200,10 +208,15 @@
  </rule>
 
  <rule ref="Squiz.PHP.LowercasePHPFunctions" />
+ <rule ref="Squiz.PHP.NonExecutableCode" />
  <rule ref="Squiz.Scope.MethodScope" />
+ <rule ref="Squiz.WhiteSpace.LanguageConstructSpacing" />
+ <rule ref="Squiz.WhiteSpace.SemicolonSpacing" />
+ <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace" />
+
  <!-- Ignore various version control directories. -->
- <exclude-pattern>*/.git/*</exclude-pattern>
- <exclude-pattern>*/.svn/*</exclude-pattern>
- <exclude-pattern>*/.hg/*</exclude-pattern>
- <exclude-pattern>*/.bzr/*</exclude-pattern>
+ <exclude-pattern>*/\.git/*</exclude-pattern>
+ <exclude-pattern>*/\.svn/*</exclude-pattern>
+ <exclude-pattern>*/\.hg/*</exclude-pattern>
+ <exclude-pattern>*/\.bzr/*</exclude-pattern>
 </ruleset>

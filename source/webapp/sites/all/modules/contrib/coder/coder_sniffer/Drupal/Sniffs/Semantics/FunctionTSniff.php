@@ -68,7 +68,25 @@ class Drupal_Sniffs_Semantics_FunctionTSniff extends Drupal_Sniffs_Semantics_Fun
 
         if ($tokens[$argument['start']]['code'] !== T_CONSTANT_ENCAPSED_STRING) {
             // Not a translatable string literal.
+            $warning = 'Only string literals should be passed to t() where possible';
+            $phpcsFile->addWarning($warning, $argument['start'], 'NotLiteralString');
             return;
+        }
+
+        $string = $tokens[$argument['start']]['content'];
+        if ($string === '""' || $string === "''") {
+            $warning = 'Do not pass empty strings to t()';
+            $phpcsFile->addWarning($warning, $argument['start'], 'EmptyString');
+            return;
+        }
+
+        $lastChar = substr($string, -1);
+        if ($lastChar === '"' || $lastChar === "'") {
+            $message = substr($string, 1, -1);
+            if ($message !== trim($message)) {
+                $warning = 'Translatable strings must not begin or end with white spaces, use placeholders with t() for variables';
+                $phpcsFile->addWarning($warning, $argument['start'], 'WhiteSpace');
+            }
         }
 
         $concatFound = $phpcsFile->findNext(T_STRING_CONCAT, $argument['start'], $argument['end']);
@@ -77,7 +95,6 @@ class Drupal_Sniffs_Semantics_FunctionTSniff extends Drupal_Sniffs_Semantics_Fun
             $phpcsFile->addError($error, $concatFound, 'Concat');
         }
 
-        $string = $tokens[$argument['start']]['content'];
         // Check if there is a backslash escaped single quote in the string and
         // if the string makes use of double quotes.
         if ($string{0} === "'" && strpos($string, "\'") !== false

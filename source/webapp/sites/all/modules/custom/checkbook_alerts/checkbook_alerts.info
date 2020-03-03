@@ -20,6 +20,7 @@ name = Checkbook Alerts
 description = Alerts functionality for Checkbook 2.0
 core = 7.x
 version = 2.0
+php = 7.2
 package = NYC Checkbook
 
 scripts[] = js/json3.min.js

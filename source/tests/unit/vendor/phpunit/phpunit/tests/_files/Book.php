@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -14,5 +14,5 @@
 class Book
 {
     // the order of properties is important for testing the cycle!
-    public $author = null;
+    public $author;
 }

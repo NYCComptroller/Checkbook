@@ -1,0 +1,29 @@
+{
+  "serviceName":"NychaSpendingWidgetService",
+  "dataFunc":"GetNychaSpendingByResponsibilityCenters",
+  "headerTitle":"Responsibility Centers",
+  "headerSubTitle":"Responsibility Centers",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_resp_centers'",
+  "table_columns":[
+    {"labelAlias":"responsibility_center","column":"responsibility_center_description","tooltip": 60},
+    {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar","derivedColumn":"resp_center_ytd_spending"},
+    {"label":"","column":""}
+  ],
+  "dataTableOptions":{
+    "aoColumns":[
+      {"sClass":"text","sWidth":"143px","bSortable":false},
+      {"sClass":"number","sWidth":"15px","asSorting":["desc","asc"]},
+      {"sWidth":"15px","bSortable":false}
+    ],
+    "bServerSide":true,
+    "bFilter":false,
+    "bPaginate":false,
+    "bProcessing":true,
+    "bLengthChange":false,
+    "bInfo":false,
+    "bAutoWidth":false,
+    "aaSorting":[[1,"desc"]],
+    "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+    "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+  }
+}

@@ -13,7 +13,7 @@
 /**
  * Drupal_Sniffs_Files_TxtFileLineLengthSniff.
  *
- * Checks all lines in a *.txt file and throws warnings if they are over 80
+ * Checks all lines in a *.txt or *.md file and throws warnings if they are over 80
  * characters in length.
  *
  * @category PHP
@@ -49,7 +49,7 @@ class Drupal_Sniffs_Files_TxtFileLineLengthSniff implements PHP_CodeSniffer_Snif
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $fileExtension = strtolower(substr($phpcsFile->getFilename(), -3));
-        if ($fileExtension === 'txt') {
+        if ($fileExtension === 'txt' || $fileExtension === '.md') {
             $tokens = $phpcsFile->getTokens();
 
             $content = rtrim($tokens[$stackPtr]['content']);

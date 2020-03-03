@@ -30,7 +30,11 @@ $plugin = array(
 );
 
 /**
- * implementation of checkbook context plugin  
+ * implementation of checkbook context plugin
+ * @param $empty
+ * @param null $data
+ * @param bool $conf
+ * @return ctools_context
  */
 function ctools_context_create_checkbook($empty, $data = NULL, $conf = FALSE) {
   // The input is expected to be an object as created by ctools_break_phrase
@@ -53,6 +57,9 @@ function ctools_context_create_checkbook($empty, $data = NULL, $conf = FALSE) {
 
 /**
  * Convert a context specific checkbook.
+ * @param $context
+ * @param $type
+ * @return string
  */
 function ctools_context_checkbook_convert($context, $type) {
  switch ($type) {

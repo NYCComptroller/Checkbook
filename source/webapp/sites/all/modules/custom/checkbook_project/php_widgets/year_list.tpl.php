@@ -22,8 +22,9 @@
 //Hide the Date Filter
 //on Spending Advanced Search page when 'Check Date' parameter is present in the URL &
 //on Pending Contracts Advanced Search page
-if((preg_match('/^spending\/search\/transactions/',$_GET['q']) && (RequestUtilities::get('chkdate') || !RequestUtilities::get('year'))) || RequestUtilities::get('contstatus') == 'P'
-    || preg_match('/^contract\/all\/transactions/',$_GET['q'])){
+if((preg_match('/^spending\/search\/transactions/',$_GET['q']) && (RequestUtilities::get('chkdate') || !RequestUtilities::get('year')))
+    || RequestUtilities::get('contstatus') == 'P' || preg_match('/^contract\/all\/transactions/',$_GET['q']) || preg_match('/^nycha_contracts\/all\/transactions/',$_GET['q'])
+    || (preg_match('/^nycha_spending\/search\/transactions/',$_GET['q']) && (RequestUtilities::get('issue_date') || !RequestUtilities::get('year')))){
     return;
 }
 
@@ -31,19 +32,16 @@ if((preg_match('/^spending\/search\/transactions/',$_GET['q']) && (RequestUtilit
 $filter_years = _checkbook_max_data_year();
 
 //$q is the new URL for the Date Filter options
-$q = $_SERVER['REQUEST_URI'];
+$q = request_uri();
 $url_parts = parse_url($q);
 if(!isset($_REQUEST['expandBottomContURL']) && $url_parts['query']){
   $q = str_replace('?'.$url_parts['query'], "", $q);
 }
 
-//Set the default Domain to be 'Spending' for Trends and Smart Search
+//Set the default Domain to be 'Spending' for Trends
 if(preg_match("/trends/",$q)){
     $q = "/spending_landing/yeartype/B/year/" ;
     $trends = true;
-}else if(preg_match("/smart_search/",$q)){
-    $q = "/spending_landing/yeartype/B/year/" ;
-    $search = true;
 }
 
 //Pending Contracts do not have year filter applicable, so the Date Filter options are set to navigate to Active Expense Contracts landing page for the latest Fiscal Year
@@ -64,14 +62,11 @@ $url_year_type_value = (RequestUtilities::get('yeartype')) ? RequestUtilities::g
 
 //Set $year_id_value to current Fiscal Year ID for Pending Contracts
 if(preg_match("/contracts_pending_exp_landing/",$_GET['q']) || preg_match("/contracts_pending_rev_landing/",$_GET['q'])){
-    $url_year_id_value = _getFiscalYearID();
+    $url_year_id_value = CheckbookDateUtil::getCurrentFiscalYearId();
     $url_year_type_value = 'B';
 }
 
 $bottomURL = $_REQUEST['expandBottomContURL'];
-
-$dept_Ids = SpendingUtil::getDepartmentIds();
-$expCatIds = SpendingUtil::getExpenseCatIds();
 if(isset($bottomURL)){
     $pathParams = explode('/', $bottomURL);
     if(preg_match("/dept/",$bottomURL)){
@@ -83,49 +78,45 @@ if(isset($bottomURL)){
         $expCatId =  filter_xss($pathParams[($index+1)]);
     }
 }
-
+$datasource = RequestUtilities::get('datasource');
 $fiscal_year_data_array = array();
 $calendar_year_data_array = array();
-$current_fy_id = _getCurrentYearID();
-$isSelected = false;
+$years = _checkbook_year_list($datasource);
 
+// 249.json
+foreach($years as $year){
+    $selected_fiscal_year = '';
+    $selected_cal_year = '';
 
-foreach($node->data as $key => $value){
-    if($value['year_id'] == $url_year_id_value && $url_year_type_value == 'B'){
-        $selected_fiscal_year = 'selected = yes';
-        $selected_cal_year = '';
-        $isSelected =  true;
-    }elseif($value['year_id'] == $url_year_id_value && $url_year_type_value == 'C'){
-        $selected_fiscal_year = '';
-        $selected_cal_year = 'selected = yes';
-    }else{
-        $selected_fiscal_year = '';
-        $selected_cal_year = '';
-        $isSelected =  true;
+    if ($year['year_id'] == $url_year_id_value){
+        if('B' == $url_year_type_value){
+            $selected_fiscal_year = 'selected = yes';
+        }
+        if(('C' == $url_year_type_value) || Datasource::isNYCHA()){
+            $selected_cal_year = 'selected = yes';
+        }
     }
-    //For Trends and Smart Search, set the default year value to current NYC fiscal year
-    if($trends || $search){
-        if($value['year_id'] == $current_fy_id){
+
+    //For TrendsNYCCHKBK-9474, set the default year value to current NYC fiscal year
+    if($trends){
+        if($year['year_id'] == CheckbookDateUtil::getCurrentFiscalYearId()){
             $selected_fiscal_year = 'selected = yes';
         }
     }
     /*********  Begining of Fiscal Year Options   ********/
-    if($value['year_value'] <= $filter_years['year_value'] && $value['year_value'] != '2010'){
+    if($year['year_value'] <= $filter_years['year_value']){
 
-        $display_text = 'FY '.$value['year_value'].' (Jul 1, '.($value['year_value']-1).' - Jun 30, '.$value['year_value'].')';
+        $display_text = 'FY '.$year['year_value'].' (Jul 1, '.($year['year_value']-1).' - Jun 30, '.$year['year_value'].')';
 
-        //For Trends and Smart Search append the year value for 'Spending' link
-        if($trends || $search){
-            $link = $q .$value['year_id'] ;
+        //For Trends, append the year value for 'Spending' link
+        if($trends){
+            $link = $q .$year['year_id'] ;
         }else{
             if(RequestUtilities::get("calyear")){
-                $link = preg_replace("/calyear\/" . $url_year_id_value . "/","year/" .  $value['year_id'],$q);
+                $link = preg_replace("/calyear\/" . $url_year_id_value . "/","year/" .  $year['year_id'],$q);
             }else{
-                $link = preg_replace("/year\/" . $url_year_id_value . "/","year/" .  $value['year_id'],$q);
+                $link = preg_replace("/year\/" . $url_year_id_value . "/","year/" .  $year['year_id'],$q);
             }
-
-          // $link = str_replace("/dept/".$deptId,"/dept/".$dept_Ids[$value['year_id']],$link);
-            $link = str_replace("/expcategory/".$expCatId,"/expcategory/".$expCatIds[$value['year_id']],$link);
 
             //For Transaction pages replace the year ID and Year type in 'expandBottomContURL'
             if(preg_match("/expandBottomContURL/",$link) && (preg_match("/spending/",$link) || preg_match("/payroll/",$link))){
@@ -133,7 +124,7 @@ foreach($node->data as $key => $value){
                 $url = $link_parts[0];
                 $bottom_url = preg_replace("/\/calyear\//","/year/" ,$link_parts[1]);
                 $bottom_url_year_id = RequestUtil::getRequestKeyValueFromURL("year",$bottom_url);
-                $bottom_url = preg_replace('/\/year\/'.$bottom_url_year_id.'/','/year/'.$value['year_id'],$bottom_url);
+                $bottom_url = preg_replace('/\/year\/'.$bottom_url_year_id.'/','/year/'.$year['year_id'],$bottom_url);
                 $link = $url . '?expandBottomContURL='. $bottom_url;
             }
         }
@@ -141,7 +132,7 @@ foreach($node->data as $key => $value){
         //For the charts with the months links, need to persist the month param for the newly selected year
         if(isset($bottomURL) && preg_match('/month/',$bottomURL)){
             $old_month_id = RequestUtil::getRequestKeyValueFromURL("month",$bottomURL);
-            $year_id = $value['year_id'];
+            $year_id = $year['year_id'];
             if(isset($old_month_id) && isset($year_id)) {
                 $new_month_id = _translateMonthIdByYear($old_month_id,$year_id);
                 $link = preg_replace('/\/month\/'.$old_month_id.'/','/month/'.$new_month_id,$link);
@@ -153,36 +144,33 @@ foreach($node->data as $key => $value){
 
         $fiscal_year_data_array[] = array('display_text' =>$display_text ,
                                     'link' => $link,
-                                    'value' => $value['year_id'].'~B',
+                                    'value' => $year['year_id'].'~B',
                                     'selected' => $selected_fiscal_year);
     }
     /*********  End of Fiscal Year Options   ********/
 
-    /*********  Begining of Calendar Year Options (Applicable for Payroll domain only)   ********/
-    if(preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
-        if($value['year_value'] <= $filter_years['cal_year_value']){
+    /*********  Beginning of Calendar Year Options ********/
+    if(preg_match('/payroll/',request_uri())){
+        if($year['year_value'] <= $filter_years['cal_year_value']){
             if(RequestUtilities::get("calyear")){
-                $link = preg_replace("/calyear\/" . $url_year_id_value . "/","calyear/" .  $value['year_id'],$q);
+                $link = preg_replace("/calyear\/" . $url_year_id_value . "/","calyear/" .  $year['year_id'],$q);
             }else{
-                $link = preg_replace("/year\/" . $url_year_id_value . "/","year/" .  $value['year_id'],$q);
+                $link = preg_replace("/year\/" . $url_year_id_value . "/","year/" .  $year['year_id'],$q);
             }
-            $link = str_replace("/dept/".$deptId,"/dept/".$dept_Ids[$value['year_id']],$link);
-            $link = str_replace("/expcategory/".$expCatId,"/expcategory/".$expCatIds[$value['year_id']],$link);
-
             //For Transaction pages replace the year ID and Year type in 'expandBottomContURL'
             if(preg_match("/expandBottomContURL/",$link) && (preg_match("/spending/",$link) || preg_match("/payroll/",$link))){
                 $link_parts = explode("?expandBottomContURL=",$link);
                 $url = $link_parts[0];
                 $bottom_url = preg_replace("/\/year\//","/calyear/" ,$link_parts[1]);
                 $bottom_url_year_id = RequestUtil::getRequestKeyValueFromURL("calyear",$bottom_url);
-                $bottom_url = preg_replace('/\/calyear\/'.$bottom_url_year_id.'/','/calyear/'.$value['year_id'],$bottom_url);
+                $bottom_url = preg_replace('/\/calyear\/'.$bottom_url_year_id.'/','/calyear/'.$year['year_id'],$bottom_url);
                 $link = $url . '?expandBottomContURL='. $bottom_url;
             }
 
             //For the charts with the months links, need to persist the month param for the newly selected year
             if(isset($bottomURL) && preg_match('/month/',$bottomURL)){
                 $old_month_id = RequestUtil::getRequestKeyValueFromURL("month",$bottomURL);
-                $year_id = $value['year_id'];
+                $year_id = $year['year_id'];
                 if(isset($old_month_id) && isset($year_id)) {
                     $new_month_id = _translateMonthIdByYear($old_month_id,$year_id,"C");
                     $link = preg_replace('/\/month\/'.$old_month_id.'/','/month/'.$new_month_id,$link);
@@ -191,28 +179,55 @@ foreach($node->data as $key => $value){
 
             //Set year type 'C' for all calendar year options
             $link = preg_replace("/yeartype\/./","yeartype/C",$link);
-
-            $calendar_year_data_array[] = array('display_text' => 'CY '.$value['year_value'].' (Jan 1, '.$value['year_value'].' - Dec 31, '.$value['year_value'].')',
-                                                    'value' => $value['year_id'].'~C',
+            $calendar_year_data_array[] = array('display_text' => 'CY '.$year['year_value'].' (Jan 1, '.$year['year_value'].' - Dec 31, '.$year['year_value'].')',
+                                                    'value' => $year['year_id'].'~C',
                                                     'link' => $link,
                                                     'selected' => $selected_cal_year
                                                     );
         }
     }
-    /*********  End of Calendar Year Options (Applicable for Payroll domain only)   ********/
+    /*********  End of Calendar Year Options ********/
+
+    /****** Beginning of Year options for NYCHA****/
+    if(Datasource::isNYCHA()){
+      //For Transaction pages replace the year ID and Year type in 'expandBottomContURL'
+        if(preg_match("/expandBottomContURL/",$link) && (preg_match("/wt_issue_date/",$link))){
+        $link_parts = explode("?expandBottomContURL=",$link);
+        $url = preg_replace("/year\/" . $url_year_id_value . "/", "year/" . $year['year_id'], $link_parts[0]);
+        $old_year_id = RequestUtil::getRequestKeyValueFromURL("year",$link_parts[1]);
+        $old_issue_date = RequestUtil::getRequestKeyValueFromURL("issue_date",$link_parts[1]);
+        $issue_date = explode("~", $old_issue_date);
+        $month = date("n",strtotime($issue_date[0]));
+        $new_issue_date=$year['year_value']."-".$month."-01~".$year['year_value']."-".$month."-31";
+        $bottom_url = preg_replace("/year\/" . $old_year_id . "/", "year/" . $year['year_id'], $link_parts[1]);
+        $bottom_url = preg_replace("/issue_date\/" . $old_issue_date . "/", "issue_date/" . $new_issue_date, $link_parts[1]);
+        $link = $url . '?expandBottomContURL='. $bottom_url;
+        }
+        else {
+          $link = preg_replace("/year\/" . $url_year_id_value . "/", "year/" . $year['year_id'], $q);
+        }
+        if($year['year_value'] <= $filter_years['cal_year_value']) {
+            $nycha_year_data_array[] = array('display_text' => 'FY ' . $year['year_value'] . ' (Jan 1, ' . $year['year_value'] . ' - Dec 31, ' . $year['year_value'] . ')',
+                'value' => $year['year_id'],
+                'link' => $link,
+                'selected' => $selected_cal_year
+            );
+        }
+    }
+    /****** End of Year options for NYCHA ****/
 }
 
-$year_data_array = array_merge($calendar_year_data_array, $fiscal_year_data_array);
+if(Datasource::isNYCHA() && preg_match('/payroll/',request_uri())){
+    $year_data_array = $calendar_year_data_array;
+}else {
+    $year_data_array = (Datasource::isNYCHA() ? $nycha_year_data_array : array_merge($calendar_year_data_array, $fiscal_year_data_array));
+}
 
 //HTML for Date Filter
 $year_list = "<select id='year_list'>";
-foreach($year_data_array as $key => $value){
-    $year_list .= "<option ".$value['selected']." value=".$value['value']." link='" . $value['link'] . "'  >".$value['display_text']."</option>";
+foreach($year_data_array as $year){
+    $year_list .= "<option ".$year['selected']." value=".$year['value']." link='" . $year['link'] . "'  >".$year['display_text']."</option>";
 }
 $year_list .= "</select>";
-if($isSelected){
-    print "<span class=\"filter\" >Filter: </span>" . $year_list;
-}
 
-
-
+print "<span class=\"filter\" >Filter: </span>" . $year_list;

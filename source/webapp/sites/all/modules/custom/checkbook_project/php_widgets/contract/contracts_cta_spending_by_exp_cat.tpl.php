@@ -49,4 +49,4 @@ if (count($node->data) > 0) {
 
 $html = WidgetUtil::generateTable($tbl);
 echo $html;
-?>
+

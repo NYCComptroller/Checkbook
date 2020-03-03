@@ -9,7 +9,7 @@
 class ContractsParameters{
     /**
      * returns the contract category based on the page URL
-     * @return Contracts Category
+     * @return string
      */
       public static function getContractCategory(){
         $urlPath = drupal_get_path_alias($_GET['q']);

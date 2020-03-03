@@ -18,6 +18,7 @@
 name = "Widget Controller"
 description = "Module to provide controller support for widget views"
 core = 7.x
+php = 7.2
 package = REI Checkbook Widget Redesign
 dependencies[] = data_controller
 dependencies[] = ajaxnode

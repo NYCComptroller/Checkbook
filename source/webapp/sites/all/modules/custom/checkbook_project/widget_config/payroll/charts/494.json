@@ -46,9 +46,10 @@
 "transformationPHP": "
     $data = array();
     $categories=array();
-    $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
+   $data_source= RequestUtilities::_getUrlParamString('datasource');
+   $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
     foreach ($node->data as $row){
-           $link='payroll/agency_landing/agency/' .$row['agency_agency'] . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"title\");
+           $link='payroll/agency_landing/agency/' .$row['agency_agency'] . $data_source. _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string(\"title\");
            $categories[]=html_entity_decode($row['agency_agency_agency_short_name'],ENT_QUOTES);
            $data[] = (object)array('year'=>$row['year_year_year_value'],
                                                'year_type'=>$row['year_type_year_type'],

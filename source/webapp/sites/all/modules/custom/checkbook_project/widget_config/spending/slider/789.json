@@ -8,14 +8,12 @@
         },
         "series": [
          {
-                "dataset": "checkbook:spending_data",
-                                "columns": [
-                    "check_amount_sum","category.category"
-                ],
-               "seriesURLParamMap":{"year":"year.year","agency":"agency_id","yeartype":"type_of_year","vendor":"vendor.vendor"},
-               "allowedParams":["year.year","agency_id","type_of_year","vendor.vendor"],
-               "seriesDefaultParameters":{"year.year":"1","type_of_year":"B"}
-            }
+            "dataset": "checkbook:spending_data",
+            "columns": ["check_amount_sum","category.category"],
+            "seriesURLParamMap":{"year":"year.year","agency":"agency_id","yeartype":"type_of_year","vendor":"vendor.vendor"},
+            "allowedParams":["year.year","agency_id","type_of_year","vendor.vendor"],
+            "seriesDefaultParameters":{"year.year":"1","type_of_year":"B"}
+          }
         ]
     },
     "template": "spending_bottom_slider"

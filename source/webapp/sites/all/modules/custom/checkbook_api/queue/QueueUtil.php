@@ -81,13 +81,14 @@ class QueueUtil {
     return $result;
   }
 
-  /**
-   * @static
-   * @param $token
-   * @param $email
-   * @param $job_id
-   * @return DatabaseStatementInterface|int|null
-   */
+    /**
+     * @static
+     * @param $token
+     * @param $email
+     * @param $job_id
+     * @return DatabaseStatementInterface|int|null
+     * @throws Exception
+     */
   static function createQueueRequest($token, $email, $job_id) {
     $fields = array(
       'token' => $token,
@@ -103,11 +104,12 @@ class QueueUtil {
   }
 
 
-  /**
-   * @static
-   * @param $queue_request
-   * @return DatabaseStatementInterface|int|null
-   */
+    /**
+     * @static
+     * @param $queue_request
+     * @return DatabaseStatementInterface|int|null
+     * @throws Exception
+     */
   static function createNewQueueRequest($queue_request) {
       $input_parameters = array(
           'name' => $queue_request['name'],
@@ -133,6 +135,7 @@ class QueueUtil {
      * @static
      * @param $queue_request
      * @return DatabaseStatementInterface|int|null
+     * @throws Exception
      */
     static function createImmediateNewQueueRequest($queue_request) {
         $input_parameters = array(
@@ -154,12 +157,14 @@ class QueueUtil {
 
         return self::createImmediateQueueRequest($queue_request['token'], $queue_request['email'], $job_id);
     }
+
     /**
      * @static
      * @param $token
      * @param $email
      * @param $job_id
      * @return DatabaseStatementInterface|int|null
+     * @throws Exception
      */
     static function createImmediateQueueRequest($token, $email, $job_id) {
         $fields = array(
@@ -388,6 +393,8 @@ class QueueUtil {
     /**
      * Function will update the confirmation_mail_sent_date in the
      * custom_queue_request table with current timestamp
+     * @param $token
+     * @return DatabaseStatementInterface
      */
     static function updateConfirmationMailSentDate($token) {
         $db_update_query = db_update("custom_queue_request")

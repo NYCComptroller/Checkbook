@@ -18,4 +18,5 @@
 name = Checkbook Autocomplete
 description = Sets up menu items to provide data to checkbook_advanced_search and checkbook_data_feeds autocomplete fields
 core = 7.x
+php = 7.2
 package = NYC Checkbook

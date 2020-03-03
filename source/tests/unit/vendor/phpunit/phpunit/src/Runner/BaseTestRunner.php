@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -9,33 +9,65 @@
  */
 namespace PHPUnit\Runner;
 
-use File_Iterator_Facade;
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
-use ReflectionClass;
-use ReflectionException;
+use PHPUnit\Framework\TestSuite;
+use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
- * Base class for all test runners.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 abstract class BaseTestRunner
 {
-    const STATUS_PASSED     = 0;
-    const STATUS_SKIPPED    = 1;
-    const STATUS_INCOMPLETE = 2;
-    const STATUS_FAILURE    = 3;
-    const STATUS_ERROR      = 4;
-    const STATUS_RISKY      = 5;
-    const STATUS_WARNING    = 6;
-    const SUITE_METHODNAME  = 'suite';
+    /**
+     * @var int
+     */
+    public const STATUS_UNKNOWN    = -1;
+
+    /**
+     * @var int
+     */
+    public const STATUS_PASSED     = 0;
+
+    /**
+     * @var int
+     */
+    public const STATUS_SKIPPED    = 1;
+
+    /**
+     * @var int
+     */
+    public const STATUS_INCOMPLETE = 2;
+
+    /**
+     * @var int
+     */
+    public const STATUS_FAILURE    = 3;
+
+    /**
+     * @var int
+     */
+    public const STATUS_ERROR      = 4;
+
+    /**
+     * @var int
+     */
+    public const STATUS_RISKY      = 5;
+
+    /**
+     * @var int
+     */
+    public const STATUS_WARNING    = 6;
+
+    /**
+     * @var string
+     */
+    public const SUITE_METHODNAME  = 'suite';
 
     /**
      * Returns the loader to be used.
-     *
-     * @return TestSuiteLoader
      */
-    public function getLoader()
+    public function getLoader(): TestSuiteLoader
     {
         return new StandardTestSuiteLoader;
     }
@@ -45,18 +77,15 @@ abstract class BaseTestRunner
      * This is a template method, subclasses override
      * the runFailed() and clearStatus() methods.
      *
-     * @param string $suiteClassName
-     * @param string $suiteClassFile
-     * @param mixed  $suffixes
+     * @param string|string[] $suffixes
      *
-     * @return Test|null
+     * @throws Exception
      */
-    public function getTest($suiteClassName, $suiteClassFile = '', $suffixes = '')
+    public function getTest(string $suiteClassName, string $suiteClassFile = '', $suffixes = ''): ?Test
     {
-        if (\is_dir($suiteClassName) &&
-            !\is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
-            $facade = new File_Iterator_Facade;
-            $files  = $facade->getFilesAsArray(
+        if (empty($suiteClassFile) && \is_dir($suiteClassName) && !\is_file($suiteClassName . '.php')) {
+            /** @var string[] $files */
+            $files = (new FileIteratorFacade)->getFilesAsArray(
                 $suiteClassName,
                 $suffixes
             );
@@ -75,7 +104,7 @@ abstract class BaseTestRunner
         } catch (Exception $e) {
             $this->runFailed($e->getMessage());
 
-            return;
+            return null;
         }
 
         try {
@@ -86,22 +115,11 @@ abstract class BaseTestRunner
                     'suite() method must be static.'
                 );
 
-                return;
+                return null;
             }
 
-            try {
-                $test = $suiteMethod->invoke(null, $testClass->getName());
-            } catch (ReflectionException $e) {
-                $this->runFailed(
-                    \sprintf(
-                        "Failed to invoke suite() method.\n%s",
-                        $e->getMessage()
-                    )
-                );
-
-                return;
-            }
-        } catch (ReflectionException $e) {
+            $test = $suiteMethod->invoke(null, $testClass->getName());
+        } catch (\ReflectionException $e) {
             try {
                 $test = new TestSuite($testClass);
             } catch (Exception $e) {
@@ -117,31 +135,22 @@ abstract class BaseTestRunner
 
     /**
      * Returns the loaded ReflectionClass for a suite name.
-     *
-     * @param string $suiteClassName
-     * @param string $suiteClassFile
-     *
-     * @return ReflectionClass
      */
-    protected function loadSuiteClass($suiteClassName, $suiteClassFile = '')
+    protected function loadSuiteClass(string $suiteClassName, string $suiteClassFile = ''): \ReflectionClass
     {
-        $loader = $this->getLoader();
-
-        return $loader->load($suiteClassName, $suiteClassFile);
+        return $this->getLoader()->load($suiteClassName, $suiteClassFile);
     }
 
     /**
      * Clears the status message.
      */
-    protected function clearStatus()
+    protected function clearStatus(): void
     {
     }
 
     /**
      * Override to define how to handle a failed loading of
      * a test suite.
-     *
-     * @param string $message
      */
-    abstract protected function runFailed($message);
+    abstract protected function runFailed(string $message): void;
 }

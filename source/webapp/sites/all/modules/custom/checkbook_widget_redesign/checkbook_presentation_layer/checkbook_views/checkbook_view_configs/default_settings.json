@@ -10,6 +10,6 @@
     "disableViewAll":true,
     "useList":false,
     "validUrlParameters":["year","yeartype","status","agency","vendor","subvendor","doctype","mwbe",
-                          "dashboard", "awdmethod", "csize", "cindustry", "category", "industry", 
+                          "dashboard", "awdmethod", "csize", "cindustry", "category", "industry", "fundsrc",
                           "dept","agid","magid","bottom_slider","expcategory", "filter_type", "title", "salary"]
 }

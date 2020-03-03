@@ -22,7 +22,7 @@
 class DataQueryControllerRequestTree extends AbstractObject {
 
     // instances of DataQueryControllerDatasetRequest, DataQueryControllerCubeRequest or DataQueryControllerRequestTree
-    public $branches = array();
+    public $branches = [];
 
     public $joinMethod = NULL;
     public $joinColumnNames = NULL;

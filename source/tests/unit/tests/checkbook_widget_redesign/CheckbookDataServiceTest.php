@@ -17,7 +17,7 @@ class CheckbookDataServiceTest extends \PHPUnit\Framework\TestCase
     /**
      *
      */
-    public function setUp()
+    public function setUp(): void
     {
         global $phpunit_cache;
         $phpunit_cache = [];

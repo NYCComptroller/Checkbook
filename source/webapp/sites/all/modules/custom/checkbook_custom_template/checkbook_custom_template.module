@@ -114,36 +114,35 @@ function checkbook_custom_template_init(){
 
 /**
  * Implementation of hook_theme() ...
- * @param unknown_type $existing
- * @param unknown_type $type
- * @param unknown_type $theme
- * @param unknown_type $path
- * @return multitype:multitype:string multitype:unknown   multitype:string multitype:NULL
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
  */
 function checkbook_custom_template_theme($existing, $type, $theme, $path){
-    return array(
-        'revenue_cat_table' => array(
+    return [
+        'revenue_cat_table' => [
             'template' => 'templates/revenue_category',
-            'arguments' => array('node' => $node)
-        ),
-        'revenue_fundsrc_table' => array(
+            'arguments' => ['node' => NULL]
+        ],
+        'revenue_fundsrc_table' => [
             'template' => 'templates/revenue_fndsrc',
-            'arguments' => array('node' => $node)
-        ),
-        'agency_revenue_table' => array(
+            'arguments' => ['node' => NULL]
+        ],
+        'agency_revenue_table' => [
             'template' => 'templates/agency_revenue',
-            'arguments' => array('node' => $node)
-        ),
-        'dept_revenue_table' => array(
+            'arguments' => ['node' => NULL]
+        ],
+        'dept_revenue_table' => [
             'template' => 'templates/dept_revenue',
-            'arguments' => array('node' => $node)
-        ),
-        'budget_agency_percent_difference' => array(
+            'arguments' => ['node' => NULL]
+        ],
+        'budget_agency_percent_difference' => [
             'template' => 'templates/budget/agency_percent_difference',
-            'arguments' => array('node' => $node)
-        ),
+            'arguments' => ['node' => NULL]
+        ],
 
-    );
+    ];
 
 }
-?>

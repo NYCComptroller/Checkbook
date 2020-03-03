@@ -27,7 +27,7 @@ class BudgetWidgetService extends WidgetDataService implements IWidgetService {
                 break;
             case "department_name_link":
                 $column = $row['department_name'];
-                $url = BudgetUrlService::departmentUrl($row['department_id']);
+                $url = BudgetUrlService::departmentUrl($row['department_code']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
             case "expense_category_name_link":
@@ -54,7 +54,7 @@ class BudgetWidgetService extends WidgetDataService implements IWidgetService {
             case "dept_committed_budget_link":
                 $column = $row['budget_committed'];
                 $class = "bottomContainerReload";
-                $dynamic_parameter = "/dept/" . $row["department_id"];
+                $dynamic_parameter = "/dept/" . $row["department_code"];
                 $url = BudgetUrlService::committedBudgetUrl($dynamic_parameter, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;

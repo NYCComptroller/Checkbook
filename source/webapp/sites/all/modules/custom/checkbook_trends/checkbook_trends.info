@@ -18,5 +18,6 @@
 name = Checkbook Trends
 description = Checkbook 2.0 Trends
 core = 7.x
+php = 7.2
 package = NYC Checkbook
 scripts[] = js/trends.js

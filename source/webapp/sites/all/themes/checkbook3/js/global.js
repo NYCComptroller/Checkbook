@@ -125,6 +125,17 @@ jQuery(document).ready(function ($) {
         });
     };
 
+    $.fn.formatDatafeedsDatasourceRadio = function() {
+      let oge_datasources = $("#div_data_source .form-item:not(:first-child)");
+      let oge_fieldset = $('<fieldset />').addClass('oge-datasource-fieldset');
+      let oge_fieldset_legend = $('<legend />').text('Other Government Entities:');
+      oge_fieldset.append(oge_fieldset_legend);
+      oge_datasources.detach();
+      oge_fieldset.append(oge_datasources);
+      $('#div_data_source .form-radios').append(oge_fieldset);
+      $('#div_data_source').append($('<div />').addClass('clear2'));
+    };
+
     // Projects & Actions Table Styling
     Drupal.behaviors.styleOverrides = {
         attach: function (context, settings) {
@@ -173,23 +184,25 @@ jQuery(document).ready(function ($) {
             $('#dept-budget .grid-12 .inside').filter(':first').after(pager);
             $('#nyc-payroll .grid-12 .inside').filter(':first').after(pager);
             $('#nyc-revenue .grid-12 .inside').filter(':first').after(pager);
+            $('#nycha-contracts-landing .grid-12 .inside').filter(':first').after(pager);
+            $('#nycha-spending-landing .grid-12 .inside').filter(':first').after(pager);
 
-            var highSlides = '#nyc-spending .grid-12 .inside, #nyc-payroll .grid-12 .inside, #nyc-contracts .grid-12 .inside,#nyc-budget .grid-12 .inside, #agency-budget .grid-12 .inside, #agency-expenditure-categories .grid-12 .inside, #nyc-expenditure-categories .grid-12 .inside,#nyc-contracts-revenue-landing .grid-12 .inside,#nyc-revenue-pending-contracts .grid-12 .inside,#nyc-expense-pending-contracts .grid-12 .inside,#dept-budget .grid-12 .inside,#nyc-revenue .grid-12 .inside';
+            var highSlides = '#nycha-spending-landing .grid-12 .inside, #nycha-contracts-landing .grid-12 .inside, #nyc-spending .grid-12 .inside, #nyc-payroll .grid-12 .inside, #nyc-contracts .grid-12 .inside,#nyc-budget .grid-12 .inside, #agency-budget .grid-12 .inside, #agency-expenditure-categories .grid-12 .inside, #nyc-expenditure-categories .grid-12 .inside,#nyc-contracts-revenue-landing .grid-12 .inside,#nyc-revenue-pending-contracts .grid-12 .inside,#nyc-expense-pending-contracts .grid-12 .inside,#dept-budget .grid-12 .inside,#nyc-revenue .grid-12 .inside';
 
             if ($(highSlides).filter(":first").length > 0) {
-                $(highSlides).filter(":first")
-                    .once('styleOverrides')
-                    .cycle({
-                        slideExpr: '.slider-pane',
-                        fx: 'fade',
-                        timeout: 45000,
-                        height: '315px',
-                        width: '100%',
-                        fit: 1,
-                        pause: true,
-                        pager: '.slider-pager'
-                    });
-            }
+            $(highSlides).filter(":first")
+              .once('styleOverrides')
+              .cycle({
+                slideExpr: '.slider-pane',
+                fx: 'fade',
+                timeout: 45000,
+                height: '315px',
+                width: '100%',
+                fit: 1,
+                pause: true,
+                pager: '.slider-pager'
+              });
+          }
 
             $('.chart-title').css("display", "block");
 
@@ -330,7 +343,7 @@ jQuery(document).ready(function ($) {
 
             var el;
             var longSelects = '#ie #checkbook-datafeeds-data-feed-wizard #edit-agency, #ie #checkbook-datafeeds-data-feed-wizard #edit-dept, ' +
-                '#ie #checkbook-datafeeds-data-feed-wizard #edit-expense-category, #ie #checkbook-datafeeds-data-feed-wizard #edit-expense-type, ' +
+                '#ie #checkbook-datafeeds-data-feed-wizard #edit-expense-category, #ie #checkbook-datafeeds-data-feed-wizard .edit-expense-type, ' +
                 '#ie #checkbook-datafeeds-data-feed-wizard #edit-contract-type, #ie #checkbook-datafeeds-data-feed-wizard #edit-award-method';
             $(longSelects)
                 .each(function () {
@@ -720,7 +733,7 @@ jQuery(document).ready(function ($) {
                 var nodeId = $(this).attr('exportid');
                 var oSettings = $('#table_' + nodeId).dataTable().fnSettings();
 
-                var url = '/export/grid/transactions';
+                var url = '/export/grid/transactions/'+ nodeId;
                 var inputs = "<input type='hidden' name='refURL' value='" + (oSettings.sAjaxSource != null ? oSettings.sAjaxSource : oSettings.oInit.sAltAjaxSource) + "'/>"
                     + "<input type='hidden' name='iDisplayStart' value='" + oSettings._iDisplayStart + "'/>"
                     + "<input type='hidden' name='iDisplayLength' value='" + oSettings._iDisplayLength + "'/>"
@@ -944,7 +957,6 @@ jQuery(document).ready(function ($) {
     };
 
 // end of disabling code
-
 
 //Datafeeds form freeze while loading
     Drupal.behaviors.datafeedspagefreeze = {
@@ -1269,7 +1281,7 @@ function fasterSplit(str, len) {
         //if()
         ret.push(str.substr(off, len));
         off += len
-    } while (off < strlen)
+    } while (off < strlen);
     return ret
 }
 

@@ -34,10 +34,18 @@ $urlParameter = $node->widgetConfig->urlParameterName;
 if($disableFacet) { //only URL parameters count and can be disabled
     $query_string = $_GET['q'];
     $is_new_window = preg_match('/newwindow/i',$query_string);
-    $url_ref = $is_new_window ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
-    $disableFacet = preg_match('"/'.$urlParameter.'/"',$url_ref);
+    $currentPath = current_path();
+    //To disable the user to de-select the default criteria (for advanced search)-NYCHA Contracts
+    if (preg_match('/nycha_contracts\/all\/transactions/', $currentPath) ||
+        preg_match('/nycha_contracts\/search\/transactions/', $currentPath)) {
+        $url_ref = $_GET['q'];
+        $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
+    }
+    else {
+        $url_ref = $is_new_window ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
+        $disableFacet = preg_match('"/' . $urlParameter . '/"', $url_ref);
+    }
 }
-
 if(isset($node->widgetConfig->maxSelect) && !$disableFacet){
   $tooltip = 'title="Select upto ' . $node->widgetConfig->maxSelect . '"';
 }
@@ -70,7 +78,15 @@ if($is_payroll_range_filter) {
         }
     }
 }
-
+//donot show annual in ratetype facet
+if($node->widgetConfig->filterName == 'Rate Type'){
+    if ($unchecked && $unchecked)
+        foreach($unchecked as $key => $value) {
+            if($value[1] == 'ANNUAL') {
+                $unchecked[$key] = 0;
+            }
+        }
+}
 //Contract Includes Sub Vendors Facet
 //For N/A value, some values are null, this needs to be handled
 if($node->widgetConfig->filterName == 'Contract Includes Sub Vendors') {
@@ -106,6 +122,23 @@ if($node->widgetConfig->filterName == 'Sub Vendor Status in PIP') {
             $checked[$key][0] = 0;
             $checked[$key][1] = "N/A";
         }
+    }
+}
+//Document ID filter display N/A for null values
+if($node->widgetConfig->filterName == 'Document ID') {
+  if ($unchecked && $unchecked)
+    foreach($unchecked as $key => $value) {
+      if($value[1] == null) {
+        $unchecked[$key][0] = "N/A";
+        $unchecked[$key][1] = "N/A";
+      }
+    }
+  if (isset($checked) && $checked)
+    foreach($checked as $key => $value) {
+      if($value[1] == null) {
+        $checked[$key][0] = "N/A";
+        $checked[$key][1] = "N/A";
+      }
     }
 }
 
@@ -380,8 +413,8 @@ if(!$checked){
     $span = "open";
 }
 
-if(strtolower($filter_name) == 'agency'){
-    if(_checkbook_check_isEDCPage()){
+if(strtolower($filter_name) == 'agency' || strtolower($filter_name) == 'citywide agency'){
+    if(_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage()){
         $filter_name = 'Other Government Entity';
     }else{
         $filter_name = 'Citywide Agency';
@@ -404,7 +437,8 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
     $pages = ceil($node->totalDataCount/$node->widgetConfig->limit);
     if((isset($checked) && $node->widgetConfig->maxSelect == $checkedCount) || $checkedCount + $uncheckedCount == 0 || $disableFacet){
       $disabled = " DISABLED='true' " ;
-    }else{
+    }
+    else{
       $disabled = "" ;
     }
     if( !isset($node->widgetConfig->autocomplete) || $node->widgetConfig->autocomplete == true  ){ ?>
@@ -419,8 +453,8 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
         $disabled = "" ;
     }
     $disableFacet = $disableFacet ? " DISABLED='true' " : "";
-
     $ct = 0;
+
 //    if ($checked && is_array($checked)) {
     if (isset($checked) && $checked) {
       foreach ($checked as $row) {
@@ -428,15 +462,24 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
             $row[0] = str_replace('__','/', $row[0]);
             $row[1] = str_replace('__','/', $row[1]);
             $id = $id_filter_name."_checked_".$ct;
-            echo '<div class="row">';
-            echo "<div class='checkbox'><input class='styled' id='" . $id . "' name= '" . $autocomplete_id . "' type='checkbox' " . $disableFacet . " checked='checked' value='" . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . "' onClick=\"return applyTableListFilters(this.checked, '" .urlencode(html_entity_decode($row[0], ENT_QUOTES)). "', '".$urlParameter."');\"><label for='" . $id . "'></label></div>";
+            echo <<<EOL
+
+            <div class="row">
+              <label for="{$id}">
+                <div class="checkbox">
+
+EOL;
+            echo "  <input class='styled' id='" . $id . "' name= '" . $autocomplete_id . "' type='checkbox' " . $disableFacet . " checked='checked' value='" . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . "' onClick=\"return applyTableListFilters();\" />" .
+              "<label for=\"{$id}\" />";
+            echo "</div>";
             if($node->widgetConfig->filterName == 'Contract ID') {
               echo '<div class="name"><label for="'.$id.'">' . $row[1] . '</label></div>';
             }
             else {
               echo '<div class="name"><label for="'.$id.'">' . _break_text_custom2($row[1],15) . '</label></div>';
             }
-            echo '<div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
+            echo '    <div class="number"><span class="active">' . number_format($row[2]) . '</span></div>';
+            echo '  </label>';
             echo '</div>';
             $ct++;
         }
@@ -450,28 +493,39 @@ $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
     <?php
     $ct = 0;
 //    if (isset($unchecked) && is_array($unchecked))
-    if (isset($unchecked) && $unchecked)
-    foreach ($unchecked as $row) {
-        if($row[2] > 0) {
+
+      if (isset($unchecked) && $unchecked)
+        foreach ($unchecked as $row) {
+          if ($row[2] > 0) {
             $row[0] = str_replace('__', '/', $row[0]);
             $row[1] = str_replace('__', '/', $row[1]);
             $id = $id_filter_name . "_unchecked_" . $ct;
-            echo '<div class="row">';
-            echo "<div class='checkbox'><input class='styled' id='" . $id . "' name= '" . $autocomplete_id . "' type='checkbox' " . $disabled . "value='" . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . "' onClick=\"return applyTableListFilters(this.checked, '" .urlencode(html_entity_decode($row[0], ENT_QUOTES)). "', '".$urlParameter."');\"><label for='" . $id . "'></label></div>";
+            echo <<<EOL
+
+              <div class="row">
+                <label for="{$id}">
+                  <div class="checkbox">
+
+EOL;
+            echo "<input class='styled' id='" . $id . "' name= '" . $autocomplete_id . "' type='checkbox' " . $disabled . "value='" . urlencode(html_entity_decode($row[0], ENT_QUOTES)) . "' onClick=\"return applyTableListFilters();\">" .
+              " <label for='" . $id . "' />" .
+              "</div>";
             if ($node->widgetConfig->filterName == 'Contract ID') {
-                echo '<div class="name"><label for="' . $id . '">' . $row[1] . '</label></div>';
+              echo '<div class="name">' . $row[1] . '</div>';
             } else {
-                echo '<div class="name"><label for="' . $id . '">' . _break_text_custom2($row[1], 15) . '</label></div>';
+              echo '<div class="name">' . _break_text_custom2($row[1], 15) . '</div>';
             }
-            echo '<div class="number"><span><label for="' . $id . '">' . number_format($row[2]) . '</label></span></div>';
+            echo '    <div class="number"><span>' . number_format($row[2]) . '</span></div>';
+            echo '  </label>';
             echo '</div>';
             $ct++;
+          }
         }
-    }
+
     ?>
     </div>
   </div>
-        </div>
+  </div>
   </div>
 </div>
 <?php

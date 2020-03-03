@@ -84,14 +84,14 @@ class Log_daemon extends Log
     /**
      * Constructs a new syslog object.
      *
-     * @param string $name     The syslog facility.
-     * @param string $ident    The identity string.
-     * @param array  $conf     The configuration array.
-     * @param int    $maxLevel Maximum level at which to log.
+     * @param string $name The syslog facility.
+     * @param string $ident The identity string.
+     * @param array $conf The configuration array.
+     * @param int $level
      * @access public
      */
-    function Log_daemon($name, $ident = '', $conf = array(),
-                        $level = PEAR_LOG_DEBUG)
+    function __construct($name, $ident = '', $conf = array(),
+                         $level = PEAR_LOG_DEBUG)
     {
         /* Ensure we have a valid integer value for $name. */
         if (empty($name) || !is_int($name)) {
@@ -169,12 +169,13 @@ class Log_daemon extends Log
      * open() if necessary. Also passes the message along to any Log_observer
      * instances that are observing this Log.
      *
-     * @param string $message  The textual message to be logged.
+     * @param string $message The textual message to be logged.
      * @param int $priority (optional) The priority of the message.  Valid
      *                  values are: LOG_EMERG, LOG_ALERT, LOG_CRIT,
      *                  LOG_ERR, LOG_WARNING, LOG_NOTICE, LOG_INFO,
      *                  and LOG_DEBUG.  The default is LOG_INFO.
      * @access public
+     * @return bool|void
      */
     function log($message, $priority = null)
     {
@@ -214,6 +215,7 @@ class Log_daemon extends Log
         fwrite($this->_socket, '<' . $facility_level . '>' . $message . "\n");
 
         $this->_announce(array('priority' => $priority, 'message' => $message));
+        return;
     }
 
     /**
@@ -226,7 +228,7 @@ class Log_daemon extends Log
      *
      * @param int $priority     PEAR_LOG_* value to convert to LOG_* value.
      *
-     * @return  The LOG_* representation of $priority.
+     * @return int
      *
      * @access private
      */

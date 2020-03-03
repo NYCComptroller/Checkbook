@@ -120,6 +120,22 @@
         {"labelAlias": "pin","column":"tracking_number"},
         {"labelAlias": "apt_pin","column":"board_award_number"}
     ],
+  "exportColumnSqlOverride":[
+    {
+      "column":"mwbe_category_name",
+      "sourceColumn":"minority_type_id",
+      "sql":"
+        CASE
+        WHEN minority_type_id = 2 THEN 'Black American'
+        WHEN minority_type_id = 3 THEN 'Hispanic American'
+        WHEN minority_type_id = 7 THEN 'Non-M/WBE'
+        WHEN minority_type_id = 9 THEN 'Women'
+        WHEN minority_type_id = 11 THEN 'Individuals and Others'
+        ELSE 'Asian American'
+        END AS minority_type_name
+      "
+    }
+  ],
     "adjustParameters":"
     //FIX ME: Hard coded the contract type code for 'Construction' for now since it is not matching with reference table value
     if(isset($parameters['cont_type_code'][0]) && $parameters['cont_type_code'][0] == '05'){

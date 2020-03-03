@@ -74,7 +74,6 @@ class RequestUtil
     public static function isNewWindow()
     {
         $referer = $_SERVER['HTTP_REFERER'];
-
         return preg_match('/newwindow/i', $referer);
     }
 
@@ -114,116 +113,9 @@ class RequestUtil
         return 0 === stripos($path, 'contracts_revenue_landing');
     }
 
-    /** Returns Contracts page title and Breadcrumb */
-    public static function getContractBreadcrumbTitle()
+    public static function isNYCHAContractPath($path)
     {
-        $title = '';
-        $bottomURL = $_REQUEST['expandBottomContURL'];
-        if (preg_match('/magid/', $bottomURL)) {
-            $magid = RequestUtil::getRequestKeyValueFromURL("magid", $bottomURL);
-            $contract_number = _get_master_agreement_details($magid);
-            return $contract_number['contract_number'];
-
-        } elseif (preg_match('/agid/', $bottomURL)) {
-            $agid = RequestUtil::getRequestKeyValueFromURL("agid", $bottomURL);
-            $contract_number = _get_child_agreement_details($agid);
-            return $contract_number['contract_number'];
-        } elseif (preg_match('/contract/', $bottomURL) && preg_match('/pending_contract_transactions/', $bottomURL)) {
-            $contract_number = RequestUtil::getRequestKeyValueFromURL("contract", $bottomURL);
-            return $contract_number;
-        } else if (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
-            $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
-            $dashboard = RequestUtil::getRequestKeyValueFromURL("dashboard", $bottomURL);
-            $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
-            if ($smnid == 720 && $dashboard != 'mp') {
-                $title = '';
-            }
-            $bottomNavigation = '';
-            if (preg_match('/status\/A/', current_path())) {
-                $bottomNavigation = "Total Active Sub Vendor Contracts";
-            } elseif (preg_match('/status\/R/', current_path())) {
-                $bottomNavigation = "New Sub Vendor Contracts by Fiscal Year";
-            }
-            if ($smnid == 722 || $smnid == 782) {
-                $title = "Amount Modifications";
-            }
-            if ($smnid == 721 || $smnid == 720 || $smnid == 781 || $smnid == 784) {
-                $title = "";
-            }
-            if ($smnid == 722 || $smnid == 726 || $smnid == 727 || $smnid == 728 || $smnid == 729 || $smnid == 782 || $smnid == 785 || $smnid == 786 || $smnid == 787 || $smnid == 788) {
-                $title = $title . " by ";
-            }
-            if ($smnid == 725 || $smnid == 783) {
-                $title = $title . " with ";
-            }
-
-            if (preg_match('/^contracts_landing/', current_path()) && preg_match('/status\/A/', current_path())) {
-                if (preg_match('/dashboard\/ss/', current_path()) || preg_match('/dashboard\/ms/', current_path()) || preg_match('/dashboard\/sp/', current_path())) {
-                    if (preg_match('/dashboard\/ms/', current_path()) || preg_match('/dashboard\/sp/', current_path())) {
-                        $bottomNavigation = "Total Active M/WBE Sub Vendor Contracts";
-                    }
-                    $title = $title . " " . $bottomNavigation . " Transactions";
-
-                } else {
-                    $title = RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Active Expense Contracts Transactions';
-                }
-            } elseif (preg_match('/^contracts_landing/', current_path()) && preg_match('/status\/R/', current_path())) {
-                if (preg_match('/dashboard\/ss/', current_path()) || preg_match('/dashboard\/ms/', current_path()) || preg_match('/dashboard\/sp/', current_path())) {
-                    if (preg_match('/dashboard\/ms/', current_path()) || preg_match('/dashboard\/sp/', current_path())) {
-                        $bottomNavigation = "New M/WBE Sub Vendor Contracts by Fiscal Year";
-                    }
-                    $title = $title . " " . $bottomNavigation . " Transactions";
-
-                } else {
-                    $title = RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Registered Expense Contracts Transactions';
-                }
-
-            } elseif (preg_match('/^contracts_landing/', current_path()) && !preg_match('/status\/', current_path())) {
-                if (preg_match('/dashboard\/ss/', current_path())) {
-                    $title = 'Sub Contract Status by Prime Contract ID';
-                }
-                if (preg_match('/dashboard\/ms/', current_path()) || preg_match('/dashboard\/sp/', current_path())) {
-                    $title = 'M/WBE Sub Contract Status by Prime Contract ID';
-                }
-            } elseif (preg_match('/^contracts_revenue_landing/', current_path()) && preg_match('/status\/A/', current_path())) {
-                $title = RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Active Revenue Contracts Transactions';
-            } elseif (preg_match('/^contracts_revenue_landing/', current_path()) && preg_match('/status\/R/', current_path())) {
-                $title = RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Registered Revenue Contracts Transactions';
-            } elseif (preg_match('/^contracts_pending_exp_landing/', current_path())) {
-                $title = RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Pending Expense Contracts Transactions';
-            } elseif (preg_match('/^contracts_pending_rev_landing/', current_path())) {
-                $title = RequestUtil::getDashboardTitle() . ' ' . $title . ' ' . ' Pending Revenue Contracts Transactions';
-            }
-        } elseif (preg_match('/^contracts_landing/', current_path()) && preg_match('/status\/A/', current_path())) {
-            if (preg_match('/dashboard\/ss/', current_path()) || preg_match('/dashboard\/ms/', current_path()) || preg_match('/dashboard\/sp/', current_path())) {
-                $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . ' Total Active Sub Vendor Contracts';
-            } else {
-                $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Active Expense Contracts';
-            }
-
-        } elseif (preg_match('/^contracts_landing/', current_path()) && preg_match('/status\/R/', current_path())) {
-            if (preg_match('/dashboard\/ss/', current_path()) || preg_match('/dashboard\/ms/', current_path()) || preg_match('/dashboard\/sp/', current_path())) {
-                $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . ' New Sub Vendor Contracts by Fiscal Year';
-            } else {
-                $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Registered Expense Contracts';
-            }
-        } elseif (preg_match('/^contracts_landing/', current_path()) && !preg_match('/status\/', current_path())) {
-            if (preg_match('/dashboard\/ss/', current_path()) || preg_match('/dashboard\/ms/', current_path()) || preg_match('/dashboard\/sp/', current_path())) {
-                $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . ' Status of Sub Vendor Contracts by Prime Vendor';
-            }
-        } elseif (preg_match('/^contracts_revenue_landing/', current_path()) && preg_match('/status\/A/', current_path())) {
-            $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Active Revenue Contracts';
-        } elseif (preg_match('/^contracts_revenue_landing/', current_path()) && preg_match('/status\/R/', current_path())) {
-            $title = _get_contracts_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Registered Revenue Contracts';
-        } elseif (preg_match('/^contracts_pending_exp_landing/', current_path())) {
-            $title = _get_pending_contracts_breadcrumb_title_drilldown() . ' ' . RequestUtil::getDashboardTitle() . ' Pending Expense Contracts';
-        } elseif (preg_match('/^contracts_pending_rev_landing/', current_path())) {
-            $title = _get_pending_contracts_breadcrumb_title_drilldown() . ' ' . RequestUtil::getDashboardTitle() . ' Pending Revenue Contracts';
-        } else {
-            GLOBAL $checkbook_breadcrumb_title;
-            $title = $checkbook_breadcrumb_title;
-        }
-        return html_entity_decode($title);
+        return 0 === stripos($path, 'nycha_contracts');
     }
 
     /** Returns the request parameter value from URL
@@ -264,89 +156,6 @@ class RequestUtil
         return '';
     }
 
-    /** Returns Payroll page title and Breadcrumb */
-    public static function getPayrollBreadcrumbTitle()
-    {
-        $title = '';
-        $bottomURL = $_REQUEST['expandBottomContURL'];
-        if (isset($bottomURL) && preg_match('/payroll_agencytransactions/', $bottomURL)) {
-            $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
-            $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL);
-            if ($dtsmnid > 0) {
-                $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
-            } else if ($smnid > 0) {
-                $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
-            } else {
-                $title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL)) . ' Payroll Transactions';
-            }
-        } else if (isset($bottomURL) && preg_match('/payroll_employee_transactions/', $bottomURL)) {
-            $title = "Individual Employee Payroll Transactions";
-        } else if (isset($bottomURL) && preg_match('/payroll_title_transactions/', $bottomURL)) {
-            $title = "Payroll Summary by Employee Title";
-        } else if (isset($bottomURL) && preg_match('/payroll_nyc_transactions/', $bottomURL)) {
-            $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
-            $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL);
-            if ($dtsmnid > 0) {
-                $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
-            }
-            if ($smnid > 0) {
-                $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
-            }
-        } else if (isset($bottomURL) && preg_match('/payroll_nyc_title_transactions/', $bottomURL)) {
-            $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
-            if ($smnid > 0) {
-                $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
-            }
-        } else if (isset($bottomURL) && preg_match('/payroll_by_month_nyc_transactions/', $bottomURL)) {
-            $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
-            if ($smnid == '491' || $smnid == '492') {
-                $customTitle = "Overtime Payments by Month Transactions";
-            } else {
-                $customTitle = "Gross Pay by Month Transactions";
-            }
-            $title = $customTitle;
-        } else if (isset($bottomURL) && preg_match('/payroll_agency_by_month_transactions/', $bottomURL)) {
-            $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
-            if ($smnid == '491') {
-                $customTitle = "Overtime Payments by Month Transactions";
-            } else {
-                $customTitle = "Gross Pay by Month Transactions";
-            }
-            $title = $customTitle;
-        } elseif (preg_match('/^payroll\/search\/transactions/', current_path())) {
-            $title = "Payroll Transactions";
-        } elseif (preg_match('/^payroll/', current_path()) && preg_match('/agency_landing/', current_path())) {
-            $title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", current_path())) . ' Payroll';
-        } elseif (preg_match('/^payroll/', current_path()) && preg_match('/title_landing/', current_path())) {
-            $title_code = RequestUtil::getRequestKeyValueFromURL("title", current_path());
-            $title = PayrollUtil::getTitleByCode($title_code) . ' Payroll';
-            $title = mb_convert_case($title, MB_CASE_TITLE, "UTF-8");
-        } elseif (preg_match('/^payroll/', current_path()) && !preg_match('/transactions/', current_path())) {
-            $title = 'New York City Payroll';
-        } else {
-            GLOBAL $checkbook_breadcrumb_title;
-            $title = $checkbook_breadcrumb_title;
-        }
-        return html_entity_decode($title);
-    }
-
-    /** Returns Spending Transaction page title based on 'category'/'featured dashboard' value from current path
-     * @param string $defaultName
-     * @return string
-     */
-    public static function getSpendingTransactionTitle($defaultName = 'Total Spending')
-    {
-        $categoryId = RequestUtilities::get('category');
-        if (isset($categoryId)) {
-            $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId, 'display_name');
-            if (is_array($categoryDetails)) {
-                return "Total " . $categoryDetails[0]['display_name'];
-            }
-        }
-
-        return $defaultName;
-    }
-
     /**
      * Returns chart title for a prime or sub vendor page based on 'category'/'featured dashboard'/'domain'
      * using values from current path.
@@ -362,7 +171,7 @@ class RequestUtil
      * @param string $defaultTitle
      * @return string
      */
-    public static function getTitleByVendorType($domain, $defaultTitle = 'Total Spending')
+    /*public static function getTitleByVendorType($domain, $defaultTitle = 'Total Spending')
     {
         if (_checkbook_check_is_mwbe_page()) {
             $minority_type_id = RequestUtilities::get('mwbe');
@@ -388,10 +197,9 @@ class RequestUtil
         $title = $MWBE_certified
             ? '<p class="sub-chart-title">M/WBE Category: ' . $minority_category . '</p>'
             : $minority_category . ' ';
-        $title .= RequestUtil::getSpendingCategoryName($defaultTitle);
-
+        $title .= SpendingUtil::getSpendingCategoryName($defaultTitle);
         return html_entity_decode($title);
-    }
+    }*/
 
     /**
      * returns the latest minority category by domain, vendor type and the selected year.
@@ -401,14 +209,14 @@ class RequestUtil
      * @param $vendor_type
      * @return mixed
      */
-    public static function getLatestMinorityTypeByVendorType($domain, $vendor_id, $vendor_type)
+    /*public static function getLatestMinorityTypeByVendorType($domain, $vendor_id, $vendor_type)
     {
         $year_id = RequestUtilities::get('year');
         $type_of_year = 'B';
 
         if (empty($year_id)) $year_id = RequestUtilities::get('calyear');
         if (empty($type_of_year)) $type_of_year = 'B';
-        if (empty($year_id)) $year_id = _getCurrentYearID();
+        if (empty($year_id)) $year_id = CheckbookDateUtil::getCurrentFiscalYearId();
 
         $data_set = "";
         switch ($domain) {
@@ -424,170 +232,13 @@ class RequestUtil
         $minority_type_id = $minority_types[0]['minority_type_id'];
 
         return $minority_type_id;
-    }
+    }*/
 
-    /** Returns Spending Category based on 'category' value from current path
-     * @param string $defaultName
-     * @return string
-     */
-    public static function getSpendingCategoryName($defaultName = 'Total Spending')
-    {
-        $categoryId = RequestUtilities::get('category');
-        if (isset($categoryId)) {
-            $categoryDetails = SpendingUtil::getSpendingCategoryDetails($categoryId, 'display_name');
-            if (is_array($categoryDetails)) {
-                return $categoryDetails[0]['display_name'];
-            }
-        }
-
-        return $defaultName;
-    }
-
-    /** Returns Spending page title and Breadcrumb */
-    public static function getSpendingBreadcrumbTitle()
-    {
-        $title = '';
-        $bottomURL = $_REQUEST['expandBottomContURL'];
-        if (preg_match('/transactions/', current_path())) {
-            $title = SpendingUtil::getSpendingTransactionsTitle();
-        } elseif (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
-            $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL);
-            $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
-            if ($dtsmnid > 0) {
-                $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
-            } else if ($smnid > 0) {
-                $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
-            } else {
-                $last_id = _getLastRequestParamValue($bottomURL);
-                if ($last_id['vendor'] > 0) {
-                    $title = _checkbook_project_get_name_for_argument("vendor_id", RequestUtil::getRequestKeyValueFromURL("vendor", $bottomURL));
-                } elseif ($last_id["agency"] > 0) {
-                    $title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL));
-                } elseif ($last_id["expcategory"] > 0) {
-                    $title = _checkbook_project_get_name_for_argument("expenditure_object_id", RequestUtil::getRequestKeyValueFromURL("expcategory", $bottomURL));
-                } elseif ($last_id["dept"] > 0) {
-                    $title = _checkbook_project_get_name_for_argument("department_id", RequestUtil::getRequestKeyValueFromURL("dept", $bottomURL));
-                } elseif (preg_match("/\/agid/", $bottomURL)) {
-                    $title = _checkbook_project_get_name_for_argument("agreement_id", RequestUtil::getRequestKeyValueFromURL("agid", $bottomURL));
-                } elseif (preg_match("/\/magid/", $bottomURL)) {
-                    $title = _checkbook_project_get_name_for_argument("master_agreement_id", RequestUtil::getRequestKeyValueFromURL("magid", $bottomURL));
-                }
-                if (preg_match('/\/category\/1/', $bottomURL)) {
-                    $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Contract Spending Transactions';
-                } elseif (preg_match('/\/category\/2/', $bottomURL)) {
-                    $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Payroll Spending Transactions';
-                } elseif (preg_match('/\/category\/3/', $bottomURL)) {
-                    $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Capital Contracts Spending Transactions';
-                } elseif (preg_match('/\/category\/4/', $bottomURL)) {
-                    $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Others Spending Transactions';
-                } elseif (preg_match('/\/category\/5/', $bottomURL)) {
-                    $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Trust & Agency Spending Transactions';
-                } else {
-                    $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' Total Spending Transactions';
-                }
-            }
-        } elseif (preg_match('/\/category\/1/', current_path())) {
-            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Contract Spending';
-        } elseif (preg_match('/\/category\/2/', current_path())) {
-            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Payroll Spending';
-        } elseif (preg_match('/\/category\/3/', current_path())) {
-            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Capital Contracts Spending';
-        } elseif (preg_match('/\/category\/4/', current_path())) {
-            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Others Spending';
-        } elseif (preg_match('/\/category\/5/', current_path())) {
-            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Trust & Agency Spending';
-        } else {
-            $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' Total Spending';
-        }
-
-        return html_entity_decode($title);
-    }
-
-    /** Prepares Payroll bottom navigation filter
-     * @param $page
-     * @param $category
-     * @return string
-     */
-    public static function preparePayrollBottomNavFilter($page, $category)
-    {
-        $pathParams = explode('/', drupal_get_path_alias($_GET['q']));
-        $url = $page;
-        if (strlen($category) > 0) {
-            $url .= "/category/" . $category;
-        }
-        $url .= _checkbook_append_url_params();
-        $allowedFilters = array("year", "calyear", "agency", "yeartype", "vendor", "industry");
-        for ($i = 1; $i < count($pathParams); $i++) {
-            if (in_array($pathParams[$i], $allowedFilters)) {
-                $url .= '/' . $pathParams[$i] . '/' . $pathParams[($i + 1)];
-            }
-            $i++;
-        }
-        return $url;
-
-    }
-
-    /** Returns Budget page title and Breadcrumb */
-    public static function getBudgetBreadcrumbTitle()
-    {
-      $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
-      $find = '_' . $bottomURL . current_path();
-
-      $title = _get_budget_breadcrumb_title_drilldown() . ' Expense Budget';
-
-      if (!$bottomURL && stripos('_'.current_path(),'budget/transactions/')) {
-        $title = "Expense Budget Transactions";
-      } elseif (
-        stripos($find, 'transactions')
-        || stripos($find, 'department_budget_details')
-        || stripos($find, 'expense_category_budget_details')
-      ) {
-        $dtsmnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
-        $smnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
-        if (isset($dtsmnid)) {
-          $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
-        } else if (isset($smnid)) {
-          $title = NodeSummaryUtil::getInitNodeSummaryTemplateTitle($smnid);
-        }
-      }
-
-      return html_entity_decode($title);
-    }
-
-    /** Returns Revenue page title and Breadcrumb */
-    public static function getRevenueBreadcrumbTitle()
-    {
-        $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
-        $find = '_' . $bottomURL . current_path();
-        if (
-            stripos($bottomURL, 'transactions')
-            || stripos($find, 'agency_revenue_by_cross_year_collections_details')
-            || stripos($find, 'revenue_category_revenue_by_cross_year_collections_details')
-            || stripos($find, 'funding_class_revenue_by_cross_year_collections_details')
-            || stripos('_' . current_path(), 'revenue_transactions')
-        ) {
-            $dtsmnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
-            $smnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
-            if (isset($dtsmnid)) {
-                $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
-            } else if (isset($smnid)) {
-                $title = NodeSummaryUtil::getInitNodeSummaryTemplateTitle($smnid);
-            } else {
-                $title = _get_budget_breadcrumb_title_drilldown() . ' Revenue';
-            }
-        } else if (!$bottomURL && stripos('_'.current_path(), 'revenue/transactions/')) {
-            $title = "Revenue Transactions";
-        } else {
-            $title = _get_budget_breadcrumb_title_drilldown() . ' Revenue';
-        }
-
-        return html_entity_decode($title);
-    }
 
     /**
      * @return string
      */
-    public static function getRevenueNoRecordsMsg()
+   /* public static function getRevenueNoRecordsMsg()
     {
         $title = '';
         $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
@@ -621,7 +272,7 @@ class RequestUtil
             $title = "There are no revenue details.";
         }
         return html_entity_decode($title);
-    }
+    }*/
 
     /** Returns top navigation URL
      * @param $domain
@@ -633,6 +284,14 @@ class RequestUtil
         $fiscalYearId = static::getFiscalYearIdForTopNavigation();
 
         switch ($domain) {
+            case "nycha_contracts":
+                $path = "/nycha_contracts/datasource/".Datasource::NYCHA;
+                $path .="/year/".$fiscalYearId;
+                $path .= Datasource::getNYCHAUrl();
+                if (RequestUtilities::get("vendor") > 0) {
+                    $path .=  "/vendor/" . RequestUtilities::get("vendor");
+                }
+                break;
             case "contracts":
                 //Get 'Contracts Bottom Slider' amounts
                 $node = node_load(363);
@@ -677,10 +336,18 @@ class RequestUtil
                     $path = $path . "/vendor/" . RequestUtilities::get("vendor");
                 }
                 break;
+            case "nycha_spending":
+              $path = "/nycha_spending/datasource/".Datasource::NYCHA;
+              $path .="/year/".$fiscalYearId;
+              $path .= Datasource::getNYCHAUrl();
+              if (RequestUtilities::get("vendor") > 0) {
+                $path .=  "/vendor/" . RequestUtilities::get("vendor");
+              }
+            break;
             case "payroll":
                 $year = static::getCalYearIdForTopNavigation();
                 //Payroll is always redirected to the respective Calendar Year irrespective of the 'yeartpe' paramenter in the URL for all the other Domains
-                if (!preg_match('/payroll/', $_SERVER['REQUEST_URI'])) {
+                if (!preg_match('/payroll/', request_uri())) {
                     $yeartype = 'C';
                 } else {
                     $yeartype = RequestUtilities::get("yeartype");
@@ -689,38 +356,55 @@ class RequestUtil
                 if (preg_match('/agency_landing/', current_path())) {
                     $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year;
                     $path .= RequestUtilities::buildUrlFromParam('title');
-                    $path .= "/agency/" . RequestUtilities::get("agency");
+                    $path .= RequestUtilities::buildUrlFromParam('agency');
+                    $path .= RequestUtilities::buildUrlFromParam('datasource');
                 } else if (preg_match('/title_landing/', current_path())) {
                     $path = "payroll/title_landing/yeartype/" . $yeartype . "/year/" . $year;
                     $path .= RequestUtilities::buildUrlFromParam('agency');
-                    $path .= "/title/" . RequestUtilities::get("title");
+                    $path .= RequestUtilities::buildUrlFromParam('title');
+                    $path .= RequestUtilities::buildUrlFromParam('datasource');
                 } else {
                     $bottomURL = $_REQUEST['expandBottomContURL'];
                     $bottomURL = ($bottomURL) ? $bottomURL : current_path();
                     $last_parameter = _getLastRequestParamValue($bottomURL);
-                    if ($last_parameter['agency'] > 0) {
+                    if ($last_parameter['agency'] > 0 ) {
                         $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year;
+                        $path .= RequestUtilities::buildUrlFromParam('datasource');
                         $path .= RequestUtilities::buildUrlFromParam('title');
-                        $path .= "/agency/" . RequestUtilities::get("agency");
+                        $path .= RequestUtilities::buildUrlFromParam('agency');
                     } else if ($last_parameter['title'] > 0) {
                         $path = "payroll/title_landing/yeartype/" . $yeartype . "/year/" . $year;
+                        $path .= RequestUtilities::buildUrlFromParam('datasource');
                         $path .= RequestUtilities::buildUrlFromParam('agency');
-                        $path .= "/title/" . RequestUtilities::get("title");
-                    } else { //NYC Level
-                        $path = "payroll/yeartype/" . $yeartype . "/year/" . $year;
+                        $path .= RequestUtilities::buildUrlFromParam('title');
+                    } else if(RequestUtilities::getRequestParamValue('agency')) {
+                        $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year;
+                        $path .= RequestUtilities::buildUrlFromParam('datasource');
+                        $path .= RequestUtilities::buildUrlFromParam('title');
+                        $path .= RequestUtilities::buildUrlFromParam('agency');
+                    }
+                    else {
+                      // NYCHA level
+                      $datasource = RequestUtilities::getRequestParamValue('datasource');
+                      if ($datasource == 'checkbook_nycha') {
+                        $path = "payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $year . RequestUtilities::buildUrlFromParam('datasource') . Datasource::getNYCHAUrl();
+                      } //Nyc Level
+                      else {
+                        $path = "payroll/yeartype/" . $yeartype . "/year/" . $year . RequestUtilities::buildUrlFromParam('datasource');
+                      }
                     }
                 }
                 break;
             case "budget":
                 if (RequestUtilities::get("agency") > 0) {
-                    $path = "budget/yeartype/B/year/" . $fiscalYearId . "/agency/" . RequestUtilities::get("agency");
+                    $path = "budget/yeartype/B/year/" . $fiscalYearId . RequestUtilities::buildUrlFromParam('agency');
                 } else {
                     $path = "budget/yeartype/B/year/" . $fiscalYearId;
                 }
                 break;
             case "revenue":
                 if (RequestUtilities::get("agency") > 0) {
-                    $path = "revenue/yeartype/B/year/" . $fiscalYearId . "/agency/" . RequestUtilities::get("agency");
+                    $path = "revenue/yeartype/B/year/" . $fiscalYearId . RequestUtilities::buildUrlFromParam('agency');
                 } else {
                     $path = "revenue/yeartype/B/year/" . $fiscalYearId;
                 }
@@ -736,12 +420,13 @@ class RequestUtil
                 $path = preg_replace('/\/dashboard\/[^\/]*/','',$path);
                 $path = preg_replace('/\/mwbe\/[^\/]*/','',$path);
             }else{
-                if(!preg_match('/mwbe/',$path) && RequestUtilities::get("mwbe")){
-                   $path = $path."/mwbe/". RequestUtilities::get("mwbe");
+                if(!stripos(' '.$path,'/mwbe/')) {
+                  $path .= RequestUtilities::buildUrlFromParam('mwbe');
                 }
-                if(!preg_match('/dashboard/',$path) && RequestUtilities::get("dashboard")){
-                   $path = $path."/dashboard/". RequestUtilities::get("dashboard");
-                }
+
+              if(!stripos(' '.$path,'/dashboard/')) {
+                $path .= RequestUtilities::buildUrlFromParam('dashboard');
+              }
             }
         }
         return $path;
@@ -752,13 +437,11 @@ class RequestUtil
      */
     public static function getFiscalYearIdForTopNavigation()
     {
-        if (RequestUtilities::get("year") != NULL) {
-            $year = RequestUtilities::get("year");
-        } else if (RequestUtilities::get("calyear") != NULL) {
-            $year = RequestUtilities::get("calyear");
-        } else {
-            $year = _getCurrentYearID();
+        $year = RequestUtilities::get("year|calyear");
+        if (!$year) {
+            $year = CheckbookDateUtil::getCurrentFiscalYearId();
         }
+
         //For CY 2010 Payroll selection, other domains should be navigated to FY 2011
         $fiscalYearId = ($year == 111 && strtoupper(RequestUtilities::get("yeartype")) == 'C') ? 112 : $year;
         return $fiscalYearId;
@@ -775,7 +458,7 @@ class RequestUtil
         } else if (RequestUtilities::get("calyear") != NULL) {
             $year = RequestUtilities::get("calyear");
         }
-        $currentCalYear = _getCalendarYearID();
+        $currentCalYear = CheckbookDateUtil::getCurrentCalendarYearId();
         if (is_null($year) || $year > $currentCalYear) {
             $year = $currentCalYear;
         }
@@ -829,7 +512,7 @@ class RequestUtil
     public static function getEDCURL()
     {
         $vendor = _checkbook_project_querydataset("checkbook:vendor", "vendor_id", array("vendor_customer_code" => "0000776804"));
-        $url = "contracts_landing/status/A/yeartype/B/year/" . _getCurrentYearID() . "/vendor/" . $vendor[0]['vendor_id'];
+        $url = "contracts_landing/status/A/yeartype/B/year/" . CheckbookDateUtil::getCurrentFiscalYearId() . "/vendor/" . $vendor[0]['vendor_id'];
         return $url;
     }
 
@@ -839,7 +522,7 @@ class RequestUtil
     public static function getSpendingEDCURL()
     {
         $vendor = _checkbook_project_querydataset("checkbook:vendor", "vendor_id", array("vendor_customer_code" => "0000776804"));
-        $url = "spending_landing/yeartype/B/year/" . _getCurrentYearID() . "/vendor/" . $vendor[0]['vendor_id'];
+        $url = "spending_landing/yeartype/B/year/" . CheckbookDateUtil::getCurrentFiscalYearId() . "/vendor/" . $vendor[0]['vendor_id'];
         return $url;
     }
 
@@ -1175,7 +858,7 @@ class RequestUtil
     public static function getLandingPageUrl($domain, $year = null, $yearType = null)
     {
         $path = null;
-        $year = $year ?: _getCurrentYearID();
+        $year = $year ?: CheckbookDateUtil::getCurrentFiscalYearId();
         $yearType = $yearType ?: 'B';
 
         switch ($domain) {
@@ -1348,3 +1031,4 @@ class RequestUtil
       return $url;
     }
 }
+

@@ -3,6 +3,8 @@
 #budget-transactions .grid-3,
 #revenue-transactions .grid-3,
 #payroll-transactions .grid-3,
+#nycha-contracts-transactions .grid-3,
+#nycha-spending-transactions .grid-3,
 .page-node div.filter-content,
 .page-smart-search .smart-search-right{
     border: 1px solid #CACACA;
@@ -18,6 +20,11 @@
 #contract-details .grid-3{
     margin-top: 30px;
 }
+#nycha-contracts-transactions .grid-3,
+#nycha-spending-transactions .grid-3{
+  margin-top: 47px;
+}
+
 .grid-3 .narrow-down-title,
 .smart-search-right .narrow-down-title{
     color: #2E2E2E;
@@ -59,8 +66,7 @@ div.filter-content-fdomainName div.options{
     cursor:pointer;
 }
 .grid-3 div.autocomplete,
-.page-node div.autocomplete,
-.smart-search-right div.autocomplete{
+.page-node div.autocomplete{
     padding: 10px 10px 0 10px;
     width: 198px;
 }
@@ -75,13 +81,29 @@ div.filter-content-fdomainName div.options{
     max-height: 200px;
     overflow: auto;
     width: 100%;
+    margin-top: 5px;
 }
+
+.filter-content-domain div.options {
+  max-height: none !important;
+}
+
 .grid-3 div.row,
 .page-node div.row,
 .smart-search-right div.row{
-    padding: 10px 10px 0 10px;
+    padding: 7px 10px 0 10px;
     min-height: 18px;
 }
+.grid-3 div.row:hover,
+.page-node div.row:hover,
+.smart-search-right div.row:hover{
+  background-color:#eee !important;
+}
+/*.grid-3 div.row:nth-child(even),*/
+/*.page-node div.row:nth-child(even),*/
+/*.smart-search-right div.row:nth-child(even){*/
+/*  background-color:#fafafa;*/
+/*}*/
 .grid-3 div.checkbox,
 .grid-3 div.name,
 .grid-3 div.number,
@@ -94,12 +116,14 @@ div.filter-content-fdomainName div.options{
     display: inline-block;
     vertical-align: top;
 }
+
 .grid-3 div.checkbox,
 .page-node div.checkbox,
 .smart-search-right div.checkbox{
     padding: 0 5px 0 0;
     text-align: left;
-    width: 12px;
+    width: 10px;
+    margin-top: -1px;
 }
 .grid-3 div.checkbox input,
 .page-node div.checkbox input,
@@ -111,14 +135,16 @@ div.filter-content-fdomainName div.options{
 .smart-search-right div.name{
     text-align: left;
     padding: 0 5px;
-    max-width: 88px;
+    max-width: 110px;
     text-transform: uppercase;
+    cursor: pointer;
+    word-break: break-word;
 }
 .grid-3 div.number,
 .page-node div.number,
 .smart-search-right div.number{
     text-align: right;
-    width: 70px;
+    width: 60px;
     float: right;
     padding-top: 2px;
 }
@@ -174,11 +200,11 @@ div.filter-content-fdomainName div.options{
     text-align: center;
 }
 .sub-category{
-    margin-left: 22px;
+    margin-left: 20px;
     width: 176px;
 }
 .sub-category div.subcat-filter-title{
-    padding: 10px 0 0 0;
+    padding: 5px 0 0 0;
     font-size: 11px;
     color: #2e2e2e;
     text-transform: uppercase;
@@ -188,15 +214,15 @@ div.filter-content-fdomainName div.options{
     font-size: 11px;
 }
 .sub-category div.row{
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
     padding: 0;
-    width: 176px;
+    width: 180px;
 }
 .sub-category div.name{
-    max-width: 79px;
+    max-width: 90px;
 }
 .sub-category div.number{
-    width: 70px;
+    width: 62px;
 }
 .facet-content{
     margin-bottom: 20px;
@@ -248,4 +274,42 @@ div.filter-content-fdomainName div.options{
 }
 #node-widget-922 div.number {
     width: 11px;
+}
+
+/* Smart search facets ul:li */
+.smart-search-right div.autocomplete{
+  width:200px;
+  margin-top:5px;
+}
+.smart-search-right .row:hover div{
+  background-color:#eee !important;
+}
+.smart-search-right .row:hover div.name{
+  font-weight:bolder;
+}
+.smart-search-right li.row{
+  list-style: none;
+  padding: 5px 0;
+  width: 200px;
+  clear:both;
+}
+.smart-search-right div.facet-content{
+  padding-left: 10px;
+  margin:0;
+}
+.smart-search-right ul.sub-category li.row{
+  width: 180px;
+}
+.smart-search-right li.row div.checkbox{
+  float:left;
+  padding: 0 5px 0 2px;
+}
+.smart-search-right li.row div.name{
+  max-width: unset;
+  display: flex;
+  line-height: 13px;
+}
+.smart-search-right li.row div.number{
+  width:unset;
+  padding-top:unset;
 }

@@ -187,7 +187,7 @@ class ContractURLHelper
         $url .= _checkbook_append_url_params();
         if (preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q']))) {
             $allowedFilters = array("agency", "vendor", "awrdmthd", "awdmethod", "csize", "cindustry", "agid", "dashboard", "subvendor", "mwbe");
-            $url .= "/yeartype/B/year/" . _getCurrentYearID();
+            $url .= "/yeartype/B/year/" . CheckbookDateUtil::getCurrentFiscalYearId();
         } else {
             $allowedFilters = array("year", "calyear", "agency", "yeartype", "awdmethod", "vendor", "csize", "cindustry", "agid", "dashboard", "subvendor", "mwbe");
         }
@@ -211,7 +211,7 @@ class ContractURLHelper
         $url .= _checkbook_append_url_params();
         if (preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q']))) {
             $allowedFilters = array("agency", "vendor", "awrdmthd", "awdmethod", "csize", "cindustry", "agid", "dashboard", "subvendor", "mwbe");
-            $url .= "/yeartype/B/year/" . _getCurrentYearID();
+            $url .= "/yeartype/B/year/" . CheckbookDateUtil::getCurrentFiscalYearId();
         } else {
             $allowedFilters = array("year", "calyear", "agency", "yeartype", "awdmethod", "vendor", "csize", "cindustry", "agid", "subvendor", "mwbe", "status");
             //Add new parameter for bottom slider
@@ -360,7 +360,7 @@ class ContractURLHelper
         $year = $row['fiscal_year_id@checkbook:all_contracts_coa_aggregates'];
         $year_type = $row['type_of_year@checkbook:all_contracts_coa_aggregates'];
 
-        $year = !$year ? _getCurrentYearID() : $year;
+        $year = !$year ? CheckbookDateUtil::getCurrentFiscalYearId() : $year;
         $year_type = !$year_type ? 'B' : $year_type;
 
         $link = ($show_expander) ? '<span id=dtl_expand class="toggler collapsed"  magid="' . ((isset($row['contract_original_agreement_id'])) ? $row['contract_original_agreement_id'] : $row['original_agreement_id']) . '" '

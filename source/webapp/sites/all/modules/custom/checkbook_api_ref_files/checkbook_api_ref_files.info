@@ -19,6 +19,7 @@
 ;
 name = "Checkbook API Ref Files Generator"
 description = "Module to generate API reference files by cron"
+php = 7.2
 package = NYC Checkbook
 core = 7.x
 dependencies[] = checkbook_mail_system

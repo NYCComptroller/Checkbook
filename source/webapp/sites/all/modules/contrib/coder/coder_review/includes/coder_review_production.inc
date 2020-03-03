@@ -27,7 +27,7 @@ function coder_review_production_reviews() {
     '#type'    => 'regex',
     '#source'  => 'comment',
     '#value'   => '.*(?:\(|\);|\{|\})\s*$',
-    '#not'     => '[^@]@(?:\{|see).*',
+    '#not'     => '([^@]@(?:\{|see)|[^\{]\{@inheritdoc\}).*',
     '#warning' => 'Comments containing code should be removed for releases.',
   );
 

@@ -31,6 +31,13 @@ use checkbook_api\CheckbookAPIService as CheckbookAPIService;
 use checkbook_api\ResponseStatus as ResponseStatus;
 use checkbook_json_api\CheckBookJsonApi as CheckBookJsonApi;
 
+function checkbook_api_cron()
+{
+  if(defined('CHECKBOOK_DEV')) {
+    module_load_include('php', 'checkbook_api', 'script/processQueueJob');
+  }
+}
+
 /**
  * Implements hook_menu().
  */
@@ -46,13 +53,6 @@ function checkbook_api_menu() {
   $items['api'] = array(
     'title' => 'Checkbook API',
     'page callback' => 'checkbook_api',
-    'access callback' => TRUE,
-    'type' => MENU_CALLBACK,
-  );
-
-  $items['generate_ref_data'] = array(
-    'title' => 'Generate Reference Data',
-    'page callback' => 'checkbook_api_generate_ref_data',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
@@ -119,7 +119,7 @@ function checkbook_api() {
     $search_criteria = new XMLSearchCriteria($document);
     $domain = $search_criteria->getTypeOfData();
     $request_xml = $document->saveXML();
-    $client_ip = get_public_ip_address();
+    $client_ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? ($_SERVER['REMOTE_ADDR'] ?? null);
     $client_location = checkbook_api_get_ip_info($client_ip, "Location");
     $checkbook_api_service = new CheckbookAPIService();
     $api = $checkbook_api_service->createCheckbookAPI($domain,$request_xml,$client_ip,$client_location);
@@ -206,13 +206,6 @@ function checkbook_api_load_ref_data_excel($code_list_name) {
 }
 
 /**
- *
- */
-function checkbook_api_generate_ref_data() {
-  include_once 'script/generateRefData.php';
-}
-
-/**
  * @param $data_set
  * @param $parameters
  * @param $criteria
@@ -228,9 +221,24 @@ function checkbook_api_adjustBudgetParameterFilters(&$data_set, &$parameters, $c
         $parameters['budget_code_name'] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($parameters['budget_code_name'], false, true));
     }
 
-    if(count($logicalOrColumns) > 0) {
+    if(isset($logicalOrColumns) && count($logicalOrColumns) > 0) {
         $parameters['logicalOrColumns'] = $logicalOrColumns;
     }
+}
+
+/**
+ * @param $data_set
+ * @param $parameters
+ * @param $criteria
+ */
+function checkbook_api_adjustNYCHAContractsParams(&$data_set, &$parameters, $criteria){
+   if(isset($parameters['release_approved_year'])){
+        $year = $parameters['release_approved_year'];
+        $data_controller_instance = data_controller_get_operator_factory_instance();
+        $parameters['agreement_start_year'] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $year);
+        $parameters['agreement_end_year'] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $year);
+        unset($parameters['release_approved_year']);
+   }
 }
 
 /**
@@ -323,6 +331,18 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                 else {
                     // All years:
                     $parameters['latest_flag'] = 'Y';
+                    //Hide data for contracts, end date is prior 2011
+                    //TO DO: Move end fiscal year to Drupal variables
+                    $year = _getYearIDFromValue(2011);
+                    $ge_condition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
+                    if ($contract_status == 'active') {
+                      if(strtolower($type_of_data) == 'contracts_oge'){
+                        $parameters['effective_end_year_id'] = $ge_condition;
+                      }
+                      else{
+                        $parameters['effective_end_year'] = $ge_condition;
+                      }
+                    }
                 }
                 break;
 
@@ -374,6 +394,7 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
 /**
  * Updates the parameters for Active/Registered Expense Contracts
  * @param $parameters
+ * @param $criteria
  * @param $contract_status
  * @param $category
  */
@@ -585,60 +606,132 @@ function checkbook_api_adjustSpendingSql(&$sql_query) {
     if (strpos($sql_query,'l1.') !== false) {
         $alias = 'l1.';
     }
-    $sql_query =  str_replace("{$alias}prime_vendor_name", "CASE WHEN {$alias}is_prime_or_sub = 'S' THEN {$alias}prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$sql_query);
-    $sql_query =  str_replace("{$alias}vendor_type", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$sql_query);
-    $sql_query =  str_replace("{$alias}reporting_code", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}reporting_code ELSE 'N/A' END AS reporting_code",$sql_query);
-    $sql_query =  str_replace("{$alias}department_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}department_name ELSE 'N/A' END AS department_name",$sql_query);
-    $sql_query =  str_replace("{$alias}disbursement_number", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}disbursement_number ELSE 'N/A' END AS disbursement_number",$sql_query);
-    $sql_query =  str_replace("{$alias}expenditure_object_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}expenditure_object_name ELSE 'N/A' END AS expenditure_object_name",$sql_query);
+    $sql_parts = explode("WHERE", $sql_query);
+    $select_part = $sql_parts[0];
+    $where_part = $sql_parts[1];
+    $select_part =  str_replace("{$alias}prime_vendor_name", "CASE WHEN {$alias}is_prime_or_sub = 'S' THEN {$alias}prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$select_part);
+    $select_part =  str_replace("{$alias}vendor_type", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$select_part);
+    $select_part =  str_replace("{$alias}reporting_code", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}reporting_code ELSE 'N/A' END AS reporting_code",$select_part);
+    $select_part =  str_replace("{$alias}department_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}department_name ELSE 'N/A' END AS department_name",$select_part);
+    $select_part =  str_replace("{$alias}disbursement_number", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}disbursement_number ELSE 'N/A' END AS disbursement_number",$select_part);
+    $select_part =  str_replace("{$alias}expenditure_object_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}expenditure_object_name ELSE 'N/A' END AS expenditure_object_name",$select_part);
 
     $column = 'minority_type_name';
     $minority_check = <<<SQLEND
     CASE
-        WHEN {$alias}{$column}= 2 THEN 'Black American' 
-        WHEN {$alias}{$column}= 3 THEN 'Hispanic American' 
-        WHEN {$alias}{$column}= 4 THEN 'Asian American' 
-        WHEN {$alias}{$column}= 5 THEN 'Asian American' 
-        WHEN {$alias}{$column}= 7 THEN 'Non-M/WBE' 
-        WHEN {$alias}{$column}= 9 THEN 'Women' 
-        WHEN {$alias}{$column}= 11 THEN 'Individuals and Others' 
-        WHEN {$alias}{$column}= 'African American' THEN 'Black American' 
-        WHEN {$alias}{$column}= 'Hispanic American' THEN 'Hispanic American' 
-        WHEN {$alias}{$column}= 'Asian-Pacific' THEN 'Asian American' 
-        WHEN {$alias}{$column}= 'Asian-Indian' THEN 'Asian American' 
-        WHEN {$alias}{$column}= 'Non-Minority' THEN 'Non-M/WBE' 
-        WHEN {$alias}{$column}= 'Caucasian Woman' THEN 'Women' 
+        WHEN {$alias}{$column}= 2 THEN 'Black American'
+        WHEN {$alias}{$column}= 3 THEN 'Hispanic American'
+        WHEN {$alias}{$column}= 4 THEN 'Asian American'
+        WHEN {$alias}{$column}= 5 THEN 'Asian American'
+        WHEN {$alias}{$column}= 7 THEN 'Non-M/WBE'
+        WHEN {$alias}{$column}= 9 THEN 'Women'
+        WHEN {$alias}{$column}= 11 THEN 'Individuals and Others'
+        WHEN {$alias}{$column}= 'African American' THEN 'Black American'
+        WHEN {$alias}{$column}= 'Hispanic American' THEN 'Hispanic American'
+        WHEN {$alias}{$column}= 'Asian-Pacific' THEN 'Asian American'
+        WHEN {$alias}{$column}= 'Asian-Indian' THEN 'Asian American'
+        WHEN {$alias}{$column}= 'Non-Minority' THEN 'Non-M/WBE'
+        WHEN {$alias}{$column}= 'Caucasian Woman' THEN 'Women'
         WHEN {$alias}{$column}= 'Individuals & Others' THEN 'Individuals and Others'
-    END 
+    END
 SQLEND;
-    $sql_query = str_replace("{$alias}minority_type_name", $minority_check . " AS minority_type_name", $sql_query);
+    $select_part = str_replace("{$alias}minority_type_name", $minority_check . " AS minority_type_name", $select_part);
+    $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
     return $sql_query;
 
 }
 
 function checkbook_api_adjustContractSql(&$sql_query) {
-    if (strpos($sql_query,'l1.') !== false) {
-        $sql_query =  str_replace("l1.prime_vendor_name", "CASE WHEN l1.is_prime_or_sub = 'S' THEN l1.prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$sql_query);
-        $sql_query =  str_replace("l1.vendor_type", "CASE WHEN l1.is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$sql_query);
-        $sql_query =  str_replace("l1.expenditure_object_names", "CASE WHEN l1.is_prime_or_sub = 'P' THEN l1.expenditure_object_names ELSE 'N/A' END AS expenditure_object_name",$sql_query);
+    $sql_parts = explode("WHERE", $sql_query);
+    $select_part = $sql_parts[0];
+    $where_part = $sql_parts[1];
+    if (strpos($select_part,'l1.') !== false) {
+      $select_part =  str_replace("l1.prime_vendor_name", "CASE WHEN l1.is_prime_or_sub = 'S' THEN l1.prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$select_part);
+      $select_part =  str_replace("l1.vendor_type", "CASE WHEN l1.is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$select_part);
+      $select_part =  str_replace("l1.expenditure_object_names", "CASE WHEN l1.is_prime_or_sub = 'P' THEN l1.expenditure_object_names ELSE 'N/A' END AS expenditure_object_name",$select_part);
     }
-    else if (strpos($sql_query,'l4.') !== false) {
-        $sql_query =  str_replace("l4.prime_vendor_name", "CASE WHEN l4.is_prime_or_sub = 'S' THEN l4.prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$sql_query);
-        $sql_query =  str_replace("l4.vendor_type", "CASE WHEN l4.is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$sql_query);
-        $sql_query =  str_replace("l4.expenditure_object_names", "CASE WHEN l4.is_prime_or_sub = 'P' THEN l4.expenditure_object_names ELSE 'N/A' END AS expenditure_object_name",$sql_query);
+    else if (strpos($select_part,'l4.') !== false) {
+      $select_part =  str_replace("l4.prime_vendor_name", "CASE WHEN l4.is_prime_or_sub = 'S' THEN l4.prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$select_part);
+      $select_part =  str_replace("l4.vendor_type", "CASE WHEN l4.is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$select_part);
+      $select_part =  str_replace("l4.expenditure_object_names", "CASE WHEN l4.is_prime_or_sub = 'P' THEN l4.expenditure_object_names ELSE 'N/A' END AS expenditure_object_name",$select_part);
     }
     else {
-        $sql_query =  str_replace("prime_vendor_name", "CASE WHEN is_prime_or_sub = 'S' THEN prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$sql_query);
-        $sql_query =  str_replace("vendor_type", "CASE WHEN is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$sql_query);
-        $sql_query =  str_replace("expenditure_object_names", "CASE WHEN is_prime_or_sub = 'P' THEN expenditure_object_names ELSE 'N/A' END AS expenditure_object_name",$sql_query);
+      $select_part =  str_replace("prime_vendor_name", "CASE WHEN is_prime_or_sub = 'S' THEN prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$select_part);
+      $select_part =  str_replace("vendor_type", "CASE WHEN is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$select_part);
+      $select_part =  str_replace("expenditure_object_names", "CASE WHEN is_prime_or_sub = 'P' THEN expenditure_object_names ELSE 'N/A' END AS expenditure_object_name",$select_part);
     }
+
+  $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
+}
+
+function checkbook_api_adjustNYCHAContractSql(&$sql_query){
+    $year = NULL;
+    $sql_parts = explode("WHERE", $sql_query);
+    $select_part = $sql_parts[0];
+    $where_part = $sql_parts[1];
+    $where_parts = explode('AND', $where_part);
+
+    //Get Year value from WHERE
+    foreach($where_parts as $key => $value){
+      if(strpos($value,'agreement_start_year') !== false){
+        $values = explode('<=', $value);
+        $year = trim(str_replace(')','',$values[1]));
+      }
+    }
+
+    // Alter SELECT columns
+    if(isset($year)){
+      $select_part =  str_replace("release_approved_year", $year." AS release_approved_year",$select_part);
+    }
+
+    $agreement_level_hyphens = array('release_number', 'line_number', 'item_description', 'commodity_category_descr', 'item_qty_ordered',
+      'shipment_number', 'responsibility_center_descr', 'release_approved_date', 'release_line_total_amount',
+      'release_line_original_amount', 'release_line_spend_to_date', 'release_total_amount', 'release_original_amount',
+      'release_spend_to_date', 'location_descr', 'grant_name', 'expenditure_type_descr', 'display_funding_source_descr',
+      'program_phase_descr', 'gl_project_descr');
+    $release_level_hyphens = array('number_of_releases', 'line_number', 'item_description', 'commodity_category_descr', 'item_qty_ordered',
+      'shipment_number', 'responsibility_center_descr','release_line_total_amount',
+      'release_line_original_amount', 'release_line_spend_to_date', 'agreement_total_amount', 'agreement_original_amount',
+      'agreement_spend_to_date', 'location_descr', 'grant_name', 'expenditure_type_descr', 'display_funding_source_descr',
+      'program_phase_descr', 'gl_project_descr');
+    $line_level_hyphens = array('number_of_releases', 'release_total_amount', 'release_original_amount', 'release_spend_to_date', 'agreement_total_amount',
+    'agreement_original_amount', 'agreement_spend_to_date');
+
+    $text_columns = array('number_of_releases', 'release_number', 'shipment_number', 'item_qty_ordered',
+                      'release_line_total_amount', 'release_line_original_amount', 'release_line_spend_to_date',
+                     'release_total_amount', 'release_original_amount', 'release_spend_to_date',
+                     'agreement_total_amount', 'agreement_original_amount', 'agreement_spend_to_date',
+                     'po_header_id');
+
+    foreach($text_columns as $key => $value){
+      $select_part = str_replace($value, "CASE WHEN ((LOWER(record_type) = 'agreement' AND ". ((in_array($value, $agreement_level_hyphens))? 'TRUE' : 'FALSE') .") OR 
+                                                            (LOWER(record_type) = 'release' AND ". ((in_array($value, $release_level_hyphens)) ? 'TRUE' : 'FALSE') .") OR
+                                                            (LOWER(record_type) = 'line' AND ". ((in_array($value, $line_level_hyphens)) ? 'TRUE' : 'FALSE') .")) AND "  . $value . " IS NULL
+                                                        THEN '-'
+                                                      ELSE CAST(" . $value . " AS TEXT)
+                                                  END AS " . $value, $select_part);
+    }
+
+    // Set release_approved_date to hyphen when NULL (only at Agreement level)
+    $select_part =  str_replace('release_approved_date', "CASE WHEN record_type = 'Agreement' AND release_approved_date IS NULL THEN '-'
+                                                    ELSE TO_CHAR(release_approved_date, 'MM/DD/YYYY')
+                                                   END AS release_approved_date", $select_part);
+    //Set '-' to Start Date and End Date to POs
+    $po_date_columns = array('agreement_start_date', 'agreement_end_date');
+    foreach($po_date_columns as $key => $value){
+      $select_part =  str_replace($value, "CASE WHEN (upper(agreement_type_name) = 'PURCHASE ORDER') THEN '-'
+                                                    ELSE TO_CHAR(".$value.",'MM/DD/YYYY')
+                                                   END AS ".$value, $select_part);
+    }
+
+    $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
 }
 
 function checkbook_api_adjustPayrollSql(&$sql_query) {
     $sql_parts = explode("FROM", $sql_query);
     $select_part = $sql_parts[0];
     $from_part = $sql_parts[1];
-    $select_part =  str_replace("amount_basis_id", "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END AS payroll_type",$select_part);
+    $select_part =  str_replace("amount_basis_id", "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END AS amount_basis_id",$select_part);
     $sql_query = $select_part."FROM".$from_part;
 }
 
@@ -722,26 +815,4 @@ function checkbook_api_get_ip_info($ip = NULL, $purpose = "location", $deep_dete
         }
     }
     return $output;
-}
-
-/**
- * Get the IP address used for public internet-facing applications.
- *
- * @author     Dotan Cohen
- * @version    2013-06-09
- *
- * @return string
- */
-function get_public_ip_address()
-{
-    // TODO: Add a fallback to http://httpbin.org/ip
-    // TODO: Add a fallback to http://169.254.169.254/latest/meta-data/public-ipv4
-    $url="simplesniff.com/ip";
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    return $data;
 }

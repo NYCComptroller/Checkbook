@@ -50,7 +50,7 @@
         {
           "labelAlias": "agency_name",
           "column": "agency_link",
-          "exportColumn":"agency.agency.agency_name"
+          "sortSourceColumn":"agency.agency.agency_name"
         },
         {
           "labelAlias":"recognized_current",

@@ -19,6 +19,7 @@
 ;
 name = "Checkbook Services"
 description = "Functionality to serve as a service layer for checkbook"
+php = 7.2
 package = REI Checkbook Widget Redesign
 core = 7.x
 
@@ -42,12 +43,21 @@ files[] = spending/SpendingUrlService.php
 files[] = spending/ISpendingDataService.php
 files[] = spending/SpendingDataService.php
 
+files[] = nychaSpending/NychaSpendingWidgetService.php
+files[] = nychaSpending/NychaSpendingUrlService.php
+files[] = nychaSpending/data/NychaSpendingDataService.php
+files[] = nychaSpending/data/INychaSpendingDataService.php
+
 files[] = contracts/ContractsUrlService.php
+files[] = nychaContracts/NychaContractsUrlService.php
 files[] = contracts/ContractsWidgetService.php
+files[] = nychaContracts/NychaContractsWidgetService.php
 files[] = contracts/ContractsWidgetVisibilityService.php
 files[] = contracts/ContractsParameters.php
 files[] = contracts/data/IContractsDataService.php
+files[] = nychaContracts/data/INychaContractsDataService.php
 files[] = contracts/data/ContractsDataService.php
+files[] = nychaContracts/data/NychaContractsDataService.php
 
 files[] = revenue/data/RevenueDataService.php
 files[] = revenue/data/IRevenueDataService.php

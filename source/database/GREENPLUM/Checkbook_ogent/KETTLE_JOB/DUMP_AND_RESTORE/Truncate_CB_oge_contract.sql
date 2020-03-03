@@ -1,1 +1,0 @@
-TRUNCATE oge_contract;

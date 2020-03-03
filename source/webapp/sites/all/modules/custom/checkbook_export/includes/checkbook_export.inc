@@ -13,9 +13,7 @@ function _checkbook_export_form(){
 }
 
 /** Function to render export data for grid view */
-function _checkbook_export_grid_transactions(){
-
-    $nodeId = RequestUtilities::get('node',false);
+function _checkbook_export_grid_transactions($nodeId){
     $node = node_load($nodeId);
     if($node ==null ){
     	$node = widget_load($nodeId);
@@ -37,11 +35,13 @@ function _checkbook_export_grid_transactions(){
     }
     $isAsc = ($_REQUEST['sSortDir_0'] == 'asc');
 
+    LogHelper::log_notice("Exporting grid by node id # ".$node->nid);
     widget_data($node);
     if(isset($node->widgetConfig->widgetUpdateJSONConfig)){
     	eval($node->widgetConfig->widgetUpdateJSONConfig);
     }
 
+    $columns=[];
     //remove blank columns
     $cols = $node->widgetConfig->gridConfig->table_columns;
     for($i=0; $i<count($cols); $i++){
@@ -59,7 +59,7 @@ function _checkbook_export_grid_transactions(){
         if($column->eval) {
             $label = eval("return $label;");
         }
-
+        $label = str_replace('<br/>',' ', $label);
         if($i == 0)
             $data .= $label;
         else{
@@ -67,72 +67,67 @@ function _checkbook_export_grid_transactions(){
         }
         $i++;
     }
+
     if(isset($node->widgetConfig->gridConfig->data)){
-    	foreach($node->widgetConfig->gridConfig->table_columns as $column){
-    		echo $column->labelAlias . ",";
-    	}
-    	echo "\r\n";
+      foreach($node->widgetConfig->gridConfig->table_columns as $column){
+        $colTitle = str_replace('<br/>',' ', WidgetUtil::$labels[strtolower($column->labelAlias)]);
+        $colTitle = strlen($colTitle)>0 ? $colTitle : $column->labelAlias;
+        $data .= $colTitle . ",";
+      }
+      //Remove comma at the end of header to avoid empty column
+      $data = rtrim($data, ',');
+      $data .= "\r\n";
+      $sort_index = $_REQUEST['iSortCol_0'];
+      $sort_index_format = $node->widgetConfig->gridConfig->table_columns[$sort_index]->formatType;
+      $sort_for_export = isset($node->widgetConfig->gridConfig->table_columns[$sort_index]->sortExport) ? $node->widgetConfig->gridConfig->table_columns[$sort_index]->sortExport : true;
 
-        $sortindex = $_REQUEST['iSortCol_0'];
-
-    	$sortindexFormat = $node->widgetConfig->gridConfig->table_columns[$sortindex]->formatType;
-    	foreach($node->widgetConfig->gridConfig->data as &$dataRecord){
-    		$dataRecord['sort_column'] = $sortindex;
-    		if(isset($sortindexFormat)){
-    			$dataRecord['formatType'] = $sortindexFormat;
-    		}
-    	}
-        if($isAsc){
-            $order = 'asc';
+      foreach($node->widgetConfig->gridConfig->data as &$dataRecord){
+        $dataRecord['sort_column'] = $sort_index;
+        if(isset($sort_index_format)){
+          $dataRecord['formatType'] = $sort_index_format;
         }
-        else{
-            $order = 'desc';
-        }
-    	_checkbook_export_grid_sort($node, $order);
-    	foreach ($node->widgetConfig->gridConfig->data as $datarow) {
-    		$index = 0;
-    		while($index <count($node->widgetConfig->gridConfig->table_columns)){
-    			$columnValue = html_entity_decode($datarow[$index]);
-    			$columnValue = str_replace('"',chr(34).'"',$columnValue);
-				if($node->widgetConfig->gridConfig->table_columns[$index]->formatType =="amount"){
-					$columnValue = ($columnValue == null) ? 0:$columnValue;
-				}
-    			echo (($index == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"'));
-    			$index +=1;
-    		}
-    		echo "\r\n";
-    	}
+      }
+      if($sort_for_export) {
+        $order = $isAsc ? 'asc' : 'desc';
+        _checkbook_export_grid_sort($node, $order);
+      }
 
-    }
-    else if(is_array($node->data) and count($node->data) > 0){
+      foreach ($node->widgetConfig->gridConfig->data as $data_row) {
+        $index = 0;
+        while($index <count($node->widgetConfig->gridConfig->table_columns)){
+          $columnValue = html_entity_decode($data_row[$index]);
+          $columnValue = str_replace('"',chr(34).'"',$columnValue);
+          if($node->widgetConfig->gridConfig->table_columns[$index]->formatType =="amount"){
+            $columnValue = ($columnValue == null) ? 0:$columnValue;
+          }
+          $data .= (($index == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"'));
+          $index +=1;
+        }
+        $data .= "\r\n";
+      }
+    }else if(is_array($node->data) and count($node->data) > 0){
         $dataRecords = $node->data;
-
         //Custom column for ordering
         $i=1;
         foreach($dataRecords as &$dataRecord){
-            $dataRecord['sort_order'] = $i;
-            $i++;
+          $dataRecord['sort_order'] = $i;
+          $i++;
         }
-
         sort_records($dataRecords, new PropertyBasedComparator_DefaultSortingConfiguration($sortColumn,$isAsc));
-
         foreach($dataRecords as $dataRec){
-            $data .= PHP_EOL;
-            $i = 0;
-            $rowData = NULL;
-            foreach($columns as $column){
-
-                $columnValue = html_entity_decode($dataRec[$column->column], ENT_QUOTES);;
-                $columnValue = str_replace('"',chr(34).'"',$columnValue);
-                $rowData .= (($i == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"'));
-                $i++;
-            }
-
-            $rowData = str_replace(array("\r\n", "\n", "\r"),'',$rowData);
-            $data .= $rowData;
+          $data .= PHP_EOL;
+          $i = 0;
+          $rowData = NULL;
+          foreach($columns as $column){
+            $columnValue = html_entity_decode($dataRec[$column->column], ENT_QUOTES);;
+            $columnValue = str_replace('"',chr(34).'"',$columnValue);
+            $rowData .= (($i == 0) ? ('"'.$columnValue.'"') : (',"'.$columnValue.'"'));
+            $i++;
+          }
+          $rowData = str_replace(array("\r\n", "\n", "\r"),'',$rowData);
+          $data .= $rowData;
         }
     }
-
     drupal_add_http_header("Content-Type", "text/csv");
     drupal_add_http_header("Content-Length",strlen($data));
     drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
@@ -356,7 +351,9 @@ function _checkbook_export_transactions(){
     }
 }
 
-/** Function to handle download export file */
+/** Function to handle download export file
+ * @param $fileName
+ */
 function _checkbook_export_download_file($fileName){
     global $conf;
 
@@ -391,9 +388,14 @@ function _checkbook_export_check_cached(){
   return false;
 }
 
-/** Function to handle generate export file */
+/** Function to handle generate export file
+ * @param $node
+ * @param $headers
+ * @param null $exportConfigNode
+ * @return bool|string
+ */
 function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode = NULL){
-    global $conf, $databases;
+    global $conf;
 
     try{
         $fileDir = _checkbook_export_prepareFileOutputDir();
@@ -416,25 +418,56 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
         $columns = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->table_columns : $node->widgetConfig->table_columns;
         $columnsConfig = array();
         foreach($columns as $column){
-          $columnsConfig[] = (isset($column->sortSourceColumn)) ? str_replace('.','_',$column->sortSourceColumn) : str_replace('.','_',$column->column);
+        if ($column->column) {
+          $selectedColumn = (isset($column->sortSourceColumn)) ? str_replace('.', '_', $column->sortSourceColumn) : str_replace('.', '_', $column->column);
+          //For columns selected from reference tables
+          if (strpos($selectedColumn, '@')) {
+            list($selectedColumn,) = explode('@', $selectedColumn);
+          }
+          $columnsConfig[] = $selectedColumn;
         }
-
-        $input = $node->data;$start = "SELECT ";$end = " FROM (";
+    }
+    $input = $node->data;
+    $start = "SELECT ";
+    $end = " FROM (";
+    $selectQuery = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1));
+    //If there is no sub-query in the export query
+    if(!$selectQuery){
+      $end = " FROM ";
         $selectQuery = substr($input, strlen($start)+strpos($input, $start), (strlen($input) - strpos($input, $end))*(-1));
+    }
         $selectColumns = explode(",",$selectQuery);
         $exportColumns = array();
 
         foreach($selectColumns as $key =>$value){
-          $selectColumn = (strpos($value,' AS ')) ? str_replace('AS ','',substr($value, strpos($value,' AS ')+1)) : substr($value, strpos($value,'.')+1);
+      $selectColumn = $value;
+      if (strpos($selectColumn,' AS ')) {
+        //For the reference columns derived using syntax like column_name@datasource:dataset
+        list($selectColumn,) = explode(' AS ', $selectColumn);
+      }
+      if (strpos($selectColumn,'.')) {
+        list(,$selectColumn) = explode('.', $selectColumn);
+      }
           if(in_array(trim($selectColumn),$columnsConfig)){
             $exportColumns[trim($selectColumn)] = $value;
+      }else{
+        $selectColumn_ref = $value;
+        //For the reference columns derived from cube dimensions
+        if (strpos($selectColumn_ref,' AS ')) {
+          list(,$selectColumn_ref) = explode(' AS ', $selectColumn_ref);
+        }
+        if(in_array(trim($selectColumn_ref),$columnsConfig)){
+          $exportColumns[trim($selectColumn_ref)] = $value;
           }
         }
-
+    }
         $newQuery = null;
         foreach($columnsConfig as $key => $value){
+      if (!empty($exportColumns[$value])) {
           $newQuery .= $exportColumns[$value] . ',';
         }
+
+    }
         $newQuery = substr($newQuery, 0, -1);
         $node->data = str_replace($selectQuery,$newQuery, $node->data);
 
@@ -481,23 +514,22 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
             $node->data = checkbook_export_remove_non_export_columns($node);
         }
 
-        LogHelper::log_notice("Exporting to file via SQL: \n".$node->data);
-
-        $command = $conf['check_book']['data_feeds']['command'];
-
-        $data_source = RequestUtilities::get('datasource');
-        if ('checkbook_oge' == $data_source) {
-            $command .= ' ' . $databases['checkbook_oge']['main']['database'] . ' ';
-        } else {
-            $command .= ' ' . $databases['checkbook']['main']['database'] . ' ';
+        //Escaping double quotes explicitly in parameters
+        $queryParts = explode('WHERE', $node->data);
+        if(strlen($queryParts[1]) > 0) {
+          $queryParts[1] = str_replace('"', '\"', $queryParts[1]);
+          $node->data = implode(' WHERE ', array($queryParts[0], $queryParts[1]));
         }
 
+        LogHelper::log_notice("Exporting to file via SQL: \n".$node->data);
+
+        $command = _checkbook_psql_command(RequestUtilities::get('datasource'));
         $command .=
                 " -c \"\\\\COPY (" . str_replace('\\\\','\\\\\\',$node->data) . ") TO '"
                 . $tempOutputFile
                 . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
 
-//        log_error($command);
+        //log_error($command);
         LogHelper::log_notice($command);
 
         shell_exec($command);
@@ -585,7 +617,10 @@ function _checkbook_export_prepareFileOutputDir(){
     return $dir;
 }
 
-/** Function to generate the path to save export file */
+/** Function to generate the path to save export file
+ * @param $dir
+ * @throws Exception
+ */
 function _checkbook_export_prepareDirectory($dir){
     if(!file_prepare_directory($dir,FILE_CREATE_DIRECTORY)){
         LogHelper::log_error("Could not prepare file output directory $dir.Should check if this directory is writable.");
@@ -601,7 +636,7 @@ function _checkbook_export_prepareDirectory($dir){
 /** Function to generate a unique id */
 function _checkbook_export_generate_uuid(){
     if (!empty($_SERVER['REQUEST_METHOD']) && 'GET' === $_SERVER['REQUEST_METHOD']) {
-      $data = $_SERVER['REQUEST_URI'].date('Y-m-d');
+      $data = request_uri().date('Y-m-d');
       return md5($data);
     }
 
@@ -648,6 +683,7 @@ function _checkbook_export_get_data_count(){
 /**
  * Function to prepare widget using configuration
  *
+ * @param null $nodeId
  * @return bool|mixed Prepared widget node.
  */
 function _checkbook_export_get_node_config($nodeId=NULL){

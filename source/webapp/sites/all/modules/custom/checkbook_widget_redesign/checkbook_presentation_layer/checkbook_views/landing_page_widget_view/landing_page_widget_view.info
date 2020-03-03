@@ -18,5 +18,6 @@
 name="Landing Page Widget View"
 description="Widget view to display the landing page widgets"
 core = 7.x
+php = 7.2
 package = REI Checkbook Widget Redesign
 dependencies[]=data_controller

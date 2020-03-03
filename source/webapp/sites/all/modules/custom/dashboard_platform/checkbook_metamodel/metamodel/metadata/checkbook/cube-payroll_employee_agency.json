@@ -190,6 +190,12 @@
                 "total_non_salaried_employees": {
                     "function": "SUM( CASE WHEN type_of_employment = 'Salaried' THEN NULL else COALESCE(annual_salary,0) END)"
                 },
+                "max_hourly_rate":{
+                  "function": "MAX(hourly_rate)"
+                },
+                "max_daily_wage":{
+                  "function": "MAX(daily_wage)"
+                },
                 "total_overtime_employees": {
                     "function": "COUNT(DISTINCT (CASE WHEN COALESCE(positive_overtime_pay,0) > 0 THEN employee_number END))"
                 },

@@ -92,7 +92,7 @@ class Transaction {
 
 
         if (!isset($this->actionCallbacks)) {
-            $this->actionCallbacks = array();
+            $this->actionCallbacks = [];
         }
         // adding the callback to the beginning of the list. When it is time to commit/rollback the callback will be called first
         array_unshift($this->actionCallbacks, $callback);

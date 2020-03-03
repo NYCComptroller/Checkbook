@@ -253,6 +253,9 @@ class Log
     /**
      * Abstract implementation of the log() method.
      * @since Log 1.0
+     * @param $message
+     * @param null $priority
+     * @return bool
      */
     private function log_msg($message, $priority = null)
     {
@@ -525,6 +528,10 @@ class Log
      * Produces a formatted log line based on a format string and a set of
      * variables representing the current log record and state.
      *
+     * @param $format
+     * @param $timestamp
+     * @param $priority
+     * @param $message
      * @return  string  Formatted log string.
      *
      * @access  protected
@@ -705,7 +712,7 @@ class Log
     /**
      * Returns the current level mask.
      *
-     * @return interger         The current level mask.
+     * @return int
      *
      * @access  public
      * @since   Log 1.7.0
@@ -761,13 +768,14 @@ class Log
      * Adds a Log_observer instance to the list of observers that are listening
      * for messages emitted by this Log instance.
      *
-     * @param object    $observer   The Log_observer instance to attach as a
+     * @param object $observer The Log_observer instance to attach as a
      *                              listener.
      *
      * @param boolean   True if the observer is successfully attached.
      *
      * @access  public
      * @since   Log 1.0
+     * @return bool
      */
     function attach(&$observer)
     {
@@ -783,13 +791,14 @@ class Log
     /**
      * Removes a Log_observer instance from the list of observers.
      *
-     * @param object    $observer   The Log_observer instance to detach from
+     * @param object $observer The Log_observer instance to detach from
      *                              the list of listeners.
      *
      * @param boolean   True if the observer is successfully detached.
      *
      * @access  public
      * @since   Log 1.0
+     * @return bool
      */
     function detach($observer)
     {

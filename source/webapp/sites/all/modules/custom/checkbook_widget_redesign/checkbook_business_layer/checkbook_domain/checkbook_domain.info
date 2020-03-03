@@ -19,6 +19,7 @@
 ;
 name = "Checkbook Domain"
 description = "Functionality to serve as a domain layer for checkbook"
+php = 7.2
 package = REI Checkbook Widget Redesign
 core = 7.x
 
@@ -28,11 +29,13 @@ files[] = config/sql/contracts/contracts.xml
 files[] = config/sql/contracts/oge_contracts.xml
 files[] = config/sql/contracts/pending_contracts.xml
 files[] = config/sql/contracts/sub_contracts.xml
+files[] = config/sql/contracts/nycha_contracts.xml
 files[] = config/sql/revenue/revenue.xml
 files[] = config/sql/spending/mwbe_spending.xml
 files[] = config/sql/spending/oge_spending.xml
 files[] = config/sql/spending/spending.xml
 files[] = config/sql/spending/sub_vendors_spending.xml
+files[] = config/sql/spending/nycha_spending.xml
 
 files[] = constants/SqlConfigPath.php
 

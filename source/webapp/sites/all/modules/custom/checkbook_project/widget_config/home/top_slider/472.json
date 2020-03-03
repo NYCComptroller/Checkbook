@@ -18,11 +18,11 @@
         }
 
         // Payroll amount should be calculated for 'Calendar Year' always for all the other domains
-        if(!preg_match('/payroll/',$_SERVER['REQUEST_URI'])){
+        if(!preg_match('/payroll/',request_uri())){
             unset($node->widgetConfig->model->series[1]->seriesURLParamMap->yeartype);
         }
 
-        if(RequestUtilities::getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',$_SERVER['REQUEST_URI']))
+        if(RequestUtilities::getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',request_uri()))
             unset($node->widgetConfig->model->series[1]->seriesURLParamMap->year);
 
     ",
@@ -52,7 +52,7 @@
                 "allowedParams":["year.year","agency_id","type_of_year","civil_service_title_code.civil_service_title_code"],
                 "seriesDefaultParameters":{"type_of_year":"C"},
                 "adjustSerieParameters":"
-                    if(RequestUtilities::getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',$_SERVER['REQUEST_URI']))
+                    if(RequestUtilities::getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',request_uri()))
                         $serieParameters['fiscal_year_id'] = RequestUtil::getCalYearIdForTopNavigation();
                     return $serieParameters;
                 "

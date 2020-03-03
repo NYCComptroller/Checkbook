@@ -13,6 +13,7 @@ abstract class DataSource
 {
     const CitywideAgency = 'checkbook';
     const OtherGovernmentEntities = 'checkbook_oge';
+    const NYCHA = 'checkbook_nycha';
 }
 
 abstract class Domain

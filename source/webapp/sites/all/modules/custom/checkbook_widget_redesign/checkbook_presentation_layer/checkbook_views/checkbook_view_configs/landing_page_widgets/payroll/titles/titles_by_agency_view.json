@@ -2,7 +2,7 @@
     "serviceName": "PayrollWidgetService",
     "dataFunc": "GetTitlesByAgency",
     "countFunc": "GetCountSalariedEmployees",
-    "headerTitle": "Titles by Number of Employees",
+    "headerTitle": "Titles by Number of Salaried Employees",
     "headerSubTitle": "Salaried Employees",
     "footerUrl":"PayrollUrlService::getTitleFooterUrl(_widget_controller_footer_url($node), 'agency')",
     "table_columns": [

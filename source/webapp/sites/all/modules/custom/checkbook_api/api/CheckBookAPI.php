@@ -29,12 +29,13 @@ class CheckBookAPI {
   private $request_criteria;
   private $request_handler;
 
-  /**
-   * Constructor function.
-   *
-   * @param array $request_criteria
-   *   Request criteria
-   */
+    /**
+     * Constructor function.
+     *
+     * @param array $request_criteria
+     *   Request criteria
+     * @throws Exception
+     */
 public  function __construct($request_criteria) {
     // Increasing to handle memory limits when exporting.
     ini_set('memory_limit', '512M');

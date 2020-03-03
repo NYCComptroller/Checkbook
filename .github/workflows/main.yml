@@ -1,0 +1,14 @@
+name: Main Workflow
+on: [push]
+
+jobs:
+  unit_tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Perform phpunit tests
+        run: phpunit

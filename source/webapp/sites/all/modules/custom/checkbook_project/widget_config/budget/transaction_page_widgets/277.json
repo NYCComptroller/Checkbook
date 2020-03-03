@@ -32,7 +32,7 @@
     "agency": "agency_id",
     "agencyh": "agency_history_id",
     "year": "budget_fiscal_year_id",
-    "dept": "department_id",
+    "dept": "department_code",
     "deptnm": "department_name",
     "expcategory": "object_class_id",
     "expcategorynm": "object_class_name",
@@ -215,16 +215,6 @@
     {
       "label": "",
       "column": ""
-    }
-  ],
-  "export_columns": [
-    "budget_code_name"
-  ],
-  "exportColumnSqlOverride": [
-    {
-      "column": "formatted_budget_code",
-      "sourceColumn": "budget_code",
-      "sql": "budget_code||'('||budget_code_name||')'"
     }
   ],
   "adjustParameters":"

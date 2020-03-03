@@ -76,7 +76,10 @@ function reloadSidebar(curl) {
         var progress = jQuery(this).find('.progress');
         var container = jQuery(this).find('.filter-content');
         var id = jQuery(this).attr('id');
-        var nid = id.substring(id.length,id.length-3);
+        var nid = id.substring(id.length,id.length-4);
+        var nodeId = nid.replace('-','');
+
+
         if (progress && container){
             // URL that generated this code: -->
             // http://txt2re.com/index-javascript.php3?s=/dashboard_platform/data_tables_list/ajax_data/node/6&-61&15
@@ -85,7 +88,7 @@ function reloadSidebar(curl) {
             var re3='(\\d+)';	// Integer Number 1
             var p = new RegExp(re1+re2+re3,["i"]);
             //end generated code
-            curl = curl.replace(p,'/faceted-search/ajax/node/'+nid);
+            curl = curl.replace(p,'/faceted-search/ajax/node/'+nodeId);
             jQuery.ajax({
                 url: curl,
                 beforeSend: function(){

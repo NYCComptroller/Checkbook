@@ -19,6 +19,7 @@
 ;
 name = "Checkbook Infrastructure Layer"
 description = "Functionality to serve as a common infrastructure layer for checkbook"
+php = 7.2
 package = REI Checkbook Widget Redesign
 core = 7.x
 

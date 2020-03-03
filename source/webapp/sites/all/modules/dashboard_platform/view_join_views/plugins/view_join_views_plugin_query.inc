@@ -22,19 +22,19 @@ class view_join_views_plugin_query extends views_plugin_query {
 	 * Constructor; Create the basic query object and fill with default values.
 	 */
 	function init($base_table, $base_field) {
-		$this->requests = array();
-		$this->aliases = array();
-		$this->joins = array();
-		$this->orderby = array();
-		$this->parameters = array();
+		$this->requests = [];
+		$this->aliases = [];
+		$this->joins = [];
+		$this->orderby = [];
+		$this->parameters = [];
 		$this->ensure_table($base_table);
-		$this->views = array();
-		$this->joinColumns = array();
+		$this->views = [];
+		$this->joinColumns = [];
 
 		// Required fields are fields that may not be empty in rows of the
 		// resultset. Any rows with empty required fields are dropped *prior* to
 		// paging.
-		$this->required_fields = array();
+		$this->required_fields = [];
 	}
 
 	function ensure_table($table) {
@@ -148,7 +148,7 @@ class view_join_views_plugin_query extends views_plugin_query {
 			}
 
 			//now convert into format expected by views module
-			$view->result = array();
+			$view->result = [];
 			$fields = $view->get_items('field');
 			if (isset($data)) {
 				foreach ($data as $row) {
@@ -207,7 +207,7 @@ class view_join_views_plugin_query extends views_plugin_query {
 	function convertStructure($inObj) {
 		$result = NULL;
 		foreach ($inObj['result'] as $record) {
-			$recordArray = array();
+			$recordArray = [];
 			foreach ($record['row'] as $key => $value) {
 				$recordArray[$key] = $value;
 			}

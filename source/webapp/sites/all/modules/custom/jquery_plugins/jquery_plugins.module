@@ -1,145 +1,170 @@
 <?php
 /**
-* This file is part of the Checkbook NYC financial transparency software.
-* 
-* Copyright (C) 2012, 2013 New York City
-* 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU Affero General Public License for more details.
-* 
-* You should have received a copy of the GNU Affero General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (C) 2012, 2013 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 
 /**
  * Implements hook_library().
  */
-function jquery_plugins_library() {
-  $options = array(
-    'type' => 'file',
-    'group' => JS_LIBRARY,
-    'every_page' => TRUE
-  );
-  // jQuery Cycle
-  $libraries['cycle'] = array(
-    'title' => 'jQuery Cycle',
-    'website' => 'http://jquery.malsup.com/cycle/',
-    'version' => '2.9999.2',
-    'js' => array(
-      drupal_get_path('module', 'jquery_plugins') . '/jquery.cycle.all.js' => $options,
-    ),
-    'dependencies'=>array(
-      array('system','jquery')
-    )
-  );
-  // Easy List Splitter
-  $libraries['easyListSplitter'] = array(
-    'title' => 'Easy List Splitter',
-    'website' => 'http://www.madeincima.it/en/articles/resources-and-tools/easy-list-splitter-plugin/',
-    'version' => '1.0.2',
-    'js' => array(
-      drupal_get_path('module', 'jquery_plugins') . '/jquery.easyListSplitter.js' => $options,
-    ),
-    'dependencies'=>array(
-      array('system','jquery')
-    )
-  );
-  $libraries['jScrollPane'] = array(
-    'title' => 'jScrollPane',
-    'website' => 'http://jscrollpane.kelvinluck.com/',
-    'version' => '1.0.2',
-    'js' => array(
-      drupal_get_path('module', 'jquery_plugins') . '/jquery.jscrollpane.min.js' => $options,
-      drupal_get_path('module', 'jquery_plugins') . '/jquery.mousewheel.js' => $options,
-    ),
-    'css' => array(
-      drupal_get_path('module', 'jquery_plugins') . '/jquery.jscrollpane.css' => array(),
-    ),
-    'dependencies'=>array(
-      array('system','jquery')
-    )
-  );
-  $libraries['chosen'] = array(
-    'title' => 'jquery.searchabledropdown.js',
-    'website' => 'https://sourceforge.net/projects/jsearchdropdown/',
-    'version' => '1.0.8',
-    'js' => array(
-        drupal_get_path('module', 'jquery_plugins') . '/jquery.searchabledropdown/chosen.jquery.js' => array(),
-    ),
-    'css' => array(
-        drupal_get_path('module', 'jquery_plugins') . '/jquery.searchabledropdown/chosen.css' => array(
-            'type' => 'file',
-            'media' => 'all',
+function jquery_plugins_library()
+{
+    $options = array(
+        'type' => 'file',
+        'group' => JS_LIBRARY,
+        'every_page' => TRUE
+    );
+
+    // jQuery Cycle
+    $libraries['cycle'] = array(
+        'title' => 'jQuery Cycle',
+        'website' => 'http://jquery.malsup.com/cycle/',
+        'version' => '2.9999.2',
+        'js' => array(
+            drupal_get_path('module', 'jquery_plugins') . '/jquery.cycle.all.js' => $options,
         ),
-    ),
-    'dependencies'=>array(
-      array('system','jquery')
-    )
-  );
-  $libraries['fitvids'] = array(
-    'title' => 'fitvids',
-    'website' => 'http://fitvidsjs.com/',
-    'version' => '1.0',
-    'js' => array(
-      drupal_get_path('module', 'jquery_plugins') . '/jquery.fitvids.js' => $options,
-    ),
-    'dependencies'=>array(
-      array('system','jquery')
-    )
-  );
-  $libraries['custom-scrollbar'] = array(
-    'title' => 'jQuery custom content scroller',
-    'website' => 'http://manos.malihu.gr/jquery-custom-content-scroller/',
-    'version' => '2.8.1',
-    'js' => array(
-      drupal_get_path('module','jquery_plugins').'/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.concat.min.js' => $options
-    ),
-    'css' => array(
-      drupal_get_path('module','jquery_plugins').'/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.css' => array()
-    )
-  );
-   // Sticky Plugin v1.0.0 for jQuery
-   // =============
-   // Author: Anthony Garand
-   // Improvements by German M. Bravo (Kronuz) and Ruud Kamphuis (ruudk)
-   // Improvements by Leonardo C. Daronco (daronco)
-   // Created: 2/14/2011
-   // Date: 2/12/2012
-   // Website: http://labs.anthonygarand.com/sticky
-   // Description: Makes an element on the page stick on the screen as you scroll
-   //       It will only set the 'top' and 'position' of your element, you
-   //       might need to adjust the width in some cases.
-   $libraries['sticky'] = array(
-       'title' => 'Sticky Plugin v1.0.0 for jQuery',
-       'website' => 'http://labs.anthonygarand.com/sticky',
-       'version' => '1.0.0',
-       'js' => array(
-           drupal_get_path('module','jquery_plugins').'/jquery.sticky.js' => $options
-       ),
-   );
-  return $libraries;
+        'dependencies' => array(
+            array('system', 'jquery')
+        )
+    );
+
+    // Easy List Splitter
+    $libraries['easyListSplitter'] = array(
+        'title' => 'Easy List Splitter',
+        'website' => 'http://www.madeincima.it/en/articles/resources-and-tools/easy-list-splitter-plugin/',
+        'version' => '1.0.2',
+        'js' => array(
+            drupal_get_path('module', 'jquery_plugins') . '/jquery.easyListSplitter.js' => $options,
+        ),
+        'dependencies' => array(
+            array('system', 'jquery')
+        )
+    );
+
+    $libraries['jScrollPane'] = array(
+        'title' => 'jScrollPane',
+        'website' => 'http://jscrollpane.kelvinluck.com/',
+        'version' => '1.0.2',
+        'js' => array(
+            drupal_get_path('module', 'jquery_plugins') . '/jquery.jscrollpane.min.js' => $options,
+            drupal_get_path('module', 'jquery_plugins') . '/jquery.mousewheel.js' => $options,
+        ),
+        'css' => array(
+            drupal_get_path('module', 'jquery_plugins') . '/jquery.jscrollpane.css' => array(),
+        ),
+        'dependencies' => array(
+            array('system', 'jquery')
+        )
+    );
+
+    $libraries['chosen'] = array(
+        'title' => 'jquery.searchabledropdown.js',
+        'website' => 'https://sourceforge.net/projects/jsearchdropdown/',
+        'version' => '1.0.8',
+        'js' => array(
+            drupal_get_path('module', 'jquery_plugins') . '/jquery.searchabledropdown/chosen.jquery.js' => array(),
+        ),
+        'css' => array(
+            drupal_get_path('module', 'jquery_plugins') . '/jquery.searchabledropdown/chosen.css' => array(
+                'type' => 'file',
+                'media' => 'all',
+            ),
+        ),
+        'dependencies' => array(
+            array('system', 'jquery')
+        )
+    );
+    $libraries['fitvids'] = array(
+        'title' => 'fitvids',
+        'website' => 'http://fitvidsjs.com/',
+        'version' => '1.0',
+        'js' => array(
+            drupal_get_path('module', 'jquery_plugins') . '/jquery.fitvids.js' => $options,
+        ),
+        'dependencies' => array(
+            array('system', 'jquery')
+        )
+    );
+    $libraries['custom-scrollbar'] = array(
+        'title' => 'jQuery custom content scroller',
+        'website' => 'http://manos.malihu.gr/jquery-custom-content-scroller/',
+        'version' => '2.8.1',
+        'js' => array(
+            drupal_get_path('module', 'jquery_plugins') . '/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.concat.min.js' => $options
+        ),
+        'css' => array(
+            drupal_get_path('module', 'jquery_plugins') . '/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.css' => array()
+        )
+    );
+
+    // Sticky Plugin v1.0.0 for jQuery
+    // =============
+    // Author: Anthony Garand
+    // Improvements by German M. Bravo (Kronuz) and Ruud Kamphuis (ruudk)
+    // Improvements by Leonardo C. Daronco (daronco)
+    // Created: 2/14/2011
+    // Date: 2/12/2012
+    // Website: http://labs.anthonygarand.com/sticky
+    // Description: Makes an element on the page stick on the screen as you scroll
+    //       It will only set the 'top' and 'position' of your element, you
+    //       might need to adjust the width in some cases.
+    $libraries['sticky'] = array(
+        'title' => 'Sticky Plugin v1.0.0 for jQuery',
+        'website' => 'http://labs.anthonygarand.com/sticky',
+        'version' => '1.0.0',
+        'js' => array(
+            drupal_get_path('module', 'jquery_plugins') . '/jquery.sticky.js' => $options
+        ),
+    );
+
+    // Simple Pagination
+    $libraries['simplePagination'] = array(
+        'title' => 'Simple Pagination',
+        'website' => 'http://flaviusmatis.github.io/simplePagination.js/',
+        'version' => '1.6',
+        'js' => array(
+            drupal_get_path('module', 'jquery_plugins') . '/simplePagination/jquery.simplePagination.js' => $options,
+        ),
+//        'css' => array(
+//            drupal_get_path('module','jquery_plugins').'/simplePagination/simplePagination.css' => array()
+//        ),
+        'dependencies'=>array(
+            array('system','jquery')
+        )
+    );
+
+    return $libraries;
 }
 
 /**
  * Implements hook_init().
  */
-function jquery_plugins_init() {
-  drupal_add_library('jquery_plugins', 'cycle', TRUE);
-  drupal_add_library('jquery_plugins', 'easyListSplitter', TRUE);
-  drupal_add_library('jquery_plugins', 'jScrollPane', TRUE);
-  drupal_add_library('jquery_plugins', 'chosen', TRUE);
-  drupal_add_library('jquery_plugins', 'fitvids', TRUE);
-  drupal_add_library('jquery_plugins', 'fancyBox', TRUE);
-  drupal_add_library('system', 'ui.dialog');
-  drupal_add_library('system', 'jquery.cookie');
-  drupal_add_library('jquery_plugins','custom-scrollbar',TRUE);
-  drupal_add_library('jquery_plugins','sticky',TRUE);
+function jquery_plugins_init()
+{
+    drupal_add_library('jquery_plugins', 'cycle', TRUE);
+    drupal_add_library('jquery_plugins', 'easyListSplitter', TRUE);
+    drupal_add_library('jquery_plugins', 'jScrollPane', TRUE);
+    drupal_add_library('jquery_plugins', 'chosen', TRUE);
+    drupal_add_library('jquery_plugins', 'fitvids', TRUE);
+    drupal_add_library('jquery_plugins', 'fancyBox', TRUE);
+    drupal_add_library('system', 'ui.dialog');
+    drupal_add_library('system', 'jquery.cookie');
+    drupal_add_library('jquery_plugins', 'custom-scrollbar', TRUE);
+    drupal_add_library('jquery_plugins', 'sticky', TRUE);
+    drupal_add_library('jquery_plugins', 'simplePagination', TRUE);
 }

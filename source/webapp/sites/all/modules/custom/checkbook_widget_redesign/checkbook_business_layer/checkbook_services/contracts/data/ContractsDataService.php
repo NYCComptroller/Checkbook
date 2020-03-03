@@ -228,7 +228,7 @@ class ContractsDataService extends DataService implements IContractsDataService 
 
     function GetOgeMasterAgreementContractModifications($parameters, $limit = null, $orderBy = null) {
         $parameters["is_modification"] = true;
-        return $this->GetOgeContracts($parameters,$limit,$orderBy);
+        return $this->GetOgeMasterAgreementContracts($parameters,$limit,$orderBy);
     }
 
     function GetOgeContractsByDepartments($parameters, $limit = null, $orderBy = null) {

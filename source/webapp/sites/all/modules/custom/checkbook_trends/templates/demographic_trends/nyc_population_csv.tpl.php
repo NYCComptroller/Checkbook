@@ -18,8 +18,11 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+    $last_year = end($node->data)['fiscal_year'];
+    reset($node->data);
 
-    $header .= ",,,2000-2016*,,,"."\n";
+
+    $header .= ",,,2000-{$last_year}*,,,\n";
     $header .= 'Year';
     $header .=  ",United States" ;
     $header .=  ",Percentage Change from Prior Period," ;
@@ -42,6 +45,6 @@
    	}
 ?>
 
-"*Amounts as of March 28, 2017"
+"*Amounts as of March 28, <?= $last_year ?>"
 
 "Source: U.S Department of Commerce, Bureau of Economic Analysis. US Census Bureau and American Fact Finder."

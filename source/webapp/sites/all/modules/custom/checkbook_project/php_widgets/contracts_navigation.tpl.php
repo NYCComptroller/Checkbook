@@ -17,14 +17,14 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-
 $options = array('html'=>true);
 $options_disabled = array('html'=>true,"attributes"=>array("class"=>"noclick"));
 
 if(_checkbook_check_isEDCPage()){
     $contract_amount = $node->data[0]['current_amount_sum'];
     $spending_amount = $node->data[1]['check_amount_sum'];
+}else if(_checkbook_check_isNYCHAPage()){
+    $node->data[1]['total_gross_pay'] = $node->data[0]['total_gross_pay'];
 }else{
     $contract_amount = $node->data[0]['current_amount_sum'];
     $spending_amount = $node->data[2]['check_amount_sum'];
@@ -76,21 +76,25 @@ if($spending_amount  == 0){
 
 $current_dashboard = RequestUtilities::get("dashboard");
 
-if($contract_amount == 0){
-  //Check if there are any Active contracts when the registered amount is zero to enable 'Contracts' domain
-  if($node->data[14]['total_contracts'] > 0){
-    $contracts_url =  RequestUtil::getTopNavURL("contracts");
-    $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format(0, 1,'$'),$contracts_url,$options);
-  }else{
-    $contracts_url =  RequestUtil::getTopNavURL("contracts");
-    $contracts_link =  ($contracts_url) ? l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format(0, 1,'$'),$contracts_url,$options) :l('<span class="nav-title">Contracts</span><br>'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
-  }
+if(!_checkbook_check_isNYCHAPage()) {
+    if ($contract_amount == 0) {
+        //Check if there are any Active contracts when the registered amount is zero to enable 'Contracts' domain
+        if ($node->data[14]['total_contracts'] > 0) {
+            $contracts_url = RequestUtil::getTopNavURL("contracts");
+            $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), $contracts_url, $options);
+        } else {
+            $contracts_url = RequestUtil::getTopNavURL("contracts");
+            $contracts_link = ($contracts_url) ? l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), $contracts_url, $options) : l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), '', $options_disabled);
+        }
+    } else {
+        $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format($contract_amount, 1, '$'), RequestUtil::getTopNavURL("contracts"), $options);
+    }
 }else{
-    $contracts_link = l('<span class="nav-title">Contracts</span><br>'.custom_number_formatter_format($contract_amount, 1,'$'),RequestUtil::getTopNavURL("contracts"),$options);
+    $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), '', $options_disabled);
 }
 
 // Disable featured dashboatrd for other government entities.
-if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
+if(preg_match('/datasource\/checkbook_oge/',$_GET['q']) || preg_match('/datasource\/checkbook_nycha/',$_GET['q'])){
     $mwbe_amount =  0;
     $svendor_amount = 0;
     $mwbe_filters =  "<div class='main-nav-drop-down' style='display:none'></div>";

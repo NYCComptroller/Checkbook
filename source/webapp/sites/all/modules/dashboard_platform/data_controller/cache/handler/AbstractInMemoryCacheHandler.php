@@ -55,7 +55,7 @@ abstract class AbstractInMemoryCacheHandler extends AbstractCacheHandler {
     }
 
     protected function setInternalValues($values, $expiration) {
-        $errorEntryNames = array();
+        $errorEntryNames = [];
 
         foreach ($values as $entryName => $value) {
             $result = $this->setInternalValue($entryName, $value, $expiration);

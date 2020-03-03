@@ -1,7 +1,7 @@
 {
     "widgetType": "phpparser",
     "cleanURLParameters":["agency","agencyh","year","dept","deptnm","expcategory","expcategorynm","bdgcode","bdgcodenm","adpamt","preamt","encamt","cshamt","postamt","acramt","curamt","curamtr"],
-    "urlParamMap":{"agency":"agency_id","agencyh":"agency_history_id","year":"budget_fiscal_year_id","dept":"department_id","deptnm":"department_name","expcategory":"object_class_id","expcategorynm":"object_class_name","bdgcode":"budget_code_id","bdgcodenm":"budget_code_name","adpamt":"adopted_amount","preamt":"pre_encumbered_amount","encamt":"encumbered_amount","cshamt":"cash_expense_amount","postamt":"post_closing_adjustment_amount","acramt":"accrued_expense_amount","curamt":"current_budget_amount","curamtr":"current_budget_amount"},
+    "urlParamMap":{"agency":"agency_id","agencyh":"agency_history_id","year":"budget_fiscal_year_id","dept":"department_code","deptnm":"department_name","expcategory":"object_class_id","expcategorynm":"object_class_name","bdgcode":"budget_code_id","bdgcodenm":"budget_code_name","adpamt":"adopted_amount","preamt":"pre_encumbered_amount","encamt":"encumbered_amount","cshamt":"cash_expense_amount","postamt":"post_closing_adjustment_amount","acramt":"accrued_expense_amount","curamt":"current_budget_amount","curamtr":"current_budget_amount"},
     "paramTypeConfig":{"curamt":"range","adpamt":"range","preamt":"range","encamt":"range","cshamt":"range","postamt":"range","acramt":"range","curamtr":"rangeid","deptnm":"like","bdgcodenm":"like","expcategorynm":"like"},
     "dataset": "checkbook:budget",
     "adjustParameters":"

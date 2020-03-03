@@ -20,7 +20,7 @@ class Content
 
     public function __construct($data_source)
     {
-        $this->data_source=$data_source;
+        $this->data_source = $data_source;
     }
 
     public function add_field(Field $field, $column_type)
@@ -29,17 +29,17 @@ class Content
         {
             case Column::Left:
                 $this->num_left_column_fields+=1;
-                $field->column_index=$this->num_left_column_fields;
+                $field->column_index = $this->num_left_column_fields;
                 break;
 
             case Column::Right:
                 $this->num_right_column_fields+=1;
-                $field->column_index=$this->num_right_column_fields;
+                $field->column_index = $this->num_right_column_fields;
                 break;
         }
-        $this->column_type=$column_type;
-        $field->column_type=$column_type;
-        $field->domain_name=$this->domain_name;
+        $this->column_type = $column_type;
+        $field->column_type = $column_type;
+        $field->domain_name= $this->domain_name;
         $this->fields[$field->field_name] = $field;
     }
 }

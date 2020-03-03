@@ -1,7 +1,0 @@
-2014/05/20 15:21:05 - SPLIT FILES SCRIPT - Found 0 previous result rows
-2014/05/20 15:21:05 - SPLIT FILES SCRIPT - Running on platform : Linux
-2014/05/20 15:21:05 - SPLIT FILES SCRIPT - Executing command : /vol2share/NYC/NYC_ETL_JOBS/CHECKBOOK_MASTER_JOB_POSTGRESQL_DB/PreProcessing_DataFiles/split_file.sh FMS FMS_feed.txt
-2014/05/20 15:21:05 - SPLIT FILES SCRIPT - (stdout) FMS
-2014/05/20 15:21:05 - SPLIT FILES SCRIPT - (stdout) FMS_feed.txt
-2014/05/20 15:21:05 - SPLIT FILES SCRIPT - Command /vol2share/NYC/NYC_ETL_JOBS/CHECKBOOK_MASTER_JOB_POSTGRESQL_DB/PreProcessing_DataFiles/split_file.sh FMS FMS_feed.txt has finished
-2014/05/20 15:21:05 - SPLIT FILES SCRIPT - Exit status of shell [file:///vol2share/NYC/NYC_ETL_JOBS/CHECKBOOK_MASTER_JOB_POSTGRESQL_DB/PreProcessing_DataFiles/split_file.sh] was 1

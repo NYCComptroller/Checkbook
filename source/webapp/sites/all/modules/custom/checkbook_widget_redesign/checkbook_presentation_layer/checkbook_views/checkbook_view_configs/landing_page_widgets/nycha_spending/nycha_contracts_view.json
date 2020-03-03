@@ -1,0 +1,36 @@
+{
+  "serviceName":"NychaSpendingWidgetService",
+  "dataFunc":"GetNychaSpendingByContracts",
+  "countFunc":"GetCountContracts",
+  "headerTitle":"Contracts",
+  "headerSubTitle":"Contracts",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_contracts'",
+  "table_columns":[
+    {"labelAlias":"contract_id","column":"contract_id","derivedColumn":"contract_link"},
+    {"labelAlias":"contract_purpose","column":"contract_purpose", "tooltip":50},
+    {"labelAlias":"vendor","column":"vendor_name", "derivedColumn":"vendor_link","tooltip": 60},
+    {"labelAlias":"ytd_spending","column":"check_amount_sum","format":"dollar", "derivedColumn":"contract_ytd_spending"},
+    {"labelAlias":"total_contract_amount","column":"total_contract_amount","format":"dollar"},
+    {"label":"","column":""}
+  ],
+  "dataTableOptions":{
+    "aoColumns":[
+      { "bSortable": false,"sClass":"text","sWidth":"100px"},
+      { "bSortable": false,"sClass":"text","sWidth":"150px"},
+      { "bSortable": false,"sClass":"text pad-left","sWidth":"150px"},
+      {"sClass":"number","asSorting": [ "desc","asc" ], "sWidth":"60px"},
+      {"sClass":"number","asSorting": [ "desc","asc"  ],"sWidth":"130px"},
+      { "bSortable": false,"sWidth":"15px" }
+    ],
+    "bServerSide":true,
+    "bFilter":false,
+    "bPaginate":false,
+    "bProcessing":true,
+    "bLengthChange":false,
+    "bInfo":false,
+    "bAutoWidth":false,
+    "aaSorting":[[3,"desc"]],
+    "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+    "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+  }
+}

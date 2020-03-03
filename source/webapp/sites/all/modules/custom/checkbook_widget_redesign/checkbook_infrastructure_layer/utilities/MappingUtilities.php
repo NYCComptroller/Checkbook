@@ -34,7 +34,10 @@ class MappingUtilities {
         //        array('?') =>'Emerging'
     );
 
-    /** Returns the M/WBE category name based on the minority_type_id mapping */
+    /** Returns the M/WBE category name based on the minority_type_id mapping
+     * @param $minority_type_id
+     * @return mixed
+     */
     static function getMinorityCategoryById($minority_type_id) {
         return static::$minority_type_category_map[$minority_type_id];
     }

@@ -30,4 +30,3 @@ EOD;
 print $summaryContent;
 
 
-?>

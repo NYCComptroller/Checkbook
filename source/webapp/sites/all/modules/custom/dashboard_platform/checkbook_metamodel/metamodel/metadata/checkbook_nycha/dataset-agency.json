@@ -1,0 +1,30 @@
+{
+    "datasets": {
+		"agency": {
+            "datasourceName": "main",
+            "source": "ref_agency",
+            "columns": [
+                {
+                    "name": "agency_id",
+                    "key": true
+                }
+            ]
+        },
+        "agency_history":{
+                "datasourceName":"main",
+                "source":"ref_agency_history",
+                "columns":[
+                    {
+                        "name":"agency_history_id",
+                        "key":true
+                    }
+                ]
+        }
+    },
+    "references": {        
+        "agency_history__agency": [
+                {"datasetName": "agency", "columnNames": ["agency_id"]},
+                {"datasetName": "agency_history", "columnNames": ["agency_id"]}
+        ]        
+    }    
+}

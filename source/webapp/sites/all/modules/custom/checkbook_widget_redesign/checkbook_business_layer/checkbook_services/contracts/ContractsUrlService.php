@@ -427,7 +427,7 @@ class ContractsUrlService
         }
         // For advanced search, if the year value is not set, get the latest minority type category for current Fiscal Year
         if ($advanced_search) {
-            $year_id = ($year_id == null) ? _getCurrentYearID() : $year_id;
+            $year_id = ($year_id == null) ? CheckbookDateUtil::getCurrentFiscalYearId() : $year_id;
         }
 
         $latest_minority_id = $year_id

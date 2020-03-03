@@ -95,11 +95,11 @@ class CSVStreamerResultFormatter extends AbstractResultFormatter {
     function render_fields($row) {
 
         $field_ids = array_keys($this->view->field);
-        $rendered_fields = array();
+        $rendered_fields = [];
         foreach ($field_ids as $id) {
             $field = $this->view->field[$id];
             $field_is_multiple = FALSE;
-            $field_raw = array();
+            $field_raw = [];
 
             $field_output = $this->view->field[$field->options['id']]->advanced_render($row);
             $field_raw = (isset($this->view->field[$id]->field_alias) && isset($row->{$this->view->field[$id]->field_alias})) ? $row->{$this->view->field[$id]->field_alias} : NULL;

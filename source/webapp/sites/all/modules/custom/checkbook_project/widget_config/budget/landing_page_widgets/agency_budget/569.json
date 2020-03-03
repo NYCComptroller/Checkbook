@@ -73,7 +73,7 @@
     return $header;
 ",
 "footer":"
-    $url = '/panel_html/department_budget_details/budget/dept_details'.'/dtsmnid/' . $node->nid;
+    $url = '/panel_html/deppartment_budget_details/budget/dept_details'.'/dtsmnid/' . $node->nid;
     $url .= _checkbook_project_get_url_param_string('agency');
     $url .= _checkbook_project_get_url_param_string('dept');
     $url .= _checkbook_project_get_url_param_string('expcategory');

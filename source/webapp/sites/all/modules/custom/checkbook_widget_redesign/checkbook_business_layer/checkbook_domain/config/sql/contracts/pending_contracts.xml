@@ -10,7 +10,7 @@
         <param name="awdmethod" />
         <param name="csize" />
         <param name="cindustry" />
-        <param name="is_modification" />
+        <param name="is_modification" type="bool"/>
         <sql>
             SELECT DISTINCT to_char(s0.cif_received_date,'mm/dd/yy') AS received_date,
                 s0.vendor_id as vendor_id,
@@ -60,7 +60,7 @@
         <param name="awdmethod" />
         <param name="csize" />
         <param name="cindustry" />
-        <param name="is_modification" />
+        <param name="is_modification" type="bool"/>
         <sql>
             SELECT s0.contract_number as pending_contract_number
             FROM pending_contracts s0

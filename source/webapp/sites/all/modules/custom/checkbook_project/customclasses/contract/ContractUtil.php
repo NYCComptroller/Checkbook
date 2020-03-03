@@ -30,7 +30,8 @@ namespace { //global
          * 1. Current Amount
          * 2. Original Amount
          * 3. Spent to date
-         *
+         * @param $agreement_id
+         * @return bool
          */
         public static function childAgreementAmountsDiffer($agreement_id){
 
@@ -260,11 +261,9 @@ namespace { //global
                 return $url;
             }else if(in_array($latest_minority_id, array(2,3,4,5,9)) && RequestUtilities::get('dashboard') != 'mp'){
                 return $url ."/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
-            }else{
-                return $url. "/vendor/".$vendor_id;
             }
 
-            return '';
+            return $url. "/vendor/".$vendor_id;
         }
 
 
@@ -285,15 +284,13 @@ namespace { //global
             $url .= RequestUtilities::buildUrlFromParam('bottom_slider');
 
             if($current_dashboard != $new_dashboard ){
-                    return $url . $status . "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
-            }else{
-                    $url .= $status.RequestUtilities::buildUrlFromParam('cindustry'). RequestUtilities::buildUrlFromParam('csize')
-                    . RequestUtilities::buildUrlFromParam('awdmethod') ."/dashboard/" . $new_dashboard .
-                    ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
-                    return $url;
+                return $url . $status . "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
             }
 
-            return '';
+            $url .= $status.RequestUtilities::buildUrlFromParam('cindustry'). RequestUtilities::buildUrlFromParam('csize')
+                . RequestUtilities::buildUrlFromParam('awdmethod') ."/dashboard/" . $new_dashboard .
+                ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
+            return $url;
         }
 
 
@@ -316,7 +313,7 @@ namespace { //global
             }
             if($year_id == null){
                 $year_type = "B";
-                $year_id = _getCurrentYearID();
+                $year_id = CheckbookDateUtil::getCurrentFiscalYearId();
             }
 
 
@@ -727,6 +724,7 @@ namespace { //global
          * "Summary of Sub Contract Status by Prime Contract ID Transactions"
          * @param $node
          * @param $parameters
+         * @return mixed
          */
         public static function adjustSubContractTransactionsCommonParams(&$node, &$parameters) {
 
@@ -785,6 +783,7 @@ namespace { //global
          * Function to handle common facet/transaction page parameters for the Active Contracts transactions.
          * @param $node
          * @param $parameters
+         * @return mixed
          */
         public static function adjustActiveContractCommonParams(&$node, &$parameters) {
 
@@ -831,6 +830,13 @@ namespace { //global
             }
             else {
                 $parameters['latest_flag'] = 'Y';
+                //Hide data for contracts, end date is prior 2011
+                //TO DO: Move end fiscal year to Drupal variables
+                $year = _getYearIDFromValue(2011);
+                $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
+                if($contractStatus=='A'){
+                  $parameters['prime_effective_end_year_id']= $geCondition;
+                }
             }
 
             //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code

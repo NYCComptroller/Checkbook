@@ -20,3 +20,4 @@ description = Custom breadcrumbs for checkbook
 core = 7.x
 
 dependencies[] = data_controller
+files[] = customclasses/checkbook_custom_breadcrumbs.php

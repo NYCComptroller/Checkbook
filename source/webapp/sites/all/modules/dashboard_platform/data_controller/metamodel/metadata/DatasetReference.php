@@ -24,7 +24,7 @@ class DatasetReference extends AbstractMetaData {
     /**
      * @var DatasetReferencePoint[]
      */
-    public $points = array();
+    public $points = [];
 
     public function __clone() {
         parent::__clone();
@@ -116,7 +116,7 @@ class DatasetReferencePoint extends AbstractObject {
     /**
      * @var DatasetReferencePointColumn[]
      */
-    public $columns = array();
+    public $columns = [];
 
     public function equals(DatasetReferencePoint $sourceReferencePoint) {
         if (!isset($sourceReferencePoint)) {

@@ -193,6 +193,7 @@ body.page-data-feeds #zone-content .form-radios .form-item {
     width: auto;
     clear: none;
     margin-right: 45px;
+    margin-top: 5px;
 }
 
 body.page-data-feeds #zone-content .form-item {
@@ -315,7 +316,8 @@ body.page-data-feeds #edit-columns .form-item-column-select-oge-expense label,
 body.page-data-feeds #edit-columns .form-item-column-select-revenue label,
 body.page-data-feeds #edit-columns .form-item-column-select-all label,
 body.page-data-feeds #edit-columns .form-item-column-select-pending-all label,
-body.page-data-feeds #edit-columns .form-item-column-select-pending label {
+body.page-data-feeds #edit-columns .form-item-column-select-pending label,
+body.page-data-feeds #edit-columns .form-item-column-select-nycha label{
     margin-left: 97px;
 }
 
@@ -369,6 +371,7 @@ body.page-data-feeds #zone-content .first-page .form-radios {
 ****************************************/
 .salarytype {
     margin-left: 140px;
+    margin-bottom: 10px;
 }
 
 body.page-data-feeds #zone-content form.data-feeds-wizard .column .salarytype .form-item {
@@ -489,7 +492,7 @@ body.page-node-466 ol li{
 body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-agency,
 body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-dept,
 body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-expense-category,
-body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-expense-type,
+body.page-data-feeds #zone-content form.data-feeds-wizard .column select.edit-expense-type,
 body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-contract-type,
 body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-award-method  {
     position: relative !important;
@@ -499,7 +502,7 @@ body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-aw
 body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-agency option,
 body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-dept option,
 body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-expense-category option,
-body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-expense-type option,
+body.page-data-feeds #zone-content form.data-feeds-wizard .column select.edit-expense-type option,
 body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-contract-type option,
 body.page-data-feeds #zone-content form.data-feeds-wizard .column select#edit-award-method option {
     position: absolute !important;

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the php-code-coverage package.
  *
@@ -7,30 +7,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\CodeCoverage\Report\Xml;
 
 use TheSeer\Tokenizer\NamespaceUri;
 use TheSeer\Tokenizer\Tokenizer;
 use TheSeer\Tokenizer\XMLSerializer;
 
-class Source
+final class Source
 {
     /** @var \DOMElement */
     private $context;
 
-    /**
-     * @param \DOMElement $context
-     */
     public function __construct(\DOMElement $context)
     {
         $this->context = $context;
     }
 
-    /**
-     * @param string $source
-     */
-    public function setSourceCode(string $source)
+    public function setSourceCode(string $source): void
     {
         $context = $this->context;
 

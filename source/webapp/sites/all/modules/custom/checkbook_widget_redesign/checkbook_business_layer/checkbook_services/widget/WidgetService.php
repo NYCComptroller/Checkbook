@@ -13,6 +13,12 @@ abstract class WidgetService implements IWidgetService {
      * @var
      */
     protected $legacy_node_id;
+    /**
+     * Param configured to support transactions
+     * @var
+     */
+    protected $param_config;
+
 
     /**
      * Variable to hold the configuration to get widget data
@@ -28,6 +34,9 @@ abstract class WidgetService implements IWidgetService {
         if(isset($this->widgetConfig->legacy_node_id)) {
             $this->legacy_node_id = $this->widgetConfig->legacy_node_id;
         }
+        if(isset($this->widgetConfig->param_config)) {
+            $this->param_config = $this->widgetConfig->param_config;
+        }
     }
 
     /**
@@ -38,6 +47,9 @@ abstract class WidgetService implements IWidgetService {
         return $this->legacy_node_id ?: RequestUtilities::get("legacy_node_id");
     }
 
+    public function getParamName(){
+        return $this->param_config?: RequestUtilities::get("param_name");
+    }
     /**
      * Returns the widget data
      * @param $parameters

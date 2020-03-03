@@ -35,7 +35,7 @@ function landing_page_widget_view_widget_controller_metadata() {
 
 /**
  * Implementation for hook widget validate (custom)
- * @param unknown_type $node
+ * @param $node
  */
 function landing_page_widget_view_widget_controller_validate(&$node) {
 
@@ -43,7 +43,7 @@ function landing_page_widget_view_widget_controller_validate(&$node) {
 
 /**
  * Implementation for hook widget data ...
- * @param unknown_type $node
+ * @param $node
  */
 function landing_page_widget_view_widget_controller_data(&$node) {
 
@@ -151,7 +151,7 @@ function __landing_page_widget_add_padding_data($node){
 /**
  * construct the json from data returned from data controller.This function is used for simple ajax data table widget .
  * @param $node
- * @return
+ * @return false|string
  */
 function _landing_page_widget_view_ajaxdata_json($node){
     $response['aaData'] = array();
@@ -202,7 +202,7 @@ function _landing_page_widget_view_list_wt_ajaxdata($node){
 /**
  * construct the json from data returned from data controller.This function is used for dataTableWidgets data table widget .
  * @param $node
- * @return json representation of data
+ * @return false|string
  */
 function _landing_page_widget_view_list_wt_prepare_json($node){
 	global $conf;

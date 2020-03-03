@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$revenue_parameter_mapping = _checkbook_smart_search_domain_fields('revenue');
+$revenue_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'revenue');
 
 $linkable_fields = array("agency_name" => "/agency/". $revenue_results["agency_id"],);
 
@@ -35,16 +35,18 @@ foreach ($revenue_parameter_mapping as $key=>$title){
     if($key == 'fiscal_year'){
         $value = $revenue_results[$key][0];
     }
-    if(strpos(strtoupper($value), strtoupper($SearchTerm)) !== FALSE){
-        $temp = substr($value, strpos(strtoupper($value), strtoupper($SearchTerm)),strlen($SearchTerm));
-        $value = str_ireplace($SearchTerm,'<em>'. $temp . '</em>', $value);
+
+//    highlighting $searchTerm
+    if($searchTerm && (strpos(strtoupper($value), strtoupper($searchTerm)) !== FALSE)){
+        $temp = substr($value, strpos(strtoupper($value), strtoupper($searchTerm)),strlen($searchTerm));
+        $value = str_ireplace($searchTerm,'<em>'. $temp . '</em>', $value);
         $value = _checkbook_smart_search_str_html_entities($value);
     }
 
     if(in_array($key, $amount_fields)){
         $value = custom_number_formatter_format($value, 2 , '$');
     }else if(array_key_exists($key, $linkable_fields)){
-        $value = "<a href='/revenue/year/" . _getCurrentYearID() . $linkable_fields[$key] . "'>". $value ."</a>";
+        $value = "<a href='/revenue/year/" . CheckbookDateUtil::getCurrentFiscalYearId() . $linkable_fields[$key] . "'>". $value ."</a>";
     }
 
     if ($count % 2 == 0){

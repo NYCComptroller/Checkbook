@@ -18,6 +18,7 @@
 name = "Widget"
 description = "Module to add base support for widgets"
 core = 7.x
+php = 7.2
 package = REI Dashboard Platform (Visualization)
 dependencies[] = data_controller
 dependencies[] = ajaxnode

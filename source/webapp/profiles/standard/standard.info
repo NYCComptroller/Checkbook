@@ -24,7 +24,7 @@ dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = rdf
 
-; Information added by Drupal.org packaging script on 2019-01-16
-version = "7.62"
+; Information added by Drupal.org packaging script on 2019-12-18
+version = "7.69"
 project = "drupal"
-datestamp = "1547663597"
+datestamp = "1576696221"

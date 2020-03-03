@@ -24,26 +24,6 @@ if(is_array($node->data) && count($node->data) > 0){
     print  '<div class="payroll-emp-wrapper">';
     $employeeData = '';
 
-    if(count($node->data) > 1){
-        $js = "
-            jQuery('.emp-record-salaried').show();
-            jQuery('.emp-record-non-salaried').hide();
-
-            function toggleEmployee() {
-                jQuery('.emp-record-salaried').toggle();
-                jQuery('.emp-record-non-salaried').toggle();
-            };
-            jQuery('.toggleEmployee').click(toggleEmployee);
-        ";
-
-
-        if($_REQUEST['appendScripts']){
-            print "<script type='text/javascript'>" . $js . "</script>";
-        }
-        else{
-            drupal_add_js($js,"inline");
-        }
-    }
 
     $employeeData .= "<div id='emp-agency-detail-records'>";
 
@@ -75,6 +55,13 @@ if(is_array($node->data) && count($node->data) > 0){
         if($type_of_year == 'C') {
             $year_type = 'CY';
         }
+        if( $employment_type== PayrollType::$SALARIED){
+            $salaried_count = $number_employees;
+        }
+
+
+        //Default view based on salamttype in url
+        $default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
 
         if(RequestUtilities::get('smnid') == 491 || RequestUtilities::get('smnid') == 492) {
             $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
@@ -145,12 +132,38 @@ if(is_array($node->data) && count($node->data) > 0){
         $table .= "</table></div>";
         $employeeData .= $table;
     }
+    if($default_view == PayrollType::$SALARIED) {
+        $js .= "
+        jQuery('.emp-record-salaried').show();
+        jQuery('.emp-record-non-salaried').hide();
+    ";
+    }
+    else {
+        $js .= "
+        jQuery('.emp-record-salaried').hide();
+        jQuery('.emp-record-non-salaried').show();
+    ";
+    }
+    $js .= "
+        function toggleEmployee() {
+            jQuery('.emp-record-salaried').toggle();
+            jQuery('.emp-record-non-salaried').toggle();
+        };
+        jQuery('.toggleEmployee').click(toggleEmployee);
+    ";
+
+    if($_REQUEST['appendScripts']){
+        print "<script type='text/javascript'>" . $js . "</script>";
+    }
+    else{
+        drupal_add_js($js,"inline");
+    }
     if (count($node->data) > 1) {
         $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried toggleEmployee'>
                             <strong>Viewing Salaried Details</strong>&nbsp;|&nbsp;
                             <a>View Non-salaried Details</a>
                           </div>";
-        $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried'>
+        $employeeData .= "<div id='toggle-employee-non-salaried' class='emp-record-non-salaried toggleEmployee'>
                             <a>View Salaried Details</a>&nbsp;|&nbsp;
                             <strong>Viewing Non-salaried Details</strong>
                           </div>";

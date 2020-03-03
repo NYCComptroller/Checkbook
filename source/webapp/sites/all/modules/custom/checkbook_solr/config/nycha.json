@@ -1,0 +1,288 @@
+{
+  "facets": {
+    "domain": {
+      "title": "Type of Data",
+      "sub": {
+        "contracts": [
+          "agreement_type_name"
+        ],
+        "payroll": [
+          "payroll_type"
+        ],
+        "spending": [
+          "spending_category"
+        ]
+      }
+    },
+    "agreement_type_name": {
+      "title": "Purchase Order Type",
+      "child": true
+    },
+    "spending_category": {
+      "title": "Spending Category",
+      "child": true
+    },
+    "payroll_type": {
+      "title": "Payroll Type",
+      "child": true
+    },
+    "vendor_name": {
+      "title": "Vendor",
+      "autocomplete": true
+    },
+    "expenditure_type_description":{
+      "title" :"Expense Category",
+      "autocomplete": true
+    },
+    "record_type": {
+      "title": "Record Type"
+    },
+    "contract_number": {
+      "title": "Contract ID",
+      "autocomplete": true
+    },
+    "release_number": {
+      "title": "Release Number",
+      "autocomplete": true
+    },
+    "responsibility_center_name": {
+      "title": "Responsibility Center",
+      "autocomplete": true
+    },
+    "funding_source_name": {
+      "title": "Funding Source",
+      "autocomplete": true
+    },
+    "industry_type_name": {
+      "title": "Industry",
+      "autocomplete": true
+    },
+    "document_id":{
+      "title" :"Document ID",
+      "autocomplete": true
+    },
+    "invoice_number":{
+      "title" :"Invoice Number",
+      "autocomplete": true
+    },
+    "civil_service_title": {
+      "title": "Title",
+      "autocomplete": true
+    },
+    "pay_frequency": {
+      "title": "Pay Frequency"
+    },
+    "annual_salary": {
+      "title": "Annual Salary",
+      "intervals": {
+        ">200K": "[200000,*]",
+        "150K-200K": "[150000,199999.99]",
+        "100K-150K": "[100000,149999.99]",
+        "75K-100K": "[75000,99999.99]",
+        "50K-75K": "[50000,74999.99]",
+        "25K-50K": "[25000,49999.99]",
+        "<25K": "[1,24999.99]"
+      }
+    },
+    "daily_wage": {
+      "title": "Daily Wage",
+      "intervals": {
+        ">500": "[500,*]",
+        "400-500": "[400,499.99]",
+        "300-400": "[300,399.99]",
+        "200-300": "[200,299.99]",
+        "100-200": "[100,199.99]",
+        "<100": "[1,99.99]"
+      }
+    },
+    "overtime_pay": {
+      "title": "Overtime Payments",
+      "intervals": {
+        ">5K": "[5000,*]",
+        "1K-5K": "[1000,4999.99]",
+        "500-1K": "[500,999.99]",
+        "250-500": "[250,499.99]",
+        "<250": "[1,249.99]"
+      }
+    },
+    "check_amount": {
+      "title": "Check Amount",
+      "intervals": {
+        ">100M": "[100000000,*]",
+        "50M-100M": "[50000000,99999999.99]",
+        "25M-50M": "[25000000,49999999.99]",
+        "10M-25M": "[10000000,24999999.99]",
+        "1M-10M": "[1000000,9999999.99]",
+        "<1M": "[*,999999.99]"
+      }
+    },
+    "facet_year_array": {
+      "title": "Fiscal Year",
+      "autocomplete": true,
+      "sort_by_key": -1
+    }
+  },
+  "search_results_fields": {
+    "spending": {
+      "check_issue_date": "Issue Date",
+      "check_amount": "Check Amount",
+      "document_id": "Document ID",
+      "check_invoice_net_amount":"Amount Spent",
+      "section8_flag": "Section 8",
+      "spending_category": "Spending Category",
+      "agreement_type_name": "Purchase Order Type",
+      "contract_purpose":"Purpose",
+      "contract_number": "Contract ID",
+      "funding_source_name": "Funding Source",
+      "release_number": "Release number",
+      "industry_type_name": "Industry",
+      "invoice_number": "Invoice Number",
+      "responsibility_center_name": "Responsibility Center",
+      "invoice_line_number":"Line Number",
+      "expenditure_type_description": "Expense Category",
+      "distribution_line_number": "Distribution Line Number",
+      "program_phase_name": "Program",
+      "check_payment_status": "Check Status",
+      "gl_project_name":"Project",
+      "vendor_name": "Vendor",
+      "":""
+    },
+    "contracts": {
+      "agreement_type_name": "Purchase Order Type",
+      "number_of_releases": "Number of Releases",
+      "contract_number": "Contract ID",
+      "release_number": "Release Number",
+      "record_type": "Record Type",
+      "vendor_name": "Vendor Name",
+      "commodity_category_name": "Item Category",
+      "display_industry_type_name": "Industry",
+      "item_description": "Item Description",
+      "contract_type_code": "Contract type",
+      "item_qty_ordered": "Quantity Ordered",
+      "award_method_name": "Award Method",
+      "shipment_number": "Shipment Number",
+      "start_date": "Start Date",
+      "responsibility_center_name": "Responsibility center",
+      "end_date": "End Date",
+      "release_line_total_amount": "Line Current Amount",
+      "release_approved_date": "Approved Date",
+      "release_line_original_amount": "Line Original Amount",
+      "location_borough_name": "Location",
+      "release_line_spend_to_date": "Line Invoiced Amount",
+      "grant_name": "Grant Name",
+      "release_total_amount": "Release Current Amount",
+      "expenditure_type_name": "Expenditure Type",
+      "release_original_amount": "Release Original Amount",
+      "funding_source_name": "Funding source",
+      "release_spend_to_date": "Release Invoiced Amount",
+      "program_phase_code": "Program",
+      "agreement_total_amount": "Contract Current Amount",
+      "gl_project_name": "Project",
+      "agreement_original_amount": "Contract Original Amount",
+      "pin": "PIN",
+      "agreement_spend_to_date": "Contract Invoiced Amount",
+      "contract_purpose": "Purpose"
+    },
+    "payroll": {
+      "civil_service_title": "Title",
+      "agency_name": "Agency",
+      "pay_frequency": "Pay Frequency",
+      "pay_date": "Pay Date",
+      "gross_pay": "Gross Pay",
+      "annual_salary": "Annual Salary",
+      "base_pay": "Base Pay",
+      "hourly_rate": "Hourly Rate",
+      "other_payments": "Other Payments",
+      "daily_wage": "Daily Wage",
+      "overtime_pay": "Overtime Payments",
+      "payroll_type": "Payroll Type"
+    }
+  },
+  "export_fields": {
+    "spending": {
+      "check_issue_date": "Issue Date",
+      "document_id": "Document ID",
+      "section8_flag": "Section 8",
+      "agreement_type_name": "Purchase Order Type",
+      "contract_number": "Contract ID",
+      "release_number": "Release number",
+      "invoice_number": "Invoice Number",
+      "invoice_line_number": "Line Number",
+      "distribution_line_number": "Distribution Line Number",
+      "check_payment_status": "Check Status",
+      "check_amount": "Check Amount",
+      "check_invoice_net_amount":"Amount Spent",
+      "vendor_name": "Vendor",
+      "contract_purpose":"Purpose",
+      "spending_category": "Spending Category",
+      "industry_type_name": "Industry",
+      "funding_source_name": "Funding Source",
+      "responsibility_center_name": "Responsibility Center",
+      "expenditure_type_description": "Expense Category",
+      "program_phase_name": "Program",
+      "gl_project_name":"Project"
+    },
+    "payroll": {
+      "civil_service_title": "Title",
+      "agency_name": "Agency",
+      "pay_frequency": "Pay Frequency",
+      "pay_date": "Pay Date",
+      "gross_pay": "Gross Pay",
+      "annual_salary": "Annual Salary",
+      "base_pay": "Base Pay",
+      "hourly_rate": "Hourly Rate",
+      "daily_wage": "Daily Wage",
+      "other_payments": "Other Payments",
+      "overtime_pay": "Overtime Payments",
+      "payroll_type": "Payroll Type"
+    },
+    "contracts": {
+      "contract_number": "Contract ID",
+      "agreement_type_name": "Purchase Order Type",
+      "record_type": "Record Type",
+      "number_of_releases": "Number of Releases",
+      "release_number": "Release Number",
+      "line_number": "Line Number",
+      "commodity_category_name": "Item Category",
+      "item_description": "Item Description",
+      "item_qty_ordered": "Quantity Ordered",
+      "shipment_number": "Shipment Number",
+      "responsibility_center_name": "Responsibility center",
+      "start_date": "Start Date",
+      "end_date": "End Date",
+      "release_approved_date": "Approved Date",
+      "release_line_total_amount": "Line Current Amount",
+      "release_line_original_amount": "Line Original Amount",
+      "release_line_spend_to_date": "Line Invoiced Amount",
+      "release_total_amount": "Release Current Amount",
+      "release_original_amount": "Release Original Amount",
+      "release_spend_to_date": "Release Invoiced Amount",
+      "agreement_total_amount": "Contract Current Amount",
+      "agreement_original_amount": "Contract Original Amount",
+      "agreement_spend_to_date": "Contract Invoiced Amount",
+      "contract_purpose": "Purpose",
+      "vendor_name": "Vendor Name",
+      "contract_type_code": "Contract type",
+      "award_method_name": "Award Method",
+      "display_industry_type_name": "Industry",
+      "pin": "PIN",
+      "location_name": "Location",
+      "grant_name": "Grant Name",
+      "expenditure_type_name": "Expenditure Type",
+      "funding_source_name": "Funding source",
+      "program_phase_code": "Program",
+      "gl_project_name": "Project"
+    }
+  },
+  "autocomplete_terms": {
+    "vendor_name": "Vendors",
+    "contract_number": "Contract ID",
+    "grant_name": "Grant Name",
+    "funding_source_name": "Funding Source",
+    "responsibility_center_name": "Responsibility Center",
+    "expenditure_type_description": "Expense Categories"
+  },
+  "sort": {
+    "sort_by": "domain_ordering asc, sort_sequence asc, check_issue_date desc, document_id desc, date_ordering desc, invoice_number asc, invoice_line_number asc, distribution_line_number asc"
+  }
+}

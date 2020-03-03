@@ -21,17 +21,31 @@
 
 abstract class AbstractDataControllerProxy extends AbstractFactory {
 
-    protected $instance = NULL;
+  /**
+   * @var |null
+   */
+  protected $instance = NULL;
 
-    protected function __construct() {
+  /**
+   * AbstractDataControllerProxy constructor.
+   */
+  protected function __construct() {
         parent::__construct();
 
         $this->instance = $this->prepareProxiedInstance();
     }
 
-    abstract protected function prepareProxiedInstance();
+  /**
+   * @return mixed
+   */
+  abstract protected function prepareProxiedInstance();
 
-    public function __call($methodName, $args) {
+  /**
+   * @param $methodName
+   * @param $args
+   * @return mixed
+   */
+  public function __call($methodName, $args) {
         $timeStart = microtime(TRUE);
         $result = call_user_func_array(array($this->instance, $methodName), $args);
         LogHelper::log_info(t(

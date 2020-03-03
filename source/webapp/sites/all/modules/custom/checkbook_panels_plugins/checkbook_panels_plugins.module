@@ -41,6 +41,9 @@
  * It simply tells panels where to find the .inc files that define various
  * args, contexts, content_types. In this case the subdirectories of
  * checkbook_panels/panels are used.
+ * @param $module
+ * @param $plugin
+ * @return string
  */
 function checkbook_panels_plugins_ctools_plugin_directory($module, $plugin) {
 
@@ -54,6 +57,9 @@ function checkbook_panels_plugins_ctools_plugin_directory($module, $plugin) {
  *
  * If you do this, CTools will pick up default panels pages in
  * <modulename>.pages_default.inc
+ * @param $module
+ * @param $api
+ * @return array
  */
 function checkbook_panels_ctools_plugin_api($module, $api) {
   // @todo -- this example should explain how to put it in a different file.

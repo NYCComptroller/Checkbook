@@ -1,0 +1,56 @@
+{
+    "datasets": {
+		"year": {
+            "datasourceName": "main",
+            "source": "ref_year",
+            "columns": [
+                {
+                    "name": "year_id",
+                    "key": true
+                }
+            ]}     ,
+        "ref_year":{
+            "datasourceName":"main",
+            "source": "ref_year",
+            "columns":[
+                {
+                    "name":"year_value",
+                    "key":true
+                }
+            ]
+        },
+		"month": {
+            "datasourceName": "main",
+            "source": "ref_month",
+            "columns": [
+                {
+                    "name": "month_id",
+                    "key": true}
+            ]}     ,		
+		"date_id": {
+            "datasourceName": "main",
+            "source": "ref_date",
+            "columns": [
+                {
+                    "name": "date_id",
+                    "key": true}
+            ]},
+        "fiscal_period":{
+            "datasourceName":"main",
+            "source": "ref_fiscal_period",
+            "columns": [
+                {
+                    "name": "fiscal_period",
+                    "key": true
+                }
+            ]
+        }
+    },
+	"references": {
+        "date_id__year": [
+                {"datasetName": "date_id", "columnNames": ["nyc_year_id"]},
+                {"datasetName": "ref_year", "columnNames": ["year_id"]}
+        ]        
+		                     
+    }        
+}

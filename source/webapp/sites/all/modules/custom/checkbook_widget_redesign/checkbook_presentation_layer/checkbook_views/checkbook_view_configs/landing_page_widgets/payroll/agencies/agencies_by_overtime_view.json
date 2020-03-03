@@ -3,6 +3,7 @@
     "dataFunc": "GetAgenciesByOvertime",
     "countFunc": "GetCountAgencies",
     "headerTitle": "Agencies by Overtime",
+    "nychaTitle": "Overtime by Agency Title",
     "headerSubTitle": "Agencies",
     "table_columns": [
         {

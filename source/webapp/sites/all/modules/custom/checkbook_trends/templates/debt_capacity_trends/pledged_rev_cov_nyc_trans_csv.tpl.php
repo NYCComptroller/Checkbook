@@ -60,5 +60,5 @@ echo "\n"."\n".'"'."(1) Personal income tax (PIT).".'"'
     ."\n".'"'."(2) Sales tax revenue has not been required by the TFA. This amount is available to cover debt service if required.".'"'
     ."\n".'"'."(3) Grant from City and Federal Subsidy.".'"'
     ."\n".'"'."(4) Net of fair market value adjusted.".'"';
-?>
+
 

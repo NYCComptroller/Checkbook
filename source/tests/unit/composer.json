@@ -1,10 +1,10 @@
 {
-    "autoload": {
-        "psr-4": {
-            "CheckbookProject\\CustomClasses\\": "../../webapp/sites/all/modules/custom/checkbook_project/customclasses"
-        }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "*"
+  "autoload": {
+    "psr-4": {
+      "CheckbookProject\\CustomClasses\\": "../../webapp/sites/all/modules/custom/checkbook_project/customclasses"
     }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  }
 }

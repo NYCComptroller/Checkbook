@@ -39,7 +39,7 @@ class view_join_views_filter_view extends views_handler_filter {
   
   function _get_views() {
     $result = db_query("SELECT DISTINCT v.* FROM {views_view} v");
-    $views = array();
+    $views = [];
 
     // Load all the views.
     while ($data = db_fetch_object($result)) {

@@ -76,9 +76,9 @@ if($node->data[0]["vendor_id"]){
        $dashboard = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams().'/dashboard/mp';
     }
     if($node->data[0]['document_code'] == 'RCT1')
-        $vendor_link = '/contracts_pending_rev_landing/year/' . _getCurrentYearID() . '/yeartype/B'.$dashboard.'/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
+        $vendor_link = '/contracts_pending_rev_landing/year/' . CheckbookDateUtil::getCurrentFiscalYearId() . '/yeartype/B'.$dashboard.'/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
     else
-        $vendor_link = '/contracts_pending_exp_landing/year/' . _getCurrentYearID() . '/yeartype/B'.$dashboard.'/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
+        $vendor_link = '/contracts_pending_exp_landing/year/' . CheckbookDateUtil::getCurrentFiscalYearId() . '/yeartype/B'.$dashboard.'/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
 }
 
 

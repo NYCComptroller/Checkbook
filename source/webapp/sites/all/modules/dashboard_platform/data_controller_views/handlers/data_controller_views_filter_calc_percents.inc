@@ -18,7 +18,7 @@ class data_controller_views_filter_calc_percents extends views_handler_filter {
     }
 
     function selected_columns($options_array) {
-        $result = array();
+        $result = [];
         foreach ($options_array as $key => $val) {
             if ($val !== 0) {
                 $result[] = $val;

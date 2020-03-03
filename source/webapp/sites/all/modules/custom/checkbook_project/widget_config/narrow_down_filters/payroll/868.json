@@ -13,7 +13,11 @@
     "autocompleteField":"pay_frequency.pay_frequency",
     "adjustParameters":"
         $monthId = RequestUtilities::getRequestParamValue('month');
-        if(isset($monthId)){
+    $datasource = RequestUtilities::getRequestParamValue('datasource');
+    if(isset($monthId) && $datasource=='checkbook_nycha' ){
+    $node->widgetConfig->dataset = 'checkbook_nycha:payroll_employee_agency_month_basis';
+        }
+        else if(isset($monthId)){
             $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
         }
         if(function_exists('_checkbook_project_applyParameterFilters')){

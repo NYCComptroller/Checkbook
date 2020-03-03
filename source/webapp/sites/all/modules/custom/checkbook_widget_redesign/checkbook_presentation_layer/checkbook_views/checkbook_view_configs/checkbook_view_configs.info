@@ -18,4 +18,5 @@
 name="Checkbook View Configs"
 description="Module to centralize the configuration files used in define widget views"
 core = 7.x
+php = 7.2
 package = REI Checkbook Widget Redesign

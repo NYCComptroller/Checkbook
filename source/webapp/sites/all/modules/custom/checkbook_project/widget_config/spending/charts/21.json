@@ -121,7 +121,7 @@
     $node->widgetConfig->chartConfig->series[0]->data = $seriesPreviousData;
     $node->widgetConfig->chartConfig->series[1]->data = $seriesCurrentData;
     $node->widgetConfig->chartConfig->xAxis->categories = $categories;
-    $node->widgetConfig->chartTitle = RequestUtil::getSpendingCategoryName('Total Spending');
+    $node->widgetConfig->chartTitle = SpendingUtil::getSpendingCategoryName('Total Spending');
 
     if($year == 2010){
         foreach($node->data as $row){

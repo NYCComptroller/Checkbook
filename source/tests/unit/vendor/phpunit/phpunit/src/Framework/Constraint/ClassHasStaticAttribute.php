@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Exception;
 use ReflectionClass;
 
 /**
@@ -17,39 +18,41 @@ use ReflectionClass;
  *
  * The attribute name is passed in the constructor.
  */
-class ClassHasStaticAttribute extends ClassHasAttribute
+final class ClassHasStaticAttribute extends ClassHasAttribute
 {
+    /**
+     * Returns a string representation of the constraint.
+     */
+    public function toString(): string
+    {
+        return \sprintf(
+            'has static attribute "%s"',
+            $this->attributeName()
+        );
+    }
+
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param mixed $other Value or object to evaluate.
-     *
-     * @return bool
+     * @param mixed $other value or object to evaluate
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
-        $class = new ReflectionClass($other);
+        try {
+            $class = new ReflectionClass($other);
 
-        if ($class->hasProperty($this->attributeName)) {
-            $attribute = $class->getProperty($this->attributeName);
-
-            return $attribute->isStatic();
+            if ($class->hasProperty($this->attributeName())) {
+                return $class->getProperty($this->attributeName())->isStatic();
+            }
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
         }
 
         return false;
-    }
-
-    /**
-     * Returns a string representation of the constraint.
-     *
-     * @return string
-     */
-    public function toString()
-    {
-        return \sprintf(
-            'has static attribute "%s"',
-            $this->attributeName
-        );
     }
 }

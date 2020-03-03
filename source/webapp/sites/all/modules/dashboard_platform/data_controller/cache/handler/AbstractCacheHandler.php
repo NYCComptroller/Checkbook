@@ -162,7 +162,7 @@ abstract class AbstractCacheHandler extends AbstractObject implements CacheHandl
     public function setValues($values, $expiration = NULL) {
         $this->checkAccessibility(TRUE);
 
-        $adjustedValues = array();
+        $adjustedValues = [];
         if (isset($values)) {
             foreach ($values as $name => $value) {
                 $entryName = $this->assembleCacheEntryName($name);

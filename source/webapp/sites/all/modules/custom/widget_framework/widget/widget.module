@@ -67,12 +67,7 @@ function widget_menu(){
 
 
 function widget_load($key){
-	if( $id > 0 ){
-		$node = node_load($key);
-	}
-	if($node == null){
-		$node = _widget_node_load_file($key);
-	}
+    $node = _widget_node_load_file($key);
 
 	return $node;
 }
@@ -107,6 +102,7 @@ function widget_access($op, $node, $account) {
 			return TRUE;
 		}
 	}
+	return FALSE;
 }
 
 function widget_perm() {
@@ -127,11 +123,12 @@ function _widget_node_load($key, $type='node'){
 
 	switch ($type) {
 		case 'node':
-			return node_load($key);;
+			return node_load($key);
 		case 'file':
 			return _widget_node_load_file($key);
 
 	}
+	return FALSE;
 }
 
 function _widget_node_view_page($key){
@@ -184,6 +181,7 @@ function widget_node_load($nodes,$types){
       }
     }
   }
+  return FALSE;
 }
 
 function widget_form(&$node) {
@@ -201,6 +199,7 @@ function widget_form(&$node) {
       '#weight' => -5,
 		);
 	}
+    $form=[];
 
 	if ($type->has_body) {
 		// In Drupal 6, we can use node_body_field() to get the body and filter
@@ -218,25 +217,13 @@ function widget_node_validate(&$node) {
 		return ;
 
 	widget_config($node);
-/*	if (!isset($node->widgetConfig)) {
-		form_set_error('body', "Unable to parse JSON");
-	}
-	else {
-		if (!isset($node->widgetConfig->widgetType)) {
-			form_set_error('body', "Property 'widgetType' is required.");
-		}
-	}
-
-	//if we were able to determine the widgetType, invoke that widget's hook
-	if (isset($node->widgetConfig->widgetType)) {
-		widget_invoke($node, 'widget_validate');
-	}*/
+    return;
 }
 
 function widget_node_view($node, $nodata = true) {
 
 	if($node->type != 'widget')
-		return ;
+		return FALSE;
 
 //	log_debug("Request to view widget " . $node->nid . " teaser " . $teaser . " page " . $page);
 
@@ -319,7 +306,7 @@ function _widget_ajax_wrapper($node){
         var callBackURL = "/widget_ajax_data/node/' .$node->nid . '/' . $urlPath . '";
          jQuery.ajax({
       	   url: callBackURL,
-      	   success: function(data) {		            		   
+      	   success: function(data) {
       	     jQuery("#' . widget_unique_identifier($node) . '").html(data);
       	   }
       	 });
@@ -356,6 +343,7 @@ function widget_invoke(&$node, $hook, $a2 = NULL, $a3 = NULL, $a4 = NULL) {
 		$function = $module .'_'. $hook;
 		return ($function($node, $a2, $a3, $a4));
 	}
+	return FALSE;
 }
 
 function widget_get_types($op = 'types', $node = NULL, $reset = FALSE) {
@@ -364,6 +352,8 @@ function widget_get_types($op = 'types', $node = NULL, $reset = FALSE) {
 	if ($reset || !isset($_widget_types)) {
 		list($_widget_types, $_widget_names) = _widget_types_build();
 	}
+
+    $type = null;
 
 	if ($node) {
 		if (is_object($node)) {
@@ -386,6 +376,7 @@ function widget_get_types($op = 'types', $node = NULL, $reset = FALSE) {
 		case 'name':
 			return isset($_widget_names[$type]) ? $_widget_names[$type] : FALSE;
 	}
+	return FALSE;
 }
 
 function _widget_types_build() {
@@ -439,12 +430,12 @@ function widget_prepare(&$node) {
 			foreach ($urlParams as $up) {
                 $pathParam = $pathParams[$i];
 				if ($up == $pathParams[$i]) {
-       				 $up = isset($node->widgetConfig->urlParamMap) ? $node->widgetConfig->urlParamMap->$up : $up;
+          $up = isset($node->widgetConfig->urlParamMap) ? $node->widgetConfig->urlParamMap->$up : $up;
 					if(isset($pathParams[$i + 1]) && $pathParams[$i + 1] !='all'){
-                        $pathParams[$i + 1] = _replaceSpecialCharactersDecode($pathParams[$i + 1]);
-                        $node->widgetConfig->requestParams[$up] = htmlspecialchars_decode($pathParams[$i + 1]);
-                        $node->widgetConfig->originalRequestParams[$pathParam] = htmlspecialchars_decode($pathParams[$i + 1]);
-                    }
+              $pathParams[$i + 1] = _replaceSpecialCharactersDecode($pathParams[$i + 1]);
+              $node->widgetConfig->requestParams[$up] = pg_escape_string(htmlspecialchars_decode($pathParams[$i + 1]));
+              $node->widgetConfig->originalRequestParams[$pathParam] = pg_escape_string(htmlspecialchars_decode($pathParams[$i + 1]));
+          }
 					break;
 				}
 			}
@@ -726,17 +717,22 @@ function load_widget_data($node, $resultFormatter) {
                 $serieStartWith = isset($serie->startWith) ? $serie->startWith : $startWith;
                 $serieLimit = isset($serie->limit) ? $serie->limit : $limit;
 
-                $records = $isSerieList
-                ? $dataQueryController->queryDataset(
-                        $serieDatasetName,
-                        $serieColumns, $serieParameters, $serieOrderBy,
-                        $serieStartWith, $serieLimit,
-                        $resultFormatter)
-                : $dataQueryController->queryCube(
-                        $serieDatasetName,
-                        $serieColumns, $serieParameters, $serieOrderBy,
-                        $serieStartWith, $serieLimit,
-                        $resultFormatter);
+                if(isset($serie->widgetDataLoader)){
+                    eval($serie->widgetDataLoader);
+                    $records = $node->data;
+                }else {
+                    $records = $isSerieList
+                        ? $dataQueryController->queryDataset(
+                            $serieDatasetName,
+                            $serieColumns, $serieParameters, $serieOrderBy,
+                            $serieStartWith, $serieLimit,
+                            $resultFormatter)
+                        : $dataQueryController->queryCube(
+                            $serieDatasetName,
+                            $serieColumns, $serieParameters, $serieOrderBy,
+                            $serieStartWith, $serieLimit,
+                            $resultFormatter);
+                }
                 $node->nodeAdjustedParamaterConfig[] = $parameters;
 
                 // post-processing records
@@ -782,8 +778,8 @@ function load_widget_data($node, $resultFormatter) {
             }*/
 
             $node->data = $joinedRecords;
-            log_debug('Joined records:');
-            log_debug($joinedRecords);
+            //log_debug('Joined records:');
+            //log_debug($joinedRecords);
         } else {
             if(!isset($node->widgetConfig->getData) || (isset($node->widgetConfig->getData) && $node->widgetConfig->getData)){
                 $node->data = $isList
@@ -959,6 +955,7 @@ function widget_data(&$node) {
     	eval($node->widgetConfig->widgetDataLoader);
     }
     elseif (isset($node->widgetConfig->dataset) || isset($node->widgetConfig->model)) {
+        LogHelper::log_notice("Loading widget node # ".$node->nid);
         load_widget_data($node, $resultFormatter);
     }
 
@@ -1321,18 +1318,26 @@ function widget_merge_config($parent_config, $child_config){
   $child_config->cleanURLParameters[] = $child_config->autocompleteParamName;
   $child_config->paramTypeConfig = $parent_config->paramTypeConfig;
   $child_config->preProcessConfiguration = $parent_config->preProcessConfiguration;
+  if(isset($child_config->widgetConfig->adjustFacetOptions)){
+    eval($child_config->widgetConfig->adjustFacetOptions);
+  }
   $autocompleteParamName = $child_config->autocompleteParamName;
   if(isset($autocompleteParamName)){
     $child_config->paramTypeConfig->$autocompleteParamName = "autocomplete";
   }
   $urlParameterName = $child_config->urlParameterName;
 
-    if(isset($child_config->urlParameterNameType)){
-        $child_config->paramTypeConfig->$urlParameterName = "neqignorecase";
-    }
-    else{
-        $child_config->paramTypeConfig->$urlParameterName = "ne";
-    }
+  $paramNameType = $child_config->urlParameterNameType ?? 'ne';
+  switch ($paramNameType) {
+    case 'eqtext':
+      $child_config->paramTypeConfig->$urlParameterName = "neqignorecase";
+      break;
+    case 'capitalize':
+      $child_config->paramTypeConfig->$urlParameterName = "necapitalize";
+      break;
+    default:
+      $child_config->paramTypeConfig->$urlParameterName = "ne";
+  }
 
     if (isset($child_config->urlParamMap) && $child_config->urlParamMap)
     foreach($child_config->urlParamMap as $key=>$value){
@@ -1356,16 +1361,19 @@ function widget_merge_config($parent_config, $child_config){
   if(!isset($child_config->logicalOrColumns)){
     $child_config->logicalOrColumns = $parent_config->logicalOrColumns;
   }
-    if(!isset($child_config->sortSourceByNull)){
-        $child_config->sortSourceByNull= $parent_config->sortSourceByNull;
-    }
+  if(!isset($child_config->sortSourceByNull)){
+      $child_config->sortSourceByNull= $parent_config->sortSourceByNull;
+  }
+
   return (object) $child_config;
 }
 
 
-
 /**
  * Returns JSON file after merging in the js functions
+ * @param $node
+ * @param $phpArray
+ * @return false|mixed|string
  */
 function widget_mergeJSFunctions($node, $phpArray) {
 	$PLACEHOLDER_START = '"function":"';
@@ -1529,9 +1537,11 @@ function _update_dataset_datasource($datasetName,$keepOriginalDatasource = false
 	if($keepOriginalDatasource == true){
 		return $datasetName;
 	}
-    $database = RequestUtilities::get('datasource');
-    if(isset($database)){
+    $datasource = RequestUtilities::getRequestParamValue('datasource');
+    if('checkbook_oge' === $datasource){
         $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
+    }else if('checkbook_nycha' === $datasource){
+        $database = str_replace("checkbook:", "checkbook_nycha:",$datasetName);
     }else{
         $database = $datasetName;
     }
@@ -1548,6 +1558,7 @@ function _update_node_data($data,$keepOriginalDatasource = false){
         $arrayValues = array();
         foreach((Array)$value as $a=>$b){
           $a = str_replace('@checkbook_oge:',"@checkbook:",$a);
+          $a = str_replace('@checkbook_nycha:',"@checkbook:",$a);
           $arrayValues[$a] = $b;
         }
         $returnData[$key] = $arrayValues;
@@ -1609,7 +1620,27 @@ function _widget_build_sql_condition($column, $value){
 	}
 
 }
+function _widget_build_sql_not_condition($column, $value){
 
+  $values_array = explode('~',$value);
+  if(count($values_array) > 1){
+    return  $column . ' in ' . '(\'' . implode('\',\'', $values_array) . '\')';
+  }else{
+    return  $column . '!=' . '\'' . $value . '\'';
+  }
+
+}
+
+function _widget_build_sql_add_null($column, $value){
+
+  $values_array = explode('~',$value);
+  if(count($values_array) > 1){
+    return  $column . ' in ' . '(\'' . implode('\',\'', $values_array) . '\')';
+  }else{
+    return   '\'' . $value . '\''. ' AS '. $column;
+  }
+
+}
 
 function _widget_join_merge_data($array1,$array2, $keys = array()){
 	foreach($array1 as $row1_key=>$row1){

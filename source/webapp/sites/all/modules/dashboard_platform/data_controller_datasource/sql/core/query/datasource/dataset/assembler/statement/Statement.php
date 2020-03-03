@@ -235,14 +235,14 @@ class Statement extends AbstractObject {
         if (!$retrieveAllColumns) {
             // preparing tables which support each requested column
             foreach ($requestedColumnNames as $columnName) {
-                $columnNameUsage[$columnName] = array();
+                $columnNameUsage[$columnName] = [];
             }
 
             // preparing tables which support 'where' subject columns for which we did not select table alias
             if (isset($this->conditions)) {
                 foreach ($this->conditions as $condition) {
                     if (!isset($condition->subjectTableAlias)) {
-                        $columnNameUsage[$condition->subjectColumnName] = array();
+                        $columnNameUsage[$condition->subjectColumnName] = [];
                     }
                 }
             }
@@ -355,7 +355,7 @@ class Statement extends AbstractObject {
             }
         }
         // sorting select columns by request column index. If the index is not provided, corresponding column is placed at the end of the list
-        $sortedSelect = array();
+        $sortedSelect = [];
         if (isset($indexedSelect)) {
             ksort($indexedSelect);
             foreach ($indexedSelect as $assembledColumns) {
@@ -412,11 +412,11 @@ class Statement extends AbstractObject {
             else {
                 if(isset($this->logicalOrColumns)) {
 
-                    $arrayAllOrConditions = array();
+                    $arrayAllOrConditions = [];
 
                     foreach ($this->logicalOrColumns as $logicalAllOrColumnsArray) {
 
-                        $arrayOrConditions = array();
+                        $arrayOrConditions = [];
                         foreach($this->conditions as $condition) {
                             $isOrCondition = false;
                             foreach ($logicalAllOrColumnsArray as $logicalOrColumn) {
@@ -445,7 +445,7 @@ class Statement extends AbstractObject {
                     }
 
                     //Build the array for the AND columns, removing the OR columns
-                    $arrayAndConditions = array();
+                    $arrayAndConditions = [];
                     if(isset($arrayExcludeColumns)) {
                         foreach($this->conditions as $condition) {
                             if (array_search($condition->subjectColumnName, $arrayExcludeColumns) === false) {

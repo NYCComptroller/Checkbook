@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -67,7 +67,7 @@ if (!QueueUtil::isJobsInProgress()) {
         $queue_job->processJob();
         LogHelper::log_notice("$log_id: Completed processing job $job_id.");
 
-        LogHelper::log_notice("$log_id: Started udpating status 2 for job $job_id.");
+        LogHelper::log_notice("$log_id: Started updating status 2 for job $job_id.");
         $job_details = array(
           'status' => 2,
           'end_time' => time(),
@@ -80,23 +80,23 @@ if (!QueueUtil::isJobsInProgress()) {
         LogHelper::log_notice("$log_id: jobLog:" . $job_log);
 
         QueueUtil::updateJobDetails($job_id, $job_details, $job_log);
-        LogHelper::log_notice("$log_id: Completed udpating status 2 for job $job_id.");
+        LogHelper::log_notice("$log_id: Completed updating status 2 for job $job_id.");
       }
       else {
         // Do not expect this to occur.
         LogHelper::log_notice("$log_id: Could not claim the Job $job_id.");
 
-        LogHelper::log_notice("$log_id: Started udpating failed status(COULD NOT CLAIM THE JOB) 3 for job $job_id.");
+        LogHelper::log_notice("$log_id: Started updating failed status(COULD NOT CLAIM THE JOB) 3 for job $job_id.");
         $job_details = array('status' => 3, 'end_time' => time());
         $job_log = "~~$log_id: COULD NOT CLAIM THE JOB on " . date("m-d-Y, H:i:s");
         QueueUtil::updateJobDetails($job_id, $job_details, $job_log);
-        LogHelper::log_notice("$log_id: Completed udpating failed status(COULD NOT CLAIM THE JOB) 3 for job $job_id.");
+        LogHelper::log_notice("$log_id: Completed updating failed status(COULD NOT CLAIM THE JOB) 3 for job $job_id.");
       }
     }
     catch (JobRecoveryException $jre) {
-      LogHelper::log_error("$log_id: Job recoverable Exception occured while processing job $job_id. Exception is " . $jre);
+      LogHelper::log_error("$log_id: Job recoverable Exception occurred while processing job $job_id. Exception is " . $jre);
 
-      LogHelper::log_notice("$log_id: Started recovering job to set staus to 0 for job $job_id.");
+      LogHelper::log_notice("$log_id: Started recovering job to set status to 0 for job $job_id.");
       $job_details = array(
         'status' => 0,
         'start_time' => NULL,
@@ -104,16 +104,16 @@ if (!QueueUtil::isJobsInProgress()) {
       );
       $job_log = "~~$log_id: Job recovered for job $job_id on " . date("m-d-Y, H:i:s") . ". Exception is " . $jre->getMessage();
       QueueUtil::updateJobDetails($job_id, $job_details, $job_log);
-      LogHelper::log_notice("$log_id: Completed recovering job and updated staus to 0 for job $job_id for reprocessing.");
+      LogHelper::log_notice("$log_id: Completed recovering job and updated status to 0 for job $job_id for reprocessing.");
     }
     catch (Exception $exception) {
       LogHelper::log_error("$log_id: Error while processing queue job $job_id. Exception is " . $exception);
 
-      LogHelper::log_notice("$log_id: Started udpating failed status 3 for job $job_id.");
+      LogHelper::log_notice("$log_id: Started updating failed status 3 for job $job_id.");
       $job_details = array('status' => 3, 'end_time' => time());
       $job_log = "~~$log_id: Error while processing queue job on " . date("m-d-Y, H:i:s") . ". Exception is " . $exception->getMessage();
       QueueUtil::updateJobDetails($job_id, $job_details, $job_log);
-      LogHelper::log_notice("$log_id: Completed udpating failed status 3 for job $job_id.");
+      LogHelper::log_notice("$log_id: Completed updating failed status 3 for job $job_id.");
     }
   }
   else {

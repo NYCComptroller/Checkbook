@@ -26,7 +26,7 @@
 
         $parameters['latest_flag'] = 'Y';
 
-        $year = !(RequestUtilities::getRequestParamValue('year')) ? _getCurrentYearID() : RequestUtilities::getRequestParamValue('year');
+        $year = !(RequestUtilities::getRequestParamValue('year')) ? CheckbookDateUtil::getCurrentFiscalYearId() : RequestUtilities::getRequestParamValue('year');
         $year_type = !(RequestUtilities::getRequestParamValue('yeartype')) ? 'B' : RequestUtilities::getRequestParamValue('yeartype');
         $node->year = $year;
         $node->year_type = $year_type;

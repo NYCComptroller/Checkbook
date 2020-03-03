@@ -58,9 +58,7 @@ function theme_coder_review_modules_fieldset($variables) {
   $children = element_children($form);
   $operations = drupal_map_assoc(array('help', 'permissions', 'configure'));
   foreach ($children as $key) {
-    $links = array_filter(array_keys($form[$key]['links']), function ($var) {
-      return $var && $var[0] != '#';
-    });
+    $links = array_filter(array_keys($form[$key]['links']), '_coder_review_link_check');
     if ($links) {
       $operations += drupal_map_assoc($links);
     }
@@ -96,4 +94,11 @@ function theme_coder_review_modules_fieldset($variables) {
   }
 
   return theme('table', array('header' => $form['#header'], 'rows' => $rows));
+}
+
+/**
+ * Custom callback for array_filter.
+ */
+function _coder_review_link_check($var) {
+  return $var && $var[0] != '#';
 }

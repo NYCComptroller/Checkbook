@@ -188,7 +188,7 @@ if (RequestUtilities::get("datasource") != "checkbook_oge") {
      ?>
     <div class="spent-to-date">
         <?php if(!preg_match('/newwindow/',$_GET['q'])){ ?>
-        <a class="new_window" href="/contract/spending/transactions/contnum/<?php echo $contract_number; echo $status;?>/dashboard/ss/yeartype/B/year/<?php echo _getCurrentYearID();?>/syear/<?php echo _getCurrentYearID();?>/smnid/721/newwindow"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?></a>
+        <a class="new_window" href="/contract/spending/transactions/contnum/<?php echo $contract_number; echo $status;?>/dashboard/ss/yeartype/B/year/<?php echo CheckbookDateUtil::getCurrentFiscalYearId();?>/syear/<?php echo CheckbookDateUtil::getCurrentFiscalYearId();?>/smnid/721/newwindow"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?></a>
         <?php } else {
             echo custom_number_formatter_format($total_spent_todate, 2, "$");?>
         <?php } ?>

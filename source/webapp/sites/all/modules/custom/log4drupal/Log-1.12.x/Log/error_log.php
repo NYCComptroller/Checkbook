@@ -84,8 +84,8 @@ class Log_error_log extends Log
      * @param int    $level    Log messages up to and including this level.
      * @access public
      */
-    function Log_error_log($name, $ident = '', $conf = array(),
-                           $level = PEAR_LOG_DEBUG)
+    function __construct($name, $ident = '', $conf = array(),
+                         $level = PEAR_LOG_DEBUG)
     {
         $this->_id = md5(microtime());
         $this->_type = $name;

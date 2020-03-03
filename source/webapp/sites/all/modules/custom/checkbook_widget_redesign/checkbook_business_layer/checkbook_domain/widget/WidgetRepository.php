@@ -21,6 +21,7 @@ class WidgetRepository implements IWidgetRepository {
      * @param $limit
      * @param $order_by
      * @return mixed
+     * @throws Exception
      */
     public function getWidgetData($parameters, $limit, $order_by) {
         // 1. Get Data
@@ -35,6 +36,7 @@ class WidgetRepository implements IWidgetRepository {
      * Returns total number of records for the widget
      * @param $parameters
      * @return mixed
+     * @throws Exception
      */
     public function getTotalRowCount($parameters) {
         // 1. Get Data
@@ -49,6 +51,7 @@ class WidgetRepository implements IWidgetRepository {
      * Returns count for widget header using $countStatementName statement or default row count
      * @param $parameters
      * @return mixed
+     * @throws Exception
      */
     public function getHeaderCount($parameters) {
         //Default count

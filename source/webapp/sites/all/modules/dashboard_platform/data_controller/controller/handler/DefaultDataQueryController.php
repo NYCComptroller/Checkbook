@@ -27,9 +27,18 @@
  *   - cleans/adjusts (trims, converts) input parameters
  *   - wraps input parameters into a request object
  */
+
+/**
+ * Class DefaultDataQueryController
+ */
 class DefaultDataQueryController extends AbstractDataQueryController {
 
-    public function getDatasetMetaData($datasetName) {
+  /**
+   * @param string $datasetName
+   * @return DatasetMetaData
+   * @throws IllegalStateException
+   */
+  public function getDatasetMetaData($datasetName) {
         $datasetName = StringHelper::trim($datasetName);
 
         $metamodel = data_controller_get_metamodel();
@@ -54,7 +63,12 @@ class DefaultDataQueryController extends AbstractDataQueryController {
         return $dataset;
     }
 
-    public function getCubeMetaData($cubeName) {
+  /**
+   * @param string $cubeName
+   * @return CubeMetaData
+   * @throws IllegalStateException
+   */
+  public function getCubeMetaData($cubeName) {
         $cubeName = StringHelper::trim($cubeName);
 
         $metamodel = data_controller_get_metamodel();
@@ -86,7 +100,13 @@ class DefaultDataQueryController extends AbstractDataQueryController {
         return $cube;
     }
 
-    public function getNextSequenceValues($datasourceName, $sequenceName, $quantity) {
+  /**
+   * @param $datasourceName
+   * @param $sequenceName
+   * @param $quantity
+   * @return mixed
+   */
+  public function getNextSequenceValues($datasourceName, $sequenceName, $quantity) {
         $datasourceName = StringHelper::trim($datasourceName);
         $sequenceName = StringHelper::trim($sequenceName);
 
@@ -99,7 +119,14 @@ class DefaultDataQueryController extends AbstractDataQueryController {
         return $this->getDataSourceQueryHandler($datasourceName)->getNextSequenceValues($callcontext, $request);
     }
 
-    public function query($request) {
+  /**
+   * @param DataQueryControllerCubeRequest|DataQueryControllerDatasetRequest|DataQueryControllerRequestTree $request
+   * @return mixed|null |null
+   * @throws IllegalArgumentException
+   * @throws IllegalStateException
+   * @throws UnsupportedOperationException
+   */
+  public function query($request) {
         $requestCleaner = new DataQueryControllerRequestCleaner();
         $adjustedRequest = $requestCleaner->adjustRequest($request);
 
@@ -118,7 +145,14 @@ class DefaultDataQueryController extends AbstractDataQueryController {
         return $result;
     }
 
-    public function countRecords($request) {
+  /**
+   * @param DataQueryControllerCubeRequest|DataQueryControllerDatasetRequest|DataQueryControllerRequestTree $request
+   * @return int|null
+   * @throws IllegalArgumentException
+   * @throws IllegalStateException
+   * @throws UnsupportedOperationException
+   */
+  public function countRecords($request) {
         $requestCleaner = new DataQueryControllerRequestCleaner();
         $adjustedRequest = $requestCleaner->adjustRequest($request);
 
@@ -137,7 +171,12 @@ class DefaultDataQueryController extends AbstractDataQueryController {
         return $result;
     }
 
-    protected function executeDatasetQueryRequest(DataQueryControllerDatasetRequest $request) {
+  /**
+   * @param DataQueryControllerDatasetRequest $request
+   * @return mixed
+   * @throws IllegalStateException
+   */
+  protected function executeDatasetQueryRequest(DataQueryControllerDatasetRequest $request) {
         $callcontext = $this->prepareCallContext();
 
         $requestPreparer = new DataSourceDatasetQueryRequestPreparer();
@@ -159,7 +198,12 @@ class DefaultDataQueryController extends AbstractDataQueryController {
         return $result;
     }
 
-    protected function executeDatasetCountRequest(DataQueryControllerDatasetRequest $request) {
+  /**
+   * @param DataQueryControllerDatasetRequest $request
+   * @return mixed
+   * @throws IllegalStateException
+   */
+  protected function executeDatasetCountRequest(DataQueryControllerDatasetRequest $request) {
         $callcontext = $this->prepareCallContext();
 
         $requestPreparer = new DataSourceDatasetQueryRequestPreparer();
@@ -177,11 +221,22 @@ class DefaultDataQueryController extends AbstractDataQueryController {
         return $this->getDataSourceQueryHandlerByDatasetName($datasetName)->countDatasetRecords($callcontext, $datasetCountRequest, $datasetResultFormatter);
     }
 
-    protected function prepareDatasetRequestMetaData(AbstractDatasetQueryRequest $request) {
+  /**
+   * @param AbstractDatasetQueryRequest $request
+   * @throws IllegalStateException
+   */
+  protected function prepareDatasetRequestMetaData(AbstractDatasetQueryRequest $request) {
         $this->getDatasetMetaData($request->getDatasetName());
     }
 
-    protected function executeCubeQueryRequest(DataQueryControllerCubeRequest $request) {
+  /**
+   * @param DataQueryControllerCubeRequest $request
+   * @return mixed
+   * @throws IllegalArgumentException
+   * @throws IllegalStateException
+   * @throws UnsupportedOperationException
+   */
+  protected function executeCubeQueryRequest(DataQueryControllerCubeRequest $request) {
         $callcontext = $this->prepareCallContext();
 
         $requestPreparer = new DataSourceCubeQueryRequestPreparer();
@@ -202,7 +257,14 @@ class DefaultDataQueryController extends AbstractDataQueryController {
         return $this->getDataSourceQueryHandlerByCubeName($cubeName)->queryCube($callcontext, $cubeQueryRequest, $cubeResultFormatter);
     }
 
-    protected function executeCubeCountRequest(DataQueryControllerCubeRequest $request) {
+  /**
+   * @param DataQueryControllerCubeRequest $request
+   * @return mixed
+   * @throws IllegalArgumentException
+   * @throws IllegalStateException
+   * @throws UnsupportedOperationException
+   */
+  protected function executeCubeCountRequest(DataQueryControllerCubeRequest $request) {
         $callcontext = $this->prepareCallContext();
 
         $requestPreparer = new DataSourceCubeQueryRequestPreparer();
@@ -221,7 +283,11 @@ class DefaultDataQueryController extends AbstractDataQueryController {
         return $this->getDataSourceQueryHandlerByCubeName($cubeName)->countCubeRecords($callcontext, $cubeCountRequest, $cubeResultFormatter);
     }
 
-    protected function prepareCubeRequestMetaData(CubeQueryRequest $request) {
+  /**
+   * @param CubeQueryRequest $request
+   * @throws IllegalStateException
+   */
+  protected function prepareCubeRequestMetaData(CubeQueryRequest $request) {
         $metamodel = data_controller_get_metamodel();
 
         $cube = $metamodel->getCube($request->getCubeName());
@@ -235,7 +301,10 @@ class DefaultDataQueryController extends AbstractDataQueryController {
         }
     }
 
-    protected function getDefaultResultFormatter() {
+  /**
+   * @return PassthroughResultFormatter
+   */
+  protected function getDefaultResultFormatter() {
         return new PassthroughResultFormatter();
     }
 }

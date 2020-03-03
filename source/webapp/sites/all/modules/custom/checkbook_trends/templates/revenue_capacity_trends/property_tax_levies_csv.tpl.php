@@ -18,6 +18,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+    $last_year = end($node->data)['fiscal_year'];
+    reset($node->data);
+
 	$header = 'Fiscal year';
     $header .=  ",Taxes Levied for the Fiscal Year"  ;
     $header .=  ",Collected Within the Fiscal Year of the Levy - Amount"  ;
@@ -26,7 +29,7 @@
     $header .=  ",Non-Cash Liquidations and Adjustments to Levy(1)"  ;
     $header .=  ",Total Collections and Adjustments to Date - Amount"  ;
     $header .=  ",Total Collections and Adjustments to Date - Percentage of Levy,"  ;
-    $header .=  ",".'"'."Remaining Uncollected JUNE 30, 2017".'"'  ;
+    $header .=  ",".'"'."Remaining Uncollected JUNE 30, {$last_year}".'"'  ;
 	echo $header . "\n";
 
     $count = 1;
@@ -50,5 +53,5 @@
 
    echo "\n".'"'."(1) Adjustments to Tax Levy are Non-Cash Liquidations and Cancellations of Real Property Tax and include School Tax Relief payments which are not included in the City Council Resolutions.".'"';
    echo "\n".'"'."SOURCES: Resolutions of the City Council and other Department of Finance reports.".'"';
-?>
+
 

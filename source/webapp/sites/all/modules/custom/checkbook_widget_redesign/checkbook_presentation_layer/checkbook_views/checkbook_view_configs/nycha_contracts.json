@@ -1,0 +1,43 @@
+{
+  "nycha": {
+    "landing_page_widgets": {
+      "nycha_vendors": {
+        "widget_config": "nycha_contracts_by_vendors_view",
+        "visibility_parameters": ["-vendor"]
+      },
+      "nycha_awardmethods": {
+        "widget_config": "nycha_contracts_by_award_methods_view",
+        "visibility_parameters": ["-awdmethod"]
+      },
+      "nycha_purchase_orders": {
+        "widget_config": "nycha_contracts_by_purchase_orders"
+      },
+      "nycha_resp_centers": {
+        "widget_config": "nycha_contracts_by_resp_centers_view"
+      },
+      "nycha_blanket_agreements": {
+        "widget_config": "nycha_contracts_by_blanket_agreements_view"
+      },
+      "nycha_blanket_agreement_modifications": {
+        "widget_config": "nycha_contracts_by_blanket_agreement_modifs_view"
+      },
+      "nycha_planned_agreements": {
+        "widget_config": "nycha_contracts_by_planned_agreements_view"
+      },
+      "nycha_planned_agreement_modifications": {
+        "widget_config": "nycha_contracts_by_planned_agreement_modifs_view"
+      },
+      "nycha_departments": {
+        "widget_config": "nycha_contracts_by_departments_view"
+      },
+      "nycha_industries": {
+        "widget_config": "nycha_contracts_by_industries_view",
+        "visibility_parameters": ["-industry"]
+      },
+      "nycha_size":{
+        "widget_config": "nycha_contracts_by_size_view",
+        "visibility_parameters": ["-csize"]
+      }
+    }
+  }
+}

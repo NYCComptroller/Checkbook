@@ -22,8 +22,8 @@
 $url = '  ' . RequestUtil::getCurrentPageUrl();
 
     if($node->data[0]['document_code_checkbook_ref_document_code'] == 'RCT1'){
-        $agency_link = '/contracts_pending_rev_landing/year/' . _getCurrentYearID() . '/yeartype/B/agency/'. $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
-        $vendor_link = '/contracts_pending_rev_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
+        $agency_link = '/contracts_pending_rev_landing/year/' . CheckbookDateUtil::getCurrentFiscalYearId() . '/yeartype/B/agency/'. $node->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
+        $vendor_link = '/contracts_pending_rev_landing/year/' . CheckbookDateUtil::getCurrentFiscalYearId() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
     }else{
         if (_is_mwbe_vendor(RequestUtilities::get("agid")) || _is_mwbe_vendor(RequestUtilities::get("magid")) || stripos($url,'/dashboard/mp')) {
             $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams().'/dashboard/mp';
@@ -31,8 +31,8 @@ $url = '  ' . RequestUtil::getCurrentPageUrl();
         else{
             $mwbe='';
         }
-        $agency_link = '/contracts_pending_exp_landing/year/' . _getCurrentYearID() . '/yeartype/B/agency/'. $node->data[0]['agency_id_checkbook_agency'] .$mwbe. '?expandBottomCont=true';
-        $vendor_link = '/contracts_pending_exp_landing/year/' . _getCurrentYearID() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .$mwbe.'?expandBottomCont=true';
+        $agency_link = '/contracts_pending_exp_landing/year/' . CheckbookDateUtil::getCurrentFiscalYearId() . '/yeartype/B/agency/'. $node->data[0]['agency_id_checkbook_agency'] .$mwbe. '?expandBottomCont=true';
+        $vendor_link = '/contracts_pending_exp_landing/year/' . CheckbookDateUtil::getCurrentFiscalYearId() . '/yeartype/B/vendor/'.$node->data[0]['vendor_vendor'] .$mwbe.'?expandBottomCont=true';
     }
 
 if(isset($node->original_master_agreement_id)){

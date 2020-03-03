@@ -18,5 +18,6 @@
 name = "Widget PHP Parser"
 description = "Module to support PHP Parsing"
 core = 7.x
+php = 7.2
 package = REI Dashboard Platform (Visualization)
 dependencies[] = widget

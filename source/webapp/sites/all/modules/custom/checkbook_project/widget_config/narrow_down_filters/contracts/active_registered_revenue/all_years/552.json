@@ -15,7 +15,7 @@
     "autocompleteParamName":"agency_auto",    
     "autocompleteID":"fagencyId",
     "autocompleteField":"agency_name", 	
-	"maxSelect":1,        
+	"maxSelect":5,
     "adjustParameters":"
     if(function_exists('_checkbook_project_adjustContractParameterFilters')){
         _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');

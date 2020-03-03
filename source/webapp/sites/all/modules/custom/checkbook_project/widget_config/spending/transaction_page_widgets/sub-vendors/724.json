@@ -114,7 +114,7 @@
 },
 "table_columns": [
     {"labelAlias":"payee_name","column":"payee_name_link","sortSourceColumn":"disb_vendor_name","exportColumn":"payee_name_export"},
-    {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"disb_vendor_type","exportColumn":"vendor_type_calculated"},
+    {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"disb_vendor_type","exportColumn":"is_sub_vendor"},
     {"label":"","column":"","export":false},
     {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"legal_name@checkbook:prime_vendor","exportColumn":"associated_prime_vendor_name_export"},
     {"labelAlias":"issue_date","column":"disb_check_eft_issued_date"},
@@ -141,6 +141,11 @@
             else 'Asian American'
             end as minority_type_name
         "
+    },
+    {
+      "column":"is_sub_vendor",
+      "sourceColumn":"disb_vendor_type",
+      "sql":"case when disb_vendor_type = 'P' then 'No' else 'Yes' end as is_sub_vendor"
     }
 ],
 "adjustParameters":"

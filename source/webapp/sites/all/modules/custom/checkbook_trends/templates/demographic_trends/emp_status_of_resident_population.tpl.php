@@ -19,7 +19,11 @@
 */
 ?>
 <?php  
-echo eval($node->widgetConfig->header);  
+echo eval($node->widgetConfig->header);
+
+$first_year = $node->data[0]['fiscal_year'];
+$last_year = end($node->data)['fiscal_year'];
+reset($node->data);
 ?>
 
 <a class="trends-export" href="/export/download/trends_emp_status_of_resident_population_csv?dataUrl=/node/<?php echo $node->nid ?>">Export</a>
@@ -36,7 +40,7 @@ echo eval($node->widgetConfig->header);
     <thead>
     <tr>
     	<th rowspan="3" class="number"><div class="trendCen">Year</div></th>
-    	<th class="centrig bb" colspan="5"><div>1994-2016</div></th>
+    	<th class="centrig bb" colspan="5"><div><?= $first_year ?>-<?= $last_year ?></div></th>
     </tr>
     <tr>
 

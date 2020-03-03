@@ -38,7 +38,11 @@ class MappingUtil {
 //        "csize" => "award_size_id",   // NYCCHKBK-8560
 //        "cindustry" => "industry_type_id" // NYCCHKBK-8560
     ];
-    /** Returns the vendor type value based on the vendor_type mapping */
+
+    /** Returns the vendor type value based on the vendor_type mapping
+     * @param $vendor_types
+     * @return array
+     */
     static function getVendorTypeValue($vendor_types) {
         $param = "";
         foreach($vendor_types as $key=>$value){
@@ -47,7 +51,10 @@ class MappingUtil {
         return explode('~',substr($param, 0, -1));
     }
 
-    /** Returns the vendor type name based on the vendor_type mapping */
+    /** Returns the vendor type name based on the vendor_type mapping
+     * @param $vendor_type
+     * @return mixed
+     */
     static function getVendorTypeName($vendor_type) {
         return self::$vendor_type_name_map[$vendor_type];
     }
@@ -109,12 +116,18 @@ class MappingUtil {
         }
     }
 
-    /** Returns the M/WBE category name based on the minority_type_id mapping */
+    /** Returns the M/WBE category name based on the minority_type_id mapping
+     * @param $minority_type_id
+     * @return mixed
+     */
     static function getMinorityCategoryById($minority_type_id) {
         return self::$minority_type_category_map[$minority_type_id];
     }
 
-    /** Returns the M/WBE category name based on the minority_type_id mapping */
+    /** Returns the M/WBE category name based on the minority_type_id mapping
+     * @param $minority_type_name
+     * @return mixed
+     */
     static function getMinorityCategoryByName($minority_type_name) {
         return self::$minority_type_category_map_by_name[$minority_type_name];
     }

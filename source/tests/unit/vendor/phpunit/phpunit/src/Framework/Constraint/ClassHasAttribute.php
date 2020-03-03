@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Exception;
 use ReflectionClass;
 
 /**
@@ -22,38 +23,17 @@ class ClassHasAttribute extends Constraint
     /**
      * @var string
      */
-    protected $attributeName;
+    private $attributeName;
 
-    /**
-     * @param string $attributeName
-     */
-    public function __construct($attributeName)
+    public function __construct(string $attributeName)
     {
-        parent::__construct();
         $this->attributeName = $attributeName;
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns true if the
-     * constraint is met, false otherwise.
-     *
-     * @param mixed $other Value or object to evaluate.
-     *
-     * @return bool
-     */
-    protected function matches($other)
-    {
-        $class = new ReflectionClass($other);
-
-        return $class->hasProperty($this->attributeName);
-    }
-
-    /**
      * Returns a string representation of the constraint.
-     *
-     * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return \sprintf(
             'has attribute "%s"',
@@ -62,16 +42,33 @@ class ClassHasAttribute extends Constraint
     }
 
     /**
+     * Evaluates the constraint for parameter $other. Returns true if the
+     * constraint is met, false otherwise.
+     *
+     * @param mixed $other value or object to evaluate
+     */
+    protected function matches($other): bool
+    {
+        try {
+            return (new ReflectionClass($other))->hasProperty($this->attributeName);
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+    }
+
+    /**
      * Returns the description of the failure
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param mixed $other Evaluated value or object.
-     *
-     * @return string
+     * @param mixed $other evaluated value or object
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return \sprintf(
             '%sclass "%s" %s',
@@ -79,5 +76,10 @@ class ClassHasAttribute extends Constraint
             \is_object($other) ? \get_class($other) : $other,
             $this->toString()
         );
+    }
+
+    protected function attributeName(): string
+    {
+        return $this->attributeName;
     }
 }

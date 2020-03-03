@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -7,42 +7,133 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Util;
 
-use ReflectionClass;
+use Composer\Autoload\ClassLoader;
+use DeepCopy\DeepCopy;
+use Doctrine\Instantiator\Instantiator;
+use PharIo\Manifest\Manifest;
+use PharIo\Version\Version as PharIoVersion;
+use PHP_Token;
+use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\Project;
+use phpDocumentor\Reflection\Type;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Prophet;
+use SebastianBergmann\CodeCoverage\CodeCoverage;
+use SebastianBergmann\CodeUnitReverseLookup\Wizard;
+use SebastianBergmann\Comparator\Comparator;
+use SebastianBergmann\Diff\Diff;
+use SebastianBergmann\Environment\Runtime;
+use SebastianBergmann\Exporter\Exporter;
+use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
+use SebastianBergmann\GlobalState\Snapshot;
+use SebastianBergmann\Invoker\Invoker;
+use SebastianBergmann\ObjectEnumerator\Enumerator;
+use SebastianBergmann\RecursionContext\Context;
+use SebastianBergmann\ResourceOperations\ResourceOperations;
+use SebastianBergmann\Timer\Timer;
+use SebastianBergmann\Type\TypeName;
+use SebastianBergmann\Version;
+use Text_Template;
+use TheSeer\Tokenizer\Tokenizer;
+use Webmozart\Assert\Assert;
 
 /**
- * Utility class for blacklisting PHPUnit's own source code files.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class Blacklist
+final class Blacklist
 {
     /**
-     * @var array
+     * @var array<string,int>
      */
     public static $blacklistedClassNames = [
-        'File_Iterator'                               => 1,
-        'PHP_Invoker'                                 => 1,
-        'PHP_Timer'                                   => 1,
-        'PHP_Token'                                   => 1,
-        'PHPUnit\Framework\TestCase'                  => 2,
-        'PHPUnit\DbUnit\TestCase'                     => 2,
-        'PHPUnit_Framework_MockObject_Generator'      => 1,
-        'Text_Template'                               => 1,
-        'Symfony\Component\Yaml\Yaml'                 => 1,
-        'SebastianBergmann\CodeCoverage\CodeCoverage' => 1,
-        'SebastianBergmann\Diff\Diff'                 => 1,
-        'SebastianBergmann\Environment\Runtime'       => 1,
-        'SebastianBergmann\Comparator\Comparator'     => 1,
-        'SebastianBergmann\Exporter\Exporter'         => 1,
-        'SebastianBergmann\GlobalState\Snapshot'      => 1,
-        'SebastianBergmann\RecursionContext\Context'  => 1,
-        'SebastianBergmann\Version'                   => 1,
-        'Composer\Autoload\ClassLoader'               => 1,
-        'Doctrine\Instantiator\Instantiator'          => 1,
-        'phpDocumentor\Reflection\DocBlock'           => 1,
-        'Prophecy\Prophet'                            => 1,
-        'DeepCopy\DeepCopy'                           => 1
+        // composer
+        ClassLoader::class => 1,
+
+        // doctrine/instantiator
+        Instantiator::class => 1,
+
+        // myclabs/deepcopy
+        DeepCopy::class => 1,
+
+        // phar-io/manifest
+        Manifest::class => 1,
+
+        // phar-io/version
+        PharIoVersion::class => 1,
+
+        // phpdocumentor/reflection-common
+        Project::class => 1,
+
+        // phpdocumentor/reflection-docblock
+        DocBlock::class => 1,
+
+        // phpdocumentor/type-resolver
+        Type::class => 1,
+
+        // phpspec/prophecy
+        Prophet::class => 1,
+
+        // phpunit/phpunit
+        TestCase::class => 2,
+
+        // phpunit/php-code-coverage
+        CodeCoverage::class => 1,
+
+        // phpunit/php-file-iterator
+        FileIteratorFacade::class => 1,
+
+        // phpunit/php-invoker
+        Invoker::class => 1,
+
+        // phpunit/php-text-template
+        Text_Template::class => 1,
+
+        // phpunit/php-timer
+        Timer::class => 1,
+
+        // phpunit/php-token-stream
+        PHP_Token::class => 1,
+
+        // sebastian/code-unit-reverse-lookup
+        Wizard::class => 1,
+
+        // sebastian/comparator
+        Comparator::class => 1,
+
+        // sebastian/diff
+        Diff::class => 1,
+
+        // sebastian/environment
+        Runtime::class => 1,
+
+        // sebastian/exporter
+        Exporter::class => 1,
+
+        // sebastian/global-state
+        Snapshot::class => 1,
+
+        // sebastian/object-enumerator
+        Enumerator::class => 1,
+
+        // sebastian/recursion-context
+        Context::class => 1,
+
+        // sebastian/resource-operations
+        ResourceOperations::class => 1,
+
+        // sebastian/type
+        TypeName::class => 1,
+
+        // sebastian/version
+        Version::class => 1,
+
+        // theseer/tokenizer
+        Tokenizer::class => 1,
+
+        // webmozart/assert
+        Assert::class => 1,
     ];
 
     /**
@@ -51,9 +142,11 @@ class Blacklist
     private static $directories;
 
     /**
+     * @throws Exception
+     *
      * @return string[]
      */
-    public function getBlacklistedDirectories()
+    public function getBlacklistedDirectories(): array
     {
         $this->initialize();
 
@@ -61,11 +154,9 @@ class Blacklist
     }
 
     /**
-     * @param string $file
-     *
-     * @return bool
+     * @throws Exception
      */
-    public function isBlacklisted($file)
+    public function isBlacklisted(string $file): bool
     {
         if (\defined('PHPUNIT_TESTSUITE')) {
             return false;
@@ -82,7 +173,10 @@ class Blacklist
         return false;
     }
 
-    private function initialize()
+    /**
+     * @throws Exception
+     */
+    private function initialize(): void
     {
         if (self::$directories === null) {
             self::$directories = [];
@@ -92,8 +186,15 @@ class Blacklist
                     continue;
                 }
 
-                $reflector = new ReflectionClass($className);
-                $directory = $reflector->getFileName();
+                try {
+                    $directory = (new \ReflectionClass($className))->getFileName();
+                } catch (\ReflectionException $e) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
 
                 for ($i = 0; $i < $parent; $i++) {
                     $directory = \dirname($directory);
@@ -103,9 +204,9 @@ class Blacklist
             }
 
             // Hide process isolation workaround on Windows.
-            if (DIRECTORY_SEPARATOR === '\\') {
+            if (\DIRECTORY_SEPARATOR === '\\') {
                 // tempnam() prefix is limited to first 3 chars.
-                // @see http://php.net/manual/en/function.tempnam.php
+                // @see https://php.net/manual/en/function.tempnam.php
                 self::$directories[] = \sys_get_temp_dir() . '\\PHP';
             }
         }

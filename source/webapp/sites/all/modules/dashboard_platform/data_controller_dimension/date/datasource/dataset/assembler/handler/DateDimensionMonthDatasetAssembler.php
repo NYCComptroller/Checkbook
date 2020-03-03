@@ -294,7 +294,7 @@ class DateDimensionMonthDatasetAssembler extends AbstractDateDimensionDatasetAss
                         }
                     }
                     else {
-                        $table->columns = array(); // We do not need any columns
+                        $table->columns = []; // We do not need any columns
                     }
                 }
 

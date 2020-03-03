@@ -213,7 +213,7 @@ class CheckBookJsonApi
             if (!empty($response) && $response[0]['total_gross_pay']) {
                 $this->data = $response[0]['total_gross_pay'];
                 $this->data = round($this->data, -6);
-                $this->data = money_format('%i', $this->data);
+                $this->data = number_format($this->data,2);
             }
 
             $this->message = 'Total payroll for ' . $this->Helper->get_verbal_year_type($year_type) .
@@ -246,7 +246,7 @@ class CheckBookJsonApi
             if (!empty($response) && $response[0]['total']) {
                 $this->data = $response[0]['total'];
                 $this->data = round($this->data, -6);
-                $this->data = money_format('%i', $this->data);
+                $this->data = number_format($this->data,2);
             }
 
             $this->message = 'Total spending for ' . $this->Helper->get_verbal_year_type($year_type) .
@@ -278,7 +278,7 @@ class CheckBookJsonApi
             if (!empty($response) && $response[0]['total']) {
                 $this->data = $response[0]['total'];
                 $this->data = round($this->data, -6);
-                $this->data = money_format('%i', $this->data);
+                $this->data = number_format($this->data,2);
             }
 
             $this->message = 'Total budget for year ' . $year . ' is ' . $this->data;
@@ -309,7 +309,7 @@ class CheckBookJsonApi
             if (!empty($response) && $response[0]['total']) {
                 $this->data = $response[0]['total'];
                 $this->data = round($this->data, -6);
-                $this->data = money_format('%i', $this->data);
+                $this->data = number_format($this->data,2);
             }
 
             $this->message = 'Total revenue for year ' . $year . ' is ' . $this->data;
@@ -323,29 +323,4 @@ class CheckBookJsonApi
                 'like /json_api/total_revenue ; current year will be used'
         ];
     }
-
-    /**
-     * @SWG\Get(
-     *     path="/json_api/etl_status",
-     *     @SWG\Response(response="200", description="etl_status")
-     * )
-     */
-    public function etl_status()
-    {
-        drupal_page_is_cacheable(FALSE);
-
-        global $conf;
-
-        $return = [];
-        if ('UAT' == $conf['CHECKBOOK_ENV']) {
-            $return = $this->Helper->getUatEtlStatus();
-        } elseif ('PROD' == $conf['CHECKBOOK_ENV']) {
-            $return = $this->Helper->getProdEtlStatus();
-        }
-
-        $return['connections'] = $this->Helper->get_connections_info();
-
-        return $return;
-    }
-
 }

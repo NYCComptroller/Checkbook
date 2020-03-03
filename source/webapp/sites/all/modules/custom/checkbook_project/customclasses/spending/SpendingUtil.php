@@ -21,42 +21,52 @@
 
 class SpendingUtil{
 
+    /**
+     * @var array
+     */
     static $landingPageParams = array("category"=>"category","industry"=>"industry","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
-
+    static $spendingCategories = array(0 => 'Total', 2 => 'Payroll', 3 => 'Capital', 1 => 'Contract', 5 => 'Trust & Agency', 4 => 'Other',);
+    /**
+     * @param $categoryId
+     * @param array $columns
+     * @return array|null
+     */
     static function getSpendingCategoryDetails($categoryId, $columns=array('spending_category_id','display_name')){
         if(!isset($categoryId)){
             return NULL;
         }
-
         $categoryDetails = _checkbook_project_querydataset('checkbook:category',$columns, array('spending_category_id'=>$categoryId));
         return $categoryDetails;
     }
 
-    static  public function getSpendingTransactionsTitle(){
-        $title = '';
-        if(preg_match('/category\/1/',current_path())){
-          $title = $title . ' Contract' ;
-        }
-        elseif(preg_match('/category\/2/',current_path())){
-          $title = $title. ' Payroll' ;
-        }
-        elseif(preg_match('/category\/3/',current_path())){
-          $title = $title . ' Capital' ;
-        }
-        elseif(preg_match('/category\/4/',current_path())){
-          $title = $title. ' Others' ;
-        }
-        elseif(preg_match('/category\/5/',current_path())){
-          $title = $title . ' Trust & Agency' ;
-        }
-        else{
-          $title = $title . ' Total' ;
-        }
-      $title = $title . " Spending Transactions";
-      return $title ;
+    /**
+     * @return string
+     */
+    static public function getSpendingTransactionsTitle(){
+        $categories = self::$spendingCategories;
+        $title = $categories[ RequestUtilities::get('category')]. " Spending Transactions";
+        return $title ;
     }
 
-     public static function getDepartmentIds(){
+    /** Returns Spending Category based on 'category' value from current path
+     * @param string $defaultName
+     * @return string
+   */
+    public static function getSpendingCategoryName($defaultName = 'Total Spending')
+    {
+      $categoryId = RequestUtilities::get('category');
+      if ($categoryId) {
+        $categories = self::$spendingCategories;
+        $categoryName = $categories[$categoryId]. " Spending";
+        return $categoryName;
+      }
+      return $defaultName;
+    }
+
+    /**
+     * @return array
+     */
+    /*public static function getDepartmentIds(){
         $bottomURL = $_REQUEST['expandBottomContURL'];
         $deptId = NULL;$deptIds = array();
 
@@ -69,6 +79,10 @@ class SpendingUtil{
         if($deptId){
             $query1 = "SELECT agency_id, fund_class_id, department_code FROM ref_department WHERE department_id = " .$deptId;
             $deptInfo = _checkbook_project_execute_sql($query1);
+
+            if($deptInfo[0]['agency_id']){
+
+            }
 
             $query2 = "SELECT department_id, fiscal_year, year_id FROM ref_department d
                        LEFT JOIN ref_year y ON d.fiscal_year = y.year_value
@@ -86,9 +100,12 @@ class SpendingUtil{
 
         return $deptIds;
 
-    }
+    }*/
 
-     public static function getExpenseCatIds(){
+    /**
+     * @return array
+     */
+    /*public static function getExpenseCatIds(){
         $bottomURL = $_REQUEST['expandBottomContURL'];
         $expCatId = NULL;$expCatIds = array();
 
@@ -116,7 +133,7 @@ class SpendingUtil{
 
         return $expCatIds;
 
-    }
+    }*/
 
     /**
      * Returns Spending Footer Url based on values from current path
@@ -231,8 +248,9 @@ class SpendingUtil{
         $year = RequestUtilities::get("year");
         $calyear = RequestUtilities::get("calyear");
         $year_type = isset($calyear) ? "C" : "B";
-        $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : _getCurrentYearID());
+        $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : CheckbookDateUtil::getCurrentFiscalYearId());
         $vendor_id = $row["vendor_id"];
+        $agency_id = $row["agency"];
         $dashboard = RequestUtilities::get("dashboard");
 
         return $row["is_sub_vendor"] == "No"
@@ -426,21 +444,21 @@ class SpendingUtil{
 
          $query = "SELECT minority_type_id FROM(
             SELECT a.*, row_number() OVER (PARTITION BY a.vendor_id, a.year_id, a.type_of_year ORDER BY chk_date DESC) AS flag FROM(
-                SELECT a.vendor_id, 
-                    a.year_id, 
+                SELECT a.vendor_id,
+                    a.year_id,
                     a.type_of_year,
                     CASE WHEN a.minority_type_id IS NULL OR a.minority_type_id = 11 THEN 7 ELSE a.minority_type_id END minority_type_id,
                     MAX(d.check_eft_issued_date ) AS chk_date
                 FROM aggregateon_mwbe_spending_coa_entities a
-                JOIN disbursement_line_item_details d ON a.vendor_id = d.vendor_id AND a.agency_id = d.agency_id 
+                JOIN disbursement_line_item_details d ON a.vendor_id = d.vendor_id AND a.agency_id = d.agency_id
                         AND a.minority_type_id = d.minority_type_id AND a.year_id = d.check_eft_issued_nyc_year_id
-                WHERE a.vendor_id = ".$vendor_id." AND a.year_id = ".$year_id." AND a.type_of_year = '".$year_type."' 
-                GROUP BY CASE WHEN a.minority_type_id IS NULL OR a.minority_type_id = 11 THEN 7 ELSE a.minority_type_id END, 
+                WHERE a.vendor_id = ".$vendor_id." AND a.year_id = ".$year_id." AND a.type_of_year = '".$year_type."'
+                GROUP BY CASE WHEN a.minority_type_id IS NULL OR a.minority_type_id = 11 THEN 7 ELSE a.minority_type_id END,
                 a.vendor_id, a.year_id, a.type_of_year ) a ) a WHERE flag = 2 AND a.minority_type_id IN (2,3,4,5,9)
-            UNION 
-            SELECT DISTINCT minority_type_id 
-            FROM spending_vendor_latest_mwbe_category 
-            WHERE vendor_id = ".$vendor_id." AND is_prime_or_sub = '".$is_prime_or_sub."' AND type_of_year = '".$year_type."' 
+            UNION
+            SELECT DISTINCT minority_type_id
+            FROM spending_vendor_latest_mwbe_category
+            WHERE vendor_id = ".$vendor_id." AND is_prime_or_sub = '".$is_prime_or_sub."' AND type_of_year = '".$year_type."'
                   AND year_id = ".$year_id." AND minority_type_id <> 7 ";
         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
         if($results[0]['minority_type_id'] != ''){
@@ -451,6 +469,12 @@ class SpendingUtil{
         }
     }
 
+    /**
+     * @param $vendor_id
+     * @param null $year_id
+     * @param null $year_type
+     * @return bool
+     */
     public static function getLatestMwbeCategoryByVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
 
         if($year_id == null){
@@ -480,7 +504,13 @@ class SpendingUtil{
     }
 
 
-     public static function getLatestMwbeCategoryBySpendingVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
+    /**
+     * @param $vendor_id
+     * @param null $year_id
+     * @param null $year_type
+     * @return bool
+     */
+    public static function getLatestMwbeCategoryBySpendingVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
 
         if($year_id == null){
             $year_id =  RequestUtilities::get('year');
@@ -542,28 +572,6 @@ class SpendingUtil{
         return '/' . self::getSpendingTransactionPageUrl($override_params);
     }
 
-//    /**
-//     * Given the prime vendor, gets a ~ separated list of sub vendors
-//     * @param $prime_vendor_id
-//     * @return array|null|string
-//     */
-//    static function getSubVendorIdsByPrime($prime_vendor_id){
-//
-//        $year_id = RequestUtilities::getRequestParamValue('year');
-//        $type_of_year = RequestUtilities::getRequestParamValue('yeartype');
-//
-//
-//        $parameters = array('prime_vendor_id'=>$prime_vendor_id,'type_of_year'=>$type_of_year,'year_id'=>$year_id);
-//        $results = _checkbook_project_querydataset( "checkbook:contracts_subven_vendor_spending",array('vendor_id'),$parameters);
-//
-//        foreach($results as $sub_vendor) {
-//            $sub_vendors[] = $sub_vendor['vendor_id'];
-//        }
-//        $sub_vendors = array_unique($sub_vendors);
-//        $sub_vendors = is_array($sub_vendors) ? implode("~", $sub_vendors) : null;
-//        return $sub_vendors;
-//
-//    }
 
     /**
      * Returns Department Amount Link Url based on values from current path & data row
@@ -740,7 +748,11 @@ class SpendingUtil{
         . '/smnid/' . $node->nid . '/dtsmnid/' . $node->nid .'/newwindow';
     }
 
-    /** Returns Ytd Spending percent */
+    /** Returns Ytd Spending percent
+     * @param $node
+     * @param $row
+     * @return string
+     */
     static function getPercentYtdSpending($node, $row){
         $ytd_spending = $row['check_amount_sum']/$node->totalAggregateColumns['check_amount_sum']*100;
         $ytd_spending = $ytd_spending < 0 ? 0.00 : $ytd_spending;
@@ -853,7 +865,7 @@ class SpendingUtil{
     /**
      * Returns the vendor or sub vendor id for the vendor facets
      * @param $node
-     * @return null|request
+     * @return array|string
      */
     static function getVendorFacetParameter($node){
         $dashboard = RequestUtilities::get('dashboard');
@@ -885,9 +897,9 @@ class SpendingUtil{
      * @param array $override_params
      * @return string
      */
-  public static function getSpendingTransactionPageUrl($override_params = array()) {
-        return self::getSpendingUrl('panel_html/spending_transactions/spending/transactions',$override_params);
-  }
+    public static function getSpendingTransactionPageUrl($override_params = array()) {
+          return self::getSpendingUrl('panel_html/spending_transactions/spending/transactions',$override_params);
+    }
 
     /**
      *  Returns a spending contract details page Url with custom parameters appended but instead of persisted
@@ -1086,6 +1098,13 @@ class SpendingUtil{
     }
 
 
+    /**
+     * @param $year
+     * @param $yeartype
+     * @param string $non_mwbe_spending_prime
+     * @param string $mwbe_spending_prime
+     * @return string
+     */
     public static function getMWBENYCLegend($year, $yeartype, $non_mwbe_spending_prime = '', $mwbe_spending_prime = '')
     {
 
@@ -1123,7 +1142,7 @@ class SpendingUtil{
     			<div class="legend-title"><span>NYC Total M/WBE</span></div>
     			<div class="legend-item"><span>M/WBE Share: ' . $mwbe_share . ' </span></div>
     			<div class="legend-item"><span>M/WBE Spending: ' .$mwbe_spending . ' </span></div>
-    			<div class="legend-item"><span>Non M/WBE: ' . $non_mwbe . '</span></div>    			
+    			<div class="legend-item"><span>Non M/WBE: ' . $non_mwbe . '</span></div>
     			</div>
     			';
 
@@ -1178,7 +1197,11 @@ class SpendingUtil{
 
     }
 
-  public static function getTransactionPageTitle($widgetTitle){
+    /**
+     * @param string $widgetTitle
+     * @return string
+     */
+    public static function getTransactionPageTitle($widgetTitle=''){
         $catName = self::getTransactionPageCategoryName();
         $dashboard_title = RequestUtil::getDashboardTitle();
         $dashboard = RequestUtilities::get('dashboard');
@@ -1207,7 +1230,12 @@ class SpendingUtil{
         return $dashboard_title . " " . $widgetTitle . " " . $catName . " Transactions";
     }
 
-    /** Returns Spending Category based on 'category' value from current path */
+    /**
+     * Returns Spending Category based on 'category' value from current path
+     *
+     * @param string $defaultName
+     * @return string
+     */
     public static function getTransactionPageCategoryName($defaultName = 'Total Spending'){
         $categoryId = RequestUtilities::get('category');
         $dtsmnid = RequestUtilities::get('dtsmnid');
@@ -1224,7 +1252,11 @@ class SpendingUtil{
         return $category_name;
     }
 
-  public static function getSpentToDateTitle($widgetTitle){
+    /**
+     * @param $widgetTitle
+     * @return string
+     */
+    public static function getSpentToDateTitle($widgetTitle){
         $dashboard = RequestUtil::getDashboardTitle();
         $contractTitle = self::getContractTitle();
 
@@ -1282,7 +1314,10 @@ class SpendingUtil{
         return ($dashboard . " " . $widgetTitle . " " . $contractTitle . " Contracts Transactions");
     }
 
-     public static function getContractTitle(){
+    /**
+     * @return string
+     */
+    public static function getContractTitle(){
         if(RequestUtilities::get('contstatus')){
             $contract_status = RequestUtilities::get('contstatus');
         }
@@ -1314,6 +1349,9 @@ class SpendingUtil{
         return $title;
     }
 
+    /**
+     * @return bool
+     */
     public static function _show_mwbe_custom_legend(){
     	$mwbe_cats = RequestUtilities::get('mwbe');
     	if(	($mwbe_cats =='4~5' || $mwbe_cats =='4' || $mwbe_cats =='5' || $mwbe_cats =='2' || $mwbe_cats =='3' || $mwbe_cats =='9' ) && !(RequestUtilities::get('vendor') > 0 ) ){
@@ -1327,6 +1365,9 @@ class SpendingUtil{
     }
 
 
+    /**
+     * @return bool
+     */
     function _mwbe_spending_use_subvendor(){
     	if(RequestUtilities::get('vendor') > 0 || RequestUtilities::get('mwbe') == '7' || RequestUtilities::get('mwbe') == '11')
     	{
@@ -1335,6 +1376,30 @@ class SpendingUtil{
     		return false;
     	}
     }
+
+  /** Prepares Payroll bottom navigation filter
+   * @param $page
+   * @param $category
+   * @return string
+   */
+  public static function prepareSpendingBottomNavFilter($page, $category)
+  {
+    $pathParams = explode('/', drupal_get_path_alias($_GET['q']));
+    $url = $page;
+    if (strlen($category) > 0) {
+      $url .= "/category/" . $category;
+    }
+    $url .= _checkbook_append_url_params();
+    $allowedFilters = array("year", "calyear", "agency", "yeartype", "vendor", "industry");
+    for ($i = 1; $i < count($pathParams); $i++) {
+      if (in_array($pathParams[$i], $allowedFilters)) {
+        $url .= '/' . $pathParams[$i] . '/' . $pathParams[($i + 1)];
+      }
+      $i++;
+    }
+    return $url;
+
+  }
 }
 
 

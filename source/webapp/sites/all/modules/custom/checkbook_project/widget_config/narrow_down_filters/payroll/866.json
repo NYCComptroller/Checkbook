@@ -21,9 +21,14 @@
     "orderBy":"",
     "adjustParameters":"
         $monthId = RequestUtilities::getRequestParamValue('month');
-        if(isset($monthId)){
-            $node->widgetConfig->dataset = 'checkbook:payroll_month_ranged_data';
-        }
+        $datasource = RequestUtilities::getRequestParamValue('datasource');
+       if(isset($monthId) && $datasource=='checkbook_nycha' ){
+         $node->widgetConfig->dataset = 'checkbook_nycha:payroll_employee_agency_month_basis';
+         }
+        else if(isset($monthId)){
+       $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+         }
+
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
