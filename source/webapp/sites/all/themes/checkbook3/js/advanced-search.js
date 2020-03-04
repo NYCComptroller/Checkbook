@@ -666,13 +666,12 @@
           if('nycha' == solr_datasource){
             var agreement_type_code_nycha = $('#edit-checkbook-nycha-contracts-purchase-order-type').val() || 0;
             var responsibility_center_nycha = $('#edit-checkbook-nycha-contracts-responsibility-center').val() || 0;
-            var contract_type_id_nycha = $('#edit-checkbook-nycha-contracts-nycha-contract-type').val() || 0;
-            var award_method_id_nycha = $('#edit-checkbook-nycha-contracts-nycha-award-method').val() || 0;
-            var industry_type_id_nycha = $('#edit-checkbook-nycha-contracts-nycha-industry').val() || 0;
-
+            var contract_type_id_nycha = extractId($('#edit-checkbook-nycha-contracts-type').val()) || 0;
+            var award_method_id_nycha = extractId($('#edit-checkbook-nycha-contracts-award-method').val()) || 0;
+            var industry_type_id_nycha = $('#edit-checkbook-nycha-contracts-industry').val() || 0;
             var nycha_filters = {
               agreement_type_code: agreement_type_code_nycha,
-              responsibility_center: responsibility_center_nycha,
+              responsibility_center_id: responsibility_center_nycha,
               contract_type_id: contract_type_id_nycha,
               award_method_id: award_method_id_nycha,
               industry_type_id: industry_type_id_nycha,
@@ -1420,6 +1419,8 @@
           datasource = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
           // enable purchase order filter for nycha
           let agreement_type_code = (div.ele('po_type').val()) ? (div.ele('po_type').val()) : 0;
+          let resp_center_id = (div.ele('resp_center').val()) ? (div.ele('resp_center').val()) : 0;
+          let fund_src_id = (div.ele('fundsrc').val()) ? (div.ele('fundsrc').val()) : 0;
           var filters = {
             department_name: department_name,
             agency_id: agency_id,
@@ -1428,7 +1429,9 @@
             minority_type_id: minority_type_id,
             industry_type_id: industry_type_id,
             fiscal_year_id: year_id,
-            agreement_type_code: agreement_type_code
+            agreement_type_code: agreement_type_code,
+            responsibility_center_id:resp_center_id,
+            funding_source_id:fund_src_id
           };
 
           div.ele('payee_name').autocomplete({source: autoCompleteSource(solr_datasource, 'vendor_name', filters)});
