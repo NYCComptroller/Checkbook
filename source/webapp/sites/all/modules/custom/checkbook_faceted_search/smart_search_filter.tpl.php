@@ -144,15 +144,22 @@ END;
             echo '<li class="row">';
             echo "<label for=\"{$id}\">";
             echo '<div class="checkbox">';
-
             $checked = '';
             if ($sub_facet->selected) {
               $checked = in_array($sub_facet_value, $sub_facet->selected);
-              $checked = $checked ? ' checked="checked" ' : '';
-              $active = $checked ? ' class="active" ' : '';
+            }elseif(!$checked && $sub_facet_value == $sub_facet->default_value){
+              $checked = true;
             }
-            echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$sub_facet_name.'" value="'.
-              htmlentities(urlencode($sub_facet_value)).'" />';
+            $checked = $checked ? ' checked="checked" ' : '';
+            $active = $checked ? ' class="active" ' : '';
+
+            if(isset($sub_facet->input) && $sub_facet->input == 'radio'){
+              echo '<input type="radio" name="' . htmlentities($sub_facet->title) . '" ' . 'id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
+              htmlentities(urlencode($sub_facet_value)) . '" />';
+            }else{
+              echo '<input type="checkbox" id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
+                htmlentities(urlencode($sub_facet_value)) . '" />';
+            }
             echo "<label for=\"{$id}\" />";
             echo '</div>';
 

@@ -18,7 +18,9 @@
     },
     "contract_status": {
       "title": "Contract Status",
-      "child": true
+      "child": true,
+      "input": "radio",
+      "default_value": "registered"
     },
     "spending_category_name": {
       "title": "Spending Category",
