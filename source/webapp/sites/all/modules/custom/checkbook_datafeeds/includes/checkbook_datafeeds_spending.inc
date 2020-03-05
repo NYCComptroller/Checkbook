@@ -400,6 +400,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#name' => 'contractno',
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
   );
+
   $form['filter']['commodity_line'] = array(
     '#type' => 'textfield',
     '#title' => t('Commodity Line:'),
@@ -411,6 +412,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#name' => 'commodity_line',
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'commodity_line', $first_time_load, ''),
   );
+
   $form['filter']['entity_contract_number'] = array(
     '#type' => 'textfield',
     '#title' => t('Entity Contract #:'),
@@ -478,7 +480,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
   );
 
 // Updating the year filter for ajax year data load
-  $form['filter']['year'] = array(
+ /* $form['filter']['year'] = array(
     '#type' => 'select',
     '#prefix' => '<div id="year"><div class="datafield year">',
     '#suffix' => '</div></div>',
@@ -488,17 +490,20 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'year', $first_time_load, 0),
     '#validated' => true
   );
-
-  /*$form['filter']['year'] = array(
+*/
+ // BY default obtain all the year values setting the datasource as nycha (show /hide handled in javascript)
+  $form['filter']['year'] = array(
     '#type' => 'select',
-    '#options' => _year_options('all-years'),
+    '#options' => _year_options('all-years',Datasource::NYCHA),
     '#attributes' => array('class' => array('watch')),
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'year', $first_time_load, 0),
     '#prefix' => '<div id="year"><div class="datafield year">',
     '#suffix' => '</div></div>',
     '#id' => 'edit-year',
     '#name' => 'year',
-  );*/
+    '#validated' => true,
+
+  );
 
   $form['filter']['issuedfrom'] = array(
     '#type' => 'textfield',

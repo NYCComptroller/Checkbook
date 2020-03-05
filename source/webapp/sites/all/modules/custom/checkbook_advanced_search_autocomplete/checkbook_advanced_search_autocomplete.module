@@ -45,12 +45,12 @@ function checkbook_advanced_search_autocomplete_menu()
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
-  $items['advanced-search/autocomplete/spending/year'] = array(
+  /*$items['advanced-search/autocomplete/spending/year'] = array(
     'page callback' => '_checkbook_advanced_search_autocomplete_spending_year',
     'access callback' => TRUE,
     'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
     'type' => MENU_CALLBACK
-  );
+  );*/
 
     // Budget autocomplete paths
     $items['advanced-search/autocomplete/budget/department'] = array(

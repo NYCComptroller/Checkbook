@@ -52,7 +52,7 @@
   };
 
   // Load Spending Years based on datasource
-  let reloadSpendingYears = function () {
+  /*let reloadSpendingYears = function () {
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
     $('#edit-year').addClass('loading');
       $.ajax({
@@ -84,7 +84,7 @@
         }
       });
 
-  };
+  };*/
 
   // When Department Filter is changed reload Expense category Drop-down
   let reloadSpendingExpenceCategories = function () {
@@ -163,7 +163,7 @@
     $('.datafield.citywide').add('.datafield.nycha').add('.datafield.nycedc').hide();
     $('#edit-columns .form-item').hide();
     //let datefilter = $('input:radio[name=date_filter]:checked').val();
-    reloadSpendingYears();
+    //reloadSpendingYears();
     // Department and Expense Category drop-downs are reset
     reloadSpendingDepartments();
     reloadSpendingExpenceCategories();
@@ -216,9 +216,26 @@
 
     //Disable/Enable Date Filter fields
      onDateFilterChange();
+
+     //Add/Remove extra year value
+    resetYearvalue(data_source);
   };
 
-  //
+  // Hide/Show extra year value based obn datsource
+  let resetYearvalue = function (dataSource){
+    // Get the last year value by index
+    let lastYear =  $("#edit-year option:eq(11)").val();
+    switch (dataSource) {
+      case 'checkbook_nycha':
+        // Show another year value for NYCHA
+        $("#edit-year option[value='"+lastYear+"']").show();
+        break;
+      default:
+        // Hide the extra year for citywide and OGE
+        $("#edit-year option[value='"+lastYear+"']").hide();
+    }
+  };
+  // Reset Multi select option based on datasource
   let resetMultiselect = function (dataSource){
     switch (dataSource) {
       case 'checkbook_oge':
