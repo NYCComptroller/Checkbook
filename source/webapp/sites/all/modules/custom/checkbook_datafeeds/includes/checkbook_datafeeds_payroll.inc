@@ -198,10 +198,15 @@ function checkbook_datafeeds_payroll($form, &$form_state)
   );
   $form['filter']['year'] = array(
     '#type' => 'select',
+    '#options' => _year_options('',Datasource::NYCHA),
     '#title' => t('Year:'),
     '#attributes' => array('class' => array('watch')),
     '#prefix' => '<div class="datafield fiscalyear">',
+    '#default_value' => !empty($form_state['values']['year']) ? $form_state['values']['year'] : '',
     '#suffix' => '</div>',
+    '#id' => 'edit-year',
+    '#name' => 'year',
+    '#validated' => true,
   );
   $form['filter']['paydatefrom'] = array(
     '#type' => 'textfield',
@@ -596,7 +601,7 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state)
     $formatted_search_criteria['Pay Frequency'] = $values['payfrequency'];
   }
 
-  $values['year'] = ckbk_datafeeds_payroll_fix_year($values['year']);
+  //$values['year'] = ckbk_datafeeds_payroll_fix_year($values['year']);
   if (startsWith($values['year'], 'F')) {
     $form['filter']['year'] = array(
       '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
@@ -710,7 +715,7 @@ function checkbook_datafeeds_process_payroll_values($form, &$form_state, $data_s
     ),
     'responseColumns' => ($data_source == 'checkbook_nycha') ? $values['oge_column_select'] : $values['column_select'],
   );
-  $values['year'] = ckbk_datafeeds_payroll_fix_year($values['year']);
+  //$values['year'] = ckbk_datafeeds_payroll_fix_year($values['year']);
   if (startsWith($values['year'], 'F')) {
     $criteria['value']['fiscal_year'] = ltrim($values['year'], 'FY ');
   } elseif (startsWith($values['year'], 'C')) {
