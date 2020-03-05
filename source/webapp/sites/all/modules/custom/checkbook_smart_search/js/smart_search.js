@@ -215,6 +215,10 @@
         $(this).click(applySearchFilters);
       });
 
+      $('.smart-search-right input:radio', context).each(function () {
+        $(this).click(applySearchFilters);
+      });
+
       //Sets up jQuery UI autocompletes and autocomplete filtering functionality for agency name facet
       $('.solr_autocomplete', context).each(function () {
         var facet_name = $(this).attr('facet');
@@ -325,19 +329,20 @@
  *  Requires 'prepareSearchFilterUrl' function
  */
 function applySearchFilters() {
+  //Disable facet selection while results are loading
   jQuery('.smart-search-right input[type=checkbox]').attr("disabled", true);
-  var subFacet = ["spending_category",
+  jQuery('.smart-search-right input[type=radio]').attr("disabled", true);
+  let subFacet = ["spending_category",
                   "spending_category_name",
                   "agreement_type_name",
                   "payroll_type",
                   "contract_category_name",
                    "contract_status"];
 
-  // adding checked checkboxes to the query string
-  var fq = [];
+  let fq = [];
+  //Add checked checkboxes to the query string
   jQuery('.smart-search-right .narrow-down-filter input:checkbox:checked').each(function () {
-
-    var facet_name = jQuery(this).attr('facet');
+    let facet_name = jQuery(this).attr('facet');
     if (!(facet_name in fq)) {
       fq[facet_name] = [];
     }
@@ -345,30 +350,48 @@ function applySearchFilters() {
     if (subFacet.includes(facet_name) == true){
       if(fq["domain"] == undefined){
         delete fq[facet_name];
+      } else{
+        fq[facet_name].push(jQuery(this).val());
       }
-      else{ fq[facet_name].push(jQuery(this).val());}
     }
     else {
       fq[facet_name].push(jQuery(this).val());
     }
   });
 
-  var fq_string = '';
+  //Add checked radios to the query string
+  jQuery('.smart-search-right .narrow-down-filter input:radio:checked').each(function () {
+    let facet_name = jQuery(this).attr('facet');
+    if (!(facet_name in fq)) {
+      fq[facet_name] = [];
+    }
+    //Remove sub-facets from url query string when domain is unchecked
+    if (subFacet.includes(facet_name) == true){
+      if(fq["domain"] == undefined){
+        delete fq[facet_name];
+      } else{
+        fq[facet_name].push(jQuery(this).val());
+      }
+    }
+    else {
+      fq[facet_name].push(jQuery(this).val());
+    }
+  });
+
+  let fq_string = '';
   for (var k in fq) {
     fq_string += '*!*' + k + '=' + encodeURIComponent(fq[k].join('~'));
   }
 
   // adding global q string
-  var searchTerm = '';
-  var url = new URLSearchParams(window.location.search);
+  let searchTerm = '';
+  let url = new URLSearchParams(window.location.search);
   if (url.get('search_term')) {
     searchTerm = url.get('search_term').split('*!*')[0];
   }
 
-  var cUrl = "?search_term=" + searchTerm;
-
+  let cUrl = "?search_term=" + searchTerm;
   cUrl += fq_string;
-
   window.location = cUrl;
 }
 
