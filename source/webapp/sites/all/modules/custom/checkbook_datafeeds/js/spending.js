@@ -508,13 +508,16 @@
       if ($('input:radio[name=date_filter]:checked').val() === '0') {
         year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
       }
-
+      let industry=0;
       let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
-      let dept = encodeURIComponent($('#edit-dept', context).val());
+      if (data_source === 'checkbook_nycha'){
+        industry = emptyToZero($('#edit-nycha-industry', context).val());}
+      else{
+        industry = emptyToZero($('#edit-industry', context).val());}
+      let dept =  emptyToZero($('#edit-dept', context).val());
       let agency = emptyToZero($('#edit-agency', context).val());
-      let exp_cat = encodeURIComponent($('#edit-expense-category', context).val());
+      let exp_cat = emptyToZero($('#edit-expense-category', context).val());
       let mwbe_cat = $('#edit-mwbe-category', context).val()? encodeURIComponent($('#edit-mwbe-category', context).val()) : 0;
-      let industry = emptyToZero($('#edit-industry', context).val());
       let agg_type = $('#edit-purchase-order-type', context).val() ? emptyToZero($('#edit-purchase-order-type', context).val()) :0;
       let resp_center = $('#edit-resp-center', context).val() ? emptyToZero($('#edit-resp-center', context).val()) :0 ;
       let fund_src = $('#edit-funding-source', context).val() ? emptyToZero($('#edit-funding-source', context).val()) :0 ;
@@ -535,15 +538,18 @@
           if ($('input:radio[name=date_filter]:checked').val() === '0') {
             year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
           }
-          dept = encodeURIComponent($('#edit-dept', context).val());
+          dept =  emptyToZero($('#edit-dept', context).val());
           agency = emptyToZero($('#edit-agency', context).val());
-          exp_cat = encodeURIComponent($('#edit-expense-category', context).val());
+          exp_cat = emptyToZero($('#edit-expense-category', context).val());
           mwbe_cat = $('#edit-mwbe-category', context).val() ? encodeURIComponent($('#edit-mwbe-category', context).val()) : 0;
-          industry = emptyToZero($('#edit-industry', context).val());
           agg_type = $('#edit-purchase-order-type', context).val() ? emptyToZero($('#edit-purchase-order-type', context).val()) : 0;
           resp_center = $('#edit-resp-center', context).val() ? emptyToZero($('#edit-resp-center', context).val()) : 0;
           fund_src = $('#edit-funding-source', context).val() ? emptyToZero($('#edit-funding-source', context).val()) : 0;
           data_source = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
+          if (data_source === 'checkbook_nycha'){
+            industry = emptyToZero($('#edit-nycha-industry', context).val());}
+          else{
+            industry = emptyToZero($('#edit-industry', context).val());}
           spend_cat = getSpendingExpenseType(data_source);
 
           $("#edit-payee-name", context).autocomplete("option", "source", '/autocomplete/spending/payee/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/' + agg_type +'/' + resp_center + '/' +fund_src + '/'+ data_source);
