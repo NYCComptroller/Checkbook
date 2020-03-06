@@ -514,9 +514,9 @@
         industry = emptyToZero($('#edit-nycha-industry', context).val());}
       else{
         industry = emptyToZero($('#edit-industry', context).val());}
-      let dept = encodeURIComponent($('#edit-dept', context).val());
+      let dept =  emptyToZero($('#edit-dept', context).val());
       let agency = emptyToZero($('#edit-agency', context).val());
-      let exp_cat = encodeURIComponent($('#edit-expense-category', context).val());
+      let exp_cat = emptyToZero($('#edit-expense-category', context).val());
       let mwbe_cat = $('#edit-mwbe-category', context).val()? encodeURIComponent($('#edit-mwbe-category', context).val()) : 0;
       let agg_type = $('#edit-purchase-order-type', context).val() ? emptyToZero($('#edit-purchase-order-type', context).val()) :0;
       let resp_center = $('#edit-resp-center', context).val() ? emptyToZero($('#edit-resp-center', context).val()) :0 ;
@@ -538,9 +538,9 @@
           if ($('input:radio[name=date_filter]:checked').val() === '0') {
             year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
           }
-          dept = encodeURIComponent($('#edit-dept', context).val());
+          dept =  emptyToZero($('#edit-dept', context).val());
           agency = emptyToZero($('#edit-agency', context).val());
-          exp_cat = encodeURIComponent($('#edit-expense-category', context).val());
+          exp_cat = emptyToZero($('#edit-expense-category', context).val());
           mwbe_cat = $('#edit-mwbe-category', context).val() ? encodeURIComponent($('#edit-mwbe-category', context).val()) : 0;
           agg_type = $('#edit-purchase-order-type', context).val() ? emptyToZero($('#edit-purchase-order-type', context).val()) : 0;
           resp_center = $('#edit-resp-center', context).val() ? emptyToZero($('#edit-resp-center', context).val()) : 0;
