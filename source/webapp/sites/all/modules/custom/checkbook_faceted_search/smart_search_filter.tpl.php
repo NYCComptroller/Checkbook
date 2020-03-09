@@ -132,11 +132,9 @@ END;
           $sub_facet_name = $child;
           echo '<ul class="sub-category">';
           echo '<div class="subcat-filter-title">By '.htmlentities($sub_facet->title).'</div>';
-
-          foreach($sub_facet->results as $sub_facet_value => $sub_count) {
-            if ($sub_facet->calculated_value && strtolower($sub_facet_value) == 'registered') {
-              $sub_facet->results[strtolower($sub_facet->calculated_value)] = $sub_count;
-            }
+          if($sub_facet_name == 'contract_status'){
+            $sub_facet->results['registered'] = $registered_contracts;
+            $sub_facet->results['active'] = $active_contracts;
           }
 
           foreach($sub_facet->results as $sub_facet_value => $sub_count){
