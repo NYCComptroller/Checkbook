@@ -91,30 +91,27 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     }
   }
 
-//  $search_terms = explode('*!*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
-//  $reg_flag = false;
-////  $act_flag = false;
-//  foreach ($search_terms as $id => $keyvaluepair) {
-//    $keys = explode("=", $keyvaluepair);
-//    if ($keys[1] == 'registered') {
-//      $reg_flag = true;
-//    }
-//  }
-//
-//  if ($reg_flag && in_array('registered_fiscal_years', array_keys($datasource_facets))) {
-//    $solr_query->addFacet('registered_fiscal_years');
-//  } else {
-//    $solr_query->addFacet('fiscal_years');
-//  }
-
   $selected_facets = $solr_query->getSelectedFacets();
 
   $solr = CheckbookSolr::getInstance($solr_datasource);
-  $search_results = $solr->request_phps('select/?' . $solr_query->buildQuery());
-
+  $query = $solr_query->buildQuery();
+  $search_results = $solr->request_phps('select/?' . $query);
   _inject_smart_search_drupal_settings($search_results);
 
   $search_results = _ckbk_ss_sort_results($search_results, $datasource_facets);
+  //Registered Contracts Count
+  $registeredContractsQuery = getRegisteredContractsCount($query, $selected_facets);
+  if($registeredContractsQuery) {
+    $registeredContracts = $solr->request_phps('select/?' . $registeredContractsQuery);
+    $registeredContractsCount = $registeredContracts['facet_counts']['facet_fields']['contract_status']['registered'];
+  }
+
+  //Active Contracts Count
+  $activeContractsQuery = getActiveContractsCount($query, $selected_facets);
+  if($activeContractsQuery) {
+    $activeContracts = $solr->request_phps('select/?' . $activeContractsQuery);
+    $activeContractsCount = $activeContracts['facet_counts']['facet_fields']['contract_status']['registered'];
+  }
 
   if ($selected_facets) {
     /**
@@ -180,9 +177,44 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     'solr_datasource' => $solr_datasource,
     'search_results' => $search_results,
     'selected_facet_results' => $selected_facets,
+    'registered_contracts' => $registeredContractsCount,
+    'active_contracts' => $activeContractsCount
   ]);
 }
 
+/**
+ * @param array $query
+ * @param array $selectedFacets
+ * @return array
+ */
+function getRegisteredContractsCount($query, $selectedFacets){
+  if(in_array('contracts', $selectedFacets['domain']) && array_key_exists('facet_year_array', $selectedFacets)){
+    //Registered contracts count
+    $query = str_replace('&fq=contract_status:"pending"','',$query);
+    $query = str_replace('&fq=facet_year_array','&fq=registered_fiscal_year',$query);
+    return $query;
+  }else{
+    return;
+  }
+  return;
+}
+
+/**
+ * @param array $query
+ * @param array $selectedFacets
+ * @return array
+ */
+function getActiveContractsCount($query, $selectedFacets){
+  if(in_array('contracts', $selectedFacets['domain']) && array_key_exists('facet_year_array', $selectedFacets)){
+    //Active contracts count
+    $query = str_replace('&fq=contract_status:"pending"','',$query);
+    $query = str_replace('&fq=facet_year_array','&fq=fiscal_year',$query);
+    return $query;
+  }else{
+    return;
+  }
+  return;
+}
 /**
  * @param array $search_results
  * @param array $datasource_facets
