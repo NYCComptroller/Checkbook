@@ -23,7 +23,6 @@
       "title": "Status",
       "child": true,
       "input": "radio",
-      "default_value": "registered",
       "calculated_value": "Active"
     },
     "spending_category_name": {

@@ -48,7 +48,7 @@
 <div class="narrow-down-filter">
   <div class="narrow-down-title">Narrow Down Your Search:</div>
 <?php
-foreach ($facets_render??[] as $facet_name => $facet) {//if(in_array($facet_name,['domain'])) log_error($facet);
+foreach ($facets_render??[] as $facet_name => $facet) {
 
   // skipping children (sub facets)
   if ($facet->child??false){
@@ -133,12 +133,13 @@ END;
           echo '<ul class="sub-category">';
           echo '<div class="subcat-filter-title">By '.htmlentities($sub_facet->title).'</div>';
 
-          foreach($sub_facet->results as $sub_facet_value => $sub_count){
-            $activeCountFlag = false;
-            if($sub_facet->calculated_value && strtolower($sub_facet_value) == 'registered' && !$activeCountFlag){
-              $sub_facet_value[$sub_facet->calculated_value] = $sub_count;
-              $activeCountFlag = true;
+          foreach($sub_facet->results as $sub_facet_value => $sub_count) {
+            if ($sub_facet->calculated_value && strtolower($sub_facet_value) == 'registered') {
+              $sub_facet->results[strtolower($sub_facet->calculated_value)] = $sub_count;
             }
+          }
+
+          foreach($sub_facet->results as $sub_facet_value => $sub_count){
 
             $facet_result_title = $sub_facet_value;
             if (is_array($sub_count)) {
@@ -153,9 +154,8 @@ END;
             $checked = '';
             if ($sub_facet->selected) {
               $checked = in_array($sub_facet_value, $sub_facet->selected);
-            }elseif(!$checked && $sub_facet_value == $sub_facet->default_value){
-              $checked = true;
             }
+
             $checked = $checked ? ' checked="checked" ' : '';
             $active = $checked ? ' class="active" ' : '';
 
