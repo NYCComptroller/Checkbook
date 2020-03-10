@@ -57,10 +57,10 @@
           "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],30)"
         },
         "formatted_salary_amount": {
-          "expression": " isset($row['total_salaried_amount']) ? custom_number_formatter_basic_format($row['total_salaried_amount'])  : '-'  "
+          "expression": " (isset($row['total_salaried_amount']) && $row['total_salaried_amount'] > 0) ? custom_number_formatter_basic_format($row['total_salaried_amount'])  : '-'  "
         },
         "annual_salary_link": {
-          "expression": "isset($row['total_salaried_amount']) ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource') . '/salamttype/1/abc/' . $row['employee_employee'] . '>'. $row['formatted_salary_amount'] .'</a>' : '-'"
+          "expression": "(isset($row['formatted_salary_amount']) && $row['formatted_salary_amount'] != '-') ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource') . '/salamttype/1/abc/' . $row['employee_employee'] . '>'. $row['formatted_salary_amount'] .'</a>' : '-'"
         },
         "formatted_non_salary_amount": {
           "expression": " isset($row['total_non_salaried_amount']) ? custom_number_formatter_basic_format($row['total_non_salaried_amount']) : '-'"
@@ -72,7 +72,7 @@
           "expression": " isset($row['max_daily_wage']) ? custom_number_formatter_basic_format($row['max_daily_wage']) : '-'"
         },
         "formatted_hourly_rate_amount": {
-          "expression": " isset($row['max_hourly_rate']) ? custom_number_formatter_basic_format($row['max_hourly_rate']) : '-'"
+          "expression": " (isset($row['max_hourly_rate']) && $row['max_hourly_rate'] > 0) ? custom_number_formatter_basic_format($row['max_hourly_rate']) : ((isset($row['max_daily_wage']) && $row['max_daily_wage'] > 0) ? custom_number_formatter_basic_format($row['max_daily_wage']) : '-')"
         },
         "daily_wage_link": {
           "expression": " isset($row['max_daily_wage']) ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource')  . '/salamttype/2~3/abc/' . $row['employee_employee'] . '>'. $row['formatted_daily_wage_amount'] .'</a>' : '-'"
@@ -82,7 +82,7 @@
           "expression": " (isset($row['max_daily_wage']) && $row['max_daily_wage'] > 0) ? $row['daily_wage_link'] : '-'"
         },
         "hourly_rate_link": {
-          "expression": " isset($row['max_hourly_rate']) ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource')  . '/salamttype/2~3/abc/' . $row['employee_employee'] . '>'. $row['formatted_hourly_rate_amount'] .'</a>' : '-'"
+          "expression": " (isset($row['formatted_hourly_rate_amount']) && $row['formatted_hourly_rate_amount'] != '-') ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource')  . '/salamttype/2~3/abc/' . $row['employee_employee'] . '>'. $row['formatted_hourly_rate_amount'] .'</a>' : '-'"
         },
         //NYCHA Hourly Rate Link - Show hyphen when the amount is zero
         "nycha_hourly_rate_link": {
