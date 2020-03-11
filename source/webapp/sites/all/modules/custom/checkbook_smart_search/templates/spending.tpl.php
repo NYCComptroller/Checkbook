@@ -24,10 +24,13 @@ $isNycha = ('nycha' === $solr_datasource);
 $isEdc = ('edc' === $solr_datasource);
 $isOge = $isNycha || $isEdc;
 
-if ($spending_results['fiscal_year_id'] != '') {
+$actual_fiscal_year_id = CheckbookDateUtil::getCurrentFiscalYearId();
+// Limit year id up unitl current year
+if ($spending_results['fiscal_year_id'][0] != '' && $spending_results['fiscal_year_id'][0] <= $actual_fiscal_year_id) {
   $fiscal_year_id = $spending_results['fiscal_year_id'][0];
-} else {
-  $fiscal_year_id = CheckbookDateUtil::getCurrentFiscalYearId();
+}
+else {
+  $fiscal_year_id = $actual_fiscal_year_id;
 }
 
 if ($isOge) {
