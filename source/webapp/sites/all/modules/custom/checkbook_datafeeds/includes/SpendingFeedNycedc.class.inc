@@ -163,7 +163,7 @@ class SpendingFeedNycedc extends SpendingFeed
     }
 
     if ($this->values['budget_name']) {
-      $this->criteria['value']['budget_name'] = htmlspecialchars($this->values['budget_name']);
+      $this->criteria['value']['budget_name'] = $this->values['budget_name'];
     }
   }
 
