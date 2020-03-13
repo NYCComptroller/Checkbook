@@ -1038,8 +1038,9 @@ function _checkbook_autocomplete_budget_expcategory($agency, $budget_code, $dept
  * @param $expense_category
  * @param $budget_code
  * @param $year
+ * @param $solr_datasource
  */
-function _checkbook_autocomplete_budget_budgetcode($agency, $dept, $expense_category, $budget_code, $year)
+function _checkbook_autocomplete_budget_budgetcode($agency, $dept, $expense_category, $budget_code, $year, $solr_datasource = Datasource::SOLR_CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   if (!empty($search_term)) {

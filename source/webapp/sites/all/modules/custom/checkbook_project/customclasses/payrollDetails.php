@@ -372,7 +372,7 @@ class payrollDetails {
             $where .= " AND emp.employee_id = $employee_id";
         }
         $query = "
-            SELECT MAX(emp.annual_salary) as annual_salary, emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$select}
+            SELECT MAX(emp.hourly_rate) as hourly_rate, emp.employee_number, {$year_param}, emp.amount_basis_id, emp.pay_frequency{$select}
             FROM payroll emp
             JOIN
             (
@@ -394,7 +394,7 @@ class payrollDetails {
         $results = _checkbook_project_execute_sql_by_data_source($query,$data_source);
         $max_annual_salary = array();
         foreach($results as $result){
-            $max_annual_salary[$result['pay_frequency']] = $result['annual_salary'];
+            $max_annual_salary[$result['pay_frequency']] = $result['hourly_rate'];
         }
         return $max_annual_salary;
     }

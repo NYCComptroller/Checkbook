@@ -203,7 +203,16 @@
                       "sourceColumnName": "hourly_rate"
                     }
                   ]
-                }
+                },
+              {
+                "name": "daily_wage",
+                "levels": [
+                  {
+                    "name": "daily_wage",
+                    "sourceColumnName": "daily_wage"
+                  }
+                ]
+              }
             ],
             "measures":{
                 "txcount": {

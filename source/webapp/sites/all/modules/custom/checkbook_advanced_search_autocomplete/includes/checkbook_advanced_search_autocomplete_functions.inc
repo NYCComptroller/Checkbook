@@ -216,7 +216,7 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
 }
 
 // Year drop down to include 2010 for NYCHA
-function _checkbook_advanced_search_autocomplete_spending_year($data_source = Datasource::CITYWIDE, $feeds = null) {
+/*function _checkbook_advanced_search_autocomplete_spending_year($data_source = Datasource::CITYWIDE, $feeds = null) {
   $options = _get_spending_year_options($data_source);
   $matches = array();
   if(isset($options['label'])) {
@@ -246,7 +246,7 @@ function _get_spending_year_options($dataSource) {
     log_error("Error getting data from controller: \n" . $e->getMessage());
     return;
   }
-}
+}*/
 
 //Contracts autocomplete menu callback functions
 /**

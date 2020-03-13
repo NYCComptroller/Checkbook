@@ -138,13 +138,8 @@
           "range"
         ],
         "validatorType": "filterName",
-        "validatorTypeConfig": {
-          "filterNames": {
-            "filterNames": [
-              "fiscal_year",
-              "issue_date"
-            ]
-          }
+        "validatorTypeConfig":{
+          "filterNames":["fiscal_year", "issue_date"]
         }
       }
     }

@@ -154,6 +154,7 @@ jQuery('#capital-projects-filter .chartdateto').val(Highcharts.dateFormat('%Y',a
 }
 ],
 "yAxis": {
+            "opposite":false,
             "gridLineWidth": 0,
             "lineWidth": 1,
             "startOnTick": true,

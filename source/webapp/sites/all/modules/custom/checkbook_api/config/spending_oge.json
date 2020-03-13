@@ -13,7 +13,7 @@
             "spending_category":"spending_category_code@checkbook_oge:spending_category_oge",
             "commodity_line":"agreement_commodity_line_number",
             "entity_contract_number":"oge_contract_number@checkbook_oge:oge_contract_oge",
-            "budget_name":"budget_name@checkbook_oge:oge_contract_oge"
+            "budget_name":"budget_name"
         },
         "dataset":{
             "sortColumn":["-check_amount", "-disbursement_line_item_id"],
@@ -26,7 +26,7 @@
                 "vendor_name":"like",
                 "commodity_line":"like",
                 "entity_contract_number":"like",
-                "budget_name@checkbook_oge:oge_contract_oge":"contains",
+                "budget_name":"contains",
                 "oge_contract_number@checkbook_oge:oge_contract_oge":"like"
             },
             "displayConfiguration":{
@@ -46,7 +46,7 @@
                         "spending_category":"spending_category_name",
                         "commodity_line":"agreement_commodity_line_number",
                         "entity_contract_number":"oge_contract_number@checkbook_oge:oge_contract_oge",
-                        "budget_name":"budget_name@checkbook_oge:oge_contract_oge"
+                        "budget_name":"budget_name"
                     },
                     "rowElements":["other_government_entities", "fiscal_year",  "payee_name", "department", "check_amount", "expense_category"
                         , "contract_id", "contract_purpose", "capital_project",  "spending_category","entity_contract_number","budget_name","commodity_line"]
@@ -65,7 +65,7 @@
                         "Spending Category":"spending_category_name",
                         "Commodity Line":"agreement_commodity_line_number",
                         "Entity Contract #":"oge_contract_number@checkbook_oge:oge_contract_oge",
-                        "Budget Name":"budget_name@checkbook_oge:oge_contract_oge"
+                        "Budget Name":"budget_name"
                     }
                 }
             }

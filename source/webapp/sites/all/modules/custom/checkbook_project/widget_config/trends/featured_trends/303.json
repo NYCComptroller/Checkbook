@@ -234,6 +234,7 @@
     }
     ],
     "yAxis": {
+                "opposite":false,
                 "startOnTick": true,
                 "endOnTick": true,
                 "lineWidth": 1,
