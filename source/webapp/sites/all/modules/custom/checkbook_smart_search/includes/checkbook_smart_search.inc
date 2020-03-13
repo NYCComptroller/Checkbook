@@ -27,8 +27,7 @@
  * @param $form
  * @param $form_state
  */
-function _checkbook_smart_search_submit($form, &$form_state)
-{
+function _checkbook_smart_search_submit($form, &$form_state){
   $solr_datasource = _checkbook_get_datasource();
   $search_term = trim($form['search_box']['#value']);
   if ($search_term == 'Type ahead search') {
@@ -50,8 +49,7 @@ function _checkbook_smart_search_submit($form, &$form_state)
  * @param string $solr_datasource
  * @throws Exception
  */
-function _checkbook_smart_search_ajax_results(string $solr_datasource = 'citywide')
-{
+function _checkbook_smart_search_ajax_results(string $solr_datasource = 'citywide'){
   $solr_query = new CheckbookSolrQuery($solr_datasource, $_REQUEST['search_term'], 10, $_REQUEST['page'] ?? 0);
 
   $solr = CheckbookSolr::getInstance($solr_datasource);
@@ -68,8 +66,7 @@ function _checkbook_smart_search_ajax_results(string $solr_datasource = 'citywid
  * @return mixed|string
  * @throws Exception
  */
-function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide')
-{
+function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide'){
   $solr_query = new CheckbookSolrQuery($solr_datasource, $_REQUEST['search_term'], 10, $_REQUEST['page'] ?? 0);
 
   $datasource_facets = (array)CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
@@ -91,30 +88,27 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     }
   }
 
-//  $search_terms = explode('*!*', $_REQUEST['search_term']); // array("Education", "domains=Payroll~Spending", "fiscal_years=2014~2013")
-//  $reg_flag = false;
-////  $act_flag = false;
-//  foreach ($search_terms as $id => $keyvaluepair) {
-//    $keys = explode("=", $keyvaluepair);
-//    if ($keys[1] == 'registered') {
-//      $reg_flag = true;
-//    }
-//  }
-//
-//  if ($reg_flag && in_array('registered_fiscal_years', array_keys($datasource_facets))) {
-//    $solr_query->addFacet('registered_fiscal_years');
-//  } else {
-//    $solr_query->addFacet('fiscal_years');
-//  }
-
   $selected_facets = $solr_query->getSelectedFacets();
 
   $solr = CheckbookSolr::getInstance($solr_datasource);
-  $search_results = $solr->request_phps('select/?' . $solr_query->buildQuery());
-
+  $query = $solr_query->buildQuery();
+  $search_results = $solr->request_phps('select/?' . $query);
   _inject_smart_search_drupal_settings($search_results);
 
   $search_results = _ckbk_ss_sort_results($search_results, $datasource_facets);
+  //Registered Contracts Count
+  $registeredContractsQuery = getRegisteredContractsCount($query, $selected_facets);
+  if($registeredContractsQuery) {
+    $registeredContracts = $solr->request_phps('select/?' . $registeredContractsQuery);
+    $registeredContractsCount = $registeredContracts['facet_counts']['facet_fields']['contract_status']['registered'];
+  }
+
+  //Active Contracts Count
+  $activeContractsQuery = getActiveContractsCount($query, $selected_facets);
+  if($activeContractsQuery) {
+    $activeContracts = $solr->request_phps('select/?' . $activeContractsQuery);
+    $activeContractsCount = $activeContracts['facet_counts']['facet_fields']['contract_status']['registered'];
+  }
 
   if ($selected_facets) {
     /**
@@ -180,16 +174,52 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     'solr_datasource' => $solr_datasource,
     'search_results' => $search_results,
     'selected_facet_results' => $selected_facets,
+    'registered_contracts' => $registeredContractsCount,
+    'active_contracts' => $activeContractsCount
   ]);
 }
 
+/**
+ * @param array $query
+ * @param array $selectedFacets
+ * @return array
+ */
+function getRegisteredContractsCount($query, $selectedFacets){
+  if(in_array('contracts', $selectedFacets['domain']) && array_key_exists('facet_year_array', $selectedFacets)){
+    //Registered contracts count
+    $query = str_replace('&fq=contract_status:"pending"','',$query);
+    $query = str_replace('&fq=facet_year_array','&fq=registered_fiscal_year',$query);
+    $query .= '&fq=contract_status:registered';
+    return $query;
+  }else{
+    return;
+  }
+  return;
+}
+
+/**
+ * @param array $query
+ * @param array $selectedFacets
+ * @return array
+ */
+function getActiveContractsCount($query, $selectedFacets){
+  if(in_array('contracts', $selectedFacets['domain']) && array_key_exists('facet_year_array', $selectedFacets)){
+    //Active contracts count
+    $query = str_replace('&fq=contract_status:"pending"','',$query);
+    $query = str_replace('&fq=facet_year_array','&fq=fiscal_year',$query);
+    $query .= '&fq=contract_status:registered';
+    return $query;
+  }else{
+    return;
+  }
+  return;
+}
 /**
  * @param array $search_results
  * @param array $datasource_facets
  * @return array
  */
-function _ckbk_ss_sort_results(array $search_results, array $datasource_facets): array
-{
+function _ckbk_ss_sort_results(array $search_results, array $datasource_facets): array{
   /**
    * Sorting facet by value, like Fiscal Year desc
    */
@@ -209,8 +239,7 @@ function _ckbk_ss_sort_results(array $search_results, array $datasource_facets):
  * @param array $search_results
  * @return array
  */
-function _ckbk_remove_empty_intervals(array $search_results): array
-{
+function _ckbk_remove_empty_intervals(array $search_results): array{
   /**
    * Manually getting rid of empty facet_intervals values because
    * facet.mincount does not work with intervals/ranges in solr
@@ -236,8 +265,7 @@ function _ckbk_remove_empty_intervals(array $search_results): array
 /**
  * @param array $search_results
  */
-function _inject_smart_search_drupal_settings(array $search_results): void
-{
+function _inject_smart_search_drupal_settings(array $search_results): void{
   $vendor_number = count($search_results['facet_counts']['facet_fields']['vendor_name'] ?? []);
   $vendor_pages = floor($vendor_number / 100);
   drupal_add_js(array('checkbook_smart_search' => array('vendor_pages' => $vendor_pages)), 'setting');
@@ -260,8 +288,7 @@ function _inject_smart_search_drupal_settings(array $search_results): void
  * @param bool $skip_header
  * @return false|string
  */
-function _checkbook_smart_search_get_results_csv(string $solr_datasource, string $search_terms, $page_no, $no_of_results, $fl = "*", $skip_header = false)
-{
+function _checkbook_smart_search_get_results_csv(string $solr_datasource, string $search_terms, $page_no, $no_of_results, $fl = "*", $skip_header = false){
   $solr_query = new CheckbookSolrQuery($solr_datasource, $search_terms, $no_of_results, $page_no);
   $solr_query
     ->setWt('csv');
@@ -288,8 +315,7 @@ function _checkbook_smart_search_get_results_csv(string $solr_datasource, string
  * @param string $solr_datasource
  * @throws Exception
  */
-function _checkbook_smart_search_export_form(string $solr_datasource)
-{
+function _checkbook_smart_search_export_form(string $solr_datasource){
   if (!$solr_datasource) {
     echo 'unknown datasource';
   } else {
@@ -302,8 +328,7 @@ function _checkbook_smart_search_export_form(string $solr_datasource)
 /** Downloads the smart search export data
  * @param string $solr_datasource
  */
-function _checkbook_smart_search_export_download(string $solr_datasource)
-{
+function _checkbook_smart_search_export_download(string $solr_datasource){
   $domain = ucfirst($_REQUEST['domain']);
   drupal_add_http_header("Content-Type", "text/csv");
   //drupal_add_http_header("Content-Length",9);
@@ -316,8 +341,7 @@ function _checkbook_smart_search_export_download(string $solr_datasource)
 /** Exports the smart search export data
  * @param string $solr_datasource
  */
-function _checkbook_smart_search_export_data(string $solr_datasource)
-{
+function _checkbook_smart_search_export_data(string $solr_datasource){
   global $conf;
   $remaining = $conf['check_book']['datatables']['iTotalDisplayRecords'];
   $page_size = 10000;
@@ -382,8 +406,7 @@ function _checkbook_smart_search_export_data(string $solr_datasource)
  *
  * @param string $solr_datasource
  */
-function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'citywide')
-{
+function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'citywide'){
   $search_term = htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES);
   $search_term = strtolower($search_term);
 
@@ -483,8 +506,7 @@ function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'cit
  * @param string $facet
  * @return array
  */
-function _checkbook_autocomplete(string $solr_datasource, string $facet): array
-{
+function _checkbook_autocomplete(string $solr_datasource, string $facet): array{
   $solr_query = new CheckbookSolrQuery($solr_datasource, $_REQUEST['search_term'] ?? '');
 
   $solr_query->setFqAutocompleteTerm($facet, $_REQUEST['term'] ?? '');
@@ -508,8 +530,7 @@ function _checkbook_autocomplete(string $solr_datasource, string $facet): array
  * @param string $solr_datasource
  * @param string $facet
  */
-function _checkbook_smart_search_autocomplete(string $solr_datasource, string $facet)
-{
+function _checkbook_smart_search_autocomplete(string $solr_datasource, string $facet){
   $data = _checkbook_autocomplete($solr_datasource, $facet);
   foreach ($data as &$line) {
     $line['value'] = urlencode($line['value']);
@@ -521,19 +542,16 @@ function _checkbook_smart_search_autocomplete(string $solr_datasource, string $f
  * @param string $solr_datasource
  * @param string $facet
  */
-function _checkbook_advanced_search_autocomplete(string $solr_datasource, string $facet)
-{
+function _checkbook_advanced_search_autocomplete(string $solr_datasource, string $facet){
   $data = _checkbook_autocomplete($solr_datasource, $facet);
   drupal_json_output($data);
-
 }
 
 /**
  * @param $results
  * @return array
  */
-function _checkbook_vendor_type_prepare_labels($results)
-{
+function _checkbook_vendor_type_prepare_labels($results){
   $pv = $results['p'] + $results['pm'];
   $sv = $results['s'] + $results['sm'];
   $mv = $results['sm'] + $results['pm'];
@@ -556,8 +574,7 @@ function _checkbook_vendor_type_prepare_labels($results)
  * @param null $count
  * @return string
  */
-function _checkbook_smart_search_clear_url(string $solr_datasource,$facetName, $facetValue = null, $count = null)
-{
+function _checkbook_smart_search_clear_url(string $solr_datasource,$facetName, $facetValue = null, $count = null){
 
   $searchArgs = $_REQUEST['search_term'];
   $clearArgURL = "/smart_search/".$solr_datasource."?search_term=";
@@ -627,8 +644,7 @@ function _checkbook_smart_search_clear_url(string $solr_datasource,$facetName, $
  * @param $string
  * @return mixed|string $string.
  */
-function _checkbook_smart_search_str_html_entities($string)
-{
+function _checkbook_smart_search_str_html_entities($string){
   $string = str_replace("<em>", "**!**", $string);
   $string = str_replace("</em>", "**||**", $string);
   $string = htmlentities($string);
@@ -642,8 +658,7 @@ function _checkbook_smart_search_str_html_entities($string)
  * This function returns the current NYC year  ...
  * @return string    $string = str_replace("^", "\%5E", $string);
  */
-function getCurrentYearID()
-{
+function getCurrentYearID(){
   STATIC $current_nyc_year;
   if (!isset($current_nyc_year)) {
     $current_nyc_year = date("Y");
