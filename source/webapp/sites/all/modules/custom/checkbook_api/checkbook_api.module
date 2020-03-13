@@ -585,7 +585,7 @@ function checkbook_api_adjustSpendingDataSetResults(&$data_records) {
 
         //Derive sub vendor column from vendor type
         if(isset($data_record['vendor_type'])) {
-            $data_records[$key]['vendor_type'] = (preg_match('/S/', $data_record['vendor_type'])) ? 'Yes' : 'No';
+            $data_records[$key]['vendor_type'] = (preg_match('/S/i', $data_record['vendor_type'])) ? 'Yes' : 'No';
             //If Sub vendor field = "Yes" following should be "N/A": Capital Project,Department,Document ID,Expense Category, Associated Prime Vendor
             if($data_records[$key]['vendor_type'] == 'Yes') {
                 $data_records[$key]['reporting_code'] = 'N/A';
@@ -704,7 +704,7 @@ function checkbook_api_adjustNYCHAContractSql(&$sql_query){
                      'po_header_id');
 
     foreach($text_columns as $key => $value){
-      $select_part = str_replace($value, "CASE WHEN ((LOWER(record_type) = 'agreement' AND ". ((in_array($value, $agreement_level_hyphens))? 'TRUE' : 'FALSE') .") OR 
+      $select_part = str_replace($value, "CASE WHEN ((LOWER(record_type) = 'agreement' AND ". ((in_array($value, $agreement_level_hyphens))? 'TRUE' : 'FALSE') .") OR
                                                             (LOWER(record_type) = 'release' AND ". ((in_array($value, $release_level_hyphens)) ? 'TRUE' : 'FALSE') .") OR
                                                             (LOWER(record_type) = 'line' AND ". ((in_array($value, $line_level_hyphens)) ? 'TRUE' : 'FALSE') .")) AND "  . $value . " IS NULL
                                                         THEN '-'

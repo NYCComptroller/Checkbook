@@ -31,7 +31,7 @@ class CheckbookSolrQueryTest extends \PHPUnit\Framework\TestCase
         $searchTerms = 'rei*!*vendor_names=rei%2Bsystems%252C%2Binc.';
         $query = new CheckbookSolrQuery('nycha', $searchTerms, 9);
         $query->setSort('asdf');
-        $this->assertEquals('q=text:rei&fq=vendor_name:"rei%5C%2Bsystems%252c%5C%2Binc."&start=0&rows=9&sort=asdf&wt=phps',
+        $this->assertEquals('q=text:rei&fq=vendor_name:"rei%5C%2Bsystems%252c%5C%2Binc%5C."&start=0&rows=9&sort=asdf&wt=phps',
             $query->buildQuery());
     }
 

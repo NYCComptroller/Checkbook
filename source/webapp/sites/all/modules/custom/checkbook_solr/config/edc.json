@@ -20,7 +20,7 @@
       "title": "Contract Status",
       "child": true,
       "input": "radio",
-      "default_value": "registered"
+      "calculated_value": "active"
     },
     "spending_category_name": {
       "title": "Spending Category",
