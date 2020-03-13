@@ -49,7 +49,7 @@ if ($isOge) {
       "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
       "vendor_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/vendor/" . $spending_results["vendor_id"],
     );
-  } elseif (strtolower($spending_results['is_prime_or_sub']) == 'yes' && strtolower($spending_results['is_minority_vendor'])=='y') {
+  } elseif (strtolower($spending_results['is_prime_or_sub']) == 'yes' && strtolower($spending_results['is_minority_vendor'])=='n') {
     $linkable_fields = array(
       "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
       "vendor_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/subvendor/" . $spending_results["vendor_id"] . "/dashboard/ss",
