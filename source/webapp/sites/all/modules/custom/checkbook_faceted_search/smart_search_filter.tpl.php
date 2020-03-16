@@ -132,6 +132,7 @@ END;
           $sub_facet_name = $child;
           echo '<ul class="sub-category">';
           echo '<div class="subcat-filter-title">By '.htmlentities($sub_facet->title).'</div>';
+          //Set Active and Registered Contracts Counts
           if($sub_facet_name == 'contract_status'){
             $sub_facet->results['registered'] = $registered_contracts;
             $sub_facet->results['active'] = $active_contracts;

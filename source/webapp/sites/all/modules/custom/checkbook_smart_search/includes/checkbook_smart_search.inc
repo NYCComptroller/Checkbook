@@ -94,17 +94,17 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
   $query = $solr_query->buildQuery();
 
   //Registered Contracts Count
-  $registeredContractsQuery = getRegisteredContractsCount($query, $selected_facets);
+  $registeredContractsQuery = getRegisteredContractsQuery($query, $selected_facets);
   if($registeredContractsQuery) {
     $registeredContracts = $solr->request_phps('select/?' . $registeredContractsQuery);
-    $registeredContractsCount = $registeredContracts['facet_counts']['facet_fields']['contract_status']['registered'];
+    $registeredContractsCount = $registeredContracts['response']['numFound'];
   }
 
   //Active Contracts Count
-  $activeContractsQuery = getActiveContractsCount($query, $selected_facets);
+  $activeContractsQuery = getActiveContractsQuery($query, $selected_facets);
   if($activeContractsQuery) {
     $activeContracts = $solr->request_phps('select/?' . $activeContractsQuery);
-    $activeContractsCount = $activeContracts['facet_counts']['facet_fields']['contract_status']['registered'];
+    $activeContractsCount = $activeContracts['response']['numFound'];
   }
 
   //Alter query for Contracts domain to get registered contracts for selected fiscal year
@@ -192,8 +192,8 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
  * @param array $selectedFacets
  * @return array
  */
-function getRegisteredContractsCount($query, $selectedFacets){
-  if(in_array('contracts', $selectedFacets['domain']) && array_key_exists('facet_year_array', $selectedFacets)){
+function getRegisteredContractsQuery($query, $selectedFacets){
+  if(in_array('contracts', $selectedFacets['domain'])){
     //Registered contracts count
     $query = str_replace('&fq=contract_status:"pending"','',$query);
     $query = str_replace('&fq=facet_year_array','&fq=registered_fiscal_year',$query);
@@ -210,8 +210,8 @@ function getRegisteredContractsCount($query, $selectedFacets){
  * @param array $selectedFacets
  * @return array
  */
-function getActiveContractsCount($query, $selectedFacets){
-  if(in_array('contracts', $selectedFacets['domain']) && array_key_exists('facet_year_array', $selectedFacets)){
+function getActiveContractsQuery($query, $selectedFacets){
+  if(in_array('contracts', $selectedFacets['domain'])){
     //Active contracts count
     $query = str_replace('&fq=contract_status:"pending"','',$query);
     //$query = str_replace('&fq=facet_year_array','&fq=fiscal_year',$query);
