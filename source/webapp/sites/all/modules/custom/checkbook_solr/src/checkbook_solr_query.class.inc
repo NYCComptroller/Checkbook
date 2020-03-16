@@ -371,11 +371,12 @@ class CheckbookSolrQuery
     /**
      * DO NOT CHANGE ORDER, BACKSLASH MUST BE FIRST
      */
-    $escape_chars = explode(' ', '\\ + - & | ! ( ) { } [ ] ^ " ~ * ? : /');
+    $escape_chars = ['\\', '.', '^', '$', '*', '+', '(', ')', '[', ']', '{', '}', '-', '&', '', '|', '!', '"', '?', ':', '/'];
     $replace_to = [];
     foreach ($escape_chars as $char) {
       $replace_to[] = "\\" . $char;
     }
+
     $return = str_replace($escape_chars, $replace_to, $string);
     $return = urlencode(strtolower($return));
 
