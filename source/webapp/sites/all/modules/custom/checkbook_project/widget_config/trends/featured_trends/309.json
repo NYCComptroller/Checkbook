@@ -145,6 +145,7 @@ jQuery('#debt-filter .chartdateto').val(Highcharts.dateFormat('%Y',axis.max));
 }
 ],
 "yAxis": {
+            "opposite":false,
             "gridLineWidth": 0,
             "lineWidth": 1,
             "startOnTick": true,

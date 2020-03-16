@@ -390,16 +390,16 @@ $spendingByVendor = $node->spendingByVendor;
                           <td class="text ncc-item_description" >
                             <div><?= _get_tooltip_markup(htmlentities($shipment['item_description']), 20) ?></div>
                           </td>
-                          <td class="center ncc-shipment_number">
+                          <td class="number-center ncc-shipment_number">
                             <div><?= htmlentities($shipment['shipment_number']) ?></div>
                           </td>
-                          <td class="center endcol">
+                          <td class="number-center endcol">
                             <div><?= custom_number_formatter_format($shipment['release_line_total_amount'], 2, "$"); ?></div>
                           </td>
-                          <td class="center endCol">
+                          <td class="number-center endCol">
                             <div><?= custom_number_formatter_format($shipment['release_line_original_amount'], 2, "$"); ?></div>
                           </td>
-                          <td class="center endCol">
+                          <td class="number-center endCol">
                             <div><?= custom_number_formatter_format($shipment['release_line_spend_to_date'], 2, "$"); ?></div>
                           </td>
                           <td class="text endCol">

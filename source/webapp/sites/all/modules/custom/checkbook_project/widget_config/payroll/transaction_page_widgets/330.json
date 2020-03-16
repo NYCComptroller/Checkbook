@@ -35,7 +35,8 @@
     "columns": ["employee_number.employee_number","payroll_id.payroll_id","agency_name.agency_name","civil_service_title.civil_service_title","annual_salary.annual_salary",
       "amount_basis_id.amount_basis_id","payroll_type","pay_frequency.pay_frequency","pay_date.pay_date",
       "gross_pay.gross_pay","base_pay.base_pay","other_payments.other_payments","overtime_pay.overtime_pay",
-      "gross_pay_cytd.gross_pay_cytd","calendar_fiscal_year_id.calendar_fiscal_year_id","agency_id.agency_id","hourly_rate.hourly_rate"],
+      "gross_pay_cytd.gross_pay_cytd","calendar_fiscal_year_id.calendar_fiscal_year_id","agency_id.agency_id",
+      "hourly_rate.hourly_rate","daily_wage.daily_wage"],
     "caption":"",
     "derivedColumns": {
         "formatted_daily_wage_amount": {
@@ -45,7 +46,7 @@
         "expression": "$row['amount_basis_id_amount_basis_id'] == 1 ? custom_number_formatter_basic_format($row['annual_salary_annual_salary'])  : '-'"
         },
       "formatted_hourly_rate": {
-        "expression":" (isset($row['hourly_rate_hourly_rate']) && $row['hourly_rate_hourly_rate'] > 0) ? custom_number_formatter_basic_format($row['hourly_rate_hourly_rate'])  : '-'"
+        "expression":" (isset($row['hourly_rate_hourly_rate']) && $row['hourly_rate_hourly_rate'] > 0) ? custom_number_formatter_basic_format($row['hourly_rate_hourly_rate'])  : ((isset($row['daily_wage_daily_wage']) && $row['daily_wage_daily_wage'] > 0) ? custom_number_formatter_basic_format($row['daily_wage_daily_wage']) : '-') "
       },
         "nycha_hourly_rate":{
           "expression":"(isset($row['hourly_rate_hourly_rate']) && $row['hourly_rate_hourly_rate'] > 0) ? custom_number_formatter_basic_format($row['hourly_rate_hourly_rate'])  : '-'"
@@ -131,7 +132,6 @@
       }
       $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
       $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
-
     ",
     "adjustParameters":"
         $adjustedParameters = $parameters;
