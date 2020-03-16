@@ -92,10 +92,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
 
   $solr = CheckbookSolr::getInstance($solr_datasource);
   $query = $solr_query->buildQuery();
-  $search_results = $solr->request_phps('select/?' . $query);
-  _inject_smart_search_drupal_settings($search_results);
 
-  $search_results = _ckbk_ss_sort_results($search_results, $datasource_facets);
   //Registered Contracts Count
   $registeredContractsQuery = getRegisteredContractsCount($query, $selected_facets);
   if($registeredContractsQuery) {
@@ -109,6 +106,17 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     $activeContracts = $solr->request_phps('select/?' . $activeContractsQuery);
     $activeContractsCount = $activeContracts['facet_counts']['facet_fields']['contract_status']['registered'];
   }
+
+  //Alter query for Contracts domain to get registered contracts for selected fiscal year
+  if(in_array('contracts', $selected_facets['domain']) && in_array('registered', $selected_facets['contract_status'])){
+    $query = str_replace('&fq=facet_year_array','&fq=registered_fiscal_year',$query);
+  }
+
+  //Search Results
+  $search_results = $solr->request_phps('select/?' . $query);
+  _inject_smart_search_drupal_settings($search_results);
+
+  $search_results = _ckbk_ss_sort_results($search_results, $datasource_facets);
 
   if ($selected_facets) {
     /**
@@ -206,7 +214,7 @@ function getActiveContractsCount($query, $selectedFacets){
   if(in_array('contracts', $selectedFacets['domain']) && array_key_exists('facet_year_array', $selectedFacets)){
     //Active contracts count
     $query = str_replace('&fq=contract_status:"pending"','',$query);
-    $query = str_replace('&fq=facet_year_array','&fq=fiscal_year',$query);
+    //$query = str_replace('&fq=facet_year_array','&fq=fiscal_year',$query);
     $query .= '&fq=contract_status:registered';
     return $query;
   }else{
