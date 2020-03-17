@@ -91,7 +91,7 @@
       "expression": "($row['adj_distribution_line_amount'] == null) ? '-' : custom_number_formatter_basic_format($row['adj_distribution_line_amount'], 2)"
     },
     "vendor_name_formatted": {
-      "expression": "($row['vendor_name'] == null) ? 'N/A' : _get_tooltip_markup($row['vendor_name'],36)"
+      "expression": "_get_tooltip_markup($row['vendor_name'],36)"
     },
     "vendor_link": {
       "expression": "(($row['display_spending_category_name'] == 'Payroll') || RequestUtil::isNewWindow()) ? $row['vendor_name_formatted'] : '<a href=\"'.NychaSpendingUrlService::generateLandingPageUrl('vendor', $row['vendor_id']).'\">'.$row['vendor_name_formatted'].'</a>'"
