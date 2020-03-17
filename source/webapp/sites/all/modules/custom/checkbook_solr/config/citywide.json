@@ -23,7 +23,7 @@
       "title": "Status",
       "child": true,
       "input": "radio",
-      "default_value": "registered"
+      "calculated_value": "active"
     },
     "spending_category_name": {
       "title": "Spending Category",
@@ -156,7 +156,7 @@
       "industry_type_name": "Industry",
       "contract_number": "Contract ID",
       "check_amount": "Check Amount",
-      "check_eft_issued_date_export": "Issue Date",
+      "check_eft_issued_date": "Issue Date",
       "minority_type_name": "M/WBE Category",
       "is_prime_or_sub": "Sub Vendor",
       "prime_vendor_name": "Associated Prime Vendor"

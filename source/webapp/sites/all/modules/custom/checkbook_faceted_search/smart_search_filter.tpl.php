@@ -132,6 +132,12 @@ END;
           $sub_facet_name = $child;
           echo '<ul class="sub-category">';
           echo '<div class="subcat-filter-title">By '.htmlentities($sub_facet->title).'</div>';
+          //Set Active and Registered Contracts Counts
+          if($sub_facet_name == 'contract_status'){
+            $sub_facet->results['registered'] = $registered_contracts;
+            $sub_facet->results['active'] = $active_contracts;
+          }
+
           foreach($sub_facet->results as $sub_facet_value => $sub_count){
 
             $facet_result_title = $sub_facet_value;
@@ -147,9 +153,8 @@ END;
             $checked = '';
             if ($sub_facet->selected) {
               $checked = in_array($sub_facet_value, $sub_facet->selected);
-            }elseif(!$checked && $sub_facet_value == $sub_facet->default_value){
-              $checked = true;
             }
+
             $checked = $checked ? ' checked="checked" ' : '';
             $active = $checked ? ' class="active" ' : '';
 
