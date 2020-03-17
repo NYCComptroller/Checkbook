@@ -17,7 +17,7 @@ class NychaSpendingWidgetService extends WidgetDataService implements IWidgetSer
             case "vendor_link":
                 $column = $row['vendor_name'];
                 $url = NychaSpendingUrlService::generateLandingPageUrl('vendor',$row['vendor_id']);
-                if($row['vendor_id'] == 1){$value = $column;}
+                if($row['vendor_id'] == '164952'){$value = $column;}
                 else {$value = "<a href='{$url}'>{$column}</a>";}
                 break;
           case "contract_link":
