@@ -13,11 +13,11 @@
       }
     },
     "contract_category_name": {
-      "title": "Contract Category",
+      "title": "Category",
       "child": true
     },
     "contract_status": {
-      "title": "Contract Status",
+      "title": "Status",
       "child": true,
       "input": "radio",
       "calculated_value": "active"
