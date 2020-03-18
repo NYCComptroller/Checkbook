@@ -337,7 +337,8 @@ function applySearchFilters() {
                   "agreement_type_name",
                   "payroll_type",
                   "contract_category_name",
-                   "contract_status"];
+                  "contract_status",
+                  "registered_fiscal_year"];
 
   let fq = [];
   //Add checked checkboxes to the query string
