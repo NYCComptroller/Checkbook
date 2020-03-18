@@ -209,7 +209,7 @@ function getActiveContractsQuery($query, $selectedFacets){
   if(in_array('contracts', $selectedFacets['domain'])){
     //Active contracts count
     $query = str_replace('&fq=contract_status:"pending"','',$query);
-    //$query = str_replace('&fq=facet_year_array','&fq=fiscal_year',$query);
+    $query = str_replace('&fq=registered_fiscal_year','&fq=facet_year_array',$query);
     $query .= '&fq=contract_status:registered';
     return $query;
   }else{
