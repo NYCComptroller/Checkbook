@@ -380,7 +380,21 @@ function applySearchFilters() {
   });
 
   let fq_string = '';
-  for (var k in fq) {
+  let contract_status_reg_flag = false;
+  for (let k in fq) {
+    if (k == 'contract_status' && fq[k].toString().toLowerCase() == 'registered') {
+      contract_status_reg_flag = true;
+    }
+  }
+  for (let k in fq) {
+    //Year parameter changes for Contract Status selection
+    if(k == 'facet_year_array' && contract_status_reg_flag){
+      fq['registered_fiscal_year'] = fq[k];
+      k = 'registered_fiscal_year';
+    }else if(k == 'registered_fiscal_year'){
+      fq['facet_year_array'] = fq[k];
+      k = 'facet_year_array';
+    }
     fq_string += '*!*' + k + '=' + encodeURIComponent(fq[k].join('~'));
   }
 
