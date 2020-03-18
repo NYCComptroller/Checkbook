@@ -107,11 +107,6 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
     $activeContractsCount = $activeContracts['response']['numFound'];
   }
 
-  //Alter query for Contracts domain to get registered contracts for selected fiscal year
-  if(in_array('contracts', $selected_facets['domain']) && in_array('registered', $selected_facets['contract_status'])){
-    $query = str_replace('&fq=facet_year_array','&fq=registered_fiscal_year',$query);
-  }
-
   //Search Results
   $search_results = $solr->request_phps('select/?' . $query);
   _inject_smart_search_drupal_settings($search_results);
