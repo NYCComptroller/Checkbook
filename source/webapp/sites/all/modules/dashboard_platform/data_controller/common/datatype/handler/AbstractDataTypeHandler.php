@@ -74,8 +74,9 @@ abstract class AbstractDataTypeHandler extends AbstractObject implements DataTyp
             }
 
             $v = strtoupper($adjustedValue);
-            //if (($v === 'NULL') || ($v === 'N/A')) {
-            if($v === 'NULL')
+            //(Reverting change made earlier as this might impact cityiwde and edc transactions.
+            // The issue is handled at individual filter and nycha json transaction settings)).
+            if (($v === 'NULL') || ($v === 'N/A'))
             {
                 return NULL;
             }
