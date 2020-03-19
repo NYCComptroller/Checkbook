@@ -50,10 +50,17 @@
 <?php
 foreach ($facets_render??[] as $facet_name => $facet) {
 
-  // skipping children (sub facets)
-  if ($facet->child??false){
-    continue;
-  }
+    // skipping children (sub facets)
+    if ($facet->child??false){
+      continue;
+    }
+
+    if(in_array('registered', $selected_facet_results['contract_status']) && strtolower($facet_name) == 'facet_year_array'){
+      continue;
+    }
+    if(!in_array('registered', $selected_facet_results['contract_status']) && strtolower($facet_name) == 'registered_fiscal_year'){
+      continue;
+    }
 
     $span='';
     $display_facet = 'none';
