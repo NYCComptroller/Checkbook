@@ -381,9 +381,13 @@ function applySearchFilters() {
 
   let fq_string = '';
   let contract_status_reg_flag = false;
+  let contract_status_active_flag = false;
   for (let k in fq) {
     if (k == 'contract_status' && fq[k].toString().toLowerCase() == 'registered') {
       contract_status_reg_flag = true;
+    }
+    if (k == 'contract_status' && fq[k].toString().toLowerCase() == 'active') {
+      contract_status_active_flag = true;
     }
   }
   for (let k in fq) {
@@ -391,7 +395,7 @@ function applySearchFilters() {
     if(k == 'facet_year_array' && contract_status_reg_flag){
       fq['registered_fiscal_year'] = fq[k];
       k = 'registered_fiscal_year';
-    }else if(k == 'registered_fiscal_year'){
+    }else if(k == 'registered_fiscal_year' && contract_status_active_flag){
       fq['facet_year_array'] = fq[k];
       k = 'facet_year_array';
     }
