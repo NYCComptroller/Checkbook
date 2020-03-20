@@ -337,7 +337,8 @@ function applySearchFilters() {
                   "agreement_type_name",
                   "payroll_type",
                   "contract_category_name",
-                   "contract_status"];
+                  "contract_status",
+                  "registered_fiscal_year"];
 
   let fq = [];
   //Add checked checkboxes to the query string
@@ -379,7 +380,25 @@ function applySearchFilters() {
   });
 
   let fq_string = '';
-  for (var k in fq) {
+  let contract_status_reg_flag = false;
+  let contract_status_active_flag = false;
+  for (let k in fq) {
+    if (k == 'contract_status' && fq[k].toString().toLowerCase() == 'registered') {
+      contract_status_reg_flag = true;
+    }
+    if (k == 'contract_status' && fq[k].toString().toLowerCase() == 'active') {
+      contract_status_active_flag = true;
+    }
+  }
+  for (let k in fq) {
+    //Year parameter changes for Contract Status selection
+    if(k == 'facet_year_array' && contract_status_reg_flag){
+      fq['registered_fiscal_year'] = fq[k];
+      k = 'registered_fiscal_year';
+    }else if(k == 'registered_fiscal_year' && contract_status_active_flag){
+      fq['facet_year_array'] = fq[k];
+      k = 'facet_year_array';
+    }
     fq_string += '*!*' + k + '=' + encodeURIComponent(fq[k].join('~'));
   }
 

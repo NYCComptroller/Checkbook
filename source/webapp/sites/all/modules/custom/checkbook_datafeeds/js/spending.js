@@ -40,9 +40,6 @@
           }
         }
         $('#edit-dept').html(html);
-        if(dept_hidden) {
-          $('#edit-dept').val(dept_hidden);
-        }
         }, complete: function () {
           enable_input($('#edit-dept'));
           $('#edit-dept').removeClass('loading');
@@ -50,41 +47,6 @@
       });
     }
   };
-
-  // Load Spending Years based on datasource
-  /*let reloadSpendingYears = function () {
-    let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
-    $('#edit-year').addClass('loading');
-      $.ajax({
-        url: '/advanced-search/autocomplete/spending/year/' + data_source + '/feeds'
-        , success: function (data) {
-          //let html = '<option select="selected" value="0" >All Years</option>';
-          let html='';
-          if (data[0]) {
-            if (data[0] !== 'No Matches Found') {
-              $.each(data, function (key, exp_cat) {
-                // Remove null data from drop down
-                if (exp_cat.name !== '\[\]') {
-                  if (exp_cat.code == 0){
-                    html = html + '<option value="' + exp_cat.code  + '" selected="selected">' + exp_cat.name + '</option>';
-                  }
-                  else {
-                    html = html + '<option value="' + exp_cat.code + '">' + exp_cat.name + '</option>';
-                  }
-                }
-              });
-            } else {
-              html = html + '<option value="">' + data[0] + '</option>';
-            }
-          }
-          $('#edit-year').html(html);
-        }, complete: function () {
-          enable_input($('#edit-year'));
-          $('#edit-year').removeClass('loading');
-        }
-      });
-
-  };*/
 
   // When Department Filter is changed reload Expense category Drop-down
   let reloadSpendingExpenceCategories = function () {
@@ -129,9 +91,6 @@
             }
           }
           $('#edit-expense-category').html(html);
-          if (expense_category_hidden) {
-            $('#edit-expense-category').val(expense_category_hidden);
-          }
         }, complete: function () {
           enable_input($('#edit-expense-category'));
           $('#edit-expense-category').removeClass('loading');
@@ -162,8 +121,7 @@
   let showHideSpendingFields = function (data_source) {
     $('.datafield.citywide').add('.datafield.nycha').add('.datafield.nycedc').hide();
     $('#edit-columns .form-item').hide();
-    //let datefilter = $('input:radio[name=date_filter]:checked').val();
-    //reloadSpendingYears();
+
     // Department and Expense Category drop-downs are reset
     reloadSpendingDepartments();
     reloadSpendingExpenceCategories();
