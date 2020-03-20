@@ -51,6 +51,9 @@ switch($solr_datasource){
     break;
   default:
     $yeartype="B";
+    if ($payroll_results['payroll_type_text'][0] == 'NON-SALARIED' && $payroll_results['hourly_rate'] == 0){
+      $payroll_results['hourly_rate'] = $payroll_results['daily_wage'];
+    }
     $linkable_fields = [
       "agency_name" => "/payroll/agency_landing/yeartype/C/year/" . $fiscal_year_id . "/agency/" . $agency_id,
     ];
@@ -94,7 +97,7 @@ foreach ($payroll_parameter_mapping as $key => $title){
         .$agency_id . $dataSourceUrl . "/abc/" .$emp_id. "/salamttype/".$salaried."/year/"
         . $fiscal_year_id . "/yeartype/".$yeartype."'>". custom_number_formatter_format($value, 2 , '$') ."</a>";
     } else {
-      $value = '';
+      $value = '-';
     }
   }
 
