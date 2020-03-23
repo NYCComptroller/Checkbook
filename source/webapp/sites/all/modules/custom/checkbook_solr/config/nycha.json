@@ -275,7 +275,7 @@
     }
   },
   "autocomplete_terms": {
-    "vendor_name": "Vendors",
+    "vendor_name_search": "Vendors",
     "contract_number": "Contract ID",
     "grant_name": "Grant Name",
     "funding_source_name": "Funding Source",
