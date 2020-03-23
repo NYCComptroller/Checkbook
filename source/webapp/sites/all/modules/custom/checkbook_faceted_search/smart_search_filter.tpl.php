@@ -141,10 +141,16 @@ END;
           echo '<div class="subcat-filter-title">By '.htmlentities($sub_facet->title).'</div>';
           //Set Active and Registered Contracts Counts
           if($sub_facet_name == 'contract_status'){
-            if($registered_contracts > 0 )
+            if($registered_contracts > 0 ) {
               $sub_facet->results['registered'] = $registered_contracts;
-            if($active_contracts > 0)
+            }else{
+              unset($sub_facet->results['registered']);
+            }
+            if($active_contracts > 0) {
               $sub_facet->results['active'] = $active_contracts;
+            }else{
+              unset($sub_facet->results['active']);
+            }
           }
 
           foreach($sub_facet->results as $sub_facet_value => $sub_count){
