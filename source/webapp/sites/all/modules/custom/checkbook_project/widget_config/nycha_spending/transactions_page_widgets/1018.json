@@ -6,7 +6,7 @@
   "startWith":0,
   "maxSelect":5,
   "showAllRecords":true,
-  "columns":["vendor_id.vendor_id","vendor_name.vendor_name","txcount","vendor_customer_code.vendor_customer_code"],
+  "columns":["vendor_id.vendor_id","vendor_name.vendor_name","txcount"],
   "orderBy":"-txcount",
   "facetPager":true,
   "filterName":"Vendor",
