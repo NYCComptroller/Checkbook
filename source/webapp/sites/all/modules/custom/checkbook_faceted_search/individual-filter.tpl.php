@@ -64,23 +64,6 @@ if($node->widgetConfig->filterName == 'Amount') {
     }
 }
 
-//Vendor Filter (NYCCHKBK-9825 - for nycha spending vendor name N/A appears as null the below code will fix the issue.)
-if($node->widgetConfig->filterName == 'Vendor') {
-  if ($unchecked && $unchecked)
-    foreach($unchecked as $key => $value) {
-      if($value[1] == null) {
-        $unchecked[$key][0] = "N/A";
-        $unchecked[$key][1] = "N/A";
-      }
-    }
-  if (isset($checked) && $checked)
-    foreach($checked as $key => $value) {
-      if($value[1] == null) {
-        $checked[$key][0] = "N/A";
-        $checked[$key][1] = "N/A";
-      }
-    }
-}
 //Payroll Range Filter
 $is_payroll_range_filter =
     ($node->widgetConfig->filterName == 'Gross Pay YTD') ||
