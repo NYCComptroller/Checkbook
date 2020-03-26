@@ -1394,7 +1394,8 @@ function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $sta
       }
     }
   }
-  $query = '&fq=(' . $query . ')';
+  $query = (strlen($query) > 0) ? '&fq=(' . $query . ')' : $query;
+
   return $query;
 }
 
