@@ -188,7 +188,7 @@ function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide
  * @return array
  */
 function getRegisteredContractsQuery($query, $selectedFacets){
-  if(in_array('contracts', $selectedFacets['domain'])){
+  if(isset($selectedFacets['domain']) && in_array('contracts', $selectedFacets['domain'])){
     //Registered contracts count
     $query = str_replace('&fq=contract_status:"pending"','',$query);
     $query = str_replace('&fq=facet_year_array','&fq=registered_fiscal_year',$query);
@@ -206,7 +206,7 @@ function getRegisteredContractsQuery($query, $selectedFacets){
  * @return array
  */
 function getActiveContractsQuery($query, $selectedFacets){
-  if(in_array('contracts', $selectedFacets['domain'])){
+  if(isset($selectedFacets['domain']) && in_array('contracts', $selectedFacets['domain'])){
     //Active contracts count
     $query = str_replace('&fq=contract_status:"pending"','',$query);
     $query = str_replace('&fq=registered_fiscal_year','&fq=facet_year_array',$query);
@@ -341,6 +341,106 @@ function _checkbook_smart_search_export_download(string $solr_datasource){
   _checkbook_smart_search_export_data($solr_datasource);
 }
 
+/**
+ * @param string $result
+ * @return string $modified_result
+ */
+// Process hyphen fields and special case values for export results
+function hyphen_data_export_results($result,$domain){
+  $lines = explode("\n", $result);
+  $headers = str_getcsv(array_shift($lines));
+  $modified_result;
+  foreach ($lines as $line) {
+    $row = array();
+    foreach (str_getcsv($line) as $key => $field) {
+
+      switch($domain) {
+        case "nycha_contracts":
+          if ($headers[$key] == 'agreement_type_name') {
+            if (strtoupper($field) == 'PURCHASE ORDER') {
+              $date_fields = array("start_date", "end_date");
+            }
+          }
+          if ($headers[$key] == 'record_type') {
+            if ($field == 'Agreement') {
+              $hyphen_fields = array("release_number", "line_number", "commodity_category_name", "item_description", "item_qty_ordered", "shipment_number", "responsibility_center_name",
+                "release_line_total_amount", "release_line_original_amount", "release_line_spend_to_date", "release_approved_date", "release_total_amount", "release_original_amount",
+                "release_spend_to_date", "location_name", "grant_name", "expenditure_type_name", "funding_source_name", "program_phase_code", "gl_project_name");
+            } elseif ($field == 'Release') {
+              $hyphen_fields = array("number_of_releases", "line_number", "commodity_category_name", "item_description", "item_qty_ordered", "shipment_number", "responsibility_center_name", "release_line_total_amount",
+                "release_line_original_amount", "release_line_spend_to_date", "agreement_total_amount", "agreement_original_amount", "agreement_spend_to_date", "location_name",
+                "grant_name", "expenditure_type_name", "funding_source_name", "program_phase_code", "gl_project_name");
+            } elseif ($field == 'Line') {
+              $hyphen_fields = array("number_of_releases", "release_total_amount", "release_original_amount", "release_spend_to_date", "agreement_total_amount", "agreement_original_amount", "agreement_spend_to_date");
+            }
+          }
+          break;
+        case "nycha_spending":
+          $amount_hyphen_fields = array("check_invoice_net_amount", "distribution_line_number", "invoice_line_number");
+          if ($headers[$key] == 'document_id') {
+            if ($field == null) {
+              $field = "N/A";
+            }
+          }
+          if ($headers[$key] == 'spending_category') {
+            if ($field == 'Other') {
+              $hyphen_fields = array("agreement_type_name", "contract_number", "release_number", "contract_purpose", "industry_type_name", "department_name");
+            } elseif ($field == 'Section 8') {
+              $hyphen_fields = array("agreement_type_name", "contract_number", "release_number", "contract_purpose", "industry_type_name", "department_name");
+            } elseif ($field == 'Payroll') {
+              $hyphen_fields = array("agreement_type_name", "contract_number", "release_number", "invoice_number", "contract_spent_amount", "contract_purpose",
+                "industry_type_name", "funding_source_name", "responsibility_center_name", "program_phase_name", "gl_project_name");
+            }
+          }
+          break;
+        case "nycha_payroll":
+          $hyphen_fields = array("annual_salary", "hourly_rate", "daily_wage");
+        case "citywide_payroll":
+          // Display daily wage is hourly rate is zero or '-' if both are zero
+          if ($headers[$key] == 'daily_wage') {
+            if ($field <= 0) {
+              $field = '-';
+            }
+            $daily_wage = $field;
+          }
+          if ($headers[$key] == 'hourly_rate') {
+            if ($field <= 0) {
+              $field = $daily_wage;
+            }
+          }
+          if ($headers[$key] == 'annual_salary' ){
+            if ($field <= 0) {
+              $field = '-';
+            }
+          }
+          break;
+      }
+
+      if(isset($hyphen_fields) && in_array($headers[$key], $hyphen_fields)) {
+        if ($field == null || $field <= 0 ) {
+          $field = '-';
+        }
+      }
+      if(isset($date_fields) && in_array($headers[$key], $date_fields)) {
+        $field = '-';
+      }
+      if(isset($amount_hyphen_fields) && in_array($headers[$key], $amount_hyphen_fields)) {
+        if ($field == null || $field <= 0 ) {
+          $field = '-';
+        }
+      }
+      $row[$headers[$key]] = $field;
+    }
+    if($domain == "citywide_payroll")
+    {
+      unset($row['daily_wage']);
+    }
+    $rows = implode(",", $row);
+    $modified_result .= $rows . "\n";
+    $rows = "";
+  }
+  return($modified_result);
+}
 /** Exports the smart search export data
  * @param string $solr_datasource
  */
@@ -350,22 +450,20 @@ function _checkbook_smart_search_export_data(string $solr_datasource){
   $page_size = 10000;
   $page_num = 0;
 
+  $domain = $solr_datasource.'_'.$_REQUEST['domain'];
   $fields = (array)CheckbookSolr::getExportFields($solr_datasource, $_REQUEST['domain']);
-
   $fl = implode(",", array_keys($fields));
+  // Remove daily wage display for citywide payroll
+  if($domain == "citywide_payroll")
+  {
+    unset($fields['daily_wage']);
+  }
   echo implode(",", array_values($fields)) . "\n";
 
-  //echo $solr_datasource."\n";
-  //echo $_REQUEST['domain']."\n";
-  //echo $_REQUEST['search_terms'];
-
   while ($remaining > 0) {
-    $result = _checkbook_smart_search_get_results_csv($solr_datasource, $_REQUEST['search_terms'] ?? '', $page_num, $page_size, $fl, true);
 
     // Since SOLR 7 (gptext) doesn't seem to pick up "&csv.header=false" in _checkbook_smart_search_get_results_csv(), unset CSV header manually
-    $results = explode("\n", $result);
-    unset($results[0]);
-    $result = implode("\n", $results);
+    $result = _checkbook_smart_search_get_results_csv($solr_datasource, $_REQUEST['search_terms'] ?? '', $page_num, $page_size, $fl, true);
 
     $page_num += 1;
     $remaining = $remaining - $page_size;
@@ -376,27 +474,25 @@ function _checkbook_smart_search_export_data(string $solr_datasource){
       continue;
     }
 
-    // NYCCHKBK - 9264 display "-" only for nycha contracts purchase order transactions (start and end date) while exporting to csv
-    /*if (preg_match("/nycha/",$solr_datasource) && preg_match("/contracts/",$_REQUEST['domain'])){
-      if (preg_match("/agreement_type_name\=purchase\+order/",$_REQUEST['search_terms']) || preg_match("/contract_number\=po\d+/",$_REQUEST['search_terms'])) {
-        $result_modified = explode("\n", $result);
-          for ($i = 0; $i <count($result_modified); $i++) {
-          if (preg_match("/PURCHASE ORDER/i", $result_modified[$i])) {
-            $result_modified[$i] = preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "-", $result_modified[$i], 2);
-            $result_modified[$i] = preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $result_modified[$i]);
-            echo $result_modified[$i] . "\n";
-          }
-        }
-      }
-    } else {*/
-      $result = str_replace("Registered,Expense", "Active,Expense", $result);
-      $result = str_replace("Registered,Revenue", "Active,Revenue", $result);
-      // replacing '\,' to ' ' in export results to match UI results (earlier it was replaced by , and results were not printing properly in csv)
-      $result = str_replace("\,", " ", $result);
-      $result = preg_replace("/1970-01-01T05:00:00Z/", "N/A", $result);
-      echo preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $result);
-    //}
+    // Process records before display
+    if ($domain == "nycha_contracts" || $domain == "nycha_payroll" || $domain == "nycha_spending" || $domain == "citywide_payroll"){
+      $csv_result = hyphen_data_export_results($result,$domain);
+      //print($results);
+    }
+    else{
+      $results = explode("\n", $result);
+      unset($results[0]);
+      $csv_result = implode("\n", $results);
+    }
 
+    $csv_result= str_replace("Registered,Expense", "Active,Expense", $csv_result);
+    $csv_result = str_replace("Registered,Revenue", "Active,Revenue", $csv_result);
+    // replacing '\,' to ' ' in export results to match UI results (earlier it was replaced by , and results were not printing properly in csv)
+    $csv_result = str_replace("\,", " ", $csv_result);
+    $csv_result = preg_replace("/1970-01-01T05:00:00Z/", "N/A", $csv_result);
+    $csv_result = preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $csv_result);
+    // Print the final output
+    echo $csv_result;
     ob_flush();
     flush();
   }
@@ -523,7 +619,6 @@ function _checkbook_autocomplete(string $solr_datasource, string $facet): array{
     foreach (array_keys($facet_results) as $key) {
       array_push($matches, ["url" => "", "category" => $facet, "label" => $key, "value" => $key]);
     }
-
     return $matches;
   }
   return [['label' => 'No Matches Found', 'value' => '']];
@@ -672,3 +767,4 @@ function getCurrentYearID(){
   }
   return $current_nyc_year;
 }
+

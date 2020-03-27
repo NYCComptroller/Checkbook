@@ -54,12 +54,14 @@ $amount_fields = array("agreement_original_amount",
   "original_amount",
   "invoiced_amount");
 
-$hyphen_fields = array("agreement_type_name",
-  "po_header_id",
-  "number_of_releases",
-  "release_number",
-  "item_qty_ordered",
-  "shipment_number"
+$hyphenFields = array(
+  "Agreement" => array("release_number", "line_number", "commodity_category_name", "item_description", "item_qty_ordered", "shipment_number", "responsibility_center_name",
+    "release_line_total_amount", "release_line_original_amount", "release_line_spend_to_date", "release_approved_date", "release_total_amount", "release_original_amount",
+    "release_spend_to_date", "location_name", "grant_name", "expenditure_type_name", "funding_source_name", "program_phase_code", "gl_project_name"),
+ "Release" => array("number_of_releases", "line_number", "commodity_category_name", "item_description", "item_qty_ordered", "shipment_number", "responsibility_center_name", "release_line_total_amount",
+  "release_line_original_amount", "release_line_spend_to_date", "agreement_total_amount", "agreement_original_amount", "agreement_spend_to_date", "location_name",
+  "grant_name", "expenditure_type_name", "funding_source_name", "program_phase_code", "gl_project_name"),
+ "Line" => array("number_of_releases", "release_total_amount", "release_original_amount", "release_spend_to_date", "agreement_total_amount", "agreement_original_amount", "agreement_spend_to_date")
   );
 
 $count = 1;
@@ -76,12 +78,14 @@ foreach ($contracts_parameter_mapping as $key => $title){
   else{
     $value = $contracts_results[$key];
   }
-
-  if(in_array($key, $amount_fields)){
+  if (isset($hyphenFields[$contracts_results['record_type']]) && in_array($key, $hyphenFields[$contracts_results['record_type']] ?? [])) {
+    $value = "-";
+  }
+  if(isset($amount_fields) && in_array($key, $amount_fields)){
     $value = custom_number_formatter_format($value, 2 , '$');
   }
 
-  if(in_array($key, $date_fields)){
+  if(isset($date_fields) && in_array($key, $date_fields)){
     if($value != null && $value != "N/A" ){
       $value = date("F j, Y", strtotime(substr($value, 0, 10)));
     }
@@ -93,7 +97,7 @@ foreach ($contracts_parameter_mapping as $key => $title){
     $value = $linkable_fields[$key];
   }
 
-  if(in_array($key, $hyphen_fields)) {
+  if(isset($hyphen_fields) && in_array($key, $hyphen_fields)) {
     if ($value == null) {$value = '-';}
   }
 
