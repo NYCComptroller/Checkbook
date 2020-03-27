@@ -55,10 +55,10 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       continue;
     }
 
-    if(in_array('registered', $selected_facet_results['contract_status']) && strtolower($facet_name) == 'facet_year_array'){
+    if(isset($selected_facet_results['contract_status']) && in_array('registered', $selected_facet_results['contract_status']) && strtolower($facet_name) == 'facet_year_array'){
       continue;
     }
-    if(!in_array('registered', $selected_facet_results['contract_status']) && strtolower($facet_name) == 'registered_fiscal_year'){
+    if(isset($selected_facet_results['contract_status']) && !in_array('registered', $selected_facet_results['contract_status']) && strtolower($facet_name) == 'registered_fiscal_year'){
       continue;
     }
 
@@ -80,7 +80,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       $disabled = '';
 
       echo '<div class="autocomplete">
-              <input id="' . $autocomplete_id . '" ' . $disabled . ' type="text" class="solr_autocomplete" facet="'.$facet_name.'" /> 
+              <input id="' . $autocomplete_id . '" ' . $disabled . ' type="text" class="solr_autocomplete" facet="'.$facet_name.'" />
             </div>';
 //      placeholder="Autocomplete '.htmlentities($facet->title).'..."
     }
