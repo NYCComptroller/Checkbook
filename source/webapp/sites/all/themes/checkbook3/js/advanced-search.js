@@ -644,19 +644,21 @@
         }
 
         function autoCompletes(div) {
-          var contract_status = div.ele('status').val() || 0;
-          var contract_category_name = div.ele('category').val()|| 0;
-          var minority_type_id = div.ele('mwbe_category').val() || 0;
-          var industry_type_id = div.ele('industry').val() || 0;
-          var agreement_type_id = div.ele('contract_type').val() || 0;
-          var agency_id = div.ele('agency').val() || 0;
-          var award_method_id = div.ele('award_method').val() || 0;
-          var scntrc_status = div.ele('includes_sub_vendors').val() || 0;
-          var aprv_sta = div.ele('sub_vendor_status').val() || 0;
-          var data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
-          var solr_datasource = data_source;
-          var year = div.ele('year').val() || 0;
-          var year_id = 0;
+          let contract_status = div.ele('status').val() || 0;
+          let contract_category_name = div.ele('category').val()|| 0;
+          let minority_type_id = div.ele('mwbe_category').val() || 0;
+          let industry_type_id = div.ele('industry').val() || 0;
+          let agreement_type_id = div.ele('contract_type').val() || 0;
+          let agency_id = div.ele('agency').val() || 0;
+          let award_method_id = div.ele('award_method').val() || 0;
+          let scntrc_status = div.ele('includes_sub_vendors').val() || 0;
+          let aprv_sta = div.ele('sub_vendor_status').val() || 0;
+          let data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
+          let solr_datasource = data_source;
+          let year = div.ele('year').val() || 0;
+          let year_id = 0;
+          let reg_year_id = 0;
+
           if(year.indexOf("fy") >= 0){
             year_id = year.split('~')[1];
           }
@@ -664,12 +666,12 @@
           if ('checkbook_nycha' == data_source){solr_datasource = 'nycha'}
 
           if('nycha' == solr_datasource){
-            var agreement_type_code_nycha = $('#edit-checkbook-nycha-contracts-purchase-order-type').val() || 0;
-            var responsibility_center_nycha = $('#edit-checkbook-nycha-contracts-responsibility-center').val() || 0;
-            var contract_type_id_nycha = extractId($('#edit-checkbook-nycha-contracts-type').val()) || 0;
-            var award_method_id_nycha = extractId($('#edit-checkbook-nycha-contracts-award-method').val()) || 0;
-            var industry_type_id_nycha = $('#edit-checkbook-nycha-contracts-industry').val() || 0;
-            var nycha_filters = {
+            let agreement_type_code_nycha = $('#edit-checkbook-nycha-contracts-purchase-order-type').val() || 0;
+            let responsibility_center_nycha = $('#edit-checkbook-nycha-contracts-responsibility-center').val() || 0;
+            let contract_type_id_nycha = extractId($('#edit-checkbook-nycha-contracts-type').val()) || 0;
+            let award_method_id_nycha = extractId($('#edit-checkbook-nycha-contracts-award-method').val()) || 0;
+            let industry_type_id_nycha = $('#edit-checkbook-nycha-contracts-industry').val() || 0;
+            let nycha_filters = {
               agreement_type_code: agreement_type_code_nycha,
               responsibility_center_id: responsibility_center_nycha,
               contract_type_id: contract_type_id_nycha,
@@ -683,7 +685,11 @@
             div.ele('contract_id').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number', nycha_filters)});
             div.ele('pin').autocomplete({source: autoCompleteSource(solr_datasource,'pin', nycha_filters)});
           }else {
-            var filters = {
+              if (contract_status == 'R') {
+                reg_year_id = year_id;
+                year_id = 0;
+              }
+              var filters = {
               contract_status: contract_status,
               contract_category_name: contract_category_name,
               agreement_type_id: agreement_type_id,
@@ -693,7 +699,8 @@
               industry_type_id: industry_type_id,
               scntrc_status: scntrc_status,
               aprv_sta: aprv_sta,
-              fiscal_year_id: year_id
+              fiscal_year_id: year_id,
+              registered_fiscal_year_id: reg_year_id
             };
 
             div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name',filters)});
