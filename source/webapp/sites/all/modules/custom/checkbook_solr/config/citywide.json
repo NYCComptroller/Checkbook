@@ -199,6 +199,7 @@
       "gross_pay": "Gross Pay",
       "annual_salary": "Annual Salary",
       "base_pay": "Base Pay",
+      "daily_wage": "Daily Wage",
       "hourly_rate": "Hourly Rate",
       "other_payments": "Other Payments",
       "overtime_pay": "Overtime Payments",
