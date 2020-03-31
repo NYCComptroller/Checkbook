@@ -55,6 +55,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       continue;
     }
 
+    $selected_facet_results['contract_status'] = is_array($selected_facet_results['contract_status']) ? $selected_facet_results['contract_status'] : [];
     if(in_array('registered', $selected_facet_results['contract_status']) && strtolower($facet_name) == 'facet_year_array'){
       continue;
     }
