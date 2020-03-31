@@ -212,15 +212,6 @@
                             "sourceColumnName": "pay_date"
                         }
                     ]
-                },
-                {
-                  "name": "hourly_rate",
-                  "levels": [
-                    {
-                      "name": "hourly_rate",
-                      "sourceColumnName": "hourly_rate"
-                    }
-                  ]
                 }
             ],
             "measures":{
