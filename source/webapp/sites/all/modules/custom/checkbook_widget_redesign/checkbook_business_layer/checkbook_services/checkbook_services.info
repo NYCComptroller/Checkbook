@@ -69,6 +69,11 @@ files[] = budget/BudgetWidgetService.php
 files[] = budget/data/BudgetDataService.php
 files[] = budget/data/IBudgetDataService.php
 
+files[] = nychaBudget/data/INychaBudgetDataService.php
+files[] = nychaBudget/data/NychaBudgetDataService.php
+files[] = nychaBudget/NychaBudgetUrlService.php
+files[] = nychaBudget/NychaBudgetWidgetService.php
+
 files[] = payroll/PayrollUrlService.php
 files[] = payroll/PayrollWidgetService.php
 files[] = payroll/data/PayrollDataService.php

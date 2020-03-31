@@ -25,6 +25,8 @@ core = 7.x
 
 dependencies[] = checkbook_infrastructure_layer
 
+files[] = config/sql/budget/budget.xml
+files[] = config/sql/budget/nycha_budget.xml
 files[] = config/sql/contracts/contracts.xml
 files[] = config/sql/contracts/oge_contracts.xml
 files[] = config/sql/contracts/pending_contracts.xml
