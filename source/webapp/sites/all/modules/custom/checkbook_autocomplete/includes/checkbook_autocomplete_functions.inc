@@ -1375,22 +1375,14 @@ function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $sta
     }
   } else {
     if ($status == 'A') {
-      //if (strtolower($year_type) == 'fy') {
+      if (strtolower($year_type) == 'fy') {
         $query .= 'fiscal_year_id:' . $year_id;
-      /*} elseif (strtolower($year_type) == 'cy') {
-        $start_date = ($year_value) . "-12-31T23:59:59.999Z";
-        $end_date = ($year_value) . "-01-01T00:00:00.999Z";
-        $query .= '(start_date:[*%20TO%20' . $start_date . ']%20AND%20end_date:[' . $end_date . '%20TO%20*])';
-      }*/
+      }
     } else {
       if ($status == 'R') {
-        //if (strtolower($year_type) == 'fy') {
+        if (strtolower($year_type) == 'fy') {
           $query .= 'registered_fiscal_year_id:' . $year_id;
-        /*} elseif (strtolower($year_type) == 'cy') {
-          $start_date = ($year_value) . "-01-01T00:00:00.999Z";
-          $end_date = ($year_value) . "-12-31T23:59:59.999Z";
-          $query .= '(registration_date:[' . $start_date . '%20TO%20' . $end_date . '])';
-        }*/
+        }
       }
     }
   }
