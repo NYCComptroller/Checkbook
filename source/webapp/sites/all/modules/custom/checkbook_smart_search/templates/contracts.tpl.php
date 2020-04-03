@@ -121,9 +121,9 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
         $contract_id_link = "/contracts_revenue_landing/status/" .$status;
     }
     if($contracts_results['is_prime_or_sub'] == 'Yes'){
-        $contract_id_link .= _checkbook_project_get_year_url_param_string(). (($isOge) ? '/datasource/checkbook_oge/agency/'.$contracts_results['oge_agency_id'] : '') ."/dashboard/ss?expandBottomContURL=/panel_html/contract_transactions/"."/contract_details";
+        $contract_id_link .= _checkbook_project_get_year_url_param_string(). (($isOge) ? '/datasource/checkbook_oge/agency/'.$contracts_results['oge_agency_id'] : '') ."/dashboard/ss?expandBottomContURL=/panel_html/contract_transactions/contract_details";
     }else{
-        $contract_id_link .= _checkbook_project_get_year_url_param_string(). (($isOge) ? '/datasource/checkbook_oge/agency/'.$contracts_results['oge_agency_id'] : '') ."?expandBottomContURL=/panel_html/contract_transactions/"."/contract_details";
+        $contract_id_link .= _checkbook_project_get_year_url_param_string(). (($isOge) ? '/datasource/checkbook_oge/agency/'.$contracts_results['oge_agency_id'] : '') ."?expandBottomContURL=/panel_html/contract_transactions/contract_details";
     }
     if($contracts_results['document_code'] == 'MA1' || $contracts_results['document_code'] == 'MMA1' || $contracts_results['document_code'] == 'RCT1'){
         $contract_id_link .= "/magid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
@@ -292,9 +292,9 @@ foreach ($contracts_parameter_mapping as $key => $title){
     }
     elseif($key == "minority_type_name" && $contracts_results["minority_type_name"]){
         $id = $contracts_results["minority_type_id"];
-            if($id == '4' || $id == '5'){
-                $id = '4~5';
-            }
+        if($id == '4' || $id == '5' || $id == '10'){
+            $id = '4~5';
+        }
         if($contracts_results['minority_type_id'] != '7' && $contracts_results['minority_type_id'] != '11'){
             if($contracts_results['is_prime_or_sub'] == 'Yes'){
                 $value = "<a href='/contracts_landing/status/A/yeartype/B/year/". $fiscal_year_id ."/mwbe/".$id ."/dashboard/ms'>" .$contracts_results["minority_type_name"]."</a>";
