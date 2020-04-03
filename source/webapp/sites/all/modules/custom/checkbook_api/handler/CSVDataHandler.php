@@ -170,10 +170,8 @@ class CSVDataHandler extends AbstractDataHandler {
                     $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
                     break;
                 case "salaried_amount":
-                if($this->requestDataSet->data_source == Datasource::NYCHA) {
-                  $new_column = "CASE WHEN  amount_basis_id = 2 OR amount_basis_id = 3 THEN CAST('-' AS Text) ELSE CAST(salaried_amount AS Text) END";
+                  $new_column = "CASE WHEN  amount_basis_id = 1 THEN CAST(salaried_amount AS Text) ELSE CAST('-' AS Text) END";
                   $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
-                }
                 break;
                 case "hourly_rate":
                     if($this->requestDataSet->data_source == Datasource::NYCHA) {
@@ -185,6 +183,11 @@ class CSVDataHandler extends AbstractDataHandler {
               case "non_salaried_amount":
                 if($this->requestDataSet->data_source == Datasource::NYCHA) {
                   $new_column = "CASE WHEN " . $alias . $column . " > 0  AND amount_basis_id = 2 THEN CAST (non_salaried_amount AS Text) ELSE  CAST('-' AS Text) END";
+                  //$new_column = "''";
+                  $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
+                }
+                else{
+                  $new_column = "CASE WHEN " . $alias . $column . " > 0  AND amount_basis_id != 1 THEN CAST (non_salaried_amount AS Text) ELSE  CAST('-' AS Text) END";
                   //$new_column = "''";
                   $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
                 }
