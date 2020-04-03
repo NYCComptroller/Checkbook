@@ -210,16 +210,35 @@ class XMLDataHandler extends AbstractDataHandler
                     $new_select_part .= "CASE WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " ~* 's' THEN 'Yes' ELSE 'No' END";
                     break;
                 case "amount_basis_id":
-                    $new_select_part .=  "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END";
-                    break;
+                    $new_column = "CASE WHEN " . $alias . $column . " = 1 THEN 'Salaried' ELSE 'Non-Salaried' END";
+                    $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
+                break;
+                case "salaried_amount":
+                    $new_column = "CASE WHEN  amount_basis_id = 1 THEN CAST(salaried_amount AS Text) ELSE CAST('-' AS Text) END";
+                    $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
+                break;
+                case "hourly_rate":
+                    if($this->requestDataSet->data_source == Datasource::NYCHA) {
+                    $new_column = "CASE WHEN " . $alias . $column . " > 0 AND amount_basis_id = 3 THEN CAST(hourly_rate AS Text) ELSE CAST('-' AS Text) END";
+                    //$new_column = "''";
+                    $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
+                    }
+                break;
+                case "non_salaried_amount":
+                    if($this->requestDataSet->data_source == Datasource::NYCHA) {
+                    $new_column = "CASE WHEN " . $alias . $column . " > 0  AND amount_basis_id = 2 THEN CAST (non_salaried_amount AS Text) ELSE  CAST('-' AS Text) END";
+                    //$new_column = "''";
+                    $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
+                    }
+                    else{
+                    $new_column = "CASE WHEN " . $alias . $column . " > 0  AND amount_basis_id != 1 THEN CAST (non_salaried_amount AS Text) ELSE  CAST('-' AS Text) END";
+                    //$new_column = "''";
+                    $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
+                    }
+                break;
                 case "release_approved_year":
                     if($criteria['global']['type_of_data'] == 'Contracts_NYCHA'){
                       $new_select_part .= $criteria['value']['fiscal_year'];
-                    }
-                    break;
-                case "hourly_rate":
-                    if($this->requestDataSet->data_source == Datasource::NYCHA) {
-                        $new_select_part .=  "''";
                     }
                     break;
                 default:
