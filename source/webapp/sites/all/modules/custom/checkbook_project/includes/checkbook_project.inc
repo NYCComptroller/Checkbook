@@ -634,11 +634,11 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
         $parameters[$contractStatusCol] = $contractStatus;
       }
 
+      $data_controller_instance = data_controller_get_operator_factory_instance();
       //adjust year
       $yearCol = isset($node->widgetConfig->urlParamMap->$yearParam) ? $node->widgetConfig->urlParamMap->$yearParam : $node->widgetConfig->urlParamMap->calyear;
       $reqYear = $node->widgetConfig->requestParams[$yearCol];
       if (isset($reqYear)) {
-        $data_controller_instance = data_controller_get_operator_factory_instance();
         $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
         $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
         if (isset($dimension)) {
@@ -661,6 +661,14 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
             $parameters['effective_begin_year_id'] = $leCondition;
             $parameters['effective_end_year_id'] = $geCondition;
           }
+        }
+      }else{
+        //Hide data for contracts, end date is prior 2011
+        //TO DO: Move end fiscal year to Drupal variables
+        $year = _getYearIDFromValue(2011);
+        $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
+        if($contractStatus=='A'){
+          $parameters['ending_year_id']= $geCondition;
         }
       }
       break;
