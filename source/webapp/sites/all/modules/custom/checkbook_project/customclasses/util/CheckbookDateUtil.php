@@ -19,8 +19,7 @@
  */
 
 
-class CheckbookDateUtil
-{
+class CheckbookDateUtil{
   /**
    * @var
    */
@@ -41,8 +40,7 @@ class CheckbookDateUtil
   /**
    *
    */
-  private static function setCurrentYears()
-  {
+  private static function setCurrentYears(){
     if (self::$currentCalendarYear) {
       return;
     }
@@ -60,8 +58,7 @@ class CheckbookDateUtil
    * @param $year
    * @return int
    */
-  public static function year2yearId($year)
-  {
+  public static function year2yearId($year){
     return $year < 1900 ? $year : $year - 1899;
   }
 
@@ -69,8 +66,7 @@ class CheckbookDateUtil
    * @param $id
    * @return int
    */
-  public static function yearId2Year($id)
-  {
+  public static function yearId2Year($id){
     return $id > 1900 ? $id : $id + 1899;
   }
 
@@ -78,8 +74,7 @@ class CheckbookDateUtil
    * @param string $data_source
    * @return mixed
    */
-  public static function getCurrentFiscalYear($data_source = Datasource::CITYWIDE)
-  {
+  public static function getCurrentFiscalYear($data_source = Datasource::CITYWIDE){
     self::setCurrentYears();
     $isNYCHA = (bool)($data_source == Datasource::NYCHA || Datasource::isNYCHA());
     //For NYCHA, Fiscal Year is Calender Year
@@ -94,8 +89,7 @@ class CheckbookDateUtil
    * @param string $data_source
    * @return string
    */
-  public static function getCurrentFiscalYearId($data_source = Datasource::CITYWIDE): string
-  {
+  public static function getCurrentFiscalYearId($data_source = Datasource::CITYWIDE){
     return self::year2yearId(self::getCurrentFiscalYear($data_source));
   }
 
@@ -110,8 +104,7 @@ class CheckbookDateUtil
    *
    * @return string
    */
-  public static function getCurrentDatasourceFiscalYear(string $data_source): string
-  {
+  public static function getCurrentDatasourceFiscalYear(string $data_source){
     self::setCurrentYears();
     $key = 'current_' . $data_source . '_fy';
     if ($year = _checkbook_dmemcache_get($key)) {
@@ -130,16 +123,14 @@ class CheckbookDateUtil
    * @param string $data_source
    * @return string
    */
-  public static function getCurrentDatasourceFiscalYearId(string $data_source): string
-  {
+  public static function getCurrentDatasourceFiscalYearId(string $data_source){
     return self::year2yearId(self::getCurrentDatasourceFiscalYear($data_source));
   }
 
   /**
    * @return mixed
    */
-  public static function getCurrentCalendarYear()
-  {
+  public static function getCurrentCalendarYear(){
     self::setCurrentYears();
     return self::$currentCalendarYear;
   }
@@ -147,8 +138,7 @@ class CheckbookDateUtil
   /**
    * @return mixed
    */
-  public static function getCurrentCalendarYearId()
-  {
+  public static function getCurrentCalendarYearId(){
     self::setCurrentYears();
     return self::$currentCalendarYearId;
   }
@@ -156,8 +146,7 @@ class CheckbookDateUtil
   /**
    * @return array
    */
-  public static function getLast10fiscalYears()
-  {
+  public static function getLast10fiscalYears(){
     $last = self::getCurrentFiscalYear();
     $results = [];
     for ($i = $last; $i > $last - 10; $i--) {
@@ -170,8 +159,7 @@ class CheckbookDateUtil
    * @param string $data_source
    * @return array
    */
-  public static function getLast10FiscalYearOptions($data_source)
-  {
+  public static function getLast10FiscalYearOptions($data_source){
     // For NYCHA Fiscal Year is Calendar Year
     $last = self::getCurrentDatasourceFiscalYear($data_source);
     $yearCount = 10;
@@ -190,8 +178,7 @@ class CheckbookDateUtil
   /**
    * @return array
    */
-  public static function getLast10CalendarYearOptions($data_source)
-  {
+  public static function getLast10CalendarYearOptions($data_source){
     $last = self::getCurrentCalendarYear();
     $yearCount = 10;
     $isNYCHA = (bool)($data_source == Datasource::NYCHA || Datasource::isNYCHA());
@@ -210,14 +197,31 @@ class CheckbookDateUtil
    * @param $monthId
    * @return mixed|null
    */
-  static function getMonthDetails($monthId)
-  {
+  static function getMonthDetails($monthId){
     if (!isset($monthId)) {
       return NULL;
     }
-
     $monthDetails = _checkbook_project_querydataset('checkbook:month', array('month_id', 'month_value', 'month_name', 'month_short_name'), array('month_id' => $monthId));
     return $monthDetails;
+  }
+
+  /**
+   * return full year text value for a give year id ...
+   * @return string
+   */
+  public static function getFullYearString(){
+    $yearId = RequestUtilities::get('year');
+    $yearId = empty(((empty($yearId))) ? RequestUtilities::get('calyear') : $yearId) ? self::getCurrentFiscalYearId() :  $yearId;
+    $yearType = RequestUtilities::get('yeartype');
+    $yearType = (empty($yearType)) ? 'B' : $yearType;
+    $yearValue = _getYearValueFromID($yearId);
+    $yearString = ($yearType == 'B') ? "FY $yearValue" : "CY $yearValue";
+    if (RequestUtilities::get('datasource') == Datasource::NYCHA) {
+      $yearString .= "(January 1, " . ($yearValue) . " - Decemeber 31, $yearValue)";
+    } else {
+      $yearString .= ($yearType == 'B') ? " (July 1, " . ($yearValue - 1) . " - June 30, $yearValue)" : " (January 1, {$yearValue} - December 31, $yearValue)";
+    }
+    return $yearString;
   }
 
 }

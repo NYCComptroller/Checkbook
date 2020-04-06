@@ -47,27 +47,7 @@ function _getYearValueFromID($year_id){
  * @return string
  */
 function _getFullYearString(){
-  $year_id = RequestUtilities::get('year');
-  if (empty($year_id)) {
-    $year_id = RequestUtilities::get('calyear');
-  }
-  $yearType = RequestUtilities::get('yeartype');
-  if (empty($yearType)) {
-    $yearType = 'B';
-  }
-  if (empty($year_id)) {
-    $year_id = CheckbookDateUtil::getCurrentFiscalYearId();
-  }
-
-  $yearValue = _getYearValueFromID($year_id);
-  $yearString = ($yearType == 'B') ? "FY $yearValue" : "CY $yearValue";
-  if (RequestUtilities::get('datasource') == Datasource::NYCHA) {
-    $yearString .= "(January 1, " . ($yearValue) . " - Decemeber 31, $yearValue)";
-  } else {
-    $yearString .= ($yearType == 'B') ? " (July 1, " . ($yearValue - 1) . " - June 30, $yearValue)" : " (January 1, {$yearValue} - December 31, $yearValue)";
-  }
-
-  return $yearString;
+  return CheckbookDateUtil::getFullYearString();
 }
 
 /**
@@ -1258,7 +1238,7 @@ function get_db_query($isList, $datasetName, $columns = NULL, $parameters = NULL
  * @param string $data_source
  * @return DatabaseConnection|void DB connection
  */
-function get_datafeed_connection($db_name = "datafeed", $data_source = 'checkbook'){
+function get_datafeed_connection($db_name = "datafeed", $data_source = Datasource::CITYWIDE){
   try {
     return Database::getConnection($db_name, $data_source);
   } catch (Exception $e) {
@@ -1646,7 +1626,7 @@ function _checkbook_project_delete_file_if_stale($path){
  * @param string $data_source
  * @return array|bool|mixed|void
  */
-function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 'checkbook'){
+function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = Datasource::CITYWIDE){
   global $databases;
 
   if (function_exists('_checkbook_project_execute_sql_test')) {
@@ -1699,7 +1679,7 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
  * @param string $data_source
  * @return array|bool|mixed
  */
-function _checkbook_project_execute_sql_by_data_source($sql, $data_source = 'checkbook'){
+function _checkbook_project_execute_sql_by_data_source($sql, $data_source = Datasource::CITYWIDE){
   return _checkbook_project_execute_sql($sql, 'main', $data_source);
 }
 
