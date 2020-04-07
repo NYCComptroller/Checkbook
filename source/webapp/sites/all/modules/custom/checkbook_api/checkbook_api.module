@@ -281,7 +281,6 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                         }
                     }
 
-
                     if(strtolower($type_of_data) == 'contracts_oge'){
                         // Adjust year and year type for OGE
                         $req_year = $parameters[checkbook_api_change_datasource($datasource,'fiscal_year')];
@@ -313,8 +312,7 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                                 $parameters['registered_year_id'] = $req_year;
                             else
                                 $parameters['registered_year'] = $req_year;
-                        }
-                        else {
+                        } else {
                             if ($contract_status == 'active') {
                                 if(strtolower($type_of_data) == 'contracts_oge'){
                                     $parameters['effective_begin_year_id'] = $le_condition;
@@ -338,9 +336,12 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                     if ($contract_status == 'active') {
                       if(strtolower($type_of_data) == 'contracts_oge'){
                         $parameters['effective_end_year_id'] = $ge_condition;
+                        $parameters['ending_year_id'] = $ge_condition;
                       }
                       else{
+                        //For Citywide Revenue Category
                         $parameters['effective_end_year'] = $ge_condition;
+                        $parameters['ending_year'] = $ge_condition;
                       }
                     }
                 }
@@ -428,6 +429,13 @@ function checkbook_api_adjust_expense_contracts_params(&$parameters, $criteria, 
     }
     else {
         $parameters['latest_flag'] = 'Y';
+        //Hide Active Expense/All contracts, end date is prior 2011
+        if($contract_status == 'active') {
+          $yearId = _getYearIDFromValue(2011);
+          $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($yearId));
+          $parameters['effective_end_year_id'] = $geCondition;
+          $parameters['ending_year_id']= $geCondition;
+        }
     }
 
     //Document Code
