@@ -173,7 +173,7 @@
                     "function": "SUM(annual_salary)"
                 },
                 "total_salaried_amount": {
-                    "function": "(CASE WHEN type_of_employment = 'Salaried' AND SUM(COALESCE(annual_salary,0)) > 0 THEN CAST(SUM(COALESCE(annual_salary,0)) AS varchar) else CAST('-' AS varchar) END)"
+                    "function": "(CASE WHEN type_of_employment = 'Salaried' AND SUM(COALESCE(annual_salary,0)) > 0 THEN SUM(COALESCE(annual_salary,0)) else NULL END)"
                 },
                 "total_salaried_employees": {
                     "function": "COUNT(DISTINCT (CASE WHEN type_of_employment = 'Salaried' THEN employee_number END))"
@@ -191,13 +191,13 @@
                     "function": "SUM( CASE WHEN type_of_employment = 'Salaried' THEN NULL else COALESCE(annual_salary,0) END)"
                 },
                 "max_hourly_rate":{
-                  "function": "MAX(CASE WHEN hourly_rate > 0 THEN CAST(hourly_rate AS varchar) else CAST('-' as varchar) END)"
+                  "function": "MAX(CASE WHEN hourly_rate > 0 THEN hourly_rate  else NULL END)"
                 },
                 "max_daily_wage":{
-                  "function": "MAX(CASE WHEN daily_wage > 0 THEN CAST (daily_wage AS varchar) else CAST('-' as varchar) END)"
+                  "function": "MAX(CASE WHEN daily_wage > 0 THEN daily_wage else NULL END)"
                 },
                 "max_hourly_daily":{
-                "function": "(CASE WHEN MAX(daily_wage) > 0 THEN CAST(MAX(daily_wage) AS VARCHAR)  WHEN MAX(hourly_rate) > 0 THEN CAST(MAX(hourly_rate) AS VARCHAR) ELSE CAST('-' as varchar) END)"
+                  "function" :"MAX(CASE WHEN hourly_rate > 0 THEN hourly_rate ELSE daily_wage END)"
                 },
                 "total_overtime_employees": {
                     "function": "COUNT(DISTINCT (CASE WHEN COALESCE(positive_overtime_pay,0) > 0 THEN employee_number END))"
