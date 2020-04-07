@@ -42,7 +42,7 @@
      }
     ",
     "uniqueSortColumn":["employee_employee"],
-    "columns": ["agency.agency", "agency.agency.agency_short_name", "agency.agency.agency_name", "pay_date.pay_date",
+    "columns": ["agency.agency", "agency.agency.agency_short_name", "agency.agency.agency_name", "pay_date.pay_date","annual_salary.annual_salary",
                 "civil_service_title.civil_service_title","civil_service_title_code.civil_service_title_code", "year_type.year_type", "year.year",
                 "employee.employee", "employee_number.employee_number", "employment_type.employment_type", "max_hourly_rate", "max_daily_wage",
                 "max_hourly_daily","total_salaried_amount","total_non_salaried_amount","total_gross_pay","total_base_salary",
@@ -61,7 +61,7 @@
           "expression": " isset($row['total_salaried_amount']) ? custom_number_formatter_basic_format($row['total_salaried_amount'])  : '-'  "
         },
         "annual_salary_link": {
-          "expression": "isset($row['total_salaried_amount']) ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource') . '/salamttype/1/abc/' . $row['employee_employee'] . '>'. $row['formatted_salary_amount'] .'</a>' : '-'"
+          "expression": "(isset($row['total_salaried_amount']) && $row['total_salaried_amount'] != '-') ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource') . '/salamttype/1/abc/' . $row['employee_employee'] . '>'. $row['formatted_salary_amount'] .'</a>' : '-'"
         },
         "formatted_non_salary_amount": {
           "expression": " isset($row['total_non_salaried_amount']) ? custom_number_formatter_basic_format($row['total_non_salaried_amount']) : '-'"
@@ -86,14 +86,14 @@
           "expression": " isset($row['max_hourly_rate']) ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource')  . '/salamttype/2~3/abc/' . $row['employee_employee'] . '>'. $row['formatted_hourly_rate_amount'] .'</a>' : '-'"
         },
         "hourly_daily_link": {
-        "expression": " (isset($row['max_hourly_daily']) && $row['max_hourly_daily'] != '-') ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource')  . '/salamttype/2~3/abc/' . $row['employee_employee'] . '>'. $row['max_hourly_daily'] .'</a>' : '-'"
+        "expression": " (isset($row['max_hourly_daily']) && $row['max_hourly_daily'] != '-') ? '<a class =\"bottomContainerReload\" href=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_agency'] . _checkbook_project_get_year_url_param_string() . RequestUtilities::_getUrlParamString('datasource')  . '/salamttype/2~3/abc/' . $row['employee_employee'] . '>'. custom_number_formatter_basic_format($row['max_hourly_daily']) .'</a>' : '-'"
         },
         //NYCHA Hourly Rate Link - Show hyphen when the amount is zero
         "nycha_hourly_rate_link": {
           "expression": " (isset($row['max_hourly_rate']) && $row['max_hourly_rate'] > 0) ? $row['hourly_rate_link'] : '-'"
         },
         "export_salary_amount": {
-          "expression": " $row['employment_type_employment_type'] == 'Salaried' ? $row['total_salaried_amount']  : NULL "
+          "expression": " $row['max_hourly_daily']  <= 0 ? $row['max_hourly_daily']  : '-'"
         },
         "export_non_salary_amount": {
           "expression": " $row['employment_type_employment_type'] == 'Salaried' ? NULL : $row['total_non_salaried_amount']"
@@ -145,7 +145,7 @@
             //hourly rate column for nycha
             if(($table_column->labelAlias == 'hourly_rate' )&& ($datasource=='checkbook_nycha' )){
                 $table_column->column= 'nycha_hourly_rate_link';
-                $table_column->sortSource= 'max_hourly_rate';
+                $table_column->sortSourceColumn= 'max_hourly_rate';
            }
             //daily wage column must be sorted by default for nycha
             if($table_column->labelAlias == 'daily_wage' && ($datasource=='checkbook_nycha' ) ){
@@ -191,16 +191,14 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
     "adjustParameters":"
         $sortingCol = $_REQUEST['iSortCol_0'];
         if($sortingCol == 2){//annual sal
-            array_unshift($config->orderBy, '-employment_type.employment_type');
+            //array_unshift($config->orderBy, '-employment_type.employment_type');
         }
         else if($sortingCol == 3){//hourly rate
-            array_unshift($config->orderBy, 'employment_type.employment_type');
+            //array_unshift($config->orderBy, 'employment_type.employment_type');
         }
         else if($sortingCol == 4){//daily wage
-        array_unshift($config->orderBy, 'employment_type.employment_type');
+        //array_unshift($config->orderBy, 'employment_type.employment_type');
         }
-
-
 
         $monthId = RequestUtilities::getRequestParamValue('month');
         $datasource = RequestUtilities::getRequestParamValue('datasource');
@@ -221,6 +219,48 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
         }
         return $adjustedParameters;
     ",
+"exportColumnSqlOverride":[
+        {
+        "column":"annual_salary_link",
+        "sourceColumn":"j.total_salaried_amount",
+        "sql":"
+        CASE
+        WHEN total_salaried_amount IS NULL OR total_salaried_amount <=0  THEN CAST('-' AS TEXT)
+        ELSE CAST(total_salaried_amount AS TEXT)
+        END AS total_salaried_amounts
+        "
+        },
+        {
+        "column":"hourly_daily_link",
+        "sourceColumn":"j.max_hourly_daily",
+        "sql":"
+        CASE
+        WHEN max_hourly_daily <= 0 THEN CAST('-' AS TEXT)
+        ELSE CAST(max_hourly_daily AS TEXT)
+        END AS max_hourly_dailys
+        "
+        },
+        {
+        "column":"nycha_hourly_rate_link",
+        "sourceColumn":"j.max_hourly_rate",
+        "sql":"
+        CASE
+        WHEN max_hourly_rate IS NULL THEN CAST('-' AS TEXT)
+        ELSE CAST(max_hourly_rate AS TEXT)
+        END AS max_hourly_rates
+        "
+        },
+        {
+        "column":"nycha_daily_wage_link",
+        "sourceColumn":"j.max_daily_wage",
+        "sql":"
+        CASE
+        WHEN max_daily_wage IS NULL THEN CAST('-' AS TEXT)
+        ELSE CAST(max_daily_wage AS TEXT)
+        END AS max_daily_wages
+        "
+        }
+  ],
 "skipCustomPadding":true,
     "dataTableOptions":{
         "bRetrieve": true,
