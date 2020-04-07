@@ -338,9 +338,11 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                     if ($contract_status == 'active') {
                       if(strtolower($type_of_data) == 'contracts_oge'){
                         $parameters['effective_end_year_id'] = $ge_condition;
+                        $parameters['ending_year_id'] = $ge_condition;
                       }
                       else{
                         $parameters['effective_end_year'] = $ge_condition;
+                        $parameters['ending_year'] = $ge_condition;
                       }
                     }
                 }
