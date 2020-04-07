@@ -64,6 +64,11 @@ files[] = revenue/data/IRevenueDataService.php
 files[] = revenue/RevenueUrlService.php
 files[] = revenue/RevenueWidgetService.php
 
+files[] = nychaRevenue/data/NychaRevenueDataService.php
+files[] = nychaRevenue/data/INychaRevenueDataService.php
+files[] = nychaRevenue/NychaRevenueUrlService.php
+files[] = nychaRevenue/NychaRevenueWidgetService.php
+
 files[] = budget/BudgetUrlService.php
 files[] = budget/BudgetWidgetService.php
 files[] = budget/data/BudgetDataService.php

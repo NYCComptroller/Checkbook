@@ -5,8 +5,7 @@
  * This function returns current NYC fiscal year ID
  * @return string
  */
-function _getFiscalYearID()
-{
+function _getFiscalYearID(){
   return CheckbookDateUtil::getCurrentFiscalYearId();
 }
 
@@ -14,16 +13,14 @@ function _getFiscalYearID()
  * This function returns Calendar year ID
  * @return string
  */
-function _getCurrentCalendarYearID()
-{
+function _getCurrentCalendarYearID(){
   return CheckbookDateUtil::getCurrentCalendarYearId();
 }
 
 /**
  * @return mixed
  */
-function _getCurrentYearID()
-{
+function _getCurrentYearID(){
   return CheckbookDateUtil::getCurrentFiscalYearId();
 }
 
@@ -32,8 +29,7 @@ function _getCurrentYearID()
  * @param string $year_value
  * @return string
  */
-function _getYearIDFromValue($year_value)
-{
+function _getYearIDFromValue($year_value){
   return CheckbookDateUtil::year2yearId($year_value);
 }
 
@@ -42,8 +38,7 @@ function _getYearIDFromValue($year_value)
  * @param string $year_id
  * @return string
  */
-function _getYearValueFromID($year_id)
-{
+function _getYearValueFromID($year_id){
   return CheckbookDateUtil::yearId2Year($year_id);
 }
 
@@ -51,32 +46,8 @@ function _getYearValueFromID($year_id)
  * return full year text value for a give year id ...
  * @return string
  */
-function _getFullYearString()
-{
-
-  $year_id = RequestUtilities::get('year');
-  if (empty($year_id)) {
-    $year_id = RequestUtilities::get('calyear');
-  }
-  $yearType = RequestUtilities::get('yeartype');
-  if (empty($yearType)) {
-    $yearType = 'B';
-  }
-
-  if (empty($year_id)) {
-    $year_id = CheckbookDateUtil::getCurrentFiscalYearId();
-  }
-
-  $yearValue = _getYearValueFromID($year_id);
-  $yearString = ($yearType == 'B') ? "FY $yearValue" : "CY $yearValue";
-  if (RequestUtilities::get('datasource') == Datasource::NYCHA) {
-    $yearString .= "(January 1, " . ($yearValue) . " - Decemeber 31, $yearValue)";
-  } else {
-    $yearString .= ($yearType == 'B') ? " (July 1, " . ($yearValue - 1) . " - June 30, $yearValue)" : " (January 1, {$yearValue} - December 31, $yearValue)";
-  }
-
-
-  return $yearString;
+function _getFullYearString(){
+  return CheckbookDateUtil::getFullYearString();
 }
 
 /**
@@ -86,8 +57,7 @@ function _getFullYearString()
  * @param null $year_type
  * @return mixed
  */
-function _translateMonthIdByYear($month_id, $year_id, $year_type = null)
-{
+function _translateMonthIdByYear($month_id, $year_id, $year_type = null){
   $month_value = _getMonthValueFromId($month_id);
   $month_id = _getMonthIDFromValue($month_value, $year_id, $year_type);
   return $month_id;
@@ -100,8 +70,7 @@ function _translateMonthIdByYear($month_id, $year_id, $year_type = null)
  * @param $year_type
  * @return mixed
  */
-function _getMonthIDFromValue($month_value, $year_id, $year_type = null)
-{
+function _getMonthIDFromValue($month_value, $year_id, $year_type = null){
   $month_id = null;
   if ($year_type == "C") {
     $monthIDs = _checkbook_project_querydataset('checkbook:month', array('month_id'), array('month_value' => $month_value, 'year_id' => $year_id));
@@ -124,8 +93,7 @@ function _getMonthIDFromValue($month_value, $year_id, $year_type = null)
  * @param $month_id
  * @return mixed
  */
-function _getMonthValueFromId($month_id)
-{
+function _getMonthValueFromId($month_id){
   $monthValues = _checkbook_project_querydataset('checkbook:month', array('month_value'), array('month_id' => $month_id));
   $month_value = $monthValues[0]['month_value'];
   return $month_value;
@@ -134,14 +102,11 @@ function _getMonthValueFromId($month_id)
 /**
  * If the length of the text passed exceeds the specified length,
  * replaces the remaining characters with "..." and add a tooltip
- *
  * @param $text
  * @param int $length
  * @return string
  */
-function _shorten_word_with_tooltip($text, $length = 20)
-{
-
+function _shorten_word_with_tooltip($text, $length = 20){
   if (strlen($text) > $length) {
     return "<span title='" . htmlentities($text, ENT_QUOTES) . "'>" . substr(htmlentities($text), 0, $length - 3) . "...</span>";
   }
@@ -156,10 +121,8 @@ function _shorten_word_with_tooltip($text, $length = 20)
  * @param int $no_of_lines
  * @return string
  */
-function _get_tooltip_markup($text, $length = 20, $no_of_lines = 2)
-{
+function _get_tooltip_markup($text, $length = 20, $no_of_lines = 2){
   return _break_text_custom(html_entity_decode($text, ENT_QUOTES), $length, $no_of_lines);
-
 }
 
 /**
@@ -169,8 +132,7 @@ function _get_tooltip_markup($text, $length = 20, $no_of_lines = 2)
  * @param int $no_of_lines
  * @return string
  */
-function _break_text_custom($text, $length = 20, $no_of_lines = 2)
-{
+function _break_text_custom($text, $length = 20, $no_of_lines = 2){
   $text_array = explode(" ", $text);
   $offset = 0;
   $remaining_original = $remaining = ($length % 2 == 0) ? ($length / $no_of_lines) : (round($length / $no_of_lines) - 1);
@@ -225,8 +187,7 @@ function _break_text_custom($text, $length = 20, $no_of_lines = 2)
  * @param integer $length
  * @return string
  */
-function _break_text_custom2($text, $length = 18)
-{
+function _break_text_custom2($text, $length = 18){
   $text = html_entity_decode($text, ENT_QUOTES);
   $text_array = explode(" ", $text);
   $breaked_text = "";
@@ -246,8 +207,7 @@ function _break_text_custom2($text, $length = 18)
  * @param boolean $fromRequestPath
  * @return string request
  */
-function _getRequestParamValue($paramName, $fromRequestPath = True)
-{
+function _getRequestParamValue($paramName, $fromRequestPath = True){
   return RequestUtilities::get($paramName, $fromRequestPath);
 }
 
@@ -257,8 +217,7 @@ function _getRequestParamValue($paramName, $fromRequestPath = True)
  * @param string $fromRequestPath
  * @return string
  */
-function _getRequestParamValueBottomURL($paramName, $fromRequestPath = 'TRUE')
-{
+function _getRequestParamValueBottomURL($paramName, $fromRequestPath = 'TRUE'){
   if (empty($paramName)) {
     return NULL;
   }
@@ -287,8 +246,7 @@ function _getRequestParamValueBottomURL($paramName, $fromRequestPath = 'TRUE')
  * @return mixed|string
  * @throws Exception
  */
-function _checkbook_project_grid_view_popup($node)
-{
+function _checkbook_project_grid_view_popup($node){
   $url = $_GET['q'];
   $_GET['original_q'] = drupal_get_path_alias($_GET['q']);
   $_GET['q'] = drupal_get_path_alias($_GET['refURL']);
@@ -322,8 +280,7 @@ function _checkbook_project_grid_view_popup($node)
  * @return string
  * @throws Exception
  */
-function _checkbook_project_grid_view_widget_popup($node)
-{
+function _checkbook_project_grid_view_widget_popup($node){
   $url = $_GET['q'];
   $_GET['original_q'] = drupal_get_path_alias($_GET['q']);
   $_GET['q'] = drupal_get_path_alias($_GET['refURL']);
@@ -360,8 +317,7 @@ function _checkbook_project_grid_view_widget_popup($node)
  * @param $node
  * @return mixed|string|string[]|null
  */
-function _checkbook_project_view_all_popup($node)
-{
+function _checkbook_project_view_all_popup($node){
   $_GET['q'] = drupal_get_path_alias($_GET['refURL']);
   widget_set_uid($node, "popup");
   widget_config($node);
@@ -394,8 +350,7 @@ function _checkbook_project_view_all_popup($node)
  * @param $node
  * @return string
  */
-function _checkbook_project_view_all_popup_data($node)
-{
+function _checkbook_project_view_all_popup_data($node){
   $_GET['q'] = drupal_get_path_alias($_GET['refURL']);
   $limitPerPage = (isset($node->widgetConfig->limitPerPage) ? $node->widgetConfig->limitPerPage : 10);
 
@@ -438,10 +393,7 @@ function _checkbook_project_view_all_popup_data($node)
       return "";
       break;
   }
-
-
   echo $response;
-
 }
 
 
@@ -450,8 +402,7 @@ function _checkbook_project_view_all_popup_data($node)
  * @param $node
  * @throws Exception
  */
-function _checkbook_project_node_display($node)
-{
+function _checkbook_project_node_display($node){
   widget_config($node);
 
   //prepare anything we'll need before loading
@@ -470,8 +421,7 @@ function _checkbook_project_node_display($node)
  * @param $id
  * @return string
  */
-function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = null)
-{
+function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = null){
   if(!isset($data_source)) {
     $data_source = _checkbook_check_isNYCHAPage() ? Datasource::NYCHA : Datasource::CITYWIDE;
   }
@@ -617,8 +567,7 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
  * @param null $parameters
  * @return mixed
  */
-function _checkbook_project_querydataset($dataset, $columns, $parameters = null)
-{
+function _checkbook_project_querydataset($dataset, $columns, $parameters = null){
   try {
     $dataController = data_controller_get_instance();
     $dataset = _update_dataset_datasource($dataset);
@@ -638,32 +587,16 @@ function _checkbook_project_querydataset($dataset, $columns, $parameters = null)
  * @param null $dimension
  * @return mixed adjusted parameters
  */
-function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters, $contractType, $dimension = null)
-{
-
-  //$contractCategoryParam = 'contcat';
+function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters, $contractType, $dimension = null){
   $contractStatusParam = 'contstatus';
   $yearParam = 'year';
   $yearTypeParam = 'yeartype';
 
-  /*$contCategoryCol = $node->widgetConfig->urlParamMap->$contractCategoryParam;
-  $reqContCat = $node->widgetConfig->requestParams[$contCategoryCol];*/
-
   switch ($contractType) {
     case "active_registered":
-
       //adjust dataset
       $yearTypeCol = $node->widgetConfig->urlParamMap->$yearTypeParam;
       $reqYearType = $node->widgetConfig->requestParams[$yearTypeCol];
-      $current_url = $_SERVER['HTTP_REFERER'];
-//            if (preg_match("/contract\/search\/transactions/", $current_url)) {
-//                $advanced_search = true;
-//            } else {
-//                $current_url = request_uri();
-//                if (preg_match("/contract\/search\/transactions/", $current_url)) {
-//                    $advanced_search = true;
-//                }
-//            }
 
       if (isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage()) {
         if (isset($node->widgetConfig->dataset)) {
@@ -674,7 +607,6 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
           }
         }
       }
-
       //adjust status
       $contractStatusCol = $node->widgetConfig->urlParamMap->$contractStatusParam;
       $contractStatus = $node->widgetConfig->requestParams[$contractStatusCol];
@@ -682,11 +614,11 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
         $parameters[$contractStatusCol] = $contractStatus;
       }
 
+      $data_controller_instance = data_controller_get_operator_factory_instance();
       //adjust year
       $yearCol = isset($node->widgetConfig->urlParamMap->$yearParam) ? $node->widgetConfig->urlParamMap->$yearParam : $node->widgetConfig->urlParamMap->calyear;
       $reqYear = $node->widgetConfig->requestParams[$yearCol];
       if (isset($reqYear)) {
-        $data_controller_instance = data_controller_get_operator_factory_instance();
         $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
         $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
         if (isset($dimension)) {
@@ -709,55 +641,22 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
             $parameters['effective_begin_year_id'] = $leCondition;
             $parameters['effective_end_year_id'] = $geCondition;
           }
-
+        }
+      }else{
+        //Hide data for contracts, end date is prior 2011
+        //TO DO: Move end fiscal year to Drupal variables
+        $year = _getYearIDFromValue(2011);
+        $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
+        if($contractStatus=='A'){
+          $parameters['ending_year_id']= $geCondition;
         }
       }
-
-      //adjust category
-      /*if(isset($reqContCat)){
-          if($reqContCat=='revenue'){
-              $docCodes = 'RCT1';
-          }else if($reqContCat=='expense'){
-              $docCodes = array("MMA1","MA1","CT1");
-          }else if($reqContCat=='allexpense'){
-              $docCodes = array("MMA1","MA1","CT1","DO1","CTA1");
-          }
-
-          $node->widgetConfig->requestParams[$contCategoryCol]= $docCodes;
-          $node->widgetConfig->originalRequestParams[$contractCategoryParam]= $docCodes;
-          $parameters[$contCategoryCol]= $docCodes;
-      }*/
-
       break;
-
-    /*case "pending":
-        //adjust category
-        if(isset($reqContCat)){
-            if($reqContCat=='revenue'){
-                $docCodes = 'RCT1';
-            }else if($reqContCat=='expense'){
-                $docCodes = array("MMA1","MA1","CT1","MAR","CTR","CTA1");
-            }
-
-            $node->widgetConfig->requestParams[$contCategoryCol]= $docCodes;
-            $node->widgetConfig->originalRequestParams[$contractCategoryParam]= $docCodes;
-            $parameters[$contCategoryCol]= $docCodes;
-        }
-    break;*/
-
     case "active_registered_all":
-      /*if(RequestUtilities::getRequestParamValue($contractStatusParam) =='A'){
-          $data_controller_instance = data_controller_get_operator_factory_instance();
-          $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array(date('Y-m-d')));
-          $parameters['effective_begin_date'] = $leCondition;
-      }*/
       break;
-
     default:
       break;
   }
-
-
 }
 
 /**
@@ -766,9 +665,7 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
  *
  * @return mixed
  */
-function _checkbook_project_adjust_spending_parameter_filters(&$node, &$parameters)
-{
-  $cat = $parameters['spending_category_id'];
+function _checkbook_project_adjust_spending_parameter_filters(&$node, &$parameters){
   if (isset($parameters['ctx.ctx.vendor_id']) || isset($parameters['ctx.ctx.document_agency_id']) || isset($parameters['ctx.ctx.award_method_id']) || isset($parameters['ctx.ctx.award_size_id']) || isset($parameters['ctx.ctx.industry_type_id'])) {
     $year = $parameters['check_eft_issued_nyc_year_id'];
     $calyear = $parameters['calendar_fiscal_year_id'];
@@ -796,8 +693,7 @@ function _checkbook_project_adjust_spending_parameter_filters(&$node, &$paramete
  * @param $parameters
  * @return mixed
  */
-function _checkbook_project_adjust_date_spending_parameter_filters(&$node, &$parameters)
-{
+function _checkbook_project_adjust_date_spending_parameter_filters(&$node, &$parameters){
   $yearType = $parameters['year_type'][0];
   $year = $parameters['year_id'][0];
 
@@ -810,7 +706,6 @@ function _checkbook_project_adjust_date_spending_parameter_filters(&$node, &$par
 
   unset($parameters['year_type']);
   unset($parameters['year_id']);
-
   return $parameters;
 }
 
@@ -824,9 +719,7 @@ function _checkbook_project_adjust_date_spending_parameter_filters(&$node, &$par
  * @param $parameters
  * @return mixed
  */
-function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$parameters)
-{
-
+function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$parameters){
   $dtsmnid = RequestUtilities::get('dtsmnid');
   $smnid = RequestUtilities::get('smnid');
   $month = RequestUtilities::get('month');
@@ -888,7 +781,6 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
   }
 
   return $parameters;
-
 }
 
 /**
@@ -898,8 +790,7 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
  * @param $aggregateColumn
  * @return mixed
  */
-function _checkbook_project_pre_process_aggregation($node, $aggregateColumn)
-{
+function _checkbook_project_pre_process_aggregation($node, $aggregateColumn){
   $params = $node->nodeAdjustedParamaterConfig;
   $ds = _update_dataset_datasource($node->widgetConfig->dataset, $node->widgetConfig->keepOriginalDatasource);
   $column = $aggregateColumn;
@@ -924,9 +815,7 @@ function _checkbook_project_pre_process_aggregation($node, $aggregateColumn)
  * the vendor name is exact and an 'IN' search can be used for speed and accuracy.
  * @param $node
  */
-function _checkbook_project_adjust_vendor_facet_json(&$node)
-{
-
+function _checkbook_project_adjust_vendor_facet_json(&$node){
   if (preg_match('/fvendor/', $_GET['q'])) {
     //Vendor Facet
     if ($node->widgetConfig->filterName == 'Vendor') {
@@ -948,9 +837,7 @@ function _checkbook_project_adjust_vendor_facet_json(&$node)
  * @param $node
  * @return string
  */
-function _checkbook_project_payroll_sql($node)
-{
-
+function _checkbook_project_payroll_sql($node){
   $where_filters = array();
   $filter_param_value = $node->param;
 
@@ -1012,25 +899,7 @@ function _checkbook_project_payroll_sql($node)
  * @param $parameters Widget parsed request parameters
  * @return Widget adjusted parameters
  */
-function _checkbook_project_applyParameterFilters($node, $parameters)
-{
-
-  /*
-      //SAMPLE DATA
-      $originalRequestParams = array('reqParam1'=>'1~2','reqParam2'=>'6','reqParam3'=>'~1');
-
-      urlParamMap = array('reqParam1'=>'dbcol1','reqParam2'=>'dbcol1','reqParam3'=>'dbcol2');
-      $paramTypeConfig = array('reqParam1'=>'range','reqParam2'=>'rangeid','reqParam3'=>'range');
-
-      //'dbcol1' will have latest value from request. This should be handled differently. Look at 'dbcol1' value.
-      $parameters = array('dbcol1'=>array(6),'dbcol2'=>array(null,1));
-      //This function hanldes correct value for 'dbcol1' to organise these values by directly accessging original request parameters
-      $configurationTypes = array('dbcol1'=>array(
-                                                  'range'=>array(1,2),
-                                                  'rangeid'=>array(6))
-                                                  );
-  */
-
+function _checkbook_project_applyParameterFilters($node, $parameters){
   $adjustedParameters = $parameters;
 
   //Convert configuration to array for processing
@@ -1084,7 +953,6 @@ function _checkbook_project_applyParameterFilters($node, $parameters)
     return $adjustedParameters;
   }
 
-
   $data_controller_instance = data_controller_get_operator_factory_instance();
   foreach ($adjustedParameters as $param => $value) {
     if (!array_key_exists($param, $configurationTypes)) {//Configuration for param do not exist
@@ -1092,7 +960,6 @@ function _checkbook_project_applyParameterFilters($node, $parameters)
     }
 
     $paramConfigTypes = $configurationTypes[$param];
-
     $conditions = NULL;
 
     foreach ($paramConfigTypes as $paramConfigType => $paramValues) {
@@ -1296,17 +1163,14 @@ function _checkbook_project_applyParameterFilters($node, $parameters)
  * @param null|ResultFormatter $resultFormatter ResultFormatter
  * @return DB results
  */
-function get_db_results($isList, $datasetName, $columns = NULL, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL)
-{
+function get_db_results($isList, $datasetName, $columns = NULL, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL){
   $controller = data_controller_get_instance();
-
   $records = NULL;
   if ($isList) {
     $records = $controller->queryDataset($datasetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
   } else {
     $records = $controller->queryCube($datasetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
   }
-
   return $records;
 }
 
@@ -1318,10 +1182,8 @@ function get_db_results($isList, $datasetName, $columns = NULL, $parameters = NU
  * @param null|ResultFormatter $resultFormatter ResultFormatter
  * @return integer Count
  */
-function get_db_result_count($isList, $datasetName, $columns, $parameters = NULL, ResultFormatter $resultFormatter = NULL)
-{
+function get_db_result_count($isList, $datasetName, $columns, $parameters = NULL, ResultFormatter $resultFormatter = NULL){
   $controller = data_controller_get_instance();
-
   $recordCount = NULL;
   if ($isList) {
     $recordCount = $controller->countDatasetRecords($datasetName, $parameters, $resultFormatter);
@@ -1346,8 +1208,7 @@ function get_db_result_count($isList, $datasetName, $columns, $parameters = NULL
  * @return null Query
  * @throws Exception
  */
-function get_db_query($isList, $datasetName, $columns = NULL, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL)
-{
+function get_db_query($isList, $datasetName, $columns = NULL, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL){
   $sqlQuery = NULL;
 
   //Since we are disabling execution mode below, need to make sure meta model is loaded.
@@ -1377,8 +1238,7 @@ function get_db_query($isList, $datasetName, $columns = NULL, $parameters = NULL
  * @param string $data_source
  * @return DatabaseConnection|void DB connection
  */
-function get_datafeed_connection($db_name = "datafeed", $data_source = 'checkbook')
-{
+function get_datafeed_connection($db_name = "datafeed", $data_source = Datasource::CITYWIDE){
   try {
     return Database::getConnection($db_name, $data_source);
   } catch (Exception $e) {
@@ -1394,8 +1254,7 @@ function get_datafeed_connection($db_name = "datafeed", $data_source = 'checkboo
  * @param $value : Value to be checked
  * @return true or false
  */
-function _checkbook_project_check_parameter($reqParam, $value = null)
-{
+function _checkbook_project_check_parameter($reqParam, $value = null){
   $urlPath = drupal_get_path_alias($_GET['q']);
   $pathParams = explode('/', $urlPath);
   $index = array_search($reqParam, $pathParams);
@@ -1414,8 +1273,7 @@ function _checkbook_project_check_parameter($reqParam, $value = null)
  * @param bool $landing_page_link
  * @return string
  */
-function _checkbook_project_get_year_url_param_string($applySpendingYear = false, $applyPreviousYear = false, $spendingTransactions = false, $landing_page_link = false)
-{
+function _checkbook_project_get_year_url_param_string($applySpendingYear = false, $applyPreviousYear = false, $spendingTransactions = false, $landing_page_link = false){
 
   $urlPath = drupal_get_path_alias($_GET['q']);
   $pathParams = explode('/', $urlPath);
@@ -1455,8 +1313,7 @@ function _checkbook_project_get_year_url_param_string($applySpendingYear = false
 /**
  * @return bool
  */
-function _checkbook_current_request_is_ajax()
-{
+function _checkbook_current_request_is_ajax(){
   return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
 }
 
@@ -1468,37 +1325,8 @@ function _checkbook_current_request_is_ajax()
  * @param bool $ajaxPath
  * @return string
  */
-function _checkbook_project_get_url_param_string($key, $key_alias = null, $ajaxPath = FALSE)
-{
+function _checkbook_project_get_url_param_string($key, $key_alias = null, $ajaxPath = FALSE){
   return RequestUtilities::buildUrlFromParam("{$key}|{$key_alias}");
-
-//    $urlPath = drupal_get_path_alias($_GET['q']);
-//    if (_checkbook_current_request_is_ajax()) {
-//      // remove query part
-//      $urlPath = strtok($_SERVER['HTTP_REFERER'], '?');
-//    }
-//
-//    $pathParams = explode('/', $urlPath);
-//    $keyIndex = NULL;
-//    foreach ($pathParams as $index => $value) {
-//        if ($key == $value || ($key_alias != null && $key_alias == $value && $value != nul)) {
-//            $keyIndex = $index;
-//        }
-//    }
-//
-//    $url = '';
-//    if ($keyIndex) {
-//        if ($key_alias == null) {
-//            $url = "/$key/" . urlencode($pathParams[($keyIndex + 1)]);
-//        } else {
-//          $url = "/$key_alias/" . urlencode($pathParams[($keyIndex + 1)]);
-//        }
-//    }
-////    if (_checkbook_current_request_is_ajax()) {
-////      LogHelper::log_warn('_checkbook_project_get_url_param_string :: isAjax :: ' . $url);
-////    }
-//    return $url;
-
 }
 
 /**
@@ -1508,8 +1336,7 @@ function _checkbook_project_get_url_param_string($key, $key_alias = null, $ajaxP
  * @param null $node
  * @return string
  */
-function _checkbook_project_get_vendor_facet_url_param_string($node = null)
-{
+function _checkbook_project_get_vendor_facet_url_param_string($node = null){
   $fvendor = null;
   $vendor = RequestUtilities::get('vendor');
   $subvendor = RequestUtilities::get('subvendor');
@@ -1539,18 +1366,14 @@ function _checkbook_project_get_vendor_facet_url_param_string($node = null)
         $fvendor = $vendor;
       break;
   }
-
   return $fvendor != null ? '/fvendor/' . $fvendor : '';
-
 }
 
 /**
  * return helper function to get master agreement id from chidl agreement id
  * @return array
  */
-function _get_document_codes()
-{
-
+function _get_document_codes(){
   $document_codes = get_db_results(true, 'checkbook:ref_document_code', array("document_code_id", "document_code"), null, NULL, 0, null);
   $codes = array();
   foreach ($document_codes as $row) {
@@ -1564,8 +1387,7 @@ function _get_document_codes()
  * return helper function to get master agreement id from chidl agreement id
  * @return string
  */
-function _get_master_agreement_id()
-{
+function _get_master_agreement_id(){
   $agid = (RequestUtilities::get('agid') == null) ? 1 : RequestUtilities::get('agid');
   $results = get_db_results(true, 'checkbook:history_agreement', array("master_agreement_id"), array("original_agreement_id" => $agid), NULL, 0, 1);
   $magid = ($results[0]['master_agreement_id'] == null) ? 0 : $results[0]['master_agreement_id'];
@@ -1578,15 +1400,13 @@ function _get_master_agreement_id()
  * @param $magid
  * @return array
  */
-function _get_master_agreement_details($magid)
-{
+function _get_master_agreement_details($magid){
   if (!isset($magid)) {
     return NULL;
   }
   $results = get_db_results(true, 'checkbook:history_master_agreement', array("document_code@checkbook:ref_document_code", "contract_number"), array("master_agreement_id" => $magid), NULL, 0, 1);
   //$docTypeCode = ($results[0]['document_code@checkbook:ref_document_code'] ==null ) ? '' : $results[0]['document_code@checkbook:ref_document_code'];
   return isset($results[0]) ? $results[0] : NULL;
-
 }
 
 /**
@@ -1594,14 +1414,12 @@ function _get_master_agreement_details($magid)
  * @param $parent_contract_number
  * @return null
  */
-function _get_master_agreement_details_by_parent_contract_number($parent_contract_number)
-{
+function _get_master_agreement_details_by_parent_contract_number($parent_contract_number){
   if (!isset($parent_contract_number)) {
     return NULL;
   }
   $results = get_db_results(true, 'checkbook:history_master_agreement', array("document_code@checkbook:ref_document_code", "master_agreement_id", "original_master_agreement_id"), array("contract_number" => $parent_contract_number, "latest_flag" => "Y"), NULL, 0, 1);
   return isset($results[0]) ? $results[0] : NULL;
-
 }
 
 /**
@@ -1609,15 +1427,13 @@ function _get_master_agreement_details_by_parent_contract_number($parent_contrac
  * @param $agid
  * @return array
  */
-function _get_child_agreement_details($agid)
-{
+function _get_child_agreement_details($agid){
   if (!isset($agid)) {
     return NULL;
   }
   $results = get_db_results(true, 'checkbook:history_agreement', array("document_code@checkbook:ref_document_code", "contract_number"), array("agreement_id" => $agid), NULL, 0, 1);
   //$docTypeCode = ($results[0]['document_code@checkbook:ref_document_code'] ==null ) ? '' : $results[0]['document_code@checkbook:ref_document_code'];
   return isset($results[0]) ? $results[0] : NULL;
-
 }
 
 /**
@@ -1625,8 +1441,7 @@ function _get_child_agreement_details($agid)
  * @param $contnum
  * @return string
  */
-function _get_contract_type($contnum)
-{
+function _get_contract_type($contnum){
   $contnum_3 = substr($contnum, 0, 3); //get first 3 characters from contract number
   $contnum_4 = substr($contnum, 0, 4); //get first 4 characters from contract number
   $fourLetterContractTypes = array('mma1', 'cta1', 'rct1', 'pcc1', 'cta2', 'mac1');
@@ -1643,8 +1458,7 @@ function _get_contract_type($contnum)
  *
  * @return string
  */
-function _checkbook_project_get_contract_url($contnum, $agreement_id)
-{
+function _checkbook_project_get_contract_url($contnum, $agreement_id){
   $contract_type = _get_contract_type($contnum);
   if (strtolower($contract_type) == 'mma1' || strtolower($contract_type) == 'ma1') {
     return '/magid/' . $agreement_id . '/doctype/' . $contract_type;
@@ -1663,8 +1477,7 @@ function _checkbook_project_get_contract_url($contnum, $agreement_id)
  *
  * @return string
  */
-function _pending_contracts_link_contract_details($contract_number, $original_agreement_id, $doctype, $pending_contract_number = null, $version = null, $linktype = null)
-{
+function _pending_contracts_link_contract_details($contract_number, $original_agreement_id, $doctype, $pending_contract_number = null, $version = null, $linktype = null){
   $lower_doctype = strtolower($doctype);
 
   if ($original_agreement_id) {
@@ -1713,8 +1526,7 @@ function _pending_contracts_link_contract_details($contract_number, $original_ag
  * @param $doctype
  * @return string
  */
-function _get_contract_cat($doctype)
-{
+function _get_contract_cat($doctype){
 
   if ($doctype == 'rct1') {
     return ('revenue');
@@ -1729,8 +1541,7 @@ function _get_contract_cat($doctype)
  * @return string
  * @throws Exception
  */
-function _checkbook_project_prepare_data_feeds_file_output_dir()
-{
+function _checkbook_project_prepare_data_feeds_file_output_dir(){
   global $conf;
 
   $dir = variable_get('file_public_path', 'sites/default/files') . '/' . $conf['check_book']['data_feeds']['output_file_dir'];
@@ -1745,7 +1556,6 @@ function _checkbook_project_prepare_data_feeds_file_output_dir()
   } catch (Exception $e) {
     LogHelper::log_error($e);
   }
-
   return $dir;
 }
 
@@ -1753,8 +1563,7 @@ function _checkbook_project_prepare_data_feeds_file_output_dir()
  * Function to generate a unique id
  * @return string
  */
-function _checkbook_project_generate_uuid()
-{
+function _checkbook_project_generate_uuid(){
   $guid = 'export';
   $uid = uniqid("", true);
   $data = '';
@@ -1784,8 +1593,7 @@ function _checkbook_project_generate_uuid()
  * @param $dir
  * @throws Exception
  */
-function _checkbook_project_prepare_data_feeds_dir($dir)
-{
+function _checkbook_project_prepare_data_feeds_dir($dir){
   if (!file_prepare_directory($dir, FILE_CREATE_DIRECTORY)) {
     LogHelper::log_error("Could not prepare file output directory $dir.Should check if this directory is writable.");
     throw new Exception("Could not prepare file. Please contact Support team.");
@@ -1795,8 +1603,7 @@ function _checkbook_project_prepare_data_feeds_dir($dir)
 /**
  *
  */
-function _checkbook_project_clean_files()
-{
+function _checkbook_project_clean_files(){
   $dir = _checkbook_export_prepareFileOutputDir();
   file_scan_directory($dir, '/.*/', array('callback' => '_checkbook_project_delete_file_if_stale'));
 }
@@ -1806,8 +1613,7 @@ function _checkbook_project_clean_files()
  *
  * @param $path
  */
-function _checkbook_project_delete_file_if_stale($path)
-{
+function _checkbook_project_delete_file_if_stale($path){
   $timeDiff = intval(floor((REQUEST_TIME - filemtime($path)) / (3600)));
   if ($timeDiff > 2) {//More than 2 hours old
     file_unmanaged_delete($path);
@@ -1820,8 +1626,7 @@ function _checkbook_project_delete_file_if_stale($path)
  * @param string $data_source
  * @return array|bool|mixed|void
  */
-function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 'checkbook')
-{
+function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = Datasource::CITYWIDE){
   global $databases;
 
   if (function_exists('_checkbook_project_execute_sql_test')) {
@@ -1866,7 +1671,6 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
     _checkbook_dmemcache_set($cacheKey, $output);
   }
 
-
   return $output;
 }
 
@@ -1875,8 +1679,7 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
  * @param string $data_source
  * @return array|bool|mixed
  */
-function _checkbook_project_execute_sql_by_data_source($sql, $data_source = 'checkbook')
-{
+function _checkbook_project_execute_sql_by_data_source($sql, $data_source = Datasource::CITYWIDE){
   return _checkbook_project_execute_sql($sql, 'main', $data_source);
 }
 
@@ -1885,8 +1688,7 @@ function _checkbook_project_execute_sql_by_data_source($sql, $data_source = 'che
  * @param $nid
  * @return bool
  */
-function _checkbook_project_recordsExists($nid)
-{
+function _checkbook_project_recordsExists($nid){
   static $recordExists = array();
 
   if (isset($recordExists[$nid])) {
@@ -1922,8 +1724,7 @@ function _checkbook_project_recordsExists($nid)
  * @param $node (processed node config)
  * @return int
  */
-function _checkbook_project_recordCount($node)
-{
+function _checkbook_project_recordCount($node){
   static $recordCounts = array();
 
   if (isset($recordCounts[$node->nid])) {
@@ -1952,11 +1753,8 @@ function _checkbook_project_recordCount($node)
  *
  * @return string
  */
-function _checkbook_project_getChartTitle($domain, $subTitle, $by = null, $chart = null)
-{
-
+function _checkbook_project_getChartTitle($domain, $subTitle, $by = null, $chart = null){
   $title = NULL;
-
   $url = $_GET['q'];
 
   switch (strtolower($domain)) {
@@ -1992,11 +1790,9 @@ function _checkbook_project_getChartTitle($domain, $subTitle, $by = null, $chart
 
 /**
  * @param $string
- *
  * @return false|string
  */
-function format_string_to_date($string)
-{
+function format_string_to_date($string){
 
   if ($string == null or trim($string) == '')
     return "";
@@ -2011,8 +1807,7 @@ function format_string_to_date($string)
  * @param null $param
  * @return array
  */
-function _getLastRequestParamValue($url = null, $param = null)
-{
+function _getLastRequestParamValue($url = null, $param = null){
   $value = NULL;
   $skip_next = false;
   if ($url == null) $url = $_GET['q'];
@@ -2058,8 +1853,7 @@ function _getLastRequestParamValue($url = null, $param = null)
  *
  * @return mixed
  */
-function _checkbook_regex_replace_pattern($string)
-{
+function _checkbook_regex_replace_pattern($string){
   $search = [
     '.',
     '^',
@@ -2087,8 +1881,6 @@ function _checkbook_regex_replace_pattern($string)
     '\}',
   ];
   $string = str_replace($search, $replace, $string);
-
-
   return $string;
 }
 
@@ -2096,8 +1888,7 @@ function _checkbook_regex_replace_pattern($string)
 /**
  * @return bool
  */
-function _checkbook_project_ma1_mma1_exist()
-{
+function _checkbook_project_ma1_mma1_exist(){
   $url = $_GET['q'];
   $urlPath = drupal_get_path_alias($url);
   $pathParams = explode('/', $urlPath);
@@ -2117,11 +1908,9 @@ function _checkbook_project_ma1_mma1_exist()
 
 /**
  * @param $string
- *
  * @return int
  */
-function _get_num_from_string($string)
-{
+function _get_num_from_string($string){
   return (int)preg_replace('/[^\-\d]*(\-?\d*).*/', '$1', $string);
 }
 
@@ -2129,16 +1918,14 @@ function _get_num_from_string($string)
  * @param $year
  * @return int
  */
-function _checkbook_get_year_id($year)
-{
+function _checkbook_get_year_id($year){
   return CheckbookDateUtil::year2yearId($year);
 }
 
 /**
  * @return array
  */
-function _checkbook_year_list($datasource)
-{
+function _checkbook_year_list($datasource){
   $year = CheckbookDateUtil::getCurrentFiscalYear();
   $return = [];
   $yearCount = 10;
@@ -2158,8 +1945,7 @@ function _checkbook_year_list($datasource)
 /**
  * @return array
  */
-function _checkbook_max_data_year($data_source = Datasource::CITYWIDE)
-{
+function _checkbook_max_data_year($data_source = Datasource::CITYWIDE){
   return [
     'year_value' => CheckbookDateUtil::getCurrentFiscalYear($data_source),
     'year_id' => CheckbookDateUtil::getCurrentFiscalYearId($data_source),
@@ -2179,11 +1965,9 @@ function _checkbook_max_data_year($data_source = Datasource::CITYWIDE)
  *
  * @return string
  */
-function _checkbook_append_url_params($source = null, $overidden_params = array(), $top_nav = false)
-{
+function _checkbook_append_url_params($source = null, $overidden_params = array(), $top_nav = false){
   $datasource = (isset($overidden_params['datasource'])) ? $overidden_params['datasource'] : RequestUtilities::get('datasource');
   $mwbe = (isset($overidden_params['mwbe'])) ? $overidden_params['mwbe'] : RequestUtilities::get('mwbe');
-  //$svendor = (isset($overidden_params['subvendor'])) ? $overidden_params['subvendor'] : RequestUtilities::getRequestParamValue('subvendor');
   $dashboard = (isset($overidden_params['dashboard'])) ? $overidden_params['dashboard'] : RequestUtilities::get('dashboard');
 
   $url = "";
@@ -2217,8 +2001,7 @@ function _checkbook_append_url_params($source = null, $overidden_params = array(
 /**
  * @return bool
  */
-function _checkbook_check_isEDCPage()
-{
+function _checkbook_check_isEDCPage(){
   if ('edc' == _checkbook_get_datasource()) {
     return true;
   }
@@ -2233,8 +2016,7 @@ function _checkbook_check_isEDCPage()
 /**
  * @return bool for NYCHA page
  */
-function _checkbook_check_isNYCHAPage()
-{
+function _checkbook_check_isNYCHAPage(){
   if ('nycha' == _checkbook_get_datasource()) {
     return true;
   }
@@ -2247,14 +2029,12 @@ function _checkbook_check_isNYCHAPage()
 }
 
 /** Returns Boolean if this is an mwbe page */
-function _checkbook_check_is_mwbe_page()
-{
+function _checkbook_check_is_mwbe_page(){
   return null != RequestUtilities::get('mwbe');
 }
 
 /** Returns Boolean if this is a sub vendor page */
-function _checkbook_check_is_sub_vendor_page()
-{
+function _checkbook_check_is_sub_vendor_page(){
   return preg_match('"/dashboard\/dsv"', $_GET['q']);
 }
 
@@ -2266,8 +2046,7 @@ function _checkbook_check_is_sub_vendor_page()
  *
  * @return int
  */
-function _checkbook_check_is_sub_vendor_level_page()
-{
+function _checkbook_check_is_sub_vendor_level_page(){
   return _checkbook_check_is_sub_vendor_page() && RequestUtilities::get("subvendor") != "all";
 }
 
@@ -2276,8 +2055,7 @@ function _checkbook_check_is_sub_vendor_level_page()
  *
  * @return int
  */
-function _checkbook_check_is_sub_vendor_ethnicity_page()
-{
+function _checkbook_check_is_sub_vendor_ethnicity_page(){
   return _checkbook_check_is_sub_vendor_page() && _checkbook_check_is_mwbe_page();
 }
 
@@ -2286,8 +2064,7 @@ function _checkbook_check_is_sub_vendor_ethnicity_page()
  *
  * @return bool
  */
-function _checkbook_is_oge_contract($cont_num)
-{
+function _checkbook_is_oge_contract($cont_num){
   $rows = _checkbook_project_querydataset('checkbook_oge:oge_contract', array('fms_contract_number'), array('fms_contract_number' => $cont_num));
   if ($rows > 0) {
     return true;
@@ -2301,8 +2078,7 @@ function _checkbook_is_oge_contract($cont_num)
  *
  * @return bool
  */
-function _checkbook_is_oge_parent_contract($cont_num)
-{
+function _checkbook_is_oge_parent_contract($cont_num){
   $rows = _checkbook_project_querydataset('checkbook_oge:agreement_snapshot', array('master_contract_number'), array('master_contract_number' => $cont_num));
   if ($rows > 0) {
     return true;
@@ -2317,8 +2093,7 @@ function _checkbook_is_oge_parent_contract($cont_num)
  *
  * @return string
  */
-function _checkbook_get_oge_agency_id($vendor_id)
-{
+function _checkbook_get_oge_agency_id($vendor_id){
   $vendors = _checkbook_project_querydataset('checkbook:vendor', array('vendor_id', 'legal_name'), array('vendor_id' => $vendor_id));
   $vendor_name = $vendors[0]['legal_name'];
   $agencies = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id', 'agency_name'), array('agency_name' => $vendor_name, 'is_display' => 'Y', 'is_oge_agency' => 'Y'));
@@ -2329,8 +2104,7 @@ function _checkbook_get_oge_agency_id($vendor_id)
  * Return citywide/edc/nycha current datasource
  * @return string
  */
-function _checkbook_get_datasource()
-{
+function _checkbook_get_datasource(){
   $url = '//' . current_path();
 
   if (strpos($url, '/nycha') || strpos($url, 'agency/162') || strpos($url, '/checkbook_nycha')) {
@@ -2349,8 +2123,7 @@ function _checkbook_get_datasource()
  *
  * @return string
  */
-function _checkbook_get_toggle_vendor_id($agency_id)
-{
+function _checkbook_get_toggle_vendor_id($agency_id){
   $agencies = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id', 'agency_name'), array('agency_id' => $agency_id, 'is_oge_agency' => 'Y'));
   $agency_name = $agencies[0]['agency_name'];
   $vendors = _checkbook_project_querydataset('checkbook:vendor', array('vendor_id', 'legal_name'), array('legal_name' => $agency_name));
@@ -2361,8 +2134,7 @@ function _checkbook_get_toggle_vendor_id($agency_id)
 /**
  * @return array|null
  */
-function _get_toggle_view_links()
-{
+function _get_toggle_view_links(){
   $q = request_uri();
   $array_q = explode('/', $q);
   $array_q[1] = ($array_q[1] == 'contracts_landing') ? $array_q[1] . '/status/A' : $array_q[1];
@@ -2394,8 +2166,7 @@ function _get_toggle_view_links()
  *
  * @return bool
  */
-function _is_mwbe_vendor($agreement_id)
-{
+function _is_mwbe_vendor($agreement_id){
   if (!($agreement_id = intval($agreement_id))) {
     return false;
   }
@@ -2415,8 +2186,7 @@ function _is_mwbe_vendor($agreement_id)
 /**
  * @param $node
  */
-function _getAnnualSalariedEmployeeCount($node)
-{
+function _getAnnualSalariedEmployeeCount($node){
   $agency_id = RequestUtilities::get('agency');
   $yeartype = RequestUtilities::get('yeartype');
   $yearid = RequestUtilities::get('year');
@@ -2438,8 +2208,7 @@ function _getAnnualSalariedEmployeeCount($node)
 /**
  * @return bool
  */
-function isAdvancedSearchResultsPage()
-{
+function isAdvancedSearchResultsPage(){
   $current_url = $_SERVER['HTTP_REFERER'];
   if (preg_match("/contract\/search\/transactions/", $current_url)) {
     return true;
@@ -2456,8 +2225,7 @@ function isAdvancedSearchResultsPage()
  * @param null $attributes
  * @return array|void
  */
-function _get_contract_includes_subvendors_data($attributes = NULL)
-{
+function _get_contract_includes_subvendors_data($attributes = NULL){
   if (function_exists('_get_contract_includes_subvendors_data_test')) {
 //      phpunit
     return _get_contract_includes_subvendors_data_test($attributes);
@@ -2494,27 +2262,15 @@ function _get_contract_includes_subvendors_data($attributes = NULL)
  *
  * @return string
  */
-function _checkbook_vendor_link($vendor_id, $prime = FALSE)
-{
-
+function _checkbook_vendor_link($vendor_id, $prime = FALSE){
   $status = '/status/' . (RequestUtilities::get("status") ?: 'A');
-
   if (RequestUtilities::get("doctype") == "RCT1") {
     $page = '/contracts_revenue_landing';
     $is_mwbe = _is_mwbe_vendor(RequestUtilities::get("magid"));
-    if ($is_mwbe) {
-      $mwbe = '/dashboard/mp';
-
-    } else {
-      $mwbe = '';
-    }
-
-
+    $mwbe = ($is_mwbe)? '/dashboard/mp' : '';
   } else {
-
     $page = '/contracts_landing';
     $url = '  ' . RequestUtil::getCurrentPageUrl();
-
     if (stripos($url, 'contracts_pending_exp_landing') && $status === '/status/A') {
       $page = '/contracts_landing';
     } elseif (stripos($url, 'contracts_pending_exp_landing')) {
@@ -2525,31 +2281,23 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE)
       $page = '/contracts_revenue_landing';
     }
 
-
-    if (_is_mwbe_vendor(RequestUtilities::get("agid")) || _is_mwbe_vendor(RequestUtilities::get("magid")) || PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, CheckbookDateUtil::getCurrentFiscalYearId(), 'B')) {
-      $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
-    } else {
-      $mwbe = '';
-    }
-
+    $mwbe = (_is_mwbe_vendor(RequestUtilities::get("agid")) || _is_mwbe_vendor(RequestUtilities::get("magid"))
+      || PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, CheckbookDateUtil::getCurrentFiscalYearId(), 'B')) ?
+      RequestUtilities::_appendMWBESubVendorDatasourceUrlParams() : '';
   }
 
   $vendor_link = $page . $status . '/year/' . CheckbookDateUtil::getCurrentFiscalYearId() . '/yeartype/B/vendor/' . $vendor_id . $mwbe . '?expandBottomCont=true';
-
   return $vendor_link;
 }
 
 
 /**
  * @param $agency_id
- *
  * @param bool $prime
  * @return string
  */
-function _checkbook_agency_link($agency_id, $prime = FALSE)
-{
+function _checkbook_agency_link($agency_id, $prime = FALSE){
   $issubvendor = 'false';
-
   $status = '/status/' . (RequestUtilities::get("status") ?: 'A');
 
   $datasource = '';
@@ -2559,11 +2307,7 @@ function _checkbook_agency_link($agency_id, $prime = FALSE)
 
   if (RequestUtilities::get("doctype") == "RCT1") {
     $is_mwbe = _is_mwbe_vendor(RequestUtilities::get("magid"));
-    if ($is_mwbe) {
-      $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
-    } else {
-      $mwbe = '';
-    }
+    $mwbe = ($is_mwbe) ? RequestUtilities::_appendMWBESubVendorDatasourceUrlParams() : '';
     $agency_link = '/contracts_revenue_landing' . $status . $mwbe . '/year/' . CheckbookDateUtil::getCurrentFiscalYearId() . $datasource . '/yeartype/B/agency/'
       . $agency_id . '?expandBottomCont=true';
   } else {
@@ -2584,9 +2328,8 @@ function _checkbook_agency_link($agency_id, $prime = FALSE)
       $issubvendor = true;
     }
 
-    if (_is_mwbe_vendor(RequestUtilities::get("magid")) || _is_mwbe_vendor(RequestUtilities::get("agid")) || $issubvendor) {
-      $mwbe = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams();
-    }
+    $mwbe = (_is_mwbe_vendor(RequestUtilities::get("magid")) || _is_mwbe_vendor(RequestUtilities::get("agid"))
+      || $issubvendor)  ? RequestUtilities::_appendMWBESubVendorDatasourceUrlParams() : '';
 
     $agency_link = $dashboard . $status . '/year/' . CheckbookDateUtil::getCurrentFiscalYearId() . $datasource . '/yeartype/B/agency/'
       . $agency_id . $mwbe . '?expandBottomCont=true';
@@ -2600,15 +2343,14 @@ function _checkbook_agency_link($agency_id, $prime = FALSE)
  * @param null $mc
  * @return bool|mixed
  */
-function _checkbook_dmemcache_get($key, $bin = 'cache', $mc = NULL)
-{
+function _checkbook_dmemcache_get($key, $bin = 'cache', $mc = NULL){
 //    MOCK CACHE FOR PHPUNIT
   if (defined('PHPUNIT_RUNNING') && PHPUNIT_RUNNING) {
     global $phpunit_cache;
     return !empty($phpunit_cache[$key]) ? $phpunit_cache[$key] : false;
   }
 
-//    manually disabled, ex. during etl status
+// manually disabled, ex. during etl status
   if (defined('CHECKBOOK_NO_DB_CACHE') && CHECKBOOK_NO_DB_CACHE) {
     return false;
   }
@@ -2636,8 +2378,7 @@ function _checkbook_dmemcache_get($key, $bin = 'cache', $mc = NULL)
  * @param null $mc
  * @return bool
  */
-function _checkbook_dmemcache_set($key, $value, $exp = 54000, $bin = 'cache', $mc = NULL)
-{
+function _checkbook_dmemcache_set($key, $value, $exp = 54000, $bin = 'cache', $mc = NULL){
   if (defined('PHPUNIT_RUNNING') && PHPUNIT_RUNNING) {
     global $phpunit_cache;
     $phpunit_cache[$key] = $value;
@@ -2661,19 +2402,13 @@ function _checkbook_dmemcache_set($key, $value, $exp = 54000, $bin = 'cache', $m
  * @param string $database
  * @return mixed|string
  */
-function _checkbook_psql_command($database = 'checkbook')
-{
+function _checkbook_psql_command($database = 'checkbook'){
   global $conf, $databases;
 
   // extra check empty db
   if (!$database) {
     $database = 'checkbook';
   }
-
-  //$psql_path = '/usr/bin/psql';  // default
-  //if (isset($conf['check_book']['psql_path'])) {
-  //  $psql_path = $conf['check_book']['psql_path'];
-  //}
 
   if (!isset($databases[$database])) {
     LogHelper::log_warn('$databases[' . $database . '] not found');
@@ -2691,8 +2426,7 @@ function _checkbook_psql_command($database = 'checkbook')
  * @param string $input
  * @return int|string
  */
-function emptyToZero($input)
-{
+function emptyToZero($input){
   if (is_numeric($input)) {
     return $input;
   }
@@ -2720,8 +2454,7 @@ function _emptyToZero($input){
  * @param int $len
  * @return string
  */
-function _ckbk_excerpt($text='', int $len=20):string
-{
+function _ckbk_excerpt($text='', int $len=20):string{
   if(!$text){return '';}
   return (strlen($text) > $len) ? substr($text, 0, $len) . '...' : $text;
 }
