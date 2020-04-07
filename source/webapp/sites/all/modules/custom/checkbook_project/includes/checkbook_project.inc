@@ -591,6 +591,7 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
   $contractStatusParam = 'contstatus';
   $yearParam = 'year';
   $yearTypeParam = 'yeartype';
+  $data_controller_instance = data_controller_get_operator_factory_instance();
 
   switch ($contractType) {
     case "active_registered":
@@ -613,8 +614,6 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
       if (isset($contractStatus)) {
         $parameters[$contractStatusCol] = $contractStatus;
       }
-
-      $data_controller_instance = data_controller_get_operator_factory_instance();
       //adjust year
       $yearCol = isset($node->widgetConfig->urlParamMap->$yearParam) ? $node->widgetConfig->urlParamMap->$yearParam : $node->widgetConfig->urlParamMap->calyear;
       $reqYear = $node->widgetConfig->requestParams[$yearCol];
@@ -642,25 +641,25 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
             $parameters['effective_end_year_id'] = $geCondition;
           }
         }
-      }else{
-        //Hide data for contracts, end date is prior 2011
-        //TO DO: Move end fiscal year to Drupal variables
-        $year = _getYearIDFromValue(2011);
-        $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
-        $parameters['ending_year_id'] = $geCondition;
-        if ($contractStatus == 'A') {
-          if (isset($dimension)) {
-            $parameters[$dimension . '.' . $dimension . '.effective_end_year_id'] = $geCondition;
-          } else {
-            $parameters['effective_end_year_id'] = $geCondition;
-          }
-        }
       }
       break;
     case "active_registered_all":
       break;
     default:
       break;
+  }
+
+  //Hide data for contracts, end date is prior 2011
+  //TO DO: Move end fiscal year to Drupal variables
+  $year = _getYearIDFromValue(2011);
+  $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
+  $parameters['ending_year_id'] = $geCondition;
+  if ($contractStatus == 'A') {
+    if (isset($dimension)) {
+      $parameters[$dimension . '.' . $dimension . '.effective_end_year_id'] = $geCondition;
+    } else {
+      $parameters['effective_end_year_id'] = $geCondition;
+    }
   }
 }
 
