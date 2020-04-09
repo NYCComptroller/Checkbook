@@ -1,7 +1,10 @@
 <?php
 
 class NychaBudgetDataService extends DataService implements INyhcaBudgetDataService {
-
+  /* NYCHA Budget */
+  function GetNychaExpenseCategoriesByBudget($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
     /**
      * Common function that automatically configures the Nycha Budget sql
      * @param $dataFunction
