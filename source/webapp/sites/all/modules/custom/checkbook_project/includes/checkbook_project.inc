@@ -653,14 +653,11 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
   //TO DO: Move end fiscal year to Drupal variables
   $year = _getYearIDFromValue(2011);
   $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
-  $parameters['ending_year_id'] = $geCondition;
-  if ($contractStatus == 'A') {
     if (isset($dimension)) {
       $parameters[$dimension . '.' . $dimension . '.effective_end_year_id'] = $geCondition;
     } else {
       $parameters['effective_end_year_id'] = $geCondition;
     }
-  }
 }
 
 /**
