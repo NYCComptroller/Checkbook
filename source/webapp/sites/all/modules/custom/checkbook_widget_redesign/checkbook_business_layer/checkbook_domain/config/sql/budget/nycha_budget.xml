@@ -1,2 +1,21 @@
 <statements>
+
+  <!--Expense Categories Methods-->
+  <statement name="GetNychaExpenseCategoriesByBudget" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="dept" type="string" />
+    <sql>
+      SELECT
+      expenditure_type_description AS expense_category,
+      adopted_budget,
+      modified_budget,
+      actual_amount,
+      committed
+      FROM budget
+      GROUP BY expenditure_type_description,adopted_budget,modified_budget,actual_amount,committed
+    </sql>
+  </statement>
 </statements>
+
+
