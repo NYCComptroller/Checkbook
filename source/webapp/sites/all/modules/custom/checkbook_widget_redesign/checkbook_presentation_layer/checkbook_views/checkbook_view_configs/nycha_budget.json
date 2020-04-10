@@ -1,8 +1,8 @@
 {
   "nycha": {
     "landing_page_widgets": {
-      "nycha_budget_by_expense_categories":{
-        "widget_config":"nycha_budget_by_expense_categories_view"
+      "expense_categories":{
+        "widget_config":"expense_categories_view"
       }
     }
   }
