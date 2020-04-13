@@ -22,10 +22,8 @@
 /**
  * Class to load configuration used by datafeeds
  */
-class DatafeedsConfigUtil
-{
-  public static function dataSourceRadio($data_source, $domain)
-  {
+class DatafeedsConfigUtil{
+  public static function dataSourceRadio($data_source, $domain){
     $options = [
       'checkbook' => 'Citywide Agencies',
       'checkbook_oge' => 'New York City Economic Development Corporation',
@@ -55,8 +53,7 @@ class DatafeedsConfigUtil
    * @return mixed
    *   configuration
    */
-  static function getConfig($domain)
-  {
+  static function getConfig($domain){
     $config_str = file_get_contents(realpath(drupal_get_path('module', 'checkbook_datafeeds')) . "/config/checkbook_datafeeds_" . strtolower($domain) . "_column_options.json");
 
     $converter = new Json2PHPArray();

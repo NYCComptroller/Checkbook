@@ -30,8 +30,7 @@
  * @return array
  *   Renderable array of first step of Budget
  */
-function checkbook_datafeeds_budget($form, &$form_state)
-{
+function checkbook_datafeeds_budget($form, &$form_state){
   $format = $form_state['step_information']['type']['stored_values']['format'];
   $agency = isset($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)';
   $dept = !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : '';
@@ -236,7 +235,7 @@ function checkbook_datafeeds_budget($form, &$form_state)
   $form['columns']['column_select_expense'] = array(
     '#type' => 'select',
     '#title' => t('Budget Columns<span class="form-required" title="This field is required.">*</span>'),
-    '#options' => _checkbook_datafeeds_budget_column_options($format),
+    '#options' => _checkbook_datafeeds_budget_column_options(Datasource::CITYWIDE, $format),
     '#multiple' => TRUE,
     '#default_value' => !empty($form_state['values']['column_select_expense']) ? $form_state['values']['column_select_expense'] : '',
   );
@@ -273,51 +272,22 @@ function checkbook_datafeeds_budget($form, &$form_state)
 
 /**
  * Budget column options.
- *
- * @param string $datatype
+ * @param string $dataSource
+ * @param string $dataType
  *   Data type (xml or csv)
  *
  * @return array
  *   FAPI structured array for select box #options
  */
-function _checkbook_datafeeds_budget_column_options($datatype)
-{
-  if ($datatype == 'csv') {
-    $out = drupal_map_assoc(array(
-      "Accrued Expense",
-      "Adopted",
-      "Agency",
-      "Budget Code",
-      "Budget Name",
-      "Cash Expense",
-      "Department",
-      "Encumbered",
-      "Expense Category",
-      "Modified",
-      "Post Adjustments",
-      "Pre-Encumbered",
-      "Year",
-    ));
-  } else {
-    if ($datatype = 'xml') {
-      $out = drupal_map_assoc(array(
-        "accrued_expense",
-        "adopted",
-        "agency",
-        "budget_code",
-        "budget_name",
-        "cash_expense",
-        "department",
-        "encumbered",
-        "expense_category",
-        "modified",
-        "post_adjustment",
-        "pre_encumbered",
-        "year",
-      ));
-    }
-  }
-  return $out;
+function _checkbook_datafeeds_budget_column_options($dataSource, $dataType){
+  $options = DatafeedsConfigUtil::getConfig(strtolower('budget'));
+
+  $options = $options['data_source'][$dataSource] ?? $options['data_source'][Datasource::CITYWIDE];
+  $options = $options['data_type'][$dataType] ?? $options['data_type']['default'];
+
+  ksort($options);
+  return $options;
+
 }
 
 /**
@@ -328,8 +298,7 @@ function _checkbook_datafeeds_budget_column_options($datatype)
  * @param array $form_state
  *   Data Feeds wizard form_state array
  */
-function checkbook_datafeeds_budget_next_submit($form, &$form_state)
-{
+function checkbook_datafeeds_budget_next_submit($form, &$form_state){
   $current_step = &$form_state['step'];
   $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
 
@@ -354,8 +323,7 @@ function checkbook_datafeeds_budget_next_submit($form, &$form_state)
  * @return array
  *   Renderable array of Budget confirmation page step
  */
-function checkbook_datafeeds_budget_confirmation($form, &$form_state)
-{
+function checkbook_datafeeds_budget_confirmation($form, &$form_state){
   $values = $form_state['step_information']['budget']['stored_values'];
   $responsetype = $form_state['step_information']['type']['stored_values']['format'];
   $user_criteria = array();
@@ -536,8 +504,7 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state)
  * @param array $form_state
  *   Data Feeds wizard form_state array
  */
-function checkbook_datafeeds_budget_confirmation_previous_submit($form, &$form_state)
-{
+function checkbook_datafeeds_budget_confirmation_previous_submit($form, &$form_state){
   $current_step = &$form_state['step'];
   $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
   $current_step = 'budget';
@@ -556,8 +523,7 @@ function checkbook_datafeeds_budget_confirmation_previous_submit($form, &$form_s
  * @return array
  *   Structured array expected by API
  */
-function checkbook_datafeeds_process_budget_values($form, $form_state)
-{
+function checkbook_datafeeds_process_budget_values($form, $form_state){
   $values = $form_state['step_information']['budget']['stored_values'];
   $pattern = "/.*?(\\[.*?\\])/is";
   global $conf;
@@ -652,8 +618,7 @@ function checkbook_datafeeds_process_budget_values($form, $form_state)
  * @param array $form_state
  *   Data Feeds wizard form_state array
  */
-function checkbook_datafeeds_budget_validate($form, &$form_state)
-{
+function checkbook_datafeeds_budget_validate($form, &$form_state){
   $adoptedfrom = $form_state['values']['adoptedfrom'];
   $adoptedto = $form_state['values']['adoptedto'];
   $currentfrom = $form_state['values']['currentfrom'];
