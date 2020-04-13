@@ -48,10 +48,9 @@ if($node->data[2]['budget_modified'] > 0) {
 }
 
 //Spending Link
-$category_names = NychaSpendingUtil::$categories;
+$total_spending = 0;
 foreach($node->data as $key=>$row){
   $row['invoice_amount_sum'] = ($row['category_name_category_name'] == 'Payroll') ? $row['check_amount_sum'] : $row['invoice_amount_sum'];
-  //$categories[$row['category_category']] = array('name' => $row['category_name_category_name'], 'amount' => $row['invoice_amount_sum']);
   $total_spending +=  $row['invoice_amount_sum'];
 }
 if($total_spending > 0  ) {
