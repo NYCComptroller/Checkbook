@@ -1,0 +1,41 @@
+{
+  "datasets":{
+    "budget":{
+      "datasourceName":"main",
+      "source":"budget"
+    }
+  },
+  "cubes":{
+    "budget":{
+      "sourceDatasetName":"budget",
+      "dimensions":[
+        {
+          "name": "year",
+          "levels": [
+            {
+              "name": "year",
+              "sourceColumnName": "budget_fiscal_year"
+            }
+          ]
+        },
+        {
+          "name":"year_id",
+          "levels":[
+            {
+              "name":"year_id",
+              "sourceColumnName":"budget_fiscal_year_id"
+            }
+          ]
+        }
+      ],
+      "measures":{
+        "txcount": {
+          "function": "COUNT(*)"
+        },
+        "budget_modified":{
+          "function":"SUM(COALESCE(modified_budget,0))"
+        }
+      }
+    }
+  }
+}
