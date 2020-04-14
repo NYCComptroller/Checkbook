@@ -38,7 +38,7 @@
   "urlParamMap":{
     "year":"year_id.year_id",
     "agency":"agency_id.agency_id",
-    "expcategory":"object_class_id.object_class_id",
+    "expcategory":"object_class_id.object_class_id"
   },
   "dataset":"checkbook_nycha:budget",
   "columns":[
