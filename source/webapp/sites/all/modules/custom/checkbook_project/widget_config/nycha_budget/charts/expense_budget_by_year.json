@@ -1,0 +1,130 @@
+{
+  "widgetType":"highcharts",
+  "widgetSubType":"highcharts",
+  "header":"
+    $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+    $header .= ChartUtil::generateWidgetGridViewLink($node);
+    return $header;
+  ",
+  "chartTitle": "Expense Budget",
+  "gridConfig":{
+    "template":"highchart_budget_grid_view",
+    "html_class":"chart-grid-view-table",
+    "table_columns": [
+      {
+        "labelAlias": "fiscal_year",
+        "column": "year_year",
+        "sortColumn":"sort_order"
+      },
+      {
+        "colLabel": "committed",
+        "column": "budget_committed",
+        "eval":true
+      },
+      {
+        "colLabel": "remaining",
+        "column": "budget_remaining",
+        "eval":true
+      }
+    ]
+  },
+  "defaultParameters":{
+    "year_id.year_id":119
+  },
+  "cleanURLParameters":[
+    "year",
+    "agency",
+    "expcategory",
+    "dept"
+  ],
+  "urlParamMap":{
+    "year":"year_id.year_id",
+    "agency":"agency_id.agency_id",
+    "expcategory":"object_class_id.object_class_id",
+    "dept":"dept_code.dept_code"
+  },
+  "dataset":"checkbook_nycha:budget",
+  "columns":[
+    "year.year",
+    "budget_committed",
+    "budget_remaining"
+  ],
+  "transformationPHP":"
+  $transactions_page = '/' . current_path()  . '?expandBottomContURL=/panel_html/budget_transactions';
+  $year = ($node->widgetConfig->requestParams['year_id.year_id']) ? '/year/' . $node->widgetConfig->requestParams['year_id.year_id'] : '';
+$agency = ($node->widgetConfig->requestParams['agency_id.agency_id']) ? '/agency/' . $node->widgetConfig->requestParams['agency_id.agency_id'] : '';
+$dept = ($node->widgetConfig->requestParams['dept_code.dept_code']) ? '/dept/' . $node->widgetConfig->requestParams['dept_code.dept_code'] : '';
+$expcategory = ($node->widgetConfig->requestParams['object_class_id.object_class_id']) ? '/expcategory/' . $node->widgetConfig->requestParams['object_class_id.object_class_id'] : '';
+$smnid = '/smnid/259';
+$budget_committed = '/budgettype/committed';
+$budget_remaining = '/budgettype/remaining';
+$url_committed =  $transactions_page . $smnid . $budget_committed . $year . $agency . $dept . $expcategory;
+$url_remaining =  $transactions_page . $smnid . $budget_remaining . $year . $agency . $dept . $expcategory;
+$allZero = TRUE;
+foreach ($node->data as $row){
+if (abs($row['budget_committed']) > 0){$allZero = FALSE;}
+if (abs($row['budget_remaining']) > 0){$allZero = FALSE;}
+$categories[] = $row['year_year'];
+$committed_data[] = array('y' => $row['budget_committed'], 'url' => $url_committed);
+$remaining_data[] = array('y' => $row['budget_remaining'], 'url' => $url_remaining);
+}
+if($allZero){$node->totalDataCount = 0;}
+$node->widgetConfig->chartTitle = 'Expense Budget';
+$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+$node->widgetConfig->chartConfig->series = array(array('name' => 'Committed', 'data' => $committed_data), array('name' => 'Remaining', 'data' => $remaining_data));
+return $node->data;
+",
+"summaryView":{
+"template":"budget_expense_transactions_summary",
+"templateTitle":"Expense Budget Transactions",
+"templateLabel":"Year",
+"templateLabelEval":"return 'FY '._getYearValueFromID(RequestUtilities::getRequestParamValue('year'));"
+},
+"chartConfig":{
+"chart":{
+"defaultSeriesType":"column"
+},
+"plotOptions":{
+"series": {
+"cursor": "pointer",
+"point": {
+"events": {
+"function": "clickEvent"
+}
+}
+},
+"column":{
+"minPointLength":3,
+"pointWidth":150
+}
+},
+"xAxis":{
+"categories":[]
+},
+"yAxis":{
+"title":{
+"text":""
+},
+"labels":{
+"function":"yAxisFormat"
+}
+},
+"legend":{
+"align":"left",
+"verticalAlign":"bottom"
+},
+"title":{
+"text":""
+},
+"series":[],
+"tooltip":{
+"stickyTracking":false,
+"function":"formatTooltip"
+}
+}
+}
+<function>
+formatTooltip^^"formatter":function(){return 'Year: ' + this.x + '<br>Amount: ' + abbrNum(this.y, 2, '$');}##
+yAxisFormat^^"formatter":function(){return yAxisLabelFormatter(this);}##
+clickEvent^^"click": function(){location.href = this.url;}
+</function>
