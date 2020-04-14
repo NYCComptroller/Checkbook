@@ -25,18 +25,18 @@
 class DatafeedsConfigUtil{
   public static function dataSourceRadio($data_source, $domain){
     $options = [
-      'checkbook' => 'Citywide Agencies',
-      'checkbook_oge' => 'New York City Economic Development Corporation',
-      'checkbook_nycha' => 'New York City Housing Authority'
+      Datasource::CITYWIDE => 'Citywide Agencies',
+      Datasource::OGE => 'New York City Economic Development Corporation',
+      Datasource::NYCHA => 'New York City Housing Authority'
     ];
-    if ('payroll' == $domain) {
+    if (Domain::$PAYROLL == $domain || Domain::$BUDGET == $domain || Domain::$REVENUE == $domain) {
       unset($options['checkbook_oge']);
     }
     return [
       '#type' => 'radios',
       '#title' => 'Data source',
       '#options' => $options,
-      '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
+      '#default_value' => !isset($data_source) ? Datasource::CITYWIDE : $data_source,
       '#prefix' => '<div id="div_data_source">',
       '#suffix' => '</div><br/>',
     ];

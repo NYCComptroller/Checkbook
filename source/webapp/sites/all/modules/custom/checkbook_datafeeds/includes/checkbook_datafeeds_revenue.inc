@@ -32,13 +32,13 @@
 function checkbook_datafeeds_revenue($form, &$form_state){
   $datatype = $form_state['step_information']['type']['stored_values']['format'];
   $revenue_fys = array('' => "All Fiscal Years");
-  $revenue_fys = $revenue_fys + _checkbook_advanced_search_get_year('revenue', 'datafeeds');
+  $revenue_fys = $revenue_fys + _checkbook_advanced_search_get_year(Domain::$REVENUE, 'datafeeds');
   $agency_options = _agency_options(Datasource::CITYWIDE);
 
   //<editor-fold desc="Heading">
 
   $form['loaded'] = array(
-    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('revenue') . '</div>',
+    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date(Domain::$REVENUE) . '</div>',
   );
   $form['requiredmessage'] = array(
     '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
@@ -229,7 +229,7 @@ function checkbook_datafeeds_revenue($form, &$form_state){
  *   FAPI structured array for select box #options
  */
 function _checkbook_datafeeds_revenue_column_options($dataSource, $dataType){
-  $options = DatafeedsConfigUtil::getConfig(strtolower('revenue'));
+  $options = DatafeedsConfigUtil::getConfig(strtolower(Domain::$REVENUE));
 
   $options = $options['data_source'][$dataSource] ?? $options['data_source'][Datasource::CITYWIDE];
   $options = $options['data_type'][$dataType] ?? $options['data_type']['default'];
@@ -436,7 +436,7 @@ function checkbook_datafeeds_revenue_confirmation($form, &$form_state){
   $criteria = checkbook_datafeeds_process_revenue_values($form, $form_state);
   $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
   $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
-  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, 'revenue');
+  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, Domain::$REVENUE);
   return $modified_form;
 }
 
