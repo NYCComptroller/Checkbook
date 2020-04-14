@@ -26,6 +26,24 @@
               "sourceColumnName":"budget_fiscal_year_id"
             }
           ]
+        },
+        {
+          "name":"object_class_id",
+          "levels":[
+            {
+              "name":"object_class_id",
+              "sourceColumnName":"expenditure_type_id"
+            }
+          ]
+        },
+        {
+          "name":"object_class_name",
+          "levels":[
+            {
+              "name":"object_class_name",
+              "sourceColumnName":"expenditure_type_name"
+            }
+          ]
         }
       ],
       "measures":{
