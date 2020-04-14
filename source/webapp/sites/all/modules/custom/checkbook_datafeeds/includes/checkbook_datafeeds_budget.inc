@@ -32,10 +32,6 @@
  */
 function checkbook_datafeeds_budget($form, &$form_state){
   $format = $form_state['step_information']['type']['stored_values']['format'];
-  $agency = isset($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)';
-  $dept = !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : '';
-  $expcat = !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : '';
-  $year = !empty($form_state['values']['fiscal_year']) ? $form_state['values']['fiscal_year'] : 'FY' . CheckbookDateUtil::getCurrentFiscalYear();
   $agency_options = _agency_options(Datasource::CITYWIDE);
 
   //<editor-fold desc="Heading">
@@ -277,7 +273,7 @@ function checkbook_datafeeds_budget($form, &$form_state){
  *   Data type (xml or csv)
  *
  * @return array
- *   FAPI structured array for select box #options
+ *   API structured array for select box #options
  */
 function _checkbook_datafeeds_budget_column_options($dataSource, $dataType){
   $options = DatafeedsConfigUtil::getConfig(strtolower('budget'));
@@ -287,7 +283,6 @@ function _checkbook_datafeeds_budget_column_options($dataSource, $dataType){
 
   ksort($options);
   return $options;
-
 }
 
 /**
