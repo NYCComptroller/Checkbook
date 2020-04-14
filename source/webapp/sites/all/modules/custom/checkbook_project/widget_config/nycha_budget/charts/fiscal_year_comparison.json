@@ -6,7 +6,6 @@
   $header .= ChartUtil::generateWidgetGridViewLink($node);
   return $header;
   ",
-  "chartTitle": "Fiscal Year Comparisons",
   "gridConfig":{
     "template":"highchart_budget_grid_view",
     "html_class":"chart-grid-view-table",
@@ -42,13 +41,11 @@
   "cleanURLParameters":[
     "year",
     "agency",
-    "dept",
     "expcategory"
   ],
   "urlParamMap":{
     "year":"year_id.year_id",
     "agency":"agency_id.agency_id",
-    "dept":"dept_code.dept_code",
     "expcategory":"object_class_id.object_class_id"
   },
   "adjustParameters":"
@@ -69,7 +66,7 @@ return $adjustedParameters;",
 "transformationPHP":"
 $transactions_page = '/' .  current_path()  . '?expandBottomContURL=/panel_html/budget_transactions';
 $agency = ($node->widgetConfig->requestParams['agency_id.agency_id']) ? '/agency/' . $node->widgetConfig->requestParams['agency_id.agency_id'] : '';
-$dept = ($node->widgetConfig->requestParams['dept_code.dept_code']) ? '/dept/' . $node->widgetConfig->requestParams['dept_code.dept_code'] : '';
+//$dept = ($node->widgetConfig->requestParams['dept_code.dept_code']) ? '/dept/' . $node->widgetConfig->requestParams['dept_code.dept_code'] : '';
 $expcategory = ($node->widgetConfig->requestParams['object_class_id.object_class_id']) ? '/expcategory/' . $node->widgetConfig->requestParams['object_class_id.object_class_id'] : '';
 $budget_committed = '/budgettype/committed';
 $budget_remaining = '/budgettype/remaining';
@@ -79,8 +76,8 @@ if (abs($row['budget_committed']) > 0){$allZero = FALSE;}
 if (abs($row['budget_remaining']) > 0){$allZero = FALSE;}
 $categories[] = $row['year_year'];
 $year = '/year/' . $row['year_id_year_id'];
-$url_committed = $transactions_page . $budget_committed . $agency . $expcategory . $dept . $year;
-$url_remaining = $transactions_page . $budget_remaining . $agency . $expcategory . $dept . $year;
+$url_committed = $transactions_page . $budget_committed . $agency . $expcategory . $year;
+$url_remaining = $transactions_page . $budget_remaining . $agency . $expcategory . $year;
 $committed_data[] = array('name' => $row['year_year'], 'y' => $row['budget_committed'], 'url' => $url_committed);
 $remaining_data[] = array('name' => $row['year_year'], 'y' => $row['budget_remaining'], 'url' => $url_remaining);
 }
