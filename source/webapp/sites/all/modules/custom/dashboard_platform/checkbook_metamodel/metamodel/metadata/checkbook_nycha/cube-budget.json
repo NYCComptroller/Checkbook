@@ -34,6 +34,12 @@
         },
         "budget_modified":{
           "function":"SUM(COALESCE(modified_budget,0))"
+        },
+        "budget_remaining":{
+          "function":"SUM(funds_available)"
+        },
+        "budget_committed":{
+          "function":"SUM(committed)"
         }
       }
     }
