@@ -34,7 +34,7 @@ function checkbook_datafeeds_spending($form, &$form_state)
   $datatype = $form_state['step_information']['type']['stored_values']['format'];
 
   $form['loaded'] = array(
-    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('spending') . '</div>',
+    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date(Domain::$SPENDING) . '</div>',
   );
   $form['requiredmessage'] = array(
     '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
@@ -44,7 +44,7 @@ function checkbook_datafeeds_spending($form, &$form_state)
   );
 
   $data_source = $form_state['values']['datafeeds-spending-domain-filter'] ?? Datasource::CITYWIDE;
-  $form['datafeeds-spending-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, 'spending');
+  $form['datafeeds-spending-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, Domain::$SPENDING);
 
   $form['filter'] = array(
     '#type' => 'fieldset',
@@ -546,7 +546,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
  */
 function _checkbook_datafeeds_spending_column_options($data_source, $data_type)
 {
-  $options = DatafeedsConfigUtil::getConfig(strtolower('spending'));
+  $options = DatafeedsConfigUtil::getConfig(strtolower(Domain::$SPENDING));
 
   $options = $options['data_source'][$data_source] ?? $options['data_source'][Datasource::CITYWIDE];
   $options = $options['data_type'][$data_type] ?? $options['data_type']['default'];

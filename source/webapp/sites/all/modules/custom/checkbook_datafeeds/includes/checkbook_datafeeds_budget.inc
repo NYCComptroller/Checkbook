@@ -37,7 +37,7 @@ function checkbook_datafeeds_budget($form, &$form_state){
   //<editor-fold desc="Heading">
 
   $form['loaded'] = array(
-    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('budget') . '</div>',
+    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date(Domain::$BUDGET) . '</div>',
   );
   $form['requiredmessage'] = array(
     '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
@@ -45,6 +45,9 @@ function checkbook_datafeeds_budget($form, &$form_state){
   $form['description'] = array(
     '#markup' => '<h2 class="domain-title">Budget</h2>'
   );
+
+  $data_source = $form_state['values']['datafeeds-budget-domain-filter'] ?? Datasource::CITYWIDE;
+  $form['datafeeds-budget-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, Domain::$BUDGET);
 
   //</editor-fold>
 
@@ -276,7 +279,7 @@ function checkbook_datafeeds_budget($form, &$form_state){
  *   API structured array for select box #options
  */
 function _checkbook_datafeeds_budget_column_options($dataSource, $dataType){
-  $options = DatafeedsConfigUtil::getConfig(strtolower('budget'));
+  $options = DatafeedsConfigUtil::getConfig(strtolower(Domain::$BUDGET));
 
   $options = $options['data_source'][$dataSource] ?? $options['data_source'][Datasource::CITYWIDE];
   $options = $options['data_type'][$dataType] ?? $options['data_type']['default'];
@@ -487,7 +490,7 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state){
   $criteria = checkbook_datafeeds_process_budget_values($form, $form_state);
   $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
   $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
-  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, 'budget');
+  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, Domain::$BUDGET);
   return $modified_form;
 }
 
