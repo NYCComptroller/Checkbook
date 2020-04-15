@@ -58,6 +58,7 @@
 
     Drupal.behaviors.budgetDataFeeds = {
         attach:function(context,settings){
+            $.fn.formatDatafeedsDatasourceRadio();
             $.fn.reloadDepartment();
             $.fn.reloadExpenseCategory();
 
