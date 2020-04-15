@@ -289,7 +289,7 @@ class WidgetUtil
         "grant" => "Grant<br/>Name",
         "expenditure_type" => "Expenditure<br/>Type",
         "funding_source" => "Funding<br/>Source",
-        "responsibility_center" => "Responsibility Center",
+        "responsibility_center" => "Responsibility<br/>Center",
         "program" => "Program",
         "project" => "Project",
         "commodity_category" => "Commodity<br/>Category",
