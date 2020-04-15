@@ -194,6 +194,7 @@ class WidgetUtil
         "remaining"=>"Remaining",
         "pre_encumbered"=>"Pre<br/>Encumbered",
         "encumbered"=>"Encumbered",
+        "actual_amount"=>"Actual<br/>Amount",
         "accrued_expense"=>"Accrued<br/>Expense",
         "cash_payments"=>"Cash<br/>Payments",
         "post_adjustments"=>"Post<br/>Adjustments",
