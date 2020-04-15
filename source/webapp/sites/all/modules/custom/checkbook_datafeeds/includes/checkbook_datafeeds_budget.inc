@@ -32,8 +32,6 @@
  */
 function checkbook_datafeeds_budget($form, &$form_state){
   $format = $form_state['step_information']['type']['stored_values']['format'];
-  $agency_options = _agency_options(Datasource::CITYWIDE);
-
   //<editor-fold desc="Heading">
 
   $form['loaded'] = array(
@@ -56,6 +54,82 @@ function checkbook_datafeeds_budget($form, &$form_state){
     '#title' => t('3. Filter the Data:'),
     '#attributes' => array('class' => array('budget-fieldset')),
   );
+
+  //<editor-fold desc="CityWide Fields">
+  $form['filter']['checkbook-fields-begin'] = array(
+    '#markup' => '<div class="checkbook_fields">',
+  );
+  $form = checkbook_datafeeds_budget_filter_data($form, $form_state, Datasource::CITYWIDE);
+  $form['filter']['checkbook-fields-end'] = array(
+    '#markup' => '</div>',
+  );
+  //</editor-fold>
+
+  //<editor-fold desc="NYCHA Fields">
+  $form['filter']['checkbook-nycha-fields-begin'] = array(
+    '#markup' => '<div class="checkbook_nycha_fields">',
+  );
+  $form = checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, Datasource::NYCHA);
+  $form['filter']['checkbook-nycha-fields-end'] = array(
+    '#markup' => '</div>',
+  );
+  //</editor-fold>
+
+  $form['columns'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('4. Select Columns:'),
+  );
+
+  //<editor-fold desc="CityWide Multi-select Options">
+  $form['columns']['column_select_expense'] = array(
+    '#type' => 'select',
+    '#title' => t('Budget Columns<span class="form-required" title="This field is required.">*</span>'),
+    '#options' => _checkbook_datafeeds_budget_column_options(Datasource::CITYWIDE, $format),
+    '#multiple' => TRUE,
+    '#default_value' => !empty($form_state['values']['column_select_expense']) ? $form_state['values']['column_select_expense'] : '',
+  );
+
+  //Hidden Field for multi-select
+  $form['columns']['hidden_multiple_value'] = array(
+    '#value' => isset($form_state['values']['column_select']) ? '|' . implode('||', $form_state['values']['column_select']) . '|' : '',
+    '#type' => 'hidden',
+  );
+  //</editor-fold>
+
+  $form['#attached'] = array(
+    'library' => array(
+      array('system', 'ui.autocomplete', FALSE),
+      array('checkbook_datafeeds', 'jquery_multiselect', FALSE),
+    ),
+    'js' => array(
+      'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/budget.js',
+    ),
+  );
+  $form['#validate'] = array('checkbook_datafeeds_budget_validate');
+  $form['#attributes'] = array('class' => array('budget', 'data-feeds-wizard'));
+  $form['prev'] = array(
+    '#type' => 'submit',
+    '#value' => t('Previous'),
+    '#name' => 'prev',
+    '#submit' => array('previous_submit'),
+    '#limit_validation_errors' => array(),
+  );
+  $form['feeds_budget_next'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+    '#submit' => array('checkbook_datafeeds_budget_next_submit'),
+  );
+  return $form;
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @param $data_source
+ * @return mixed
+ */
+function checkbook_datafeeds_budget_filter_data($form, $form_state, $data_source = Datasource::CITYWIDE){
+  $agency_options = _agency_options($data_source);
   $form['filter']['leftbegin'] = array(
     '#markup' => '<div class="column column-left">',
   );
@@ -227,48 +301,75 @@ function checkbook_datafeeds_budget($form, &$form_state){
   $form['filter']['rightend'] = array(
     '#markup' => '</div>',
   );
-  $form['columns'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('4. Select Columns:'),
-  );
-  $form['columns']['column_select_expense'] = array(
-    '#type' => 'select',
-    '#title' => t('Budget Columns<span class="form-required" title="This field is required.">*</span>'),
-    '#options' => _checkbook_datafeeds_budget_column_options(Datasource::CITYWIDE, $format),
-    '#multiple' => TRUE,
-    '#default_value' => !empty($form_state['values']['column_select_expense']) ? $form_state['values']['column_select_expense'] : '',
-  );
-  //Hidden Field for multi-select
-  $form['columns']['hidden_multiple_value'] = array(
-    '#value' => isset($form_state['values']['column_select']) ? '|' . implode('||', $form_state['values']['column_select']) . '|' : '',
-    '#type' => 'hidden',
-  );
-  $form['#attached'] = array(
-    'library' => array(
-      array('system', 'ui.autocomplete', FALSE),
-      array('checkbook_datafeeds', 'jquery_multiselect', FALSE),
-    ),
-    'js' => array(
-      'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/budget.js',
-    ),
-  );
-  $form['#validate'] = array('checkbook_datafeeds_budget_validate');
-  $form['#attributes'] = array('class' => array('budget', 'data-feeds-wizard'));
-  $form['prev'] = array(
-    '#type' => 'submit',
-    '#value' => t('Previous'),
-    '#name' => 'prev',
-    '#submit' => array('previous_submit'),
-    '#limit_validation_errors' => array(),
-  );
-  $form['feeds_budget_next'] = array(
-    '#type' => 'submit',
-    '#value' => t('Submit'),
-    '#submit' => array('checkbook_datafeeds_budget_next_submit'),
-  );
   return $form;
 }
 
+/**
+ * @param $form
+ * @param $form_state
+ * @param $data_source
+ * @return mixed
+ */
+function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_source){
+  $first_time_load = checkbook_datafeeds_is_first_load($form_state, $data_source);
+  $form['filter']['nycha-leftbegin'] = array(
+    '#markup' => '<div class="column column-left">',
+  );
+  $form['filter']['nycha_fiscal_year'] = array(
+    '#type' => 'select',
+    '#title' => t('Year:'),
+    '#options' => CheckbookDateUtil::getLast10fiscalYears(),
+    '#default_value' => !empty($form_state['values']['nycha_fiscal_year']) ? $form_state['values']['nycha_fiscal_year'] : CheckbookDateUtil::getCurrentFiscalYear(),
+    '#attributes' => array('class' => array('watch')),
+    '#prefix' => '<div class="datafield fiscalyear">',
+    '#suffix' => '</div>',
+  );
+
+  $expenseCategories = _budget_expcat_options(NUll, NUll, NULL, Datasource::NYCHA);
+  $form['filter']['nycha_expense_category'] = array(
+    '#type' => 'select',
+    '#title' => t('Expense Category:'),
+    '#prefix' => '<div id="expense-category" class="datafield expensecategory">',
+    '#suffix' => '</div>',
+    '#validated' => TRUE,
+    '#default_value' => !empty($form_state['values']['nycha_expense_category']) ? $form_state['values']['nycha_expense_category'] : 'Select Expense Category',
+  );
+
+  $resp_center_options = _checkbook_advanced_search_get_responsibility_centers(Datasource::NYCHA, true);
+  $form['filter']['resp_center'] = array(
+    '#type' => 'select',
+    '#title' => t('Responsibility<br/>Center:'),
+    '#options' => $resp_center_options['options'],
+    '#option_attributes' => $resp_center_options['option_attributes'],
+    '#attributes' => array('class' => array('watch')),
+    '#prefix' => '<div class="datafield resp-center">',
+    '#suffix' => '</div>',
+    '#id' => 'edit-resp-center',
+    '#name' => 'resp_center',
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'resp_center', $first_time_load, 'Select Responsibility Center'),
+  );
+  $funding_source_options = _funding_source_options(Datasource::NYCHA);
+  $form['filter']['funding_source'] = array(
+    '#type' => 'select',
+    '#title' => t('Funding Source:'),
+    '#options' => $funding_source_options['options'],
+    '#option_attributes' => $funding_source_options['option_attributes'],
+    '#prefix' => '<div class="datafield fundingsource nycha">',
+    '#suffix' => '</div>',
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => !empty($form_state['values']['funding_source']) ? $form_state['values']['funding_source'] : 'All Funding Sources',
+  );
+  $form['filter']['nycha-leftend'] = array(
+    '#markup' => '</div>',
+  );
+  $form['filter']['nycha-rightbegin'] = array(
+    '#markup' => '<div class="column column-right">',
+  );
+  $form['filter']['nycha-rightend'] = array(
+    '#markup' => '</div>',
+  );
+  return $form;
+}
 /**
  * Budget column options.
  * @param string $dataSource
