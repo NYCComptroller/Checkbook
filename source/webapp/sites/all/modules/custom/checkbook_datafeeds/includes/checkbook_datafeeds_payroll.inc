@@ -322,7 +322,7 @@ function _checkbook_datafeeds_payroll_column_options($datatype, $data_source = "
       "gross_pay", "gross_pay_ytd", "hourly_rate", "other_payments", "overtime_payments",
       "pay_date", "pay_frequency", "payroll_type", "title",)),
       "checkbook_nycha" => drupal_map_assoc(array("annual_salary", "base_pay", "calendar_year", "daily_wage",
-        "gross_pay", "gross_pay_ytd", "hourly_rate",
+        "gross_pay", "gross_pay_ytd", "hourly_rate","other_payments",
         "overtime_payments", "pay_date", "pay_frequency", "payroll_type", "title",)),
     );
   }
