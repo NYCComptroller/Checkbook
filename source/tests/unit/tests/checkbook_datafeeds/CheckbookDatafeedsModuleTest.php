@@ -6,30 +6,25 @@ include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/includes/checkbook_dataf
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/constants/CommonConstants.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/checkbook_project.module';
-include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/config/util/DatafeedsConfigUtil.php';
-include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/config/checkbook_datafeeds_budget_column_options.json';
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class CheckbookDatafeedsModuleTest
  */
-class CheckbookDatafeedsModuleTest extends TestCase
-{
+class CheckbookDatafeedsModuleTest extends TestCase{
 
     /**
      *
      */
-    public function setUp(): void
-    {
+    public function setUp(): void {
         parent::setUp();
     }
 
     /**
      *
      */
-    public function test_checkbook_datafeeds_menu()
-    {
+    public function test_checkbook_datafeeds_menu(){
         $items = checkbook_datafeeds_menu();
         $this->assertEquals('array', gettype($items));
         $this->assertEquals(8, sizeof($items));
@@ -46,8 +41,7 @@ class CheckbookDatafeedsModuleTest extends TestCase
     /**
      *
      */
-    public function test_checkbook_datafeeds_library()
-    {
+    public function test_checkbook_datafeeds_library(){
         $libs = checkbook_datafeeds_library();
         $this->assertEquals('array', gettype($libs));
         $this->assertEquals(5, sizeof($libs['jquery_multiselect']));
@@ -56,8 +50,7 @@ class CheckbookDatafeedsModuleTest extends TestCase
     /**
      *
      */
-    public function test_checkbook_datafeeds_theme()
-    {
+    public function test_checkbook_datafeeds_theme(){
         $hooks = checkbook_datafeeds_theme(1, 2, 3, 4);
         $this->assertEquals(1, sizeof($hooks['user_criteria']));
         $this->assertEquals('array', gettype($hooks));
@@ -66,16 +59,14 @@ class CheckbookDatafeedsModuleTest extends TestCase
     /**
      *
      */
-    public function checkbook_datafeeds_api_page()
-    {
+    public function checkbook_datafeeds_api_page(){
         $this->assertTrue(checkbook_datafeeds_api_page());
     }
 
     /**
      *
      */
-    public function test_checkbook_datafeeds_tracking_form()
-    {
+    public function test_checkbook_datafeeds_tracking_form(){
         $form = checkbook_datafeeds_tracking_form();
         $this->assertEquals('array', gettype($form));
         $this->assertEquals(1, sizeof($form['#attached']));
@@ -87,8 +78,7 @@ class CheckbookDatafeedsModuleTest extends TestCase
     /**
      *
      */
-    public function test_checkbook_datafeeds_tracking_form_submit()
-    {
+    public function test_checkbook_datafeeds_tracking_form_submit(){
         $test_form_state = [
             'values' => [
                 'tracking_number' => 'secret007'
@@ -101,8 +91,7 @@ class CheckbookDatafeedsModuleTest extends TestCase
     /**
      *
      */
-    public function test_checkbook_datafeeds_tracking_results_page()
-    {
+    public function test_checkbook_datafeeds_tracking_results_page(){
         $page = checkbook_datafeeds_tracking_results_page();
         $this->assertEquals('array', gettype($page));
         $this->assertEquals(2, sizeof($page['instructions']));
@@ -118,8 +107,7 @@ class CheckbookDatafeedsModuleTest extends TestCase
     /**
      *
      */
-    public function test_theme_user_criteria()
-    {
+    public function test_theme_user_criteria(){
         $test_vars = [
             'usercriteria' => [
                 'Columns' => 'a',
@@ -134,8 +122,7 @@ class CheckbookDatafeedsModuleTest extends TestCase
     /**
      *
      */
-    public function test_checkbook_datafeeds_data_feeds_page()
-    {
+    public function test_checkbook_datafeeds_data_feeds_page(){
         $page = checkbook_datafeeds_data_feeds_page();
         $this->assertEquals('array', gettype($page));
         $this->assertEquals(2, sizeof($page['instructions']));
@@ -150,8 +137,7 @@ class CheckbookDatafeedsModuleTest extends TestCase
     /**
      *
      */
-    public function test_checkbook_datafeeds_data_feed_wizard()
-    {
+    public function test_checkbook_datafeeds_data_feed_wizard(){
         $test_form_state = [
             'step' => 'none'
         ];
@@ -164,24 +150,8 @@ class CheckbookDatafeedsModuleTest extends TestCase
         $this->assertEquals(1, sizeof($form['#attributes']));
     }
 
-    public function test_checkbook_datafeeds_budget_column_options_csv()
-    {
-        $out = _checkbook_datafeeds_budget_column_options(Datasource::CITYWIDE, 'csv');
-        $this->assertEquals('array', gettype($out));
-        $this->assertEquals('Accrued Expense', $out[0]);
-        $this->assertEquals(13, sizeof($out));
-    }
 
-    public function test_checkbook_datafeeds_budget_column_options_xml()
-    {
-        $out = _checkbook_datafeeds_budget_column_options(Datasource::CITYWIDE, 'xml');
-        $this->assertEquals('array', gettype($out));
-        $this->assertEquals('accrued_expense', $out[0]);
-        $this->assertEquals(13, sizeof($out));
-    }
-
-    public function test_checkbook_datafeeds_budget_next_submit()
-    {
+    public function test_checkbook_datafeeds_budget_next_submit(){
         $test_form_state = [
             'step' => 'forward',
             'step_information' => [
@@ -207,8 +177,7 @@ class CheckbookDatafeedsModuleTest extends TestCase
         $this->assertEquals(777, $test_form_state['values']);
     }
 
-    public function test_checkbook_datafeeds_process_contracts_values()
-    {
+    public function test_checkbook_datafeeds_process_contracts_values(){
         $test_form = [];
         $test_form_state = [];
         $test_form_state['step_information']['contracts']['stored_values'] = [
