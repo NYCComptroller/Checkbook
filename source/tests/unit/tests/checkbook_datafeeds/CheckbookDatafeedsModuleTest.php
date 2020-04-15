@@ -7,6 +7,7 @@ include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastr
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/checkbook_project.module';
 include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/config/util/DatafeedsConfigUtil.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/config/checkbook_datafeeds_budget_column_options.json';
 
 use PHPUnit\Framework\TestCase;
 
