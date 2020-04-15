@@ -164,7 +164,7 @@ class CheckbookDatafeedsModuleTest extends TestCase
 
     public function test_checkbook_datafeeds_budget_column_options_csv()
     {
-        $out = _checkbook_datafeeds_budget_column_options('csv');
+        $out = _checkbook_datafeeds_budget_column_options(Datasource::CITYWIDE, 'csv');
         $this->assertEquals('array', gettype($out));
         $this->assertEquals('Accrued Expense', $out[0]);
         $this->assertEquals(13, sizeof($out));
@@ -172,7 +172,7 @@ class CheckbookDatafeedsModuleTest extends TestCase
 
     public function test_checkbook_datafeeds_budget_column_options_xml()
     {
-        $out = _checkbook_datafeeds_budget_column_options('xml');
+        $out = _checkbook_datafeeds_budget_column_options(Datasource::CITYWIDE, 'xml');
         $this->assertEquals('array', gettype($out));
         $this->assertEquals('accrued_expense', $out[0]);
         $this->assertEquals(13, sizeof($out));
