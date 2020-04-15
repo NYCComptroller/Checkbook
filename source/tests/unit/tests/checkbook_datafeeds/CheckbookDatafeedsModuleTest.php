@@ -6,6 +6,7 @@ include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/includes/checkbook_dataf
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/constants/CommonConstants.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/checkbook_project.module';
+include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/config/util/DatafeedsConfigUtil.php';
 
 use PHPUnit\Framework\TestCase;
 
@@ -204,21 +205,6 @@ class CheckbookDatafeedsModuleTest extends TestCase
         checkbook_datafeeds_budget_next_submit([], $test_form_state);
         $this->assertEquals(777, $test_form_state['values']);
     }
-
-    //    public function test_checkbook_datafeeds_contracts_filter_data()
-//    {
-//        $test_form = [];
-//        $test_form_state = [
-//            'triggering_element' =>
-//            [
-//                '#value' => 'somevalue',
-//                '#ajax' => ['parameters'=> ['data_source_changed'=>'yes']]
-//            ]
-//        ];
-//        $test_data_source = [];
-//        $form = checkbook_datafeeds_contracts_filter_data($test_form, $test_form_state, $test_data_source);
-//        $this->assertEquals('array', gettype($form));
-//    }
 
     public function test_checkbook_datafeeds_process_contracts_values()
     {
