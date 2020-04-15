@@ -27,10 +27,9 @@
  *   Data Feeds wizard form_state array
  *
  * @return array
- *   Renderable array of first step of Spending
+ *   array of first step of Spending
  */
-function checkbook_datafeeds_spending($form, &$form_state)
-{
+function checkbook_datafeeds_spending($form, &$form_state){
   $datatype = $form_state['step_information']['type']['stored_values']['format'];
 
   $form['loaded'] = array(
@@ -147,8 +146,7 @@ function checkbook_datafeeds_spending($form, &$form_state)
  * @param $data_source
  * @return mixed
  */
-function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_source)
-{
+function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_source){
   $first_time_load = checkbook_datafeeds_is_first_load($form_state, $data_source);
   $citywide_sc = checkbook_datafeeds_filter_get_default_value($form_state, 'expense_type', $first_time_load, 'Select Expense Category');
   $oge_sc = checkbook_datafeeds_filter_get_default_value($form_state, 'nycedc_expense_type', $first_time_load, 'Select Expense Category');
@@ -479,18 +477,6 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#markup' => '<div class="datafield year-filters last-item">',
   );
 
-// Updating the year filter for ajax year data load
- /* $form['filter']['year'] = array(
-    '#type' => 'select',
-    '#prefix' => '<div id="year"><div class="datafield year">',
-    '#suffix' => '</div></div>',
-    '#attributes' => array('class' => array('watch')),
-    '#id' => 'edit-year',
-    '#name' => 'year',
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'year', $first_time_load, 0),
-    '#validated' => true
-  );
-*/
  // BY default obtain all the year values setting the datasource as nycha (show /hide handled in javascript)
   $form['filter']['year'] = array(
     '#type' => 'select',
@@ -544,8 +530,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
  * @return array
  *   FAPI structured array for select box #options
  */
-function _checkbook_datafeeds_spending_column_options($data_source, $data_type)
-{
+function _checkbook_datafeeds_spending_column_options($data_source, $data_type){
   $options = DatafeedsConfigUtil::getConfig(strtolower(Domain::$SPENDING));
 
   $options = $options['data_source'][$data_source] ?? $options['data_source'][Datasource::CITYWIDE];
@@ -564,8 +549,7 @@ function _checkbook_datafeeds_spending_column_options($data_source, $data_type)
  * @param array $form_state
  *   Data Feeds wizard form_state array
  */
-function checkbook_datafeeds_spending_next_submit($form, &$form_state)
-{
+function checkbook_datafeeds_spending_next_submit($form, &$form_state){
   $current_step = &$form_state['step'];
   $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
   $current_step = 'spending_confirmation';
@@ -587,6 +571,7 @@ function checkbook_datafeeds_spending_next_submit($form, &$form_state)
  *   current selected data source (i.e. checkbook, checkbook_oge)
  * @param string $response_type
  *   response type (i.e. csv, xml)
+ * @param $export_order
  * @return array
  */
 function checkbook_datafeeds_spending_filter_selected_columns($selected_columns, $data_source, $response_type, $export_order = null){
@@ -631,8 +616,7 @@ function checkbook_datafeeds_spending_filter_selected_columns($selected_columns,
  * @return array
  *   Renderable array of Payroll confirmation step
  */
-function checkbook_datafeeds_spending_confirmation($form, &$form_state)
-{
+function checkbook_datafeeds_spending_confirmation($form, &$form_state){
   //Get current data source
   $data_source = $form_state['input']['datafeeds-spending-domain-filter'];
   $feed = checkbook_datafeeds\FeedFactory::getFeed($data_source, Domain::$SPENDING);
@@ -647,8 +631,7 @@ function checkbook_datafeeds_spending_confirmation($form, &$form_state)
  * @param array $form_state
  *   Data Feeds wizard form_state array
  */
-function checkbook_datafeeds_spending_confirmation_previous_submit($form, &$form_state)
-{
+function checkbook_datafeeds_spending_confirmation_previous_submit($form, &$form_state){
   $current_step = &$form_state['step'];
   $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
   $current_step = 'spending';
@@ -664,8 +647,7 @@ function checkbook_datafeeds_spending_confirmation_previous_submit($form, &$form
  * @param array $form_state
  *   Data Feeds wizard form_state array
  */
-function checkbook_datafeeds_spending_validate(&$form, &$form_state)
-{
+function checkbook_datafeeds_spending_validate(&$form, &$form_state){
   $data_source = $form_state['input']['datafeeds-spending-domain-filter'];
   $feed = checkbook_datafeeds\FeedFactory::getFeed($data_source, Domain::$SPENDING);
   $feed->checkbook_datafeeds_spending_validate($form, $form_state);
