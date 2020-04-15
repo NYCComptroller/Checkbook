@@ -1,9 +1,9 @@
 {
   "serviceName":"NychaBudgetWidgetService",
-  "dataFunc":"GetNychaExpenseCategoriesByBudget",
-  "headerTitle": "Expense Categories",
+  "dataFunc":"GetProjects",
+  "headerTitle": "Projects",
   "table_columns":[
-    {"labelAlias":"expense_category","column":"expense_category"},
+    {"labelAlias":"project","column":"gl_project_description"},
     {"labelAlias":"adopted","column":"adopted_budget","format":"dollar"},
     {"labelAlias":"modified","column":"modified_budget","format":"dollar"},
     {"labelAlias":"committed","column":"committed","format":"dollar"},

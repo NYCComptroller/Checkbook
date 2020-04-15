@@ -3,6 +3,33 @@
     "landing_page_widgets": {
       "expense_categories":{
         "widget_config":"expense_categories_view"
+      },
+      "expense_categories_committed": {
+        "widget_config":"committed_expense_view"
+      },
+      "responsibility_centers": {
+        "widget_config":"responsibility_centers_view"
+      },
+      "responsibility_centers_committed_expense": {
+        "widget_config":"responsibility_centers_committed_expense_view"
+      },
+      "funding_sources": {
+        "widget_config":"funding_source_view"
+      },
+      "funding_sources_committed_expense": {
+        "widget_config":"funding_sources_committed_expense_view"
+      },
+      "programs": {
+        "widget_config":"programs_view"
+      },
+      "programs_committed_expense": {
+        "widget_config":"programs_committed_expense_view"
+      },
+      "projects": {
+        "widget_config":"projects_view"
+      },
+      "projects_committed_expense": {
+        "widget_config":"projects_committed_expense_view"
       }
     }
   }
