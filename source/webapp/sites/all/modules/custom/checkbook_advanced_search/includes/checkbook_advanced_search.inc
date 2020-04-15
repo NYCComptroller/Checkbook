@@ -632,15 +632,14 @@ function _checkbook_advanced_search_get_responsibility_centers($data_source = Da
           $text = $value['responsibility_center_description'] . ' [' . $value['responsibility_center_code'] . ']';
           $res_center_key_val_option_attributes[$text] = array('title' => $text);
           $res_center_key_val_options[$text] = _ckbk_excerpt($text);
-            } else {
-                $keys = $value['responsibility_center_id'];
-                $res_center_key_val_option_attributes[$keys] = array('title' => $value['responsibility_center_description']);
-                $res_center_key_val_options[$keys] = _ckbk_excerpt($value['responsibility_center_description']);
-            }
+        } else {
+          $keys = $value['responsibility_center_id'];
+          $res_center_key_val_option_attributes[$keys] = array('title' => $value['responsibility_center_description']);
+          $res_center_key_val_options[$keys] = _ckbk_excerpt($value['responsibility_center_description']);
         }
+      }
 
-        return array('options' => $res_center_key_val_options, 'option_attributes' => $res_center_key_val_option_attributes);
-
+      return array('options' => $res_center_key_val_options, 'option_attributes' => $res_center_key_val_option_attributes);
     } catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
