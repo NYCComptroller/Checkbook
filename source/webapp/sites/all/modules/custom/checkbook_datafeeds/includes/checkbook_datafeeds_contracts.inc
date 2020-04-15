@@ -38,7 +38,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
   //<editor-fold desc="Heading">
 
   $form['loaded'] = array(
-    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('contracts') . '</div>',
+    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date(Domain::$CONTRACTS) . '</div>',
   );
   $form['requiredmessage'] = array(
     '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
@@ -51,7 +51,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
 
   //<editor-fold desc="Filter">
 
-  $form['datafeeds-contracts-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, 'contracts');
+  $form['datafeeds-contracts-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, Domain::$CONTRACTS);
 
   $form['filter'] = array(
     '#type' => 'fieldset',
@@ -1481,7 +1481,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
     $criteria['responseColumns'] = checkbook_datafeeds_override_column_order($criteria['responseColumns'], $intended_order);
   }
 
-  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $response_type, 'contracts');
+  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $response_type, Domain::$CONTRACTS);
   return $modified_form;
 }
 
@@ -1498,7 +1498,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
  */
 function _checkbook_datafeeds_contracts_column_options($data_source, $status, $category, $data_type)
 {
-  $options = DatafeedsConfigUtil::getConfig(strtolower('contracts'));
+  $options = DatafeedsConfigUtil::getConfig(strtolower(Domain::$CONTRACTS));
 
   $options = !isset($options['data_source'][$data_source]) ? $options['data_source']['checkbook'] : $options['data_source'][$data_source];
   $options = !isset($options['status'][$status]) ? $options['status']['default'] : $options['status'][$status];
@@ -1520,7 +1520,7 @@ function _checkbook_datafeeds_contracts_column_options($data_source, $status, $c
 function _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source, $status, $expense_category, $year)
 {
   //Get column configurations
-  $domain = 'contracts';
+  $domain = Domain::$CONTRACTS;
   if ($data_source == Datasource::OGE) {
     $domain = $domain . '_oge';
   } else if ($data_source == Datasource::NYCHA) {

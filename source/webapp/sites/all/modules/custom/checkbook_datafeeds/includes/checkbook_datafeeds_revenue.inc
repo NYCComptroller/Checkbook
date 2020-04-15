@@ -29,17 +29,16 @@
  * @return array
  *   Renderable array of first step of Payroll
  */
-function checkbook_datafeeds_revenue($form, &$form_state)
-{
+function checkbook_datafeeds_revenue($form, &$form_state){
   $datatype = $form_state['step_information']['type']['stored_values']['format'];
   $revenue_fys = array('' => "All Fiscal Years");
-  $revenue_fys = $revenue_fys + _checkbook_advanced_search_get_year('revenue', 'datafeeds');
+  $revenue_fys = $revenue_fys + _checkbook_advanced_search_get_year(Domain::$REVENUE, 'datafeeds');
   $agency_options = _agency_options(Datasource::CITYWIDE);
 
   //<editor-fold desc="Heading">
 
   $form['loaded'] = array(
-    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('revenue') . '</div>',
+    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date(Domain::$REVENUE) . '</div>',
   );
   $form['requiredmessage'] = array(
     '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
@@ -179,7 +178,7 @@ function checkbook_datafeeds_revenue($form, &$form_state)
   $form['columns']['column_select'] = array(
     '#type' => 'select',
     '#title' => t('Columns'),
-    '#options' => _checkbook_datafeeds_revenue_column_options($datatype),
+    '#options' => _checkbook_datafeeds_revenue_column_options(DataSource::CITYWIDE, $datatype),
     '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     '#required' => TRUE,
     '#multiple' => TRUE,
@@ -221,49 +220,23 @@ function checkbook_datafeeds_revenue($form, &$form_state)
 }
 
 /**
- * Column options for Revenue section.
- *
- * @param string $datatype
- *   Type of data for Data Feeds to return (xml or csv)
+ * Budget column options.
+ * @param string $dataSource
+ * @param string $dataType
+ *   Data type (xml or csv)
  *
  * @return array
  *   FAPI structured array for select box #options
  */
-function _checkbook_datafeeds_revenue_column_options($datatype)
-{
-  if ($datatype == 'csv') {
-    return drupal_map_assoc(array(
-      "Adopted",
-      "Agency",
-      "Budget Fiscal Year",
-      "Closing Classification Name",
-      "Fiscal Year",
-      "Fund Class",
-      "Funding Class",
-      "Modified",
-      "Recognized",
-      "Revenue Category",
-      "Revenue Class",
-      "Revenue Source",
-    ));
-  } else {
-    if ($datatype == 'xml') {
-      return drupal_map_assoc(array(
-        "adopted",
-        "agency",
-        "budget_fiscal_year",
-        "closing_classification_name",
-        "fiscal_year",
-        "fund_class",
-        "funding_class",
-        "modified",
-        "recognized",
-        "revenue_category",
-        "revenue_class",
-        "revenue_source",
-      ));
-    }
-  }
+function _checkbook_datafeeds_revenue_column_options($dataSource, $dataType){
+  $options = DatafeedsConfigUtil::getConfig(strtolower(Domain::$REVENUE));
+
+  $options = $options['data_source'][$dataSource] ?? $options['data_source'][Datasource::CITYWIDE];
+  $options = $options['data_type'][$dataType] ?? $options['data_type']['default'];
+
+  ksort($options);
+  return $options;
+
 }
 
 /**
@@ -274,8 +247,7 @@ function _checkbook_datafeeds_revenue_column_options($datatype)
  * @param array $form_state
  *   Data Feed wizard form_state array
  */
-function checkbook_datafeeds_revenue_next_submit($form, &$form_state)
-{
+function checkbook_datafeeds_revenue_next_submit($form, &$form_state){
   $current_step = &$form_state['step'];
   $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
   $current_step = 'revenue_confirmation';
@@ -299,8 +271,7 @@ function checkbook_datafeeds_revenue_next_submit($form, &$form_state)
  * @return array
  *   Renderable array of Payroll confirmation step
  */
-function checkbook_datafeeds_revenue_confirmation($form, &$form_state)
-{
+function checkbook_datafeeds_revenue_confirmation($form, &$form_state){
   $values = $form_state['step_information']['revenue']['stored_values'];
   $responsetype = $form_state['step_information']['type']['stored_values']['format'];
   $user_criteria = array();
@@ -465,7 +436,7 @@ function checkbook_datafeeds_revenue_confirmation($form, &$form_state)
   $criteria = checkbook_datafeeds_process_revenue_values($form, $form_state);
   $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
   $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
-  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, 'revenue');
+  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, Domain::$REVENUE);
   return $modified_form;
 }
 
@@ -569,11 +540,7 @@ function checkbook_datafeeds_process_revenue_values($form, &$form_state)
  * @param array $form_state
  *   Data Feeds wizard form_state array
  */
-function checkbook_datafeeds_revenue_validate($form, &$form_state)
-{
-  $numbermessage = 'Value must be a number.';
-  $gtmessage = 'Value of To value must be greater than From value.';
-
+function checkbook_datafeeds_revenue_validate($form, &$form_state){
   $adoptedfrom = $form_state['values']['adoptedfrom'];
   $adoptedto = $form_state['values']['adoptedto'];
   if ($adoptedfrom && !is_numeric($adoptedfrom)) {

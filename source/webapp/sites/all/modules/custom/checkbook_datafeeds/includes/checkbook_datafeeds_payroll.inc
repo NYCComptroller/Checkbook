@@ -40,7 +40,7 @@ function checkbook_datafeeds_payroll($form, &$form_state)
   //<editor-fold desc="Heading">
 
   $form['loaded'] = array(
-    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('payroll') . '</div>',
+    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date(Domain::$PAYROLL) . '</div>',
   );
   $form['requiredmessage'] = array(
     '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
@@ -51,14 +51,14 @@ function checkbook_datafeeds_payroll($form, &$form_state)
 
   //</editor-fold>
 
-  $form['datafeeds-payroll-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, 'payroll');
+  $form['datafeeds-payroll-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, Domain::$PAYROLL);
 
   $form['filter'] = array(
     '#type' => 'fieldset',
     '#title' => t('3. Filter the Data:'),
     '#attributes' => array('class' => array('payroll-fieldset')),
   );
-  $form['filter']['other_government_entity'] = array(
+  /*$form['filter']['other_government_entity'] = array(
     '#type' => 'select',
     '#title' => t('Other Government<br/>Entities:'),
     '#options' => $oge_options['options'],
@@ -67,13 +67,13 @@ function checkbook_datafeeds_payroll($form, &$form_state)
     '#default_value' => !empty($form_state['values']['other_government_entity']) ? $form_state['values']['other_government_entity'] : 'Select One',
     '#prefix' => '<div class="column column-left"><div class="datafield other_government_entity">',
     '#suffix' => '</div>',
-  );
+  );*/
   $form['filter']['title'] = array(
     '#type' => 'textfield',
     '#title' => t('Title:'),
     '#attributes' => array('class' => array('watch')),
     '#default_value' => !empty($form_state['values']['title']) ? $form_state['values']['title'] : '',
-    '#prefix' => '<div class="datafield title">',
+    '#prefix' => '<div class="column column-left"><div class="datafield title">',
     '#suffix' => '<input name="title_exact" value="' . $_POST['title_exact'] . '" type="hidden"></div>',
   );
   $form['filter']['agency'] = array(
@@ -403,7 +403,7 @@ function checkbook_datafeeds_payroll_next_submit($form, &$form_state)
 function checkbook_datafeeds_payroll_filter_selected_columns($selected_columns, $data_source, $response_type, $year_type = 'calendar_year')
 {
   //Get column configurations
-  $domain = 'payroll';
+  $domain = Domain::$PAYROLL;
   $domain = $data_source == 'checkbook_nycha' ? $domain . '_nycha' : $domain;
   $domain_config = ConfigUtil::getDomainConfiguration($domain);
   $domain = $domain . '_' . $year_type;
@@ -722,7 +722,7 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state)
   $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
   $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
 
-  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, 'payroll');
+  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, Domain::$PAYROLL);
   return $modified_form;
 }
 

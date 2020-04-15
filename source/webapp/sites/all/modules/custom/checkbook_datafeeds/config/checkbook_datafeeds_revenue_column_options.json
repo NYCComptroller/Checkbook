@@ -1,0 +1,36 @@
+{
+  "data_source": {
+    "checkbook": {
+      "data_type": {
+        "csv": {
+          "Adopted": "Adopted",
+          "Agency": "Agency",
+          "Budget Fiscal Year": "Budget Fiscal Year",
+          "Closing Classification Name": "Closing Classification Name",
+          "Fiscal Year": "Fiscal Year",
+          "Fund Class": "Fund Class",
+          "Funding Class": "Funding Class",
+          "Modified": "Modified",
+          "Recognized": "Recognized",
+          "Revenue Category": "Revenue Category",
+          "Revenue Class": "Revenue Class",
+          "Revenue Source": "Revenue Source"
+        },
+        "xml": {
+          "adopted": "adopted",
+          "agency": "agency",
+          "budget_fiscal_year": "budget_fiscal_year",
+          "closing_classification_name": "closing_classification_name",
+          "fiscal_year": "fiscal_year",
+          "fund_class": "fund_class",
+          "funding_class": "funding_class",
+          "modified": "modified",
+          "recognized": "recognized",
+          "revenue_category": "revenue_category",
+          "revenue_class": "revenue_class",
+          "revenue_source": "revenue_source"
+        }
+      }
+    }
+  }
+}

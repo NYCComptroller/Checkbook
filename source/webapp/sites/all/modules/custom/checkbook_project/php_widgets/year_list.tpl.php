@@ -189,30 +189,32 @@ foreach($years as $year){
     /*********  End of Calendar Year Options ********/
 
     /****** Beginning of Year options for NYCHA****/
-    if(Datasource::isNYCHA()){
-      //For Transaction pages replace the year ID and Year type in 'expandBottomContURL'
-        if(preg_match("/expandBottomContURL/",$link) && (preg_match("/wt_issue_date/",$link))){
-        $link_parts = explode("?expandBottomContURL=",$link);
-        $url = preg_replace("/year\/" . $url_year_id_value . "/", "year/" . $year['year_id'], $link_parts[0]);
-        $old_year_id = RequestUtil::getRequestKeyValueFromURL("year",$link_parts[1]);
-        $old_issue_date = RequestUtil::getRequestKeyValueFromURL("issue_date",$link_parts[1]);
-        $issue_date = explode("~", $old_issue_date);
-        $month = date("n",strtotime($issue_date[0]));
-        $new_issue_date=$year['year_value']."-".$month."-01~".$year['year_value']."-".$month."-31";
-        $bottom_url = preg_replace("/year\/" . $old_year_id . "/", "year/" . $year['year_id'], $link_parts[1]);
-        $bottom_url = preg_replace("/issue_date\/" . $old_issue_date . "/", "issue_date/" . $new_issue_date, $link_parts[1]);
-        $link = $url . '?expandBottomContURL='. $bottom_url;
-        }
-        else {
+    if(Datasource::isNYCHA()) {
+      //For NYCHA Budget, get years only from 2018
+      if (!(preg_match('/nycha_budget/', request_uri()) && $year['year_value'] < 2018)) {
+        //For Transaction pages replace the year ID and Year type in 'expandBottomContURL'
+        if (preg_match("/expandBottomContURL/", $link) && (preg_match("/wt_issue_date/", $link))) {
+          $link_parts = explode("?expandBottomContURL=", $link);
+          $url = preg_replace("/year\/" . $url_year_id_value . "/", "year/" . $year['year_id'], $link_parts[0]);
+          $old_year_id = RequestUtil::getRequestKeyValueFromURL("year", $link_parts[1]);
+          $old_issue_date = RequestUtil::getRequestKeyValueFromURL("issue_date", $link_parts[1]);
+          $issue_date = explode("~", $old_issue_date);
+          $month = date("n", strtotime($issue_date[0]));
+          $new_issue_date = $year['year_value'] . "-" . $month . "-01~" . $year['year_value'] . "-" . $month . "-31";
+          $bottom_url = preg_replace("/year\/" . $old_year_id . "/", "year/" . $year['year_id'], $link_parts[1]);
+          $bottom_url = preg_replace("/issue_date\/" . $old_issue_date . "/", "issue_date/" . $new_issue_date, $link_parts[1]);
+          $link = $url . '?expandBottomContURL=' . $bottom_url;
+        } else {
           $link = preg_replace("/year\/" . $url_year_id_value . "/", "year/" . $year['year_id'], $q);
         }
-        if($year['year_value'] <= $filter_years['cal_year_value']) {
-            $nycha_year_data_array[] = array('display_text' => 'FY ' . $year['year_value'] . ' (Jan 1, ' . $year['year_value'] . ' - Dec 31, ' . $year['year_value'] . ')',
-                'value' => $year['year_id'],
-                'link' => $link,
-                'selected' => $selected_cal_year
-            );
+        if ($year['year_value'] <= $filter_years['cal_year_value']) {
+          $nycha_year_data_array[] = array('display_text' => 'FY ' . $year['year_value'] . ' (Jan 1, ' . $year['year_value'] . ' - Dec 31, ' . $year['year_value'] . ')',
+            'value' => $year['year_id'],
+            'link' => $link,
+            'selected' => $selected_cal_year
+          );
         }
+      }
     }
     /****** End of Year options for NYCHA ****/
 }
