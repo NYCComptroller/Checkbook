@@ -983,10 +983,11 @@ function _budget_dept_options($year, $agency)
  *   Agency code
  * @param $dept
  *   Department code
+ * @param $dataSource
  * @return mixed Expenditure object codes and expenditure object names, filtered by agency, department, year
  *   Expenditure object codes and expenditure object names, filtered by agency, department, year
  */
-function _budget_expcat_options($year, $agency, $dept)
+function _budget_expcat_options($year, $agency, $dept, $dataSource = Datasource::CITYWIDE)
 {
   $agency = emptyToZero(urldecode($agency));
   $dept = emptyToZero(urldecode($dept));
@@ -1001,7 +1002,7 @@ function _budget_expcat_options($year, $agency, $dept)
     }
     $query = "SELECT DISTINCT object_class_name || ' [' || object_class_code || ']' expenditure_object_code  FROM budget WHERE"
       . $agencystring . $yearstring . $deptstring . "ORDER BY expenditure_object_code ASC";
-    $results = _checkbook_project_execute_sql($query);
+    $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
     if (count($results) > 0) {
       foreach ($results as $result) {
         $options[$result['expenditure_object_code']] = $result['expenditure_object_code'];
