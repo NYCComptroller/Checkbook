@@ -729,22 +729,22 @@ function checkbook_api_adjustNYCHAContractSql(&$sql_query){
 }
 
 function checkbook_api_adjustPayrollSql(&$sql_query) {
-    $sql_parts = explode("FROM", $sql_query);
-    $select_part = $sql_parts[0];
-    $from_part = $sql_parts[1];
-    $select_part =  str_replace("amount_basis_id", "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END AS amount_basis_id",$select_part);
-    $select_part =  str_replace("salaried_amount", "CASE WHEN amount_basis_id = 1 THEN  CAST(salaried_amount AS Text) ELSE CAST('-' AS text) END AS annual_salary",$select_part);
-    $select_part =  str_replace("non_salaried_amount", "CASE WHEN amount_basis_id !=1  AND non_salaried_amount > 0 THEN  CAST(non_salaried_amount AS text) ELSE CAST('-' AS Text) END AS hourly_rate",$select_part);
-    $sql_query = $select_part."FROM".$from_part;
+  $sql_parts = explode("FROM", $sql_query);
+  $select_part = $sql_parts[0];
+  $from_part = $sql_parts[1];
+  $select_part =  str_replace("amount_basis_id", "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END AS amount_basis_id",$select_part);
+  $select_part = preg_replace('/\bsalaried_amount\b/', 'CASE WHEN amount_basis_id != 1 THEN  CAST(\'-\' AS text) ELSE CAST(salaried_amount AS Text) END AS salaried_amount', $select_part);
+  $select_part = preg_replace('/\bnon_salaried_amount\b/', 'CASE WHEN amount_basis_id = 1 THEN  CAST(\'-\' AS text) ELSE CAST(non_salaried_amount AS Text) END AS non_salaried_amount', $select_part);
+  $sql_query = $select_part."FROM".$from_part;
 }
 function checkbook_api_adjustNYCHAPayrollSql(&$sql_query) {
   $sql_parts = explode("FROM", $sql_query);
   $select_part = $sql_parts[0];
   $from_part = $sql_parts[1];
   $select_part =  str_replace("amount_basis_id", "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END AS amount_basis_id",$select_part);
-  $select_part =  str_replace("salaried_amount", "CASE WHEN amount_basis_id = 2 OR  amount_basis_id = 3  THEN  CAST('-' AS text) ELSE CAST(salaried_amount AS Text) END AS annual_salary",$select_part);
-  $select_part =  str_replace("non_salaried_amount", "CASE WHEN amount_basis_id = 2 AND non_salaried_amount > 0 THEN  CAST(non_salaried_amount AS text) ELSE CAST('-' AS Text) END AS daily_wage",$select_part);
-  $select_part =  str_replace(" ", "CASE WHEN amount_basis_id = 3 AND hourly_rate > 0 THEN  CAST(hourly_rate AS text) ELSE CAST('-' AS Text) END AS hourly_rate",$select_part);
+  $select_part =  preg_replace('/\bsalaried_amount\b/', 'CASE WHEN amount_basis_id != 1 THEN  CAST(\'-\' AS text) ELSE CAST(salaried_amount AS Text) END AS salaried_amount',$select_part);
+  $select_part =  preg_replace('/\bnon_salaried_amount\b/', 'CASE WHEN amount_basis_id = 2 AND non_salaried_amount > 0 THEN  CAST(non_salaried_amount AS text) ELSE CAST(\'-\' AS Text) END AS non_salaried_amount',$select_part);
+  $select_part =  str_replace("hourly_rate", "CASE WHEN amount_basis_id = 3 AND non_salaried_amount > 0 THEN  CAST(non_salaried_amount AS text) ELSE CAST('-' AS Text) END AS hourly_rate",$select_part);
   $sql_query = $select_part."FROM".$from_part;
 }
 function checkbook_api_change_datasource($datasource,$param){

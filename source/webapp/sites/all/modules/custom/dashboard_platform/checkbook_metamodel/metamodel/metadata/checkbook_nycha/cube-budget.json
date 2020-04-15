@@ -1,0 +1,65 @@
+{
+  "datasets":{
+    "budget":{
+      "datasourceName":"main",
+      "source":"budget"
+    }
+  },
+  "cubes":{
+    "budget":{
+      "sourceDatasetName":"budget",
+      "dimensions":[
+        {
+          "name": "year",
+          "levels": [
+            {
+              "name": "year",
+              "sourceColumnName": "budget_fiscal_year"
+            }
+          ]
+        },
+        {
+          "name":"year_id",
+          "levels":[
+            {
+              "name":"year_id",
+              "sourceColumnName":"budget_fiscal_year_id"
+            }
+          ]
+        },
+        {
+          "name":"object_class_id",
+          "levels":[
+            {
+              "name":"object_class_id",
+              "sourceColumnName":"expenditure_type_id"
+            }
+          ]
+        },
+        {
+          "name":"object_class_name",
+          "levels":[
+            {
+              "name":"object_class_name",
+              "sourceColumnName":"expenditure_type_name"
+            }
+          ]
+        }
+      ],
+      "measures":{
+        "txcount": {
+          "function": "COUNT(*)"
+        },
+        "budget_modified":{
+          "function":"SUM(COALESCE(modified_budget,0))"
+        },
+        "budget_remaining":{
+          "function":"SUM(funds_available)"
+        },
+        "budget_committed":{
+          "function":"SUM(committed)"
+        }
+      }
+    }
+  }
+}

@@ -402,6 +402,11 @@ class RequestUtil
                     $path = "budget/yeartype/B/year/" . $fiscalYearId;
                 }
                 break;
+            case "nycha_budget":
+              $path = "/nycha_budget/datasource/".Datasource::NYCHA;
+              $path .="/year/".$fiscalYearId;
+              $path .= Datasource::getNYCHAUrl();
+              break;
             case "revenue":
                 if (RequestUtilities::get("agency") > 0) {
                     $path = "revenue/yeartype/B/year/" . $fiscalYearId . RequestUtilities::buildUrlFromParam('agency');
