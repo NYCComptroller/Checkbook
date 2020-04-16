@@ -53,6 +53,72 @@ class BudgetFeedNycha extends BudgetFeed
   }
 
   protected function _validate_by_datasource(&$form, &$form_state){
+
+    //Adopted Amount
+    $adoptedFrom = $form_state['values']['nycha_adopted_from'];
+    $adoptedTo = $form_state['values']['nycha_adopted_to'];
+    if ($adoptedFrom && !is_numeric($adoptedFrom)) {
+      form_set_error('nycha_adopted_from', t('Adopted Budget From value must be a number.'));
+    }
+    if ($adoptedTo && !is_numeric($adoptedTo)) {
+      form_set_error('nycha_adopted_to', t('Adopted Budget To value must be a number.'));
+    }
+    if (is_numeric($adoptedFrom) && is_numeric($adoptedTo) && $adoptedTo < $adoptedFrom) {
+      form_set_error('nycha_adopted_to', t('Invalid range for Adopted Budget.'));
+    }
+
+    //Modified Amount
+    $modifiedFrom = $form_state['values']['nycha_modified_from'];
+    $modifiedTo = $form_state['values']['nycha_modified_to'];
+    if ($modifiedFrom && !is_numeric($modifiedFrom)) {
+      form_set_error('nycha_modified_from', t('Modified Budget From value must be a number.'));
+    }
+    if ($modifiedTo && !is_numeric($modifiedTo)) {
+      form_set_error('nycha_modified_to', t('Modified Budget To value must be a number.'));
+    }
+    if (is_numeric($modifiedFrom) && is_numeric($modifiedTo) && $modifiedTo < $modifiedFrom) {
+      form_set_error('nycha_modified_to', t('Invalid range for Modified Budget.'));
+    }
+
+    //Committed Amount
+    $committedFrom = $form_state['values']['nycha_committed_from'];
+    $committedTo = $form_state['values']['nycha_committed_to'];
+    if ($committedFrom && !is_numeric($committedFrom)) {
+      form_set_error('nycha_committed_from', t('Committed Budget From value must be a number.'));
+    }
+    if ($committedTo && !is_numeric($committedTo)) {
+      form_set_error('nycha_committed_to', t('Committed Budget To value must be a number.'));
+    }
+    if (is_numeric($committedFrom) && is_numeric($committedTo) && $committedTo < $committedFrom) {
+      form_set_error('nycha_committed_to', t('Invalid range for Committed Budget.'));
+    }
+
+    //Encumbered Amount
+    $encumberedFrom = $form_state['values']['nycha_encumbered_from'];
+    $encumberedTo = $form_state['values']['nycha_encumbered_to'];
+    if ($encumberedFrom && !is_numeric($encumberedFrom)) {
+      form_set_error('nycha_encumbered_from', t('Encumbered Budget From value must be a number.'));
+    }
+    if ($encumberedTo && !is_numeric($encumberedTo)) {
+      form_set_error('nycha_encumbered_to', t('Encumbered Budget To value must be a number.'));
+    }
+    if (is_numeric($encumberedFrom) && is_numeric($encumberedTo) && $encumberedTo < $encumberedFrom) {
+      form_set_error('nycha_encumbered_to', t('Invalid range for Encumbered Budget.'));
+    }
+
+    //Actual Amount
+    $actualFrom = $form_state['values']['nycha_actual_from'];
+    $actualTo = $form_state['values']['nycha_actual_to'];
+    if ($actualFrom && !is_numeric($actualFrom)) {
+      form_set_error('nycha_actual_from', t('Actual Budget From value must be a number.'));
+    }
+    if ($actualTo && !is_numeric($actualTo)) {
+      form_set_error('nycha_actual_to', t('Actual Budget To value must be a number.'));
+    }
+    if (is_numeric($actualFrom) && is_numeric($actualTo) && $actualTo < $actualFrom) {
+      form_set_error('nycha_actual_to', t('Invalid range for Actual Budget.'));
+    }
+
     $multi_select_hidden = isset($form_state['input']['nycha_column_select']) ? '|' . implode('||', $form_state['input']['nycha_column_select']) . '|' : '';
     if (!$multi_select_hidden) {
       form_set_error('nycha_column_select', t('You must select at least one column - nyhca.'));
