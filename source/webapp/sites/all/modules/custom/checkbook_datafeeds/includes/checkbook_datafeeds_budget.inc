@@ -386,14 +386,30 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#default_value' => !empty($form_state['values']['nycha_project']) ? $form_state['values']['nycha_project'] : 'Select Project',
   );
 
+  $budget_type_options = _budget_type_options(Datasource::NYCHA);
   $form['filter']['nycha_budget_type'] = array(
-    '#type' => 'textfield',
+    '#type' => 'select',
     '#title' => t('Budget Type:'),
-    '#attributes' => array('class' => array('watch')),
-    '#default_value' => !empty($form_state['values']['nycha_budget_type']) ? $form_state['values']['nycha_budget_type'] : '',
-    '#prefix' => '<div class="datafield nycha_budget_type">',
+    '#options' => $budget_type_options['options'],
+    '#option_attributes' => $budget_type_options['option_attributes'],
+    '#prefix' => '<div class="datafield budgettype nycha">',
     '#suffix' => '</div>',
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => !empty($form_state['values']['nycha_budget_type']) ? $form_state['values']['nycha_budget_type'] : 'Select Budget Type',
   );
+
+  $budget_name_options = _budget_name_options(Datasource::NYCHA);
+  $form['filter']['nycha_budget_name'] = array(
+    '#type' => 'select',
+    '#title' => t('Budget Name:'),
+    '#options' => $budget_name_options['options'],
+    '#option_attributes' => $budget_name_options['option_attributes'],
+    '#prefix' => '<div class="datafield budgetname nycha">',
+    '#suffix' => '</div>',
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => !empty($form_state['values']['nycha_budget_name']) ? $form_state['values']['nycha_budget_name'] : 'Select Budget Name',
+  );
+
   $form['filter']['nycha-leftend'] = array(
     '#markup' => '</div>',
   );
