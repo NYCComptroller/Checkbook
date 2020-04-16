@@ -80,7 +80,7 @@ function checkbook_datafeeds_budget($form, &$form_state){
     '#title' => t('4. Select Columns:'),
   );
 
-  //<editor-fold desc="CityWide Multi-select Options">
+  //<editor-fold desc="CityWide and NYCHA Multi-select Options">
   $form['columns']['column_select_expense'] = array(
     '#type' => 'select',
     '#title' => t('Budget Columns<span class="form-required" title="This field is required.">*</span>'),
@@ -89,9 +89,24 @@ function checkbook_datafeeds_budget($form, &$form_state){
     '#default_value' => !empty($form_state['values']['column_select_expense']) ? $form_state['values']['column_select_expense'] : '',
   );
 
+  $form['columns']['nycha_column_select'] = array(
+    '#type' => 'select',
+    '#title' => t('NYCHA Budget Columns<span class="form-required" title="This field is required.">*</span>'),
+    '#options' => _checkbook_datafeeds_budget_column_options(Datasource::NYCHA, $format),
+    '#multiple' => TRUE,
+    '#default_value' => !empty($form_state['values']['nycha_column_select']) ? $form_state['values']['nycha_column_select'] : '',
+  );
+
+  //Hidden Field for multi-select
+  if ($data_source == Datasource::NYCHA) {
+    $multi_select_hidden = isset($form_state['input']['nycha_column_select']) ? '|' . implode('||', $form_state['input']['nycha_column_select']) . '|' : '';
+  } else {
+    $multi_select_hidden = isset($form_state['input']['column_select_expense']) ? '|' . implode('||', $form_state['input']['column_select_expense']) . '|' : '';
+  }
+
   //Hidden Field for multi-select
   $form['columns']['hidden_multiple_value'] = array(
-    '#value' => isset($form_state['values']['column_select']) ? '|' . implode('||', $form_state['values']['column_select']) . '|' : '',
+    '#value' => $multi_select_hidden,
     '#type' => 'hidden',
   );
   //</editor-fold>
@@ -386,14 +401,30 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#default_value' => !empty($form_state['values']['nycha_project']) ? $form_state['values']['nycha_project'] : 'Select Project',
   );
 
+  $budget_type_options = _budget_type_options(Datasource::NYCHA);
   $form['filter']['nycha_budget_type'] = array(
-    '#type' => 'textfield',
+    '#type' => 'select',
     '#title' => t('Budget Type:'),
-    '#attributes' => array('class' => array('watch')),
-    '#default_value' => !empty($form_state['values']['nycha_budget_type']) ? $form_state['values']['nycha_budget_type'] : '',
-    '#prefix' => '<div class="datafield nycha_budget_type">',
+    '#options' => $budget_type_options['options'],
+    '#option_attributes' => $budget_type_options['option_attributes'],
+    '#prefix' => '<div class="datafield budgettype nycha">',
     '#suffix' => '</div>',
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => !empty($form_state['values']['nycha_budget_type']) ? $form_state['values']['nycha_budget_type'] : 'Select Budget Type',
   );
+
+  $budget_name_options = _budget_name_options(Datasource::NYCHA);
+  $form['filter']['nycha_budget_name'] = array(
+    '#type' => 'select',
+    '#title' => t('Budget Name:'),
+    '#options' => $budget_name_options['options'],
+    '#option_attributes' => $budget_name_options['option_attributes'],
+    '#prefix' => '<div class="datafield budgetname nycha">',
+    '#suffix' => '</div>',
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => !empty($form_state['values']['nycha_budget_name']) ? $form_state['values']['nycha_budget_name'] : 'Select Budget Name',
+  );
+
   $form['filter']['nycha-leftend'] = array(
     '#markup' => '</div>',
   );
@@ -538,176 +569,10 @@ function checkbook_datafeeds_budget_next_submit($form, &$form_state){
  *   Renderable array of Budget confirmation page step
  */
 function checkbook_datafeeds_budget_confirmation($form, &$form_state){
-  $values = $form_state['step_information']['budget']['stored_values'];
-  $responsetype = $form_state['step_information']['type']['stored_values']['format'];
-  $user_criteria = array();
-  $user_criteria['Type of Data'] = 'Budget';
-  $user_criteria['Type of File'] = $responsetype;
-  $form['download_feeds'] = array(
-    '#markup' => '<h2 id="edit-description">Download Data</h2>',
-  );
-  $form['columns'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Selected Columns'),
-  );
-  $formatted_search_criteria = array();
-  //Used to maintain the order of the columns
-  $selected_columns = checkbook_datafeeds_format_columns();
-  $form_state['step_information']['budget']['stored_values']['column_select'] = $selected_columns;
-  foreach ($selected_columns as $column) {
-    $form['columns'][$column] = array(
-      '#markup' => '<div>' . $column . '</div>',
-    );
-    $user_criteria['Columns'][] = $column;
-  }
-  $form['filter'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Search Criteria'),
-  );
-  $form['filter']['data_type'] = array(
-    '#markup' => '<div><strong>Type of Data:</strong> Budget</div>',
-  );
-  $formatted_search_criteria['Type of Data'] = 'Budget';
-  $form['filter']['file_type'] = array(
-    '#markup' => '<div><strong>Type of File:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
-  );
-  $formatted_search_criteria['Type of File'] = $form_state['step_information']['type']['stored_values']['format'];
-  if ($values['agency']) {
-    $form['filter']['agency'] = array('#markup' => '<div><strong>Agency:</strong> ' . $values['agency'] . '</div>');
-    $user_criteria['Agency'] = $values['agency'];
-    $formatted_search_criteria['Agency'] = $values['agency'];
-  }
-  if ($values['dept'] && $values['dept'] != 'Select Department') {
-    $form['filter']['department'] = array('#markup' => '<div><strong>Department:</strong> ' . $values['dept'] . '</div>');
-    $user_criteria['Department'] = $values['dept'];
-    $formatted_search_criteria['Department'] = $values['dept'];
-  }
-  if ($values['expense_category'] && $values['expense_category'] != 'Select Expense Category') {
-    $form['filter']['expense_category'] = array('#markup' => '<div><strong>Expense Category:</strong> ' . $values['expense_category'] . '</div>');
-    $user_criteria['Expense Category'] = $values['expense_category'];
-    $formatted_search_criteria['Expense Category'] = $values['expense_category'];
-  }
-  if ($values['budget_code']) {
-    $form['filter']['budget_code'] = array('#markup' => '<div><strong>Budget Code:</strong> ' . $values['budget_code'] . '</div>');
-    $user_criteria['Budget Code'] = $values['budget_code'];
-    $formatted_search_criteria['Budget Code'] = $values['budget_code'];
-  }
-  if ($values['fiscal_year']) {
-    $form['filter']['fiscal_year'] = array('#markup' => '<div><strong>Year:</strong> ' . $values['fiscal_year'] . '</div>');
-    $user_criteria['Year'] = $values['fiscal_year'];
-    $formatted_search_criteria['Year'] = $values['fiscal_year'];
-  }
-  if ($values['currentfrom'] && $values['currentto']) {
-    $form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong> Greater Than Equal to: $' . $values['currentfrom'] . ' Less Than Equal to: $' . $values['currentto'] . '</div>');
-    $user_criteria['Modified Budget Greater Than'] = $values['currentfrom'];
-    $user_criteria['Modified Budget Less Than'] = $values['currentto'];
-    $formatted_search_criteria['Modified Budget'] = 'Greater Than Equal to: $' . $values['currentfrom'] . ' Less Than Equal to: $' . $values['currentto'];
-  } elseif (!$values['currentfrom'] && $values['currentto']) {
-    $form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong> Less Than Equal to: $' . $values['currentto'] . '</div>');
-    $user_criteria['Modified Budget Less Than'] = $values['currentto'];
-    $formatted_search_criteria['Modified Budget'] = 'Less Than Equal to: $' . $values['currentto'];
-  } elseif ($values['currentfrom'] && !$values['currentto']) {
-    $form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong> Greater Than Equal to: $' . $values['currentfrom'] . '</div>');
-    $user_criteria['Modified Budget Greater Than'] = $values['currentfrom'];
-    $formatted_search_criteria['Modified Budget'] = 'Greater Than Equal to: $' . $values['currentfrom'];
-  }
-  if ($values['adoptedfrom'] && $values['adoptedto']) {
-    $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Greater Than Equal to: $' . $values['adoptedfrom'] . ' Less Than Equal to: $' . $values['adoptedto'] . '</div>');
-    $user_criteria['Adopted Budget Greater Than'] = $values['adoptedfrom'];
-    $user_criteria['Adopted Budget Less Than'] = $values['adoptedto'];
-    $formatted_search_criteria['Adopted Budget'] = 'Greater Than Equal to: $' . $values['adoptedfrom'] . ' Less Than Equal to: $' . $values['adoptedto'];
-  } elseif (!$values['adoptedfrom'] && $values['adoptedto']) {
-    $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Less Than Equal to: $' . $values['adoptedto'] . '</div>');
-    $user_criteria['Adopted Budget Less Than'] = $values['adoptedto'];
-    $formatted_search_criteria['Adopted Budget'] = 'Less Than Equal to: $' . $values['adoptedto'];
-  } elseif ($values['adoptedfrom'] && !$values['adoptedto']) {
-    $form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Greater Than Equal to: $' . $values['adoptedfrom'] . '</div>');
-    $user_criteria['Adopted Budget Greater Than'] = $values['adoptedfrom'];
-    $formatted_search_criteria['Adopted Budget'] = 'Greater Than Equal to: $' . $values['adoptedfrom'];
-  }
-  if ($values['preencumberedfrom'] && $values['preencumberedto']) {
-    $form['filter']['preencumbered'] = array('#markup' => '<div><strong>Pre-encumbered:</strong> Greater Than Equal to: $' . $values['preencumberedfrom'] . ' Less Than Equal to: $' . $values['preencumberedto'] . '</div>');
-    $user_criteria['Pre-encumbered Greater Than'] = $values['preencumberedfrom'];
-    $user_criteria['Pre-encumbered Less Than'] = $values['preencumberedto'];
-    $formatted_search_criteria['Pre-encumbered'] = 'Greater Than Equal to: $' . $values['preencumberedfrom'] . ' Less Than Equal to: $' . $values['preencumberedto'];
-  } elseif (!$values['preencumberedfrom'] && $values['preencumberedto']) {
-    $form['filter']['preencumbered'] = array('#markup' => '<div><strong>Pre-encumbered:</strong> Less Than Equal to: $' . $values['preencumberedto'] . '</div>');
-    $user_criteria['Pre-encumbered Less Than'] = $values['preencumberedto'];
-    $formatted_search_criteria['Pre-encumbered'] = 'Less Than Equal to: $' . $values['preencumberedto'];
-  } elseif ($values['preencumberedfrom'] && !$values['preencumberedto']) {
-    $form['filter']['preencumbered'] = array('#markup' => '<div><strong>Pre-encumbered:</strong> Greater Than Equal to: $' . $values['preencumberedfrom'] . '</div>');
-    $user_criteria['Pre-encumbered Greater Than'] = $values['preencumberedfrom'];
-    $formatted_search_criteria['Pre-encumbered'] = 'Greater Than Equal to: $' . $values['preencumberedfrom'];
-  }
-  if ($values['encumberedfrom'] && $values['encumberedto']) {
-    $form['filter']['encumbered'] = array('#markup' => '<div><strong>Encumbered:</strong> Greater Than Equal to: $' . $values['encumberedfrom'] . ' Less Than Equal to: $' . $values['encumberedto'] . '</div>');
-    $user_criteria['Encumbered Greater Than'] = $values['encumberedfrom'];
-    $user_criteria['Encumbered Less Than'] = $values['encumberedto'];
-    $formatted_search_criteria['Encumbered'] = 'Greater Than Equal to: $' . $values['encumberedfrom'] . ' Less Than Equal to: $' . $values['encumberedto'];
-  } elseif (!$values['encumberedfrom'] && $values['encumberedto']) {
-    $form['filter']['encumbered'] = array('#markup' => '<div><strong>Encumbered:</strong> Less Than Equal to: $' . $values['encumberedto'] . '</div>');
-    $user_criteria['Encumbered Less Than'] = $values['encumberedto'];
-    $formatted_search_criteria['Encumbered'] = 'Less Than Equal to: $' . $values['encumberedto'];
-  } elseif ($values['encumberedfrom'] && !$values['encumberedto']) {
-    $form['filter']['encumbered'] = array('#markup' => '<div><strong>Encumbered:</strong> Greater Than Equal to: $' . $values['encumberedfrom'] . '</div>');
-    $user_criteria['Encumbered Greater Than'] = $values['encumberedfrom'];
-    $formatted_search_criteria['Encumbered'] = 'Greater Than Equal to: $' . $values['encumberedfrom'];
-  }
-  if ($values['accruedexpensefrom'] && $values['accruedexpenseto']) {
-    $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Greater Than Equal to: $' . $values['accruedexpensefrom'] . ' Less Than Equal to: $' . $values['accruedexpenseto'] . '</div>');
-    $user_criteria['Accrued Expense Greater Than'] = $values['accruedexpensefrom'];
-    $user_criteria['Accrued Expense Less Than'] = $values['accruedexpenseto'];
-    $formatted_search_criteria['Accrued Expense'] = 'Greater Than Equal to: $' . $values['accruedexpensefrom'] . ' Less Than Equal to: $' . $values['accruedexpenseto'];
-  } elseif (!$values['accruedexpensefrom'] && $values['accruedexpenseto']) {
-    $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Less Than Equal to: $' . $values['accruedexpenseto'] . '</div>');
-    $user_criteria['Accrued Expense Less Than'] = $values['accruedexpenseto'];
-    $formatted_search_criteria['Accrued Expense'] = 'Less Than Equal to: $' . $values['accruedexpenseto'];
-  } elseif ($values['accruedexpensefrom'] && !$values['accruedexpenseto']) {
-    $form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Greater Than Equal to: $' . $values['accruedexpensefrom'] . '</div>');
-    $user_criteria['Accrued Expense Greater Than'] = $values['accruedexpensefrom'];
-    $formatted_search_criteria['Accrued Expense'] = 'Greater Than Equal to: $' . $values['accruedexpensefrom'];
-  }
-  if ($values['cashfrom'] && $values['cashto']) {
-    $form['filter']['cash_amount'] = array('#markup' => '<div><strong>Cash Expense:</strong> Greater Than Equal to: $' . $values['cashfrom'] . ' Less Than Equal to: $' . $values['cashto'] . '</div>');
-    $user_criteria['Cash Expense Greater Than'] = $values['cashfrom'];
-    $user_criteria['Cash Expense Less Than'] = $values['cashto'];
-    $formatted_search_criteria['Cash Expense'] = 'Greater Than Equal to: $' . $values['cashfrom'] . ' Less Than Equal to: $' . $values['cashto'];
-  } elseif (!$values['cashfrom'] && $values['cashto']) {
-    $form['filter']['cash_amount'] = array('#markup' => '<div><strong>Cash Expense:</strong> Less Than Equal to: $' . $values['cashto'] . '</div>');
-    $user_criteria['Cash Expense Less Than'] = $values['cashto'];
-    $formatted_search_criteria['Cash Expense'] = 'Less Than Equal to: $' . $values['cashto'];
-  } elseif ($values['cashfrom'] && !$values['cashto']) {
-    $form['filter']['cash_amount'] = array('#markup' => '<div><strong>Cash Expense:</strong> Greater Than Equal to: $' . $values['cashfrom'] . '</div>');
-    $user_criteria['Cash Expense Greater Than'] = $values['cashfrom'];
-    $formatted_search_criteria['Cash Expense'] = 'Greater Than Equal to: $' . $values['cashfrom'];
-  }
-  if ($values['postadjustmentsfrom'] && $values['postadjustmentsto']) {
-    $form['filter']['post_adjustments'] = array('#markup' => '<div><strong>Post Adjustments:</strong> Greater Than Equal to: $' . $values['postadjustmentsfrom'] . ' Less Than Equal to: $' . $values['postadjustmentsto'] . '</div>');
-    $user_criteria['Post Adjustments Greater Than'] = $values['postadjustmentsfrom'];
-    $user_criteria['Post Adjustments Less Than'] = $values['postadjustmentsto'];
-    $formatted_search_criteria['Post Adjustments'] = 'Greater Than Equal to: $' . $values['postadjustmentsfrom'] . ' Less Than Equal to: $' . $values['postadjustmentsto'];
-  } elseif (!$values['postadjustmentsfrom'] && $values['postadjustmentsto']) {
-    $form['filter']['post_adjustments'] = array('#markup' => '<div><strong>Post Adjustments:</strong> Less Than Equal to: $' . $values['postadjustmentsto'] . '</div>');
-    $user_criteria['Post Adjustments Less Than'] = $values['postadjustmentsto'];
-    $formatted_search_criteria['Post Adjustments'] = 'Less Than Equal to: $' . $values['postadjustmentsto'];
-  } elseif ($values['postadjustmentsfrom'] && !$values['postadjustmentsto']) {
-    $form['filter']['post_adjustments'] = array('#markup' => '<div><strong>Post Adjustments:</strong> Greater Than Equal to: $' . $values['postadjustmentsfrom'] . '</div>');
-    $user_criteria['Post Adjustments Greater Than'] = $values['postadjustmentsfrom'];
-    $formatted_search_criteria['Post Adjustments'] = 'Greater Than Equal to: $' . $values['postadjustmentsfrom'];
-  }
-  $form['#attributes'] = array(
-    'class' => array(
-      'confirmation-page',
-      'data-feeds-wizard',
-    ),
-  );
-
-  $user_criteria['Formatted'] = $formatted_search_criteria;
-  $criteria = checkbook_datafeeds_process_budget_values($form, $form_state);
-  $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
-  $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
-  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, Domain::$BUDGET);
-  return $modified_form;
+  //Get current data source
+  $data_source = $form_state['input']['datafeeds-budget-domain-filter'];
+  $feed = checkbook_datafeeds\FeedFactory::getFeed($data_source, Domain::$BUDGET);
+  return $feed->process_confirmation($form, $form_state);
 }
 
 /**
@@ -727,104 +592,6 @@ function checkbook_datafeeds_budget_confirmation_previous_submit($form, &$form_s
 }
 
 /**
- * Convert values from Budget section of form to an array format expected by API SearchCriteria.
- *
- * @param array $form
- *   Data Feeds wizard form array
- * @param array $form_state
- *   Data Feeds wizard form_state array
- *
- * @return array
- *   Structured array expected by API
- */
-function checkbook_datafeeds_process_budget_values($form, $form_state){
-  $values = $form_state['step_information']['budget']['stored_values'];
-  $pattern = "/.*?(\\[.*?\\])/is";
-  global $conf;
-  $criteria = array(
-    'global' => array(
-      'type_of_data' => 'Budget',
-      'records_from' => 1,
-      'max_records' => isset($conf['check_book']['data_feeds']['max_record_limit']) ? $conf['check_book']['data_feeds']['max_record_limit'] : 200000,
-    ),
-  );
-  $criteria['responseColumns'] = $values['column_select'];
-  if ($values['fiscal_year'] != 'All Years') {
-    $criteria['value']['year'] = $values['fiscal_year'];
-  }
-  if ($values['agency'] != 'Citywide (All Agencies)') {
-    preg_match($pattern, $values['agency'], $amatches);
-    if ($amatches) {
-      $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
-    }
-  }
-  if ($values['dept']) {
-    preg_match($pattern, $values['dept'], $dcmatches);
-    if ($dcmatches) {
-      $criteria['value']['department_code'] = trim($dcmatches[1], '[ ]');
-    }
-  }
-  if ($values['expense_category']) {
-    preg_match($pattern, $values['expense_category'], $ecmatches);
-    if ($ecmatches) {
-      $criteria['value']['expense_category'] = trim($ecmatches[1], '[ ]');
-    }
-  }
-  if ($values['budget_code']) {
-    preg_match($pattern, $values['budget_code'], $bcmatches);
-    if ($bcmatches) {
-      $criteria['value']['budget_code'] = trim($bcmatches[1], '[ ]');
-      $criteria['value']['budget_code_name'] = str_replace($bcmatches[1], "", $values['budget_code']);
-    } else {
-      $criteria['value']['budget_code_name'] = $values['budget_code'];
-    }
-  }
-  if ($values['adoptedfrom'] !== '' || $values['adoptedto'] !== '') {
-    $criteria['range']['adopted'] = array(
-      checknull($values['adoptedfrom']),
-      checknull($values['adoptedto']),
-    );
-  }
-  if ($values['currentfrom'] !== '' || $values['currentto'] !== '') {
-    $criteria['range']['modified'] = array(
-      checknull($values['currentfrom']),
-      checknull($values['currentto']),
-    );
-  }
-  if ($values['preencumberedfrom'] !== '' || $values['preencumberedto'] !== '') {
-    $criteria['range']['pre_encumbered'] = array(
-      checknull($values['preencumberedfrom']),
-      checknull($values['preencumberedto']),
-    );
-  }
-  if ($values['encumberedfrom'] !== '' || $values['encumberedto'] !== '') {
-    $criteria['range']['encumbered'] = array(
-      checknull($values['encumberedfrom']),
-      checknull($values['encumberedto']),
-    );
-  }
-  if ($values['cashfrom'] !== '' || $values['cashto'] !== '') {
-    $criteria['range']['cash_expense'] = array(
-      checknull($values['cashfrom']),
-      checknull($values['cashto']),
-    );
-  }
-  if ($values['postadjustmentsfrom'] !== '' || $values['postadjustmentsto'] !== '') {
-    $criteria['range']['post_adjustment'] = array(
-      checknull($values['postadjustmentsfrom']),
-      checknull($values['postadjustmentsto']),
-    );
-  }
-  if ($values['accruedexpensefrom'] !== '' || $values['accruedexpenseto'] !== '') {
-    $criteria['range']['accrued_expense'] = array(
-      checknull($values['accruedexpensefrom']),
-      checknull($values['accruedexpenseto']),
-    );
-  }
-  return $criteria;
-}
-
-/**
  * Validate handler for Budget section of form.
  *
  * @param array $form
@@ -833,96 +600,7 @@ function checkbook_datafeeds_process_budget_values($form, $form_state){
  *   Data Feeds wizard form_state array
  */
 function checkbook_datafeeds_budget_validate($form, &$form_state){
-  $adoptedfrom = $form_state['values']['adoptedfrom'];
-  $adoptedto = $form_state['values']['adoptedto'];
-  $currentfrom = $form_state['values']['currentfrom'];
-  $currentto = $form_state['values']['currentto'];
-  $preencfrom = $form_state['values']['preencumberedfrom'];
-  $preencto = $form_state['values']['preencumberedto'];
-  $encto = $form_state['values']['encumberedto'];
-  $encfrom = $form_state['values']['encumberedfrom'];
-  $cashfrom = $form_state['values']['cashfrom'];
-  $cashto = $form_state['values']['cashto'];
-  $postfrom = $form_state['values']['postadjustmentsfrom'];
-  $postto = $form_state['values']['postadjustmentsto'];
-  $accruedfrom = $form_state['values']['accruedexpensefrom'];
-  $accruedto = $form_state['values']['accruedexpenseto'];
-  $expensecolumns = $form_state['values']['column_select_expense'];
-  // Adopted:
-  if ($adoptedfrom && !is_numeric($adoptedfrom)) {
-    form_set_error('adoptedfrom', t('Adopted Budget From value must be a number.'));
-  }
-  if ($adoptedto && !is_numeric($adoptedto)) {
-    form_set_error('adoptedto', t('Adopted Budget To value must be a number.'));
-  }
-  if (is_numeric($adoptedfrom) && is_numeric($adoptedto) && $adoptedto < $adoptedfrom) {
-    form_set_error('adoptedto', t('Invalid range for Adopted Budget.'));
-  }
-  // Current:
-  if ($currentfrom && !is_numeric($currentfrom)) {
-    form_set_error('currentfrom', t('Modified Budget From value must be a number.'));
-  }
-  if ($currentto && !is_numeric($currentto)) {
-    form_set_error('currentto', t('Modified Budget To value must be a number.'));
-  }
-  if (is_numeric($currentfrom) && is_numeric($currentto) && $currentto < $currentfrom) {
-    form_set_error('currentto', t('Invalid range for Modified Budget.'));
-  }
-  // Preencumbered:
-  if ($preencfrom && !is_numeric($preencfrom)) {
-    form_set_error('preencumberedfrom', t('Pre-encumbered From value must be a number.'));
-  }
-  if ($preencto && !is_numeric($preencto)) {
-    form_set_error('preencumberedto', t('Pre-encumbered To value must be a number.'));
-  }
-  if (is_numeric($preencfrom) && is_numeric($preencto) && $preencto < $preencfrom) {
-    form_set_error('preencumberedto', t('Invalid range for Pre-encumbered.'));
-  }
-  // Encumbered:
-  if ($encfrom && !is_numeric($encfrom)) {
-    form_set_error('encumberedfrom', t('Encumbered From value must be a number.'));
-  }
-  if ($encto && !is_numeric($encto)) {
-    form_set_error('encumberedto', t('Encumbered To value must be a number.'));
-  }
-  if (is_numeric($encfrom) && is_numeric($encto) && $encto < $encfrom) {
-    form_set_error('encumberedto', t('Invalid range for Encumbered.'));
-  }
-  // Cash:
-  if ($cashfrom && !is_numeric($cashfrom)) {
-    form_set_error('cashfrom', t('Cash Expense From value must be a number.'));
-  }
-  if ($cashto && !is_numeric($cashto)) {
-    form_set_error('cashto', t('Cash Expense To value must be a number.'));
-  }
-  if (is_numeric($cashfrom) && is_numeric($cashto) && $cashto < $cashfrom) {
-    form_set_error('cashto', t('Invalid range for Cash Expense.'));
-  }
-  // Post Adjustments:
-  if ($postfrom && !is_numeric($postfrom)) {
-    form_set_error('postadjustmentsfrom', t('Post Adjustment From value must be a number.'));
-  }
-  if ($postto && !is_numeric($postto)) {
-    form_set_error('postadjustmentsto', t('Post Adjustment To value must be a number.'));
-  }
-  if (is_numeric($postfrom) && is_numeric($postto) && $postto < $postfrom) {
-    form_set_error('postadjustmentsto', t('Invalid range for Post Adjustment.'));
-  }
-  // Accrued Expense:
-  if ($accruedfrom && !is_numeric($accruedfrom)) {
-    form_set_error('accruedexpensefrom', t('Accrued Expense From value must be a number.'));
-  }
-  if ($accruedto && !is_numeric($accruedto)) {
-    form_set_error('accruedexpenseto', t('Accrued Expense To value must be a number.'));
-  }
-  if (is_numeric($accruedfrom) && is_numeric($accruedto) && $accruedto < $accruedfrom) {
-    form_set_error('accruedexpenseto', t('Invalid range for Accrued Expense.'));
-  }
-  // Columns:
-  if (!$expensecolumns) {
-    form_set_error('column_select_expense', t('You must select at least one column.'));
-  }
-  //Set the hidden filed values on Budget form
-  $form_state['complete form']['dept_hidden']['#value'] = $form_state['values']['dept'];
-  $form_state['complete form']['expense_category_hidden']['#value'] = $form_state['values']['expense_category'];
+  $data_source = $form_state['input']['datafeeds-budget-domain-filter'];
+  $feed = checkbook_datafeeds\FeedFactory::getFeed($data_source, Domain::$BUDGET);
+  $feed->checkbook_datafeeds_budget_validate($form, $form_state);
 }

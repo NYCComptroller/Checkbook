@@ -37,8 +37,36 @@
     "checkbook_nycha": {
       "data_type": {
         "csv": {
-        },
+          "Actual Amount": "Actual Amount",
+          "Adopted": "Adopted",
+          "Budget Name":"Budget Name",
+          "Budget Type" : "Budget Type",
+          "Committed": "Committed",
+          "Encumbered": "Encumbered",
+          "Expense Category": "Expense Category",
+          "Funding Source": "Funding Source",
+          "Modified": "Modified",
+          "Program": "Program",
+          "Project": "Project",
+          "Remaining": "Remaining",
+          "Responsibility Center": "Responsibility Center",
+          "Year": "Year"
+      },
         "xml": {
+          "actual_amount": "actual_amount",
+          "adopted": "adopted",
+          "budget_name": "budget_name",
+          "budget_type": "budget_type",
+          "committed": "committed",
+          "encumbered": "encumbered",
+          "expense_category": "expense_category",
+          "funding_source": "funding_source",
+          "modified": "modified",
+          "program": "program",
+          "project": "project",
+          "remaining": "remaining",
+          "responsibility_center": "responsibility_center",
+          "year": "year"
         }
       }
     }
