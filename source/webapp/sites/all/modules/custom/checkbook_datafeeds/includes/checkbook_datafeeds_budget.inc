@@ -329,6 +329,8 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
   $form['filter']['nycha_expense_category'] = array(
     '#type' => 'select',
     '#title' => t('Expense Category:'),
+    '#options' => $expenseCategories['options'],
+    '#option_attributes' => $expenseCategories['option_attributes'],
     '#prefix' => '<div id="expense-category" class="datafield expensecategory">',
     '#suffix' => '</div>',
     '#validated' => TRUE,
@@ -336,7 +338,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
   );
 
   $resp_center_options = _checkbook_advanced_search_get_responsibility_centers(Datasource::NYCHA, true);
-  $form['filter']['resp_center'] = array(
+  $form['filter']['nycha_resp_center'] = array(
     '#type' => 'select',
     '#title' => t('Responsibility<br/>Center:'),
     '#options' => $resp_center_options['options'],
@@ -346,10 +348,22 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#suffix' => '</div>',
     '#id' => 'edit-resp-center',
     '#name' => 'resp_center',
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'resp_center', $first_time_load, 'Select Responsibility Center'),
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_resp_center', $first_time_load, 'Select Responsibility Center'),
   );
   $funding_source_options = _funding_source_options(Datasource::NYCHA);
-  $form['filter']['funding_source'] = array(
+  $form['filter']['nycha_funding_source'] = array(
+    '#type' => 'select',
+    '#title' => t('Funding Source:'),
+    '#options' => $funding_source_options['options'],
+    '#option_attributes' => $funding_source_options['option_attributes'],
+    '#prefix' => '<div class="datafield fundingsource nycha">',
+    '#suffix' => '</div>',
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => !empty($form_state['values']['nycha_funding_source']) ? $form_state['values']['nycha_funding_source'] : 'All Funding Sources',
+  );
+
+  $program_options = _funding_source_options(Datasource::NYCHA);
+  $form['filter']['nycha_'] = array(
     '#type' => 'select',
     '#title' => t('Funding Source:'),
     '#options' => $funding_source_options['options'],

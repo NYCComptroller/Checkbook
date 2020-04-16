@@ -987,31 +987,38 @@ function _budget_dept_options($year, $agency)
  * @return mixed Expenditure object codes and expenditure object names, filtered by agency, department, year
  *   Expenditure object codes and expenditure object names, filtered by agency, department, year
  */
-function _budget_expcat_options($year, $agency, $dept, $dataSource = Datasource::CITYWIDE)
-{
-  $agency = emptyToZero(urldecode($agency));
-  $dept = emptyToZero(urldecode($dept));
-  if ($agency) {
-    $agencystring = " agency_code = '" . $agency . "' ";
-    if ($year) {
-      $year = ltrim($year, 'FY');
-      $yearstring = " AND budget_fiscal_year = " . $year . " ";
-    }
-    if ($dept) {
-      $deptstring = " AND department_code = '" . $dept . "' ";
-    }
-    $query = "SELECT DISTINCT object_class_name || ' [' || object_class_code || ']' expenditure_object_code  FROM budget WHERE"
-      . $agencystring . $yearstring . $deptstring . "ORDER BY expenditure_object_code ASC";
-    $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
-    if (count($results) > 0) {
-      foreach ($results as $result) {
-        $options[$result['expenditure_object_code']] = $result['expenditure_object_code'];
+function _budget_expcat_options($year, $agency, $dept, $dataSource = Datasource::CITYWIDE){
+  switch ($dataSource){
+    case Datasource::NYCHA :
+      $query = "SELECT DISTINCT expenditure_type_description || ' [' || expenditure_type_code || ']' AS expenditure_object_code 
+                FROM budget ORDER BY expenditure_object_code ASC";
+      $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
+      $expCategories = _checkbook_datafeeds_expcat_options($results, $dataSource);
+      return $expCategories;
+      break;
+    default:
+      $agency = emptyToZero(urldecode($agency));
+      $dept = emptyToZero(urldecode($dept));
+      if ($agency) {
+        $agencyString = " agency_code = '" . $agency . "' ";
+        $yearString = ($year) ? " AND budget_fiscal_year = " . ltrim($year, 'FY') . " " : "";
+        $deptString = ($dept) ? " AND department_code = '" . $dept . "' " : "";
+
+        $query = "SELECT DISTINCT object_class_name || ' [' || object_class_code || ']' expenditure_object_code  FROM budget WHERE"
+          . $agencyString . $yearString . $deptString . "ORDER BY expenditure_object_code ASC";
+        $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
+        $options = array();
+        if (count($results) > 0) {
+          foreach ($results as $result) {
+            $options[$result['expenditure_object_code']] = $result['expenditure_object_code'];
+          }
+        }
+        $matches = array();
+        foreach ($options as $key => $value) {
+          $matches[] = htmlentities($value);
+        }
+        drupal_json_output($matches);
       }
-    }
-    $matches = array();
-    foreach ($options as $key => $value)
-      $matches[] = htmlentities($value);
-    drupal_json_output($matches);
   }
 }
 
@@ -1143,7 +1150,10 @@ function _expcat_options($agency, $dept, $sc, $year, $data_source = null)
       if ($dept) {
         $deptstring = "AND disbursement_line_item_details.department_code = '" . $dept . "' ";
       }
-      $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $yearstring . $agencystring . $scstring . $deptstring . "ORDER BY expenditure_object_code ASC";
+      $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code 
+                FROM disbursement_line_item_details, ref_spending_category 
+                WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id "
+                . $yearstring . $agencystring . $scstring . $deptstring . "ORDER BY expenditure_object_code ASC";
       $data = _checkbook_project_execute_sql_by_data_source($query, Datasource::OGE);
       break;
 
@@ -1167,7 +1177,10 @@ function _expcat_options($agency, $dept, $sc, $year, $data_source = null)
       if ($dept) {
         $deptstring = "AND disbursement_line_item_details.department_code = '" . $dept . "' ";
       }
-      $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code FROM disbursement_line_item_details, ref_spending_category WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id " . $yearstring . $agencystring . $scstring . $deptstring . "ORDER BY expenditure_object_code ASC";
+      $query = "SELECT DISTINCT expenditure_object_name|| '[' || expenditure_object_code || ']' expenditure_object_code 
+                FROM disbursement_line_item_details, ref_spending_category 
+                WHERE disbursement_line_item_details.spending_category_id = ref_spending_category.spending_category_id "
+                . $yearstring . $agencystring . $scstring . $deptstring . "ORDER BY expenditure_object_code ASC";
       $data = _checkbook_project_execute_sql($query);
       break;
   }
@@ -1182,9 +1195,7 @@ function _expcat_options($agency, $dept, $sc, $year, $data_source = null)
  * @param null $data_source
  * @return mixed
  */
-function _checkbook_datafeeds_expcat_options($data, $data_source = null)
-{
-
+function _checkbook_datafeeds_expcat_options($data, $data_source = null){
   //IE8 - handle drop down width issue
   $title = 'Select Expense Category';
   $menu_options[''] = $title;
