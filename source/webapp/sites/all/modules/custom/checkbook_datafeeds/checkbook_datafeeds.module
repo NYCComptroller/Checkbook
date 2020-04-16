@@ -1022,6 +1022,52 @@ function _budget_expcat_options($year, $agency, $dept, $dataSource = Datasource:
   }
 }
 
+/**
+ * Get Program Phase from Data Controller and format into a FAPI select input #options array.
+ * @param $dataSource
+ * @return array of Program Phase data
+ */
+function _budget_program_options($dataSource = Datasource::CITYWIDE){
+  switch ($dataSource){
+    case Datasource::NYCHA :
+      $query = "SELECT DISTINCT program_phase_description || ' [' || program_phase_code  || ']' AS program 
+                FROM ref_program_phase ORDER BY program ASC";
+      $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
+      $title = 'Select Program';
+      $options[''] = $title;
+      $option_attributes = array($title => array('title' => $title));
+      foreach ($data as $row) {
+        $text = $row['program'];
+        $option_attributes[$text] = array('title' => $text);
+        $options[$text] = _ckbk_excerpt($text);
+      }
+      return array('options' => $options, 'option_attributes' => $option_attributes);
+      break;
+  }
+}
+
+/**
+ * Get Program Phase from Data Controller and format into a FAPI select input #options array.
+ * @param $dataSource
+ * @return array of Program Phase data
+ */
+function _budget_project_options($dataSource = Datasource::CITYWIDE){
+  switch ($dataSource){
+    case Datasource::NYCHA :
+      $query = "SELECT project_description || ' [' || project_code  || ']' AS project FROM ref_project ORDER BY project ASC";
+      $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
+      $title = 'Select Project';
+      $options[''] = $title;
+      $option_attributes = array($title => array('title' => $title));
+      foreach ($data as $row) {
+        $text = $row['project'];
+        $option_attributes[$text] = array('title' => $text);
+        $options[$text] = _ckbk_excerpt($text);
+      }
+      return array('options' => $options, 'option_attributes' => $option_attributes);
+      break;
+  }
+}
 
 /**
  * Get Department from Data Controller and format into a FAPI select input #options array.
