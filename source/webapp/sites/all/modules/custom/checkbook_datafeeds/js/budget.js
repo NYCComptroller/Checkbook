@@ -58,12 +58,20 @@
     let showHideBudgetFields = function (dataSource){
       switch (dataSource) {
         case 'checkbook_nycha':
+          //Fields
           $('.checkbook_fields').hide();
           $('.checkbook_nycha_fields').show();
+          //Multi-select
+          $('.form-item-nycha-column-select').show();
+          $('.form-item-column-select-expense').hide();
           break;
         default:
+          //Fields
           $('.checkbook_fields').show();
           $('.checkbook_nycha_fields').hide();
+          //Multi-select
+          $('.form-item-nycha-column-select').hide();
+          $('.form-item-column-select-expense').show();
       }
     }
 
@@ -72,6 +80,11 @@
       //Remove all the validation errors when data source is changed
       $('div.messages').remove();
       $('.error').removeClass('error');
+
+      //Reset the selected columns
+      $('#edit-column-select-expense').multiSelect('deselect_all');
+      $('#edit-nycha-column-select').multiSelect('deselect_all');
+
       showHideBudgetFields(dataSource);
     }
 
@@ -87,6 +100,8 @@
 
             //Data Source change event
             $('input:radio[name=datafeeds-budget-domain-filter]', context).change(function () {
+              $('input:hidden[name="hidden_multiple_value"]', context).val("");
+              //$.fn.clearInputFields();
               onDataSourceChange($(this, context).val());
             });
 
@@ -123,7 +138,7 @@
                   });
               });
 
-              // Sets up multi-select/option transfer
+              // Sets up multi-select/option transfer for CityWide
               $('#edit-column-select-expense',context).multiSelect();
               $('#ms-edit-column-select-expense .ms-selectable .ms-list',context).after('<a class="select">Add All</a>');
               $('#ms-edit-column-select-expense .ms-selection .ms-list',context).after('<a class="deselect">Remove All</a>');
@@ -134,8 +149,15 @@
                   $('#edit-column-select-expense',context).multiSelect('deselect_all');
               });
 
-              $(':input[name="budgettype"]',context).change(function(){
-                  $('#edit-column-select-expense',context).multiSelect('deselect_all');
+              // Sets up multi-select/option transfer for NYCHA
+              $('#edit-nycha-column-select',context).multiSelect();
+              $('#ms-edit-nycha-column-select .ms-selectable .ms-list',context).after('<a class="select">Add All</a>');
+              $('#ms-edit-nycha-column-select .ms-selection .ms-list',context).after('<a class="deselect">Remove All</a>');
+              $('#ms-edit-nycha-column-select a.select',context).click(function(){
+                $('#edit-nycha-column-select',context).multiSelect('select_all');
+              });
+              $('#ms-edit-nycha-column-select a.deselect',context).click(function(){
+                $('#edit-nycha-column-select',context).multiSelect('deselect_all');
               });
           }
     }
