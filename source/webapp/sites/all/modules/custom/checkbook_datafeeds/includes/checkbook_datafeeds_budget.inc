@@ -30,19 +30,12 @@
  * @return array
  *   Renderable array of first step of Budget
  */
-function checkbook_datafeeds_budget($form, &$form_state)
-{
+function checkbook_datafeeds_budget($form, &$form_state){
   $format = $form_state['step_information']['type']['stored_values']['format'];
-  $agency = isset($form_state['values']['agency']) ? $form_state['values']['agency'] : 'Citywide (All Agencies)';
-  $dept = !empty($form_state['values']['dept']) ? $form_state['values']['dept'] : '';
-  $expcat = !empty($form_state['values']['expense_category']) ? $form_state['values']['expense_category'] : '';
-  $year = !empty($form_state['values']['fiscal_year']) ? $form_state['values']['fiscal_year'] : 'FY' . CheckbookDateUtil::getCurrentFiscalYear();
-  $agency_options = _agency_options(Datasource::CITYWIDE);
-
   //<editor-fold desc="Heading">
 
   $form['loaded'] = array(
-    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('budget') . '</div>',
+    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date(Domain::$BUDGET) . '</div>',
   );
   $form['requiredmessage'] = array(
     '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
@@ -51,6 +44,9 @@ function checkbook_datafeeds_budget($form, &$form_state)
     '#markup' => '<h2 class="domain-title">Budget</h2>'
   );
 
+  $data_source = $form_state['values']['datafeeds-budget-domain-filter'] ?? Datasource::CITYWIDE;
+  $form['datafeeds-budget-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, Domain::$BUDGET);
+
   //</editor-fold>
 
   $form['filter'] = array(
@@ -58,6 +54,82 @@ function checkbook_datafeeds_budget($form, &$form_state)
     '#title' => t('3. Filter the Data:'),
     '#attributes' => array('class' => array('budget-fieldset')),
   );
+
+  //<editor-fold desc="CityWide Fields">
+  $form['filter']['checkbook-fields-begin'] = array(
+    '#markup' => '<div class="checkbook_fields">',
+  );
+  $form = checkbook_datafeeds_budget_filter_data($form, $form_state, Datasource::CITYWIDE);
+  $form['filter']['checkbook-fields-end'] = array(
+    '#markup' => '</div>',
+  );
+  //</editor-fold>
+
+  //<editor-fold desc="NYCHA Fields">
+  $form['filter']['checkbook-nycha-fields-begin'] = array(
+    '#markup' => '<div class="checkbook_nycha_fields">',
+  );
+  $form = checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, Datasource::NYCHA);
+  $form['filter']['checkbook-nycha-fields-end'] = array(
+    '#markup' => '</div>',
+  );
+  //</editor-fold>
+
+  $form['columns'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('4. Select Columns:'),
+  );
+
+  //<editor-fold desc="CityWide Multi-select Options">
+  $form['columns']['column_select_expense'] = array(
+    '#type' => 'select',
+    '#title' => t('Budget Columns<span class="form-required" title="This field is required.">*</span>'),
+    '#options' => _checkbook_datafeeds_budget_column_options(Datasource::CITYWIDE, $format),
+    '#multiple' => TRUE,
+    '#default_value' => !empty($form_state['values']['column_select_expense']) ? $form_state['values']['column_select_expense'] : '',
+  );
+
+  //Hidden Field for multi-select
+  $form['columns']['hidden_multiple_value'] = array(
+    '#value' => isset($form_state['values']['column_select']) ? '|' . implode('||', $form_state['values']['column_select']) . '|' : '',
+    '#type' => 'hidden',
+  );
+  //</editor-fold>
+
+  $form['#attached'] = array(
+    'library' => array(
+      array('system', 'ui.autocomplete', FALSE),
+      array('checkbook_datafeeds', 'jquery_multiselect', FALSE),
+    ),
+    'js' => array(
+      'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/budget.js',
+    ),
+  );
+  $form['#validate'] = array('checkbook_datafeeds_budget_validate');
+  $form['#attributes'] = array('class' => array('budget', 'data-feeds-wizard'));
+  $form['prev'] = array(
+    '#type' => 'submit',
+    '#value' => t('Previous'),
+    '#name' => 'prev',
+    '#submit' => array('previous_submit'),
+    '#limit_validation_errors' => array(),
+  );
+  $form['feeds_budget_next'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+    '#submit' => array('checkbook_datafeeds_budget_next_submit'),
+  );
+  return $form;
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @param $data_source
+ * @return mixed
+ */
+function checkbook_datafeeds_budget_filter_data($form, $form_state, $data_source = Datasource::CITYWIDE){
+  $agency_options = _agency_options($data_source);
   $form['filter']['leftbegin'] = array(
     '#markup' => '<div class="column column-left">',
   );
@@ -229,95 +301,207 @@ function checkbook_datafeeds_budget($form, &$form_state)
   $form['filter']['rightend'] = array(
     '#markup' => '</div>',
   );
-  $form['columns'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('4. Select Columns:'),
-  );
-  $form['columns']['column_select_expense'] = array(
-    '#type' => 'select',
-    '#title' => t('Budget Columns<span class="form-required" title="This field is required.">*</span>'),
-    '#options' => _checkbook_datafeeds_budget_column_options($format),
-    '#multiple' => TRUE,
-    '#default_value' => !empty($form_state['values']['column_select_expense']) ? $form_state['values']['column_select_expense'] : '',
-  );
-  //Hidden Field for multi-select
-  $form['columns']['hidden_multiple_value'] = array(
-    '#value' => isset($form_state['values']['column_select']) ? '|' . implode('||', $form_state['values']['column_select']) . '|' : '',
-    '#type' => 'hidden',
-  );
-  $form['#attached'] = array(
-    'library' => array(
-      array('system', 'ui.autocomplete', FALSE),
-      array('checkbook_datafeeds', 'jquery_multiselect', FALSE),
-    ),
-    'js' => array(
-      'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/budget.js',
-    ),
-  );
-  $form['#validate'] = array('checkbook_datafeeds_budget_validate');
-  $form['#attributes'] = array('class' => array('budget', 'data-feeds-wizard'));
-  $form['prev'] = array(
-    '#type' => 'submit',
-    '#value' => t('Previous'),
-    '#name' => 'prev',
-    '#submit' => array('previous_submit'),
-    '#limit_validation_errors' => array(),
-  );
-  $form['feeds_budget_next'] = array(
-    '#type' => 'submit',
-    '#value' => t('Submit'),
-    '#submit' => array('checkbook_datafeeds_budget_next_submit'),
-  );
   return $form;
 }
 
 /**
+ * @param $form
+ * @param $form_state
+ * @param $data_source
+ * @return mixed
+ */
+function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_source){
+  $first_time_load = checkbook_datafeeds_is_first_load($form_state, $data_source);
+  $form['filter']['nycha-leftbegin'] = array(
+    '#markup' => '<div class="column column-left">',
+  );
+  $form['filter']['nycha_fiscal_year'] = array(
+    '#type' => 'select',
+    '#title' => t('Year:'),
+    '#options' => CheckbookDateUtil::getNychaBudgetFiscalYears(),
+    '#default_value' => !empty($form_state['values']['nycha_fiscal_year']) ? $form_state['values']['nycha_fiscal_year'] : CheckbookDateUtil::getCurrentFiscalYear(),
+    '#attributes' => array('class' => array('watch')),
+    '#prefix' => '<div class="datafield fiscalyear">',
+    '#suffix' => '</div>',
+  );
+
+  $expenseCategories = _budget_expcat_options(NUll, NUll, NULL, Datasource::NYCHA);
+  $form['filter']['nycha_expense_category'] = array(
+    '#type' => 'select',
+    '#title' => t('Expense Category:'),
+    '#options' => $expenseCategories['options'],
+    '#option_attributes' => $expenseCategories['option_attributes'],
+    '#prefix' => '<div id="expense-category" class="datafield expensecategory">',
+    '#suffix' => '</div>',
+    '#validated' => TRUE,
+    '#default_value' => !empty($form_state['values']['nycha_expense_category']) ? $form_state['values']['nycha_expense_category'] : 'Select Expense Category',
+  );
+
+  $resp_center_options = _checkbook_advanced_search_get_responsibility_centers(Datasource::NYCHA, true);
+  $form['filter']['nycha_resp_center'] = array(
+    '#type' => 'select',
+    '#title' => t('Responsibility<br/>Center:'),
+    '#options' => $resp_center_options['options'],
+    '#option_attributes' => $resp_center_options['option_attributes'],
+    '#attributes' => array('class' => array('watch')),
+    '#prefix' => '<div class="datafield resp-center">',
+    '#suffix' => '</div>',
+    '#id' => 'edit-resp-center',
+    '#name' => 'resp_center',
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_resp_center', $first_time_load, 'Select Responsibility Center'),
+  );
+  $funding_source_options = _funding_source_options(Datasource::NYCHA);
+  $form['filter']['nycha_funding_source'] = array(
+    '#type' => 'select',
+    '#title' => t('Funding Source:'),
+    '#options' => $funding_source_options['options'],
+    '#option_attributes' => $funding_source_options['option_attributes'],
+    '#prefix' => '<div class="datafield fundingsource nycha">',
+    '#suffix' => '</div>',
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => !empty($form_state['values']['nycha_funding_source']) ? $form_state['values']['nycha_funding_source'] : 'Select Funding Source',
+  );
+
+  $program_options = _budget_program_options(Datasource::NYCHA);
+  $form['filter']['nycha_program'] = array(
+    '#type' => 'select',
+    '#title' => t('Program:'),
+    '#options' => $program_options['options'],
+    '#option_attributes' => $program_options['option_attributes'],
+    '#prefix' => '<div class="datafield program nycha">',
+    '#suffix' => '</div>',
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => !empty($form_state['values']['nycha_program']) ? $form_state['values']['nycha_program'] : 'Select Program',
+  );
+
+  $project_options = _budget_project_options(Datasource::NYCHA);
+  $form['filter']['nycha_project'] = array(
+    '#type' => 'select',
+    '#title' => t('Project:'),
+    '#options' => $project_options['options'],
+    '#option_attributes' => $project_options['option_attributes'],
+    '#prefix' => '<div class="datafield project nycha">',
+    '#suffix' => '</div>',
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => !empty($form_state['values']['nycha_project']) ? $form_state['values']['nycha_project'] : 'Select Project',
+  );
+
+  $form['filter']['nycha_budget_type'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Budget Type:'),
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => !empty($form_state['values']['nycha_budget_type']) ? $form_state['values']['nycha_budget_type'] : '',
+    '#prefix' => '<div class="datafield nycha_budget_type">',
+    '#suffix' => '</div>',
+  );
+  $form['filter']['nycha-leftend'] = array(
+    '#markup' => '</div>',
+  );
+  $form['filter']['nycha-rightbegin'] = array(
+    '#markup' => '<div class="column column-right">',
+  );
+  //Adopted Amount
+  $form['filter']['nycha_adopted_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#prefix' => '<div class="datafield nycha_adopted_from datarange"><label>Adopted:</label><div class="ranges">',
+    '#default_value' => !empty($form_state['values']['nycha_adopted_from']) ? $form_state['values']['nycha_adopted_from'] : '',
+  );
+  $form['filter']['nycha_adopted_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('to'),
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#suffix' => '</div></div>',
+    '#default_value' => !empty($form_state['values']['nycha_adopted_to']) ? $form_state['values']['nycha_adopted_to'] : '',
+  );
+  //Modified Amount
+  $form['filter']['nycha_modified_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#prefix' => '<div class="datafield nycha_modified_from datarange"><label>Modified:</label><div class="ranges">',
+    '#default_value' => !empty($form_state['values']['nycha_modified_from']) ? $form_state['values']['nycha_modified_from'] : '',
+  );
+  $form['filter']['nycha_modified_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('to'),
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#suffix' => '</div></div>',
+    '#default_value' => !empty($form_state['values']['nycha_modified_to']) ? $form_state['values']['nycha_modified_to'] : '',
+  );
+  //Committed Amount
+  $form['filter']['nycha_committed_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#prefix' => '<div class="datafield nycha_committed_from datarange"><label>Committed:</label><div class="ranges">',
+    '#default_value' => !empty($form_state['values']['nycha_committed_from']) ? $form_state['values']['nycha_committed_from'] : '',
+  );
+  $form['filter']['nycha_committed_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('to'),
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#suffix' => '</div></div>',
+    '#default_value' => !empty($form_state['values']['nycha_committed_to']) ? $form_state['values']['nycha_committed_to'] : '',
+  );
+  //Encumbered  Amount
+  $form['filter']['nycha_encumbered_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#prefix' => '<div class="datafield nycha_encumbered_from datarange"><label>Encumbered:</label><div class="ranges">',
+    '#default_value' => !empty($form_state['values']['nycha_encumbered_from']) ? $form_state['values']['nycha_encumbered_from'] : '',
+  );
+  $form['filter']['nycha_encumbered_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('to'),
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#suffix' => '</div></div>',
+    '#default_value' => !empty($form_state['values']['nycha_encumbered_to']) ? $form_state['values']['nycha_encumbered_to'] : '',
+  );
+  //Actual Amount
+  $form['filter']['nycha_actual_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#prefix' => '<div class="datafield nycha_actual_from datarange"><label>Actual:</label><div class="ranges">',
+    '#default_value' => !empty($form_state['values']['nycha_actual_from']) ? $form_state['values']['nycha_actual_from'] : '',
+  );
+  $form['filter']['nycha_actual_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('to'),
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#suffix' => '</div></div>',
+    '#default_value' => !empty($form_state['values']['nycha_actual_to']) ? $form_state['values']['nycha_actual_to'] : '',
+  );
+  $form['filter']['nycha-rightend'] = array(
+    '#markup' => '</div>',
+  );
+  return $form;
+}
+/**
  * Budget column options.
- *
- * @param string $datatype
+ * @param string $dataSource
+ * @param string $dataType
  *   Data type (xml or csv)
  *
  * @return array
- *   FAPI structured array for select box #options
+ *   API structured array for select box #options
  */
-function _checkbook_datafeeds_budget_column_options($datatype)
-{
-  if ($datatype == 'csv') {
-    $out = drupal_map_assoc(array(
-      "Accrued Expense",
-      "Adopted",
-      "Agency",
-      "Budget Code",
-      "Budget Name",
-      "Cash Expense",
-      "Department",
-      "Encumbered",
-      "Expense Category",
-      "Modified",
-      "Post Adjustments",
-      "Pre-Encumbered",
-      "Year",
-    ));
-  } else {
-    if ($datatype = 'xml') {
-      $out = drupal_map_assoc(array(
-        "accrued_expense",
-        "adopted",
-        "agency",
-        "budget_code",
-        "budget_name",
-        "cash_expense",
-        "department",
-        "encumbered",
-        "expense_category",
-        "modified",
-        "post_adjustment",
-        "pre_encumbered",
-        "year",
-      ));
-    }
-  }
-  return $out;
+function _checkbook_datafeeds_budget_column_options($dataSource, $dataType){
+  $options = DatafeedsConfigUtil::getConfig(strtolower(Domain::$BUDGET));
+
+  $options = $options['data_source'][$dataSource] ?? $options['data_source'][Datasource::CITYWIDE];
+  $options = $options['data_type'][$dataType] ?? $options['data_type']['default'];
+
+  ksort($options);
+  return $options;
 }
 
 /**
@@ -328,8 +512,7 @@ function _checkbook_datafeeds_budget_column_options($datatype)
  * @param array $form_state
  *   Data Feeds wizard form_state array
  */
-function checkbook_datafeeds_budget_next_submit($form, &$form_state)
-{
+function checkbook_datafeeds_budget_next_submit($form, &$form_state){
   $current_step = &$form_state['step'];
   $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
 
@@ -354,8 +537,7 @@ function checkbook_datafeeds_budget_next_submit($form, &$form_state)
  * @return array
  *   Renderable array of Budget confirmation page step
  */
-function checkbook_datafeeds_budget_confirmation($form, &$form_state)
-{
+function checkbook_datafeeds_budget_confirmation($form, &$form_state){
   $values = $form_state['step_information']['budget']['stored_values'];
   $responsetype = $form_state['step_information']['type']['stored_values']['format'];
   $user_criteria = array();
@@ -524,7 +706,7 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state)
   $criteria = checkbook_datafeeds_process_budget_values($form, $form_state);
   $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
   $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
-  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, 'budget');
+  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, Domain::$BUDGET);
   return $modified_form;
 }
 
@@ -536,8 +718,7 @@ function checkbook_datafeeds_budget_confirmation($form, &$form_state)
  * @param array $form_state
  *   Data Feeds wizard form_state array
  */
-function checkbook_datafeeds_budget_confirmation_previous_submit($form, &$form_state)
-{
+function checkbook_datafeeds_budget_confirmation_previous_submit($form, &$form_state){
   $current_step = &$form_state['step'];
   $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
   $current_step = 'budget';
@@ -556,8 +737,7 @@ function checkbook_datafeeds_budget_confirmation_previous_submit($form, &$form_s
  * @return array
  *   Structured array expected by API
  */
-function checkbook_datafeeds_process_budget_values($form, $form_state)
-{
+function checkbook_datafeeds_process_budget_values($form, $form_state){
   $values = $form_state['step_information']['budget']['stored_values'];
   $pattern = "/.*?(\\[.*?\\])/is";
   global $conf;
@@ -652,8 +832,7 @@ function checkbook_datafeeds_process_budget_values($form, $form_state)
  * @param array $form_state
  *   Data Feeds wizard form_state array
  */
-function checkbook_datafeeds_budget_validate($form, &$form_state)
-{
+function checkbook_datafeeds_budget_validate($form, &$form_state){
   $adoptedfrom = $form_state['values']['adoptedfrom'];
   $adoptedto = $form_state['values']['adoptedto'];
   $currentfrom = $form_state['values']['currentfrom'];

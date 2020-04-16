@@ -64,10 +64,10 @@ $contracts_active = '';
 $spending_active = '';
 $payroll_active = '';
 switch ($arg){
-    case 'budget':
+    case 'nycha_budget':
         $budget_active = ' active';
         break;
-    case 'revenue':
+    case 'nycha_revenue':
         $revenue_active = ' active';
         break;
     case 'nycha_contracts':

@@ -7,13 +7,152 @@
     <param name="dept" type="string" />
     <sql>
       SELECT
-      expenditure_type_description AS expense_category,
-      adopted_budget,
-      modified_budget,
-      actual_amount,
-      committed
+      DISTINCT(expenditure_type_description) AS expense_category,
+      SUM(adopted_budget) AS adopted_budget,
+      SUM(modified_budget) AS modified_budget,
+      SUM(funds_available)AS funds_available,
+      SUM(committed)AS committed
       FROM budget
-      GROUP BY expenditure_type_description,adopted_budget,modified_budget,actual_amount,committed
+      GROUP BY expenditure_type_description
+    </sql>
+  </statement>
+
+  <statement name="GetNychaExpenseCategoriesByCommittedExpenseBudget" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="dept" type="string" />
+    <sql>
+      SELECT
+      DISTINCT(expenditure_type_description) AS expense_category,
+      SUM(committed) AS committed,
+      SUM(encumbrance_amount) AS encumbrance_amount,
+      SUM(actual_amount) AS actual_amount
+      FROM budget
+      GROUP BY expenditure_type_description
+    </sql>
+  </statement>
+
+  <statement name="GetResponsibilityCenters" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="dept" type="string" />
+    <sql>
+      SELECT
+      DISTINCT(responsibility_center_description) AS responsibility_center,
+      SUM(adopted_budget) AS adopted_budget,
+      SUM(modified_budget) AS modified_budget,
+      SUM(committed) AS committed,
+      SUM(funds_available) AS funds_available
+      FROM budget
+      GROUP BY responsibility_center_description
+    </sql>
+  </statement>
+
+  <statement name="GetResponsibilityCentersByCommittedExpense" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="dept" type="string" />
+    <sql>
+      SELECT
+      DISTINCT(responsibility_center_description) AS responsibility_center,
+      SUM(committed) AS committed,
+      SUM(encumbrance_amount) AS encumbrance_amount,
+      SUM(actual_amount) AS actual_amount
+      FROM budget
+      GROUP BY responsibility_center_description
+    </sql>
+  </statement>
+
+  <statement name="GetFundingSources" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="dept" type="string" />
+    <sql>
+      SELECT
+      DISTINCT(funding_source_description) AS funding_source_description,
+      SUM(adopted_budget) AS adopted_budget,
+      SUM(modified_budget) AS modified_budget,
+      SUM(committed) AS committed,
+      SUM(funds_available) AS funds_available
+      FROM budget
+      GROUP BY funding_source_description
+    </sql>
+  </statement>
+
+  <statement name="GetFundingSourcesByCommittedExpense" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="dept" type="string" />
+    <sql>
+      SELECT
+      DISTINCT(funding_source_description) AS funding_source_description,
+      SUM(committed) AS committed,
+      SUM(encumbrance_amount) AS encumbrance_amount,
+      SUM(actual_amount) AS actual_amount
+      FROM budget
+      GROUP BY funding_source_description
+    </sql>
+  </statement>
+
+  <statement name="GetPrograms" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="dept" type="string" />
+    <sql>
+      SELECT
+      DISTINCT(program_phase_description) AS program_phase_description,
+      SUM(adopted_budget) AS adopted_budget,
+      SUM(modified_budget) AS modified_budget,
+      SUM(committed) AS committed,
+      SUM(funds_available) AS funds_available
+      FROM budget
+      GROUP BY program_phase_description
+    </sql>
+  </statement>
+
+  <statement name="GetProgramsByCommittedExpense" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="dept" type="string" />
+    <sql>
+      SELECT
+      DISTINCT(program_phase_description) AS program_phase_description,
+      SUM(committed) AS committed,
+      SUM(encumbrance_amount) AS encumbrance_amount,
+      SUM(actual_amount) AS actual_amount
+      FROM budget
+      GROUP BY program_phase_description
+    </sql>
+  </statement>
+
+  <statement name="GetProjects" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="dept" type="string" />
+    <sql>
+      SELECT
+      DISTINCT(gl_project_description) AS gl_project_description,
+      SUM(adopted_budget) AS adopted_budget,
+      SUM(modified_budget) AS modified_budget,
+      SUM(committed) AS committed,
+      SUM(funds_available) AS funds_available
+      FROM budget
+      GROUP BY gl_project_description
+    </sql>
+  </statement>
+
+  <statement name="GetProjectsByCommittedExpense" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="agency" type="int" />
+    <param name="dept" type="string" />
+    <sql>
+      SELECT
+      DISTINCT(gl_project_description) AS gl_project_description,
+      SUM(committed) AS committed,
+      SUM(encumbrance_amount) AS encumbrance_amount,
+      SUM(actual_amount) AS actual_amount
+      FROM budget
+      GROUP BY gl_project_description
     </sql>
   </statement>
 </statements>

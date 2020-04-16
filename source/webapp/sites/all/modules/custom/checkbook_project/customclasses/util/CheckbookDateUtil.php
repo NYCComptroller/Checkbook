@@ -156,6 +156,22 @@ class CheckbookDateUtil{
   }
 
   /**
+   * Year List for NYCHA Budget
+   * Returns past 10 years list from current year which are greater than 2017
+   * @return array
+   */
+  public static function getNychaBudgetFiscalYears(){
+    $last = self::getCurrentFiscalYear(Datasource::NYCHA);
+    $results = [];
+    for ($i = $last; $i > $last - 10; $i--) {
+      if($i > 2017) {
+        $results[$i] = $i;
+      }
+    }
+    return $results;
+  }
+
+  /**
    * @param string $data_source
    * @return array
    */
