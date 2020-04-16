@@ -1070,6 +1070,51 @@ function _budget_project_options($dataSource = Datasource::CITYWIDE){
 }
 
 /**
+ * Get Budget Type from Data Controller and format into a FAPI select input #options array.
+ * @param $dataSource
+ * @return array of Budget Type data
+ */
+function _budget_type_options($dataSource = Datasource::CITYWIDE){
+  switch ($dataSource){
+    case Datasource::NYCHA :
+      $query = "SELECT DISTINCT budget_type FROM budget ORDER BY budget_type ASC";
+      $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
+      $title = 'Select Budget Type';
+      $options[''] = $title;
+      $option_attributes = array($title => array('title' => $title));
+      foreach ($data as $row) {
+        $text = $row['budget_type'];
+        $option_attributes[$text] = array('title' => $text);
+        $options[$text] = _ckbk_excerpt($text);
+      }
+      return array('options' => $options, 'option_attributes' => $option_attributes);
+      break;
+  }
+}
+
+/**
+ * Get Budget Name from Data Controller and format into a FAPI select input #options array.
+ * @param $dataSource
+ * @return array of Budget Name data
+ */
+function _budget_name_options($dataSource = Datasource::CITYWIDE){
+  switch ($dataSource){
+    case Datasource::NYCHA :
+      $query = "SELECT DISTINCT budget_name FROM budget ORDER BY budget_name ASC";
+      $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
+      $title = 'Select Budget Name';
+      $options[''] = $title;
+      $option_attributes = array($title => array('title' => $title));
+      foreach ($data as $row) {
+        $text = $row['budget_name'];
+        $option_attributes[$text] = array('title' => $text);
+        $options[$text] = _ckbk_excerpt($text);
+      }
+      return array('options' => $options, 'option_attributes' => $option_attributes);
+      break;
+  }
+}
+/**
  * Get Department from Data Controller and format into a FAPI select input #options array.
  *
  * @param $agency
