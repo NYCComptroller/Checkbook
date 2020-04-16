@@ -80,7 +80,7 @@ function checkbook_datafeeds_budget($form, &$form_state){
     '#title' => t('4. Select Columns:'),
   );
 
-  //<editor-fold desc="CityWide Multi-select Options">
+  //<editor-fold desc="CityWide and NYCHA Multi-select Options">
   $form['columns']['column_select_expense'] = array(
     '#type' => 'select',
     '#title' => t('Budget Columns<span class="form-required" title="This field is required.">*</span>'),
@@ -89,9 +89,24 @@ function checkbook_datafeeds_budget($form, &$form_state){
     '#default_value' => !empty($form_state['values']['column_select_expense']) ? $form_state['values']['column_select_expense'] : '',
   );
 
+  $form['columns']['nycha_column_select'] = array(
+    '#type' => 'select',
+    '#title' => t('NYCHA Budget Columns<span class="form-required" title="This field is required.">*</span>'),
+    '#options' => _checkbook_datafeeds_budget_column_options(Datasource::NYCHA, $format),
+    '#multiple' => TRUE,
+    '#default_value' => !empty($form_state['values']['nycha_column_select']) ? $form_state['values']['nycha_column_select'] : '',
+  );
+
+  //Hidden Field for multi-select
+  if ($data_source == Datasource::NYCHA) {
+    $multi_select_hidden = isset($form_state['input']['nycha_column_select']) ? '|' . implode('||', $form_state['input']['nycha_column_select']) . '|' : '';
+  } else {
+    $multi_select_hidden = isset($form_state['input']['column_select_expense']) ? '|' . implode('||', $form_state['input']['column_select_expense']) . '|' : '';
+  }
+
   //Hidden Field for multi-select
   $form['columns']['hidden_multiple_value'] = array(
-    '#value' => isset($form_state['values']['column_select']) ? '|' . implode('||', $form_state['values']['column_select']) . '|' : '',
+    '#value' => $multi_select_hidden,
     '#type' => 'hidden',
   );
   //</editor-fold>
