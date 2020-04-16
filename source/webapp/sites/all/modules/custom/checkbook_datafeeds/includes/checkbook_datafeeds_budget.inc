@@ -318,7 +318,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
   $form['filter']['nycha_fiscal_year'] = array(
     '#type' => 'select',
     '#title' => t('Year:'),
-    '#options' => CheckbookDateUtil::getLast10fiscalYears(),
+    '#options' => CheckbookDateUtil::getNychaBudgetFiscalYears(),
     '#default_value' => !empty($form_state['values']['nycha_fiscal_year']) ? $form_state['values']['nycha_fiscal_year'] : CheckbookDateUtil::getCurrentFiscalYear(),
     '#attributes' => array('class' => array('watch')),
     '#prefix' => '<div class="datafield fiscalyear">',
@@ -329,6 +329,8 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
   $form['filter']['nycha_expense_category'] = array(
     '#type' => 'select',
     '#title' => t('Expense Category:'),
+    '#options' => $expenseCategories['options'],
+    '#option_attributes' => $expenseCategories['option_attributes'],
     '#prefix' => '<div id="expense-category" class="datafield expensecategory">',
     '#suffix' => '</div>',
     '#validated' => TRUE,
@@ -336,7 +338,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
   );
 
   $resp_center_options = _checkbook_advanced_search_get_responsibility_centers(Datasource::NYCHA, true);
-  $form['filter']['resp_center'] = array(
+  $form['filter']['nycha_resp_center'] = array(
     '#type' => 'select',
     '#title' => t('Responsibility<br/>Center:'),
     '#options' => $resp_center_options['options'],
@@ -346,10 +348,10 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#suffix' => '</div>',
     '#id' => 'edit-resp-center',
     '#name' => 'resp_center',
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'resp_center', $first_time_load, 'Select Responsibility Center'),
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_resp_center', $first_time_load, 'Select Responsibility Center'),
   );
   $funding_source_options = _funding_source_options(Datasource::NYCHA);
-  $form['filter']['funding_source'] = array(
+  $form['filter']['nycha_funding_source'] = array(
     '#type' => 'select',
     '#title' => t('Funding Source:'),
     '#options' => $funding_source_options['options'],
@@ -357,13 +359,126 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#prefix' => '<div class="datafield fundingsource nycha">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
-    '#default_value' => !empty($form_state['values']['funding_source']) ? $form_state['values']['funding_source'] : 'All Funding Sources',
+    '#default_value' => !empty($form_state['values']['nycha_funding_source']) ? $form_state['values']['nycha_funding_source'] : 'Select Funding Source',
+  );
+
+  $program_options = _budget_program_options(Datasource::NYCHA);
+  $form['filter']['nycha_program'] = array(
+    '#type' => 'select',
+    '#title' => t('Program:'),
+    '#options' => $program_options['options'],
+    '#option_attributes' => $program_options['option_attributes'],
+    '#prefix' => '<div class="datafield program nycha">',
+    '#suffix' => '</div>',
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => !empty($form_state['values']['nycha_program']) ? $form_state['values']['nycha_program'] : 'Select Program',
+  );
+
+  $project_options = _budget_project_options(Datasource::NYCHA);
+  $form['filter']['nycha_project'] = array(
+    '#type' => 'select',
+    '#title' => t('Project:'),
+    '#options' => $project_options['options'],
+    '#option_attributes' => $project_options['option_attributes'],
+    '#prefix' => '<div class="datafield project nycha">',
+    '#suffix' => '</div>',
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => !empty($form_state['values']['nycha_project']) ? $form_state['values']['nycha_project'] : 'Select Project',
+  );
+
+  $form['filter']['nycha_budget_type'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Budget Type:'),
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => !empty($form_state['values']['nycha_budget_type']) ? $form_state['values']['nycha_budget_type'] : '',
+    '#prefix' => '<div class="datafield nycha_budget_type">',
+    '#suffix' => '</div>',
   );
   $form['filter']['nycha-leftend'] = array(
     '#markup' => '</div>',
   );
   $form['filter']['nycha-rightbegin'] = array(
     '#markup' => '<div class="column column-right">',
+  );
+  //Adopted Amount
+  $form['filter']['nycha_adopted_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#prefix' => '<div class="datafield nycha_adopted_from datarange"><label>Adopted:</label><div class="ranges">',
+    '#default_value' => !empty($form_state['values']['nycha_adopted_from']) ? $form_state['values']['nycha_adopted_from'] : '',
+  );
+  $form['filter']['nycha_adopted_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('to'),
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#suffix' => '</div></div>',
+    '#default_value' => !empty($form_state['values']['nycha_adopted_to']) ? $form_state['values']['nycha_adopted_to'] : '',
+  );
+  //Modified Amount
+  $form['filter']['nycha_modified_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#prefix' => '<div class="datafield nycha_modified_from datarange"><label>Modified:</label><div class="ranges">',
+    '#default_value' => !empty($form_state['values']['nycha_modified_from']) ? $form_state['values']['nycha_modified_from'] : '',
+  );
+  $form['filter']['nycha_modified_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('to'),
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#suffix' => '</div></div>',
+    '#default_value' => !empty($form_state['values']['nycha_modified_to']) ? $form_state['values']['nycha_modified_to'] : '',
+  );
+  //Committed Amount
+  $form['filter']['nycha_committed_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#prefix' => '<div class="datafield nycha_committed_from datarange"><label>Committed:</label><div class="ranges">',
+    '#default_value' => !empty($form_state['values']['nycha_committed_from']) ? $form_state['values']['nycha_committed_from'] : '',
+  );
+  $form['filter']['nycha_committed_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('to'),
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#suffix' => '</div></div>',
+    '#default_value' => !empty($form_state['values']['nycha_committed_to']) ? $form_state['values']['nycha_committed_to'] : '',
+  );
+  //Encumbered  Amount
+  $form['filter']['nycha_encumbered_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#prefix' => '<div class="datafield nycha_encumbered_from datarange"><label>Encumbered:</label><div class="ranges">',
+    '#default_value' => !empty($form_state['values']['nycha_encumbered_from']) ? $form_state['values']['nycha_encumbered_from'] : '',
+  );
+  $form['filter']['nycha_encumbered_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('to'),
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#suffix' => '</div></div>',
+    '#default_value' => !empty($form_state['values']['nycha_encumbered_to']) ? $form_state['values']['nycha_encumbered_to'] : '',
+  );
+  //Actual Amount
+  $form['filter']['nycha_actual_from'] = array(
+    '#type' => 'textfield',
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#prefix' => '<div class="datafield nycha_actual_from datarange"><label>Actual:</label><div class="ranges">',
+    '#default_value' => !empty($form_state['values']['nycha_actual_from']) ? $form_state['values']['nycha_actual_from'] : '',
+  );
+  $form['filter']['nycha_actual_to'] = array(
+    '#type' => 'textfield',
+    '#title' => t('to'),
+    '#size' => 15,
+    '#maxlength' => 15,
+    '#suffix' => '</div></div>',
+    '#default_value' => !empty($form_state['values']['nycha_actual_to']) ? $form_state['values']['nycha_actual_to'] : '',
   );
   $form['filter']['nycha-rightend'] = array(
     '#markup' => '</div>',
