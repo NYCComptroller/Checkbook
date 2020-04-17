@@ -380,6 +380,18 @@ function _get_nycha_budget_breadcrumb_title_drilldown()
         case 'expcategory':
           $title = _checkbook_project_get_name_for_argument("expenditure_type_code", $value);
           break;
+        case 'respcenter':
+          $title = _checkbook_project_get_name_for_argument("responsibility_center_code", $value);
+          break;
+        case 'fundsrc':
+          $title = _checkbook_project_get_name_for_argument("funding_source_code", $value);
+          break;
+        case 'program':
+          $title = _checkbook_project_get_name_for_argument("program_phase_code", $value);
+          break;
+        case 'project':
+          $title = _checkbook_project_get_name_for_argument("gl_project_code", $value);
+          break;
         default:
           $title = "New York City Housing Authority";
       }
