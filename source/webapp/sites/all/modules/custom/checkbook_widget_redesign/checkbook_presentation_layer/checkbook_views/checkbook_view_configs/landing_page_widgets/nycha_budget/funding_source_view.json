@@ -3,10 +3,10 @@
   "dataFunc":"GetFundingSources",
   "headerTitle": "Funding Sources",
   "table_columns":[
-    {"labelAlias":"funding_source","column":"funding_source_description"},
+    {"labelAlias":"funding_source","column":"funding_source_description", "derivedColumn":"funding_source_name_link"},
     {"labelAlias":"adopted","column":"adopted_budget","format":"dollar"},
     {"labelAlias":"modified","column":"modified_budget","format":"dollar"},
-    {"labelAlias":"committed","column":"committed","format":"dollar"},
+    {"labelAlias":"committed","column":"committed","format":"dollar",  "derivedColumn":"committed_budget_link"},
     {"labelAlias":"remaining","column":"funds_available","format":"dollar"},
     {"label":"","column":""}
   ],

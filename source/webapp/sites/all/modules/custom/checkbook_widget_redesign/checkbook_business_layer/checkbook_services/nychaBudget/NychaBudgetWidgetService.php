@@ -30,6 +30,21 @@ class NychaBudgetWidgetService extends WidgetDataService implements IWidgetServi
         $url = NychaBudgetUrlService::responsibilityCenterURL($row['responsibility_center_code']);
         $value = "<a href='{$url}'>{$column}</a>";
         break;
+      case "funding_source_name_link":
+        $column = $row['funding_source_description'];
+        $url = NychaBudgetUrlService::fundingSourceURL($row['funding_source_code']);
+        $value = "<a href='{$url}'>{$column}</a>";
+        break;
+      case "program_name_link":
+        $column = $row['program_phase_description'];
+        $url = NychaBudgetUrlService::programNameLink($row['program_phase_code']);
+        $value = "<a href='{$url}'>{$column}</a>";
+        break;
+      case "project_name_link":
+        $column = $row['gl_project_description'];
+        $url = NychaBudgetUrlService::projectNameLink($row['gl_project_code']);
+        $value = "<a href='{$url}'>{$column}</a>";
+        break;
       case "committed_budget_link":
         $column = $row['committed'];
         //$url = BudgetUrlService::departmentUrl($row['department_code']);

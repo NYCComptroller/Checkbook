@@ -18,22 +18,28 @@
         "visibility_parameters":["-respcenter"]
       },
       "funding_sources": {
-        "widget_config":"funding_source_view"
+        "widget_config":"funding_source_view",
+        "visibility_parameters":["-fundsrc"]
       },
       "funding_sources_committed_expense": {
-        "widget_config":"funding_sources_committed_expense_view"
+        "widget_config":"funding_sources_committed_expense_view",
+        "visibility_parameters":["-fundsrc"]
       },
       "programs": {
-        "widget_config":"programs_view"
+        "widget_config":"programs_view",
+        "visibility_parameters":["-program"]
       },
       "programs_committed_expense": {
-        "widget_config":"programs_committed_expense_view"
+        "widget_config":"programs_committed_expense_view",
+        "visibility_parameters":["-program"]
       },
       "projects": {
-        "widget_config":"projects_view"
+        "widget_config":"projects_view",
+        "visibility_parameters":["-project"]
       },
       "projects_committed_expense": {
-        "widget_config":"projects_committed_expense_view"
+        "widget_config":"projects_committed_expense_view",
+        "visibility_parameters":["-project"]
       }
     }
   }
