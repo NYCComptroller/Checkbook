@@ -35,6 +35,12 @@ class BudgetFeedNycha extends BudgetFeed
     $this->form['filter']['agency'] = array('#markup' => '<div><strong>' . $this->oge_label .':</strong> ' . $this->oge_name_code . '</div>',);
     $this->formatted_search_criteria[$this->oge_label] = $this->oge_name;
 
+    //Year
+    if ($this->values['nycha_fiscal_year']) {
+      $this->form['filter']['nycha_fiscal_year'] = array('#markup' => '<div><strong>Year:</strong> ' . $this->values['nycha_fiscal_year'] . '</div>');
+      $this->user_criteria['Year'] = $this->values['nycha_fiscal_year'];
+      $this->formatted_search_criteria['Year'] = $this->values['nycha_fiscal_year'];
+    }
     //Expense Category
     if ($this->values['nycha_expense_category'] && $this->values['nycha_expense_category'] != 'Select Expense Category' && $this->values['nycha_expense_category'] != '0') {
       // converts special characters to HTML entities
@@ -46,10 +52,162 @@ class BudgetFeedNycha extends BudgetFeed
       $this->formatted_search_criteria['Expense Category'] = $this->values['nycha_expense_category'];
     }
 
+    //Responsibility Center
+    if ($this->values['nycha_resp_center'] && $this->values['nycha_resp_center'] != 'Select Responsibility Center' && $this->values['nycha_resp_center'] != '0') {
+      // converts special characters to HTML entities
+      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['nycha_resp_center'])) {
+        $this->values['nycha_resp_center'] = htmlspecialchars($this->values['nycha_resp_center']);
+      }
+      $this->form['filter']['nycha_resp_center'] = array('#markup' => '<div><strong>Responsibility Center:</strong> ' . $this->values['nycha_resp_center'] . '</div>');
+      $this->user_criteria['Responsibility Center'] = $this->values['nycha_resp_center'];
+      $this->formatted_search_criteria['Responsibility Center'] = $this->values['nycha_resp_center'];
+    }
+
+    //Funding Source
+    if ($this->values['nycha_funding_source'] && $this->values['nycha_funding_source'] != 'Select Funding Source' && $this->values['nycha_funding_source'] != '0') {
+      // converts special characters to HTML entities
+      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['nycha_funding_source'])) {
+        $this->values['nycha_funding_source'] = htmlspecialchars($this->values['nycha_funding_source']);
+      }
+      $this->form['filter']['nycha_funding_source'] = array('#markup' => '<div><strong>Funding Source:</strong> ' . $this->values['nycha_funding_source'] . '</div>');
+      $this->user_criteria['Funding Source'] = $this->values['nycha_funding_source'];
+      $this->formatted_search_criteria['Funding Source'] = $this->values['nycha_funding_source'];
+    }
+
+    //Program
+    if ($this->values['nycha_program'] && $this->values['nycha_program'] != 'Select Program' && $this->values['nycha_program'] != '0') {
+      // converts special characters to HTML entities
+      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['nycha_program'])) {
+        $this->values['nycha_program'] = htmlspecialchars($this->values['nycha_program']);
+      }
+      $this->form['filter']['nycha_program'] = array('#markup' => '<div><strong>Program:</strong> ' . $this->values['nycha_program'] . '</div>');
+      $this->user_criteria['Program'] = $this->values['nycha_program'];
+      $this->formatted_search_criteria['Program'] = $this->values['nycha_program'];
+    }
+
+    //Project
+    if ($this->values['nycha_project'] && $this->values['nycha_project'] != 'Select Project' && $this->values['nycha_project'] != '0') {
+      // converts special characters to HTML entities
+      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['nycha_project'])) {
+        $this->values['nycha_project'] = htmlspecialchars($this->values['nycha_project']);
+      }
+      $this->form['filter']['nycha_project'] = array('#markup' => '<div><strong>Project:</strong> ' . $this->values['nycha_project'] . '</div>');
+      $this->user_criteria['Project'] = $this->values['nycha_project'];
+      $this->formatted_search_criteria['Project'] = $this->values['nycha_project'];
+    }
+
+    //Budget Type
+    if ($this->values['nycha_budget_type'] && $this->values['nycha_budget_type'] != 'Select Budget Type' && $this->values['nycha_budget_type'] != '0') {
+      // converts special characters to HTML entities
+      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['nycha_budget_type'])) {
+        $this->values['nycha_budget_type'] = htmlspecialchars($this->values['nycha_budget_type']);
+      }
+      $this->form['filter']['nycha_budget_type'] = array('#markup' => '<div><strong>Budget Type:</strong> ' . $this->values['nycha_budget_type'] . '</div>');
+      $this->user_criteria['Budget Type'] = $this->values['nycha_budget_type'];
+      $this->formatted_search_criteria['Budget Type'] = $this->values['nycha_budget_type'];
+    }
+
+    //Budget Name
+    if ($this->values['nycha_budget_name'] && $this->values['nycha_budget_name'] != 'Select Budget Name' && $this->values['nycha_budget_name'] != '0') {
+      // converts special characters to HTML entities
+      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['nycha_budget_name'])) {
+        $this->values['nycha_budget_name'] = htmlspecialchars($this->values['nycha_budget_name']);
+      }
+      $this->form['filter']['nycha_budget_name'] = array('#markup' => '<div><strong>Budget Name:</strong> ' . $this->values['nycha_budget_name'] . '</div>');
+      $this->user_criteria['Budget Name'] = $this->values['nycha_budget_name'];
+      $this->formatted_search_criteria['Budget Name'] = $this->values['nycha_budget_name'];
+    }
   }
 
   protected function _process_datasource_values(){
-
+    //Year
+    if ($this->values['nycha_fiscal_year'] != 'All Years') {
+      $this->criteria['value']['year'] = $this->values['nycha_fiscal_year'];
+    }
+    //Expense Category
+    if ($this->values['nycha_expense_category']) {
+      preg_match($this->bracket_value_pattern, $this->values['nycha_expense_category'], $ecmatches);
+      if ($ecmatches) {
+        $this->criteria['value']['expense_category'] = trim($ecmatches[1], '[ ]');
+      }
+    }
+    //Responsibility Center
+    if ($this->values['nycha_resp_center']) {
+      preg_match($this->bracket_value_pattern, $this->values['nycha_resp_center'], $ecmatches);
+      if ($ecmatches) {
+        $this->criteria['value']['responsibility_center'] = trim($ecmatches[1], '[ ]');
+      }
+    }
+    //Funding Source
+    if ($this->values['nycha_funding_source']) {
+      preg_match($this->bracket_value_pattern, $this->values['nycha_funding_source'], $ecmatches);
+      if ($ecmatches) {
+        $this->criteria['value']['funding_source'] = trim($ecmatches[1], '[ ]');
+      }
+    }
+    //Program
+    if ($this->values['nycha_program']) {
+      preg_match($this->bracket_value_pattern, $this->values['nycha_program'], $ecmatches);
+      if ($ecmatches) {
+        $this->criteria['value']['program'] = trim($ecmatches[1], '[ ]');
+      }
+    }
+    //Project
+    if ($this->values['nycha_project']) {
+      preg_match($this->bracket_value_pattern, $this->values['nycha_project'], $ecmatches);
+      if ($ecmatches) {
+        $this->criteria['value']['project'] = trim($ecmatches[1], '[ ]');
+      }
+    }
+    //Budget Type
+    if ($this->values['nycha_budget_type']) {
+      preg_match($this->bracket_value_pattern, $this->values['nycha_budget_type'], $ecmatches);
+      if ($ecmatches) {
+        $this->criteria['value']['budget_type'] = trim($ecmatches[1], '[ ]');
+      }
+    }
+    //Budget Name
+    if ($this->values['nycha_budget_name']) {
+      preg_match($this->bracket_value_pattern, $this->values['nycha_budget_name'], $ecmatches);
+      if ($ecmatches) {
+        $this->criteria['value']['budget_name'] = trim($ecmatches[1], '[ ]');
+      }
+    }
+    //Adopted Amount
+    if ($this->values['nycha_adopted_from'] !== '' || $this->values['nycha_adopted_to'] !== '') {
+      $this->criteria['range']['adopted'] = array(
+        checknull($this->values['nycha_adopted_from']),
+        checknull($this->values['nycha_adopted_to']),
+      );
+    }
+    //Modified AMount
+    if ($this->values['nycha_modified_from'] !== '' || $this->values['nycha_modified_to'] !== '') {
+      $this->criteria['range']['modified'] = array(
+        checknull($this->values['nycha_modified_from']),
+        checknull($this->values['nycha_modified_to']),
+      );
+    }
+    //Committed AMount
+    if ($this->values['nycha_committed_from'] !== '' || $this->values['nycha_committed_to'] !== '') {
+      $this->criteria['range']['committed'] = array(
+        checknull($this->values['nycha_committed_from']),
+        checknull($this->values['nycha_committed_to']),
+      );
+    }
+    //Encumbered AMount
+    if ($this->values['nycha_encumbered_from'] !== '' || $this->values['nycha_encumbered_to'] !== '') {
+      $this->criteria['range']['encumbered'] = array(
+        checknull($this->values['nycha_encumbered_from']),
+        checknull($this->values['nycha_encumbered_to']),
+      );
+    }
+    //Actual AMount
+    if ($this->values['nycha_actual_from'] !== '' || $this->values['nycha_actual_to'] !== '') {
+      $this->criteria['range']['actual'] = array(
+        checknull($this->values['nycha_actual_from']),
+        checknull($this->values['nycha_actual_to']),
+      );
+    }
   }
 
   protected function _validate_by_datasource(&$form, &$form_state){
@@ -121,7 +279,7 @@ class BudgetFeedNycha extends BudgetFeed
 
     $multi_select_hidden = isset($form_state['input']['nycha_column_select']) ? '|' . implode('||', $form_state['input']['nycha_column_select']) . '|' : '';
     if (!$multi_select_hidden) {
-      form_set_error('nycha_column_select', t('You must select at least one column - nyhca.'));
+      form_set_error('nycha_column_select', t('You must select at least one column.'));
     }
   }
 }
