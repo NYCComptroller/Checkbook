@@ -3,15 +3,10 @@
 
 class NychaBudgetUrlService {
 
-    static function getFooterUrl($parameters,$legacy_node_id = null) {
-        $legacy_node_id = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
+    static function getFooterUrl($parameters = null) {
         $url = '/panel_html/nycha_budget_transactions/nycha_budget/transactions'
-            . $legacy_node_id
-            .RequestUtilities::buildUrlFromParam('agency')
-            .RequestUtilities::buildUrlFromParam('dept')
-            .RequestUtilities::buildUrlFromParam('expcategory')
-            . _checkbook_project_get_year_url_param_string();
-
+            .RequestUtilities::buildUrlFromParam('year')
+            .RequestUtilities::buildUrlFromParam('expcategory');
         return $url;
     }
 }
