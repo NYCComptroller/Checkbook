@@ -2,16 +2,20 @@
   "nycha": {
     "landing_page_widgets": {
       "expense_categories":{
-        "widget_config":"expense_categories_view"
+        "widget_config":"expense_categories_view",
+        "visibility_parameters":["-expcategory"]
       },
       "expense_categories_committed": {
-        "widget_config":"committed_expense_view"
+        "widget_config":"committed_expense_view",
+        "visibility_parameters":["-expcategory"]
       },
       "responsibility_centers": {
-        "widget_config":"responsibility_centers_view"
+        "widget_config":"responsibility_centers_view",
+        "visibility_parameters":["-respcenter"]
       },
       "responsibility_centers_committed_expense": {
-        "widget_config":"responsibility_centers_committed_expense_view"
+        "widget_config":"responsibility_centers_committed_expense_view",
+        "visibility_parameters":["-respcenter"]
       },
       "funding_sources": {
         "widget_config":"funding_source_view"

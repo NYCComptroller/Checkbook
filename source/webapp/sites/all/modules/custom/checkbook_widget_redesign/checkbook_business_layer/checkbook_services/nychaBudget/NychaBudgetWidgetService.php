@@ -19,6 +19,23 @@ class NychaBudgetWidgetService extends WidgetDataService implements IWidgetServi
   public function implementDerivedColumn($column_name, $row) {
     $value = null;
     $legacy_node_id = $this->getLegacyNodeId();
+    switch ($column_name) {
+      case "expense_category_name_link":
+        $column = $row['expense_category'];
+        $url = NychaBudgetUrlService::expenseCategoryURL($row['expenditure_type_code']);
+        $value = "<a href='{$url}'>{$column}</a>";
+        break;
+      case "responsibility_center_name_link":
+        $column = $row['responsibility_center'];
+        $url = NychaBudgetUrlService::responsibilityCenterURL($row['responsibility_center_code']);
+        $value = "<a href='{$url}'>{$column}</a>";
+        break;
+      case "committed_budget_link":
+        $column = $row['committed'];
+        //$url = BudgetUrlService::departmentUrl($row['department_code']);
+        $value = "<a href='{}'>{$column}</a>";
+        break;
+    }
 
     if(isset($value)) {
       return $value;

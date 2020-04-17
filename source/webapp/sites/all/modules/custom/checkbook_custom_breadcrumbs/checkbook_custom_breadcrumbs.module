@@ -45,6 +45,8 @@ function checkbook_custom_breadcrumbs_page_alter(&$page)
     _set_nycha_contracts_breadcrumb_title_drilldown();
   } else if (preg_match('/^nycha_spending/', current_path())) {
     _set_nycha_spending_breadcrumb_title_drilldown();
+  } else if (preg_match('/^nycha_budget/', current_path())) {
+    _set_nycha_budget_breadcrumb_title_drilldown();
   }
 
   _checkbook_custom_breadcrumnb_add_breadcrumb_title();
@@ -113,6 +115,14 @@ function _set_nycha_contracts_breadcrumb_title_drilldown()
 function _set_nycha_spending_breadcrumb_title_drilldown()
 {
   drupal_set_title(_get_nycha_spending_breadcrumb_title_drilldown(), PASS_THROUGH);
+}
+
+/**
+ * Custom function to set title for NYCHA Spending landing pages
+ **/
+function _set_nycha_budget_breadcrumb_title_drilldown()
+{
+  drupal_set_title(_get_nycha_budget_breadcrumb_title_drilldown(), PASS_THROUGH);
 }
 
 /**
@@ -345,6 +355,30 @@ function _get_nycha_spending_breadcrumb_title_drilldown()
           break;
         case 'fundsrc':
           $title = _checkbook_project_get_name_for_argument("funding_source_id", $value);
+          break;
+        default:
+          $title = "New York City Housing Authority";
+      }
+    }
+  }
+  return $title;
+
+}
+
+/**
+ * Custom function to get title for NYCHA CONTRACTS landing pages
+ **/
+function _get_nycha_budget_breadcrumb_title_drilldown()
+{
+  $bottomURL = $_REQUEST['expandBottomContURL'];
+  if (!$bottomURL && preg_match('/^nycha_spending\/search\/transactions/', current_path()) || preg_match('/^nycha_spending\/all\/transactions/', current_path())) {
+    $title = null;
+  } else {
+    $lastReqParam = _getLastRequestParamValue();
+    foreach ($lastReqParam as $key => $value) {
+      switch ($key) {
+        case 'expcategory':
+          $title = _checkbook_project_get_name_for_argument("expenditure_type_code", $value);
           break;
         default:
           $title = "New York City Housing Authority";

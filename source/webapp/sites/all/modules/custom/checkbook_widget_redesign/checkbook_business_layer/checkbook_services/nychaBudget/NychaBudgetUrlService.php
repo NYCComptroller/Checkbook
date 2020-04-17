@@ -14,4 +14,18 @@ class NychaBudgetUrlService {
 
         return $url;
     }
+
+  public static function expenseCategoryURL($expenditure_type_code){
+    $url =   "/nycha_budget"
+      .RequestUtilities::buildUrlFromParam('year')
+      .'/expcategory/'.$expenditure_type_code;
+    return $url;
+  }
+
+  public static function responsibilityCenterURL($responsibilty_center_code){
+    $url =   "/nycha_budget"
+      .RequestUtilities::buildUrlFromParam('year')
+      .'/respcenter/'.$responsibilty_center_code;
+    return $url;
+  }
 }
