@@ -34,7 +34,9 @@ class ValidatorConfig
     'Contracts_OGE',
     'Payroll_NYCHA',
     'Contracts_NYCHA',
-    'Spending_NYCHA'
+    'Spending_NYCHA',
+    'Budget_NYCHA',
+    'Revenue_NYCHA',
   ];
   static $response_formats = ['xml', 'csv'];
   static $specialChars = "!\"#$%&'()*+,–./:;<=>@?[\\]^{}|~`";
