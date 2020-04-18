@@ -18,6 +18,7 @@
       "dataset":{
           "sortColumn":["-modified_budget","-budget_id"],
           "name":"checkbook_nycha:budget",
+          "data_source":"checkbook_nycha",
           "displayConfiguration":{
               "xml":{
                   "rootElement":"budget_transactions",

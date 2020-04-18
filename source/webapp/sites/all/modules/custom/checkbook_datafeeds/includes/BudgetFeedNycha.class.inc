@@ -234,25 +234,19 @@ class BudgetFeedNycha extends BudgetFeed
       }
     }
     //Project
-    if ($this->values['nycha_project']) {
+    if ($this->values['nycha_project'])  {
       preg_match($this->bracket_value_pattern, $this->values['nycha_project'], $ecmatches);
       if ($ecmatches) {
         $this->criteria['value']['project'] = trim($ecmatches[1], '[ ]');
       }
     }
     //Budget Type
-    if ($this->values['nycha_budget_type']) {
-      preg_match($this->bracket_value_pattern, $this->values['nycha_budget_type'], $ecmatches);
-      if ($ecmatches) {
-        $this->criteria['value']['budget_type'] = trim($ecmatches[1], '[ ]');
-      }
+    if ($this->values['nycha_budget_type'] && $this->values['nycha_budget_type'] != "Select Budget Type" && $this->values['nycha_budget_type'] != "") {
+       $this->criteria['value']['budget_type'] = $this->values['nycha_budget_type'];
     }
     //Budget Name
-    if ($this->values['nycha_budget_name']) {
-      preg_match($this->bracket_value_pattern, $this->values['nycha_budget_name'], $ecmatches);
-      if ($ecmatches) {
-        $this->criteria['value']['budget_name'] = trim($ecmatches[1], '[ ]');
-      }
+    if ($this->values['nycha_budget_name'] && $this->values['nycha_budget_name'] != "Select Budget Name" && $this->values['nycha_budget_name'] != "") {
+      $this->criteria['value']['budget_name'] = $this->values['nycha_budget_name'];
     }
     //Adopted Budget
     if ($this->values['nycha_adopted_from'] !== '' || $this->values['nycha_adopted_to'] !== '') {
@@ -261,28 +255,28 @@ class BudgetFeedNycha extends BudgetFeed
         checknull($this->values['nycha_adopted_to']),
       );
     }
-    //Modified AMount
+    //Modified Amount
     if ($this->values['nycha_modified_from'] !== '' || $this->values['nycha_modified_to'] !== '') {
       $this->criteria['range']['modified'] = array(
         checknull($this->values['nycha_modified_from']),
         checknull($this->values['nycha_modified_to']),
       );
     }
-    //Committed AMount
+    //Committed Amount
     if ($this->values['nycha_committed_from'] !== '' || $this->values['nycha_committed_to'] !== '') {
       $this->criteria['range']['committed'] = array(
         checknull($this->values['nycha_committed_from']),
         checknull($this->values['nycha_committed_to']),
       );
     }
-    //Encumbered AMount
+    //Encumbered Amount
     if ($this->values['nycha_encumbered_from'] !== '' || $this->values['nycha_encumbered_to'] !== '') {
       $this->criteria['range']['encumbered'] = array(
         checknull($this->values['nycha_encumbered_from']),
         checknull($this->values['nycha_encumbered_to']),
       );
     }
-    //Actual AMount
+    //Actual Amount
     if ($this->values['nycha_actual_from'] !== '' || $this->values['nycha_actual_to'] !== '') {
       $this->criteria['range']['actual'] = array(
         checknull($this->values['nycha_actual_from']),
