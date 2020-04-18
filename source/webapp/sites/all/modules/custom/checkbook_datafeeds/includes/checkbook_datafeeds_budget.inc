@@ -416,6 +416,12 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#default_value' => !empty($form_state['values']['nycha_budget_type']) ? $form_state['values']['nycha_budget_type'] : 'Select Budget Type',
   );
 
+  $form['nycha_budget_type_hidden'] = array(
+    '#title' => 'nycha_budget_type_hidden',
+    '#value' => $form_state['values']['nycha_budget_type'],
+    '#type' => 'hidden'
+  );
+
   $budget_name_options = _budget_name_options(Datasource::NYCHA);
   $form['filter']['nycha_budget_name'] = array(
     '#type' => 'select',
@@ -427,6 +433,12 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#attributes' => array('class' => array('watch')),
     '#validated' => TRUE,
     '#default_value' => !empty($form_state['values']['nycha_budget_name']) ? $form_state['values']['nycha_budget_name'] : 'Select Budget Name',
+  );
+
+  $form['nycha_budget_name_hidden'] = array(
+    '#title' => 'nycha_budget_name_hidden',
+    '#value' => $form_state['values']['nycha_budget_name'],
+    '#type' => 'hidden'
   );
 
   $form['filter']['nycha-leftend'] = array(

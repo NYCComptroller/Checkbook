@@ -362,5 +362,9 @@ class BudgetFeedNycha extends BudgetFeed
     if (!$multi_select_hidden) {
       form_set_error('nycha_column_select', t('You must select at least one column.'));
     }
+
+    //Set the hidden filed values for Budget Name and Budget Type
+    $form_state['complete form']['nycha_budget_type_hidden']['#value'] = $form_state['values']['nycha_budget_type'];
+    $form_state['complete form']['nycha_budget_name_hidden']['#value'] = $form_state['values']['nycha_budget_name'];
   }
 }
