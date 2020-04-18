@@ -315,7 +315,7 @@ class BudgetFeedCitywide extends BudgetFeed{
     }
     // Columns:
     if (!$expensecolumns) {
-      form_set_error('column_select_expense', t('You must select at least one column - Coty.'));
+      form_set_error('column_select_expense', t('You must select at least one column.'));
     }
     //Set the hidden filed values on Budget form
     $form_state['complete form']['dept_hidden']['#value'] = $form_state['values']['dept'];
