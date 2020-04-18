@@ -1102,7 +1102,7 @@ function _budget_type_options($dataSource = Datasource::CITYWIDE, $budgetName = 
   switch ($dataSource){
     case Datasource::NYCHA :
       $where = (isset($budgetName) && $budgetName!= '') ? "WHERE budget_name = '". $budgetName ."' ":"";
-      $query = "SELECT DISTINCT budget_type FROM budget ". $where ." ORDER BY budget_type ASC";log_error($query);
+      $query = "SELECT DISTINCT budget_type FROM budget ". $where ." ORDER BY budget_type ASC";
       $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
       $title = 'Select Budget Type';
       $options[''] = $title;
@@ -1134,7 +1134,7 @@ function _budget_name_options($dataSource = Datasource::CITYWIDE, $budgetType = 
   switch ($dataSource){
     case Datasource::NYCHA :
       $where = (isset($budgetType) && $budgetType!= '') ? "WHERE budget_type = '". $budgetType ."' ":"";
-      $query = "SELECT DISTINCT budget_name FROM budget ". $where ." ORDER BY budget_name ASC";log_error($query);
+      $query = "SELECT DISTINCT budget_name FROM budget ". $where ." ORDER BY budget_name ASC";
       $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
       $title = 'Select Budget Name';
       $options[''] = $title;
