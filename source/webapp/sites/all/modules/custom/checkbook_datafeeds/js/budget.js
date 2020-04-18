@@ -163,7 +163,7 @@
             });
 
             $('#edit-nycha-budget-name', context).change(function () {
-              $('input:hidden[name="nycha_budget_type_hidden"]', context).val($('#edit-nycha-budget-name', context).val());
+              $('input:hidden[name="nycha_budget_type_hidden"]', context).val($('#edit-nycha-budget-type', context).val());
               $('input:hidden[name="nycha_budget_name_hidden"]', context).val($(this, context).val());
               reloadBudgetType();
               if($(this, context).val() == 'Select Budget Name' || $(this, context).val() == ''){
