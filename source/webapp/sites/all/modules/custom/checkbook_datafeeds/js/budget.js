@@ -82,6 +82,14 @@
       $('div.messages').remove();
       $('.error').removeClass('error');
 
+      //Clear Input Fields
+      clearInputFields();
+
+      //Disable Expense Category and Department drop-downs
+      $('select[name="expense_category"]').attr('disabled','disabled');
+      $('select[name="dept"]').attr('disabled','disabled');
+
+
       //Reset the selected columns
       $('#edit-column-select-expense').multiSelect('deselect_all');
       $('#edit-nycha-column-select').multiSelect('deselect_all');
@@ -145,7 +153,6 @@
             //Data Source change event
             $('input:radio[name=datafeeds-budget-domain-filter]', context).change(function () {
               $('input:hidden[name="hidden_multiple_value"]', context).val("");
-              //$.fn.clearInputFields();
               onDataSourceChange($(this, context).val());
             });
 
@@ -232,5 +239,24 @@
         return code[1];
       }
       return 0;
+    }
+
+    //Function to clear text fields and drop-downs
+     let clearInputFields = function (dataSource) {
+      $('.fieldset-wrapper').find(':input').each(function () {
+        switch (this.type) {
+          case 'select-one':
+            const default_option = $(this).attr('default_selected_value');
+            if (default_option) {
+              $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
+            } else {
+              $(this).find('option:first').attr("selected", "selected");
+            }
+            break;
+          case 'text':
+            $(this).val('');
+            break;
+        }
+      });
     }
 }(jQuery));
