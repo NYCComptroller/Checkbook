@@ -54,6 +54,7 @@
             $('select[name="expense_category"]').attr('disabled','disabled');
         }
     }
+
     //Show/hide fields based on data-source selected
     let showHideBudgetFields = function (dataSource){
       switch (dataSource) {
@@ -81,11 +82,62 @@
       $('div.messages').remove();
       $('.error').removeClass('error');
 
+      //Clear Input Fields
+      clearInputFields();
+
+      //Disable Expense Category and Department drop-downs
+      $('select[name="expense_category"]').attr('disabled','disabled');
+      $('select[name="dept"]').attr('disabled','disabled');
+
+
       //Reset the selected columns
       $('#edit-column-select-expense').multiSelect('deselect_all');
       $('#edit-nycha-column-select').multiSelect('deselect_all');
 
       showHideBudgetFields(dataSource);
+    }
+
+    let reloadBudgetType = function(){
+      let budget_name = encodeURIComponent($('#edit-nycha-budget-name').val());
+      let budget_type_hidden = $('input:hidden[name="nycha_budget_type_hidden"]').val();
+      let data_source = $('input[name="datafeeds-budget-domain-filter"]:checked').val();
+
+      $.ajax({
+        url: '/budget/budget_type/' + data_source + '/' + budget_name + '/'  + true,
+        success: function(data) {
+          let html = '<option value="" >Select Budget Type</option>';
+          if(data[0]){
+            for (i = 0; i < data.length; i++) {
+              html = html + '<option value="' + data[i].value + '" title="' + data[i].value + '">' + data[i].text  + '</option>';
+            }
+          }
+          $('select[name="nycha_budget_type"]').html(html);
+          if(budget_type_hidden){
+            $('select[name="nycha_budget_type"]').val(budget_type_hidden);
+          }
+        }
+      });
+    }
+
+    let reloadBudgetName = function(){
+      let budget_type = encodeURIComponent($('#edit-nycha-budget-type').val());
+      let budget_name_hidden = $('input:hidden[name="nycha_budget_name_hidden"]').val();
+      let data_source = $('input[name="datafeeds-budget-domain-filter"]:checked').val();
+      $.ajax({
+        url: '/budget/budget_name/' + data_source + '/' + budget_type + '/'  + true,
+        success: function(data) {
+          let html = '<option value="" >Select Budget Name</option>';
+          if(data[0]){
+            for (i = 0; i < data.length; i++) {
+              html = html + '<option value="' + data[i].value + '" title="' + data[i].value + '">' + data[i].text  + '</option>';
+            }
+          }
+          $('select[name="nycha_budget_name"]').html(html);
+          if(budget_name_hidden){
+            $('select[name="nycha_budget_name"]').val(budget_name_hidden);
+          }
+        }
+      });
     }
 
     Drupal.behaviors.budgetDataFeeds = {
@@ -101,65 +153,82 @@
             //Data Source change event
             $('input:radio[name=datafeeds-budget-domain-filter]', context).change(function () {
               $('input:hidden[name="hidden_multiple_value"]', context).val("");
-              //$.fn.clearInputFields();
               onDataSourceChange($(this, context).val());
             });
 
             $('#edit-agency', context).change(function () {
-                  $('input:hidden[name="dept_hidden"]', context).val("");
-                  $('input:hidden[name="expense_category_hidden"]', context).val("");
-                  $.fn.reloadDepartment();
-                  $.fn.reloadExpenseCategory();
-              });
+                $('input:hidden[name="dept_hidden"]', context).val("");
+                $('input:hidden[name="expense_category_hidden"]', context).val("");
+                $.fn.reloadDepartment();
+                $.fn.reloadExpenseCategory();
+            });
 
-              $('#edit-dept', context).change(function () {
-                  $('input:hidden[name="dept_hidden"]', context).val($('#edit-dept', context).val());
-                  $('input:hidden[name="expense_category_hidden"]', context).val("");
-                  $.fn.reloadExpenseCategory();
-              });
+            $('#edit-dept', context).change(function () {
+                $('input:hidden[name="dept_hidden"]', context).val($('#edit-dept', context).val());
+                $('input:hidden[name="expense_category_hidden"]', context).val("");
+                $.fn.reloadExpenseCategory();
+            });
 
-              //Sets up jQuery UI autocompletes and autocomplete filtering functionality
-              let year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
-              let agency = emptyToZero($('#edit-agency',context).val());
-              let dept = ($('#edit-dept',context).val()) ? $('#edit-dept',context).val() : 0;
-              let expcategory = ($('#edit-expense-category',context).val()) ? $('#edit-expense-category',context).val() : 0;
-              let budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
+            $('#edit-nycha-budget-name', context).change(function () {
+              $('input:hidden[name="nycha_budget_type_hidden"]', context).val($('#edit-nycha-budget-type', context).val());
+              $('input:hidden[name="nycha_budget_name_hidden"]', context).val($(this, context).val());
+              reloadBudgetType();
+              if($(this, context).val() == 'Select Budget Name' || $(this, context).val() == ''){
+                reloadBudgetName();
+              }
+            });
 
-              $('#edit-budget-code',context).autocomplete({source:'/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + year});
-              $('.watch:input',context).each(function () {
-                  $(this,context).focus(function () {
-                      //set letiables for each field's value
-                      year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
-                      let agency = emptyToZero($('#edit-agency',context).val());
-                      let dept = ($('#edit-dept',context).val()) ? $('#edit-dept',context).val() : 0;
-                      let expcategory = ($('#edit-expense-category',context).val()) ? $('#edit-expense-category',context).val() : 0;
-                      budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
-                      $('#edit-budget-code',context).autocomplete({source:'/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + year});
-                  });
-              });
+            $('#edit-nycha-budget-type', context).change(function () {
+              $('input:hidden[name="nycha_budget_type_hidden"]', context).val($(this, context).val());
+              $('input:hidden[name="nycha_budget_name_hidden"]', context).val($('#edit-nycha-budget-name', context).val());
+              reloadBudgetName();
+              if($(this, context).val() == 'Select Budget Type' || $(this, context).val() == ''){
+                reloadBudgetType();
+              }
+            });
+
+            //Sets up jQuery UI autocompletes and autocomplete filtering functionality
+            let year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
+            let agency = emptyToZero($('#edit-agency',context).val());
+            let dept = ($('#edit-dept',context).val()) ? $('#edit-dept',context).val() : 0;
+            let expcategory = ($('#edit-expense-category',context).val()) ? $('#edit-expense-category',context).val() : 0;
+            let budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
+
+            $('#edit-budget-code',context).autocomplete({source:'/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + year});
+            $('.watch:input',context).each(function () {
+                $(this,context).focus(function () {
+                    //set letiables for each field's value
+                    year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
+                    let agency = emptyToZero($('#edit-agency',context).val());
+                    let dept = ($('#edit-dept',context).val()) ? $('#edit-dept',context).val() : 0;
+                    let expcategory = ($('#edit-expense-category',context).val()) ? $('#edit-expense-category',context).val() : 0;
+                    budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
+                    $('#edit-budget-code',context).autocomplete({source:'/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + year});
+                });
+            });
 
               // Sets up multi-select/option transfer for CityWide
-              $('#edit-column-select-expense',context).multiSelect();
-              $('#ms-edit-column-select-expense .ms-selectable .ms-list',context).after('<a class="select">Add All</a>');
-              $('#ms-edit-column-select-expense .ms-selection .ms-list',context).after('<a class="deselect">Remove All</a>');
-              $('#ms-edit-column-select-expense a.select',context).click(function(){
-                  $('#edit-column-select-expense',context).multiSelect('select_all');
-              });
-              $('#ms-edit-column-select-expense a.deselect',context).click(function(){
-                  $('#edit-column-select-expense',context).multiSelect('deselect_all');
-              });
+            $('#edit-column-select-expense',context).multiSelect();
+            $('#ms-edit-column-select-expense .ms-selectable .ms-list',context).after('<a class="select">Add All</a>');
+            $('#ms-edit-column-select-expense .ms-selection .ms-list',context).after('<a class="deselect">Remove All</a>');
+            $('#ms-edit-column-select-expense a.select',context).click(function(){
+                $('#edit-column-select-expense',context).multiSelect('select_all');
+            });
+            $('#ms-edit-column-select-expense a.deselect',context).click(function(){
+                $('#edit-column-select-expense',context).multiSelect('deselect_all');
+            });
 
-              // Sets up multi-select/option transfer for NYCHA
-              $('#edit-nycha-column-select',context).multiSelect();
-              $('#ms-edit-nycha-column-select .ms-selectable .ms-list',context).after('<a class="select">Add All</a>');
-              $('#ms-edit-nycha-column-select .ms-selection .ms-list',context).after('<a class="deselect">Remove All</a>');
-              $('#ms-edit-nycha-column-select a.select',context).click(function(){
-                $('#edit-nycha-column-select',context).multiSelect('select_all');
-              });
-              $('#ms-edit-nycha-column-select a.deselect',context).click(function(){
-                $('#edit-nycha-column-select',context).multiSelect('deselect_all');
-              });
-          }
+            // Sets up multi-select/option transfer for NYCHA
+            $('#edit-nycha-column-select',context).multiSelect();
+            $('#ms-edit-nycha-column-select .ms-selectable .ms-list',context).after('<a class="select">Add All</a>');
+            $('#ms-edit-nycha-column-select .ms-selection .ms-list',context).after('<a class="deselect">Remove All</a>');
+            $('#ms-edit-nycha-column-select a.select',context).click(function(){
+              $('#edit-nycha-column-select',context).multiSelect('select_all');
+            });
+            $('#ms-edit-nycha-column-select a.deselect',context).click(function(){
+              $('#edit-nycha-column-select',context).multiSelect('deselect_all');
+            });
+        }
     }
 
     //Function to retrieve values enclosed in brackets or return zero if none
@@ -170,5 +239,24 @@
         return code[1];
       }
       return 0;
+    }
+
+    //Function to clear text fields and drop-downs
+     let clearInputFields = function (dataSource) {
+      $('.fieldset-wrapper').find(':input').each(function () {
+        switch (this.type) {
+          case 'select-one':
+            const default_option = $(this).attr('default_selected_value');
+            if (default_option) {
+              $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
+            } else {
+              $(this).find('option:first').attr("selected", "selected");
+            }
+            break;
+          case 'text':
+            $(this).val('');
+            break;
+        }
+      });
     }
 }(jQuery));
