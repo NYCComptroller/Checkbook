@@ -18,12 +18,13 @@
       "dataset":{
           "sortColumn":["-modified_budget","-budget_id"],
           "name":"checkbook_nycha:budget",
+          "data_source":"checkbook_nycha",
           "displayConfiguration":{
               "xml":{
                   "rootElement":"budget_transactions",
                   "rowParentElement":"transaction",
                   "elementsColumn":{
-                    "fiscal_year": "budget_fiscal_year",
+                    "year": "budget_fiscal_year",
                     "adopted": "adopted_budget",
                     "modified": "modified_budget",
                     "budget_type": "budget_type",
@@ -46,7 +47,7 @@
               },
               "csv":{
                   "elementsColumn":{
-                    "Fiscal Year": "budget_fiscal_year",
+                    "Year": "budget_fiscal_year",
                     "Adopted": "adopted_budget",
                     "Modified": "modified_budget",
                     "Budget Type": "budget_type",
