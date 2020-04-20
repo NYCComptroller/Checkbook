@@ -4,8 +4,8 @@
   "headerTitle": "Funding Sources by Committed Expense Budget",
   "headerSubTitle": "Funding Sources",
   "table_columns":[
-    {"labelAlias":"funding_source","column":"funding_source_description"},
-    {"labelAlias":"committed","column":"committed","format":"dollar"},
+    {"labelAlias":"funding_source","column":"funding_source_description", "derivedColumn":"funding_source_name_link"},
+    {"labelAlias":"committed","column":"committed","format":"dollar", "derivedColumn":"committed_budget_link"},
     {"labelAlias":"encumbered","column":"encumbrance_amount","format":"dollar"},
     {"labelAlias":"actual_amount","column":"actual_amount","format":"dollar"},
     {"label":"","column":""}
