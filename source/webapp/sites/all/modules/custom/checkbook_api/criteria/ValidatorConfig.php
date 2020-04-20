@@ -55,6 +55,7 @@ class ValidatorConfig
     'apt_pin',
     'expense_category',
     'vendor_customer_code',
-    'payee_code'
+    'payee_code',
+    'budget_type'
   ];
 }

@@ -620,3 +620,43 @@ function checkbook_datafeeds_budget_validate($form, &$form_state){
   $feed = checkbook_datafeeds\FeedFactory::getFeed($data_source, Domain::$BUDGET);
   $feed->checkbook_datafeeds_budget_validate($form, $form_state);
 }
+
+/**
+ * Filters selected columns to only contain columns configured for this domain and data_source
+ *
+ * @param array $selected_columns
+ *   selected column array
+ * @param string $data_source
+ *   current selected data source (i.e. checkbook, checkbook_nycha)
+ * @param string $response_type
+ *   response type (i.e. csv, xml)
+ * @param $export_order
+ * @return array
+ */
+function checkbook_datafeeds_budget_filter_selected_columns($selected_columns, $data_source, $response_type, $export_order = null){
+  //Get column configurations
+  switch ($data_source) {
+    case Datasource::NYCHA:
+      $domain = 'budget_nycha';
+      break;
+    default:
+      $domain = 'budget';
+  }
+  $domain_config = ConfigUtil::getDomainConfiguration($domain);
+  //Get columns which should be included for the current data source
+  $columns_included = $domain_config->$domain->dataset->displayConfiguration->$response_type->elementsColumn;
+
+  //Filter out selected columns which are not configured to show for this data source
+  $filtered_columns = array_intersect_key($selected_columns, (array)$columns_included);
+
+  //Only for NYCHA, export order is not same as multi-select options
+  if($data_source == Datasource::NYCHA && isset($export_order)) {
+    $filtered_columns = [];
+    foreach ($columns_included as $key => $value) {
+      if (in_array($key, $selected_columns)) {
+        $filtered_columns[$key] = $key;
+      }
+    }
+  }
+  return $filtered_columns;
+}

@@ -95,16 +95,16 @@ function checkbook_datafeeds_menu()
     'type' => MENU_CALLBACK
   );
 
-  $items['budget/budget_name/%/%/%'] = array(
+  $items['data-feeds/budget/budget_name/%/%/%'] = array(
     'page callback' => '_budget_name_options',
-    'page arguments' => array(2, 3, 4),
+    'page arguments' => array(3, 4, 5),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
   );
 
-  $items['budget/budget_type/%/%/%'] = array(
+  $items['data-feeds/budget/budget_type/%/%/%'] = array(
     'page callback' => '_budget_type_options',
-    'page arguments' => array(2, 3, 4),
+    'page arguments' => array(3, 4, 5),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
   );
