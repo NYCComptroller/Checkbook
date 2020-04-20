@@ -2,34 +2,44 @@
   "nycha": {
     "landing_page_widgets": {
       "expense_categories":{
-        "widget_config":"expense_categories_view"
+        "widget_config":"expense_categories_view",
+        "visibility_parameters":["-expcategory"]
       },
       "expense_categories_committed": {
-        "widget_config":"committed_expense_view"
+        "widget_config":"committed_expense_view",
+        "visibility_parameters":["-expcategory"]
       },
       "responsibility_centers": {
-        "widget_config":"responsibility_centers_view"
+        "widget_config":"responsibility_centers_view",
+        "visibility_parameters":["-respcenter"]
       },
       "responsibility_centers_committed_expense": {
-        "widget_config":"responsibility_centers_committed_expense_view"
+        "widget_config":"responsibility_centers_committed_expense_view",
+        "visibility_parameters":["-respcenter"]
       },
       "funding_sources": {
-        "widget_config":"funding_source_view"
+        "widget_config":"funding_source_view",
+        "visibility_parameters":["-fundsrc"]
       },
       "funding_sources_committed_expense": {
-        "widget_config":"funding_sources_committed_expense_view"
+        "widget_config":"funding_sources_committed_expense_view",
+        "visibility_parameters":["-fundsrc"]
       },
       "programs": {
-        "widget_config":"programs_view"
+        "widget_config":"programs_view",
+        "visibility_parameters":["-program"]
       },
       "programs_committed_expense": {
-        "widget_config":"programs_committed_expense_view"
+        "widget_config":"programs_committed_expense_view",
+        "visibility_parameters":["-program"]
       },
       "projects": {
-        "widget_config":"projects_view"
+        "widget_config":"projects_view",
+        "visibility_parameters":["-project"]
       },
       "projects_committed_expense": {
-        "widget_config":"projects_committed_expense_view"
+        "widget_config":"projects_committed_expense_view",
+        "visibility_parameters":["-project"]
       }
     }
   }

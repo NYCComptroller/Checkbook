@@ -3,156 +3,276 @@
   <!--Expense Categories Methods-->
   <statement name="GetNychaExpenseCategoriesByBudget" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
-    <param name="agency" type="int" />
-    <param name="dept" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
     <sql>
       SELECT
-      DISTINCT(expenditure_type_description) AS expense_category,
+      expenditure_type_description AS expense_category,
+      expenditure_type_id,
       SUM(adopted_budget) AS adopted_budget,
       SUM(modified_budget) AS modified_budget,
       SUM(funds_available)AS funds_available,
       SUM(committed)AS committed
       FROM budget
-      GROUP BY expenditure_type_description
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY expenditure_type_description,expenditure_type_id
     </sql>
   </statement>
 
   <statement name="GetNychaExpenseCategoriesByCommittedExpenseBudget" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
-    <param name="agency" type="int" />
-    <param name="dept" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
     <sql>
       SELECT
-      DISTINCT(expenditure_type_description) AS expense_category,
+      expenditure_type_description AS expense_category,
+      expenditure_type_id,
       SUM(committed) AS committed,
       SUM(encumbrance_amount) AS encumbrance_amount,
       SUM(actual_amount) AS actual_amount
       FROM budget
-      GROUP BY expenditure_type_description
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY expenditure_type_description, expenditure_type_id
     </sql>
   </statement>
 
   <statement name="GetResponsibilityCenters" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
-    <param name="agency" type="int" />
-    <param name="dept" type="string" />
+    <param name="expcategory" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
     <sql>
       SELECT
-      DISTINCT(responsibility_center_description) AS responsibility_center,
+      responsibility_center_description AS responsibility_center,
+      responsibility_center_id,
       SUM(adopted_budget) AS adopted_budget,
       SUM(modified_budget) AS modified_budget,
       SUM(committed) AS committed,
       SUM(funds_available) AS funds_available
       FROM budget
-      GROUP BY responsibility_center_description
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY responsibility_center_description, responsibility_center_id
     </sql>
   </statement>
 
   <statement name="GetResponsibilityCentersByCommittedExpense" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
-    <param name="agency" type="int" />
-    <param name="dept" type="string" />
+    <param name="expcategory" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
     <sql>
       SELECT
-      DISTINCT(responsibility_center_description) AS responsibility_center,
+      responsibility_center_description AS responsibility_center,
+      responsibility_center_id,
       SUM(committed) AS committed,
       SUM(encumbrance_amount) AS encumbrance_amount,
       SUM(actual_amount) AS actual_amount
       FROM budget
-      GROUP BY responsibility_center_description
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY responsibility_center_description, responsibility_center_id
     </sql>
   </statement>
 
   <statement name="GetFundingSources" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
-    <param name="agency" type="int" />
-    <param name="dept" type="string" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
     <sql>
       SELECT
-      DISTINCT(funding_source_description) AS funding_source_description,
+      funding_source_description AS funding_source_description,
+      funding_source_id,
       SUM(adopted_budget) AS adopted_budget,
       SUM(modified_budget) AS modified_budget,
       SUM(committed) AS committed,
       SUM(funds_available) AS funds_available
       FROM budget
-      GROUP BY funding_source_description
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY funding_source_description, funding_source_id
     </sql>
   </statement>
 
   <statement name="GetFundingSourcesByCommittedExpense" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
-    <param name="agency" type="int" />
-    <param name="dept" type="string" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
     <sql>
       SELECT
-      DISTINCT(funding_source_description) AS funding_source_description,
+      funding_source_description AS funding_source_description,
+      funding_source_id,
       SUM(committed) AS committed,
       SUM(encumbrance_amount) AS encumbrance_amount,
       SUM(actual_amount) AS actual_amount
       FROM budget
-      GROUP BY funding_source_description
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY funding_source_description, funding_source_id
     </sql>
   </statement>
 
   <statement name="GetPrograms" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
-    <param name="agency" type="int" />
-    <param name="dept" type="string" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="project" type="string" />
     <sql>
       SELECT
-      DISTINCT(program_phase_description) AS program_phase_description,
+      program_phase_description AS program_phase_description,
+      program_phase_id,
       SUM(adopted_budget) AS adopted_budget,
       SUM(modified_budget) AS modified_budget,
       SUM(committed) AS committed,
       SUM(funds_available) AS funds_available
       FROM budget
-      GROUP BY program_phase_description
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="expcategory" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY program_phase_description, program_phase_id
     </sql>
   </statement>
 
   <statement name="GetProgramsByCommittedExpense" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
-    <param name="agency" type="int" />
-    <param name="dept" type="string" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="project" type="string" />
     <sql>
       SELECT
-      DISTINCT(program_phase_description) AS program_phase_description,
+      program_phase_description AS program_phase_description,
+      program_phase_id,
       SUM(committed) AS committed,
       SUM(encumbrance_amount) AS encumbrance_amount,
       SUM(actual_amount) AS actual_amount
       FROM budget
-      GROUP BY program_phase_description
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY program_phase_description, program_phase_id
     </sql>
   </statement>
 
   <statement name="GetProjects" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
-    <param name="agency" type="int" />
-    <param name="dept" type="string" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
     <sql>
       SELECT
-      DISTINCT(gl_project_description) AS gl_project_description,
+      gl_project_description AS gl_project_description,
+      gl_project_id,
       SUM(adopted_budget) AS adopted_budget,
       SUM(modified_budget) AS modified_budget,
       SUM(committed) AS committed,
       SUM(funds_available) AS funds_available
       FROM budget
-      GROUP BY gl_project_description
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+        </exp>
+      </where>
+      GROUP BY gl_project_description, gl_project_id
     </sql>
   </statement>
 
   <statement name="GetProjectsByCommittedExpense" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
-    <param name="agency" type="int" />
-    <param name="dept" type="string" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
     <sql>
       SELECT
-      DISTINCT(gl_project_description) AS gl_project_description,
+      gl_project_description AS gl_project_description,
+      gl_project_id,
       SUM(committed) AS committed,
       SUM(encumbrance_amount) AS encumbrance_amount,
       SUM(actual_amount) AS actual_amount
       FROM budget
-      GROUP BY gl_project_description
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+        </exp>
+      </where>
+      GROUP BY gl_project_description, gl_project_id
     </sql>
   </statement>
 </statements>
