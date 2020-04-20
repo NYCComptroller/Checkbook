@@ -127,14 +127,14 @@ abstract class BudgetFeed{
     //Used to maintain the order of the columns
     $this->selected_columns = checkbook_datafeeds_format_columns();
     //Filter columns for current data source
-    //$this->filtered_columns = checkbook_datafeeds_spending_filter_selected_columns($this->selected_columns, $this->data_source, $this->response_type);
+    $this->filtered_columns = checkbook_datafeeds_budget_filter_selected_columns($this->selected_columns, $this->data_source, $this->response_type);
 
     foreach ($this->selected_columns as $column) {
       $this->form['columns'][$column] = array('#markup' => '<div>' . $column . '</div>');
       $this->user_criteria['Columns'][] = $column;
     }
 
-   // $this->filtered_columns = checkbook_datafeeds_spending_filter_selected_columns($this->selected_columns, $this->data_source, $this->response_type, 'nycha_export');
+    $this->filtered_columns = checkbook_datafeeds_budget_filter_selected_columns($this->selected_columns, $this->data_source, $this->response_type, 'nycha_export');
 
     $this->form['filter'] = array(
       '#type' => 'fieldset',

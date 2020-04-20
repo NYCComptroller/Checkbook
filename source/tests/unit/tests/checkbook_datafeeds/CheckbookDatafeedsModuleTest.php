@@ -27,7 +27,7 @@ class CheckbookDatafeedsModuleTest extends TestCase{
     public function test_checkbook_datafeeds_menu(){
         $items = checkbook_datafeeds_menu();
         $this->assertEquals('array', gettype($items));
-        $this->assertEquals(8, sizeof($items));
+        $this->assertEquals(10, sizeof($items));
         $this->assertEquals(4, sizeof($items['data-feeds']));
         $this->assertEquals(3, sizeof($items['data-feeds/data-feeds']));
         $this->assertEquals(5, sizeof($items['data-feeds/api']));

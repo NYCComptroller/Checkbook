@@ -185,18 +185,18 @@ class BudgetFeedNycha extends BudgetFeed
 
     //Actual
     if ($this->values['nycha_actual_from'] && $this->values['nycha_actual_to']) {
-      $this->form['filter']['actual_budget'] = array('#markup' => '<div><strong>Actual Budget:</strong> Greater Than Equal to: $' . $this->values['nycha_actual_from'] . ' Less Than Equal to: $' . $this->values['nycha_actual_to'] . '</div>');
-      $this->user_criteria['Actual Budget Greater Than'] = $this->values['nycha_actual_from'];
-      $this->user_criteria['Actual Budget Less Than'] = $this->values['nycha_actual_to'];
-      $this->formatted_search_criteria['Actual Budget'] = 'Greater Than Equal to: $' . $this->values['nycha_actual_from'] . ' Less Than Equal to: $' . $this->values['nycha_actual_to'];
+      $this->form['filter']['actual_budget'] = array('#markup' => '<div><strong>Actual Amount:</strong> Greater Than Equal to: $' . $this->values['nycha_actual_from'] . ' Less Than Equal to: $' . $this->values['nycha_actual_to'] . '</div>');
+      $this->user_criteria['Actual Amount Greater Than'] = $this->values['nycha_actual_from'];
+      $this->user_criteria['Actual Amount Less Than'] = $this->values['nycha_actual_to'];
+      $this->formatted_search_criteria['Actual Amount'] = 'Greater Than Equal to: $' . $this->values['nycha_actual_from'] . ' Less Than Equal to: $' . $this->values['nycha_actual_to'];
     } elseif (!$this->values['nycha_actual_from'] && $this->values['nycha_actual_to']) {
-      $this->form['filter']['actual_budget'] = array('#markup' => '<div><strong>Actual Budget:</strong> Less Than Equal to: $' . $this->values['nycha_actual_to'] . '</div>');
-      $this->user_criteria['Actual Budget Less Than'] = $this->values['nycha_actual_to'];
-      $this->formatted_search_criteria['Actual Budget'] = 'Less Than Equal to: $' . $this->values['nycha_actual_to'];
+      $this->form['filter']['actual_budget'] = array('#markup' => '<div><strong>Actual Amount:</strong> Less Than Equal to: $' . $this->values['nycha_actual_to'] . '</div>');
+      $this->user_criteria['Actual Amount Less Than Less Than'] = $this->values['nycha_actual_to'];
+      $this->formatted_search_criteria['Actual Amount'] = 'Less Than Equal to: $' . $this->values['nycha_actual_to'];
     } elseif ($this->values['nycha_actual_from'] && !$this->values['nycha_actual_to']) {
-      $this->form['filter']['actual_budget'] = array('#markup' => '<div><strong>Actual Budget:</strong> Greater Than Equal to: $' . $this->values['nycha_actual_from'] . '</div>');
-      $this->user_criteria['Actual Budget Greater Than'] = $this->values['nycha_actual_from'];
-      $this->formatted_search_criteria['Actual Budget'] = 'Greater Than Equal to: $' . $this->values['nycha_actual_from'];
+      $this->form['filter']['actual_budget'] = array('#markup' => '<div><strong>Actual Amount:</strong> Greater Than Equal to: $' . $this->values['nycha_actual_from'] . '</div>');
+      $this->user_criteria['Actual Amount Greater Than Greater Than'] = $this->values['nycha_actual_from'];
+      $this->formatted_search_criteria['Actual Amount'] = 'Greater Than Equal to: $' . $this->values['nycha_actual_from'];
     }
   }
 
@@ -234,25 +234,19 @@ class BudgetFeedNycha extends BudgetFeed
       }
     }
     //Project
-    if ($this->values['nycha_project']) {
+    if ($this->values['nycha_project'])  {
       preg_match($this->bracket_value_pattern, $this->values['nycha_project'], $ecmatches);
       if ($ecmatches) {
         $this->criteria['value']['project'] = trim($ecmatches[1], '[ ]');
       }
     }
     //Budget Type
-    if ($this->values['nycha_budget_type']) {
-      preg_match($this->bracket_value_pattern, $this->values['nycha_budget_type'], $ecmatches);
-      if ($ecmatches) {
-        $this->criteria['value']['budget_type'] = trim($ecmatches[1], '[ ]');
-      }
+    if ($this->values['nycha_budget_type'] && $this->values['nycha_budget_type'] != "Select Budget Type" && $this->values['nycha_budget_type'] != "") {
+       $this->criteria['value']['budget_type'] = $this->values['nycha_budget_type'];
     }
     //Budget Name
-    if ($this->values['nycha_budget_name']) {
-      preg_match($this->bracket_value_pattern, $this->values['nycha_budget_name'], $ecmatches);
-      if ($ecmatches) {
-        $this->criteria['value']['budget_name'] = trim($ecmatches[1], '[ ]');
-      }
+    if ($this->values['nycha_budget_name'] && $this->values['nycha_budget_name'] != "Select Budget Name" && $this->values['nycha_budget_name'] != "") {
+      $this->criteria['value']['budget_name'] = $this->values['nycha_budget_name'];
     }
     //Adopted Budget
     if ($this->values['nycha_adopted_from'] !== '' || $this->values['nycha_adopted_to'] !== '') {
@@ -261,28 +255,28 @@ class BudgetFeedNycha extends BudgetFeed
         checknull($this->values['nycha_adopted_to']),
       );
     }
-    //Modified AMount
+    //Modified Amount
     if ($this->values['nycha_modified_from'] !== '' || $this->values['nycha_modified_to'] !== '') {
       $this->criteria['range']['modified'] = array(
         checknull($this->values['nycha_modified_from']),
         checknull($this->values['nycha_modified_to']),
       );
     }
-    //Committed AMount
+    //Committed Amount
     if ($this->values['nycha_committed_from'] !== '' || $this->values['nycha_committed_to'] !== '') {
       $this->criteria['range']['committed'] = array(
         checknull($this->values['nycha_committed_from']),
         checknull($this->values['nycha_committed_to']),
       );
     }
-    //Encumbered AMount
+    //Encumbered Amount
     if ($this->values['nycha_encumbered_from'] !== '' || $this->values['nycha_encumbered_to'] !== '') {
       $this->criteria['range']['encumbered'] = array(
         checknull($this->values['nycha_encumbered_from']),
         checknull($this->values['nycha_encumbered_to']),
       );
     }
-    //Actual AMount
+    //Actual Amount
     if ($this->values['nycha_actual_from'] !== '' || $this->values['nycha_actual_to'] !== '') {
       $this->criteria['range']['actual'] = array(
         checknull($this->values['nycha_actual_from']),
@@ -349,18 +343,22 @@ class BudgetFeedNycha extends BudgetFeed
     $actualFrom = $form_state['values']['nycha_actual_from'];
     $actualTo = $form_state['values']['nycha_actual_to'];
     if ($actualFrom && !is_numeric($actualFrom)) {
-      form_set_error('nycha_actual_from', t('Actual Budget From value must be a number.'));
+      form_set_error('nycha_actual_from', t('Actual Amount From value must be a number.'));
     }
     if ($actualTo && !is_numeric($actualTo)) {
-      form_set_error('nycha_actual_to', t('Actual Budget To value must be a number.'));
+      form_set_error('nycha_actual_to', t('Actual Amount To value must be a number.'));
     }
     if (is_numeric($actualFrom) && is_numeric($actualTo) && $actualTo < $actualFrom) {
-      form_set_error('nycha_actual_to', t('Invalid range for Actual Budget.'));
+      form_set_error('nycha_actual_to', t('Invalid range for Actual Amount.'));
     }
 
     $multi_select_hidden = isset($form_state['input']['nycha_column_select']) ? '|' . implode('||', $form_state['input']['nycha_column_select']) . '|' : '';
     if (!$multi_select_hidden) {
       form_set_error('nycha_column_select', t('You must select at least one column.'));
     }
+
+    //Set the hidden filed values for Budget Name and Budget Type
+    $form_state['complete form']['nycha_budget_type_hidden']['#value'] = $form_state['values']['nycha_budget_type'];
+    $form_state['complete form']['nycha_budget_name_hidden']['#value'] = $form_state['values']['nycha_budget_name'];
   }
 }

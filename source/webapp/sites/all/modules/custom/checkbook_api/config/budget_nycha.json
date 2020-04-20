@@ -13,17 +13,18 @@
           "modified":"modified_budget",
           "committed":"committed",
           "encumbered":"encumbrance_amount",
-          "actual": "actual_amount"
+          "actual_amount": "actual_amount"
       },
       "dataset":{
           "sortColumn":["-modified_budget","-budget_id"],
           "name":"checkbook_nycha:budget",
+          "data_source":"checkbook_nycha",
           "displayConfiguration":{
               "xml":{
                   "rootElement":"budget_transactions",
                   "rowParentElement":"transaction",
                   "elementsColumn":{
-                    "fiscal_year": "budget_fiscal_year",
+                    "year": "budget_fiscal_year",
                     "adopted": "adopted_budget",
                     "modified": "modified_budget",
                     "budget_type": "budget_type",
@@ -46,7 +47,7 @@
               },
               "csv":{
                   "elementsColumn":{
-                    "Fiscal Year": "budget_fiscal_year",
+                    "Year": "budget_fiscal_year",
                     "Adopted": "adopted_budget",
                     "Modified": "modified_budget",
                     "Budget Type": "budget_type",
@@ -79,7 +80,7 @@
           "modified":{"valueType":"range", "dataType":"amount", "maxLength":18},
           "committed":{"valueType":"range", "dataType":"amount", "maxLength":18},
           "encumbered":{"valueType":"range", "dataType":"amount", "maxLength":18},
-          "actual":{"valueType":"range", "dataType":"amount", "maxLength":18}
+          "actual_amount":{"valueType":"range", "dataType":"amount", "maxLength":18}
       }
   }
 }
