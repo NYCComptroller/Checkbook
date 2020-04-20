@@ -1934,7 +1934,7 @@ td.pad-left div{
 .dataTables_wrapper td.dataTables_empty{
  padding:10px;
 }
-.dataTable th div {
+.dataTable th div{
     margin: 8px 0 8px 5px;
 }
 .dataTable th.text div {
@@ -1952,9 +1952,6 @@ td.pad-left div{
     text-align:center;
     float:right;
     padding-right: 10px;
-}
-.dataTable td div {
-    margin: 13px 1px 13px 0px;
 }
 
 .contracts-oge-spending-bottom {
