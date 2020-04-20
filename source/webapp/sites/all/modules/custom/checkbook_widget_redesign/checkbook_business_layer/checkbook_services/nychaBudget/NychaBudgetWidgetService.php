@@ -22,27 +22,27 @@ class NychaBudgetWidgetService extends WidgetDataService implements IWidgetServi
     switch ($column_name) {
       case "expense_category_name_link":
         $column = $row['expense_category'];
-        $url = NychaBudgetUrlService::expenseCategoryURL($row['expenditure_type_code']);
+        $url = NychaBudgetUrlService::expenseCategoryURL($row['expenditure_type_id']);
         $value = "<a href='{$url}'>{$column}</a>";
         break;
       case "responsibility_center_name_link":
         $column = $row['responsibility_center'];
-        $url = NychaBudgetUrlService::responsibilityCenterURL($row['responsibility_center_code']);
+        $url = NychaBudgetUrlService::responsibilityCenterURL($row['responsibility_center_id']);
         $value = "<a href='{$url}'>{$column}</a>";
         break;
       case "funding_source_name_link":
         $column = $row['funding_source_description'];
-        $url = NychaBudgetUrlService::fundingSourceURL($row['funding_source_code']);
+        $url = NychaBudgetUrlService::fundingSourceURL($row['funding_source_id']);
         $value = "<a href='{$url}'>{$column}</a>";
         break;
       case "program_name_link":
         $column = $row['program_phase_description'];
-        $url = NychaBudgetUrlService::programNameLink($row['program_phase_code']);
+        $url = NychaBudgetUrlService::programNameLink($row['program_phase_id']);
         $value = "<a href='{$url}'>{$column}</a>";
         break;
       case "project_name_link":
         $column = $row['gl_project_description'];
-        $url = NychaBudgetUrlService::projectNameLink($row['gl_project_code']);
+        $url = NychaBudgetUrlService::projectNameLink($row['gl_project_id']);
         $value = "<a href='{$url}'>{$column}</a>";
         break;
       case "committed_budget_link":

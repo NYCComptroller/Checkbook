@@ -10,7 +10,7 @@
     <sql>
       SELECT
       expenditure_type_description AS expense_category,
-      expenditure_type_code,
+      expenditure_type_id,
       SUM(adopted_budget) AS adopted_budget,
       SUM(modified_budget) AS modified_budget,
       SUM(funds_available)AS funds_available,
@@ -19,13 +19,13 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
-          <exp op="=" dbField="responsibility_center_code" paramName="respcenter" />
-          <exp op="=" dbField="funding_source_code" paramName="fundsrc" />
-          <exp op="=" dbField="program_phase_code" paramName="program" />
-          <exp op="=" dbField="gl_project_code" paramName="project" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
         </exp>
       </where>
-      GROUP BY expenditure_type_description,expenditure_type_code
+      GROUP BY expenditure_type_description,expenditure_type_id
     </sql>
   </statement>
 
@@ -38,7 +38,7 @@
     <sql>
       SELECT
       expenditure_type_description AS expense_category,
-      expenditure_type_code,
+      expenditure_type_id,
       SUM(committed) AS committed,
       SUM(encumbrance_amount) AS encumbrance_amount,
       SUM(actual_amount) AS actual_amount
@@ -46,13 +46,13 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
-          <exp op="=" dbField="responsibility_center_code" paramName="respcenter" />
-          <exp op="=" dbField="funding_source_code" paramName="fundsrc" />
-          <exp op="=" dbField="program_phase_code" paramName="program" />
-          <exp op="=" dbField="gl_project_code" paramName="project" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
         </exp>
       </where>
-      GROUP BY expenditure_type_description, expenditure_type_code
+      GROUP BY expenditure_type_description, expenditure_type_id
     </sql>
   </statement>
 
@@ -65,7 +65,7 @@
     <sql>
       SELECT
       responsibility_center_description AS responsibility_center,
-      responsibility_center_code,
+      responsibility_center_id,
       SUM(adopted_budget) AS adopted_budget,
       SUM(modified_budget) AS modified_budget,
       SUM(committed) AS committed,
@@ -74,13 +74,13 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
-          <exp op="=" dbField="expenditure_type_code" paramName="expcategory" />
-          <exp op="=" dbField="funding_source_code" paramName="fundsrc" />
-          <exp op="=" dbField="program_phase_code" paramName="program" />
-          <exp op="=" dbField="gl_project_code" paramName="project" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
         </exp>
       </where>
-      GROUP BY responsibility_center_description, responsibility_center_code
+      GROUP BY responsibility_center_description, responsibility_center_id
     </sql>
   </statement>
 
@@ -93,7 +93,7 @@
     <sql>
       SELECT
       responsibility_center_description AS responsibility_center,
-      responsibility_center_code,
+      responsibility_center_id,
       SUM(committed) AS committed,
       SUM(encumbrance_amount) AS encumbrance_amount,
       SUM(actual_amount) AS actual_amount
@@ -101,13 +101,13 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
-          <exp op="=" dbField="expenditure_type_code" paramName="expcategory" />
-          <exp op="=" dbField="funding_source_code" paramName="fundsrc" />
-          <exp op="=" dbField="program_phase_code" paramName="program" />
-          <exp op="=" dbField="gl_project_code" paramName="project" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
         </exp>
       </where>
-      GROUP BY responsibility_center_description, responsibility_center_code
+      GROUP BY responsibility_center_description, responsibility_center_id
     </sql>
   </statement>
 
@@ -120,7 +120,7 @@
     <sql>
       SELECT
       funding_source_description AS funding_source_description,
-      funding_source_code,
+      funding_source_id,
       SUM(adopted_budget) AS adopted_budget,
       SUM(modified_budget) AS modified_budget,
       SUM(committed) AS committed,
@@ -129,13 +129,13 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
-          <exp op="=" dbField="expenditure_type_code" paramName="expcategory" />
-          <exp op="=" dbField="responsibility_center_code" paramName="respcenter" />
-          <exp op="=" dbField="program_phase_code" paramName="program" />
-          <exp op="=" dbField="gl_project_code" paramName="project" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
         </exp>
       </where>
-      GROUP BY funding_source_description, funding_source_code
+      GROUP BY funding_source_description, funding_source_id
     </sql>
   </statement>
 
@@ -148,7 +148,7 @@
     <sql>
       SELECT
       funding_source_description AS funding_source_description,
-      funding_source_code,
+      funding_source_id,
       SUM(committed) AS committed,
       SUM(encumbrance_amount) AS encumbrance_amount,
       SUM(actual_amount) AS actual_amount
@@ -156,13 +156,13 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
-          <exp op="=" dbField="expenditure_type_code" paramName="expcategory" />
-          <exp op="=" dbField="responsibility_center_code" paramName="respcenter" />
-          <exp op="=" dbField="program_phase_code" paramName="program" />
-          <exp op="=" dbField="gl_project_code" paramName="project" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
         </exp>
       </where>
-      GROUP BY funding_source_description, funding_source_code
+      GROUP BY funding_source_description, funding_source_id
     </sql>
   </statement>
 
@@ -175,7 +175,7 @@
     <sql>
       SELECT
       program_phase_description AS program_phase_description,
-      program_phase_code,
+      program_phase_id,
       SUM(adopted_budget) AS adopted_budget,
       SUM(modified_budget) AS modified_budget,
       SUM(committed) AS committed,
@@ -184,13 +184,13 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="budget_fiscal_year_id" paramName="expcategory" />
-          <exp op="=" dbField="expenditure_type_code" paramName="expcategory" />
-          <exp op="=" dbField="responsibility_center_code" paramName="respcenter" />
-          <exp op="=" dbField="funding_source_code" paramName="fundsrc" />
-          <exp op="=" dbField="gl_project_code" paramName="project" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
         </exp>
       </where>
-      GROUP BY program_phase_description, program_phase_code
+      GROUP BY program_phase_description, program_phase_id
     </sql>
   </statement>
 
@@ -203,7 +203,7 @@
     <sql>
       SELECT
       program_phase_description AS program_phase_description,
-      program_phase_code,
+      program_phase_id,
       SUM(committed) AS committed,
       SUM(encumbrance_amount) AS encumbrance_amount,
       SUM(actual_amount) AS actual_amount
@@ -211,13 +211,13 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
-          <exp op="=" dbField="expenditure_type_code" paramName="expcategory" />
-          <exp op="=" dbField="responsibility_center_code" paramName="respcenter" />
-          <exp op="=" dbField="funding_source_code" paramName="fundsrc" />
-          <exp op="=" dbField="gl_project_code" paramName="project" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
         </exp>
       </where>
-      GROUP BY program_phase_description, program_phase_code
+      GROUP BY program_phase_description, program_phase_id
     </sql>
   </statement>
 
@@ -230,7 +230,7 @@
     <sql>
       SELECT
       gl_project_description AS gl_project_description,
-      gl_project_code,
+      gl_project_id,
       SUM(adopted_budget) AS adopted_budget,
       SUM(modified_budget) AS modified_budget,
       SUM(committed) AS committed,
@@ -239,13 +239,13 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
-          <exp op="=" dbField="expenditure_type_code" paramName="expcategory" />
-          <exp op="=" dbField="responsibility_center_code" paramName="respcenter" />
-          <exp op="=" dbField="funding_source_code" paramName="fundsrc" />
-          <exp op="=" dbField="program_phase_code" paramName="program" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
         </exp>
       </where>
-      GROUP BY gl_project_description, gl_project_code
+      GROUP BY gl_project_description, gl_project_id
     </sql>
   </statement>
 
@@ -258,7 +258,7 @@
     <sql>
       SELECT
       gl_project_description AS gl_project_description,
-      gl_project_code,
+      gl_project_id,
       SUM(committed) AS committed,
       SUM(encumbrance_amount) AS encumbrance_amount,
       SUM(actual_amount) AS actual_amount
@@ -266,13 +266,13 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
-          <exp op="=" dbField="expenditure_type_code" paramName="expcategory" />
-          <exp op="=" dbField="responsibility_center_code" paramName="respcenter" />
-          <exp op="=" dbField="funding_source_code" paramName="fundsrc" />
-          <exp op="=" dbField="program_phase_code" paramName="program" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
         </exp>
       </where>
-      GROUP BY gl_project_description, gl_project_code
+      GROUP BY gl_project_description, gl_project_id
     </sql>
   </statement>
 </statements>
