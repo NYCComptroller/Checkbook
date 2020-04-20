@@ -2,6 +2,7 @@
   "serviceName":"NychaBudgetWidgetService",
   "dataFunc":"GetProjects",
   "headerTitle": "Projects",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_projects'",
   "table_columns":[
     {"labelAlias":"project","column":"gl_project_description"},
     {"labelAlias":"adopted","column":"adopted_budget","format":"dollar"},
