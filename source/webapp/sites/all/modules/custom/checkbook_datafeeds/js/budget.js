@@ -100,10 +100,10 @@
     let reloadBudgetType = function(){
       let budget_name = encodeURIComponent($('#edit-nycha-budget-name').val());
       let budget_type_hidden = $('input:hidden[name="nycha_budget_type_hidden"]').val();
-      let data_source = $('input[name="datafeeds-budget-domain-filter"]:checked').val();
+      let data_source = 'checkbook_nycha';
 
       $.ajax({
-        url: '/budget/budget_type/' + data_source + '/' + budget_name + '/'  + true,
+        url: 'data-feeds/budget/budget_type/' + data_source + '/' + budget_name + '/'  + true,
         success: function(data) {
           let html = '<option value="" >Select Budget Type</option>';
           if(data[0]){
@@ -122,9 +122,10 @@
     let reloadBudgetName = function(){
       let budget_type = encodeURIComponent($('#edit-nycha-budget-type').val());
       let budget_name_hidden = $('input:hidden[name="nycha_budget_name_hidden"]').val();
-      let data_source = $('input[name="datafeeds-budget-domain-filter"]:checked').val();
+      let data_source = 'checkbook_nycha';
+
       $.ajax({
-        url: '/budget/budget_name/' + data_source + '/' + budget_type + '/'  + true,
+        url: 'data-feeds/budget/budget_name/' + data_source + '/' + budget_type + '/'  + true,
         success: function(data) {
           let html = '<option value="" >Select Budget Name</option>';
           if(data[0]){
@@ -145,6 +146,8 @@
             $.fn.formatDatafeedsDatasourceRadio();
             $.fn.reloadDepartment();
             $.fn.reloadExpenseCategory();
+            reloadBudgetType();
+            reloadBudgetName();
 
             let dataSource = $('input[name="datafeeds-budget-domain-filter"]:checked', context).val();
             //Display or hide fields based on data source selection
