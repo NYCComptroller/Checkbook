@@ -13,7 +13,7 @@
           "modified":"modified_budget",
           "committed":"committed",
           "encumbered":"encumbrance_amount",
-          "actual": "actual_amount"
+          "actual_amount": "actual_amount"
       },
       "dataset":{
           "sortColumn":["-modified_budget","-budget_id"],
@@ -80,7 +80,7 @@
           "modified":{"valueType":"range", "dataType":"amount", "maxLength":18},
           "committed":{"valueType":"range", "dataType":"amount", "maxLength":18},
           "encumbered":{"valueType":"range", "dataType":"amount", "maxLength":18},
-          "actual":{"valueType":"range", "dataType":"amount", "maxLength":18}
+          "actual_amount":{"valueType":"range", "dataType":"amount", "maxLength":18}
       }
   }
 }
