@@ -185,18 +185,18 @@ class BudgetFeedNycha extends BudgetFeed
 
     //Actual
     if ($this->values['nycha_actual_from'] && $this->values['nycha_actual_to']) {
-      $this->form['filter']['actual_budget'] = array('#markup' => '<div><strong>Actual Budget:</strong> Greater Than Equal to: $' . $this->values['nycha_actual_from'] . ' Less Than Equal to: $' . $this->values['nycha_actual_to'] . '</div>');
-      $this->user_criteria['Actual Budget Greater Than'] = $this->values['nycha_actual_from'];
-      $this->user_criteria['Actual Budget Less Than'] = $this->values['nycha_actual_to'];
-      $this->formatted_search_criteria['Actual Budget'] = 'Greater Than Equal to: $' . $this->values['nycha_actual_from'] . ' Less Than Equal to: $' . $this->values['nycha_actual_to'];
+      $this->form['filter']['actual_budget'] = array('#markup' => '<div><strong>Actual Amount:</strong> Greater Than Equal to: $' . $this->values['nycha_actual_from'] . ' Less Than Equal to: $' . $this->values['nycha_actual_to'] . '</div>');
+      $this->user_criteria['Actual Amount Greater Than'] = $this->values['nycha_actual_from'];
+      $this->user_criteria['Actual Amount Less Than'] = $this->values['nycha_actual_to'];
+      $this->formatted_search_criteria['Actual Amount'] = 'Greater Than Equal to: $' . $this->values['nycha_actual_from'] . ' Less Than Equal to: $' . $this->values['nycha_actual_to'];
     } elseif (!$this->values['nycha_actual_from'] && $this->values['nycha_actual_to']) {
-      $this->form['filter']['actual_budget'] = array('#markup' => '<div><strong>Actual Budget:</strong> Less Than Equal to: $' . $this->values['nycha_actual_to'] . '</div>');
-      $this->user_criteria['Actual Budget Less Than'] = $this->values['nycha_actual_to'];
-      $this->formatted_search_criteria['Actual Budget'] = 'Less Than Equal to: $' . $this->values['nycha_actual_to'];
+      $this->form['filter']['actual_budget'] = array('#markup' => '<div><strong>Actual Amount:</strong> Less Than Equal to: $' . $this->values['nycha_actual_to'] . '</div>');
+      $this->user_criteria['Actual Amount Less Than Less Than'] = $this->values['nycha_actual_to'];
+      $this->formatted_search_criteria['Actual Amount'] = 'Less Than Equal to: $' . $this->values['nycha_actual_to'];
     } elseif ($this->values['nycha_actual_from'] && !$this->values['nycha_actual_to']) {
-      $this->form['filter']['actual_budget'] = array('#markup' => '<div><strong>Actual Budget:</strong> Greater Than Equal to: $' . $this->values['nycha_actual_from'] . '</div>');
-      $this->user_criteria['Actual Budget Greater Than'] = $this->values['nycha_actual_from'];
-      $this->formatted_search_criteria['Actual Budget'] = 'Greater Than Equal to: $' . $this->values['nycha_actual_from'];
+      $this->form['filter']['actual_budget'] = array('#markup' => '<div><strong>Actual Amount:</strong> Greater Than Equal to: $' . $this->values['nycha_actual_from'] . '</div>');
+      $this->user_criteria['Actual Amount Greater Than Greater Than'] = $this->values['nycha_actual_from'];
+      $this->formatted_search_criteria['Actual Amount'] = 'Greater Than Equal to: $' . $this->values['nycha_actual_from'];
     }
   }
 
@@ -343,13 +343,13 @@ class BudgetFeedNycha extends BudgetFeed
     $actualFrom = $form_state['values']['nycha_actual_from'];
     $actualTo = $form_state['values']['nycha_actual_to'];
     if ($actualFrom && !is_numeric($actualFrom)) {
-      form_set_error('nycha_actual_from', t('Actual Budget From value must be a number.'));
+      form_set_error('nycha_actual_from', t('Actual Amount From value must be a number.'));
     }
     if ($actualTo && !is_numeric($actualTo)) {
-      form_set_error('nycha_actual_to', t('Actual Budget To value must be a number.'));
+      form_set_error('nycha_actual_to', t('Actual Amount To value must be a number.'));
     }
     if (is_numeric($actualFrom) && is_numeric($actualTo) && $actualTo < $actualFrom) {
-      form_set_error('nycha_actual_to', t('Invalid range for Actual Budget.'));
+      form_set_error('nycha_actual_to', t('Invalid range for Actual Amount.'));
     }
 
     $multi_select_hidden = isset($form_state['input']['nycha_column_select']) ? '|' . implode('||', $form_state['input']['nycha_column_select']) . '|' : '';

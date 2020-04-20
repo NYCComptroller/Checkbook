@@ -516,7 +516,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#type' => 'textfield',
     '#size' => 15,
     '#maxlength' => 15,
-    '#prefix' => '<div class="datafield nycha_actual_from datarange"><label>Actual:</label><div class="ranges">',
+    '#prefix' => '<div class="datafield nycha_actual_from datarange"><label>Actual Amount:</label><div class="ranges">',
     '#default_value' => !empty($form_state['values']['nycha_actual_from']) ? $form_state['values']['nycha_actual_from'] : '',
   );
   $form['filter']['nycha_actual_to'] = array(
