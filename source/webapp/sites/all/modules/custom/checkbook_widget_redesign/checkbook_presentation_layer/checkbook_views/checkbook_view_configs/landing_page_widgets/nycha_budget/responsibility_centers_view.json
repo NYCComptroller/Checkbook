@@ -2,6 +2,7 @@
   "serviceName":"NychaBudgetWidgetService",
   "dataFunc":"GetResponsibilityCenters",
   "headerTitle": "Responsibility Centers",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_resp_centers'",
   "table_columns":[
     {"labelAlias":"responsibility_center","column":"responsibility_center", "derivedColumn":"responsibility_center_name_link"},
     {"labelAlias":"adopted","column":"adopted_budget","format":"dollar"},

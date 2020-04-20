@@ -62,6 +62,6 @@ class NychaBudgetWidgetService extends WidgetDataService implements IWidgetServi
   }
 
   public function getWidgetFooterUrl($parameters) {
-    return NychaBudgetUrlService::getFooterUrl($parameters,$this->getLegacyNodeId());
+    return NychaBudgetUrlService::getFooterUrl($parameters);
   }
 }

@@ -2,6 +2,7 @@
   "serviceName":"NychaBudgetWidgetService",
   "dataFunc":"GetFundingSources",
   "headerTitle": "Funding Sources",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_funding_sources'",
   "table_columns":[
     {"labelAlias":"funding_source","column":"funding_source_description", "derivedColumn":"funding_source_name_link"},
     {"labelAlias":"adopted","column":"adopted_budget","format":"dollar"},

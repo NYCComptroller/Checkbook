@@ -416,6 +416,12 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#default_value' => !empty($form_state['values']['nycha_budget_type']) ? $form_state['values']['nycha_budget_type'] : 'Select Budget Type',
   );
 
+  $form['nycha_budget_type_hidden'] = array(
+    '#title' => 'nycha_budget_type_hidden',
+    '#value' => $form_state['values']['nycha_budget_type'],
+    '#type' => 'hidden'
+  );
+
   $budget_name_options = _budget_name_options(Datasource::NYCHA);
   $form['filter']['nycha_budget_name'] = array(
     '#type' => 'select',
@@ -427,6 +433,12 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#attributes' => array('class' => array('watch')),
     '#validated' => TRUE,
     '#default_value' => !empty($form_state['values']['nycha_budget_name']) ? $form_state['values']['nycha_budget_name'] : 'Select Budget Name',
+  );
+
+  $form['nycha_budget_name_hidden'] = array(
+    '#title' => 'nycha_budget_name_hidden',
+    '#value' => $form_state['values']['nycha_budget_name'],
+    '#type' => 'hidden'
   );
 
   $form['filter']['nycha-leftend'] = array(
@@ -504,7 +516,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#type' => 'textfield',
     '#size' => 15,
     '#maxlength' => 15,
-    '#prefix' => '<div class="datafield nycha_actual_from datarange"><label>Actual:</label><div class="ranges">',
+    '#prefix' => '<div class="datafield nycha_actual_from datarange"><label>Actual Amount:</label><div class="ranges">',
     '#default_value' => !empty($form_state['values']['nycha_actual_from']) ? $form_state['values']['nycha_actual_from'] : '',
   );
   $form['filter']['nycha_actual_to'] = array(
@@ -607,4 +619,44 @@ function checkbook_datafeeds_budget_validate($form, &$form_state){
   $data_source = $form_state['input']['datafeeds-budget-domain-filter'];
   $feed = checkbook_datafeeds\FeedFactory::getFeed($data_source, Domain::$BUDGET);
   $feed->checkbook_datafeeds_budget_validate($form, $form_state);
+}
+
+/**
+ * Filters selected columns to only contain columns configured for this domain and data_source
+ *
+ * @param array $selected_columns
+ *   selected column array
+ * @param string $data_source
+ *   current selected data source (i.e. checkbook, checkbook_nycha)
+ * @param string $response_type
+ *   response type (i.e. csv, xml)
+ * @param $export_order
+ * @return array
+ */
+function checkbook_datafeeds_budget_filter_selected_columns($selected_columns, $data_source, $response_type, $export_order = null){
+  //Get column configurations
+  switch ($data_source) {
+    case Datasource::NYCHA:
+      $domain = 'budget_nycha';
+      break;
+    default:
+      $domain = 'budget';
+  }
+  $domain_config = ConfigUtil::getDomainConfiguration($domain);
+  //Get columns which should be included for the current data source
+  $columns_included = $domain_config->$domain->dataset->displayConfiguration->$response_type->elementsColumn;
+
+  //Filter out selected columns which are not configured to show for this data source
+  $filtered_columns = array_intersect_key($selected_columns, (array)$columns_included);
+
+  //Only for NYCHA, export order is not same as multi-select options
+  if($data_source == Datasource::NYCHA && isset($export_order)) {
+    $filtered_columns = [];
+    foreach ($columns_included as $key => $value) {
+      if (in_array($key, $selected_columns)) {
+        $filtered_columns[$key] = $key;
+      }
+    }
+  }
+  return $filtered_columns;
 }
