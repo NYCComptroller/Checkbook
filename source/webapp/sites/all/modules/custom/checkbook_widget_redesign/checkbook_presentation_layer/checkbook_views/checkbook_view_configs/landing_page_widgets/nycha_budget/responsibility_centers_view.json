@@ -4,10 +4,10 @@
   "headerTitle": "Responsibility Centers",
   "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_resp_centers'",
   "table_columns":[
-    {"labelAlias":"responsibility_center","column":"responsibility_center"},
+    {"labelAlias":"responsibility_center","column":"responsibility_center", "derivedColumn":"responsibility_center_name_link"},
     {"labelAlias":"adopted","column":"adopted_budget","format":"dollar"},
     {"labelAlias":"modified","column":"modified_budget","format":"dollar"},
-    {"labelAlias":"committed","column":"committed","format":"dollar"},
+    {"labelAlias":"committed","column":"committed","format":"dollar", "derivedColumn":"committed_budget_link"},
     {"labelAlias":"remaining","column":"funds_available","format":"dollar"},
     {"label":"","column":""}
   ],
