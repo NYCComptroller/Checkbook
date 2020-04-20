@@ -1012,11 +1012,18 @@ function _budget_dept_options($year, $agency)
 function _budget_expcat_options($year, $agency, $dept, $dataSource = Datasource::CITYWIDE){
   switch ($dataSource){
     case Datasource::NYCHA :
-      $query = "SELECT DISTINCT expenditure_type_description || ' [' || expenditure_type_code || ']' AS expenditure_object_code 
-                FROM budget ORDER BY expenditure_object_code ASC";
-      $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
-      $expCategories = _checkbook_datafeeds_expcat_options($results, $dataSource);
-      return $expCategories;
+        $query = "SELECT DISTINCT expenditure_type_description || ' [' || expenditure_type_code || ']' AS expenditure_object_code 
+                  FROM budget ORDER BY expenditure_object_code ASC";
+        $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
+        $title = 'Select Expense Category';
+        $options[''] = $title;
+        $option_attributes = array($title => array('title' => $title));
+        foreach ($results as $row) {
+          $text = $row['expenditure_object_code'];
+          $option_attributes[$text] = array('title' => $text);
+          $options[$text] = _ckbk_excerpt($text);
+        }
+        return array('options' => $options, 'option_attributes' => $option_attributes);
       break;
     default:
       $agency = emptyToZero(urldecode($agency));
