@@ -1076,11 +1076,11 @@ function _budget_program_options($dataSource = Datasource::CITYWIDE){
 function _budget_project_options($dataSource = Datasource::CITYWIDE){
   switch ($dataSource){
     case Datasource::NYCHA :
-      $query = "SELECT project_description || ' [' || project_code  || ']' AS project FROM ref_project ORDER BY project ASC";
+      $query = "SELECT gl_project_description || ' [' || gl_project_code  || ']' AS project FROM ref_gl_project ORDER BY gl_project_description ASC";
       $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
       $title = 'Select Project';
-      $options[''] = $title;
-      $option_attributes = array($title => array('title' => $title));
+      $options['Select Project'] = $title;
+      $option_attributes[''] = array('title' => $title);
       foreach ($data as $row) {
         $text = $row['project'];
         $option_attributes[$text] = array('title' => $text);
