@@ -125,7 +125,7 @@ abstract class BudgetFeed{
     ];
 
     //Used to maintain the order of the columns
-    $this->selected_columns = checkbook_datafeeds_format_columns();
+    $this->selected_columns = $this->filtered_columns = checkbook_datafeeds_format_columns();
     //Filter columns for current data source
     //$this->filtered_columns = checkbook_datafeeds_spending_filter_selected_columns($this->selected_columns, $this->data_source, $this->response_type);
 
