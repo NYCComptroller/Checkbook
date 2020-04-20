@@ -45,6 +45,8 @@ function checkbook_custom_breadcrumbs_page_alter(&$page)
     _set_nycha_contracts_breadcrumb_title_drilldown();
   } else if (preg_match('/^nycha_spending/', current_path())) {
     _set_nycha_spending_breadcrumb_title_drilldown();
+  } else if (preg_match('/^nycha_budget/', current_path())) {
+    _set_nycha_spending_breadcrumb_title_drilldown();
   }
 
   _checkbook_custom_breadcrumnb_add_breadcrumb_title();

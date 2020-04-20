@@ -18,8 +18,6 @@ class NychaBudgetWidgetService extends WidgetDataService implements IWidgetServi
 
   public function implementDerivedColumn($column_name, $row) {
     $value = null;
-    $legacy_node_id = $this->getLegacyNodeId();
-
     if(isset($value)) {
       return $value;
     }
@@ -30,6 +28,6 @@ class NychaBudgetWidgetService extends WidgetDataService implements IWidgetServi
   }
 
   public function getWidgetFooterUrl($parameters) {
-    return NychaBudgetUrlService::getFooterUrl($parameters,$this->getLegacyNodeId());
+    return NychaBudgetUrlService::getFooterUrl($parameters);
   }
 }

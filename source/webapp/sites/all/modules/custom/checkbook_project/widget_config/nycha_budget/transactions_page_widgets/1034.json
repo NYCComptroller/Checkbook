@@ -1,0 +1,254 @@
+{
+  "widgetType": "data_tables",
+  "widgetSubType": "dataTableList",
+  "cleanURLParameters": [
+    "year",
+    "expcategory",
+    "expcategorynm",
+    "resp_center",
+    "fundsrc",
+    "prgm",
+    "proj",
+    "bdgtyp",
+    "bdgnm",
+    "modamtr",
+    "comamtr"
+  ],
+  "urlParamMap": {
+    "year": "budget_fiscal_year_id",
+    "expcategory": "expenditure_type_id",
+    "expcategorynm": "expenditure_type_description",
+    "resp_center": "responsibility_center_id",
+    "fundsrc":"funding_source_id",
+    "prgm": "program_phase_id",
+    "proj": "gl_project_id",
+    "bdgtyp": "budget_type",
+    "bdgcode": "budget_code_id",
+    "bdgnm": "budget_name",
+    "modamtr": "modified_budget",
+    "comamtr": "committed"
+  },
+  "paramTypeConfig": {
+    "comamtr": "rangeid",
+    "modamtr": "rangeid",
+    "bdgnm": "eqignorecase",
+    "expcategorynm": "eqignorecase",
+    "bdgnm_exact": "eqignorecase"
+  },
+  "header":"
+  $header = NULL;
+  $header .= widget_data_tables_export_link($node);
+  return $header;
+  ",
+  "useList":true,
+  "getTotalDataCount": true,
+  "limit": "35",
+  "stickyHeader": true,
+  "noDataInitialLoad": true,
+  "html_class": "initiative-table",
+  "no_results_content": "No Results Found",
+  "dataset": "checkbook_nycha:budget",
+  "uniqueSortColumn":"budget_id",
+  "columns": [
+    "budget_fiscal_year_id",
+    "adopted_budget",
+    "expenditure_type_name",
+    "expenditure_type_description",
+    "budget_fiscal_year",
+    "committed",
+    "funds_available",
+    "modified_budget",
+    "budget_type",
+    "budget_name",
+    "encumbrance_amount",
+    "actual_amount",
+    "funding_source_description",
+    "responsibility_center_description",
+    "program_phase_description",
+    "gl_project_description"
+  ],
+  "caption": "",
+  "derivedColumns": {
+    "formatted_expense_category": {
+      "expression": "_get_tooltip_markup($row['object_class_name'], 28)"
+    },
+    "budget_code_name_formatted": {
+      "expression": "_get_tooltip_markup($row['budget_code_name'], 36)"
+    },
+    "formatted_current_budget_amount": {
+      "expression": "custom_number_formatter_basic_format($row['current_budget_amount'])"
+    },
+    "formatted_adopted_amount": {
+      "expression": "custom_number_formatter_basic_format($row['adopted_amount'])"
+    },
+    "formatted_pre_encumbered_amount": {
+      "expression": "custom_number_formatter_basic_format($row['pre_encumbered_amount'])"
+    },
+    "formatted_encumbered_amount": {
+      "expression": "custom_number_formatter_basic_format($row['encumbered_amount'])"
+    },
+    "formatted_cash_expense_amount": {
+      "expression": "custom_number_formatter_basic_format($row['cash_expense_amount'])"
+    },
+    "formatted_post_closing_adjustment_amount": {
+      "expression": "custom_number_formatter_basic_format($row['post_closing_adjustment_amount'])"
+    },
+    "formatted_accrued_expense_amount": {
+      "expression": "custom_number_formatter_basic_format($row['accrued_expense_amount'])"
+    },
+    "formatted_remaining_amount": {
+      "expression": "custom_number_formatter_basic_format($row['remaining_budget'])"
+    },
+    "formatted_committed_amount": {
+      "expression": "custom_number_formatter_basic_format($row['total_expenditure_amount'])"
+    }
+  },
+  "table_columns": [
+    {
+      "labelAlias": "fiscal_year",
+      "column": "budget_fiscal_year"
+    },
+    {
+      "labelAlias": "adopted",
+      "column": "adopted_budget",
+      "sortSourceColumn": "adopted_budget"
+    },
+    {
+      "labelAlias": "modified",
+      "column": "modified_budget",
+      "sortSourceColumn": "modified_budget"
+    },
+    {
+      "labelAlias": "budget_type",
+      "column": "budget_type",
+      "sortSourceColumn": "budget_type"
+    },
+    {
+      "labelAlias": "budget_name",
+      "column": "budget_name",
+      "sortSourceColumn": "budget_name"
+    },
+    {
+      "labelAlias": "encumbered",
+      "column": "encumbrance_amount",
+      "sortSourceColumn": "encumbrance_amount"
+    },
+    {
+      "labelAlias": "actual_amount",
+      "column": "actual_amount",
+      "sortSourceColumn": "actual_amount"
+    },
+    {
+      "labelAlias": "committed",
+      "column": "committed",
+      "sortSourceColumn": "committed"
+    },
+    {
+      "labelAlias": "remaining",
+      "column": "funds_available",
+      "sortSourceColumn": "funds_available"
+    },
+    {
+      "labelAlias": "expense_category",
+      "column": "expenditure_type_description",
+      "sortSourceColumn": "expenditure_type_description"
+    },
+    {
+      "labelAlias": "funding_source",
+      "column": "funding_source_description",
+      "sortSourceColumn": "funding_source_description"
+    },
+    {
+      "labelAlias": "responsibility_center",
+      "column": "responsibility_center_description",
+      "sortSourceColumn": "responsibility_center_description"
+    },
+    {
+      "labelAlias": "program",
+      "column": "program_phase_description",
+      "sortSourceColumn": "program_phase_description"
+    },
+    {
+      "labelAlias": "project",
+      "column": "gl_project_description",
+      "sortSourceColumn": "gl_project_description"
+    },
+    {
+      "label": "",
+      "column": ""
+    }
+  ],
+  "adjustParameters":"
+  if(function_exists('_checkbook_project_applyParameterFilters')){
+  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+return $adjustedParameters;
+",
+"dataTableOptions":{
+"bRetrieve": true,
+"bServerSide": true,
+"bProcessing":true,
+"bFilter": false,
+"iDisplayLength":35,
+"bPaginate": true,
+"sPaginationType":"full_numbers",
+"bLengthChange": false,
+"sDom":"<pr><t><ip>",
+"oLanguage": {
+"sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_"
+},
+"bInfo": true,
+"aoColumns":[
+{"sClass":"number","sWidth":"70px","asSorting": [ "desc","asc" ]},
+{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"number pad-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"number", "sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"sClass":"number", "sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"text pad-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"bSortable": true,"sWidth":"15px" }
+],
+"aaSorting":[[2,"desc"]],
+"sScrollX": "100%",
+"bScrollCollapse": false,
+"fnInitComplete": "##function () { new FixedColumns( oTable, {
+\"iLeftColumns\": 1,
+\"iLeftWidth\": 115
+} );}##"
+},
+"customExternalJS":"function prepareTableListFilterUrl(){
+var oExpCategoryNms = getNamedFilterCriteria('fExpCategoryNm');
+var oExpCategoryIds = getNamedFilterCriteria('fExpCategory');
+var oModAmount = getNamedFilterCriteria('fModAmount');
+var oComAmount = getNamedFilterCriteria('fComAmount');
+var obudgetCodeId = getNamedFilterCriteria('fbdgcode');
+var obudgetName = getNamedFilterCriteria('fbdgnm');
+var obudgetType = getNamedFilterCriteria('fbdgtyp');
+var oRespCenterIds = getNamedFilterCriteria('fRespCenter');
+var oFundingIds = getNamedFilterCriteria('fFundingId');
+var oProgramIds = getNamedFilterCriteria('fProgramId');
+var oProjectIds = getNamedFilterCriteria('fProjectId');
+
+var  cUrl = oTable.fnSettings().sAjaxSource;
+cUrl = adjustUrlParameter(cUrl,'expcategorynm',oExpCategoryNms);
+cUrl = adjustUrlParameter(cUrl,'expcategory',oExpCategoryIds);
+cUrl = adjustUrlParameter(cUrl,'resp_center', oRespCenterIds);
+cUrl = adjustUrlParameter(cUrl,'modamtr',oModAmount);
+cUrl = adjustUrlParameter(cUrl,'comamtr',oComAmount);
+cUrl = adjustUrlParameter(cUrl,'bdgcode',obudgetCodeId);
+cUrl = adjustUrlParameter(cUrl,'bdgnm',obudgetName);
+cUrl = adjustUrlParameter(cUrl,'bdgtyp',obudgetType);
+cUrl = adjustUrlParameter(cUrl,'fundsrc',oFundingIds);
+cUrl = adjustUrlParameter(cUrl,'prgm',oProgramIds);
+cUrl = adjustUrlParameter(cUrl,'proj',oProjectIds);
+
+return cUrl;
+}"
+}
