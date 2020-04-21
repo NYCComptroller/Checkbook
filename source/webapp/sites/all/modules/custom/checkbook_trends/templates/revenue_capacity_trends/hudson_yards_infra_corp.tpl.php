@@ -58,9 +58,7 @@ echo eval($node->widgetConfig->header);
         <th class="number"><div class="trendCen" >Total</div></th>
     </tr>    
     </thead>
-
     <tbody>
-
     <?php
         $count = 1;
         foreach($node->data as $row){
@@ -86,11 +84,10 @@ echo eval($node->widgetConfig->header);
             $count++;
         }
     ?>
-
     </tbody>
 </table>
 </div>
-<div class="footnote"><!-- p>(*) Date of inception of Hudson Yards Infrastructure Corporation was August 19, 2004.</p -->
+<div class="footnote">
     <p>HYIC issued its first bonds on December 21, 2006.</p>
     <br />
     <p>(1) District Improvement Bonuses (DIB)</p>
