@@ -45,10 +45,40 @@ class NychaBudgetWidgetService extends WidgetDataService implements IWidgetServi
         $url = NychaBudgetUrlService::projectNameLink($row['gl_project_id']);
         $value = "<a href='{$url}'>{$column}</a>";
         break;
-      case "committed_budget_link":
-        $column = $row['committed'];
-        //$url = BudgetUrlService::departmentUrl($row['department_code']);
-        $value = "<a href='{}'>{$column}</a>";
+      case "expense_committed_budget_link":
+        $column = $row['expenditure_type_id'];
+        $dynamic_parameter = "/expcategory/" . $row["expenditure_type_id"];
+        $class = "bottomContainerReload";
+        $url = NychaBudgetUrlService::committedBudgetUrl($dynamic_parameter, 'comm_expense_category');
+        $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+        break;
+      case "resp_committed_budget_link":
+        $column = $row['responsibility_center_id'];
+        $dynamic_parameter = "/resp_center/" . $row["responsibility_center_id"];
+        $class = "bottomContainerReload";
+        $url = NychaBudgetUrlService::committedBudgetUrl($dynamic_parameter, 'comm_resp_center');
+        $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+        break;
+      case "fundsrc_committed_budget_link":
+        $column = $row['funding_source_id'];
+        $dynamic_parameter = "/fundsrc/" . $row["funding_source_id"];
+        $class = "bottomContainerReload";
+        $url = NychaBudgetUrlService::committedBudgetUrl($dynamic_parameter, 'comm_fundsrc');
+        $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+        break;
+      case "prog_committed_budget_link":
+        $column = $row['program_phase_id'];
+        $dynamic_parameter = "/prgm/" . $row["program_phase_id"];
+        $class = "bottomContainerReload";
+        $url = NychaBudgetUrlService::committedBudgetUrl($dynamic_parameter, 'comm_prgm');
+        $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+        break;
+      case "proj_committed_budget_link":
+        $column = $row['gl_project_id'];
+        $dynamic_parameter = "/proj/" . $row["gl_project_id"];
+        $class = "bottomContainerReload";
+        $url = NychaBudgetUrlService::committedBudgetUrl($dynamic_parameter, 'comm_proj');
+        $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
         break;
     }
 
