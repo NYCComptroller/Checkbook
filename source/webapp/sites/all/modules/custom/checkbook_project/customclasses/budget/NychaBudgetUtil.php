@@ -24,10 +24,15 @@ class NychaBudgetUtil{
     $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
     $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
     $widget_titles = self::$widget_titles;
-
+    $budgetType = RequestUtil::getRequestKeyValueFromURL('budgettype', $url);
     //Transactions Page main title
     $title = isset($widget) ? $widget_titles[$widget]: "";
-    $title .= ' '. "Expense Budget Transactions";
+    if ($budgetType == 'committed'){
+      $title .= ' '."By Committed ".' '. "Expense Budget Transactions";
+    }
+    else {
+      $title .= ' ' . "Expense Budget Transactions";
+    }
     return $title;
   }
 
