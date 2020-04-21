@@ -278,7 +278,7 @@ class BudgetFeedNycha extends BudgetFeed
     }
     //Actual Amount
     if ($this->values['nycha_actual_from'] !== '' || $this->values['nycha_actual_to'] !== '') {
-      $this->criteria['range']['actual'] = array(
+      $this->criteria['range']['actual_amount'] = array(
         checknull($this->values['nycha_actual_from']),
         checknull($this->values['nycha_actual_to']),
       );
