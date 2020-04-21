@@ -3,6 +3,7 @@
   "dataFunc":"GetNychaExpenseCategoriesByCommittedExpenseBudget",
   "headerTitle": "Expense Categories by Committed Expense  Budget",
   "headerSubTitle":"Expense Categories",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_expense_categories/budgettype/committed'",
   "table_columns":[
     {"labelAlias":"expense_category","column":"expense_category", "derivedColumn":"expense_category_name_link"},
     {"labelAlias":"committed","column":"committed","format":"dollar", "derivedColumn":"expense_committed_budget_link"},

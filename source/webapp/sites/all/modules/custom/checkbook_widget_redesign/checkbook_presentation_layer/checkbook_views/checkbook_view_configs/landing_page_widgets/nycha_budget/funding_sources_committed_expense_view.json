@@ -3,6 +3,7 @@
   "dataFunc":"GetFundingSourcesByCommittedExpense",
   "headerTitle": "Funding Sources by Committed Expense Budget",
   "headerSubTitle": "Funding Sources",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_funding_sources/budgettype/committed'",
   "table_columns":[
     {"labelAlias":"funding_source","column":"funding_source_description", "derivedColumn":"funding_source_name_link"},
     {"labelAlias":"committed","column":"committed","format":"dollar", "derivedColumn":"committed_budget_link"},

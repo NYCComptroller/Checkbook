@@ -3,6 +3,7 @@
   "dataFunc":"GetProgramsByCommittedExpense",
   "headerTitle": "Programs by Committed Expense Budget",
   "headerSubTitle": "Programs",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_program/budgettype/committed'",
   "table_columns":[
     {"labelAlias":"program","column":"program_phase_description", "derivedColumn":"program_name_link"},
     {"labelAlias":"committed","column":"committed","format":"dollar", "derivedColumn":"committed_budget_link"},
