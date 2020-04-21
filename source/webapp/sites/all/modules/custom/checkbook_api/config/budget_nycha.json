@@ -41,8 +41,8 @@
                   },
                   "rowElements":["fiscal_year", "budget_type", "budget_name", "expense_category", "funding_source", "responsibility_center", "program", "project"],
                   "rowDataGroupElements":{
-                      "budget_amounts":["modified", "adopted", "modified"],
-                      "expenditure_amounts":["committed","encumbered", "actual"]
+                      "budget_amounts":["modified", "adopted", "remaining"],
+                      "expenditure_amounts":["committed","encumbered", "actual_amount"]
                   }
               },
               "csv":{
