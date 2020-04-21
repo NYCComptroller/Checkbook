@@ -2,7 +2,7 @@
   "serviceName":"NychaBudgetWidgetService",
   "dataFunc":"GetPrograms",
   "headerTitle": "Programs",
-  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_program'",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_program/budgettype/remaining'",
   "table_columns":[
     {"labelAlias":"program","column":"program_phase_description", "derivedColumn":"program_name_link"},
     {"labelAlias":"adopted","column":"adopted_budget","format":"dollar"},
