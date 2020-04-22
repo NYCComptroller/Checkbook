@@ -63,11 +63,13 @@ reset($node->data);
       if(isset($row['percentage_change_from_prior_period']) && $row['percentage_change_from_prior_period'] < 0){
         $open_parentheses_col3 = "(";
         $closed_parentheses_col3 = ")";
+        $row['percentage_change_from_prior_period'] = $row['percentage_change_from_prior_period']*-1;
       }
 
       if(isset($row['percentage_change_prior_period']) && $row['percentage_change_prior_period'] < 0){
         $open_parentheses_col5 = "(";
         $closed_parentheses_col5 = ")";
+        $row['percentage_change_prior_period'] = $row['percentage_change_prior_period']*-1;
       }
 
       echo "<tr>";
