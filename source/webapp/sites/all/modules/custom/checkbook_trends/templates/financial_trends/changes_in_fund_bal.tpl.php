@@ -23,19 +23,21 @@ echo eval($node->widgetConfig->header);
 $table_rows = array();
 $years = array();
 foreach( $node->data as $row){
-	$length =  $row['indentation_level'];
-	$spaceString = '&nbsp;';
-	while($length > 0){
-		$spaceString .= '&nbsp;';
-		$length -=1;
-	}
-	$table_rows[$row['display_order']]['category'] =  $row['category'];
-	$table_rows[$row['display_order']]['highlight_yn'] = $row['highlight_yn'];
-	$table_rows[$row['display_order']]['indentation_level'] = $row['indentation_level'];
-	$table_rows[$row['display_order']]['amount_display_type'] = $row['amount_display_type'];
-	$table_rows[$row['display_order']]['currency_symbol'] = $row['currency_symbol'];
-	$table_rows[$row['display_order']][$row['fiscal_year']]['amount'] = $row['amount'];
-	$years[$row['fiscal_year']] = 	$row['fiscal_year'];
+  if(isset($row['category']) || isset($row['amount'])) {
+    $length = $row['indentation_level'];
+    $spaceString = '&nbsp;';
+    while ($length > 0) {
+      $spaceString .= '&nbsp;';
+      $length -= 1;
+    }
+    $table_rows[$row['display_order']]['category'] = $row['category'];
+    $table_rows[$row['display_order']]['highlight_yn'] = $row['highlight_yn'];
+    $table_rows[$row['display_order']]['indentation_level'] = $row['indentation_level'];
+    $table_rows[$row['display_order']]['amount_display_type'] = $row['amount_display_type'];
+    $table_rows[$row['display_order']]['currency_symbol'] = $row['currency_symbol'];
+    $table_rows[$row['display_order']][$row['fiscal_year']]['amount'] = $row['amount'];
+    $years[$row['fiscal_year']] = $row['fiscal_year'];
+  }
 }
 rsort($years);
 ?>
@@ -97,7 +99,6 @@ rsort($years);
 
             foreach ($years as $year){
                 echo "<td><div></div></td>";
-
                 if($count == count($table_rows)){
                     echo "<td class='" . $amount_class . " ' ><div>" . $row[$year]['amount'] . "%</div></td>";
                 }else{
