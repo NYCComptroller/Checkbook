@@ -4,15 +4,14 @@
 class NychaBudgetUrlService {
 
     static function getFooterUrl($parameters = null) {
-        // = '/panel_html/nycha_budget_transactions/nycha_budget/transactions'
-          //  .RequestUtilities::buildUrlFromParam('year')
-            //.RequestUtilities::buildUrlFromParam('expcategory');
-        //return $url;
-
       $url = "/panel_html/nycha_budget_transactions/nycha_budget/transactions"
         . RequestUtilities::buildUrlFromParam('year')
+        . RequestUtilities::buildUrlFromParam('datasource')
+        . RequestUtilities::buildUrlFromParam('expcategory')
+        . RequestUtilities::buildUrlFromParam('respcenter')
         . RequestUtilities::buildUrlFromParam('fundsrc')
-        . RequestUtilities::buildUrlFromParam('datasource');
+        . RequestUtilities::buildUrlFromParam('program')
+        . RequestUtilities::buildUrlFromParam('project');
       return $url;
     }
 
@@ -27,8 +26,10 @@ class NychaBudgetUrlService {
       . RequestUtilities::buildUrlFromParam('year')
       . RequestUtilities::buildUrlFromParam('datasource')
       . RequestUtilities::buildUrlFromParam('expcategory')
+      . RequestUtilities::buildUrlFromParam('respcenter')
       . RequestUtilities::buildUrlFromParam('fundsrc')
-      . RequestUtilities::buildUrlFromParam('prog')
+      . RequestUtilities::buildUrlFromParam('program')
+      . RequestUtilities::buildUrlFromParam('project')
       . '/widget/'. $widget
       . '/budgettype/'.$budgetype
       . $dynamic_parameter;
@@ -36,58 +37,63 @@ class NychaBudgetUrlService {
     return $url;
   }
 
-  public static function expenseCategoryURL($expenditure_type_code){
+  public static function expenseCategoryURL($expenditure_type_type){
     $url =   "/nycha_budget"
       .RequestUtilities::buildUrlFromParam('year')
+      .RequestUtilities::buildUrlFromParam('datasource')
       .RequestUtilities::buildUrlFromParam('respcenter')
       .RequestUtilities::buildUrlFromParam('fundsrc')
       .RequestUtilities::buildUrlFromParam('program')
       .RequestUtilities::buildUrlFromParam('project')
-      .'/expcategory/'.$expenditure_type_code;
+      .'/expcategory/'.$expenditure_type_type;
     return $url;
   }
 
-  public static function responsibilityCenterURL($responsibilty_center_code){
+  public static function responsibilityCenterURL($responsibilty_center_type){
     $url =   "/nycha_budget"
       .RequestUtilities::buildUrlFromParam('year')
+      .RequestUtilities::buildUrlFromParam('datasource')
       .RequestUtilities::buildUrlFromParam('fundsrc')
       .RequestUtilities::buildUrlFromParam('program')
       .RequestUtilities::buildUrlFromParam('expcategory')
       .RequestUtilities::buildUrlFromParam('project')
-      .'/respcenter/'.$responsibilty_center_code;
+      .'/respcenter/'.$responsibilty_center_type;
     return $url;
   }
 
-  public static function fundingSourceURL($funding_source_code){
+  public static function fundingSourceURL($funding_source_type){
     $url =   "/nycha_budget"
       .RequestUtilities::buildUrlFromParam('year')
+      .RequestUtilities::buildUrlFromParam('datasource')
       .RequestUtilities::buildUrlFromParam('respcenter')
       .RequestUtilities::buildUrlFromParam('program')
       .RequestUtilities::buildUrlFromParam('expcategory')
       .RequestUtilities::buildUrlFromParam('project')
-      .'/fundsrc/'.$funding_source_code;
+      .'/fundsrc/'.$funding_source_type;
     return $url;
   }
 
-  public static function programNameLink($program_phase_code){
+  public static function programNameLink($program_phase_type){
     $url =   "/nycha_budget"
       .RequestUtilities::buildUrlFromParam('year')
+      .RequestUtilities::buildUrlFromParam('datasource')
       .RequestUtilities::buildUrlFromParam('respcenter')
       .RequestUtilities::buildUrlFromParam('fundsrc')
       .RequestUtilities::buildUrlFromParam('expcategory')
       .RequestUtilities::buildUrlFromParam('project')
-      .'/program/'.$program_phase_code;
+      .'/program/'.$program_phase_type;
     return $url;
   }
 
-  public static function projectNameLink($gl_project_code){
+  public static function projectNameLink($gl_project_type){
     $url =   "/nycha_budget"
       .RequestUtilities::buildUrlFromParam('year')
+      .RequestUtilities::buildUrlFromParam('datasource')
       .RequestUtilities::buildUrlFromParam('respcenter')
       .RequestUtilities::buildUrlFromParam('fundsrc')
       .RequestUtilities::buildUrlFromParam('expcategory')
       .RequestUtilities::buildUrlFromParam('program')
-      .'/project/'.$gl_project_code;
+      .'/project/'.$gl_project_type;
     return $url;
   }
 }
