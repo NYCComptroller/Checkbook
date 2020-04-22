@@ -7,7 +7,7 @@
     {"labelAlias":"program","column":"program_phase_description", "derivedColumn":"program_name_link"},
     {"labelAlias":"adopted","column":"adopted_budget","format":"dollar"},
     {"labelAlias":"modified","column":"modified_budget","format":"dollar"},
-    {"labelAlias":"committed","column":"committed","format":"dollar","derivedColumn":"committed_budget_link"},
+    {"labelAlias":"committed","column":"committed","format":"dollar","derivedColumn":"prog_committed_budget_link"},
     {"labelAlias":"remaining","column":"funds_available","format":"dollar"},
     {"label":"","column":""}
   ],

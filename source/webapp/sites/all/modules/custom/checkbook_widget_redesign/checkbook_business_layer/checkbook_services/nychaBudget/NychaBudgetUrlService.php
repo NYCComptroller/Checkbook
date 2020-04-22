@@ -16,6 +16,26 @@ class NychaBudgetUrlService {
       return $url;
     }
 
+  /* Gets the Committed budget link in a generic way
+  * @param $dynamic_parameter - custom dynamic parameters to be used in the URL
+  * @param null $legacy_node_id
+  * @return string
+  */
+  static function committedBudgetUrl($dynamic_parameter, $widget,$budgetype) {
+    $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
+    $url = "/panel_html/nycha_budget_transactions/nycha_budget/transactions"
+      . RequestUtilities::buildUrlFromParam('year')
+      . RequestUtilities::buildUrlFromParam('datasource')
+      . RequestUtilities::buildUrlFromParam('expcategory')
+      . RequestUtilities::buildUrlFromParam('fundsrc')
+      . RequestUtilities::buildUrlFromParam('prog')
+      . '/widget/'. $widget
+      . '/budgettype/'.$budgetype
+      . $dynamic_parameter;
+
+    return $url;
+  }
+
   public static function expenseCategoryURL($expenditure_type_code){
     $url =   "/nycha_budget"
       .RequestUtilities::buildUrlFromParam('year')
