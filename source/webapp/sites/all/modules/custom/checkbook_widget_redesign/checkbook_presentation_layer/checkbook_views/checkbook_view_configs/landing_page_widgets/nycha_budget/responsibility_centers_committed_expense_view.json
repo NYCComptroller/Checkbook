@@ -3,9 +3,10 @@
   "dataFunc":"GetResponsibilityCentersByCommittedExpense",
   "headerTitle": "Responsibility Centers by Committed Expense Budget",
   "headerSubTitle": "Responsibility Centers",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_resp_centers/budgettype/committed'",
   "table_columns":[
     {"labelAlias":"responsibility_center","column":"responsibility_center", "derivedColumn":"responsibility_center_name_link"},
-    {"labelAlias":"committed","column":"committed","format":"dollar", "derivedColumn":"committed_budget_link"},
+    {"labelAlias":"committed","column":"committed","format":"dollar", "derivedColumn":"resp_committed_by_budget_link"},
     {"labelAlias":"encumbered","column":"encumbrance_amount","format":"dollar"},
     {"labelAlias":"actual_amount","column":"actual_amount","format":"dollar"},
     {"label":"","column":""}

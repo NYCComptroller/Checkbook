@@ -3,9 +3,10 @@
   "dataFunc":"GetProjectsByCommittedExpense",
   "headerTitle": "Projects by Committed Expense Budget",
   "headerSubTitle": "Projects",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_projects/budgettype/committed'",
   "table_columns":[
     {"labelAlias":"project","column":"gl_project_description", "derivedColumn":"project_name_link"},
-    {"labelAlias":"committed","column":"committed","format":"dollar", "derivedColumn":"committed_budget_link"},
+    {"labelAlias":"committed","column":"committed","format":"dollar", "derivedColumn":"proj_committed_by_budget_link"},
     {"labelAlias":"encumbered","column":"encumbrance_amount","format":"dollar"},
     {"labelAlias":"actual_amount","column":"actual_amount","format":"dollar"},
     {"label":"","column":""}

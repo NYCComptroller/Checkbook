@@ -83,7 +83,7 @@ function checkbook_datafeeds_budget($form, &$form_state){
   //<editor-fold desc="CityWide and NYCHA Multi-select Options">
   $form['columns']['column_select_expense'] = array(
     '#type' => 'select',
-    '#title' => t('Budget Columns<span class="form-required" title="This field is required.">*</span>'),
+    '#title' => t('Columns<span class="form-required" title="This field is required.">*</span>'),
     '#options' => _checkbook_datafeeds_budget_column_options(Datasource::CITYWIDE, $format),
     '#multiple' => TRUE,
     '#default_value' => !empty($form_state['values']['column_select_expense']) ? $form_state['values']['column_select_expense'] : '',
@@ -91,7 +91,7 @@ function checkbook_datafeeds_budget($form, &$form_state){
 
   $form['columns']['nycha_column_select'] = array(
     '#type' => 'select',
-    '#title' => t('NYCHA Budget Columns<span class="form-required" title="This field is required.">*</span>'),
+    '#title' => t('Columns<span class="form-required" title="This field is required.">*</span>'),
     '#options' => _checkbook_datafeeds_budget_column_options(Datasource::NYCHA, $format),
     '#multiple' => TRUE,
     '#default_value' => !empty($form_state['values']['nycha_column_select']) ? $form_state['values']['nycha_column_select'] : '',

@@ -50,13 +50,12 @@
         $rowString .= ',' .(($row['isp_revenue_3']>0)?('"'.number_format($row['isp_revenue_3']).'"'):'-');
         $rowString .= ',' .(($row['pilomrt_payment']>0)?('"'.number_format($row['pilomrt_payment']).'"'):'-');
         $rowString .= ',' .(($row['pilot']>0)?('"'.number_format($row['pilot']).'"'):'-');
-        $rowString .= ',' .(($row['other_4']>0)?('"'.number_format($row['other_4']).'"'):'-');
+        $rowString .= ',' .(($row['other_4']>0)?('"'.number_format($row['other_4']).'"'):'-').(in_array($row['fiscal_year'], ['2019'])? '(9)':'');
         $rowString .= ',' .(($row['investment_earnings']>0)?('"'.number_format($row['investment_earnings']).'"'):'-');
         $rowString .= ',' .(($row['total_revenue']>0)?('"'.number_format($row['total_revenue']).'"'):'-');
         $rowString .= ',' .(($row['interest']>0)?('"'.number_format($row['interest']).'"'):'-');
         $rowString .= ',' .(($row['principal']>0)?('"'.number_format($row['principal']).'"'):'-');
         $rowString .= ',' .(($row['total']>0)?('"'.number_format($row['total']).'"'):'-');
-        //$rowString .= ',' .(($row['operating_expenses']>0)?('"'.number_format($row['operating_expenses']).'"'):'-');
         $rowString .= ',' .(($row['operating_expenses']>0)?('"'.number_format($row['operating_expenses']).'"'):'-') . ((  $row['fiscal_year'] == '2012')? '(9)':'');
         $rowString .= ',' .(($row['total_to_be_covered']>0)?('"'.number_format($row['total_to_be_covered']).'"'):'-');
         $rowString .= ',' . $row['coverage_on_total_revenue_5'].(in_array($row['fiscal_year'], ['2009','2010','2011','2012'])? '(6)':'');

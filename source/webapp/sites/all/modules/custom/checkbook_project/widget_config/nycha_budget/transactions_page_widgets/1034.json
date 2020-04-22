@@ -81,26 +81,26 @@
     "formatted_adopted_amount": {
       "expression": "custom_number_formatter_basic_format($row['adopted_amount'])"
     },
-    "formatted_pre_encumbered_amount": {
-      "expression": "custom_number_formatter_basic_format($row['pre_encumbered_amount'])"
-    },
     "formatted_encumbered_amount": {
       "expression": "custom_number_formatter_basic_format($row['encumbered_amount'])"
     },
-    "formatted_cash_expense_amount": {
-      "expression": "custom_number_formatter_basic_format($row['cash_expense_amount'])"
+    "exp_name_formatted":{
+      "expression": "_get_tooltip_markup($row['expenditure_type_description'],36)"
     },
-    "formatted_post_closing_adjustment_amount": {
-      "expression": "custom_number_formatter_basic_format($row['post_closing_adjustment_amount'])"
+    "budget_name_formatted":{
+      "expression": "_get_tooltip_markup($row['budget_name'],36)"
     },
-    "formatted_accrued_expense_amount": {
-      "expression": "custom_number_formatter_basic_format($row['accrued_expense_amount'])"
+    "resp_center_formatted":{
+      "expression": "_get_tooltip_markup($row['responsibility_center_description'],36)"
     },
-    "formatted_remaining_amount": {
-      "expression": "custom_number_formatter_basic_format($row['remaining_budget'])"
+    "funding_source_formatted":{
+      "expression": "_get_tooltip_markup($row['funding_source_description'],36)"
     },
-    "formatted_committed_amount": {
-      "expression": "custom_number_formatter_basic_format($row['total_expenditure_amount'])"
+    "program_formatted":{
+      "expression": "_get_tooltip_markup($row['program_phase_description'],36)"
+    },
+    "project_formatted":{
+      "expression": "_get_tooltip_markup($row['gl_project_description'],36)"
     }
   },
   "table_columns": [
@@ -150,27 +150,27 @@
     },
     {
       "labelAlias": "expense_category",
-      "column": "expenditure_type_description",
+      "column": "exp_name_formatted",
       "sortSourceColumn": "expenditure_type_description"
     },
     {
       "labelAlias": "funding_source",
-      "column": "funding_source_description",
+      "column": "funding_source_formatted",
       "sortSourceColumn": "funding_source_description"
     },
     {
       "labelAlias": "responsibility_center",
-      "column": "responsibility_center_description",
+      "column": "resp_center_formatted",
       "sortSourceColumn": "responsibility_center_description"
     },
     {
       "labelAlias": "program",
-      "column": "program_phase_description",
+      "column": "program_formatted",
       "sortSourceColumn": "program_phase_description"
     },
     {
       "labelAlias": "project",
-      "column": "gl_project_description",
+      "column": "project_formatted",
       "sortSourceColumn": "gl_project_description"
     },
     {
@@ -183,6 +183,16 @@
   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
 }
 return $adjustedParameters;
+",
+"adjustDataTableOptions":"
+$budgettype = RequestUtilities::getRequestParamValue('budgettype');
+if(isset($budgettype)) {
+$is_committed_expense = ($budgettype == 'committed');
+$is_remaining_expense = ($budgettype == 'remaining');
+}
+if($is_committed_expense) {
+$node->widgetConfig->dataTableOptions->aaSorting[0][0] = 7;
+}
 ",
 "dataTableOptions":{
 "bRetrieve": true,
@@ -199,7 +209,7 @@ return $adjustedParameters;
 },
 "bInfo": true,
 "aoColumns":[
-{"sClass":"number","sWidth":"70px","asSorting": [ "desc","asc" ]},
+{"sClass":"text","sWidth":"70px","asSorting": [ "desc","asc" ]},
 {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
 {"sClass":"number pad-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
 {"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
@@ -208,9 +218,9 @@ return $adjustedParameters;
 {"sClass":"number", "sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"number", "sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
-{"sClass":"text pad-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
-{"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
-{"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left","sWidth":"155px","asSorting": [ "desc","asc" ]},
+{"sClass":"text pad-left", "sWidth":"155px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left", "sWidth":"155px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"bSortable": true,"sWidth":"15px" }

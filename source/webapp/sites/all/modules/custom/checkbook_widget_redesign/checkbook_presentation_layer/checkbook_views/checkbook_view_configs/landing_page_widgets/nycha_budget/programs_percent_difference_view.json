@@ -1,14 +1,14 @@
 {
   "serviceName":"NychaBudgetWidgetService",
-  "dataFunc":"GetNychaExpenseCategoriesByCommittedExpenseBudget",
-  "headerTitle": "Expense Categories by Committed Expense  Budget",
-  "headerSubTitle":"Expense Categories",
-  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_expense_categories/budgettype/committed'",
+  "dataFunc":"GetNychaProgramsByPercentDifference",
+  "headerTitle": "Programs by Percent Difference",
+  "headerSubTitle": "Programs",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_expense_categories'",
   "table_columns":[
-    {"labelAlias":"expense_category","column":"expense_category", "derivedColumn":"expense_category_name_link"},
-    {"labelAlias":"committed","column":"committed","format":"dollar", "derivedColumn":"expense_committed_by_budget_link"},
-    {"labelAlias":"encumbered","column":"encumbrance_amount","format":"dollar"},
-    {"labelAlias":"actual_amount","column":"actual_amount","format":"dollar"},
+    {"labelAlias":"program","column":"program_phase_description", "derivedColumn":"program_name_link"},
+    {"labelAlias": "previous_modified","column": "previous_amount","format": "dollar"},
+    {"labelAlias": "current_modified","column": "current_amount","format": "dollar"},
+    {"labelAlias": "percent_diff","column": "percent_difference3","format": "percent"},
     {"label":"","column":""}
   ],
   "dataTableOptions":{
@@ -26,7 +26,7 @@
     "bLengthChange":false,
     "bInfo":false,
     "bAutoWidth":false,
-    "aaSorting":[[1,"desc"]],
+    "aaSorting":[[3,"desc"]],
     "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
     "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
   }
