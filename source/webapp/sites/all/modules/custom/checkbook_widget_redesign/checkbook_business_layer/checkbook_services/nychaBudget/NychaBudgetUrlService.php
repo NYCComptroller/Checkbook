@@ -21,16 +21,16 @@ class NychaBudgetUrlService {
   * @param null $legacy_node_id
   * @return string
   */
-  static function committedBudgetUrl($dynamic_parameter, $widget) {
+  static function committedBudgetUrl($dynamic_parameter, $widget,$budgetype) {
     $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
     $url = "/panel_html/nycha_budget_transactions/nycha_budget/transactions"
       . RequestUtilities::buildUrlFromParam('year')
       . RequestUtilities::buildUrlFromParam('datasource')
-      .  RequestUtilities::buildUrlFromParam('budgettype')
       . RequestUtilities::buildUrlFromParam('expcategory')
       . RequestUtilities::buildUrlFromParam('fundsrc')
       . RequestUtilities::buildUrlFromParam('prog')
       . '/widget/'. $widget
+      . '/budgettype/'.$budgetype
       . $dynamic_parameter;
 
     return $url;
