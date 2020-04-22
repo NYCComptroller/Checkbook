@@ -209,7 +209,7 @@ $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 7;
 },
 "bInfo": true,
 "aoColumns":[
-{"sClass":"number","sWidth":"70px","asSorting": [ "desc","asc" ]},
+{"sClass":"text","sWidth":"70px","asSorting": [ "desc","asc" ]},
 {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
 {"sClass":"number pad-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
 {"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
