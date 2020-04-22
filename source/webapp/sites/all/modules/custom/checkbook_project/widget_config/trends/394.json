@@ -5,7 +5,7 @@
         "html_class":"trends-table",
         "useList":true,
 	"no_results_content":"No Results Found",
-        "defaultParameters":{"display_yn":"Y"},
+  "defaultParameters":{"display_yn":"Y"},
 	"dataset": "checkbook:trends_changes_in_fund_balances",
 	"columns": ["category","amount","fiscal_year","highlight_yn","indentation_level","display_order","amount_display_type","currency_symbol"],
        "orderBy":"display_order",
@@ -18,7 +18,7 @@
         "bSort":false,
         "sScrollY": 400, 
         "sScrollX": "100%",
-         "sScrollXInner": "1975px",
+         "sScrollXInner": "2000px",
          "bScrollCollapse": false,
          "bAutoWidth": false,
         "fnPreDrawCallback":"##function( oSettings ) {
@@ -33,6 +33,6 @@
        },
  "customJS":"new FixedColumns( oTable, {
  		\"iLeftColumns\": 1,
-		\"iLeftWidth\": 300
+		\"iLeftWidth\": 350
  	} );"
 }

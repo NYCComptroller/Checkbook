@@ -45,6 +45,6 @@
    	}
 ?>
 
-"*Amounts as of March 28, <?= $last_year ?>"
+"*Amounts as of March 22, 2019 and May 2019."
 
 "Source: U.S Department of Commerce, Bureau of Economic Analysis. US Census Bureau and American Fact Finder."
