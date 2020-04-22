@@ -58,43 +58,36 @@ echo eval($node->widgetConfig->header);
         <th class="number"><div class="trendCen" >Total</div></th>
     </tr>    
     </thead>
-
     <tbody>
-
     <?php
         $count = 1;
         foreach($node->data as $row){
             $dollar_sign = ($count == 1 ? '<div class="dollarItem" >$</div>':'');
             echo "<tr>";
-            
             echo "<td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['dib_revenue_1']>0)?number_format($row['dib_revenue_1']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['tep_revenue_2']>0)?number_format($row['tep_revenue_2']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['isp_revenue_3']>0)?number_format($row['isp_revenue_3']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['pilomrt_payment']>0)?number_format($row['pilomrt_payment']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['pilot']>0)?number_format($row['pilot']):'-') . "</td>";            //PILOT DATA
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['other_4']>0)?number_format($row['other_4']):'-') . "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['other_4']>0)?number_format($row['other_4']):'-') . ((  $row['fiscal_year'] == '2019')? "<sup class='endItem'>(9)</sup>":"<sup class='endItem' style='visibility: hidden;'>(9)</sup>") . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['investment_earnings']>0)?number_format($row['investment_earnings']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_revenue']>0)?number_format($row['total_revenue']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['interest']>0)?number_format($row['interest']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['principal']>0)?number_format($row['principal']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total']>0)?number_format($row['total']):'-') . "</td>";
-            //echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['operating_expenses']>0)?number_format($row['operating_expenses']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['operating_expenses']>0)?number_format($row['operating_expenses']):'-') . ((  $row['fiscal_year'] == '2012')? "<sup class='endItem'>(9)</sup>":"<sup class='endItem' style='visibility: hidden;'>(9)</sup>"). "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_to_be_covered']>0)?number_format($row['total_to_be_covered']):'-') . "</td>";
-            //echo "<td class='number ' ><div class='tdCen'>" . $row['coverage_on_total_revenue_5'] . (($row['fiscal_year'] == '2009' || $row['fiscal_year'] == '2010' || $row['fiscal_year'] == '2011' || $row['fiscal_year'] == '2012')? "<sup class='endItem'>(7)</sup>":"<sup class='endItem' style='visibility: hidden;'>(7)</sup>") . "</div></td>";
             echo "<td class='number ' ><div class='tdCen'>" . $row['coverage_on_total_revenue_5'] . (in_array($row['fiscal_year'], ['2009','2010', '2011','2012'])? "<sup class='endItem'>(6)</sup>":"<sup class='endItem' style='visibility: hidden;'>(6)</sup>") . "</div></td>";
-//            echo "<td class='number ' ><div class='tdCen'>" . $row['coverage_on_total_revenue_5'] . "</td>";
             echo "<td>&nbsp;</td>";
             echo "</tr>";
             $count++;
         }
     ?>
-
     </tbody>
 </table>
 </div>
-<div class="footnote"><!-- p>(*) Date of inception of Hudson Yards Infrastructure Corporation was August 19, 2004.</p -->
+<div class="footnote">
     <p>HYIC issued its first bonds on December 21, 2006.</p>
     <br />
     <p>(1) District Improvement Bonuses (DIB)</p>

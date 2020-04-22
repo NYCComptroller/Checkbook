@@ -10,6 +10,15 @@ class NychaBudgetDataService extends DataService implements INychaBudgetDataServ
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
+  function GetNychaExpenseCategoriesByPercentDifference($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetNychaResponsibilityCentersByPercentDifference($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+
   function GetResponsibilityCenters($parameters, $limit = null, $orderBy = null) {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
@@ -26,6 +35,10 @@ class NychaBudgetDataService extends DataService implements INychaBudgetDataServ
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
+  function GetNychaFundingSourcesByPercentDifference($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
   function GetPrograms($parameters, $limit = null, $orderBy = null) {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
@@ -34,11 +47,19 @@ class NychaBudgetDataService extends DataService implements INychaBudgetDataServ
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
+  function GetNychaProgramsByPercentDifference($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
   function GetProjects($parameters, $limit = null, $orderBy = null) {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
   function GetProjectsByCommittedExpense($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetProjectsByPercentDifference($parameters, $limit = null, $orderBy = null) {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
