@@ -79,7 +79,7 @@
 "(4)   Includes adjustments for Business Improvement Districts, Original Issue Discount, and cash on hand for defeasance."
 "(5)   To provide for the City's capital program, State legislation was enacted which created the Transitional Finance Authority (TFA)."
 "      TFA debt above 13.5 billion (Excludes TFA Building Aid Revenue bonds and Recovery Bonds) is subject to the general debt limit of the City."
-"(6)   Obligations for water supply and certain obligations for rapid transit are excluded pursuant to the State Constitution
-"      and in accordance with provisions of the State Local Finance Law. Resources of the General Debt Service Fund applicable to
-"      non-excluded debt and debt service appropriations for the redemption of such debt are deducted from the non-excluded funded debt
+"(6)   Obligations for water supply and certain obligations for rapid transit are excluded pursuant to the State Constitution"
+"      and in accordance with provisions of the State Local Finance Law. Resources of the General Debt Service Fund applicable to"
+"      non-excluded debt and debt service appropriations for the redemption of such debt are deducted from the non-excluded funded debt"
 "      to arrive at the funded debt within the debt limit."
