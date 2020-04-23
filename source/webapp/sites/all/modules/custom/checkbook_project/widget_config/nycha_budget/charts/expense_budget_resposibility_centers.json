@@ -41,10 +41,18 @@
     "year_id.year_id":119
   },
   "cleanURLParameters":[
-    "year"
+    "year",
+    "expcategory",
+    "project",
+    "program",
+    "fundsrc"
   ],
   "urlParamMap":{
-    "year":"year_id.year_id"
+    "year":"year_id.year_id",
+    "expcategory": "expenditure_type_id.expenditure_type_id",
+    "project": "gl_project_id.gl_project_id",
+    "program": "program_phase_id.program_phase_id",
+    "fundsrc": "funding_source_id.funding_source_id"
   },
   "transformationPHP":"
   $landing_page =  '/' .  current_path()  ;
