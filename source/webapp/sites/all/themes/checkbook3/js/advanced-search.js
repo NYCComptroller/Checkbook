@@ -391,10 +391,10 @@
       var budgetCodeAlreadyLoaded = false;
 
       function reloadBudgetCode() {
-        let fiscal_year = $('#edit-checkbook-budget-budget-year').val() || 0;
-        let agency = $('#edit-checkbook-budget-budget-agency').val() || 0;
-        let dept = $('#edit-checkbook-budget-budget-department').val() || 0;
-        let exp_cat = $('#edit-checkbook-budget-budget-expense-category').val() || 0;
+        let fiscal_year = $('#edit-checkbook-budget-year').val() || 0;
+        let agency = $('#edit-checkbook-budget-agency').val() || 0;
+        let dept = $('#edit-checkbook-budget-department').val() || 0;
+        let exp_cat = $('#edit-checkbook-budget-expense-category').val() || 0;
         let budget_code = $('#edit-checkbook-budget-budget-code').val() || 0;
         let budget_name = $('#edit-checkbook-budget-budget-name').val() || 0;
 
@@ -428,10 +428,10 @@
       var budgetNamesAlreadyLoaded = false;
 
       function reloadBudgetName() {
-        let fiscal_year = $('#edit-checkbook-budget-budget-year').val() || 0;
-        let agency = $('#edit-checkbook-budget-budget-agency').val() || 0;
-        let dept = $('#edit-checkbook-budget-budget-department').val() || 0;
-        let exp_cat = $('#edit-checkbook-budget-budget-expense-category').val() || 0;
+        let fiscal_year = $('#edit-checkbook-budget-year').val() || 0;
+        let agency = $('#edit-checkbook-budget-agency').val() || 0;
+        let dept = $('#edit-checkbook-budget-department').val() || 0;
+        let exp_cat = $('#edit-checkbook-budget-expense-category').val() || 0;
         let budget_code = $('#edit-checkbook-budget-budget-code').val() || 0;
         let budget_name = $('#edit-checkbook-budget-budget-name').val() || 0;
 
