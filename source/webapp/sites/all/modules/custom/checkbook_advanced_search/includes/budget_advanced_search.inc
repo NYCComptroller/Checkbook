@@ -23,30 +23,35 @@
  *
  * @param $form
  * @param $form_state
+ * @param $data_source
  * @return string
  */
-function _checkbook_advanced_search_budget_submit($form, &$form_state)
-{
-  $budget_agency = trim($form['budget']['budget_agencies']['#value']);
-  $budget_department = trim($form_state['input']['budget_department']);
-  $budget_expense_category = trim($form_state['input']['budget_expense_category']);
-  $budget_budget_code = trim($form['budget']['budget_budget_code']['#value']);
-  $budget_budget_name = trim($form['budget']['budget_budget_name']['#value']);
-  $budget_fiscal_year = trim($form['budget']['budget_fiscal_year']['#value']);
-  $budget_adopted_budget_from = trim($form['budget']['budget_adopted_budget_from']['#value']);
-  $budget_adopted_budget_to = trim($form['budget']['budget_adopted_budget_to']['#value']);
-  $budget_current_modified_from = trim($form['budget']['budget_current_modified_from']['#value']);
-  $budget_current_modified_to = trim($form['budget']['budget_current_modified_to']['#value']);
-  $budget_pre_encumbered_from = trim($form['budget']['budget_pre_encumbered_from']['#value']);
-  $budget_pre_encumbered_to = trim($form['budget']['budget_pre_encumbered_to']['#value']);
-  $budget_encumbered_from = trim($form['budget']['budget_encumbered_from']['#value']);
-  $budget_encumbered_to = trim($form['budget']['budget_encumbered_to']['#value']);
-  $budget_accrued_expense_from = trim($form['budget']['budget_accrued_expense_from']['#value']);
-  $budget_accrued_expense_to = trim($form['budget']['budget_accrued_expense_to']['#value']);
-  $budget_cash_expense_from = trim($form['budget']['budget_cash_expense_from']['#value']);
-  $budget_cash_expense_to = trim($form['budget']['budget_cash_expense_to']['#value']);
-  $budget_post_adjustments_from = trim($form['budget']['budget_post_adjustments_from']['#value']);
-  $budget_post_adjustments_to = trim($form['budget']['budget_post_adjustments_to']['#value']);
+function _checkbook_advanced_search_budget_submit($form, &$form_state, $data_source = DataSource::CITYWIDE){
+  $filter_dimension = $data_source . '_budget';
+  if( $data_source == Datasource::NYCHA){
+    $redirect_url =   _checkbook_advanced_search_nycha_budget_submit($form, $form_state);
+    return $redirect_url;
+  }
+  $budget_agency = _checkbook_get_selected_value($form, $filter_dimension, 'agency');
+  $budget_department = _checkbook_get_selected_value($form, $filter_dimension, 'department');
+  $budget_expense_category = _checkbook_get_selected_value($form, $filter_dimension, 'expense_category');
+  $budget_budget_code = _checkbook_get_selected_value($form, $filter_dimension, 'budget_code');
+  $budget_budget_name = _checkbook_get_selected_value($form, $filter_dimension, 'budget_name');
+  $budget_fiscal_year = _checkbook_get_selected_value($form, $filter_dimension, 'year');
+  $budget_adopted_budget_from = _checkbook_get_selected_value($form, $filter_dimension, 'adopted_from');
+  $budget_adopted_budget_to = _checkbook_get_selected_value($form, $filter_dimension, 'adopted_to');
+  $budget_current_modified_from = _checkbook_get_selected_value($form, $filter_dimension, 'modified_from');
+  $budget_current_modified_to = _checkbook_get_selected_value($form, $filter_dimension, 'modified_to');
+  $budget_pre_encumbered_from = _checkbook_get_selected_value($form, $filter_dimension, 'pre_encumbered_from');
+  $budget_pre_encumbered_to = _checkbook_get_selected_value($form, $filter_dimension, 'pre_encumbered_to');
+  $budget_encumbered_from = _checkbook_get_selected_value($form, $filter_dimension, 'encumbered_from');
+  $budget_encumbered_to = _checkbook_get_selected_value($form, $filter_dimension, 'encumbered_to');
+  $budget_accrued_expense_from = _checkbook_get_selected_value($form, $filter_dimension, 'accrued_expense_from');
+  $budget_accrued_expense_to = _checkbook_get_selected_value($form, $filter_dimension, 'accrued_expense_to');
+  $budget_cash_expense_from = _checkbook_get_selected_value($form, $filter_dimension, 'cash_payments_from');
+  $budget_cash_expense_to = _checkbook_get_selected_value($form, $filter_dimension, 'cash_payments_to');
+  $budget_post_adjustments_from = _checkbook_get_selected_value($form, $filter_dimension, 'post_adjustments_from');
+  $budget_post_adjustments_to = _checkbook_get_selected_value($form, $filter_dimension, 'post_adjustments_to');
   $redirect_url = "budget/transactions";
   if (!empty($budget_fiscal_year)) {
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_fiscal_year, 'year');
@@ -91,5 +96,36 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state)
   $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_current_modified_range_array, 'curamt', TRUE);
 
   return $redirect_url;
+}
+
+
+/**
+ * Constructs the URL for Nycha Budget based on the input by the users
+ *
+ * @param $form
+ * @param $form_state
+ * @return string
+ */
+function _checkbook_advanced_search_nycha_budget_submit($form, &$form_state){
+  $filter_dimension =  'checkbook_nycha_contracts';
+  $nycha_agency_id = Datasource::getNYCHAId();
+  $redirect_url = "";
+  if(!empty($nycha_agency_id)){
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($nycha_agency_id, 'agency');
+  }
+  $redirect_url .= '/datasource/checkbook_nycha';
+  return $redirect_url;
+}
+
+/**
+ * Returns input value from drupal form
+ *
+ * @param $form
+ * @param $filter_dimension
+ * @param $field_name
+ * @return string
+ */
+function _checkbook_get_selected_value($form, $filter_dimension, $field_name){
+  return trim($form[$filter_dimension][$filter_dimension . '_' .$field_name]['#value']);
 }
 
