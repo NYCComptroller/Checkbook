@@ -219,26 +219,26 @@
         $('#edit-budget-advanced-search-domain-filter-checkbook-oge').parent().hide();
         let budget_div = function (data_source, div_contents) {
           this.div_elements = {
-            'agency': 'select[name=' + data_source + '_agency]',
-            'department': 'select[name=' + data_source + '_department]',
-            'expense_category': 'select[name=' + data_source + '_expense_category]',
+            'agency': 'select[name=' + data_source + '_budget_agency]',
+            'department': 'select[name=' + data_source + '_budget_department]',
+            'expense_category': 'select[name=' + data_source + '_budget_expense_category]',
             'budget_code': 'select[name=' + data_source + '_budget_code]',
             'budget_name': 'select[name=' + data_source + '_budget_name]',
-            'year': 'select[name=' + data_source + '_year]',
-            'adopted_from': 'input:text[name=' + data_source + '_adopted_from]',
-            'adopted_to': 'input:text[name=' + data_source + '_adopted_to]',
-            'modified_from': 'input:text[name=' + data_source + '_modified_from]',
-            'modified_to': 'input:text[name=' + data_source + '_modified_to]',
-            'pre_encumbered_from': 'input:text[name=' + data_source + '_pre_encumbered_from]',
-            'pre_encumbered_to': 'input:text[name=' + data_source + '_pre_encumbered_to]',
-            'encumbered_from': 'input:text[name=' + data_source + '_encumbered_from]',
-            'encumbered_to': 'input:text[name=' + data_source + '_encumbered_to]',
-            'accrued_expense_from': 'input:text[name=' + data_source + '_accrued_expense_from]',
-            'accrued_expense_to': 'input:text[name=' + data_source + '_accrued_expense_to]',
-            'cash_payments_from': 'input:text[name=' + data_source + '_cash_payments_from]',
-            'cash_payments_to': 'input:text[name=' + data_source + '_cash_payments_to]',
-            'post_adjustments_from': 'input:text[name=' + data_source + '_post_adjustments_from]',
-            'post_adjustments_to': 'input:text[name=' + data_source + '_post_adjustments_to]',
+            'year': 'select[name=' + data_source + '_budget_year]',
+            'adopted_from': 'input:text[name=' + data_source + '_budget_adopted_from]',
+            'adopted_to': 'input:text[name=' + data_source + '_budget_adopted_to]',
+            'modified_from': 'input:text[name=' + data_source + '_budget_modified_from]',
+            'modified_to': 'input:text[name=' + data_source + '_budget_modified_to]',
+            'pre_encumbered_from': 'input:text[name=' + data_source + '_budget_pre_encumbered_from]',
+            'pre_encumbered_to': 'input:text[name=' + data_source + '_budget_pre_encumbered_to]',
+            'encumbered_from': 'input:text[name=' + data_source + '_budget_encumbered_from]',
+            'encumbered_to': 'input:text[name=' + data_source + '_budget_encumbered_to]',
+            'accrued_expense_from': 'input:text[name=' + data_source + '_budget_accrued_expense_from]',
+            'accrued_expense_to': 'input:text[name=' + data_source + '_budget_accrued_expense_to]',
+            'cash_payments_from': 'input:text[name=' + data_source + '_budget_cash_payments_from]',
+            'cash_payments_to': 'input:text[name=' + data_source + '_budget_cash_payments_to]',
+            'post_adjustments_from': 'input:text[name=' + data_source + '_budget_post_adjustments_from]',
+            'post_adjustments_to': 'input:text[name=' + data_source + '_budget_post_adjustments_to]',
           };
 
           this.data_source = data_source;
@@ -273,7 +273,7 @@
 
         //Agency, Department and Expense Category inputs interaction
         disable_input([div_checkbook_budget.ele('department'), div_checkbook_budget.ele('expense_category')]);
-        div_checkbook_budget.ele('agency').change(function () {alert($(this).val());
+        div_checkbook_budget.ele('agency').change(function () {
           onBudgetAgencyChange(div_checkbook_budget);
         });
 
@@ -291,7 +291,7 @@
         var reloadDepartment = function(div) {
           var val;
           var fiscal_year = (val = div.ele('year').val()) ? val : 0;
-          var agency = (val = div.ele('agency').val()) ? val : 0;alert(agency);
+          var agency = (val = div.ele('agency').val()) ? val : 0;
           $.ajax({
             url: '/advanced-search/autocomplete/budget/department/' + fiscal_year + '/' + agency,
             success: function (data) {
@@ -310,9 +310,9 @@
 
         var reloadExpenseCategory = function(div) {
           var val;
-          var fiscal_year = (val = div.ele('year').val().val()) ? val : 0;
-          var agency = (val = div.ele('agency').val().val()) ? val : 0;
-          var dept = (val = div.ele('department').val().val()) ? val : 0;
+          var fiscal_year = (val = div.ele('year').val()) ? val : 0;
+          var agency = (val = div.ele('agency').val()) ? val : 0;
+          var dept = (val = div.ele('department').val()) ? val : 0;
 
           $.ajax({
             url: '/advanced-search/autocomplete/budget/expcategory/' + fiscal_year + '/' + agency + '/' + dept.toString().replace(/\//g, "__"),
@@ -391,10 +391,10 @@
       var budgetCodeAlreadyLoaded = false;
 
       function reloadBudgetCode() {
-        let fiscal_year = $('#edit-checkbook-budget-year').val() || 0;
-        let agency = $('#edit-checkbook-budget-agency').val() || 0;
-        let dept = $('#edit-checkbook-budget-department').val() || 0;
-        let exp_cat = $('#edit-checkbook-budget-expense-category').val() || 0;
+        let fiscal_year = $('#edit-checkbook-budget-budget-year').val() || 0;
+        let agency = $('#edit-checkbook-budget-budget-agency').val() || 0;
+        let dept = $('#edit-checkbook-budget-budget-department').val() || 0;
+        let exp_cat = $('#edit-checkbook-budget-budget-expense-category').val() || 0;
         let budget_code = $('#edit-checkbook-budget-budget-code').val() || 0;
         let budget_name = $('#edit-checkbook-budget-budget-name').val() || 0;
 
@@ -428,13 +428,12 @@
       var budgetNamesAlreadyLoaded = false;
 
       function reloadBudgetName() {
-        let fiscal_year = $('#edit-checkbook-budget-year').val() || 0;
-        let agency = $('#edit-checkbook-budget-agency').val() || 0;
-        let dept = $('#edit-checkbook-budget-department').val() || 0;
-        let exp_cat = $('#edit-checkbook-budget-expense-category').val() || 0;
+        let fiscal_year = $('#edit-checkbook-budget-budget-year').val() || 0;
+        let agency = $('#edit-checkbook-budget-budget-agency').val() || 0;
+        let dept = $('#edit-checkbook-budget-budget-department').val() || 0;
+        let exp_cat = $('#edit-checkbook-budget-budget-expense-category').val() || 0;
         let budget_code = $('#edit-checkbook-budget-budget-code').val() || 0;
         let budget_name = $('#edit-checkbook-budget-budget-name').val() || 0;
-
 
         let url = '/advanced-search/autocomplete/budget/budgetname/' + fiscal_year + '/' + agency + '/' +
           dept.toString().replace(/\//g, "__") + '/' + exp_cat.toString().replace(/\//g, "__") + '/' + budget_code;
