@@ -241,6 +241,18 @@
             'cash_payments_to': 'input:text[name=' + data_source + '_budget_cash_payments_to]',
             'post_adjustments_from': 'input:text[name=' + data_source + '_budget_post_adjustments_from]',
             'post_adjustments_to': 'input:text[name=' + data_source + '_budget_post_adjustments_to]',
+            'resp_center':'select[name=' + data_source + '_budget_responsibility_center]',
+            'fundsrc':'select[name=' + data_source + '_budget_fundsrc]',
+            'program':'select[name=' + data_source + '_budget_program]',
+            'project':'select[name=' + data_source + '_budget_project]',
+            'budget_type':'select[name=' + data_source + '_budget_budget_type]',
+            'budget_type_chosen':'select[name=' + data_source + '_budget_budget_type_chosen]',
+            'nycha_budget_name':'select[name=' + data_source + '_budget_nycha_budget_name]',
+            'nycha_budget_name_chosen':'select[name=' + data_source + '_budget_nycha_budget_name_chosen]',
+            'committed_from': 'input:text[name=' + data_source + '_budget_committed_from]',
+            'committed_to': 'input:text[name=' + data_source + '_budget_committed_to]',
+            'actual_from': 'input:text[name=' + data_source + '_budget_actual_from]',
+            'actual_to': 'input:text[name=' + data_source + '_budget_actual_to]',
           };
 
           this.data_source = data_source;
