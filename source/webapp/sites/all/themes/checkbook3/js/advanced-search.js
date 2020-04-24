@@ -260,51 +260,13 @@
         let div_checkbook_budget_nycha = new budget_div('checkbook_nycha', div_budget_main.children('div.checkbook-nycha'));
 
         //On change of data source
-        $('input:radio[name=budget_advanced_search_domain_filter]').change(function () {
-          onChangeDataSource($('input[name=budget_advanced_search_domain_filter]:checked').val());
-        });
+        //$('input:radio[name=budget_advanced_search_domain_filter]').change(function () {
+        //  onBudgetDataSourceChange($('input[name=budget_advanced_search_domain_filter]:checked').val());
+        //});
         //checkbook_advanced_search_clear_button.js sets this value by default
         $('input:radio[name=budget_advanced_search_domain_filter]').click(function () {
-          onChangeDataSource($('input[name=budget_advanced_search_domain_filter]:checked').val());
+          onBudgetDataSourceChange($('input[name=budget_advanced_search_domain_filter]:checked').val());
         });
-
-        //Reset fields to default values
-        let resetFields = function(divWrapper) {
-          $(divWrapper.children()).find(':input').each(function () {
-            if (this.type == 'text') {
-              $(this).val('');
-            }
-            if (this.type == 'select-one') {
-              var default_option = $(this).attr('default_selected_value');
-              if (!default_option)
-                $(this).find('option:first').attr("selected", "selected");
-              else
-                $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
-            }
-        });
-        }
-
-        let onChangeDataSource = function(dataSource) {
-          /* Reset all the fields for the data source */
-          resetFields(div_budget_main);
-
-          /* Initialize view by data source */
-          switch (dataSource) {
-            case "checkbook_nycha":
-              resetFields(div_checkbook_budget_nycha.contents());
-              div_checkbook_budget.contents().hide();
-              div_checkbook_budget_nycha.contents().show();
-              break;
-
-            default:
-              resetFields(div_checkbook_budget.contents());
-              div_checkbook_budget.contents().show();
-              div_checkbook_budget_nycha.contents().hide();
-              if (!div_checkbook_budget.ele('agency')) {
-                disable_input([div_checkbook_budget.ele('department'), div_checkbook_budget.ele('expense_category')]);
-              }
-          }
-        }
 
         let onBudgetAgencyChange = function(div){
           if (div.ele('agency').val() === "0") {
@@ -431,6 +393,44 @@
               }
             }
           });
+        }
+
+        //Reset fields to default values
+        let resetFields = function(divWrapper) {
+          $(divWrapper.children()).find(':input').each(function () {
+            if (this.type == 'text') {
+              $(this).val('');
+            }
+            if (this.type == 'select-one') {
+              var default_option = $(this).attr('default_selected_value');
+              if (!default_option)
+                $(this).find('option:first').attr("selected", "selected");
+              else
+                $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
+            }
+          });
+        }
+
+        let onBudgetDataSourceChange = function(dataSource) {
+          /* Reset all the fields for the data source */
+          resetFields(div_budget_main);
+
+          /* Initialize view by data source */
+          switch (dataSource) {
+            case "checkbook_nycha":
+              resetFields(div_checkbook_budget_nycha.contents());
+              div_checkbook_budget.contents().hide();
+              div_checkbook_budget_nycha.contents().show();
+              break;
+
+            default:
+              resetFields(div_checkbook_budget.contents());
+              div_checkbook_budget.contents().show();
+              div_checkbook_budget_nycha.contents().hide();
+              if (div_checkbook_budget.ele('agency').val() == "0") {
+                disable_input([div_checkbook_budget.ele('department'), div_checkbook_budget.ele('expense_category')]);
+              }
+          }
         }
 
         //Trigger Chosen input tool for 'Budget Code' and 'Budget Name'
@@ -566,9 +566,9 @@
         var div_checkbook_contracts_nycha = new contracts_div('checkbook_nycha', div_contracts_main.children('div.checkbook-nycha'));
 
         //On change of data source
-        $('input:radio[name=contracts_advanced_search_domain_filter]').change(function () {
-          onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
-        });
+       // $('input:radio[name=contracts_advanced_search_domain_filter]').change(function () {
+        //  onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
+        //});
         ///checkbook_advanced_search_clear_button.js sets this value by default
         $('input:radio[name=contracts_advanced_search_domain_filter]').click(function () {
           onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
@@ -982,9 +982,9 @@
         });
 
         //On change of data source
-        $('input:radio[name=payroll_advanced_search_domain_filter]').change(function () {
-          onChangeDataSource($('input[name=payroll_advanced_search_domain_filter]:checked').val());
-        });
+        //$('input:radio[name=payroll_advanced_search_domain_filter]').change(function () {
+        //  onChangeDataSource($('input[name=payroll_advanced_search_domain_filter]:checked').val());
+       //});
         ///checkbook_advanced_search_clear_button.js sets this value by default
         $('input:radio[name=payroll_advanced_search_domain_filter]').click(function () {
           onChangeDataSource($('input[name=payroll_advanced_search_domain_filter]:checked').val());
@@ -1392,9 +1392,9 @@
         }
 
         //On change of data source
-        $('input:radio[name=spending_advanced_search_domain_filter]').change(function () {
-          onChangeDataSource($('input[name=spending_advanced_search_domain_filter]:checked').val());
-        });
+        //$('input:radio[name=spending_advanced_search_domain_filter]').change(function () {
+        //  onChangeDataSource($('input[name=spending_advanced_search_domain_filter]:checked').val());
+        //});
         //checkbook_advanced_search_clear_button.js sets this value by default
         $('input:radio[name=spending_advanced_search_domain_filter]').click(function () {
           onChangeDataSource($('input[name=spending_advanced_search_domain_filter]:checked').val());
