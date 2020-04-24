@@ -15,5 +15,19 @@
     {"field_name":"cash_payments","column":"column-right"},
     {"field_name":"post_adjustments","column":"column-right"},
     {"field_name":"budget","column":"none"}
+  ],
+  "checkbook_nycha": [
+    {"field_name":"expense_category","column":"column-left"},
+    {"field_name":"responsibility_center","column":"column-left"},
+    {"field_name":"fundsrc","column":"column-left"},
+    {"field_name":"program","column":"column-left"},
+    {"field_name":"project","column":"column-left"},
+    {"field_name":"budget_type","column":"column-left"},
+    {"field_name":"nycha_budget_name","column":"column-left"},
+    {"field_name":"adopted","column":"column-right"},
+    {"field_name":"modified","column":"column-right"},
+    {"field_name":"committed","column":"column-right"},
+    {"field_name":"encumbered","column":"column-right"},
+    {"field_name":"actual","column":"column-right"}
   ]
 }
