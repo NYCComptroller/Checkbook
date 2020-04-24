@@ -413,7 +413,7 @@
 
         let onBudgetDataSourceChange = function(dataSource) {
           /* Reset all the fields for the data source */
-          resetFields(div_budget_main);
+          //resetFields(div_budget_main);
 
           /* Initialize view by data source */
           switch (dataSource) {
@@ -427,9 +427,15 @@
               resetFields(div_checkbook_budget.contents());
               div_checkbook_budget.contents().show();
               div_checkbook_budget_nycha.contents().hide();
+              //Disable department and Expense Category Drop-downs
               if (div_checkbook_budget.ele('agency').val() == "0") {
                 disable_input([div_checkbook_budget.ele('department'), div_checkbook_budget.ele('expense_category')]);
               }
+              //Reset Budget Name and Budget Code Chosen drop-downs
+              div_checkbook_budget.ele('budget_code').val("0").trigger("chosen:updated");
+              div_checkbook_budget.ele('budget_name').val("0").trigger("chosen:updated");
+              reloadBudgetCode(div_checkbook_budget);
+              reloadBudgetName(div_checkbook_budget);
           }
         }
 
@@ -442,9 +448,6 @@
           no_results_text: "No matches found"
         });
         div_checkbook_budget.ele('budget_name_chosen').find('.chosen-search-input').attr("placeholder", "Search Budget Name");
-
-        reloadBudgetCode(div_checkbook_budget);
-        reloadBudgetName(div_checkbook_budget);
 
         //Agency, Department and Expense Category inputs interaction
         disable_input([div_checkbook_budget.ele('department'), div_checkbook_budget.ele('expense_category')]);
