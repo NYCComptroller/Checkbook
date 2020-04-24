@@ -77,9 +77,11 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
  * @param string $data_source
  * @return array
  */
-function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = Datasource::CITYWIDE)
-{
+function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = Datasource::CITYWIDE){
     try {
+       if($data_source == Datasource::NYCHA && $domain == Domain::$BUDGET){
+         return CheckbookDateUtil::getNychaBudgetFiscalYears();
+       }
         $data = CheckbookDateUtil::getLast10FiscalYearOptions($data_source);
         $max_year = _checkbook_max_data_year($data_source);
         $fiscal_year_array = [];

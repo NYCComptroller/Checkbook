@@ -106,7 +106,7 @@ function checkbook_advanced_search_form($form, $form_state)
 
   //<editor-fold desc="Budget">
 
-  $form = _checkbook_advanced_search_get_form($form, Domain::Budget, $agencies, $agency_attributes, _checkbook_advanced_search_get_year('budget'));
+  $form = _checkbook_advanced_search_get_form($form, Domain::Budget, $agencies, $agency_attributes, $year_range);
 
   //</editor-fold>
 
@@ -475,6 +475,9 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
     $contract_type_attribute = _checkbook_advanced_search_get_nycha_contract_types($data_source);
     $fundsrc_attributes = checkbook_advanced_search_get_nycha_funding_sources($data_source);
     $year_attribute = _checkbook_advanced_search_get_year($domain, null, $data_source);
+    $expense_category_attributes = _budget_expcat_options(NUll, NUll, NULL, Datasource::NYCHA, false);
+    $program_attributes = _budget_program_options(Datasource::NYCHA, false);
+    $project_attributes = _budget_project_options(Datasource::NYCHA, false);
   } else {
     $mwbe_category_attributes = _checkbook_advanced_search_get_mwbe_category_and_id();
     $sub_vendor_status = _checkbook_advanced_search_get_subcontract_approval_status_and_id();
@@ -535,6 +538,18 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
           case '$fundsrc_attributes':
             $field_definition_configs[$i]['attributes']['options'] = $fundsrc_attributes['options'];
             $field_definition_configs[$i]['attributes']['option_attributes'] = $fundsrc_attributes['option_attributes'];
+            break;
+          case '$expense_category_attributes':
+            $field_definition_configs[$i]['attributes']['options'] = $expense_category_attributes['options'];
+            $field_definition_configs[$i]['attributes']['option_attributes'] = $expense_category_attributes['option_attributes'];
+            break;
+          case '$program_attributes':
+            $field_definition_configs[$i]['attributes']['options'] = $program_attributes['options'];
+            $field_definition_configs[$i]['attributes']['option_attributes'] = $program_attributes['option_attributes'];
+            break;
+          case '$project_attributes':
+            $field_definition_configs[$i]['attributes']['options'] = $project_attributes['options'];
+            $field_definition_configs[$i]['attributes']['option_attributes'] = $project_attributes['option_attributes'];
             break;
         }
       }

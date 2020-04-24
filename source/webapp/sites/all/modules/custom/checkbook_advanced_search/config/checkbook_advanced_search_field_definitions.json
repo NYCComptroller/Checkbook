@@ -5,7 +5,10 @@
     },
     "expense_category":{
         "field_type":"select",
-        "field_name":"expense_category"
+        "field_name":"expense_category",
+        "attributes":{
+          "options":"$expense_category_attributes"
+        }
     },
     "expense_type":{
         "field_type":"select",
@@ -408,11 +411,17 @@
   },
   "program":{
     "field_type":"select",
-    "field_name":"program"
+    "field_name":"program",
+    "attributes":{
+      "options":"$program_attributes"
+    }
   },
   "project":{
     "field_type":"select",
-    "field_name":"project"
+    "field_name":"project",
+    "attributes":{
+      "options":"$project_attributes"
+    }
   },
   "nycha_budget_name":{
     "field_type":"select",
