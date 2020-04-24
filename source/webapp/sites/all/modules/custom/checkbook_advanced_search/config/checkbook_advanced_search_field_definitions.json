@@ -405,5 +405,42 @@
   "budget":{
     "field_type":"submit",
     "field_name":"budget"
+  },
+  "program":{
+    "field_type":"select",
+    "field_name":"program"
+  },
+  "project":{
+    "field_type":"select",
+    "field_name":"project"
+  },
+  "nycha_budget_name":{
+    "field_type":"select",
+    "field_name":"nycha_budget_name",
+    "attributes":{
+      "title":"Budget Name"
+    }
+  },
+  "budget_type":{
+    "field_type":"select",
+    "field_name":"budget_type"
+  },
+  "committed":{
+    "field_type":"rangefield",
+    "field_name":"committed",
+    "attributes":{
+      "title":"Committed",
+      "size":30,
+      "maxlength":32
+    }
+  },
+  "actual":{
+    "field_type":"rangefield",
+    "field_name":"actual",
+    "attributes":{
+      "title":"Actual Amount",
+      "size":30,
+      "maxlength":32
+    }
   }
 }
