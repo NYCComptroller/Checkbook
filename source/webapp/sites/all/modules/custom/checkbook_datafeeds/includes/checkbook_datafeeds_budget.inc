@@ -333,7 +333,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
   $form['filter']['nycha_fiscal_year'] = array(
     '#type' => 'select',
     '#title' => t('Year:'),
-    '#options' => CheckbookDateUtil::getNychaBudgetFiscalYears(),
+    '#options' => CheckbookDateUtil::getNychaBudgetFiscalYears(true),
     '#default_value' => !empty($form_state['values']['nycha_fiscal_year']) ? $form_state['values']['nycha_fiscal_year'] : CheckbookDateUtil::getCurrentFiscalYear(),
     '#attributes' => array('class' => array('watch')),
     '#prefix' => '<div class="datafield fiscalyear">',
