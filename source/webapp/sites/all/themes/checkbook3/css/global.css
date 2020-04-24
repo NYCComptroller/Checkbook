@@ -1502,6 +1502,8 @@ div.create-alert-schedule-alert select{
 #checkbook-advanced-search-form #edit-payroll-clear,
 #checkbook-advanced-search-form #edit-budget-submit,
 #checkbook-advanced-search-form #edit-budget-clear,
+#checkbook-advanced-search-form #edit-budget-submit--2,
+#checkbook-advanced-search-form #edit-budget-clear--2,
 #checkbook-advanced-search-form #edit-revenue-submit,
 #checkbook-advanced-search-form #edit-revenue-clear{
     float:none;
