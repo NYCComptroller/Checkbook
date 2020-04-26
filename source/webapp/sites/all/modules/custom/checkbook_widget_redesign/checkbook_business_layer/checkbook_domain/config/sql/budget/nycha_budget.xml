@@ -277,7 +277,7 @@
       FROM budget
       <where>
         <exp op="AND">
-          <exp op="=" dbField="budget_fiscal_year_id" paramName="expcategory" />
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
           <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
           <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
           <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
