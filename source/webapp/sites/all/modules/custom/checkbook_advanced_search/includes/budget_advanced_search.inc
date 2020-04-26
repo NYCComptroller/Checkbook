@@ -32,68 +32,70 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state, $data_sou
     $redirect_url =   _checkbook_advanced_search_nycha_budget_submit($form, $form_state);
     return $redirect_url;
   }
-  $budget_agency = _checkbook_get_selected_value($form, $filter_dimension, 'agency');
-  $budget_department = _checkbook_get_selected_value($form, $filter_dimension, 'department');
-  $budget_expense_category = _checkbook_get_selected_value($form, $filter_dimension, 'expense_category');
-  $budget_budget_code = _checkbook_get_selected_value($form, $filter_dimension, 'budget_code');
-  $budget_budget_name = _checkbook_get_selected_value($form, $filter_dimension, 'budget_name');
-  $budget_fiscal_year = _checkbook_get_selected_value($form, $filter_dimension, 'year');
-  $budget_adopted_budget_from = _checkbook_get_selected_value($form, $filter_dimension, 'adopted_from');
-  $budget_adopted_budget_to = _checkbook_get_selected_value($form, $filter_dimension, 'adopted_to');
-  $budget_current_modified_from = _checkbook_get_selected_value($form, $filter_dimension, 'modified_from');
-  $budget_current_modified_to = _checkbook_get_selected_value($form, $filter_dimension, 'modified_to');
-  $budget_pre_encumbered_from = _checkbook_get_selected_value($form, $filter_dimension, 'pre_encumbered_from');
-  $budget_pre_encumbered_to = _checkbook_get_selected_value($form, $filter_dimension, 'pre_encumbered_to');
-  $budget_encumbered_from = _checkbook_get_selected_value($form, $filter_dimension, 'encumbered_from');
-  $budget_encumbered_to = _checkbook_get_selected_value($form, $filter_dimension, 'encumbered_to');
-  $budget_accrued_expense_from = _checkbook_get_selected_value($form, $filter_dimension, 'accrued_expense_from');
-  $budget_accrued_expense_to = _checkbook_get_selected_value($form, $filter_dimension, 'accrued_expense_to');
-  $budget_cash_expense_from = _checkbook_get_selected_value($form, $filter_dimension, 'cash_payments_from');
-  $budget_cash_expense_to = _checkbook_get_selected_value($form, $filter_dimension, 'cash_payments_to');
-  $budget_post_adjustments_from = _checkbook_get_selected_value($form, $filter_dimension, 'post_adjustments_from');
-  $budget_post_adjustments_to = _checkbook_get_selected_value($form, $filter_dimension, 'post_adjustments_to');
   $redirect_url = "budget/transactions";
-  if (!empty($budget_fiscal_year)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_fiscal_year, 'year');
+  $agency = _checkbook_get_selected_value($form, $filter_dimension, 'agency');
+  $department = _checkbook_get_selected_value($form, $filter_dimension, 'department');
+  $department = ($department == "Select Department") ? 0 : $department;
+  $expense_category = _checkbook_get_selected_value($form, $filter_dimension, 'expense_category');
+  $expense_category = ($expense_category == "Select Expense Category") ? 0 : $expense_category;
+  $budget_code = _checkbook_get_selected_value($form, $filter_dimension, 'budget_code');
+  $budget_name = _checkbook_get_selected_value($form, $filter_dimension, 'budget_name');
+  $fiscal_year = _checkbook_get_selected_value($form, $filter_dimension, 'year');
+  $adopted_budget_from = _checkbook_get_selected_value($form, $filter_dimension, 'adopted_from');
+  $adopted_budget_to = _checkbook_get_selected_value($form, $filter_dimension, 'adopted_to');
+  $current_modified_from = _checkbook_get_selected_value($form, $filter_dimension, 'modified_from');
+  $current_modified_to = _checkbook_get_selected_value($form, $filter_dimension, 'modified_to');
+  $pre_encumbered_from = _checkbook_get_selected_value($form, $filter_dimension, 'pre_encumbered_from');
+  $pre_encumbered_to = _checkbook_get_selected_value($form, $filter_dimension, 'pre_encumbered_to');
+  $encumbered_from = _checkbook_get_selected_value($form, $filter_dimension, 'encumbered_from');
+  $encumbered_to = _checkbook_get_selected_value($form, $filter_dimension, 'encumbered_to');
+  $accrued_expense_from = _checkbook_get_selected_value($form, $filter_dimension, 'accrued_expense_from');
+  $accrued_expense_to = _checkbook_get_selected_value($form, $filter_dimension, 'accrued_expense_to');
+  $cash_expense_from = _checkbook_get_selected_value($form, $filter_dimension, 'cash_payments_from');
+  $cash_expense_to = _checkbook_get_selected_value($form, $filter_dimension, 'cash_payments_to');
+  $post_adjustments_from = _checkbook_get_selected_value($form, $filter_dimension, 'post_adjustments_from');
+  $post_adjustments_to = _checkbook_get_selected_value($form, $filter_dimension, 'post_adjustments_to');
+  if (!empty($fiscal_year)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($fiscal_year, 'year');
   }
-  if (!empty($budget_expense_category)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_expense_category, 'expcategorynm');
+  if (!empty($expense_category)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($expense_category, 'expcategorynm');
   }
-  if (!empty($budget_agency)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_agency, 'agency');
+  if (!empty($agency)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($agency, 'agency');
   }
-  if (!empty($budget_department)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_department, 'deptnm');
+  if (!empty($department)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($department, 'deptnm');
   }
-  if (!empty($budget_budget_code)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_code, 'bdgcode_code');
+  if (!empty($budget_code)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_code, 'bdgcode_code');
   }
-  if (!empty($budget_budget_name)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_budget_name, 'bdgcodenm');
+  if (!empty($budget_name)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_name, 'bdgcodenm');
   }
 
 
   //URL for ranges
-  $budget_adopted_budget_range_array = array('from' => $budget_adopted_budget_from, 'to' => $budget_adopted_budget_to, 'type' => 'amount');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_adopted_budget_range_array, 'adpamt', TRUE);
+  $adopted_budget_range_array = array('from' => $adopted_budget_from, 'to' => $adopted_budget_to, 'type' => 'amount');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($adopted_budget_range_array, 'adpamt', TRUE);
 
-  $budget_pre_encumbered_range_array = array('from' => $budget_pre_encumbered_from, 'to' => $budget_pre_encumbered_to, 'type' => 'amount');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_pre_encumbered_range_array, 'preamt', TRUE);
+  $pre_encumbered_range_array = array('from' => $pre_encumbered_from, 'to' => $pre_encumbered_to, 'type' => 'amount');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($pre_encumbered_range_array, 'preamt', TRUE);
 
-  $budget_encumbered_range_array = array('from' => $budget_encumbered_from, 'to' => $budget_encumbered_to, 'type' => 'amount');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_encumbered_range_array, 'encamt', TRUE);
+  $encumbered_range_array = array('from' => $encumbered_from, 'to' => $encumbered_to, 'type' => 'amount');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($encumbered_range_array, 'encamt', TRUE);
 
-  $budget_cash_expense_range_array = array('from' => $budget_cash_expense_from, 'to' => $budget_cash_expense_to, 'type' => 'amount');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_cash_expense_range_array, 'cshamt', TRUE);
+  $cash_expense_range_array = array('from' => $cash_expense_from, 'to' => $cash_expense_to, 'type' => 'amount');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($cash_expense_range_array, 'cshamt', TRUE);
 
-  $budget_post_adjustments_range_array = array('from' => $budget_post_adjustments_from, 'to' => $budget_post_adjustments_to, 'type' => 'amount');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_post_adjustments_range_array, 'postamt', TRUE);
+  $post_adjustments_range_array = array('from' => $post_adjustments_from, 'to' => $post_adjustments_to, 'type' => 'amount');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($post_adjustments_range_array, 'postamt', TRUE);
 
-  $budget_accrued_expense_range_array = array('from' => $budget_accrued_expense_from, 'to' => $budget_accrued_expense_to, 'type' => 'amount');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_accrued_expense_range_array, 'acramt', TRUE);
+  $accrued_expense_range_array = array('from' => $accrued_expense_from, 'to' => $accrued_expense_to, 'type' => 'amount');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($accrued_expense_range_array, 'acramt', TRUE);
 
-  $budget_current_modified_range_array = array('from' => $budget_current_modified_from, 'to' => $budget_current_modified_to, 'type' => 'amount');
-  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_current_modified_range_array, 'curamt', TRUE);
+  $current_modified_range_array = array('from' => $current_modified_from, 'to' => $current_modified_to, 'type' => 'amount');
+  $redirect_url .= _checkbook_advanced_search_generate_redirect_url($current_modified_range_array, 'curamt', TRUE);
 
   return $redirect_url;
 }
@@ -107,13 +109,11 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state, $data_sou
  * @return string
  */
 function _checkbook_advanced_search_nycha_budget_submit($form, &$form_state){
-  $filter_dimension =  'checkbook_nycha_contracts';
   $nycha_agency_id = Datasource::getNYCHAId();
-  $redirect_url = "";
+  $redirect_url = 'nycha_budget/transactions/datasource/checkbook_nycha';
   if(!empty($nycha_agency_id)){
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($nycha_agency_id, 'agency');
   }
-  $redirect_url .= '/datasource/checkbook_nycha';
   return $redirect_url;
 }
 
