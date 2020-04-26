@@ -29,7 +29,7 @@
 function _checkbook_advanced_search_budget_submit($form, &$form_state, $data_source = DataSource::CITYWIDE){
   $filter_dimension = $data_source . '_budget';
   if( $data_source == Datasource::NYCHA){
-    $redirect_url =   _checkbook_advanced_search_nycha_budget_submit($form, $form_state);
+    $redirect_url =   _checkbook_advanced_search_nycha_budget_submit($form, $form_state, $filter_dimension);
     return $redirect_url;
   }
   $redirect_url = "budget/transactions";
@@ -106,15 +106,78 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state, $data_sou
  *
  * @param $form
  * @param $form_state
+ * @param $filterDimension
  * @return string
  */
-function _checkbook_advanced_search_nycha_budget_submit($form, &$form_state){
-  $nycha_agency_id = Datasource::getNYCHAId();
-  $redirect_url = 'nycha_budget/transactions/datasource/checkbook_nycha';
-  if(!empty($nycha_agency_id)){
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($nycha_agency_id, 'agency');
-  }
-  return $redirect_url;
+function _checkbook_advanced_search_nycha_budget_submit($form, &$form_state, $filterDimension){
+  $redirectUrl = 'nycha_budget/search/transactions/datasource/checkbook_nycha';
+
+  $agencyId = Datasource::getNYCHAId();
+  $year = _checkbook_get_selected_value($form, $filterDimension, 'year');
+
+  $expenseCategory = _checkbook_get_selected_value($form, $filterDimension, 'expense_category');
+  $expenseCategory = ($expenseCategory == "Select Expense Category") ? 0 : $expenseCategory;
+
+  $responsibilityCenter = _checkbook_get_selected_value($form, $filterDimension, 'responsibility_center');
+  $responsibilityCenter = ($responsibilityCenter == "Select Responsibility Center") ? 0 : $responsibilityCenter;
+
+  $fundSrc = _checkbook_get_selected_value($form, $filterDimension, 'fundsrc');
+  $fundSrc = ($fundSrc == "Select Funding Source") ? 0 : $fundSrc;
+
+  $program = _checkbook_get_selected_value($form, $filterDimension, 'program');
+  $program = ($program == "Select Program") ? 0 : $program;
+
+  $project = _checkbook_get_selected_value($form, $filterDimension, 'project');
+  $project = ($project == "Select Project") ? 0 : $project;
+
+  $budgetType = _checkbook_get_selected_value($form, $filterDimension, 'budget_type');
+  $budgetType = ($budgetType == "Select Budget Type") ? 0 : $budgetType;
+
+  $budgetName = _checkbook_get_selected_value($form, $filterDimension, 'nycha_budget_name');
+  $budgetName = ($budgetName == "Select Budget Name") ? 0 : $budgetName;
+
+  $adoptedFrom = _checkbook_get_selected_value($form, $filterDimension, 'adopted_from');
+  $adoptedTo = _checkbook_get_selected_value($form, $filterDimension, 'adopted_to');
+
+  $modifiedFrom = _checkbook_get_selected_value($form, $filterDimension, 'modified_from');
+  $modifiedTo = _checkbook_get_selected_value($form, $filterDimension, 'modified_to');
+
+  $committedFrom = _checkbook_get_selected_value($form, $filterDimension, 'committed_from');
+  $committedTo = _checkbook_get_selected_value($form, $filterDimension, 'committed_to');
+
+  $encumberedFrom = _checkbook_get_selected_value($form, $filterDimension, 'encumbered_from');
+  $encumberedTo = _checkbook_get_selected_value($form, $filterDimension, 'encumbered_to');
+
+  $actualFrom = _checkbook_get_selected_value($form, $filterDimension, 'actual_from');
+  $actualTo = _checkbook_get_selected_value($form, $filterDimension, 'actual_to');
+
+  $redirectUrl .= (!empty($agencyId))? _checkbook_advanced_search_generate_redirect_url($agencyId, 'agency') : "";
+  $redirectUrl .= (!empty($year))? _checkbook_advanced_search_generate_redirect_url($year, 'year') : "";
+  $redirectUrl .= (!empty($expenseCategory))? _checkbook_advanced_search_generate_redirect_url($expenseCategory, 'expcategory') : "";
+  $redirectUrl .= (!empty($responsibilityCenter))? _checkbook_advanced_search_generate_redirect_url($responsibilityCenter, 'resp_center') : "";
+  $redirectUrl .= (!empty($fundSrc))? _checkbook_advanced_search_generate_redirect_url($fundSrc, 'fundsrc') : "";
+  $redirectUrl .= (!empty($program))? _checkbook_advanced_search_generate_redirect_url($program, 'prgm') : "";
+  $redirectUrl .= (!empty($project))? _checkbook_advanced_search_generate_redirect_url($project, 'proj') : "";
+  $redirectUrl .= (!empty($budgetType))? _checkbook_advanced_search_generate_redirect_url($budgetType, 'bdgtyp') : "";
+  $redirectUrl .= (!empty($budgetName))? _checkbook_advanced_search_generate_redirect_url($budgetName, 'bdgnm') : "";
+
+  //URL for ranges
+  $adoptedRange = array('from' => $adoptedFrom, 'to' => $adoptedTo, 'type' => 'amount');
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($adoptedRange, 'adpamt', TRUE);
+
+  $modifiedRange = array('from' => $modifiedFrom, 'to' => $modifiedTo, 'type' => 'amount');
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($modifiedRange, 'modamtr', TRUE);
+
+  $committedRange = array('from' => $committedFrom, 'to' => $committedTo, 'type' => 'amount');
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($committedRange, 'comamtr', TRUE);
+
+  $encumberedRange = array('from' => $encumberedFrom, 'to' => $encumberedTo, 'type' => 'amount');
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($encumberedRange, 'adpamt', TRUE);
+
+  $actualRange = array('from' => $actualFrom, 'to' => $actualTo, 'type' => 'amount');
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($actualRange, 'adpamt', TRUE);
+
+  return $redirectUrl;
 }
 
 /**
