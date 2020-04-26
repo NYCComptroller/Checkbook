@@ -30,7 +30,7 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
 
     switch ($form_state['clicked_button']['#name']) {
         case "budget_submit":
-            $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
+            $data_source = $form_state['values']['budget_advanced_search_domain_filter'];
             $form_state['redirect'] = _checkbook_advanced_search_budget_submit($form, $form_state, $data_source);
             break;
         case "revenue_submit":
