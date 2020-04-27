@@ -116,6 +116,17 @@
         "<1M": "[*,999999.99]"
       }
     },
+    "modified_budget": {
+      "title": "By Modified Expense Budget",
+      "intervals": {
+        ">100M": "[100000000,*]",
+        "50M-100M": "[50000000,99999999.99]",
+        "25M-50M": "[25000000,49999999.99]",
+        "10M-25M": "[10000000,24999999.99]",
+        "1M-10M": "[1000000,9999999.99]",
+        "<1M": "[*,999999.99]"
+      }
+    },
     "facet_year_array": {
       "title": "Fiscal Year",
       "autocomplete": true,
@@ -196,6 +207,22 @@
       "daily_wage": "Daily Wage",
       "overtime_pay": "Overtime Payments",
       "payroll_type": "Payroll Type"
+    },
+    "budget":{
+      "fiscal_year": "Year",
+      "expenditure_type_description": "Expense Category",
+      "funding_source_name": "Funding Source",
+      "program_phase_name": "Program",
+      "budget_type": "Budget Type",
+      "budget_name": "Budget Name",
+      "adopted_budget": "Adopted",
+      "modified_budget": "Modified",
+      "responsibility_center_name" : "Responsibility Center",
+      "gl_project_name": "Project",
+      "committed": "Committed",
+      "actual_amount": "Actual Amount",
+      "funds_available": "Remaining",
+      "encumbrance_amount": "Encumbered"
     }
   },
   "export_fields": {
@@ -272,6 +299,22 @@
       "funding_source_name": "Funding source",
       "program_phase_code": "Program",
       "gl_project_name": "Project"
+    },
+    "budget":{
+      "fiscal_year": "Year",
+      "adopted_budget": "Adopted",
+      "modified_budget": "Modified",
+      "budget_type": "Budget Type",
+      "budget_name": "Budget Name",
+      "encumbrance_amount": "Encumbered",
+      "actual_amount": "Actual Amount",
+      "committed": "Committed",
+      "funds_available": "Remaining",
+      "expenditure_type_description": "Expense Category",
+      "funding_source_name": "Funding Source",
+      "responsibility_center_name" : "Responsibility Center",
+      "program_phase_name": "Program",
+      "gl_project_name": "Project"
     }
   },
   "autocomplete_terms": {
@@ -283,6 +326,6 @@
     "expenditure_type_description": "Expense Categories"
   },
   "sort": {
-    "sort_by": "domain_ordering asc, sort_sequence asc, check_issue_date desc, document_id desc, date_ordering desc, invoice_number asc, invoice_line_number asc, distribution_line_number asc"
+    "sort_by": "domain_ordering asc, sort_sequence asc, check_issue_date desc, document_id desc, date_ordering desc, invoice_number asc, invoice_line_number asc, distribution_line_number asc, id desc"
   }
 }
