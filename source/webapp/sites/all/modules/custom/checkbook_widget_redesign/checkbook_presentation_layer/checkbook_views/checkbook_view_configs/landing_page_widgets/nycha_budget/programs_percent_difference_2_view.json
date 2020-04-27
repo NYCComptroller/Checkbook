@@ -6,18 +6,20 @@
   "footerUrl":"NychaBudgetUrlService::getPercentDiffFooterUrl(_widget_controller_footer_url($node),'prgm_details')",
   "table_columns":[
     {"labelAlias":"program","column":"program_phase_description", "derivedColumn":"program_name_link"},
+    {"labelAlias": "previous_1_modified","column": "previous_1_amount","format": "dollar"},
     {"labelAlias": "previous_modified","column": "previous_amount","format": "dollar"},
     {"labelAlias": "current_modified","column": "current_amount","format": "dollar"},
-    {"labelAlias": "percent_diff","column": "percent_difference1","format": "percent"},
-    {"label":"","column":""}
+    {"labelAlias": "percent_diff","column": "percent_difference2","format": "percent"},
+    {"label": "","column": ""}
   ],
   "dataTableOptions":{
     "aoColumns":[
       {"bSortable":false,"sWidth":"250px","sClass":"text"},
-      {"bSortable":true,"sWidth":"150px","sClass":"number","asSorting":["desc","asc"]},
-      {"bSortable":true,"sWidth":"150px" ,"sClass":"number","asSorting":["desc" ,"asc"]},
-      {"bSortable":true,"sWidth":"150px","sClass":"number","asSorting":["desc","asc"]},
-      {"bSortable":false,"sWidth":"15px"}
+      { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": true,"sWidth":"150px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
+      { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": true,"sWidth":"150px","sClass":"number","asSorting": [ "desc","asc"  ] },
+      { "bSortable": true,"sWidth":"15px" }
     ],
     "bServerSide":true,
     "bFilter":false,
@@ -26,7 +28,7 @@
     "bLengthChange":false,
     "bInfo":false,
     "bAutoWidth":false,
-    "aaSorting":[[3,"desc"]],
+    "aaSorting":[[4,"desc"]],
     "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
     "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
   }
