@@ -1,33 +1,22 @@
 {
   "widgetType": "data_tables",
   "widgetSubType": "dataTableList",
-  "cleanURLParameters": [
-    "year",
-    "expcategory",
-    "resp_center",
-    "fundsrc",
-    "prgm",
-    "proj",
-    "bdgtyp",
-    "bdgnm",
-    "modamtr",
-    "comamtr"
-  ],
+  "cleanURLParameters": ["year", "expcategory", "resp_center", "fundsrc", "prgm", "proj", "bdgtyp",
+                          "bdgnm", "modamt", "modamtr", "comamtr", "adpamt", "encamt", "actual"],
   "urlParamMap": {
-    "year": "budget_fiscal_year_id",
-    "expcategory": "expenditure_type_id",
-    "resp_center": "responsibility_center_id",
-    "fundsrc":"funding_source_id",
-    "prgm": "program_phase_id",
-    "proj": "gl_project_id",
-    "bdgtyp": "budget_type",
-    "bdgnm": "budget_name",
-    "modamtr": "modified_budget",
-    "comamtr": "committed"
+    "year": "budget_fiscal_year_id", "expcategory": "expenditure_type_id", "resp_center": "responsibility_center_id",
+    "fundsrc":"funding_source_id", "prgm": "program_phase_id", "proj": "gl_project_id", "bdgtyp": "budget_type",
+    "bdgnm": "budget_name", "modamt": "modified_budget", "modamtr": "modified_budget", "comamt": "committed", "comamtr": "committed",
+    "encamt":"encumbrance_amount", "actual":"actual_amount", "adpamt": "adopted_budget"
   },
   "paramTypeConfig": {
     "comamtr": "rangeid",
+    "comamt": "range",
     "modamtr": "rangeid",
+    "modamt": "range",
+    "adpamt": "range",
+    "encamt": "range",
+    "actual": "range",
     "bdgnm": "eqignorecase",
     "bdgnm_exact": "eqignorecase"
   },
