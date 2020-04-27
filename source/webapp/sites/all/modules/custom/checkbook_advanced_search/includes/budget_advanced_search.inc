@@ -41,8 +41,8 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state, $data_sou
   $budget_code = _checkbook_get_selected_value($form, $filter_dimension, 'budget_code');
   $budget_name = _checkbook_get_selected_value($form, $filter_dimension, 'budget_name');
   $fiscal_year = _checkbook_get_selected_value($form, $filter_dimension, 'year');
-  $adopted_budget_from = _checkbook_get_selected_value($form, $filter_dimension, 'adopted_from');
-  $adopted_budget_to = _checkbook_get_selected_value($form, $filter_dimension, 'adopted_to');
+  $adopted_budget_from = _checkbook_get_selected_value($form, $filter_dimension, 'adopted_budget_from');
+  $adopted_budget_to = _checkbook_get_selected_value($form, $filter_dimension, 'adopted_budget_to');
   $current_modified_from = _checkbook_get_selected_value($form, $filter_dimension, 'modified_from');
   $current_modified_to = _checkbook_get_selected_value($form, $filter_dimension, 'modified_to');
   $pre_encumbered_from = _checkbook_get_selected_value($form, $filter_dimension, 'pre_encumbered_from');
@@ -136,8 +136,8 @@ function _checkbook_advanced_search_nycha_budget_submit($form, &$form_state, $fi
   $budgetName = _checkbook_get_selected_value($form, $filterDimension, 'nycha_budget_name');
   $budgetName = ($budgetName == "Select Budget Name") ? 0 : $budgetName;
 
-  $adoptedFrom = _checkbook_get_selected_value($form, $filterDimension, 'adopted_from');
-  $adoptedTo = _checkbook_get_selected_value($form, $filterDimension, 'adopted_to');
+  $adoptedFrom = _checkbook_get_selected_value($form, $filterDimension, 'adopted_budget_from');
+  $adoptedTo = _checkbook_get_selected_value($form, $filterDimension, 'adopted_budget_to');
 
   $modifiedFrom = _checkbook_get_selected_value($form, $filterDimension, 'modified_from');
   $modifiedTo = _checkbook_get_selected_value($form, $filterDimension, 'modified_to');
