@@ -1,0 +1,143 @@
+{
+  "datasets":{
+    "budget_percent_difference":{
+      "datasourceName":"main",
+      "source":"aggregateon_budget_by_year"
+    }
+  },
+  "cubes":{
+    "budget_percent_difference":{
+      "sourceDatasetName":"budget_percent_difference",
+      "dimensions":[
+        {
+          "name": "year_id",
+          "levels": [
+            {
+              "name": "year_id",
+              "sourceColumnName": "budget_fiscal_year_id"
+            }
+          ]
+        },
+        {
+          "name": "expenditure_budget",
+          "levels": [
+            {
+              "name": "expenditure_budget",
+              "datasetName":"expenditure_budget",
+              "sourceColumnName": "expenditure_type_name"
+            }
+          ]
+        },
+        {
+          "name": "expenditure_type_name",
+          "levels": [
+            {
+              "name": "expenditure_type_name",
+              "sourceColumnName": "expenditure_type_name"
+            }
+          ]
+        },
+        {
+          "name":"funding_source_code",
+          "levels":[
+            {
+              "name":"funding_source_code",
+              "sourceColumnName":"funding_source_code"
+            }
+          ]
+        },
+        {
+          "name":"funding_budget",
+          "levels":[
+            {
+              "name":"funding_budget",
+              "datasetName":"funding_budget",
+              "sourceColumnName":"funding_source_code"
+            }
+          ]
+        },
+        {
+          "name":"responsibility_center_code",
+          "levels":[
+            {
+              "name":"responsibility_center_code",
+              "sourceColumnName":"responsibility_center_code"
+            }
+          ]
+        },
+        {
+          "name":"resp_budget",
+          "levels":[
+            {
+              "name":"resp_budget",
+              "datasetName": "resp_budget",
+              "sourceColumnName":"responsibility_center_code"
+            }
+          ]
+        },
+        {
+          "name":"program_phase_code",
+          "levels":[
+            {
+              "name":"program_phase_code",
+              "sourceColumnName":"program_phase_code"
+            }
+          ]
+        },
+        {
+          "name":"prog_budget",
+          "levels":[
+            {
+              "name":"prog_budget",
+              "datasetName":"prog_budget",
+              "sourceColumnName":"program_phase_code"
+            }
+          ]
+        },
+        {
+          "name":"gl_project_code",
+          "levels":[
+            {
+              "name":"gl_project_code",
+              "sourceColumnName":"gl_project_code"
+            }
+          ]
+        },
+        {
+          "name":"proj_budget",
+          "levels":[
+            {
+              "name":"proj_budget",
+              "datasetName":"proj_budget",
+              "sourceColumnName":"gl_project_code"
+            }
+          ]
+        }
+      ],
+
+      "measures":{
+        "current_amount": {
+          "function": "SUM(COALESCE(modified_budget_amount,0))"
+        },
+        "previous_amount": {
+          "function": "SUM(COALESCE(modified_budget_amount_py_1,0))"
+        },
+        "previous_1_amount": {
+          "function": "SUM(COALESCE(modified_budget_amount_py_2,0))"
+        },
+        "previous_2_amount": {
+          "function": "SUM(COALESCE(modified_budget_amount_py_3,0))"
+        },
+        "percent_difference1": {
+          "function": "CASE SUM(COALESCE(modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_1,0)))/SUM(COALESCE(modified_budget_amount_py_1,0)))*100 END"
+        },
+        "percent_difference2": {
+          "function": "CASE SUM(COALESCE(modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_2,0)))/SUM(COALESCE(modified_budget_amount_py_2,0)))*100 END"
+        },
+        "percent_difference3": {
+          "function": "CASE SUM(COALESCE(modified_budget_amount_py_3,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_3,0)))/SUM(COALESCE(modified_budget_amount_py_3,0)))*100 END"
+        }
+      }
+    }
+  }
+}

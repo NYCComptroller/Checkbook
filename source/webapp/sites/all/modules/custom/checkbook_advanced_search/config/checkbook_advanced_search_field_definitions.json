@@ -5,7 +5,10 @@
     },
     "expense_category":{
         "field_type":"select",
-        "field_name":"expense_category"
+        "field_name":"expense_category",
+        "attributes":{
+          "options":"$expense_category_attributes"
+        }
     },
     "expense_type":{
         "field_type":"select",
@@ -328,6 +331,125 @@
     "attributes":{
       "title":"Approved Date",
       "date_year_range":"$year_range"
+    }
+  },
+  //Budget specific fields
+  "budget_name":{
+    "field_type":"select",
+    "field_name":"budget_name"
+  },
+  "budget_code":{
+    "field_type":"select",
+    "field_name":"budget_code"
+  },
+  "adopted":{
+    "field_type":"rangefield",
+    "field_name":"adopted_budget",
+    "attributes":{
+      "title":"Adopted",
+      "size":30,
+      "maxlength":32
+    }
+  },
+  "modified":{
+    "field_type":"rangefield",
+    "field_name":"modified",
+    "attributes":{
+      "title":"Modified",
+      "size":30,
+      "maxlength":32
+    }
+  },
+  "pre_encumbered":{
+    "field_type":"rangefield",
+    "field_name":"pre_encumbered",
+    "attributes":{
+      "title":"Pre Encumbered",
+      "size":30,
+      "maxlength":32
+    }
+  },
+  "encumbered":{
+    "field_type":"rangefield",
+    "field_name":"encumbered",
+    "attributes":{
+      "title":"Encumbered",
+      "size":30,
+      "maxlength":32
+    }
+  },
+  "accrued_expense":{
+    "field_type":"rangefield",
+    "field_name":"accrued_expense",
+    "attributes":{
+      "title":"Accrued Expense",
+      "size":30,
+      "maxlength":32
+    }
+  },
+  "cash_payments":{
+    "field_type":"rangefield",
+    "field_name":"cash_payments",
+    "attributes":{
+      "title":"Cash Payments",
+      "size":30,
+      "maxlength":32
+    }
+  },
+  "post_adjustments":{
+    "field_type":"rangefield",
+    "field_name":"post_adjustments",
+    "attributes":{
+      "title":"Post Adjustments",
+      "size":30,
+      "maxlength":32
+    }
+  },
+  "budget":{
+    "field_type":"submit",
+    "field_name":"budget"
+  },
+  "program":{
+    "field_type":"select",
+    "field_name":"program",
+    "attributes":{
+      "options":"$program_attributes"
+    }
+  },
+  "project":{
+    "field_type":"select",
+    "field_name":"project",
+    "attributes":{
+      "options":"$project_attributes"
+    }
+  },
+  "nycha_budget_name":{
+    "field_type":"select",
+    "field_name":"nycha_budget_name",
+    "attributes":{
+      "title":"Budget Name"
+    }
+  },
+  "budget_type":{
+    "field_type":"select",
+    "field_name":"budget_type"
+  },
+  "committed":{
+    "field_type":"rangefield",
+    "field_name":"committed",
+    "attributes":{
+      "title":"Committed",
+      "size":30,
+      "maxlength":32
+    }
+  },
+  "actual":{
+    "field_type":"rangefield",
+    "field_name":"actual",
+    "attributes":{
+      "title":"Actual Amount",
+      "size":30,
+      "maxlength":32
     }
   }
 }

@@ -241,7 +241,6 @@ abstract class PageType {
 
         $pageType = null;
         switch(CheckbookDomain::getCurrent()) {
-
             case CheckbookDomain::SPENDING:
                 /**
                  * ADVANCED_SEARCH_PAGE - spending/search/transactions
@@ -284,6 +283,12 @@ abstract class PageType {
             case CheckbookDomain::BUDGET:
             case CheckbookDomain::PAYROLL:
                 break;
+            case CheckbookDomain::NYCHA_BUDGET:
+              if(preg_match('/nycha_budget\/search\/transactions/',$urlPath) || preg_match('/nycha_budget\/search\/transactions/',$ajaxPath)) {
+                $pageType = self::ADVANCED_SEARCH_PAGE;
+              }
+              break;
+
         }
         return $pageType;
     }

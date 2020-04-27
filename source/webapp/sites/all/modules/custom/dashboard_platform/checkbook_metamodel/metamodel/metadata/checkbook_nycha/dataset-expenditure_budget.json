@@ -1,0 +1,14 @@
+{
+  "datasets": {
+    "expenditure_budget": {
+      "datasourceName": "main",
+      "source": "ref_expenditure_type",
+      "columns": [
+        {
+          "name": "expenditure_type_name",
+          "key": true
+        }
+      ]
+    }
+  }
+}

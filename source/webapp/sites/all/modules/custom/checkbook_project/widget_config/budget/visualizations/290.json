@@ -46,9 +46,9 @@
   },
   "transformationPHP":"
   $landing_page =  '/' .  current_path()  ;
-  
-  
-  
+
+
+
   $allZero = TRUE;
   foreach ($node->data as $row) {
     if (abs($row['budget_committed']) > 0){$allZero = FALSE;}

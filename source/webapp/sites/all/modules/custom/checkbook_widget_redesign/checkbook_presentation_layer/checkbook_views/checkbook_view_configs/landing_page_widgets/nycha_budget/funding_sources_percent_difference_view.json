@@ -3,7 +3,7 @@
   "dataFunc":"GetNychaFundingSourcesByPercentDifference",
   "headerTitle": "Funding Sources by Percent Difference",
   "headerSubTitle": "Funding Sources",
-  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_expense_categories'",
+  "footerUrl":"NychaBudgetUrlService::getPercentDiffFooterUrl(_widget_controller_footer_url($node),'fund_details')",
   "table_columns":[
     {"labelAlias":"funding_source","column":"funding_source_description", "derivedColumn":"funding_source_name_link"},
     {"labelAlias": "previous_modified","column": "previous_amount","format": "dollar"},

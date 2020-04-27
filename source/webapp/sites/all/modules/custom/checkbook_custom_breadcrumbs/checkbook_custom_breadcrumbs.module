@@ -368,11 +368,10 @@ function _get_nycha_spending_breadcrumb_title_drilldown()
 /**
  * Custom function to get title for NYCHA CONTRACTS landing pages
  **/
-function _get_nycha_budget_breadcrumb_title_drilldown()
-{
-  $bottomURL = $_REQUEST['expandBottomContURL'];
-  if (!$bottomURL && preg_match('/^nycha_spending\/search\/transactions/', current_path()) || preg_match('/^nycha_spending\/all\/transactions/', current_path())) {
-    $title = null;
+function _get_nycha_budget_breadcrumb_title_drilldown(){
+  $title = NULL;
+  if (CheckbookDomain::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
+    $title = NULL;
   } else {
     $lastReqParam = _getLastRequestParamValue();
     foreach ($lastReqParam as $key => $value) {
@@ -398,7 +397,6 @@ function _get_nycha_budget_breadcrumb_title_drilldown()
     }
   }
   return $title;
-
 }
 
 /**

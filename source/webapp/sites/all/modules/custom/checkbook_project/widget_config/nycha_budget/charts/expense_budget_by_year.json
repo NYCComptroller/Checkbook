@@ -32,13 +32,19 @@
   },
   "cleanURLParameters":[
     "year",
-    "agency",
-    "expcategory"
+    "expcategory",
+    "respcenter",
+    "fundsrc",
+    "program",
+    "project"
   ],
   "urlParamMap":{
     "year":"year_id.year_id",
-    "agency":"agency_id.agency_id",
-    "expcategory":"object_class_id.object_class_id"
+    "expcategory":"expenditure_type_id",
+    "respcenter": "responsibility_center_id",
+    "fundsrc": "funding_source_id",
+    "program": "program_phase_id",
+    "project": "gl_project_id"
   },
   "dataset":"checkbook_nycha:budget",
   "columns":[
@@ -47,15 +53,17 @@
     "budget_remaining"
   ],
   "transformationPHP":"
-  $transactions_page = '/' . current_path()  . '?expandBottomContURL=/panel_html/budget_transactions';
+  $transactions_page = '/' . current_path()  . '?expandBottomContURL=/panel_html/nycha_budget_transactions/datasource/checkbook_nycha';
   $year = ($node->widgetConfig->requestParams['year_id.year_id']) ? '/year/' . $node->widgetConfig->requestParams['year_id.year_id'] : '';
-$agency = ($node->widgetConfig->requestParams['agency_id.agency_id']) ? '/agency/' . $node->widgetConfig->requestParams['agency_id.agency_id'] : '';
-//$dept = ($node->widgetConfig->requestParams['dept_code.dept_code']) ? '/dept/' . $node->widgetConfig->requestParams['dept_code.dept_code'] : '';
-$expcategory = ($node->widgetConfig->requestParams['object_class_id.object_class_id']) ? '/expcategory/' . $node->widgetConfig->requestParams['object_class_id.object_class_id'] : '';
+$expcategory = ($node->widgetConfig->requestParams['expenditure_type_id']) ? '/expcategory/' . $node->widgetConfig->requestParams['expenditure_type_id'] : '';
+$resp = ($node->widgetConfig->requestParams['responsibility_center_id']) ? '/resp_center/' . $node->widgetConfig->requestParams['responsibility_center_id'] : '';
+$fundsrc = ($node->widgetConfig->requestParams['funding_source_id']) ? '/fundsrc/' . $node->widgetConfig->requestParams['funding_source_id'] : '';
+$prog = ($node->widgetConfig->requestParams['program_phase_id']) ? '/prgm/' . $node->widgetConfig->requestParams['program_phase_id'] : '';
+$proj = ($node->widgetConfig->requestParams['gl_project_id']) ? '/proj/' . $node->widgetConfig->requestParams['gl_project_id'] : '';
 $budget_committed = '/budgettype/committed';
 $budget_remaining = '/budgettype/remaining';
-$url_committed =  $transactions_page . $budget_committed . $year . $agency . $expcategory;
-$url_remaining =  $transactions_page . $budget_remaining . $year . $agency . $expcategory;
+$url_committed =  $transactions_page . $budget_committed . $year . $expcategory . $resp . $fundsrc . $proj . $prog;
+$url_remaining =  $transactions_page . $budget_remaining . $year . $expcategory . $resp . $fundsrc . $proj . $prog;
 $allZero = TRUE;
 foreach ($node->data as $row){
 if (abs($row['budget_committed']) > 0){$allZero = FALSE;}
@@ -70,12 +78,6 @@ $node->widgetConfig->chartConfig->xAxis->categories = $categories;
 $node->widgetConfig->chartConfig->series = array(array('name' => 'Committed', 'data' => $committed_data), array('name' => 'Remaining', 'data' => $remaining_data));
 return $node->data;
 ",
-"summaryView":{
-"template":"budget_expense_transactions_summary",
-"templateTitle":"Expense Budget Transactions",
-"templateLabel":"Year",
-"templateLabelEval":"return 'FY '._getYearValueFromID(RequestUtilities::getRequestParamValue('year'));"
-},
 "chartConfig":{
 "chart":{
 "defaultSeriesType":"column"
