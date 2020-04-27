@@ -106,168 +106,7 @@ function checkbook_advanced_search_form($form, $form_state)
 
   //<editor-fold desc="Budget">
 
-  $form['budget']['budget_agencies'] = array(
-    '#type' => 'select',
-    '#title' => t('Agency'),
-    '#prefix' => '<h3><a >Budget</a></h3><div id="budget-advanced-search"><div class="column column-left">',
-    '#default_value' => t('Citywide(All Agencies)'),
-    '#options' => $agencies,
-    '#option_attributes' => $agency_attributes,
-    //advanced-search-disable-accordion
-  );
-  $form['budget']['budget_department'] = array(
-    '#type' => 'select',
-    '#title' => t('Department'),
-    '#default_value' => t('Select Department'),
-    '#options' => array('Select Department'),
-    '#disabled' => TRUE,
-  );
-  $form['budget']['budget_expense_category'] = array(
-    '#type' => 'select',
-    '#title' => t('Expense Category'),
-    '#default_value' => t('Select Expense Category'),
-    '#options' => array("Select Expense Category"),
-    '#disabled' => TRUE,
-  );
-  $form['budget']['budget_budget_code'] = array(
-    '#type' => 'select',
-    '#title' => t('Budget Code'),
-    '#default_value' => t('Select Budget Code'),
-    '#options' => array("Select Budget Code"),
-    '#validated' => TRUE,
-  );
-  $form['budget']['budget_budget_name'] = array(
-    '#type' => 'select',
-    '#title' => t('Budget Name'),
-    '#default_value' => t('Select Budget Name'),
-    '#options' => array("Select Budget Name"),
-    '#validated' => TRUE,
-  );
-  $form['budget']['budget_fiscal_year'] = array(
-    '#type' => 'select',
-    '#title' => t('Year'),
-    '#default_value' => CheckbookDateUtil::getCurrentFiscalYearId(),
-    '#options' => _checkbook_advanced_search_get_year('budget'),
-    '#attributes' => array('default_selected_value' => CheckbookDateUtil::getCurrentFiscalYearId())
-  );
-  $form['budget']['budget_adopted_budget_from'] = array(
-    '#type' => 'textfield',
-    '#size' => 30,
-    '#maxlength' => 32,
-    '#prefix' => '<div class="datafield budget_adopted_budget datarange"><label>Adopted</label><div class="ranges"><div class="form-item form-type-textfield form-item-budget-adopted">',
-    '#suffix' => '<span class="advanced-search-to">to </span>',
-  );
-  $form['budget']['budget_adopted_budget_to'] = array(
-    '#type' => 'textfield',
-    '#title' => t(''),
-    '#size' => 30,
-    '#maxlength' => 32,
-    '#suffix' => '</div></div></div></div>',
-  );
-  $form['budget']['budget_current_modified_from'] = array(
-    '#type' => 'textfield',
-    '#size' => 30,
-    '#maxlength' => 32,
-    '#prefix' => '<div class="column column-right"><div class="datafield budget_current_modified datarange"><label>Modified</label><div class="ranges"><div class="form-item form-type-textfield form-item-budget-modified">',
-    '#suffix' => '<span class="advanced-search-to">to </span>'
-  );
-  $form['budget']['budget_current_modified_to'] = array(
-    '#type' => 'textfield',
-    '#title' => t(''),
-    '#size' => 30,
-    '#maxlength' => 32,
-    '#suffix' => '</div></div></div>',
-  );
-  $form['budget']['budget_pre_encumbered_from'] = array(
-    '#type' => 'textfield',
-    '#size' => 30,
-    '#maxlength' => 32,
-    '#prefix' => '<div class="datafield budget_pre_encumbered datarange"><label>Pre Encumbered</label><div class="ranges"><div class="form-item form-type-textfield form-item-budget-pre-encumbered">',
-    '#suffix' => '<span class="advanced-search-to">to </span>',
-  );
-  $form['budget']['budget_pre_encumbered_to'] = array(
-    '#type' => 'textfield',
-    '#title' => t(''),
-    '#size' => 30,
-    '#maxlength' => 32,
-    '#suffix' => '</div></div></div>',
-  );
-  $form['budget']['budget_encumbered_from'] = array(
-    '#type' => 'textfield',
-    '#size' => 30,
-    '#maxlength' => 32,
-    '#prefix' => '<div class="datafield budget_encumbered datarange"><label>Encumbered</label><div class="ranges"><div class="form-item form-type-textfield form-item-budget-encumbered">',
-    '#suffix' => '<span class="advanced-search-to">to </span>',
-  );
-  $form['budget']['budget_encumbered_to'] = array(
-    '#type' => 'textfield',
-    '#title' => t(''),
-    '#size' => 30,
-    '#maxlength' => 32,
-    '#suffix' => '</div></div></div>',
-  );
-  $form['budget']['budget_accrued_expense_from'] = array(
-    '#type' => 'textfield',
-    '#size' => 30,
-    '#maxlength' => 32,
-    '#prefix' => '<div class="datafield budget_accrued_expense datarange"><label>Accrued Expense</label><div class="ranges"><div class="form-item form-type-textfield form-item-budget-accrued-expense">',
-    '#suffix' => '<span class="advanced-search-to">to </span>',
-  );
-  $form['budget']['budget_accrued_expense_to'] = array(
-    '#type' => 'textfield',
-    '#title' => t(''),
-    '#size' => 30,
-    '#maxlength' => 32,
-    '#suffix' => '</div></div></div>',
-  );
-  $form['budget']['budget_cash_expense_from'] = array(
-    '#type' => 'textfield',
-    '#size' => 30,
-    '#maxlength' => 32,
-    '#prefix' => '<div class="datafield budget_cash_expense datarange"><label>Cash Payments</label></label><div class="ranges"><div class="form-item form-type-textfield form-item-budget-expense">',
-    '#suffix' => '<span class="advanced-search-to">to </span>',
-  );
-  $form['budget']['budget_cash_expense_to'] = array(
-    '#type' => 'textfield',
-    '#title' => t(''),
-    '#size' => 30,
-    '#maxlength' => 32,
-    '#suffix' => '</div></div></div>',
-  );
-  $form['budget']['budget_post_adjustments_from'] = array(
-    '#type' => 'textfield',
-    '#size' => 30,
-    '#maxlength' => 32,
-    '#prefix' => '<div class="datafield budget_post_adjustments datarange"><label>Post Adjustments</label><div class="ranges"><div class="form-item form-type-textfield form-item-budget-post-adjustments">',
-    '#suffix' => '<span class="advanced-search-to">to </span>',
-  );
-  $form['budget']['budget_post_adjustments_to'] = array(
-    '#type' => 'textfield',
-    '#title' => t(''),
-    '#size' => 30,
-    '#maxlength' => 32,
-    '#suffix' => '</div></div></div></div>',
-  );
-  $form['budget']['budget_next'] = array(
-    '#type' => 'button',
-    '#value' => t('Next'),
-    '#name' => 'budget_next',
-    '#prefix' => t('<div class="budget-submit">'),
-    '#ajax' => array(
-      'callback' => '_checkbook_advanced_search_create_alert_results_ajax',
-      'event' => 'click'
-    ),
-  );
-  $form['budget']['budget_submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Submit'),
-    '#name' => 'budget_submit',
-  );
-  $form['budget']['budget_clear'] = array(
-    '#suffix' => '</div></div>',
-    '#type' => 'submit',
-    '#value' => t('Clear All'),
-  );
+  $form = _checkbook_advanced_search_get_form($form, Domain::Budget, $agencies, $agency_attributes, $year_range);
 
   //</editor-fold>
 
@@ -636,6 +475,9 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
     $contract_type_attribute = _checkbook_advanced_search_get_nycha_contract_types($data_source);
     $fundsrc_attributes = checkbook_advanced_search_get_nycha_funding_sources($data_source);
     $year_attribute = _checkbook_advanced_search_get_year($domain, null, $data_source);
+    $expense_category_attributes = _budget_expcat_options(NUll, NUll, NULL, Datasource::NYCHA, false);
+    $program_attributes = _budget_program_options(Datasource::NYCHA, false);
+    $project_attributes = _budget_project_options(Datasource::NYCHA, false);
   } else {
     $mwbe_category_attributes = _checkbook_advanced_search_get_mwbe_category_and_id();
     $sub_vendor_status = _checkbook_advanced_search_get_subcontract_approval_status_and_id();
@@ -696,6 +538,18 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
           case '$fundsrc_attributes':
             $field_definition_configs[$i]['attributes']['options'] = $fundsrc_attributes['options'];
             $field_definition_configs[$i]['attributes']['option_attributes'] = $fundsrc_attributes['option_attributes'];
+            break;
+          case '$expense_category_attributes':
+            $field_definition_configs[$i]['attributes']['options'] = $expense_category_attributes['options'];
+            $field_definition_configs[$i]['attributes']['option_attributes'] = $expense_category_attributes['option_attributes'];
+            break;
+          case '$program_attributes':
+            $field_definition_configs[$i]['attributes']['options'] = $program_attributes['options'];
+            $field_definition_configs[$i]['attributes']['option_attributes'] = $program_attributes['option_attributes'];
+            break;
+          case '$project_attributes':
+            $field_definition_configs[$i]['attributes']['options'] = $project_attributes['options'];
+            $field_definition_configs[$i]['attributes']['option_attributes'] = $project_attributes['option_attributes'];
             break;
         }
       }
