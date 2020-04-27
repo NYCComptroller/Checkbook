@@ -14,6 +14,11 @@ class NychaBudgetUtil{
     'wt_projects' => 'Projects',
     'wt_funding_sources' => 'Funding Sources',
     'wt_program' => 'Programs',
+    'exp_details' => 'Expense Categories',
+    'resp_details' => 'Responsibility Centers',
+    'proj_details' => 'Projects',
+    'fund_details' => 'Funding Sources',
+    'prgm_details' => 'Programs',
     'comm_expense_category' => 'Expense Category',
     'comm_resp_center' => 'Responsibility Center',
     'comm_proj' => 'Project',
@@ -34,6 +39,9 @@ class NychaBudgetUtil{
     $title = isset($widget) ? $widget_titles[$widget]: "";
     if ($budgetType == 'committed'){
       $title .= ' '."By Committed ".' '. "Expense Budget Transactions";
+    }
+    if ($budgetType == 'percdiff'){
+      $title .= ' '."By Percent Difference ".' '. "Expense Budget Transactions";
     }
     else {
       $title .= ' ' . "Expense Budget Transactions";
