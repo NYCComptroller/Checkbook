@@ -11,7 +11,7 @@
     "html_class":"chart-grid-view-table",
     "table_columns": [
       {
-        "labelAlias": "expense_category",
+        "labelAlias": "program",
         "column": "program_phase_description_program_phase_description",
         "sortColumn": "program_phase_description_program_phase_description"
       },
