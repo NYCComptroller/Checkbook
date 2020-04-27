@@ -166,16 +166,16 @@ function _checkbook_advanced_search_nycha_budget_submit($form, &$form_state, $fi
   $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($adoptedRange, 'adpamt', TRUE);
 
   $modifiedRange = array('from' => $modifiedFrom, 'to' => $modifiedTo, 'type' => 'amount');
-  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($modifiedRange, 'modamtr', TRUE);
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($modifiedRange, 'modamt', TRUE);
 
   $committedRange = array('from' => $committedFrom, 'to' => $committedTo, 'type' => 'amount');
-  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($committedRange, 'comamtr', TRUE);
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($committedRange, 'comamt', TRUE);
 
   $encumberedRange = array('from' => $encumberedFrom, 'to' => $encumberedTo, 'type' => 'amount');
-  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($encumberedRange, 'adpamt', TRUE);
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($encumberedRange, 'encamt', TRUE);
 
   $actualRange = array('from' => $actualFrom, 'to' => $actualTo, 'type' => 'amount');
-  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($actualRange, 'adpamt', TRUE);
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($actualRange, 'actual', TRUE);
 
   return $redirectUrl;
 }
