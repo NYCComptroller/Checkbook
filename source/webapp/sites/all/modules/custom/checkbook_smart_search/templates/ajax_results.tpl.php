@@ -62,28 +62,27 @@ if($noOfTotalResults > 0){
     $transaction_no++;
     switch(strtolower($value['domain'])){
       case "revenue":
-        print theme('revenue', ['revenue_results' => $value, 'searchTerm' => $searchTerms[0], 'solr_datasource' => $solr_datasource]);
+        $template = ($solr_datasource == Datasource::SOLR_NYCHA) ? "nycha_revenue" : "revenue";
+        $results = 'revenue_results';
         break;
       case "budget":
-        print theme('budget', ['budget_results' => $value, 'searchTerm' => $searchTerms[0], 'solr_datasource'=>$solr_datasource]);
+        $template = ($solr_datasource == Datasource::SOLR_NYCHA) ? "nycha_budget" : "budget";
+        $results = 'budget_results';
         break;
       case "spending":
-        if($solr_datasource == Datasource::SOLR_NYCHA) {
-          print theme('nycha_spending', ['spending_results' => $value, 'searchTerm' => $searchTerms[0], 'solr_datasource' => $solr_datasource]);
-        }else{
-          print theme('spending', ['spending_results' => $value, 'searchTerm' => $searchTerms[0], 'solr_datasource' => $solr_datasource]);
-        }
+        $template = ($solr_datasource == Datasource::SOLR_NYCHA) ? "nycha_spending" : "spending";
+        $results = 'spending_results';
         break;
       case "payroll":
-        print theme('payroll', ['payroll_results' => $value, 'searchTerm' => $searchTerms[0], 'solr_datasource' => $solr_datasource]);
+        $template = "payroll";
+        $results = 'payroll_results';
         break;
       case "contracts":
-        if($solr_datasource == Datasource::SOLR_NYCHA) {
-          print theme('nycha_contracts', ['contracts_results' => $value, 'searchTerm' => $searchTerms[0], 'solr_datasource' => $solr_datasource]);
-        }else{
-        print theme('contracts', ['contracts_results' => $value, 'searchTerm' => $searchTerms[0], 'solr_datasource' => $solr_datasource]);}
+        $template = ($solr_datasource == Datasource::SOLR_NYCHA) ? "nycha_contracts" : "contracts";
+        $results = 'contracts_results';
         break;
     }
+    print theme($template, ['budget_results' => $value, 'searchTerm' => $searchTerms[0], 'solr_datasource' => $solr_datasource]);
     print "</li>";
   }
   print "</ol>";
