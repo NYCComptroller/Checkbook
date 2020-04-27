@@ -40,7 +40,7 @@ class NychaBudgetUtil{
     if ($budgetType == 'committed'){
       $title .= ' '."By Committed ".' '. "Expense Budget Transactions";
     }
-    if ($budgetType == 'percdiff'){
+    elseif ($budgetType == 'percdiff'){
       $title .= ' '."By Percent Difference ".' '. "Expense Budget Transactions";
     }
     else {
