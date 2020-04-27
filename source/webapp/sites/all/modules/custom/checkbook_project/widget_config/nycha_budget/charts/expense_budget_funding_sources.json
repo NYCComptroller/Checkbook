@@ -7,11 +7,11 @@
   return $header;
   ",
   "gridConfig":{
-    "template":"highchart_budget_grid_view",
+    "template":"highchart_nycha_budget_fundsrc_grid_view",
     "html_class":"chart-grid-view-table",
     "table_columns": [
       {
-        "labelAlias": "expense_category",
+        "labelAlias": "funding_source",
         "column": "funding_source_description_funding_source_description",
         "sortColumn": "funding_source_description_funding_source_description"
       },
