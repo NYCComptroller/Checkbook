@@ -522,6 +522,8 @@
           no_results_text: "No matches found"
         });
         div_checkbook_budget.ele('budget_name_chosen').find('.chosen-search-input').attr("placeholder", "Search Budget Name");
+        reloadBudgetCode(div_checkbook_budget);
+        reloadBudgetName(div_checkbook_budget);
 
         //Citywide Budget - Drop-down change events
         div_checkbook_budget.ele('agency').change(function () {
@@ -562,6 +564,8 @@
           no_results_text: "No matches found"
         });
         div_checkbook_budget_nycha.ele('nycha_budget_name_chosen').find('.chosen-search-input').attr("placeholder", "Search Budget Name");
+        reloadBudgetType(div_checkbook_budget_nycha);
+        reloadNychaBudgetName(div_checkbook_budget_nycha);
 
         //NYCHA Budget - Drop-down change events
         div_checkbook_budget_nycha.ele('nycha_budget_name').change(function () {
@@ -1756,6 +1760,7 @@
         let active_accordion_window = 2;
         switch (page_clicked_from) {
           case "budget":
+          case "nycha_budget":
             active_accordion_window = 0;
             break;
           case "revenue":
