@@ -7,11 +7,11 @@
   return $header;
   ",
   "gridConfig":{
-    "template":"highchart_budget_grid_view",
+    "template":"highchart_nycha_budget_projects_grid_view",
     "html_class":"chart-grid-view-table",
     "table_columns": [
       {
-        "labelAlias": "expense_category",
+        "labelAlias": "project",
         "column": "gl_project_description_gl_project_description",
         "sortColumn": "gl_project_description_gl_project_description"
       },
