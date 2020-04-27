@@ -28,6 +28,24 @@
           ]
         },
         {
+          "name":"agency",
+          "levels":[
+            {
+              "name":"agency",
+              "sourceColumnName":"agency_id"
+            }
+          ]
+        },
+        {
+          "name":"agency_name",
+          "levels":[
+            {
+              "name":"agency_name",
+              "sourceColumnName":"agency_name"
+            }
+          ]
+        },
+        {
           "name": "expenditure_type_id",
           "levels": [
             {
