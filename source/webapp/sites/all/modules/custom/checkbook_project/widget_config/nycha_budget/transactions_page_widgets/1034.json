@@ -23,7 +23,6 @@
     "prgm": "program_phase_id",
     "proj": "gl_project_id",
     "bdgtyp": "budget_type",
-    "bdgcode": "budget_code_id",
     "bdgnm": "budget_name",
     "modamtr": "modified_budget",
     "comamtr": "committed"

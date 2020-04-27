@@ -19,14 +19,6 @@
  */
 
 /**
- * Constructs the URL for Spending transactions based on the input by the users
- *
- * @param $form
- * @param $form_state
- * @param string $data_source
- * @return string
- */
-/**
  * Constructs the URL for Contracts based on the input by the users
  *
  * @param $form
@@ -34,8 +26,7 @@
  * @param string $data_source
  * @return string
  */
-function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_source = DataSource::CITYWIDE)
-{
+function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_source = DataSource::CITYWIDE){
   $filter_dimension = $data_source . '_contracts';
   if( $data_source == Datasource::NYCHA){
     $redirect_url =   _checkbook_advanced_search_nycha_contracts_submit($form, $form_state);
@@ -232,11 +223,9 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
  *
  * @param $form
  * @param $form_state
- * @param string $data_source
  * @return string
  */
-function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state)
-{
+function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state){
   $filter_dimension =  'checkbook_nycha_contracts';
   $nycha_agency_id = Datasource::getNYCHAId();
   $type=trim($form[$filter_dimension][$filter_dimension .'_type']['#value']);
