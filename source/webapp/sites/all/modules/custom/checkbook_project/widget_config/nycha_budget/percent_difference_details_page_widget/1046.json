@@ -1,0 +1,271 @@
+{
+  "widgetType": "data_tables",
+  "widgetSubType":"dataTableList",
+  "header":"
+  $header = NULL;
+  $header .= widget_data_tables_export_link($node);
+  return $header;
+  ",
+  "html_class": "initiative-table",
+  "getTotalDataCount":true,
+  "no_results_content":"No Results Found",
+  "cleanURLParameters":[
+    "year"
+  ],
+  "urlParamMap": {
+    "year":"year_id.year_id"
+  },
+  "allowRequestParams":["widget"],
+  "defaultParameters":{"year_id.year_id":119},
+  "noDataInitialLoad":true,
+  "dataset": "checkbook_nycha:budget_percent_difference",
+  "columns": [
+    "year_id.year_id",
+    "expenditure_budget.expenditure_budget.expenditure_type_description",
+    "expenditure_budget.expenditure_budget.expenditure_type_id",
+    "funding_budget.funding_budget.funding_source_description",
+    "funding_budget.funding_budget.funding_source_id",
+    "resp_budget.resp_budget.responsibility_center_description",
+    "resp_budget.resp_budget.responsibility_center_id",
+    "prog_budget.prog_budget.program_phase_description",
+    "prog_budget.prog_budget.program_phase_id",
+    "proj_budget.proj_budget.gl_project_description",
+    "proj_budget.proj_budget.gl_project_id",
+    "percent_difference1",
+    "percent_difference2",
+    "percent_difference3",
+    "current_amount",
+    "previous_amount",
+    "previous_1_amount",
+    "previous_2_amount"],
+  "limit":35,
+  "adjustDataTableOptions":"
+  $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
+  $year = _getYearValueFromID(RequestUtilities::getRequestParamValue('year'));
+  $query_string = $_GET['q'];
+  $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
+
+  if($widget == 'fund_details'){
+  $node->widgetConfig->table_columns[0]->labelAlias = 'funding_source';
+  $node->widgetConfig->table_columns[0]->column = 'fund_src_link';
+  $node->widgetConfig->table_columns[0]->sortSourceColumn = 'funding_budget_funding_budget_funding_source_description';
+  }
+  elseif($widget == 'resp_details'){
+  $node->widgetConfig->table_columns[0]->labelAlias = 'repsonsibility_center';
+  $node->widgetConfig->table_columns[0]->column = 'resp_center_link';
+  $node->widgetConfig->table_columns[0]->sortSourceColumn = 'resp_budget_resp_budget_responsibility_center_description';
+  }
+  elseif($widget == 'prgm_details'){
+  $node->widgetConfig->table_columns[0]->labelAlias = 'program';
+  $node->widgetConfig->table_columns[0]->column = 'prgm_link';
+  $node->widgetConfig->table_columns[0]->sortSourceColumn = 'prog_budget_prog_budget_program_phase_description';
+  }
+  elseif($widget == 'proj_details'){
+  $node->widgetConfig->table_columns[0]->labelAlias = 'project';
+  $node->widgetConfig->table_columns[0]->column = 'proj_link';
+  $node->widgetConfig->table_columns[0]->sortSourceColumn = 'proj_budget_proj_budget_gl_project_description';
+  }
+  foreach($node->widgetConfig->table_columns as $key => $table_column){
+    if($year == 2012 && ($table_column->column == 'percent_difference2_formatted' || $table_column->column == 'percent_difference3_formatted')){
+    unset($node->widgetConfig->table_columns[$key]);
+    unset($adjustDataTableOptions->aoColumns[$key]);
+    }
+    if($year == 2013 && ($table_column->column == 'percent_difference1_formatted' || $table_column->column == 'percent_difference3_formatted')){
+    unset($node->widgetConfig->table_columns[$key]);
+    unset($adjustDataTableOptions->aoColumns[$key]);
+    }
+    else if($year != 2012 && $year != 2013){
+    if($table_column->column == 'percent_difference1_formatted' || $table_column->column == 'percent_difference2_formatted'){
+    unset($node->widgetConfig->table_columns[$key]);
+    unset($adjustDataTableOptions->aoColumns[$key]);
+    }
+    }
+
+    //hourly rate column must refer amount basis id for nycha
+
+
+    $label = WidgetUtil::generateLabelMapping($table_column->labelAlias);
+    $int_val = _get_num_from_string($label);
+
+    if($int_val != 0 && $int_val < 2011){
+    unset($node->widgetConfig->table_columns[$key]);
+    unset($adjustDataTableOptions->aoColumns[$key]);
+    }
+
+
+    }
+    $column_count = count($node->widgetConfig->table_columns);
+    $adjustDataTableOptions->aaSorting[0][0] = $column_count - 2;
+
+    $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
+    $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
+",
+"adjustParameters":"
+    $type_filter = NULL ;
+    $url = RequestUtil::getCurrentPageUrl();
+    $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
+    if($widget == 'exp_details') {$type_filter .= 'E';}
+    elseif($widget == 'resp_details'){ $type_filter .= 'R';}
+    elseif($widget == 'fund_details'){ $type_filter .= 'F';}
+    elseif($widget == 'proj_details'){ $type_filter .= 'G';}
+    elseif($widget == 'prgm_details'){ $type_filter .= 'P';}
+    $parameters['filter_type'] = $type_filter;
+    $adjustedParameters = $parameters;
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+    $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    return $adjustedParameters;
+",
+"derivedColumns":{
+    "expense_cat_link":{
+    "expression":"'<a href=\"/nycha_budget'
+    ._checkbook_project_get_url_param_string(\"year\")
+    ._checkbook_project_get_url_param_string(\"datasource\")
+    ._checkbook_project_get_url_param_string(\"respcenter\")
+    ._checkbook_project_get_url_param_string(\"program\")
+    ._checkbook_project_get_url_param_string(\"project\")
+    ._checkbook_project_get_url_param_string(\"fundsrc\")
+    .'/expcategory/'.$row['expenditure_budget_expenditure_budget_expenditure_type_id']
+    .'\">'.$row['expenditure_budget_expenditure_budget_expenditure_type_description'].'</a>'"
+    },
+    "fund_src_link":{
+    "expression":"'<a href=\"/nycha_budget'
+    ._checkbook_project_get_url_param_string(\"year\")
+    ._checkbook_project_get_url_param_string(\"datasource\")
+    ._checkbook_project_get_url_param_string(\"respcenter\")
+    ._checkbook_project_get_url_param_string(\"program\")
+    ._checkbook_project_get_url_param_string(\"project\")
+    ._checkbook_project_get_url_param_string(\"expcategory\")
+    .'/fundsrc/'.$row['funding_budget_funding_budget_funding_source_id']
+    .'\">'.$row['funding_budget_funding_budget_funding_source_description'].'</a>'"
+    },
+    "resp_center_link":{
+    "expression":"'<a href=\"/nycha_budget'
+    ._checkbook_project_get_url_param_string(\"year\")
+    ._checkbook_project_get_url_param_string(\"datasource\")
+    ._checkbook_project_get_url_param_string(\"fundsrc\")
+    ._checkbook_project_get_url_param_string(\"program\")
+    ._checkbook_project_get_url_param_string(\"project\")
+    ._checkbook_project_get_url_param_string(\"expcategory\")
+    .'/respcenter/'.$row['resp_budget_resp_budget_responsibility_center_id']
+    .'\">'.$row['resp_budget_resp_budget_responsibility_center_description'].'</a>'"
+    },
+    "prgm_link":{
+    "expression":"'<a href=\"/nycha_budget'
+    ._checkbook_project_get_url_param_string(\"year\")
+    ._checkbook_project_get_url_param_string(\"datasource\")
+    ._checkbook_project_get_url_param_string(\"fundsrc\")
+    ._checkbook_project_get_url_param_string(\"respcenter\")
+    ._checkbook_project_get_url_param_string(\"project\")
+    ._checkbook_project_get_url_param_string(\"expcategory\")
+    .'/program/'.$row['prog_budget_prog_budget_program_phase_id']
+    .'\">'.$row['prog_budget_prog_budget_program_phase_description'].'</a>'"
+    },
+    "proj_link":{
+    "expression":"'<a href=\"/nycha_budget'
+    ._checkbook_project_get_url_param_string(\"year\")
+    ._checkbook_project_get_url_param_string(\"datasource\")
+    ._checkbook_project_get_url_param_string(\"fundsrc\")
+    ._checkbook_project_get_url_param_string(\"respcenter\")
+    ._checkbook_project_get_url_param_string(\"program\")
+    ._checkbook_project_get_url_param_string(\"expcategory\")
+    .'/project/'.$row['proj_budget_proj_budget_gl_project_id']
+    .'\">'.$row['proj_budget_proj_budget_gl_project_description'].'</a>'"
+    },
+    "current_amount_formatted":{
+    "expression":"custom_number_formatter_basic_format($row['current_amount'])"
+    },
+    "percent_difference1_formatted":{
+    "expression": "round($row['percent_difference1'],2) . '%'"
+    },
+    "percent_difference2_formatted":{
+    "expression": "round($row['percent_difference2'],2) . '%'"
+    },
+    "percent_difference3_formatted":{
+    "expression": "round($row['percent_difference3'],2) . '%'"
+    },
+    "previous_amount_formatted":{
+    "expression":"custom_number_formatter_basic_format($row['previous_amount'])"
+    },
+    "previous_1_amount_formatted":{
+    "expression":"custom_number_formatter_basic_format($row['previous_1_amount'])"
+    },
+    "previous_2_amount_formatted":{
+    "expression":"custom_number_formatter_basic_format($row['previous_2_amount'])"
+    }
+},
+"table_columns": [
+{
+"labelAlias": "expense_category",
+"column": "expense_cat_link",
+"sortSourceColumn":"expenditure_budget_expenditure_budget_expenditure_type_description"
+},
+{
+"labelAlias":"previous_2_modified",
+"column":"previous_2_amount_formatted",
+"sortSourceColumn":"previous_2_amount"
+},
+{
+"labelAlias":"previous_1_modified",
+"column":"previous_1_amount_formatted",
+"sortSourceColumn":"previous_1_amount"
+},
+{
+"labelAlias":"previous_modified",
+"column":"previous_amount_formatted",
+"sortSourceColumn":"previous_amount"
+},
+{
+"labelAlias": "current_modified",
+"column":"current_amount_formatted",
+"sortSourceColumn":"current_amount"
+},
+{
+"labelAlias":"percent_diff",
+"column":"percent_difference1_formatted",
+"sortSourceColumn":"percent_difference1"
+},
+{
+"labelAlias":"percent_diff",
+"column":"percent_difference2_formatted",
+"sortSourceColumn":"percent_difference2"
+},
+{
+"labelAlias":"percent_diff",
+"column":"percent_difference3_formatted",
+"sortSourceColumn":"percent_difference3"
+},
+{
+"label": "",
+"column": ""
+}
+],
+"dataTableOptions":{
+"aoColumns": [
+{ "bSortable": true,"sWidth":"250px","sClass":"text" },
+{ "bSortable": true,"sWidth":"160px","sClass":"number","asSorting": [ "desc","asc"  ] },
+{ "bSortable": true,"sWidth":"160px","sClass":"number","asSorting": [ "desc","asc"  ] },
+{ "bSortable": true,"sWidth":"160px" ,"sClass":"number","asSorting": [ "desc" ,"asc" ]},
+{ "bSortable": true,"sWidth":"160px","sClass":"number","asSorting": [ "desc","asc"  ] },
+{ "bSortable": true,"sWidth":"160px","sClass":"number","asSorting": [ "desc","asc"  ] },
+{ "bSortable": true,"sWidth":"178px","sClass":"number","asSorting": [ "desc","asc"  ] },
+{ "bSortable": true,"sWidth":"178px","sClass":"number","asSorting": [ "desc","asc"  ] },
+{ "bSortable": true,"sWidth":"30px" }
+],
+"aaSorting":[[4,"desc"]],
+"bRetrieve": true,
+"bServerSide": true,
+"bProcessing":true,
+"bFilter": false,
+"iDisplayLength":35,
+"bPaginate": true,
+"sPaginationType":"full_numbers",
+"bLengthChange": false,
+"sDom":"<pr><t><ip>",
+"oLanguage": {
+"sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_",
+"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+},
+"bInfo": true
+}
+}

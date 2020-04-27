@@ -3,7 +3,7 @@
   "dataFunc":"GetNychaResponsibilityCentersByPercentDifference",
   "headerTitle": "Responsibility Centers by Percent Difference",
   "headerSubTitle": "Responsibility Centers",
-  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_expense_categories'",
+  "footerUrl":"NychaBudgetUrlService::getPercentDiffFooterUrl(_widget_controller_footer_url($node),'resp_details')",
   "table_columns":[
     {"labelAlias":"responsibility_center","column":"responsibility_center", "derivedColumn":"responsibility_center_name_link"},
     {"labelAlias": "previous_modified","column": "previous_amount","format": "dollar"},
