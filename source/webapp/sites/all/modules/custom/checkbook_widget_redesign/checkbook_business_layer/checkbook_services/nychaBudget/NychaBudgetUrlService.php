@@ -15,6 +15,39 @@ class NychaBudgetUrlService {
       return $url;
     }
 
+  /**
+   * Function to build the footer url for the budget widgets
+   * @param $footerUrl
+   * @param $widget
+   * @return string
+   */
+  static function getPercentDiffFooterUrl($footerUrl, $widget){
+    $url = null;
+    switch($widget){
+      case "exp_details":
+        $url = "/panel_html/nycha_budget_percent_difference_details/nycha_budget/details/budgettype/percdiff/widget/exp_details";
+        break;
+      case "resp_details":
+        $url = "/panel_html/nycha_budget_percent_difference_details/nycha_budget/details/budgettype/percdiff/widget/resp_details";
+        break;
+      case "prgm_details":
+        $url = "/panel_html/nycha_budget_percent_difference_details/nycha_budget/details/budgettype/percdiff/widget/prgm_details";
+        break;
+      case "fund_details":
+        $url = "/panel_html/nycha_budget_percent_difference_details/nycha_budget/details/budgettype/percdiff/widget/fund_details";
+        break;
+      case "proj_details":
+        $url = "/panel_html/nycha_budget_percent_difference_details/nycha_budget/details/budgettype/percdiff/widget/proj_details";
+        break;
+    }
+    if(isset($url)){
+      return str_replace("/panel_html/nycha_budget_transactions/nycha_budget/transactions", $url, $footerUrl);
+    }else{
+      return $footerUrl;
+    }
+
+  }
+
   /* Gets the Committed budget link in a generic way
   * @param $dynamic_parameter - custom dynamic parameters to be used in the URL
   * @param null $legacy_node_id

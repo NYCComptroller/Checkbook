@@ -1,0 +1,14 @@
+{
+  "datasets": {
+    "funding_budget": {
+      "datasourceName": "main",
+      "source": "ref_funding_source",
+      "columns": [
+        {
+          "name": "funding_source_code",
+          "key": true
+        }
+      ]
+    }
+  }
+}
