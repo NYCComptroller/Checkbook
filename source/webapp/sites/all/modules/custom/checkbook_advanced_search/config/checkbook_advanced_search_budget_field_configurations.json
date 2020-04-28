@@ -30,9 +30,6 @@
     {"field_name":"committed","column":"column-right"},
     {"field_name":"encumbered","column":"column-right"},
     {"field_name":"actual","column":"column-right"},
-    {"field_name":"","column":"column-right"},
-    {"field_name":"","column":"column-right"},
-    {"field_name":"","column":"column-right"},
     {"field_name":"budget","column":"none"}
   ]
 }
