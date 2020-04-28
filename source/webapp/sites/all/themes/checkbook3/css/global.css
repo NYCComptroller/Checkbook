@@ -1453,7 +1453,8 @@ div.create-alert-schedule-alert select{
     width: 346px;
 }
 #checkbook-advanced-search-form .column.column-left.checkbook,
-#checkbook-advanced-search-form .column.column-left.checkbook-oge{
+#checkbook-advanced-search-form .column.column-left.checkbook-oge,
+#checkbook-advanced-search-form .column.column-left.checkbook-nycha{
     clear: left;
 }
 #checkbook-datafeeds-data-feed-wizard .column-right,
