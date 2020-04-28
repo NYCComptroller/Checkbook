@@ -10,7 +10,7 @@
   "orderBy":"-txcount",
   "facetPager":true,
   "filterName":"Project ",
-  "urlParameterName":"proj",
+  "urlParameterName":"project",
   "autocompleteParamName":"proj_auto",
   "autocompleteID":"fProjectId",
   "autocompleteField":"gl_project_description",

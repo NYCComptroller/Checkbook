@@ -10,7 +10,7 @@
   "orderBy":"-txcount",
   "facetPager":true,
   "filterName":"Program ",
-  "urlParameterName":"prgm",
+  "urlParameterName":"program",
   "autocompleteParamName":"prgm_auto",
   "autocompleteID":"fProgramId",
   "autocompleteField":"program_phase_description",

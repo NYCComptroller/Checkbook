@@ -11,16 +11,22 @@
     "bdgtyp",
     "bdgnm",
     "modamtr",
-    "comamtr"
+    "comamtr",
+    "respcenter",
+    "program",
+    "project"
   ],
   "urlParamMap":{
     "year": "budget_fiscal_year_id",
     "expcategory": "expenditure_type_id",
     "expcategorynm": "expenditure_type_description",
     "resp_center": "responsibility_center_id",
+    "respcenter":"responsibility_center_id",
+    "program": "program_phase_id",
     "fundsrc":"funding_source_id",
     "prgm": "program_phase_id",
     "proj": "gl_project_id",
+    "project": "gl_project_id",
     "bdgtyp": "budget_type",
     "bdgcode": "budget_code_id",
     "bdgnm": "budget_name",

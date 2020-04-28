@@ -10,7 +10,7 @@
   "orderBy":"-txcount",
   "facetPager":true,
   "filterName":"Responsibility Center",
-  "urlParameterName":"resp_center",
+  "urlParameterName":"respcenter",
   "autocompleteParamName":"responsibility_center_description_auto",
   "autocompleteID":"fRespCenter",
   "autocompleteField":"responsibility_center_description",
