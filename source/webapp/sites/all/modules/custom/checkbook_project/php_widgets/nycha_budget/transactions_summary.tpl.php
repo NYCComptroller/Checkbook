@@ -27,14 +27,14 @@ $url = $_REQUEST['expandBottomContURL'];
 $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
 $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
 
-if(strpos($widget, 'comm_') !== false) {
+if((strpos($widget, 'comm_') !== false) || ($widget == 'wt_year')) {
   $subTitle = NychaBudgetUtil::getTransactionsSubTitle($widget, $url);
 }
 $subTitle = isset($subTitle) ? $subTitle : ' ';
 
 $titleSummary = "<div class='contract-details-heading'>
                   <div class='contract-id'>
-                    <h2 class='contract-title'>{$title}</h2>
+                    <h2 class='contract-title'>{$title}</h2></br>
                     {$subTitle}</div>";
 echo $titleSummary;
 
