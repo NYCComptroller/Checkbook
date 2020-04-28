@@ -53,7 +53,7 @@
     "budget_remaining"
   ],
   "transformationPHP":"
-  $transactions_page = '/' . current_path()  . '?expandBottomContURL=/panel_html/nycha_budget_transactions/datasource/checkbook_nycha';
+  $transactions_page = '/' . current_path()  . '?expandBottomContURL=/panel_html/nycha_budget_transactions/datasource/checkbook_nycha/widget/wt_year';
   $year = ($node->widgetConfig->requestParams['year_id.year_id']) ? '/year/' . $node->widgetConfig->requestParams['year_id.year_id'] : '';
 $expcategory = ($node->widgetConfig->requestParams['expenditure_type_id']) ? '/expcategory/' . $node->widgetConfig->requestParams['expenditure_type_id'] : '';
 $resp = ($node->widgetConfig->requestParams['responsibility_center_id']) ? '/resp_center/' . $node->widgetConfig->requestParams['responsibility_center_id'] : '';
