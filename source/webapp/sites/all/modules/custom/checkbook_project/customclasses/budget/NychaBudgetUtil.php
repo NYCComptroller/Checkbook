@@ -39,10 +39,10 @@ class NychaBudgetUtil{
     //Transactions Page main title
     $title = (isset($widget) && ($widget != 'wt_year')) ? $widget_titles[$widget]: "";
     if ($budgetType == 'committed' && $widget != 'wt_year'){
-      $title .= ' '."By Committed ".' '. "Expense Budget Transactions";
+      $title .= ' '."by Committed ".' '. "Expense Budget Transactions";
     }
     elseif ($budgetType == 'percdiff'){
-      $title .= ' '."By Percent Difference ".' '. "Expense Budget Transactions";
+      $title .= ' '."by Percent Difference ".' '. "Expense Budget Transactions";
     }
     else {
       $title .= ' ' . "Expense Budget Transactions";
