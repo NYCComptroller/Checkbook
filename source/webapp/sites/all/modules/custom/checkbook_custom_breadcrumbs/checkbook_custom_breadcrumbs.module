@@ -370,7 +370,7 @@ function _get_nycha_spending_breadcrumb_title_drilldown()
  **/
 function _get_nycha_budget_breadcrumb_title_drilldown(){
   $title = NULL;
-  if (CheckbookDomain::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
+  if (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
     $title = NULL;
   } else {
     $lastReqParam = _getLastRequestParamValue();
