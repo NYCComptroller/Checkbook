@@ -13,10 +13,10 @@
     "year"
   ],
   "urlParamMap": {
-    "year":"year_id.year_id"
+    "year":"budget_fiscal_year_id"
   },
   "allowRequestParams":["widget"],
-  "defaultParameters":{"year_id.year_id":119},
+  "defaultParameters":{"budget_fiscal_year_id":119},
   "noDataInitialLoad":true,
   "dataset": "checkbook_nycha:budget_percent_difference",
   "columns": [
@@ -65,40 +65,34 @@
   $node->widgetConfig->table_columns[0]->column = 'proj_link';
   $node->widgetConfig->table_columns[0]->sortSourceColumn = 'proj_budget_proj_budget_gl_project_description';
   }
-  foreach($node->widgetConfig->table_columns as $key => $table_column){
-    if($year == 2012 && ($table_column->column == 'percent_difference2_formatted' || $table_column->column == 'percent_difference3_formatted')){
-    unset($node->widgetConfig->table_columns[$key]);
-    unset($adjustDataTableOptions->aoColumns[$key]);
+    foreach($node->widgetConfig->table_columns as $key => $table_column){
+      if($year == 2019 && ($table_column->column == 'percent_difference2_formatted' || $table_column->column == 'percent_difference3_formatted')){
+      unset($node->widgetConfig->table_columns[$key]);
+      unset($adjustDataTableOptions->aoColumns[$key]);
+      }
+      if($year == 2020 && ($table_column->column == 'percent_difference1_formatted' || $table_column->column == 'percent_difference3_formatted')){
+      unset($node->widgetConfig->table_columns[$key]);
+      unset($adjustDataTableOptions->aoColumns[$key]);
+      }
+      else if($year != 2019 && $year != 2020){
+      if($table_column->column == 'percent_difference1_formatted' || $table_column->column == 'percent_difference2_formatted'){
+      unset($node->widgetConfig->table_columns[$key]);
+      unset($adjustDataTableOptions->aoColumns[$key]);
+      }
+      }
+      $label = WidgetUtil::generateLabelMapping($table_column->labelAlias);
+      $int_val = _get_num_from_string($label);
+
+      if($int_val != 0 && $int_val < 2018){
+      unset($node->widgetConfig->table_columns[$key]);
+      unset($adjustDataTableOptions->aoColumns[$key]);
+      }
     }
-    if($year == 2013 && ($table_column->column == 'percent_difference1_formatted' || $table_column->column == 'percent_difference3_formatted')){
-    unset($node->widgetConfig->table_columns[$key]);
-    unset($adjustDataTableOptions->aoColumns[$key]);
-    }
-    else if($year != 2012 && $year != 2013){
-    if($table_column->column == 'percent_difference1_formatted' || $table_column->column == 'percent_difference2_formatted'){
-    unset($node->widgetConfig->table_columns[$key]);
-    unset($adjustDataTableOptions->aoColumns[$key]);
-    }
-    }
+      $column_count = count($node->widgetConfig->table_columns);
+      $adjustDataTableOptions->aaSorting[0][0] = $column_count - 2;
 
-    //hourly rate column must refer amount basis id for nycha
-
-
-    $label = WidgetUtil::generateLabelMapping($table_column->labelAlias);
-    $int_val = _get_num_from_string($label);
-
-    if($int_val != 0 && $int_val < 2011){
-    unset($node->widgetConfig->table_columns[$key]);
-    unset($adjustDataTableOptions->aoColumns[$key]);
-    }
-
-
-    }
-    $column_count = count($node->widgetConfig->table_columns);
-    $adjustDataTableOptions->aaSorting[0][0] = $column_count - 2;
-
-    $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
-    $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
+      $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
+      $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
 ",
 "adjustParameters":"
     $type_filter = NULL ;
