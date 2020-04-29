@@ -82,7 +82,7 @@ if($noOfTotalResults > 0){
         $results = 'contracts_results';
         break;
     }
-    print theme($template, ['budget_results' => $value, 'searchTerm' => $searchTerms[0], 'solr_datasource' => $solr_datasource]);
+    print theme($template, [$results => $value, 'searchTerm' => $searchTerms[0], 'solr_datasource' => $solr_datasource]);
     print "</li>";
   }
   print "</ol>";
