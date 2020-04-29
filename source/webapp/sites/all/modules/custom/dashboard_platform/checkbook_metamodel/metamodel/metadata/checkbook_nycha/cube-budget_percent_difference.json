@@ -19,20 +19,20 @@
           ]
         },
         {
-          "name": "expenditure_budget",
+          "name": "expenditure_type_name",
           "levels": [
             {
-              "name": "expenditure_budget",
-              "datasetName":"expenditure_budget",
+              "name": "expenditure_type_name",
               "sourceColumnName": "expenditure_type_name"
             }
           ]
         },
         {
-          "name": "expenditure_type_name",
+          "name": "exp_budget",
           "levels": [
             {
-              "name": "expenditure_type_name",
+              "name": "exp_budget",
+              "datasetName":"exp_budget",
               "sourceColumnName": "expenditure_type_name"
             }
           ]

@@ -1,6 +1,6 @@
 {
   "datasets": {
-    "expenditure_budget": {
+    "exp_budget": {
       "datasourceName": "main",
       "source": "ref_expenditure_type",
       "columns": [
