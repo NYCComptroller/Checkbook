@@ -30,7 +30,8 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
 
     switch ($form_state['clicked_button']['#name']) {
         case "budget_submit":
-            $form_state['redirect'] = _checkbook_advanced_search_budget_submit($form, $form_state);
+            $data_source = $form_state['values']['budget_advanced_search_domain_filter'];
+            $form_state['redirect'] = _checkbook_advanced_search_budget_submit($form, $form_state, $data_source);
             break;
         case "revenue_submit":
             $form_state['redirect'] = _checkbook_advanced_search_revenue_submit($form, $form_state);
@@ -47,7 +48,8 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
             $form_state['redirect'] = _checkbook_advanced_search_payroll_submit($form, $form_state);
             break;
         case "budget_next":
-            return _checkbook_advanced_search_budget_submit($form, $form_state);
+            $data_source = $form_state['values']['budget_advanced_search_domain_filter'];
+            return _checkbook_advanced_search_budget_submit($form, $form_state, $data_source);
             break;
         case "revenue_next":
             return _checkbook_advanced_search_revenue_submit($form, $form_state, 'next');
@@ -75,9 +77,11 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
  * @param string $data_source
  * @return array
  */
-function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = Datasource::CITYWIDE)
-{
+function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = Datasource::CITYWIDE){
     try {
+       if($data_source == Datasource::NYCHA && $domain == Domain::$BUDGET){
+         return CheckbookDateUtil::getNychaBudgetFiscalYears();
+       }
         $data = CheckbookDateUtil::getLast10FiscalYearOptions($data_source);
         $max_year = _checkbook_max_data_year($data_source);
         $fiscal_year_array = [];

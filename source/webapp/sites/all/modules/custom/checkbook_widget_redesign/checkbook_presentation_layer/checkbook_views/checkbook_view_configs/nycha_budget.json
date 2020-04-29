@@ -9,12 +9,44 @@
         "widget_config":"committed_expense_view",
         "visibility_parameters":["-expcategory"]
       },
+      "expense_categories_percent_difference": {
+        "widget_config":"expense_categories_percent_difference_view",
+        "visibility_parameters":["-expcategory"]
+      },
+      "percent_difference_by_expense_categories":{
+        "widget_config":"expense_categories_percent_difference_3_view",
+        "visibility_parameters":["-expcategory"]
+      },
+      "percent_difference_by_expense_categories_previous_1":{
+        "widget_config":"expense_categories_percent_difference_view",
+        "visibility_parameters":["-expcategory"]
+      },
+      "percent_difference_by_expense_categories_previous_2":{
+        "widget_config":"expense_categories_percent_difference_2_view",
+        "visibility_parameters":["-expcategory"]
+      },
       "responsibility_centers": {
         "widget_config":"responsibility_centers_view",
         "visibility_parameters":["-respcenter"]
       },
       "responsibility_centers_committed_expense": {
         "widget_config":"responsibility_centers_committed_expense_view",
+        "visibility_parameters":["-respcenter"]
+      },
+      "responsibility_centers_percent_difference": {
+        "widget_config":"responsibility_center_percent_difference_view",
+        "visibility_parameters":["-respcenter"]
+      },
+      "percent_difference_by_resp_center":{
+        "widget_config":"responsibility_center_percent_difference_3_view",
+        "visibility_parameters":["-respcenter"]
+      },
+      "percent_difference_by_resp_center_previous_1":{
+        "widget_config":"responsibility_center_percent_difference_view",
+        "visibility_parameters":["-respcenter"]
+      },
+      "percent_difference_by_resp_center_previous_2":{
+        "widget_config":"responsibility_center_percent_difference_2_view",
         "visibility_parameters":["-respcenter"]
       },
       "funding_sources": {
@@ -25,6 +57,22 @@
         "widget_config":"funding_sources_committed_expense_view",
         "visibility_parameters":["-fundsrc"]
       },
+      "funding_sources_percent_difference": {
+        "widget_config":"funding_sources_percent_difference_view",
+        "visibility_parameters":["-fundsrc"]
+      },
+      "percent_difference_by_fundsrc":{
+        "widget_config":"funding_sources_percent_difference_3_view",
+        "visibility_parameters":["-fundsrc"]
+      },
+      "percent_difference_by_fundsrc_previous_1":{
+        "widget_config":"funding_sources_percent_difference_view",
+        "visibility_parameters":["-fundsrc"]
+      },
+      "percent_difference_by_fundsrc_previous_2":{
+        "widget_config":"funding_sources_percent_difference_2_view",
+        "visibility_parameters":["-fundsrc"]
+      },
       "programs": {
         "widget_config":"programs_view",
         "visibility_parameters":["-program"]
@@ -33,12 +81,44 @@
         "widget_config":"programs_committed_expense_view",
         "visibility_parameters":["-program"]
       },
+      "programs_percent_difference": {
+        "widget_config":"programs_percent_difference_view",
+        "visibility_parameters":["-program"]
+      },
+      "percent_difference_by_programs":{
+        "widget_config":"programs_percent_difference_3_view",
+        "visibility_parameters":["-program"]
+      },
+      "percent_difference_by_programs_previous_1":{
+        "widget_config":"programs_percent_difference_view",
+        "visibility_parameters":["-program"]
+      },
+      "percent_difference_by_programs_previous_2":{
+        "widget_config":"programs_percent_difference_2_view",
+        "visibility_parameters":["-program"]
+      },
       "projects": {
         "widget_config":"projects_view",
         "visibility_parameters":["-project"]
       },
       "projects_committed_expense": {
         "widget_config":"projects_committed_expense_view",
+        "visibility_parameters":["-project"]
+      },
+      "projects_percent_difference": {
+        "widget_config":"projects_percent_difference_view",
+        "visibility_parameters":["-project"]
+      },
+      "percent_difference_by_projects":{
+        "widget_config":"projects_percent_difference_3_view",
+        "visibility_parameters":["-project"]
+      },
+      "percent_difference_by_projects_previous_1":{
+        "widget_config":"projects_percent_difference_view",
+        "visibility_parameters":["-project"]
+      },
+      "percent_difference_by_projects_previous_2":{
+        "widget_config":"projects_percent_difference_2_view",
         "visibility_parameters":["-project"]
       }
     }

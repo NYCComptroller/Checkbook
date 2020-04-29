@@ -473,14 +473,15 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state){
   }
 
   if ($data_source == Datasource::NYCHA) {
-    if ($values['other_government_entity']) {
-      $other_government_entity = ($values['other_government_entity'] == 'Select One') ? 'All' : $values['other_government_entity'];
+    //if ($values['other_government_entity']) {
+      $other_government_entity = 'NEW YORK CITY HOUSING AUTHORITY[996]';
+      //$other_government_entity = ($values['other_government_entity'] == 'Select One') ? 'All' : $values['other_government_entity'];
       $form['filter']['other_government_entity'] = array(
         '#markup' => '<div><strong>Other Government Entities:</strong> ' . $other_government_entity . '</div>',
       );
-      $user_criteria['Other Government Entity'] = $values['other_government_entity'];
+      $user_criteria['Other Government Entity'] = $other_government_entity;
       $formatted_search_criteria['Other Government Entities'] = $other_government_entity;
-    }
+    //}
   } else {
     if ($values['agency']) {
       $form['filter']['agency'] = array(

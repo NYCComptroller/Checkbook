@@ -1453,7 +1453,8 @@ div.create-alert-schedule-alert select{
     width: 346px;
 }
 #checkbook-advanced-search-form .column.column-left.checkbook,
-#checkbook-advanced-search-form .column.column-left.checkbook-oge{
+#checkbook-advanced-search-form .column.column-left.checkbook-oge,
+#checkbook-advanced-search-form .column.column-left.checkbook-nycha{
     clear: left;
 }
 #checkbook-datafeeds-data-feed-wizard .column-right,
@@ -1502,6 +1503,8 @@ div.create-alert-schedule-alert select{
 #checkbook-advanced-search-form #edit-payroll-clear,
 #checkbook-advanced-search-form #edit-budget-submit,
 #checkbook-advanced-search-form #edit-budget-clear,
+#checkbook-advanced-search-form #edit-budget-submit--2,
+#checkbook-advanced-search-form #edit-budget-clear--2,
 #checkbook-advanced-search-form #edit-revenue-submit,
 #checkbook-advanced-search-form #edit-revenue-clear{
     float:none;
@@ -2756,12 +2759,16 @@ h1.no-spending-transactions {width: 500px}
   margin-right:10px !important;
 }
 .page-revenue #revenue-transactions .inside .panel-pane.pane-custom.pane-2.noDataShowFull,
-.page-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull{
+.page-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull,
+.page-nycha-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull
+{
     width:100% !important;
     float:none !important;
 }
 .page-revenue #revenue-transactions .inside .panel-pane.pane-custom.pane-2.noDataShowFull #no-records,
-.page-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull #no-records{
+.page-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull #no-records,
+.page-nycha-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull #no-records
+{
     text-align:center;
     float:left;
     clear:both;
@@ -4046,18 +4053,20 @@ table.nycha_assoc_contracts_list {
   vertical-align: top;
 }
 
-body.page-data-feeds #div_data_source,
-#checkbook-advanced-search-form #div_spending_data_source,
-#checkbook-advanced-search-form #div_contracts_data_source,
-#checkbook-advanced-search-form #div_payroll_data_source{
-  border: 1px solid #CCCCCC;
-  border-radius: 5px;
-  padding: 10px;
-}
-
 body.page-data-feeds select.loading{
   background: url(/sites/all/themes/checkbook/images/loading.gif) no-repeat right center;
   color:#fff;
+}
+
+/** CSS for Data-source filter on advanced search form **/
+body.page-data-feeds #div_data_source,
+#checkbook-advanced-search-form #div_spending_data_source,
+#checkbook-advanced-search-form #div_contracts_data_source,
+#checkbook-advanced-search-form #div_payroll_data_source,
+#checkbook-advanced-search-form #div_budget_data_source{
+  border: 1px solid #CCCCCC;
+  border-radius: 5px;
+  padding: 10px;
 }
 
 #div_data_source .form-type-radios .form-item{
@@ -4089,7 +4098,8 @@ body.page-data-feeds select.loading{
 
 #checkbook-advanced-search-form #div_spending_data_source .form-item,
 #checkbook-advanced-search-form #div_contracts_data_source .form-item,
-#checkbook-advanced-search-form #div_payroll_data_source .form-item {
+#checkbook-advanced-search-form #div_payroll_data_source .form-item,
+#checkbook-advanced-search-form #div_budget_data_source .form-item{
   height: 25px;
   float: left;
   margin-right: 70px;
@@ -4097,7 +4107,8 @@ body.page-data-feeds select.loading{
 
 #checkbook-advanced-search-form #div_spending_data_source,
 #checkbook-advanced-search-form #div_contracts_data_source,
-#checkbook-advanced-search-form #div_payroll_data_source{
+#checkbook-advanced-search-form #div_payroll_data_source,
+#checkbook-advanced-search-form #div_budget_data_source{
   font-size: 12px;
 }
 

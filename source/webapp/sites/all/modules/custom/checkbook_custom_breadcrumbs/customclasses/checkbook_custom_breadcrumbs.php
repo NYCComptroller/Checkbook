@@ -354,5 +354,47 @@ class CustomBreadcrumbs
     }
     return $title;
   }
+
+
+  /** Returns NYCHA Budget page title and Breadcrumb */
+  public static function getNYCHABudgetBreadcrumbTitle()
+  {
+    $bottomURL = $_REQUEST['expandBottomContURL'];
+    if (!$bottomURL && preg_match('/^nycha_budget\/search\/transactions/', current_path()) || preg_match('/^nycha_budget\/all\/transactions/', current_path()))
+    {
+      $title = 'NYCHA Budget Transactions';
+    } else if (stripos($bottomURL, 'transactions')) {
+      $title = NychaBudgetUtil::getTransactionsTitle($bottomURL);
+    } else if (preg_match('/nycha_budget/', $bottomURL)) {
+      $title = RequestUtil::getRequestKeyValueFromURL("nycha_budget", $bottomURL);
+    }
+    else {
+        $lastReqParam = _getLastRequestParamValue();
+        foreach ($lastReqParam as $key => $value) {
+          switch ($key) {
+            case 'expcategory':
+              $title = _checkbook_project_get_name_for_argument("expenditure_type_id", $value);
+              break;
+            case 'respcenter':
+              $title = _checkbook_project_get_name_for_argument("responsibility_center_id", $value);
+              break;
+            case 'fundsrc':
+              $title = _checkbook_project_get_name_for_argument("funding_source_id", $value);
+              break;
+            case 'program':
+              $title = _checkbook_project_get_name_for_argument("program_phase_id", $value);
+              break;
+            case 'project':
+              $title = _checkbook_project_get_name_for_argument("gl_project_id", $value);
+              break;
+            default:
+              $title = "New York City Housing Authority";
+          }
+          $title .= ' Budget';
+        }
+      }
+      return $title;
+    }
+
 }
 ?>

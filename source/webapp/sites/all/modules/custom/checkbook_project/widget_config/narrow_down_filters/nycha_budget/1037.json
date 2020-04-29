@@ -11,16 +11,25 @@
   "facetPager":true,
   "filterName":"Responsibility Center",
   "urlParameterName":"resp_center",
-  "autocompleteParamName":"responsibility_center_name_auto",
+  "autocompleteParamName":"responsibility_center_description_auto",
   "autocompleteID":"fRespCenter",
-  "autocompleteField":"responsibility_center_name",
+  "autocompleteField":"responsibility_center_description",
   "adjustParameters":"
-  if(function_exists('_checkbook_project_applyParameterFilters')){
-  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
-}
-$adjustedParameters['responsibility_center_id.responsibility_center_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
-return $adjustedParameters;
-",
-"template":"individual_filter"
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+      $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    $adjustedParameters['responsibility_center_id.responsibility_center_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+    return $adjustedParameters;
+  ",
+  "adjustFacetOptions":"
+    if(PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
+      $node->widgetConfig->allowFacetDeselect = true;
+      $node->widgetConfig->showAllRecords = true;
+    }else{
+      $node->widgetConfig->allowFacetDeselect = false;
+      $node->widgetConfig->showAllRecords = false;
+   }
+  ",
+  "template":"individual_filter"
 }
 

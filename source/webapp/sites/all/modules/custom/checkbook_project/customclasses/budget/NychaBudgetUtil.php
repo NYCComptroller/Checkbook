@@ -14,6 +14,17 @@ class NychaBudgetUtil{
     'wt_projects' => 'Projects',
     'wt_funding_sources' => 'Funding Sources',
     'wt_program' => 'Programs',
+    'exp_details' => 'Expense Categories',
+    'resp_details' => 'Responsibility Centers',
+    'proj_details' => 'Projects',
+    'fund_details' => 'Funding Sources',
+    'prgm_details' => 'Programs',
+    'comm_expense_category' => 'Expense Category',
+    'comm_resp_center' => 'Responsibility Center',
+    'comm_proj' => 'Project',
+    'comm_fundsrc' => 'Funding Source',
+    'comm_prgm' => 'Program',
+    'wt_year' => 'Year'
     );
 
   /**
@@ -26,13 +37,54 @@ class NychaBudgetUtil{
     $widget_titles = self::$widget_titles;
     $budgetType = RequestUtil::getRequestKeyValueFromURL('budgettype', $url);
     //Transactions Page main title
-    $title = isset($widget) ? $widget_titles[$widget]: "";
-    if ($budgetType == 'committed'){
-      $title .= ' '."By Committed ".' '. "Expense Budget Transactions";
+    $title = (isset($widget) && ($widget != 'wt_year')) ? $widget_titles[$widget]: "";
+    if ($budgetType == 'committed' && $widget != 'wt_year'){
+      $title .= ' '."by Committed ".' '. "Expense Budget Transactions";
+    }
+    elseif ($budgetType == 'percdiff'){
+      $title .= ' '."by Percent Difference ".' '. "Expense Budget Transactions";
     }
     else {
       $title .= ' ' . "Expense Budget Transactions";
     }
+    return $title;
+  }
+
+  /**
+   * @param $widget Widget Name
+   * @param $bottomURL
+   * @return null|string -- Returns Sub Title for Committed Transactions Details
+   */
+  static public function getTransactionsSubTitle($widget, $bottomURL){
+    $widgetTitles = self::$widget_titles;
+    $title = '<b>'.$widgetTitles[$widget].': </b>';
+
+    switch($widget){
+      case 'comm_expense_category':
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('expcategory', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("expenditure_type_id", $reqParam);
+        break;
+      case 'comm_resp_center':
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('resp_center', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("responsibility_center_id", $reqParam);
+        break;
+      case 'comm_fundsrc':
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('fundsrc', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("funding_source_id", $reqParam);
+        break;
+      case 'comm_prgm':
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('prgm', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("program_phase_id", $reqParam);
+        break;
+      case 'comm_proj':
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('proj', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("gl_project_id", $reqParam);
+        break;
+      case 'wt_year' :
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
+        $title .= _getYearValueFromID($reqParam);
+    }
+
     return $title;
   }
 

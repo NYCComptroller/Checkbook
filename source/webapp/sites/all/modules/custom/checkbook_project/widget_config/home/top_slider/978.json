@@ -61,13 +61,9 @@
       {
         "dataset": "checkbook_nycha:budget",
         "columns":["budget_modified"],
-        "seriesURLParamMap":{"year":"year_id.year_id"},
-        "allowedParams":["year_id.year_id"],
+        "seriesURLParamMap":{"year":"budget_fiscal_year_id"},
+        "allowedParams":["budget_fiscal_year_id"],
         "adjustSerieParameters":"
-          //Calculate amount for all years on 'All Years' advanced search results page
-          //if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear')){
-          //  $serieParameters['budget_fiscal_year_id'] = RequestUtil:: getFiscalYearIdForTopNavigation();
-          //}
           return $serieParameters;
         "
       },
