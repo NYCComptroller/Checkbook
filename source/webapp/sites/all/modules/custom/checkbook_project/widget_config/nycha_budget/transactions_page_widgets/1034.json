@@ -201,6 +201,9 @@ $is_remaining_expense = ($budgettype == 'remaining');
 if($is_committed_expense) {
 $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 7;
 }
+if($is_remaining_expense) {
+$node->widgetConfig->dataTableOptions->aaSorting[0][0] = 8;
+}
 ",
 "dataTableOptions":{
 "bRetrieve": true,
