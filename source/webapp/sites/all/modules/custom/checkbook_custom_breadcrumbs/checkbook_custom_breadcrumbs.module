@@ -366,13 +366,12 @@ function _get_nycha_spending_breadcrumb_title_drilldown()
 }
 
 /**
- * Custom function to get title for NYCHA CONTRACTS landing pages
+ * Custom function to get title for NYCHA Budget landing pages
  **/
-function _get_nycha_budget_breadcrumb_title_drilldown()
-{
-  $bottomURL = $_REQUEST['expandBottomContURL'];
-  if (!$bottomURL && preg_match('/^nycha_budget\/search\/transactions/', current_path())) {
-    $title = null;
+function _get_nycha_budget_breadcrumb_title_drilldown(){
+  $title = NULL;
+  if (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
+    $title = NULL;
   } else {
     $lastReqParam = _getLastRequestParamValue();
     foreach ($lastReqParam as $key => $value) {
@@ -398,7 +397,6 @@ function _get_nycha_budget_breadcrumb_title_drilldown()
     }
   }
   return $title;
-
 }
 
 /**
@@ -639,6 +637,8 @@ function _checkbook_custom_breadcrumnb_add_breadcrumb_title()
     $checkbook_breadcrumb_title = CustomBreadcrumbs::getNYCHASpendingBreadcrumbTitle();
   } elseif (preg_match('/^budget/', current_path())) {
     $checkbook_breadcrumb_title = CustomBreadcrumbs::getBudgetBreadcrumbTitle();
+  } elseif (preg_match('/^nycha_budget/', current_path())) {
+    $checkbook_breadcrumb_title = CustomBreadcrumbs::getNYCHABudgetBreadcrumbTitle();
   } elseif (preg_match('/^revenue/', current_path())) {
     $checkbook_breadcrumb_title = CustomBreadcrumbs::getRevenueBreadcrumbTitle();
   } elseif (preg_match('/smart_search/', current_path())) {
