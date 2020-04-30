@@ -65,7 +65,7 @@ class NychaBudgetUtil{
         $title .= _checkbook_project_get_name_for_argument("expenditure_type_id", $reqParam);
         break;
       case 'comm_resp_center':
-        $reqParam = RequestUtil::getRequestKeyValueFromURL('resp_center', $bottomURL);
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('respcenter', $bottomURL);
         $title .= _checkbook_project_get_name_for_argument("responsibility_center_id", $reqParam);
         break;
       case 'comm_fundsrc':
