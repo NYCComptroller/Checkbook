@@ -103,14 +103,14 @@ class NychaBudgetWidgetService extends WidgetDataService implements IWidgetServi
         break;
       case "proj_committed_budget_link":
         $column = $row['committed'];
-        $dynamic_parameter = "/proj/" . $row["gl_project_id"];
+        $dynamic_parameter = "/project/" . $row["gl_project_id"];
         $class = "bottomContainerReload";
         $url = NychaBudgetUrlService::committedBudgetUrl($dynamic_parameter, 'comm_proj','remaining');
         $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
         break;
       case "proj_committed_by_budget_link":
         $column = $row['committed'];
-        $dynamic_parameter = "/proj/" . $row["gl_project_id"];
+        $dynamic_parameter = "/project/" . $row["gl_project_id"];
         $class = "bottomContainerReload";
         $url = NychaBudgetUrlService::committedBudgetUrl($dynamic_parameter, 'comm_proj','committed');
         $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
