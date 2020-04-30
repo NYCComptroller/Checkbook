@@ -362,8 +362,8 @@ class CustomBreadcrumbs
     $bottomURL = $_REQUEST['expandBottomContURL'];
     if (!$bottomURL && preg_match('/^nycha_budget\/search\/transactions/', current_path()) || preg_match('/^nycha_budget\/all\/transactions/', current_path()))
     {
-      $title = 'NYCHA Budget Transactions';
-    } else if (stripos($bottomURL, 'transactions')) {
+      $title = 'NYCHA Expense Budget Transactions';
+    } else if ((stripos($bottomURL, 'transactions')) || (stripos($bottomURL, 'details'))){
       $title = NychaBudgetUtil::getTransactionsTitle($bottomURL);
     } else if (preg_match('/nycha_budget/', $bottomURL)) {
       $title = RequestUtil::getRequestKeyValueFromURL("nycha_budget", $bottomURL);
