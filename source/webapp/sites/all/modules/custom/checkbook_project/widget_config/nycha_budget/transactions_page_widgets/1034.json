@@ -235,7 +235,7 @@ $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 8;
 },
 "customExternalJS":"function prepareTableListFilterUrl(){
                       var oAgencyIds = getNamedFilterCriteria('fAgencyId');
-                      var oExpCategoryIds = getNamedFilterCriteria('fExpCategory');
+                      var oExpCategoryIds = getNamedFilterCriteria('fExpCategoryId');
                       var oModAmount = getNamedFilterCriteria('fModAmount');
                       var oComAmount = getNamedFilterCriteria('fComAmount');
                       var obudgetCodeId = getNamedFilterCriteria('fbdgcode');
