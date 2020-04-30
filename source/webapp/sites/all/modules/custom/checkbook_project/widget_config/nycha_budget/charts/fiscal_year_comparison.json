@@ -74,7 +74,7 @@ return $adjustedParameters;",
   $expcategory = ($node->widgetConfig->requestParams['expenditure_type_id']) ? '/expcategory/' . $node->widgetConfig->requestParams['expenditure_type_id'] : '';
   $resp = ($node->widgetConfig->requestParams['responsibility_center_id']) ? '/respcenter/' . $node->widgetConfig->requestParams['responsibility_center_id'] : '';
   $fundsrc = ($node->widgetConfig->requestParams['funding_source_id']) ? '/fundsrc/' . $node->widgetConfig->requestParams['funding_source_id'] : '';
-  $prog = ($node->widgetConfig->requestParams['program_phase_id']) ? '/prgm/' . $node->widgetConfig->requestParams['program_phase_id'] : '';
+  $prog = ($node->widgetConfig->requestParams['program_phase_id']) ? '/program/' . $node->widgetConfig->requestParams['program_phase_id'] : '';
   $proj = ($node->widgetConfig->requestParams['gl_project_id']) ? '/proj/' . $node->widgetConfig->requestParams['gl_project_id'] : '';
   $budget_committed = '/budgettype/committed';
   $budget_remaining = '/budgettype/remaining';

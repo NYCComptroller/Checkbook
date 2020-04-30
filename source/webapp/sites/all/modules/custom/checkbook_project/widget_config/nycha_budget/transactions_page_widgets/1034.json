@@ -1,11 +1,11 @@
 {
   "widgetType": "data_tables",
   "widgetSubType": "dataTableList",
-  "cleanURLParameters": ["year", "expcategory", "respcenter", "fundsrc", "prgm", "proj", "bdgtyp",
+  "cleanURLParameters": ["year", "expcategory", "respcenter", "fundsrc", "program", "proj", "bdgtyp",
                           "bdgnm", "modamt", "modamtr", "comamtr", "adpamt", "encamt", "actual", "agency"],
   "urlParamMap": {
     "year": "budget_fiscal_year_id", "expcategory": "expenditure_type_id", "respcenter": "responsibility_center_id",
-    "fundsrc":"funding_source_id", "prgm": "program_phase_id", "proj": "gl_project_id", "bdgtyp": "budget_type",
+    "fundsrc":"funding_source_id", "program": "program_phase_id", "proj": "gl_project_id", "bdgtyp": "budget_type",
     "bdgnm": "budget_name", "modamt": "modified_budget", "modamtr": "modified_budget", "comamt": "committed", "comamtr": "committed",
     "encamt":"encumbrance_amount", "actual":"actual_amount", "adpamt": "adopted_budget", "agency": "agency_id"
   },
@@ -256,7 +256,7 @@ $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 8;
                       cUrl = adjustUrlParameter(cUrl,'bdgnm',obudgetName);
                       cUrl = adjustUrlParameter(cUrl,'bdgtyp',obudgetType);
                       cUrl = adjustUrlParameter(cUrl,'fundsrc',oFundingIds);
-                      cUrl = adjustUrlParameter(cUrl,'prgm',oProgramIds);
+                      cUrl = adjustUrlParameter(cUrl,'program',oProgramIds);
                       cUrl = adjustUrlParameter(cUrl,'proj',oProjectIds);
 
                       return cUrl;
