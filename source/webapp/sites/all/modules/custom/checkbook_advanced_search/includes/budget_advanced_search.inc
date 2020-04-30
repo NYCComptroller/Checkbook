@@ -157,7 +157,7 @@ function _checkbook_advanced_search_nycha_budget_submit($form, &$form_state, $fi
   $redirectUrl .= (!empty($responsibilityCenter))? _checkbook_advanced_search_generate_redirect_url($responsibilityCenter, 'respcenter') : "";
   $redirectUrl .= (!empty($fundSrc))? _checkbook_advanced_search_generate_redirect_url($fundSrc, 'fundsrc') : "";
   $redirectUrl .= (!empty($program))? _checkbook_advanced_search_generate_redirect_url($program, 'program') : "";
-  $redirectUrl .= (!empty($project))? _checkbook_advanced_search_generate_redirect_url($project, 'proj') : "";
+  $redirectUrl .= (!empty($project))? _checkbook_advanced_search_generate_redirect_url($project, 'project') : "";
   $redirectUrl .= (!empty($budgetType))? _checkbook_advanced_search_generate_redirect_url($budgetType, 'bdgtyp') : "";
   $redirectUrl .= (!empty($budgetName))? _checkbook_advanced_search_generate_redirect_url($budgetName, 'bdgnm') : "";
 

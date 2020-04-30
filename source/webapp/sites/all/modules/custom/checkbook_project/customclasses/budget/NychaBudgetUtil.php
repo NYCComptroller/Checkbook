@@ -77,7 +77,7 @@ class NychaBudgetUtil{
         $title .= _checkbook_project_get_name_for_argument("program_phase_id", $reqParam);
         break;
       case 'comm_proj':
-        $reqParam = RequestUtil::getRequestKeyValueFromURL('proj', $bottomURL);
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('project', $bottomURL);
         $title .= _checkbook_project_get_name_for_argument("gl_project_id", $reqParam);
         break;
       case 'wt_year' :
