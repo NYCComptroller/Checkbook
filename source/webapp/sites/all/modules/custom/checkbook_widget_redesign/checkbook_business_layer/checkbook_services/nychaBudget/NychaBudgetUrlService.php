@@ -59,10 +59,10 @@ class NychaBudgetUrlService {
       . RequestUtilities::buildUrlFromParam('year')
       . RequestUtilities::buildUrlFromParam('datasource')
       . RequestUtilities::buildUrlFromParam('expcategory')
-      . RequestUtilities::buildUrlFromParam('resp_center')
+      . RequestUtilities::buildUrlFromParam('respcenter')
       . RequestUtilities::buildUrlFromParam('fundsrc')
-      . RequestUtilities::buildUrlFromParam('prgm')
-      . RequestUtilities::buildUrlFromParam('proj')
+      . RequestUtilities::buildUrlFromParam('program')
+      . RequestUtilities::buildUrlFromParam('project')
       . '/widget/'. $widget
       . '/budgettype/'.$budgetype
       . $dynamic_parameter;

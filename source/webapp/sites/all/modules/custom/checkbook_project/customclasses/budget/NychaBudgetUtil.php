@@ -65,7 +65,7 @@ class NychaBudgetUtil{
         $title .= _checkbook_project_get_name_for_argument("expenditure_type_id", $reqParam);
         break;
       case 'comm_resp_center':
-        $reqParam = RequestUtil::getRequestKeyValueFromURL('resp_center', $bottomURL);
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('respcenter', $bottomURL);
         $title .= _checkbook_project_get_name_for_argument("responsibility_center_id", $reqParam);
         break;
       case 'comm_fundsrc':
@@ -73,11 +73,11 @@ class NychaBudgetUtil{
         $title .= _checkbook_project_get_name_for_argument("funding_source_id", $reqParam);
         break;
       case 'comm_prgm':
-        $reqParam = RequestUtil::getRequestKeyValueFromURL('prgm', $bottomURL);
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('program', $bottomURL);
         $title .= _checkbook_project_get_name_for_argument("program_phase_id", $reqParam);
         break;
       case 'comm_proj':
-        $reqParam = RequestUtil::getRequestKeyValueFromURL('proj', $bottomURL);
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('project', $bottomURL);
         $title .= _checkbook_project_get_name_for_argument("gl_project_id", $reqParam);
         break;
       case 'wt_year' :
