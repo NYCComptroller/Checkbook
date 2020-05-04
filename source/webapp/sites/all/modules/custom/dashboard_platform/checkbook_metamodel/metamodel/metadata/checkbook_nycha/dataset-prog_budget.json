@@ -5,7 +5,7 @@
       "source": "ref_program_phase",
       "columns": [
         {
-          "name": "program_phase_code",
+          "name": "program_phase_id",
           "key": true
         }
       ]

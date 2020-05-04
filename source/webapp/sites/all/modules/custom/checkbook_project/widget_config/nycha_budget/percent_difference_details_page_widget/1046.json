@@ -10,10 +10,20 @@
   "getTotalDataCount":true,
   "no_results_content":"No Results Found",
   "cleanURLParameters":[
-    "year"
+    "year",
+    "expcategory",
+    "respcenter",
+    "fundsrc",
+    "program",
+    "project"
   ],
   "urlParamMap": {
-    "year":"budget_fiscal_year_id"
+    "year":"budget_fiscal_year_id",
+    "expcategory": "expenditure_type_id",
+    "respcenter": "responsibility_center_id",
+    "fundsrc":"funding_source_id",
+    "program": "program_phase_id",
+    "project": "gl_project_id"
   },
   "allowRequestParams":["widget"],
   "defaultParameters":{"budget_fiscal_year_id":119},
@@ -44,7 +54,6 @@
   $year = _getYearValueFromID(RequestUtilities::getRequestParamValue('year'));
   $query_string = $_GET['q'];
   $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
-    foreach($node->widgetConfig->table_columns as $key => $table_column){
     // Adjust the first column data
     if($widget == 'fund_details'){
     $node->widgetConfig->table_columns[0]->labelAlias = 'funding_source';
@@ -52,7 +61,7 @@
     $node->widgetConfig->table_columns[0]->sortSourceColumn = 'funding_budget_funding_budget_funding_source_description';
     }
     elseif($widget == 'resp_details'){
-    $node->widgetConfig->table_columns[0]->labelAlias = 'repsonsibility_center';
+    $node->widgetConfig->table_columns[0]->labelAlias = 'reponsibility_center';
     $node->widgetConfig->table_columns[0]->column = 'resp_center_link';
     $node->widgetConfig->table_columns[0]->sortSourceColumn = 'resp_budget_resp_budget_responsibility_center_description';
     }
@@ -66,12 +75,7 @@
     $node->widgetConfig->table_columns[0]->column = 'proj_link';
     $node->widgetConfig->table_columns[0]->sortSourceColumn = 'proj_budget_proj_budget_gl_project_description';
     }
-    elseif($widget == 'exp_details'){
-    $node->widgetConfig->table_columns[0]->labelAlias = 'expense_category';
-    $node->widgetConfig->table_columns[0]->column = 'expense_cat_link';
-    $node->widgetConfig->table_columns[0]->sortSourceColumn = 'exp_budget_exp_budget_expenditure_type_description';
-    }
-
+    foreach($node->widgetConfig->table_columns as $key => $table_column){
   // Adjust the year display
       if($year == 2019 && ($table_column->column == 'percent_difference2_formatted' || $table_column->column == 'percent_difference3_formatted')){
       unset($node->widgetConfig->table_columns[$key]);
@@ -105,11 +109,18 @@
     $type_filter = NULL ;
     $url = RequestUtil::getCurrentPageUrl();
     $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
-    if($widget == 'exp_details') {$type_filter .= 'E';}
-    elseif($widget == 'resp_details'){ $type_filter .= 'R';}
-    elseif($widget == 'fund_details'){ $type_filter .= 'F';}
-    elseif($widget == 'proj_details'){ $type_filter .= 'G';}
-    elseif($widget == 'prgm_details'){ $type_filter .= 'P';}
+    foreach($node->widgetConfig->requestParams as $param=>$value){
+      if($param == 'expenditure_type_id' || $param == 'responsibility_center_id' || $param == 'funding_source_id' || $param == 'program_phase_id' || $param == 'gl_project_id'){
+      $type_filter .= 'H';
+      }
+    }
+    if ( $type_filter != 'H'){
+      if($widget == 'exp_details') {$type_filter .= 'E';}
+      elseif($widget == 'resp_details'){ $type_filter .= 'R';}
+      elseif($widget == 'fund_details'){ $type_filter .= 'F';}
+      elseif($widget == 'proj_details'){ $type_filter .= 'G';}
+      elseif($widget == 'prgm_details'){ $type_filter .= 'P';}
+    }
     $parameters['filter_type'] = $type_filter;
     $adjustedParameters = $parameters;
     if(function_exists('_checkbook_project_applyParameterFilters')){
