@@ -5,7 +5,7 @@
   "headerSubTitle": "Responsibility Centers",
   "footerUrl":"NychaBudgetUrlService::getPercentDiffFooterUrl(_widget_controller_footer_url($node),'resp_details')",
   "table_columns":[
-    {"labelAlias":"responsibility_center","column":"responsibility_center", "derivedColumn":"responsibility_center_name_link"},
+    {"labelAlias":"responsibility_center","column":"responsibility_center","tooltip":60,  "derivedColumn":"responsibility_center_name_link"},
     {"labelAlias": "previous_2_modified","column": "previous_2_amount","format": "dollar"},
     {"labelAlias": "previous_1_modified","column": "previous_1_amount","format": "dollar"},
     {"labelAlias": "previous_modified","column": "previous_amount","format": "dollar"},

@@ -5,7 +5,7 @@
   "headerSubTitle": "Projects",
   "footerUrl":"NychaBudgetUrlService::getPercentDiffFooterUrl(_widget_controller_footer_url($node),'proj_details')",
   "table_columns":[
-    {"labelAlias":"project","column":"gl_project_description", "derivedColumn":"project_name_link"},
+    {"labelAlias":"project","column":"gl_project_description", "tooltip":60, "derivedColumn":"project_name_link"},
     {"labelAlias": "previous_modified","column": "previous_amount","format": "dollar"},
     {"labelAlias": "current_modified","column": "current_amount","format": "dollar"},
     {"labelAlias": "percent_diff","column": "percent_difference1","format": "percent"},
