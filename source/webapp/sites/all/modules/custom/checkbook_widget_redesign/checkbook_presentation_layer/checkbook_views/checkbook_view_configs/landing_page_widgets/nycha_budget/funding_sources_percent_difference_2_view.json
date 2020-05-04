@@ -5,7 +5,7 @@
   "headerSubTitle": "Funding Sources",
   "footerUrl":"NychaBudgetUrlService::getPercentDiffFooterUrl(_widget_controller_footer_url($node),'fund_details')",
   "table_columns":[
-    {"labelAlias":"funding_source","column":"funding_source_description", "derivedColumn":"funding_source_name_link"},
+    {"labelAlias":"funding_source","column":"funding_source_description","tooltip":60, "derivedColumn":"funding_source_name_link"},
     {"labelAlias": "previous_1_modified","column": "previous_1_amount","format": "dollar"},
     {"labelAlias": "previous_modified","column": "previous_amount","format": "dollar"},
     {"labelAlias": "current_modified","column": "current_amount","format": "dollar"},
