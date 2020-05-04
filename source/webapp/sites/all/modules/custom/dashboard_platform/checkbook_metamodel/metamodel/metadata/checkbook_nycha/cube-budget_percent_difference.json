@@ -28,21 +28,30 @@
           ]
         },
         {
+          "name": "expenditure_type_id",
+          "levels": [
+            {
+              "name": "expenditure_type_id",
+              "sourceColumnName": "expenditure_type_id"
+            }
+          ]
+        },
+        {
           "name": "exp_budget",
           "levels": [
             {
               "name": "exp_budget",
               "datasetName":"exp_budget",
-              "sourceColumnName": "expenditure_type_name"
+              "sourceColumnName": "expenditure_type_id"
             }
           ]
         },
         {
-          "name":"funding_source_code",
+          "name":"funding_source_id",
           "levels":[
             {
-              "name":"funding_source_code",
-              "sourceColumnName":"funding_source_code"
+              "name":"funding_source_id",
+              "sourceColumnName":"funding_source_id"
             }
           ]
         },
@@ -52,16 +61,16 @@
             {
               "name":"funding_budget",
               "datasetName":"funding_budget",
-              "sourceColumnName":"funding_source_code"
+              "sourceColumnName":"funding_source_id"
             }
           ]
         },
         {
-          "name":"responsibility_center_code",
+          "name":"responsibility_center_id",
           "levels":[
             {
-              "name":"responsibility_center_code",
-              "sourceColumnName":"responsibility_center_code"
+              "name":"responsibility_center_id",
+              "sourceColumnName":"responsibility_center_id"
             }
           ]
         },
@@ -71,16 +80,16 @@
             {
               "name":"resp_budget",
               "datasetName": "resp_budget",
-              "sourceColumnName":"responsibility_center_code"
+              "sourceColumnName":"responsibility_center_id"
             }
           ]
         },
         {
-          "name":"program_phase_code",
+          "name":"program_phase_id",
           "levels":[
             {
-              "name":"program_phase_code",
-              "sourceColumnName":"program_phase_code"
+              "name":"program_phase_id",
+              "sourceColumnName":"program_phase_id"
             }
           ]
         },
@@ -90,16 +99,16 @@
             {
               "name":"prog_budget",
               "datasetName":"prog_budget",
-              "sourceColumnName":"program_phase_code"
+              "sourceColumnName":"program_phase_id"
             }
           ]
         },
         {
-          "name":"gl_project_code",
+          "name":"gl_project_id",
           "levels":[
             {
-              "name":"gl_project_code",
-              "sourceColumnName":"gl_project_code"
+              "name":"gl_project_id",
+              "sourceColumnName":"gl_project_id"
             }
           ]
         },
@@ -109,7 +118,7 @@
             {
               "name":"proj_budget",
               "datasetName":"proj_budget",
-              "sourceColumnName":"gl_project_code"
+              "sourceColumnName":"gl_project_id"
             }
           ]
         }
