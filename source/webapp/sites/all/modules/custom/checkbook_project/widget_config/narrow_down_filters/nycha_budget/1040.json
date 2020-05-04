@@ -1,7 +1,6 @@
 {
   "widgetType":"phpparser",
   "parentNid":1034,
-  "no_results_content":"No Results Found",
   "limit":100,
   "startWith":0,
   "maxSelect":5,
