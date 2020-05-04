@@ -5,7 +5,7 @@
   "headerSubTitle":"Expense Categories",
   "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_expense_categories/budgettype/committed'",
   "table_columns":[
-    {"labelAlias":"expense_category","column":"expense_category", "derivedColumn":"expense_category_name_link"},
+    {"labelAlias":"expense_category","column":"expense_category", "tooltip":60, "derivedColumn":"expense_category_name_link"},
     {"labelAlias":"committed","column":"committed","format":"dollar", "derivedColumn":"expense_committed_by_budget_link"},
     {"labelAlias":"encumbered","column":"encumbrance_amount","format":"dollar"},
     {"labelAlias":"actual_amount","column":"actual_amount","format":"dollar"},

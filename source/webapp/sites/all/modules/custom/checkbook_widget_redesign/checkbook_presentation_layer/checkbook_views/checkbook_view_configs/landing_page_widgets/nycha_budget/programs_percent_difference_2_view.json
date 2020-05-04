@@ -5,7 +5,7 @@
   "headerSubTitle": "Programs",
   "footerUrl":"NychaBudgetUrlService::getPercentDiffFooterUrl(_widget_controller_footer_url($node),'prgm_details')",
   "table_columns":[
-    {"labelAlias":"program","column":"program_phase_description", "derivedColumn":"program_name_link"},
+    {"labelAlias":"program","column":"program_phase_description", "tooltip":60, "derivedColumn":"program_name_link"},
     {"labelAlias": "previous_1_modified","column": "previous_1_amount","format": "dollar"},
     {"labelAlias": "previous_modified","column": "previous_amount","format": "dollar"},
     {"labelAlias": "current_modified","column": "current_amount","format": "dollar"},

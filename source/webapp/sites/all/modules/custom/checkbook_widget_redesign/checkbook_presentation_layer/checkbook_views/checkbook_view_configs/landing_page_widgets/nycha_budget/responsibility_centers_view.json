@@ -4,7 +4,7 @@
   "headerTitle": "Responsibility Centers",
   "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_resp_centers/budgettype/remaining'",
   "table_columns":[
-    {"labelAlias":"responsibility_center","column":"responsibility_center", "derivedColumn":"responsibility_center_name_link"},
+    {"labelAlias":"responsibility_center","column":"responsibility_center", "tooltip":60, "derivedColumn":"responsibility_center_name_link"},
     {"labelAlias":"adopted","column":"adopted_budget","format":"dollar"},
     {"labelAlias":"modified","column":"modified_budget","format":"dollar"},
     {"labelAlias":"committed","column":"committed","format":"dollar", "derivedColumn":"resp_committed_budget_link"},
