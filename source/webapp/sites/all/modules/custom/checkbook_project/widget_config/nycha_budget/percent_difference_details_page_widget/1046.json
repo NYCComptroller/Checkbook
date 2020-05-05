@@ -61,7 +61,7 @@
     $node->widgetConfig->table_columns[0]->sortSourceColumn = 'funding_budget_funding_budget_funding_source_description';
     }
     elseif($widget == 'resp_details'){
-    $node->widgetConfig->table_columns[0]->labelAlias = 'reponsibility_center';
+    $node->widgetConfig->table_columns[0]->labelAlias = 'responsibility_center';
     $node->widgetConfig->table_columns[0]->column = 'resp_center_link';
     $node->widgetConfig->table_columns[0]->sortSourceColumn = 'resp_budget_resp_budget_responsibility_center_description';
     }
