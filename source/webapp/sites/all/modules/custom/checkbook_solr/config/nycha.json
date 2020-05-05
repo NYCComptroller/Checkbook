@@ -209,7 +209,7 @@
       "payroll_type": "Payroll Type"
     },
     "budget":{
-      "fiscal_year": "Year",
+      "fiscal_year": "Fiscal Year",
       "modified_budget": "Modified",
       "expenditure_type_description": "Expense Category",
       "responsibility_center_name" : "Responsibility Center",
@@ -301,7 +301,7 @@
       "gl_project_name": "Project"
     },
     "budget":{
-      "fiscal_year": "Year",
+      "fiscal_year": "Fiscal Year",
       "adopted_budget": "Adopted",
       "modified_budget": "Modified",
       "budget_type": "Budget Type",
