@@ -43,7 +43,7 @@ h1 {
 .page-featured-trends h1, .page-contract-transactions h1, .nycha_contracts_transactions_page h1,
 .page-budget-transactions h1, .page-budget-yeartype h1, .page-budget-revenue-transactions h1, .page-contracts-revenue-landing h1,
 .page-contracts-pending-exp-landing h1, .page-spending-landing h1, .page-contracts-pending-rev-landing h1,
-.page-nycha-spending h1, .nycha_spending_transactions_page h1{
+.page-nycha-spending h1, .page-nycha-budget h1,.nycha_spending_transactions_page h1,.nycha_budget_transactions_page h1{
     font-size: 24px;
     font-weight: bold;
     color: #2E2E2E;
@@ -1453,7 +1453,8 @@ div.create-alert-schedule-alert select{
     width: 346px;
 }
 #checkbook-advanced-search-form .column.column-left.checkbook,
-#checkbook-advanced-search-form .column.column-left.checkbook-oge{
+#checkbook-advanced-search-form .column.column-left.checkbook-oge,
+#checkbook-advanced-search-form .column.column-left.checkbook-nycha{
     clear: left;
 }
 #checkbook-datafeeds-data-feed-wizard .column-right,
@@ -1502,6 +1503,8 @@ div.create-alert-schedule-alert select{
 #checkbook-advanced-search-form #edit-payroll-clear,
 #checkbook-advanced-search-form #edit-budget-submit,
 #checkbook-advanced-search-form #edit-budget-clear,
+#checkbook-advanced-search-form #edit-budget-submit--2,
+#checkbook-advanced-search-form #edit-budget-clear--2,
 #checkbook-advanced-search-form #edit-revenue-submit,
 #checkbook-advanced-search-form #edit-revenue-clear{
     float:none;
@@ -1955,6 +1958,10 @@ td.pad-left div{
 }
 .dataTable td div {
     margin: 13px 1px 13px 0px;
+}
+
+#table_394.dataTable td div {
+  margin: 13px 0px 13px 0px;
 }
 
 .contracts-oge-spending-bottom {
@@ -2661,6 +2668,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 #revenue-transactions .dataTables_wrapper,
 #nycha-contracts-transactions .dataTables_wrapper,
 #nycha-spending-transactions .dataTables_wrapper,
+#nycha-budget-transactions .dataTables_wrapper,
 .page-budget .page-contract-details .dataTables_wrapper,
 .page-revenue .page-contract-details .dataTables_wrapper
 {
@@ -2672,7 +2680,8 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 #budget-transactions > div:nth-child(1),
 #revenue-transactions > div:nth-child(1),
 #nycha-contracts-transactions > div:nth-child(1),
-#nycha-spending-transactions > div:nth-child(1)
+#nycha-spending-transactions > div:nth-child(1),
+#nycha-budget-transactions > div:nth-child(1)
 {
     margin:18px 10px 5px 10px;
 }
@@ -2684,6 +2693,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 #revenue-transactions .dataTables_wrapper > div:nth-child(2),
 #nycha-contracts-transactions .dataTables_wrapper > div:nth-child(2),
 #nycha-spending-transactions .dataTables_wrapper > div:nth-child(2),
+#nycha-budget-transactions .dataTables_wrapper > div:nth-child(2),
 .page-budget .page-contract-details .dataTables_wrapper > div:nth-child(2),
 .page-revenue .page-contract-details .dataTables_wrapper > div:nth-child(2)
 {
@@ -2694,6 +2704,7 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 #nyc-payroll .dollar-amounts,
 #spending-transactions .contract-id,
 #nycha-spending-transactions .contract-id,
+#nycha-budget-transactions .contract-id,
 #contract-details .contract-id,
 #nyc-payroll .contract-id,
 .inside .contract-details-heading,
@@ -2729,7 +2740,8 @@ h1.no-spending-transactions {width: 500px}
 #nyc-expense-pending-contracts .inside .contract-details-heading,
 .inside #node-widget-545 .contract-details-heading,
 #spending-transactions .inside .contract-details-heading,
-#nycha-spending-transactions .inside .contract-details-heading
+#nycha-spending-transactions .inside .contract-details-heading,
+#nycha-budget-transactions .inside .contract-details-heading
 {
     width:100%;
 }
@@ -2746,12 +2758,16 @@ h1.no-spending-transactions {width: 500px}
   margin-right:10px !important;
 }
 .page-revenue #revenue-transactions .inside .panel-pane.pane-custom.pane-2.noDataShowFull,
-.page-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull{
+.page-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull,
+.page-nycha-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull
+{
     width:100% !important;
     float:none !important;
 }
 .page-revenue #revenue-transactions .inside .panel-pane.pane-custom.pane-2.noDataShowFull #no-records,
-.page-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull #no-records{
+.page-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull #no-records,
+.page-nycha-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull #no-records
+{
     text-align:center;
     float:left;
     clear:both;
@@ -4045,7 +4061,8 @@ body.page-data-feeds select.loading{
 body.page-data-feeds #div_data_source,
 #checkbook-advanced-search-form #div_spending_data_source,
 #checkbook-advanced-search-form #div_contracts_data_source,
-#checkbook-advanced-search-form #div_payroll_data_source{
+#checkbook-advanced-search-form #div_payroll_data_source,
+#checkbook-advanced-search-form #div_budget_data_source{
   border: 1px solid #CCCCCC;
   border-radius: 5px;
   padding: 10px;
@@ -4080,7 +4097,8 @@ body.page-data-feeds #div_data_source,
 
 #checkbook-advanced-search-form #div_spending_data_source .form-item,
 #checkbook-advanced-search-form #div_contracts_data_source .form-item,
-#checkbook-advanced-search-form #div_payroll_data_source .form-item {
+#checkbook-advanced-search-form #div_payroll_data_source .form-item,
+#checkbook-advanced-search-form #div_budget_data_source .form-item{
   height: 25px;
   float: left;
   margin-right: 70px;
@@ -4088,7 +4106,8 @@ body.page-data-feeds #div_data_source,
 
 #checkbook-advanced-search-form #div_spending_data_source,
 #checkbook-advanced-search-form #div_contracts_data_source,
-#checkbook-advanced-search-form #div_payroll_data_source{
+#checkbook-advanced-search-form #div_payroll_data_source,
+#checkbook-advanced-search-form #div_budget_data_source{
   font-size: 12px;
 }
 
