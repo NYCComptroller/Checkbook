@@ -4036,6 +4036,12 @@ table.nycha_assoc_contracts_list {
   vertical-align: top;
 }
 
+body.page-data-feeds select.loading{
+  background: url(/sites/all/themes/checkbook/images/loading.gif) no-repeat right center;
+  color:#fff;
+}
+
+/** CSS for Data-source filter on advanced search form **/
 body.page-data-feeds #div_data_source,
 #checkbook-advanced-search-form #div_spending_data_source,
 #checkbook-advanced-search-form #div_contracts_data_source,
@@ -4043,11 +4049,6 @@ body.page-data-feeds #div_data_source,
   border: 1px solid #CCCCCC;
   border-radius: 5px;
   padding: 10px;
-}
-
-body.page-data-feeds select.loading{
-  background: url(/sites/all/themes/checkbook/images/loading.gif) no-repeat right center;
-  color:#fff;
 }
 
 #div_data_source .form-type-radios .form-item{

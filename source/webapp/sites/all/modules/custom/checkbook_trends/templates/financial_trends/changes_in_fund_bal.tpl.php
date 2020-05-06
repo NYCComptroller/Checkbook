@@ -23,6 +23,7 @@ echo eval($node->widgetConfig->header);
 $table_rows = array();
 $years = array();
 foreach( $node->data as $row){
+  if(isset($row['category']) || isset($row['amount'])) {
 	$length =  $row['indentation_level'];
 	$spaceString = '&nbsp;';
 	while($length > 0){
@@ -36,6 +37,7 @@ foreach( $node->data as $row){
 	$table_rows[$row['display_order']]['currency_symbol'] = $row['currency_symbol'];
 	$table_rows[$row['display_order']][$row['fiscal_year']]['amount'] = $row['amount'];
 	$years[$row['fiscal_year']] = 	$row['fiscal_year'];
+}
 }
 rsort($years);
 ?>

@@ -81,9 +81,7 @@ echo eval($node->widgetConfig->header);
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total']>0)?number_format($row['total']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['operating_expenses']>0)?number_format($row['operating_expenses']):'-') . ((  $row['fiscal_year'] == '2012')? "<sup class='endItem'>(9)</sup>":"<sup class='endItem' style='visibility: hidden;'>(9)</sup>"). "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_to_be_covered']>0)?number_format($row['total_to_be_covered']):'-') . "</td>";
-            //echo "<td class='number ' ><div class='tdCen'>" . $row['coverage_on_total_revenue_5'] . (($row['fiscal_year'] == '2009' || $row['fiscal_year'] == '2010' || $row['fiscal_year'] == '2011' || $row['fiscal_year'] == '2012')? "<sup class='endItem'>(7)</sup>":"<sup class='endItem' style='visibility: hidden;'>(7)</sup>") . "</div></td>";
             echo "<td class='number ' ><div class='tdCen'>" . $row['coverage_on_total_revenue_5'] . (in_array($row['fiscal_year'], ['2009','2010', '2011','2012'])? "<sup class='endItem'>(6)</sup>":"<sup class='endItem' style='visibility: hidden;'>(6)</sup>") . "</div></td>";
-//            echo "<td class='number ' ><div class='tdCen'>" . $row['coverage_on_total_revenue_5'] . "</td>";
             echo "<td>&nbsp;</td>";
             echo "</tr>";
             $count++;
@@ -93,7 +91,7 @@ echo eval($node->widgetConfig->header);
     </tbody>
 </table>
 </div>
-<div class="footnote"><!-- p>(*) Date of inception of Hudson Yards Infrastructure Corporation was August 19, 2004.</p -->
+<div class="footnote">
     <p>HYIC issued its first bonds on December 21, 2006.</p>
     <br />
     <p>(1) District Improvement Bonuses (DIB)</p>
