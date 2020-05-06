@@ -1453,7 +1453,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $user_criteria['Received Date Greater Than'] = $values['recdatefrom'];
         $formatted_search_criteria['Received Date'] = 'Greater Than Equal to: ' . $values['recdatefrom'];
       }
-      if (isset($values['year'])) {
+      if (isset($values['year']) && $values['df_contract_status'] != 'pending') {
         if ($values['year'] == '0') {
           $form['filter']['year'] = array(
             '#markup' => '<div><strong>Year:</strong> All Years</div>',
@@ -2086,6 +2086,7 @@ function checkbook_datafeeds_contracts_filter_selected_columns($selected_columns
   $columns_included = $domain_config->$domain_filter->dataset->displayConfiguration->$response_type->elementsColumn;
   //Filter out selected columns which are not configured to show for this data source
   $filtered_columns = array_intersect_key($selected_columns, (array)$columns_included);
+
   return $filtered_columns;
 }
 
@@ -2135,7 +2136,7 @@ function checkbook_datafeeds_get_configuration_key($domain, $data_source, $statu
   } else {
     $domain_filter .= $status == 'pending' ? '_pending' : '_active';
     $domain_filter .= $status == 'pending' ? '' : '_' . $expense_category;
-    $domain_filter .= ($year == 'All Years' || $year == '0') ? "_all_years" : "";
+    $domain_filter .= (($year == 'All Years' || $year == '0') &&  $status != 'pending') ? "_all_years" : "";
   }
   return $domain_filter;
 }
