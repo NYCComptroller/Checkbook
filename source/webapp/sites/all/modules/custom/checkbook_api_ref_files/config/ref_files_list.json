@@ -187,7 +187,7 @@
   },
   "nycha_budget_expenditure_type_code_list": {
     "database": "checkbook_nycha",
-    "sql": "SELECT DISTINCT expenditure_type_code, expenditure_type_description FROM ref_expenditure_type where account_type ='Expense' AND expenditure_type_code IS NOT NULL AND expenditure_type_description IS NOT NULL AND expenditure_type_description NOT IN (' ','<Unknown>','xxxxxxx') AND expenditure_type_description ~ '^'''",
+    "sql": "SELECT DISTINCT expenditure_type_code, expenditure_type_description FROM ref_expenditure_type where account_type ='Expense' AND expenditure_type_code IS NOT NULL AND expenditure_type_description IS NOT NULL AND expenditure_type_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT expenditure_type_description ~ '^'''",
     "force_quote": [
       "expenditure_type_code"
     ]
@@ -224,7 +224,7 @@
     "database": "checkbook_nycha",
     "sql": "SELECT DISTINCT budget_type from public.budget",
     "force_quote": [
-      "budget_code"
+      "budget_type"
     ]
   },
   "nycha_budget_name_code_list": {
