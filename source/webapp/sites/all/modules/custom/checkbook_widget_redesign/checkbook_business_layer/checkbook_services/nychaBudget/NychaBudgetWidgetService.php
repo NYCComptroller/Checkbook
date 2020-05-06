@@ -49,24 +49,10 @@ class NychaBudgetWidgetService extends WidgetDataService implements IWidgetServi
         $column = $row['committed'];
         $dynamic_parameter = "/expcategory/" . $row["expenditure_type_id"];
         $class = "bottomContainerReload";
-        $url = NychaBudgetUrlService::committedBudgetUrl($dynamic_parameter, 'comm_expense_category','remaining');
-        $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
-        break;
-      case "expense_committed_by_budget_link":
-        $column = $row['committed'];
-        $dynamic_parameter = "/expcategory/" . $row["expenditure_type_id"];
-        $class = "bottomContainerReload";
         $url = NychaBudgetUrlService::committedBudgetUrl($dynamic_parameter, 'comm_expense_category','committed');
         $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
         break;
       case "resp_committed_budget_link":
-        $column = $row['committed'];
-        $dynamic_parameter = "/respcenter/" . $row["responsibility_center_id"];
-        $class = "bottomContainerReload";
-        $url = NychaBudgetUrlService::committedBudgetUrl($dynamic_parameter, 'comm_resp_center','remaining');
-        $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
-        break;
-      case "resp_committed_by_budget_link":
         $column = $row['committed'];
         $dynamic_parameter = "/respcenter/" . $row["responsibility_center_id"];
         $class = "bottomContainerReload";
@@ -77,24 +63,10 @@ class NychaBudgetWidgetService extends WidgetDataService implements IWidgetServi
         $column = $row['committed'];
         $dynamic_parameter = "/fundsrc/" . $row["funding_source_id"];
         $class = "bottomContainerReload";
-        $url = NychaBudgetUrlService::committedBudgetUrl($dynamic_parameter, 'comm_fundsrc','remaining');
-        $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
-        break;
-      case "fundsrc_committed_by_budget_link":
-        $column = $row['committed'];
-        $dynamic_parameter = "/fundsrc/" . $row["funding_source_id"];
-        $class = "bottomContainerReload";
         $url = NychaBudgetUrlService::committedBudgetUrl($dynamic_parameter, 'comm_fundsrc','committed');
         $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
         break;
       case "prog_committed_budget_link":
-        $column = $row['committed'];
-        $dynamic_parameter = "/progran/" . $row["program_phase_id"];
-        $class = "bottomContainerReload";
-        $url = NychaBudgetUrlService::committedBudgetUrl($dynamic_parameter, 'comm_prgm','remaining');
-        $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
-        break;
-      case "prog_committed_by_budget_link":
         $column = $row['committed'];
         $dynamic_parameter = "/program/" . $row["program_phase_id"];
         $class = "bottomContainerReload";
@@ -102,13 +74,6 @@ class NychaBudgetWidgetService extends WidgetDataService implements IWidgetServi
         $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
         break;
       case "proj_committed_budget_link":
-        $column = $row['committed'];
-        $dynamic_parameter = "/project/" . $row["gl_project_id"];
-        $class = "bottomContainerReload";
-        $url = NychaBudgetUrlService::committedBudgetUrl($dynamic_parameter, 'comm_proj','remaining');
-        $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
-        break;
-      case "proj_committed_by_budget_link":
         $column = $row['committed'];
         $dynamic_parameter = "/project/" . $row["gl_project_id"];
         $class = "bottomContainerReload";
