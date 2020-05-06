@@ -70,6 +70,13 @@ foreach ($facets_render??[] as $facet_name => $facet) {
     if ($facet->selected || in_array($facet_name,['domain'])) {
       $span = 'open';
       $display_facet = 'block';
+      if($solr_datasource = Datasource::SOLR_NYCHA){
+        foreach($facet->results as $facet_value => $count){
+          if(strtolower($facet_value) == 'budget'){
+            unset($facet->results[$facet_value]);
+          }
+        }
+      }
     }
 
     echo '<div class="filter-content-' . $facet_name . ' filter-content">';

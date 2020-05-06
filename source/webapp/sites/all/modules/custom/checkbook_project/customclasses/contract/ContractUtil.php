@@ -835,14 +835,6 @@ namespace { //global
                 $year = _getYearIDFromValue(2011);
                 $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
                 if(self::showSubVendorData()){
-                  $parameters['sub_ending_year_id']= $geCondition;
-                }else if(!isset($dashboard) && !isset($smnid)){
-                  $parameters['ending_year_id']= $geCondition;
-                }else{
-                  $parameters['prime_ending_year_id']= $geCondition;
-                }
-                if($contractStatus=='A'){
-                  if(self::showSubVendorData()){
                     $parameters['sub_effective_end_year_id']= $geCondition;
                   }else if(!isset($dashboard) && !isset($smnid)){
                     $parameters['effective_end_year_id']= $geCondition;
@@ -850,7 +842,6 @@ namespace { //global
                     $parameters['prime_effective_end_year_id']= $geCondition;
                   }
                 }
-            }
 
             //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
             if(isset($parameters['vendor_code']) || (isset($parameters['vendor_code.vendor_code']) && $node->widgetConfig->functionality != 'search')) {

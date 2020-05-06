@@ -40,7 +40,7 @@ function checkbook_datafeeds_payroll($form, &$form_state)
   //<editor-fold desc="Heading">
 
   $form['loaded'] = array(
-    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('payroll') . '</div>',
+    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date(Domain::$PAYROLL) . '</div>',
   );
   $form['requiredmessage'] = array(
     '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
@@ -51,29 +51,20 @@ function checkbook_datafeeds_payroll($form, &$form_state)
 
   //</editor-fold>
 
-  $form['datafeeds-payroll-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, 'payroll');
+  $form['datafeeds-payroll-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, Domain::$PAYROLL);
 
   $form['filter'] = array(
     '#type' => 'fieldset',
     '#title' => t('3. Filter the Data:'),
     '#attributes' => array('class' => array('payroll-fieldset')),
   );
-  $form['filter']['other_government_entity'] = array(
-    '#type' => 'select',
-    '#title' => t('Other Government<br/>Entities:'),
-    '#options' => $oge_options['options'],
-    '#option_attributes' => $oge_options['options_attributes'],
-    '#attributes' => array('class' => array('watch')),
-    '#default_value' => !empty($form_state['values']['other_government_entity']) ? $form_state['values']['other_government_entity'] : 'Select One',
-    '#prefix' => '<div class="column column-left"><div class="datafield other_government_entity">',
-    '#suffix' => '</div>',
-  );
+
   $form['filter']['title'] = array(
     '#type' => 'textfield',
     '#title' => t('Title:'),
     '#attributes' => array('class' => array('watch')),
     '#default_value' => !empty($form_state['values']['title']) ? $form_state['values']['title'] : '',
-    '#prefix' => '<div class="datafield title">',
+    '#prefix' => '<div class="column column-left"><div class="datafield title">',
     '#suffix' => '<input name="title_exact" value="' . $_POST['title_exact'] . '" type="hidden"></div>',
   );
   $form['filter']['agency'] = array(
@@ -243,13 +234,13 @@ function checkbook_datafeeds_payroll($form, &$form_state)
   $form['columns']['oge_column_select'] = array(
     '#type' => 'select',
     '#title' => t('Columns<span class="form-required" title="This field is required.">*</span>'),
-    '#options' => _checkbook_datafeeds_payroll_column_options($datatype, 'checkbook_nycha'),
+    '#options' => _checkbook_datafeeds_payroll_column_options($datatype, Datasource::NYCHA),
     '#multiple' => TRUE,
     '#default_value' => !empty($form_state['values']['oge_column_select']) ? $form_state['values']['oge_column_select'] : '',
     '#id' => 'edit-oge-column-select',
   );
   //Hidden Field for multi-select
-  if ($data_source == 'checkbook_nycha') {
+  if ($data_source == Datasource::NYCHA) {
     $multi_select_hidden = isset($form_state['input']['oge_column_select']) ? '|' . implode('||', $form_state['input']['oge_column_select']) . '|' : '';
   } else {
     $multi_select_hidden = isset($form_state['input']['column_select']) ? '|' . implode('||', $form_state['input']['column_select']) . '|' : '';
@@ -322,7 +313,7 @@ function _checkbook_datafeeds_payroll_column_options($datatype, $data_source = "
       "gross_pay", "gross_pay_ytd", "hourly_rate", "other_payments", "overtime_payments",
       "pay_date", "pay_frequency", "payroll_type", "title",)),
       "checkbook_nycha" => drupal_map_assoc(array("annual_salary", "base_pay", "calendar_year", "daily_wage",
-        "gross_pay", "gross_pay_ytd", "hourly_rate",
+        "gross_pay", "gross_pay_ytd", "hourly_rate","other_payments",
         "overtime_payments", "pay_date", "pay_frequency", "payroll_type", "title",)),
     );
   }
@@ -403,8 +394,8 @@ function checkbook_datafeeds_payroll_next_submit($form, &$form_state)
 function checkbook_datafeeds_payroll_filter_selected_columns($selected_columns, $data_source, $response_type, $year_type = 'calendar_year')
 {
   //Get column configurations
-  $domain = 'payroll';
-  $domain = $data_source == 'checkbook_nycha' ? $domain . '_nycha' : $domain;
+  $domain = Domain::$PAYROLL;
+  $domain = $data_source == Datasource::NYCHA ? $domain . '_nycha' : $domain;
   $domain_config = ConfigUtil::getDomainConfiguration($domain);
   $domain = $domain . '_' . $year_type;
   //Get columns which should be included for the current data source
@@ -435,7 +426,7 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state)
   //Get current data source
   $data_source = $form_state['input']['datafeeds-payroll-domain-filter'];
   //Set type/source of data by data_source
-  $user_criteria['Type of Data'] = $data_source == 'checkbook_nycha' ? 'Payroll_NYCHA' : 'Payroll';
+  $user_criteria['Type of Data'] = $data_source == Datasource::NYCHA ? 'Payroll_NYCHA' : 'Payroll';
 
   $form['download_feeds'] = array(
     '#markup' => '<h2 id="edit-description">Download Data</h2>',
@@ -455,7 +446,7 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state)
   $selected_columns = checkbook_datafeeds_format_columns();
   //Filter columns for current data source
   $filtered_columns = checkbook_datafeeds_payroll_filter_selected_columns($selected_columns, $data_source, $responsetype);
-  if ($data_source == 'checkbook_nycha')
+  if ($data_source == Datasource::NYCHA)
   {
     $form_state['step_information']['payroll']['stored_values']['oge_column_select'] = $filtered_columns;
   } else
@@ -502,19 +493,17 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state)
     $formatted_search_criteria['Title'] = $values['title'];
   }
 
-  if ($data_source == 'checkbook_nycha')
-  {
-    if ($values['other_government_entity'])
-    {
-      $other_government_entity = ($values['other_government_entity'] == 'Select One') ? 'All' : $values['other_government_entity'];
+  if ($data_source == Datasource::NYCHA) {
+    //if ($values['other_government_entity']) {
+      $other_government_entity = 'NEW YORK CITY HOUSING AUTHORITY[996]';
+      //$other_government_entity = ($values['other_government_entity'] == 'Select One') ? 'All' : $values['other_government_entity'];
       $form['filter']['other_government_entity'] = array(
         '#markup' => '<div><strong>Other Government Entities:</strong> ' . $other_government_entity . '</div>',
       );
-      $user_criteria['Other Government Entity'] = $values['other_government_entity'];
+      $user_criteria['Other Government Entity'] = $other_government_entity;
       $formatted_search_criteria['Other Government Entities'] = $other_government_entity;
-    }
-  } else
-    {
+    //}
+  } else {
     if ($values['agency'])
     {
       $form['filter']['agency'] = array(
@@ -702,8 +691,7 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state)
   //Filter columns for current data source
   $filtered_columns = checkbook_datafeeds_payroll_filter_selected_columns($selected_columns, $data_source, $responsetype, $year_type);
 
-  if ($data_source == 'checkbook_nycha')
-  {
+  if ($data_source == Datasource::NYCHA) {
     $form_state['step_information']['payroll']['stored_values']['oge_column_select'] = $filtered_columns;
   } else
     {
@@ -722,7 +710,7 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state)
   $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
   $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
 
-  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, 'payroll');
+  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, Domain::$PAYROLL);
   return $modified_form;
 }
 
@@ -763,11 +751,11 @@ function checkbook_datafeeds_process_payroll_values($form, &$form_state, $data_s
   $criteria = array(
     'global' => array(
       //Set data source for query
-      'type_of_data' => $data_source == 'checkbook_nycha' ? 'Payroll_NYCHA' : 'Payroll',
+      'type_of_data' => $data_source == Datasource::NYCHA ? 'Payroll_NYCHA' : 'Payroll',
       'records_from' => 1,
       'max_records' => isset($conf['check_book']['data_feeds']['max_record_limit']) ? $conf['check_book']['data_feeds']['max_record_limit'] : 200000,
     ),
-    'responseColumns' => ($data_source == 'checkbook_nycha') ? $values['oge_column_select'] : $values['column_select'],
+    'responseColumns' => ($data_source == Datasource::NYCHA) ? $values['oge_column_select'] : $values['column_select'],
   );
   //$values['year'] = ckbk_datafeeds_payroll_fix_year($values['year']);
   if (startsWith($values['year'], 'F'))
@@ -778,8 +766,7 @@ function checkbook_datafeeds_process_payroll_values($form, &$form_state, $data_s
     $criteria['value']['calendar_year'] = ltrim($values['year'], 'CY ');
   }
 
-  if ($data_source !== 'checkbook_nycha')
-  {
+  if ($data_source !== Datasource::NYCHA) {
     if ($values['agency'] != 'Citywide (All Agencies)') {
       preg_match($pattern, $values['agency'], $amatches);
       $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
@@ -973,19 +960,16 @@ function checkbook_datafeeds_payroll_validate($form, &$form_state)
     form_set_error('salaryto', t('Invalid range for Amount.'));
   }
   //Validate response columns
-  if ('checkbook_nycha' == $data_source && !$oge_response_columns)
-  {
+  if (Datasource::NYCHA == $data_source && !$oge_response_columns) {
     form_set_error('oge_column_select', t('You must select at least one column.'));
-  } else if ('checkbook' == $data_source && !$response_columns)
-  {
+  } else if (Datasource::CITYWIDE == $data_source && !$response_columns) {
     form_set_error('column_select', t('You must select at least one column.'));
   }
 
   //Set the hidden filed values on Spending form
   $form_state['complete form']['data_source']['#value'] = $data_source;
   //Hidden Field for multi-select
-  if ($data_source == 'checkbook_nycha')
-  {
+  if ($data_source == Datasource::NYCHA) {
     $multi_select_hidden = isset($form_state['input']['oge_column_select']) ? '|' . implode('||', $form_state['input']['oge_column_select']) . '|' : '';
   } else
     {
@@ -994,14 +978,3 @@ function checkbook_datafeeds_payroll_validate($form, &$form_state)
   $form_state['complete form']['data_source']['#value'] = $data_source;
   $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;
 }
-
-
-//function ckbk_datafeeds_payroll_fix_year($year)
-//{
-  //if (strpos($year, '~')) {
-    //list($pref,$y) = explode(' ',$year);
-    //$yearValue = preg_split('/[\s]/', $year);
-    //return  $yearValue[0].' '.CheckbookDateUtil::yearId2Year($yearValue[1]);
-  //}
-  //return $year;
-//}
