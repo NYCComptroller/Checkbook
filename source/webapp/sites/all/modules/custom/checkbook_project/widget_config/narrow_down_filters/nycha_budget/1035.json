@@ -4,6 +4,8 @@
   "startWith":0,
   "maxSelect":5,
   "limit":100,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
   "columns":["expenditure_type_id.expenditure_type_id","expenditure_type_description.expenditure_type_description", "txcount"],
   "orderBy":"-txcount",
   "filterName":"Expense Category",

@@ -4,6 +4,8 @@
   "startWith":0,
   "maxSelect":5,
   "autocomplete":false,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
   "filterName":"Committed Expense Budget",
   "urlParameterName":"comamtr",
   "urlParameterType":"rangeid",

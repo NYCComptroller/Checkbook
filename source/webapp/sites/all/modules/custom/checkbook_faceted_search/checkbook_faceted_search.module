@@ -261,7 +261,7 @@ function _checkbook_faceted_search_update_data($node)
   $query_string = $_GET['q'];
   $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
 
-  if((strpos($widget, 'wt_') !== false) || (strpos($widget, 'ytd_') !== false)){
+  if((strpos($widget, 'wt_') !== false) || (strpos($widget, 'ytd_') !== false) || (strpos($widget, 'comm_') !== false)){
     $node->widgetConfig->allowFacetDeselect = false;
   }
   //Facets that have Url parameters that match the current Url will be disabled and show only the default checked items
