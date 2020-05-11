@@ -5,6 +5,7 @@
   "limit":100,
   "maxSelect":5,
   "showAllRecords":true,
+  "allowFacetDeselect":true,
   "facetPager":true,
   "columns":["budget_type.budget_type", "txcount"],
   "orderBy":"-txcount",

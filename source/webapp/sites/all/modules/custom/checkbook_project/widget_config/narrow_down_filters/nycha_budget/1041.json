@@ -4,6 +4,8 @@
   "startWith":0,
   "maxSelect":5,
   "autocomplete":false,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
   "filterName":"Modified Expense Budget",
   "urlParameterName":"modamtr",
   "urlParameterType":"rangeid",
