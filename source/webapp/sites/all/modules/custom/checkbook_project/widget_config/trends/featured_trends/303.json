@@ -21,8 +21,11 @@
     ",
     "callback":"
         var axis = chart.xAxis[0].getExtremes();
-        jQuery('#general-fund-filter .chartdatefrom').val(Number(Highcharts.dateFormat('%Y',axis.min)) + 1);
-        jQuery('#general-fund-filter .chartdateto').val(Highcharts.dateFormat('%Y',axis.max));
+        var max = Number(Highcharts.dateFormat('%Y',axis.max));
+        var min = max-9;
+        chart.xAxis[0].setExtremes(Date.UTC(min, 0), Date.UTC(max, 1), true);
+        jQuery('#general-fund-filter .chartdatefrom').val(min);
+        jQuery('#general-fund-filter .chartdateto').val(max);
     ",
     "model": {
       "join": {
@@ -120,11 +123,10 @@
       "enabled": true
     },
     "xAxis": {
-        "range": 312420240000,//Interval of 9.5 years 9.5 * 365 * 24 * 3600 * 1000
         "minRange": 31557600000,//Axis minRange prevents zooming in too far - set to 1year
         "tickInterval": 31557600000,//Interval of one year is expressed as 365 * 24 * 3600 * 1000
         "categories": {
-            "ds": "fiscal_year_utc"
+            "ds": "fiscal_year_date"
         },
         "labels": {
           "enabled":true,
@@ -192,9 +194,5 @@ dataLabelFormatter^^'formatter':function(){
   } else {
     return null;
   }
-}##
-numbers^^"setExtremes": function(event){
-  jQuery('#general-fund-filter .chartdatefrom').val(Number(Highcharts.dateFormat('%Y',event.min))+1);
-  jQuery('#general-fund-filter .chartdateto').val(Highcharts.dateFormat('%Y',event.max));
 }
 </function>
