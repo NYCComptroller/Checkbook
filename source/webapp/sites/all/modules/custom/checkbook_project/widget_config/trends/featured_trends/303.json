@@ -3,283 +3,198 @@
     "widgetSubType": "highstock",
     "html_class": "thumbnail",
     "header":"
-    print '
-    <h2 class=\"chart-title\">General Fund Revenues and General Fund Expenditures</h2>
-    <div class=\"featured-trends-filter\" id=\"general-fund-filter\">
-    <div class=\"filter-container\">
-    <input type=\"text\" class=\"chartdatefrom \" maxlength=\"4\" size=\"4\">
-    <label> to </label>
-    <input type=\"text\" class=\"chartdateto\" maxlength=\"4\" size=\"4\"></div>
-    <input type=\"submit\" value=\"Filter\" class=\"chartfilter\" name=\"0\" />
-    </div>';",
-    "footer":"print '<div class=\"detail-page-links\">
-    <a class=\"show-detail-link\" href=\"/featuredtrends/node/347\">Show Details for General Fund Expenditures and Other Financing Uses</a>
-    <a class=\"show-detail-link\" href=\"/featuredtrends/node/316\">Show Details for General Fund Revenues and Other Financing Sources</a>
-    </div>';",
+        print '
+          <h2 class=\"chart-title\">General Fund Revenues and General Fund Expenditures</h2>
+          <div class=\"featured-trends-filter\" id=\"general-fund-filter\">
+          <div class=\"filter-container\">
+          <input type=\"text\" class=\"chartdatefrom \" maxlength=\"4\" size=\"4\">
+          <label> to </label>
+          <input type=\"text\" class=\"chartdateto\" maxlength=\"4\" size=\"4\"></div>
+          <input type=\"submit\" value=\"Filter\" class=\"chartfilter\" name=\"0\" />
+          </div>';
+    ",
+    "footer":"
+        print '<div class=\"detail-page-links\">
+          <a class=\"show-detail-link\" href=\"/featuredtrends/node/347\">Show Details for General Fund Expenditures and Other Financing Uses</a>
+          <a class=\"show-detail-link\" href=\"/featuredtrends/node/316\">Show Details for General Fund Revenues and Other Financing Sources</a>
+          </div>';
+    ",
     "callback":"
-    var axis = chart.xAxis[0].getExtremes();
-    jQuery('#general-fund-filter .chartdatefrom').val(Highcharts.dateFormat('%Y',axis.min));
-    jQuery('#general-fund-filter .chartdateto').val(Highcharts.dateFormat('%Y',axis.max));
+        var axis = chart.xAxis[0].getExtremes();
+        jQuery('#general-fund-filter .chartdatefrom').val(Number(Highcharts.dateFormat('%Y',axis.min)) + 1);
+        jQuery('#general-fund-filter .chartdateto').val(Highcharts.dateFormat('%Y',axis.max));
     ",
     "model": {
-            "join": {
-                "method": "Full",
-                "columns": [
-                    "fiscal_year"
-                ]
-            },
-    "series": [
-    {
-        "dataset": "checkbook:trends_gen_fund_revenue",
-        "useList": true,
-        "orderBy": "fiscal_year",
-        "defaultParameters": {
-            "amount_display_type": "G",
-            "display_yn":"Y"
+      "join": {
+          "method": "Full",
+          "columns": [ "fiscal_year" ]
+      },
+      "series": [
+        {
+          "dataset": "checkbook:trends_gen_fund_revenue",
+          "useList": true,
+          "orderBy": "fiscal_year",
+          "defaultParameters": {"amount_display_type": "G","display_yn":"Y"},
+          "paramTypeConfig": {"fiscal_year": "range"},
+          "columns": ["fiscal_year", "amount"],
+          "columnPrefix": "revenue_"
         },
-    "paramTypeConfig": {
-                        "fiscal_year": "range"
-                    },
-    "columns": [
-    "fiscal_year",
-    "amount"
-    ],
-    "columnPrefix": "revenue_"
-    },
-    {
-        "dataset": "checkbook:trends_gen_fund_expenditure",
-        "useList": true,
-        "orderBy": "fiscal_year",
-        "defaultParameters": {
-            "amount_display_type": "G",
-            "display_yn":"Y"
-        },
-    "paramTypeConfig": {
-                        "fiscal_year": "range"
-                    },
-    "columns": [
-    "fiscal_year",
-    "amount"
-    ],
-    "columnPrefix": "expenditure_"
-    }
-    ]
+        {
+          "dataset": "checkbook:trends_gen_fund_expenditure",
+          "useList": true,
+          "orderBy": "fiscal_year",
+          "defaultParameters": {"amount_display_type": "G", "display_yn":"Y"},
+          "paramTypeConfig": {"fiscal_year": "range" },
+          "columns": ["fiscal_year", "amount"],
+          "columnPrefix": "expenditure_"
+        }
+      ]
     },
     "derivedColumns": {
-            "fiscal_year_date": {
-                "expression": "   $row['fiscal_year'] . '-1-1'"
-            },
-    "fiscal_year_utc":{
-               "expression":"strtotime($row['fiscal_year'] . '-1-1') * 1000"
-            },
-    "revenue_color":{
-                "expression":"checkbook_project_general_fund_revenue_color($row['revenue_amount'])"
-            },
-    "expenditure_color":{
-                "expression":"checkbook_project_general_fund_expenditure_color($row['expenditure_amount'])"
-            },
-    "modified_exp_amt":{
-                "expression":"$row['expenditure_amount'] * 1000"
-            },
-    "modified_rev_amt":{
-               "expression":"$row['revenue_amount'] * 1000"
-           }
+        "fiscal_year_date": {"expression": "$row['fiscal_year'] . '-1-1'" },
+        "fiscal_year_utc":{"expression":"strtotime($row['fiscal_year'] . '-1-1') * 1000" },
+        "revenue_color":{"expression":"checkbook_project_general_fund_revenue_color($row['revenue_amount'])"},
+        "expenditure_color":{"expression":"checkbook_project_general_fund_expenditure_color($row['expenditure_amount'])"},
+        "modified_exp_amt":{ "expression":"$row['expenditure_amount'] * 1000"},
+        "modified_rev_amt":{"expression":"$row['revenue_amount'] * 1000"}
     },
     "datasets": [
-    {
+      {
         "name": "revenue_amount",
         "columns": [
-             {
-                 "name":"y",
-                 "value":"modified_rev_amt"
-             },
-    {
-        "name":"x",
-        "value":"fiscal_year_utc"
-    },
-    {
-        "name":"color",
-        "value":"revenue_color"
-    }
-    ],
-    "type": "string",
-    "isArray": true
-    },
-    {
+          {"name":"y", "value":"modified_rev_amt"},
+          {"name":"x", "value":"fiscal_year_utc"},
+          {"name":"color", "value":"revenue_color"}
+        ],
+        "type": "string",
+        "isArray": true
+      },
+      {
         "name": "expenditure_amount",
         "columns": [
-             {
-                 "name":"y",
-                 "value":"modified_exp_amt"
-             },
-    {
-        "name":"x",
-        "value":"fiscal_year_utc"
-    },
-    {
-        "name":"color",
-        "value":"expenditure_color"
-    }
-    ],
-    "type": "string",
-    "isArray": true
-    }
+           {"name":"y", "value":"modified_exp_amt"},
+           {"name":"x", "value":"fiscal_year_utc"},
+           {"name":"color", "value":"expenditure_color"}
+        ],
+        "type": "string",
+        "isArray": true
+      }
     ],
     "chartConfig": {
-            "title": {
-                "style": {
-                    "fontSize": "15px",
-                    "fontWeight": "bold"
-                },
-    "margin": 0
-    },
+      "title": {
+          "style": {"fontSize": "15px", "fontWeight": "bold"},
+          "margin": 0
+      },
     "chart": {
-                "height": 600,
-                "width":940,
-                "spacingTop": 0,
-                "spacingRight": 0,
-                "spacingLeft": 0,
-                "spacingBottom": 30,
-                "backgroundColor":"rgba(255,255,255,0)",
-                "margin": [
-                    50,
-                    50,
-                    50,
-                    80
-                ]
-            },
+      "height": 600,
+      "width":940,
+      "spacingTop": 0,
+      "spacingRight": 0,
+      "spacingLeft": 0,
+      "spacingBottom": 30,
+      "backgroundColor":"rgba(255,255,255,0)",
+      "margin": [ 50, 50, 50, 80]
+    },
     "plotOptions": {
-                "column": {
-                    "minPointLength": 10,
-                    "dataLabels": {
-                        "enabled": true,
-                        "rotation": -90,
-                        "function": "dataLabelFormatter",
-                        "y": -50
-                    }
-    }
+      "column": {
+        "minPointLength": 10,
+        "dataLabels": {
+          "enabled": true,
+          "rotation": -90,
+          "function": "dataLabelFormatter",
+          "y": -50
+        }
+      }
     },
     "rangeSelector": {
-                "enabled": false,
-                "buttons":[{
-                    "type":"year",
-                    "count":1,
-                    "text":"1Y"
-                },
-                {
-                    "type":"year",
-                    "count":5,
-                    "text":"5Y"
-                },
-                {
-                    "type":"year",
-                    "count":9,
-                    "text":"10Y"
-                },
-                {
-                    "type":"ytd",
-                    "text":"YTD"
-                },
-                {
-                    "type":"all",
-                    "text":"All"
-                }],
-
-    "selected":2,
-    "inputDateFormat":"%Y",
-    "inputEditDateFormat":"%Y"
+        "enabled": false
     },
     "navigator": {
-                "enabled": true,
-                "xAxis": {
-                    "labels":{"enabled":true}
-    },
-    "margin": 0
+      "enabled": true,
+      "xAxis": {
+        "labels":{"enabled":true}
+      },
+      "margin": 0
     },
     "scrollbar": {
-                "enabled": true
-            },
-    "xAxis": {
-                "range1": 284018400000,
-                "range": 279936000000,
-                "minRange": 2419200000,
-                "tickInterval": 31557600000,
-                "categories": {
-                    "ds": "fiscal_year_date"
-                },
-    "labels": {
-                    "enabled":true,
-                    "style": {
-                        "font": "normal 11px Verdana, sans-serif"
-                    }
+      "enabled": true
     },
-    "events":{
-                    "function":"numbers"
-                }
+    "xAxis": {
+        "range": 312420240000,//Interval of 9.5 years 9.5 * 365 * 24 * 3600 * 1000
+        "minRange": 31557600000,//Axis minRange prevents zooming in too far - set to 1year
+        "tickInterval": 31557600000,//Interval of one year is expressed as 365 * 24 * 3600 * 1000
+        "categories": {
+            "ds": "fiscal_year_utc"
+        },
+        "labels": {
+          "enabled":true,
+          "style": {"font": "normal 11px Verdana, sans-serif"}
+        },
+        "events":{"function":"numbers"}
     },
     "series": [
-    {
-        "name": "Total Revenue",
-        "type": "column",
-        "data": {
-            "ds": "revenue_amount"
-        }
-    },
-    {
-        "name": "Total Expenditures ",
-        "type": "column",
-        "data": {
-            "ds": "expenditure_amount"
-        }
-    }
+      {
+          "name": "Total Revenue",
+          "type": "column",
+          "data": {"ds": "revenue_amount"}
+      },
+      {
+          "name": "Total Expenditures ",
+          "type": "column",
+          "data": { "ds": "expenditure_amount"}
+      }
     ],
     "yAxis": {
-                "opposite":false,
-                "startOnTick": true,
-                "endOnTick": true,
-                "lineWidth": 1,
-                "gridLineWidth": 0,
-                "title": {
-                    "text": ""
-                },
-    "labels": {
-                    "style": {
-                        "fontSize": "11px"
-                    },
-    "align": "right",
-    "rotation": 0,
-    "x": -2,
-    "function": "yaxisformatter"
-    }
+        "opposite":false,
+        "startOnTick": true,
+        "endOnTick": true,
+        "lineWidth": 1,
+        "gridLineWidth": 0,
+        "title": {"text": ""},
+        "labels": {
+            "style": {"fontSize": "11px" },
+            "align": "right",
+            "rotation": 0,
+            "x": -2,
+            "function": "yaxisformatter"
+        }
     },
-    "legend": {
-                "enabled": false
-            },
+    "legend": { "enabled": false},
     "tooltip": {
-                "enabled": true,
-                "shared": false,
-                "crosshairs":false,
-                "function": "tooltipformatter"
-            },
+      "enabled": true,
+      "shared": false,
+      "crosshairs":false,
+      "function": "tooltipformatter"
+    },
     "linkOptions": [
     {
-        "text": "<a class=\"show-detail-link\" href=\"/featuredtrends/node/347\">Show Details for General Fund Expenditures and Other Uses</a>"
+      "text": "<a class=\"show-detail-link\" href=\"/featuredtrends/node/347\">Show Details for General Fund Expenditures and Other Uses</a>"
     },
     {
-        "text": "<a class=\"show-detail-link\" href=\"/featuredtrends/node/316\">Show Details for General Fund Revenues and Fund Sources</a>"
+      "text": "<a class=\"show-detail-link\" href=\"/featuredtrends/node/316\">Show Details for General Fund Revenues and Fund Sources</a>"
     }
     ],
     "littleTitle":"General Fund Revenues &<br>General Fund Expenditures",
     "bigTitle":"General Fund Revenues & General Fund Expenditures"
-    }
+  }
 }
 
-
 <function>
-yaxisformatter^^'formatter' : function() {return yAxisLabelFormatter(this);}##
-tooltipformatter^^'formatter' : function() {return this.series.name + '<br>Amount: '+abbrNum(this.y, 2, '$')}##
-dataLabelFormatter^^'formatter':function(){if (this.y === 0 || this.y == undefined){return "Data Not Available";this.point.color = "#ccc";} else {return null;}}##
+yaxisformatter^^'formatter' : function() {
+   return yAxisLabelFormatter(this);
+}##
+tooltipformatter^^'formatter' : function() {
+  return this.series.name + '<br>Amount: '+abbrNum(this.y, 2, '$')
+}##
+dataLabelFormatter^^'formatter':function(){
+  if (this.y === 0 || this.y == undefined){
+    return "Data Not Available";
+  } else {
+    return null;
+  }
+}##
 numbers^^"setExtremes": function(event){
-jQuery('#general-fund-filter .chartdatefrom').val(Highcharts.dateFormat('%Y',event.min));
-jQuery('#general-fund-filter .chartdateto').val(Highcharts.dateFormat('%Y',event.max));}
+  jQuery('#general-fund-filter .chartdatefrom').val(Number(Highcharts.dateFormat('%Y',event.min))+1);
+  jQuery('#general-fund-filter .chartdateto').val(Highcharts.dateFormat('%Y',event.max));
+}
 </function>
