@@ -76,8 +76,10 @@
 ",
 "adjustParameters":"
     $type_filter = 'H' ;
+    $is_active_flag = 1;
     $url = RequestUtil::getCurrentPageUrl();
     $parameters['filter_type'] = $type_filter;
+    $parameters['is_active'] = $is_active_flag;
     $adjustedParameters = $parameters;
     if(function_exists('_checkbook_project_applyParameterFilters')){
     $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
