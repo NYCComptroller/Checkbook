@@ -186,7 +186,7 @@ yaxisformatter^^'formatter' : function() {
    return yAxisLabelFormatter(this);
 }##
 tooltipformatter^^'formatter' : function() {
-  return this.series.name + '<br>Amount: '+abbrNum(this.y, 2, '$')
+  return '<br>Amount: '+abbrNum(this.y, 2, '$')
 }##
 dataLabelFormatter^^'formatter':function(){
   if (this.y === 0 || this.y == undefined){
@@ -194,5 +194,9 @@ dataLabelFormatter^^'formatter':function(){
   } else {
     return null;
   }
+}##
+numbers^^"setExtremes": function(event){
+  jQuery('#general-fund-filter .chartdatefrom').val(Number(Highcharts.dateFormat('%Y',event.min)));
+  jQuery('#general-fund-filter .chartdateto').val(Highcharts.dateFormat('%Y',event.max));
 }
 </function>
