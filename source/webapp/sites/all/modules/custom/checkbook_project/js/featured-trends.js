@@ -100,12 +100,12 @@ function isValidYear(n, floor) {
 }
 
 function validateInput(min, max, chartno, floor, ceiling) {
-  min = Number(min);
+  min = Number(min) - 1;
   max = Number(max);
-  var mindate = Date.UTC(min, 1, 31);
-  var maxdate = Date.UTC(max, 1, 31);
-  var floorDate = Date.UTC(floor, 1, 31);
-  var ceilingDate = Date.UTC(ceiling, 1, 31);
+  var mindate = Date.UTC(min, 1);
+  var maxdate = Date.UTC(max, 1);
+  var floorDate = Date.UTC(Number(floor)-1, 1);
+  var ceilingDate = Date.UTC(ceiling, 1);
   if (min <= max) {
     if (isValidYear(min, floor) && isValidYear(max, floor)) {
       Highcharts.chartarray[chartno].xAxis[0].setExtremes(mindate, maxdate, true);
