@@ -77,13 +77,15 @@
         "margin": [50, 50, 50, 80]
       },
       "plotOptions": {
-        "column": {
+        "series":{
           "minPointLength": 10,
           "dataLabels": {
-              "enabled": true,
-              "rotation": -90,
-              "function": "dataLabelFormatter",
-              "y": -50
+            "enabled": true,
+            "function": "dataLabelFormatter",
+            "rotation": -90,
+            "inside": true,
+            "y": -2,
+            "style": {"fontSize": "9px" }
           }
         }
       },
@@ -127,8 +129,6 @@
       },
       "legend": {"enabled": false },
       "tooltip": {
-        "enabled": true,
-        "shared": false,
         "crosshairs":false,
         "function": "tooltipformatter"
       },
@@ -145,7 +145,7 @@ yaxisformatter^^'formatter' : function() {
    return yAxisLabelFormatter(this);
 }##
 tooltipformatter^^'formatter' : function() {
-  return abbrNum(this.y, 2,'$');
+  return this.points[0].series.name + ': ' + abbrNum(this.y, 2, '$');
 }##
 dataLabelFormatter^^'formatter':function(){
   if (this.y === 0){

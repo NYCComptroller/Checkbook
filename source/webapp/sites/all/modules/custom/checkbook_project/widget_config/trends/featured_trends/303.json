@@ -163,7 +163,6 @@
     },
     "legend": { "enabled": false},
     "tooltip": {
-      "enabled": true,
       "shared": false,
       "crosshairs":false,
       "function": "tooltipformatter"
@@ -186,7 +185,10 @@ yaxisformatter^^'formatter' : function() {
    return yAxisLabelFormatter(this);
 }##
 tooltipformatter^^'formatter' : function() {
-  return '<br>Amount: '+abbrNum(this.y, 2, '$')
+//return this.points ? this.points.map(function (point) {
+ //   return point.series.name + '<br>Amount: ' + abbrNum(point.y, 2, '$');
+//}) : [];
+  return this.point.series.name + '<br>Amount: '+abbrNum(this.y, 2, '$')
 }##
 dataLabelFormatter^^'formatter':function(){
   if (this.y === 0 || this.y == undefined){
