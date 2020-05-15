@@ -77,6 +77,12 @@ $remaining_data[] = array('name' => html_entity_decode($row['gl_project_descript
 if($allZero){$node->totalDataCount = 0;}
 $node->widgetConfig->chartTitle = 'Top Ten Projects by Expense Budget';
 $node->widgetConfig->chartConfig->xAxis->categories = $categories;
+if($url){
+$cursor = 'pointer';
+} else {
+$cursor = null;
+}
+$node->widgetConfig->chartConfig->plotOptions->series->cursor = $cursor;
 $node->widgetConfig->chartConfig->series = array(array('name' => 'Committed', 'data' => $committed_data),array('name' => 'Remaining', 'data' => $remaining_data));
 return $node->data;
 ",
