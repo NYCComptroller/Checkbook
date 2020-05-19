@@ -125,7 +125,7 @@ if(isset($url)) {
       $subTitle2 = $inv_contractSummary;
     }
     // if ($tcode == 'VO' || $tcode == 'AWD' || $tcode == 'DEP'|| $tcode == 'IND'|| $tcode == 'RESC' || $tcode == 'SZ') {
-    else{ $tcode_title = NYCHAContractUtil::getTitleByCode($tcode);
+    else{ $tcode_title = NYCHAContractUtil::getTransactionSubTitle($tcode);
       if ( $tcode == 'VO'){ $inv_contractName = $inv_contractDetails['vendor_name'];}
       if ( $tcode == 'AWD'){ $inv_contractName = $inv_contractDetails['award_method_name'];}
       if ( $tcode == 'DEP'){ $inv_contractName = $inv_contractDetails['department_name'];}
