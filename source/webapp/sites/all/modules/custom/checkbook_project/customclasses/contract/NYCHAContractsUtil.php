@@ -75,51 +75,6 @@ class NYCHAContractUtil
       return $summaryTitle;
     }
 
-
-  /**
-   * @param $tcode String -- Widget Key
-   * @return string -- Returns Widget Title for the given key
-   */
-  public static function getTransactionSubTitle($tcode){
-    $summaryTitle='';
-    switch($tcode){
-      case 'BA':
-        $summaryTitle = 'Blanket Agreements';
-        break;
-      case 'BAM':
-        $summaryTitle='Blanket Agreement Modifications';
-        break;
-      case 'PA':
-        $summaryTitle='Planned Agreements';
-        break;
-      case 'PAM':
-        $summaryTitle='Planned Agreement Modifications';
-        break;
-      case 'PO':
-        $summaryTitle='Purchase Orders';
-        break;
-      case 'VO':
-        $summaryTitle='Vendor';
-        break;
-      case 'AWD':
-        $summaryTitle='Award Methods';
-        break;
-      case 'IND':
-        $summaryTitle='Contracts by Industry';
-        break;
-      case 'RESC':
-        $summaryTitle='Responsibility Center';
-        break;
-      case 'DEP':
-        $summaryTitle='Department';
-        break;
-      case 'SZ':
-        $summaryTitle='Contracts by Size';
-        break;
-    }
-    return $summaryTitle;
-  }
-
   /**
    * @param $widget Widget Name
    * @param $bottomURL
