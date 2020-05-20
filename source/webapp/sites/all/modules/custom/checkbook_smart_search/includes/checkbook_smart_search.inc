@@ -405,7 +405,8 @@ function hyphen_data_export_results($result,$domain){
           }
           if ($headers[$key] == 'hourly_rate') {
             if ($field <= 0) {
-              $field = $daily_wage;
+              //$field = $daily_wage;
+              $field = isset($daily_wage) ? $daily_wage : '-';
             }
           }
           if ($headers[$key] == 'annual_salary' ){

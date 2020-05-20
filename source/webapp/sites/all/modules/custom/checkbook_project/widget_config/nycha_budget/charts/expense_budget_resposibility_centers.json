@@ -56,14 +56,25 @@
   },
   "transformationPHP":"
   $landing_page =  '/' .  current_path()  ;
-
-
-
   $allZero = TRUE;
   foreach ($node->data as $row) {
-  if (abs($row['budget_committed']) > 0){$allZero = FALSE;}
-if (abs($row['budget_remaining']) > 0){$allZero = FALSE;}
-$url = $landing_page .  '/respcenter/' . $row['responsibility_center_id_responsibility_center_id'];
+  if (abs($row['budget_committed']) > 0){
+  $allZero = FALSE;
+  }
+  if (abs($row['budget_remaining']) > 0){
+  $allZero = FALSE;
+  }
+  $exp = $node->widgetConfig->requestParams['expenditure_type_id.expenditure_type_id'];
+  $prog = $node->widgetConfig->requestParams['program_phase_id.program_phase_id'];
+  $fundsrc = $node->widgetConfig->requestParams['funding_source_id.funding_source_id'];
+  $proj = $node->widgetConfig->requestParams['gl_project_id.gl_project_id'];
+  if(($exp != null) && ($prog != null) && ($proj!= null) && ($fundsrc != null)){
+  $url = null;
+  }
+  else{
+  $url = $landing_page .  '/respcenter/' . $row['responsibility_center_id_responsibility_center_id'];
+  }
+
 $categories[] = html_entity_decode($row['responsibility_center_description_responsibility_center_description'],ENT_QUOTES);
 $committed_data[] = array('name' => html_entity_decode($row['responsibility_center_description_responsibility_center_description'],ENT_QUOTES), 'y' => $row['budget_committed'], 'url' => $url);
 $remaining_data[] = array('name' => html_entity_decode($row['responsibility_center_description_responsibility_center_description'],ENT_QUOTES), 'y' => $row['budget_remaining'], 'url' => $url);
@@ -71,6 +82,12 @@ $remaining_data[] = array('name' => html_entity_decode($row['responsibility_cent
 if($allZero){$node->totalDataCount = 0;}
 $node->widgetConfig->chartTitle = 'Top Ten Responsibility Centers by Expense Budget';
 $node->widgetConfig->chartConfig->xAxis->categories = $categories;
+if($url){
+  $cursor = 'pointer';
+} else {
+  $cursor = null;
+}
+$node->widgetConfig->chartConfig->plotOptions->series->cursor = $cursor;
 $node->widgetConfig->chartConfig->series = array(array('name' => 'Committed', 'data' => $committed_data),array('name' => 'Remaining', 'data' => $remaining_data));
 return $node->data;
 ",
@@ -119,5 +136,9 @@ return $node->data;
 <function>
 yAxisFormatter^^"formatter" : function(){return yAxisLabelFormatter(this);}##
 budgetTooltip^^"formatter" : function() {return 'Responsibility Center: '+this.point.name + '<br>Amount: ' + abbrNum(this.y, 2, '$')}##
-clickEvent^^"click": function(){location.href = this.options.url}
+clickEvent^^"click": function(){
+  if (this.options.url){
+  location.href = this.options.url
+  }
+}
 </function>

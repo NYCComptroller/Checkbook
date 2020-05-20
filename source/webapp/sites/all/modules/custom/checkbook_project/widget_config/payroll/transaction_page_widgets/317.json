@@ -120,7 +120,7 @@
     "table_columns": [
             {"labelAlias": "title","column": "employee_name_formatted","sortSourceColumn":"civil_service_title.civil_service_title"},
             {"labelAlias": "agency_name","column":"agency_name_formatted","sortSourceColumn":"agency.agency.agency_name"},
-            {"labelAlias": "annual_salary","column": "annual_salary_link","sortSourceColumn": "total_salaried_amount"},
+            {"labelAlias": "annual_salary","column": "annual_salary_link","sortSourceColumn": "annual_salary_annual_salary"},
             {"labelAlias": "hourly_rate","column": "hourly_daily_link","sortSourceColumn": "max_hourly_daily"},
             {"labelAlias": "daily_wage","column": "daily_wage_link","sortSourceColumn": "max_daily_wage"},
             {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_amount","sortSourceColumn": "total_gross_pay"},
@@ -222,12 +222,12 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 "exportColumnSqlOverride":[
         {
         "column":"annual_salary_link",
-        "sourceColumn":"j.total_salaried_amount",
+        "sourceColumn":"j.annual_salary_annual_salary",
         "sql":"
         CASE
-        WHEN total_salaried_amount IS NULL OR total_salaried_amount <=0  THEN CAST('-' AS TEXT)
-        ELSE CAST(total_salaried_amount AS TEXT)
-        END AS total_salaried_amounts
+        WHEN annual_salary_annual_salary IS NULL OR annual_salary_annual_salary <=0  THEN CAST('-' AS TEXT)
+        ELSE CAST(annual_salary_annual_salary AS TEXT)
+        END AS annual_salary_annual_salarys
         "
         },
         {
