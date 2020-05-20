@@ -237,31 +237,31 @@ Steps to install:
 5.  Bring over some third-party libraries.
 
     **Highcharts:**
-    - Download version 7.1.1 from <http://www.highcharts.com/products/highcharts>:
+    - Download version 8.1.0 from <http://www.highcharts.com/products/highcharts>:
 
-            $ wget https://code.highcharts.com/zips/Highcharts-7.1.1.zip
+            $ wget https://code.highcharts.com/zips/Highcharts-8.1.0.zip
     - Unpack it into the appropriate place in the web application:
 
             $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/
-            $ unzip Highcharts-7.1.1.zip -d \
-            /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/7.1.1
+            $ unzip Highcharts-8.1.0.zip -d \
+            /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/8.1.0
 
     - Verify that it unpacked into the right place, by checking the path to `highcharts.src.js`:
 
-            $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/7.1.1/js/highcharts.src.js
+            $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/8.1.0/js/highcharts.src.js
 
     **Highstock:**
-    - Download version 7.1.1 from <http://www.highcharts.com/products/highstock>:
+    - Download version 8.1.0 from <http://www.highcharts.com/products/highstock>:
 
-            $ wget https://code.highcharts.com/zips/Highstock-7.1.1.zip
+            $ wget https://code.highcharts.com/zips/Highstock-8.1.0.zip
     - Unpack it:
 
             $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/
-            $ unzip Highstock-7.1.1.zip -d \
-            /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/7.1.1
+            $ unzip Highstock-8.1.0.zip -d \
+            /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/8.1.0
     - Verify that it is unpacked into the right place, by checking that the path to `highstock.src.js`:
 
-            $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/7.1.1/js/highstock.src.js
+            $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/8.1.0/js/highstock.src.js
 
     Note that these Highcharts and Highstock downloads are available at
     no charge, but they are not licensed under open source licenses.
