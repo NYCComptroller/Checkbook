@@ -203,7 +203,16 @@
                       "sourceColumnName": "hourly_rate"
                     }
                   ]
-                }
+                },
+              {
+                "name": "daily_wage",
+                "levels": [
+                  {
+                    "name": "daily_wage",
+                    "sourceColumnName": "daily_wage"
+                  }
+                ]
+              }
             ],
             "measures":{
                 "txcount": {
@@ -212,8 +221,8 @@
                 "payroll_type": {
                     "function": "MAX(CASE WHEN amount_basis_id = 1 THEN 'Salaried' ELSE 'Non-Salaried' END)"
                 },
-                /*"annual_salary_pay":{
-                    "function": "CASE WHEN amount_basis_id = 1 THEN annual_salary ELSE NULL END"
+                "annual_salary_pay":{
+                  "function": "CASE WHEN amount_basis_id = 1 AND annual_salary > 0 THEN cast(annual_salary as text) ELSE '-' END"
                 },
                 "hourly_rate_pay":{
                     "function": "CASE WHEN amount_basis_id = 1 THEN NULL ELSE annual_salary END"
@@ -225,8 +234,8 @@
                     "function": "CASE WHEN amount_basis_id = 2 THEN annual_salary ELSE NULL END"
                 },
                 "hourly_rate_amount":{
-                    "function": "CASE WHEN amount_basis_id = 3 THEN  annual_salary ELSE NULL END"
-                },*/
+                    "function": "CASE WHEN hourly_rate > 0 THEN cast(hourly_rate as text ) WHEN daily_wage > 0 THEN cast(daily_wage as text) ELSE '-' END"
+                },
                 "total_gross_pay": {
                     "function": "SUM(gross_pay)"
                 },

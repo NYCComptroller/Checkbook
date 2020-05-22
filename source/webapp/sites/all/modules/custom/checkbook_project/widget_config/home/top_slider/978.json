@@ -20,8 +20,9 @@
 "allowedParams":["year.year","agency_id","type_of_year","civil_service_title_code.civil_service_title_code"],
 "seriesDefaultParameters":{"type_of_year":"C"},
 "adjustSerieParameters":"
-if(RequestUtilities::getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',request_uri()))
+          if(RequestUtilities::getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',request_uri())){
 $serieParameters['fiscal_year_id'] = RequestUtil::getCalYearIdForTopNavigation();
+          }
 return $serieParameters;
 "
 },
@@ -32,8 +33,9 @@ return $serieParameters;
 "allowedParams":["vendor_id","fiscal_year_id","calyear"],
 "adjustSerieParameters":"
 //Calculate amount for all years on 'All Years' advanced search results page
-if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))
+          if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear')){
 $serieParameters['fiscal_year_id'] = RequestUtil::getFiscalYearIdForTopNavigation();
+          }
 return $serieParameters;
 ",
   "widgetDataLoader":"
@@ -50,11 +52,9 @@ return $serieParameters;
     $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
   }
   $datasource = RequestUtilities::getRequestParamValue('datasource');
-  $sql = 'select SUM(total_maximum_contract_amount) AS total_maximum_contract_amount
-from   (SELECT C.contract_id
-        , MAX(C.total_amount) AS total_maximum_contract_amount
-          FROM   contracts_widget_summary C'
-          . $where_filter.' group by C.contract_id) a';
+          $sql = 'SELECT SUM(total_maximum_contract_amount) AS total_maximum_contract_amount
+                    FROM (SELECT C.contract_id, MAX(C.total_amount) AS total_maximum_contract_amount
+                            FROM   contracts_widget_summary C'. $where_filter.' GROUP BY C.contract_id) a';
   $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
 "
 },

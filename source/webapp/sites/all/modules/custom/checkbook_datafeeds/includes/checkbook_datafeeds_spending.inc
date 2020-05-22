@@ -27,14 +27,14 @@
  *   Data Feeds wizard form_state array
  *
  * @return array
- *   Renderable array of first step of Spending
+ *   array of first step of Spending
  */
 function checkbook_datafeeds_spending($form, &$form_state)
 {
   $datatype = $form_state['step_information']['type']['stored_values']['format'];
 
   $form['loaded'] = array(
-    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date('spending') . '</div>',
+    '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date(Domain::$SPENDING) . '</div>',
   );
   $form['requiredmessage'] = array(
     '#markup' => '<p class="required-message">Fields marked with an asterisk (<span class="form-required">*</span>) are required.</p><br/>',
@@ -44,7 +44,7 @@ function checkbook_datafeeds_spending($form, &$form_state)
   );
 
   $data_source = $form_state['values']['datafeeds-spending-domain-filter'] ?? Datasource::CITYWIDE;
-  $form['datafeeds-spending-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, 'spending');
+  $form['datafeeds-spending-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, Domain::$SPENDING);
 
   $form['filter'] = array(
     '#type' => 'fieldset',
@@ -400,6 +400,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#name' => 'contractno',
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'contractno', $first_time_load, ''),
   );
+
   $form['filter']['commodity_line'] = array(
     '#type' => 'textfield',
     '#title' => t('Commodity Line:'),
@@ -411,6 +412,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#name' => 'commodity_line',
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'commodity_line', $first_time_load, ''),
   );
+
   $form['filter']['entity_contract_number'] = array(
     '#type' => 'textfield',
     '#title' => t('Entity Contract #:'),
@@ -477,28 +479,19 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#markup' => '<div class="datafield year-filters last-item">',
   );
 
-// Updating the year filter for ajax year data load
+ // BY default obtain all the year values setting the datasource as nycha (show /hide handled in javascript)
   $form['filter']['year'] = array(
     '#type' => 'select',
+    '#options' => _year_options('all-years',Datasource::NYCHA),
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'year', $first_time_load, 0),
     '#prefix' => '<div id="year"><div class="datafield year">',
     '#suffix' => '</div></div>',
-    '#attributes' => array('class' => array('watch')),
     '#id' => 'edit-year',
     '#name' => 'year',
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'year', $first_time_load, 0),
-    '#validated' => true
-  );
+    '#validated' => true,
 
-  /*$form['filter']['year'] = array(
-    '#type' => 'select',
-    '#options' => _year_options('all-years'),
-    '#attributes' => array('class' => array('watch')),
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'year', $first_time_load, 0),
-    '#prefix' => '<div id="year"><div class="datafield year">',
-    '#suffix' => '</div></div>',
-    '#id' => 'edit-year',
-    '#name' => 'year',
-  );*/
+  );
 
   $form['filter']['issuedfrom'] = array(
     '#type' => 'textfield',
@@ -541,7 +534,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
  */
 function _checkbook_datafeeds_spending_column_options($data_source, $data_type)
 {
-  $options = DatafeedsConfigUtil::getConfig(strtolower('spending'));
+  $options = DatafeedsConfigUtil::getConfig(strtolower(Domain::$SPENDING));
 
   $options = $options['data_source'][$data_source] ?? $options['data_source'][Datasource::CITYWIDE];
   $options = $options['data_type'][$data_type] ?? $options['data_type']['default'];
@@ -582,6 +575,7 @@ function checkbook_datafeeds_spending_next_submit($form, &$form_state)
  *   current selected data source (i.e. checkbook, checkbook_oge)
  * @param string $response_type
  *   response type (i.e. csv, xml)
+ * @param $export_order
  * @return array
  */
 function checkbook_datafeeds_spending_filter_selected_columns($selected_columns, $data_source, $response_type, $export_order = null){

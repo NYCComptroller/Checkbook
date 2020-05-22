@@ -1,0 +1,46 @@
+<?php
+/**
+ * Implements hook_menu().
+ */
+function checkbook_etl_notification_menu(){
+  $items['etl_stats'] = array(
+    'title' => 'Checkbook ETL Statistics',
+    'page callback' => 'checkbook_etl_notification_notify',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function checkbook_etl_notification_notify() {
+  var_dump(getETLStatistics());
+  global $conf;
+  //$to = $conf['checkbook_dev_group_email'];
+  //$from = $conf['email_from'];
+  $to = 'saru855@gmail.com;sgade@reisystems.com';
+  $from = 'sgade@reisystems.com';
+  drupal_mail('checkbook_etl_notification', 'send-status', $to, null, [], $from, TRUE);
+  return true;
+}
+
+function checkbook_etl_notification_mail($key, &$message, $params){
+  // The key allows for a module to define multiple mails. This
+  // key needs to be the same as the first parameter in drupal_mail() above
+  //if($key ==  'some_mail_key'){
+    //$message['subject'] = t('Email from @site_name', array('@site_name' => variable_get('site_name', 'The site')));
+    // Each element of the body array becomes a new line in the email.
+    //$message['body'][] = t('Hello @user', array('@user' => format_username($params['to'])));
+    // Adding an empty string to the body array adds an extra line in the email
+    $message['subject'] = 'ETL Status';
+    $message['body'][] = '';
+    $message['body'][] = getETLStatistics();
+    $message['body'][] = '';
+  //}
+}
+
+function getETLStatistics(){
+  $url = 'http://192.168.3.237:8083';
+  $etlStats = file_get_contents($url);
+  return $etlStats;
+}
+

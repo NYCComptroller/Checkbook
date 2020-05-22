@@ -55,13 +55,29 @@
             $count = 1;
     		foreach($node->data as $row){
                 $percent_sign = ($count == 1 ) ? '<span class="endItem">%</span>' : '<span class="endItem" style="visibility:hidden;">%</span>';
+      $open_parentheses_col3 = "";
+      $closed_parentheses_col3 = "";
+      $open_parentheses_col5 = "";
+      $closed_parentheses_col5 = "";
+
+      if(isset($row['percentage_change_from_prior_period']) && $row['percentage_change_from_prior_period'] < 0){
+        $open_parentheses_col3 = "(";
+        $closed_parentheses_col3 = ")";
+        $row['percentage_change_from_prior_period'] = $row['percentage_change_from_prior_period']*-1;
+      }
+
+      if(isset($row['percentage_change_prior_period']) && $row['percentage_change_prior_period'] < 0){
+        $open_parentheses_col5 = "(";
+        $closed_parentheses_col5 = ")";
+        $row['percentage_change_prior_period'] = $row['percentage_change_prior_period']*-1;
+      }
 
 			    echo "<tr>";
 			    echo "<td class='number '><div  class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
     			echo "<td class='number '><div  class='tdCen'>" . (($row['united_states']>0)?number_format($row['united_states']):' - ') . "</div></td>";
-    			echo "<td class='number '><div  class='tdCen'>" . (($row['percentage_change_from_prior_period']>0)?(number_format($row['percentage_change_from_prior_period'],2)):' - ') . $percent_sign. "</div></td>";
+      echo "<td class='number '><div  class='tdCen'>" . $open_parentheses_col3. (($row['percentage_change_from_prior_period']>0)? (number_format($row['percentage_change_from_prior_period'],2)):' - ') . $closed_parentheses_col3 . $percent_sign . "</div></td>";
     			echo "<td class='number '><div  class='tdCen'>" . (($row['city_of_new_york']>0)?number_format($row['city_of_new_york']):' - '). "</div></td>";
-    			echo "<td class='number '><div  class='tdCen'>" . (($row['percentage_change_prior_period']!=0)?(number_format($row['percentage_change_prior_period'],2)):' - '). $percent_sign. "</div></td>";
+      echo "<td class='number '><div  class='tdCen'>" . $open_parentheses_col5 . (($row['percentage_change_prior_period']!=0)?(number_format($row['percentage_change_prior_period'],2)):' - ') . $closed_parentheses_col5 . $percent_sign . "</div></td>";
 			    echo "</tr>";
                 $count++;
     		}

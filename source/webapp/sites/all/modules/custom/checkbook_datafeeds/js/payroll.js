@@ -8,10 +8,12 @@
       $('#edit-column-select', context).multiSelect();
       $('#ms-edit-column-select .ms-selectable', context).after('<a class="deselect">Remove All</a>');
       $('#ms-edit-column-select .ms-selectable', context).after('<a class="select">Add All</a>');
-      $('#ms-edit-column-select a.select', context).click(function () {
+      $('#ms-edit-column-select a.select', context).click(function ()
+      {
         $('#edit-column-select', context).multiSelect('select_all');
       });
-      $('#ms-edit-column-select a.deselect', context).click(function () {
+      $('#ms-edit-column-select a.deselect', context).click(function ()
+      {
         $('#edit-column-select', context).multiSelect('deselect_all');
       });
 
@@ -19,10 +21,12 @@
       $('#edit-oge-column-select', context).multiSelect();
       $('#ms-edit-oge-column-select .ms-selectable', context).after('<a class="deselect">Remove All</a>');
       $('#ms-edit-oge-column-select .ms-selectable', context).after('<a class="select">Add All</a>');
-      $('#ms-edit-oge-column-select a.select', context).click(function () {
+      $('#ms-edit-oge-column-select a.select', context).click(function ()
+      {
         $('#edit-oge-column-select', context).multiSelect('select_all');
       });
-      $('#ms-edit-oge-column-select a.deselect', context).click(function () {
+      $('#ms-edit-oge-column-select a.deselect', context).click(function ()
+      {
         $('#edit-oge-column-select', context).multiSelect('deselect_all');
       });
 
@@ -40,24 +44,25 @@
       });
       //Sets up autocompletes
       var year = $('#edit-year', context).val();
-      var agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : encodeURIComponent($('#edit-agency', context).val());
+      var agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : emptyToZero($('#edit-agency', context).val());
       var payfrequency = ($('#edit-payfrequency', context).val() === 'All Pay Frequencies') ? 0 : $('#edit-payfrequency', context).val();
 
-      $('.watch:input').each(function () {
+      $('.watch:input').each(function ()
+      {
         $(this).focusin(function () {
           year = $('#edit-year', context).val();
           year = year.replace('ALL','').replace('FY','').trim();
           if(year){
             year = year.match(/\d+/)[0];
           }
-          agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : encodeURIComponent($('#edit-agency', context).val());
+          agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : emptyToZero($('#edit-agency', context).val());
           payfrequency = ($('#edit-payfrequency', context).val() === 'All Pay Frequencies') ? 0 : $('#edit-payfrequency', context).val();
           dataSource = $('input[name="datafeeds-payroll-domain-filter"]:checked', context).val();
 
           let filter = new URLSearchParams();
           if(agency){filter.set('agency_code',agency)}
           if(payfrequency){filter.set('pay_frequency', payfrequency)}
-          if(year){filter.set('calendar_fiscal_year_id',year)}
+          if(year){filter.set('calendar_fiscal_year',year)}
 
           $("#edit-title").autocomplete({
             source: '/solr_options/'+dataSource+'/payroll/civil_service_title?'+filter,
@@ -73,7 +78,8 @@
       datafeedsPayrollShowHideFields(dataSource);
 
       //Data Source change event
-      $('input:radio[name=datafeeds-payroll-domain-filter]', context).change(function () {
+      $('input:radio[name=datafeeds-payroll-domain-filter]', context).change(function ()
+      {
         //Remove all the validation errors when data source is changed
         $('div.messages', context).remove();
         $('.error', context).removeClass('error');
@@ -86,7 +92,8 @@
   };
 
   //On Data Source Change
-  let datafeedsParyllOnDataSourceChange = function (dataSource) {
+  let datafeedsParyllOnDataSourceChange = function (dataSource)
+  {
     //reset the selected columns
     $('#edit-column-select').multiSelect('deselect_all');
     $('#edit-oge-column-select').multiSelect('deselect_all');
@@ -94,8 +101,10 @@
     datafeedsPayrollShowHideFields(dataSource);
   };
 
-  let datafeedsPayrollShowHideFields = function (dataSource) {
-    getPayrollYears(dataSource);
+  let datafeedsPayrollShowHideFields = function (dataSource)
+  {
+    //Add/Remove extra year value based on datasource
+    resetYearvalue(dataSource);
     if (dataSource == 'checkbook_nycha') {
       $('.datafield.agency').hide();
       $('.form-item-oge-column-select').show();
@@ -107,7 +116,29 @@
     }
   };
 
-  let getPayrollYears = function (dataSource) {
+  let resetYearvalue = function (dataSource)
+  {
+    let lastYear =  $("#edit-year option:eq(10)").val();
+    let yearValue = lastYear.split(/\s+/);
+    $("#edit-year > option").each(function() {
+      if(dataSource === 'checkbook_nycha') {
+        if (/^FY/.test(this.value)) {
+          // Hide FY for Nycha
+          $("#edit-year option[value='" + this.value + "']").hide();
+        }
+        // Show extra one year for NYCHA (2010)
+        $("#edit-year option[value='CY "+yearValue[1]+"']").show();
+      }
+      else{
+        // Hide the extra year for citywide (FY AND CY)
+          $("#edit-year option[value='"+this.value+"']").show();
+          $("#edit-year option[value='FY "+yearValue[1]+"']").hide();
+          $("#edit-year option[value='CY "+yearValue[1]+"']").hide();
+      }
+    });
+  };
+
+  /*let getPayrollYears = function (dataSource) {
     var form = 'datafeeds';
     $.ajax({
       url: '/payroll/years/' + dataSource + '/' + form
@@ -116,7 +147,7 @@
         if (data[0]) {
           if (data[0] !== 'No Matches Found') {
             $.each(data, function (key, year) {
-              html = html + '<option value="' + year.value + '" title="' + year.label +'">' + year.label + '</option>';
+              html = html + '<option value="' + year.label +'">' + year.label + '</option>';
             });
           }
           else {
@@ -126,9 +157,10 @@
         $("#edit-year").html(html);
       }
     });
-  }
+  };*/
 
-  $.fn.clearInputFields = function () {
+  $.fn.clearInputFields = function ()
+  {
     $('.fieldset-wrapper').find(':input').each(function () {
       switch (this.type) {
         case 'select-one':
@@ -153,10 +185,11 @@
           break;
       }
     });
-  }
+  };
 
   //Function to retrieve values enclosed in brackets or return zero if none
-  function emptyToZero(input) {
+  function emptyToZero(input)
+  {
     const p = /\[(.*?)]$/;
     const code = p.exec(input.trim());
     if (code) {

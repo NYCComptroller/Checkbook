@@ -35,6 +35,8 @@ abstract class CheckbookDomain {
     const PAYROLL = "payroll";
     const NYCHA_CONTRACTS = "nycha_contracts";
     const NYCHA_SPENDING = "nycha_spending";
+    const NYCHA_BUDGET = "nycha_budget";
+    const NYCHA_REVENUE = "nycha_revenue";
 
     public static function getCurrent() {
 
@@ -61,6 +63,10 @@ abstract class CheckbookDomain {
             }
         }
 
+        if (!$domain && stripos($urlPath, '/nycha_contracts/')) {
+          $domain = self::NYCHA_CONTRACTS;
+        }
+
         if (!$domain) {
             $spending_endpoints = array(
                 '/spending_landing/',
@@ -73,24 +79,28 @@ abstract class CheckbookDomain {
             }
         }
 
+        if (!$domain && stripos($urlPath, '/nycha_spending/')) {
+          $domain = self::NYCHA_SPENDING;
+        }
+
+        if (!$domain && stripos($urlPath, '/budget/')) {
+          $domain = self::BUDGET;
+        }
+
+        if (!$domain && stripos($urlPath, '/nycha_budget/')) {
+          $domain = self::NYCHA_BUDGET;
+        }
+
         if (!$domain && stripos($urlPath, '/revenue/')) {
             $domain = self::REVENUE;
         }
 
-        if (!$domain && stripos($urlPath, '/budget/')) {
-            $domain = self::BUDGET;
+        if (!$domain && stripos($urlPath, '/nycha_revenue/')) {
+          $domain = self::NYCHA_REVENUE;
         }
 
         if (!$domain && stripos($urlPath, '/payroll/')) {
             $domain = self::PAYROLL;
-        }
-
-        if (!$domain && stripos($urlPath, '/nycha_contracts/')) {
-            $domain = self::NYCHA_CONTRACTS;
-        }
-
-        if (!$domain && stripos($urlPath, '/nycha_spending/')) {
-            $domain = self::NYCHA_SPENDING;
         }
 
         return $domain;

@@ -150,7 +150,10 @@ body.page-featured-trends .highcharts-border{
     font-size:12px;
     margin-bottom:10px;
 }
-.page-all-trends #block-system-main li{line-height:18px;}
+.page-all-trends #block-system-main li{
+  line-height:18px;
+  list-style: none;
+}
 
 .page-trends #zone-content,
 .page-trends-landing #zone-content{

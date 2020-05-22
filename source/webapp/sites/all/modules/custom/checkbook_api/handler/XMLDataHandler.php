@@ -210,16 +210,27 @@ class XMLDataHandler extends AbstractDataHandler
                     $new_select_part .= "CASE WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " ~* 's' THEN 'Yes' ELSE 'No' END";
                     break;
                 case "amount_basis_id":
-                    $new_select_part .=  "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END";
-                    break;
+                $new_select_part .=  "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END";
+                break;
+                case "salaried_amount":
+                  $new_select_part .= "CASE WHEN  amount_basis_id = 1 THEN CAST(salaried_amount AS VARCHAR) ELSE CAST('-' AS VARCHAR) END";
+                break;
+                case "non_salaried_amount":
+                    if($this->requestDataSet->data_source == Datasource::NYCHA) {
+                    $new_select_part .= "CASE WHEN amount_basis_id = 2  THEN CAST(non_salaried_amount AS VARCHAR) ELSE CAST('-' AS VARCHAR) END";
+                  }
+                  else{
+                    $new_select_part .= "CASE WHEN amount_basis_id != 1  THEN CAST(non_salaried_amount AS VARCHAR) ELSE CAST('-' AS VARCHAR) END";
+                    }
+                break;
+                case "hourly_rate":
+                    if($this->requestDataSet->data_source == Datasource::NYCHA) {
+                    $new_select_part .= "CASE WHEN amount_basis_id = 3  THEN CAST(non_salaried_amount AS VARCHAR) ELSE CAST('-' AS VARCHAR) END";
+                    }
+                break;
                 case "release_approved_year":
                     if($criteria['global']['type_of_data'] == 'Contracts_NYCHA'){
                       $new_select_part .= $criteria['value']['fiscal_year'];
-                    }
-                    break;
-                case "hourly_rate":
-                    if($this->requestDataSet->data_source == Datasource::NYCHA) {
-                        $new_select_part .=  "''";
                     }
                     break;
                 default:
@@ -263,6 +274,7 @@ class XMLDataHandler extends AbstractDataHandler
             $formattedOutputFile = $tmpDir . '/formatted_' . $filename;
             $outputFile = DRUPAL_ROOT . '/' . $fileDir . '/' . $filename;
             $commands = array();
+            //LogHelper::log_notice("DataFeeds :: QueueJob::getXMLJobCommands() cmd: ".$outputFile);
 
             //sql command
             $command = $command
@@ -270,6 +282,8 @@ class XMLDataHandler extends AbstractDataHandler
                 . $tempOutputFile
                 . "' \" ";
             $commands[] = $command;
+
+            LogHelper::log_notice("DataFeeds :: XML QUERY FOR > 10000 records: ".$command);
 
             //prepend open tags command
             $command = "sed -i '1i " . $open_tags . "' " . $tempOutputFile;

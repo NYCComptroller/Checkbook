@@ -13,12 +13,14 @@
       }
     },
     "contract_category_name": {
-      "title": "Contract Category",
+      "title": "Category",
       "child": true
     },
     "contract_status": {
-      "title": "Contract Status",
-      "child": true
+      "title": "Status",
+      "child": true,
+      "input": "radio",
+      "calculated_value": "active"
     },
     "spending_category_name": {
       "title": "Spending Category",
@@ -32,7 +34,12 @@
       "title": "Expense Category",
       "autocomplete": true
     },
-    "fiscal_year": {
+    "facet_year_array": {
+      "title": "Fiscal Year",
+      "autocomplete": true,
+      "sort_by_key": -1
+    },
+    "registered_fiscal_year": {
       "title": "Fiscal Year",
       "autocomplete": true,
       "sort_by_key": -1

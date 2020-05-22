@@ -4,6 +4,7 @@
 nbproject/
 tmp/
 data/
+!source/webapp/sites/all/modules/custom/checkbook_widget_redesign/checkbook_business_layer/checkbook_services/**/data/
 source/database/
 documentation/
 source/webapp/.buildpath

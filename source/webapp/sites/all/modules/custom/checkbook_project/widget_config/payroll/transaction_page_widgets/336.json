@@ -27,11 +27,13 @@
     "no_results_content":"No Results Found",
     "dataset": "checkbook:payroll",
     "uniqueSortColumn":"payroll_id",
-    "columns": ["employee_number","civil_service_title","agency_name","pay_frequency","pay_date","annual_salary","gross_pay","base_pay","other_payments","overtime_pay","gross_pay_cytd","calendar_fiscal_year_id","agency_id","employee_id","amount_basis_id","salaried_amount","non_salaried_amount"],
+    "columns": ["employee_number","civil_service_title","agency_name","pay_frequency","pay_date","annual_salary","gross_pay",
+      "base_pay","other_payments","overtime_pay","gross_pay_cytd","calendar_fiscal_year_id","agency_id","employee_id","amount_basis_id",
+      "salaried_amount","non_salaried_amount","hourly_rate","daily_wage"],
     "additionalSelectColumns":["amount_basis_id"],
     "derivedColumns": {
         "formatted_daily_wage_amount": {
-        "expression":  "$row['amount_basis_id'] === 2 ? custom_number_formatter_basic_format($row['non_salaried_amount'])  : '-'  "
+        "expression":  "$row['amount_basis_id'] === 2 ? custom_number_formatter_basic_format($row['daily_wage'])  : '-'  "
       },
         "formatted_hourly_rate_amount": {
             "expression":  "$row['amount_basis_id'] === 3 ? custom_number_formatter_basic_format($row['non_salaried_amount'])  : '-'  "
@@ -55,7 +57,7 @@
             "expression": "!Datasource::isNYCHA()?'<a href=/payroll/agency_landing/agency/'. $row['agency_id'] . '/yeartype/C/year/' . $row['calendar_fiscal_year_id']  . _checkbook_project_get_url_param_string('datasource'). Datasource::getNYCHAUrl() . '>'. $row['agency_name_formatted'] .'</a>':$row['agency_name_formatted']"
         },
         "formatted_salary_amount": {
-            "expression": " $row['amount_basis_id'] === 1 ? custom_number_formatter_basic_format($row['salaried_amount'])  : '-'  "
+            "expression": " (($row['amount_basis_id'] === 1 && $row['salaried_amount']) > 0) ? custom_number_formatter_basic_format($row['salaried_amount'])  : '-'  "
         },
         "annual_salary_link": {
             "expression": "PayrollUtil::getAnnualSalaryLink($row)"
@@ -100,7 +102,7 @@
         {"labelAlias": "pay_date","column": "pay_date"},
         {"labelAlias": "annual_salary","column": "annual_salary_link","sortSourceColumn": "salaried_amount","exportColumn":"export_salary_amount"},
         {"labelAlias": "hourly_rate","column": "non_salary_link","sortSourceColumn": "non_salaried_amount","exportColumn":"export_non_salary_amount"},
-        {"labelAlias": "daily_wage","column": "daily_wage_link","sortSourceColumn":"non_salaried_amount"},
+        {"labelAlias": "daily_wage","column": "daily_wage_link","sortSourceColumn":"daily_wage"},
         {"labelAlias": "pay_frequency","column": "pay_frequency"},
         {"labelAlias": "gross_pay","column": "formatted_gross_pay_amount","sortSourceColumn": "gross_pay"},
         {"labelAlias": "base_pay","column": "formatted_base_pay_amount","sortSourceColumn": "base_pay"},
@@ -143,22 +145,37 @@
         "sourceColumn":"amount_basis_id",
         "sql":"CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END AS payroll_type"
         },
+        {
+        "column":"non_salary_link",
+        "sourceColumn":"non_salaried_amount",
+        "sql":"CASE WHEN amount_basis_id = 3 OR amount_basis_id = 2 THEN CAST(non_salaried_amount AS TEXT) else CAST('-' AS TEXT)  END AS non_salaried_amount"
+        },
        {
       "column":"hourly_rate_link",
        "sourceColumn":"non_salaried_amount",
-      "sql":"CASE WHEN amount_basis_id = 3 THEN non_salaried_amount else null  END AS hourly_rate"
+      "sql":"CASE WHEN amount_basis_id = 3 THEN CAST(non_salaried_amount AS TEXT) else CAST('-' AS TEXT)  END AS hourly_rates"
+      },
+      {
+      "column":"daily_wage_link",
+      "sourceColumn":"daily_wage",
+      "sql":"CASE WHEN amount_basis_id = 2 THEN CAST(daily_wage AS TEXT) else CAST('-' AS TEXT)  END AS daily_wages"
+      },
+      {
+      "column":"annual_salary_link",
+      "sourceColumn":"salaried_amount",
+      "sql":"CASE WHEN amount_basis_id = 1 AND salaried_amount > 0 THEN CAST(salaried_amount AS TEXT) else CAST('-' AS TEXT)  END AS annual_salarys"
       }
     ],
     "adjustParameters":"
 
                 $sortingCol = $_REQUEST['iSortCol_0'];
                 if($sortingCol == 3){//annual sal
-                       array_unshift($config->orderBy, 'amount_basis_id');
+                       //array_unshift($config->orderBy, 'amount_basis_id');
                }else if($sortingCol == 4){//hourly rate
-                    array_unshift($config->orderBy, '-amount_basis_id');
+                    //array_unshift($config->orderBy, '-amount_basis_id');
                }
                 else if($sortingCol == 5){
-                    array_unshift($config->orderBy, '-amount_basis_id');
+                    //array_unshift($config->orderBy, '-amount_basis_id');
                   }
 
                 $adjustedParameters = $parameters;

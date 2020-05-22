@@ -121,7 +121,6 @@ class CheckbookGuru
     $this->solr_query->setFq('domain',"domain:{$domain}");
 
     foreach($filters as $fq => $value){
-      $value = CheckbookSolrQuery::escape(trim($value));
       if(!$value) {continue;}
       if ('term' == $fq) {
         if ($value) {

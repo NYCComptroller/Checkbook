@@ -212,15 +212,6 @@
                             "sourceColumnName": "pay_date"
                         }
                     ]
-                },
-                {
-                  "name": "hourly_rate",
-                  "levels": [
-                    {
-                      "name": "hourly_rate",
-                      "sourceColumnName": "hourly_rate"
-                    }
-                  ]
                 }
             ],
             "measures":{
@@ -233,18 +224,18 @@
                 "rate_type": {
                     "function": "MAX(CASE WHEN amount_basis_id = 2 THEN 'Daily' WHEN amount_basis_id = 3 Then 'Hourly' Else 'Annual'END)"
                 },
-                /*"annual_salary_pay":{
-                    "function": "CASE WHEN amount_basis_id = 1 THEN annual_salary ELSE NULL END"
+                "annual_salary_pay":{
+                    "function": "CASE WHEN amount_basis_id = 1 AND annual_salary > 0 THEN cast(annual_salary as text) ELSE '-' END"
                 },
                 "hourly_rate_pay":{
                     "function": "CASE WHEN amount_basis_id = 1 THEN NULL ELSE annual_salary END"
                 },
                 "daily_wage_pay":{
-                    "function": "CASE WHEN amount_basis_id = 2 THEN annual_salary ELSE NULL END"
+                    "function": "CASE WHEN amount_basis_id != 1 AND daily_wage > 0 THEN cast(daily_wage as text) ELSE '-' END"
                 },
                 "hourly_rate_amount":{
-                    "function": "CASE WHEN amount_basis_id = 3 THEN  annual_salary ELSE NULL END"
-                },*/
+                    "function": "CASE WHEN amount_basis_id != 1 AND hourly_rate > 0  THEN cast(hourly_rate as text)  ELSE '-' END"
+                },
                 "max_annual_salary":{
                     "function": "MAX(annual_salary)"
                 },

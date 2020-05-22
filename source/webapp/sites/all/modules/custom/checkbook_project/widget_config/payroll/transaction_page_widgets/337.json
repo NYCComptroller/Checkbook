@@ -42,10 +42,10 @@
             "expression": "'<a href=/payroll/agency_landing/agency/'. $row['agency_id'] . '/yeartype/B/year/' . $row['fiscal_year_id'] . RequestUtilities::_getUrlParamString('datasource') . '>'. $row['agency_name_formatted'] .'</a>'"
         },
         "formatted_salary_amount": {
-            "expression": " $row['amount_basis_id'] === 1 ? custom_number_formatter_basic_format($row['salaried_amount'])  : '-'  "
+            "expression": " (($row['amount_basis_id'] === 1 AND $row['salaried_amount']) > 0) ? custom_number_formatter_basic_format($row['salaried_amount'])  : '-'  "
         },
         "annual_salary_link": {
-            "expression": " $row['amount_basis_id'] === 1 ? '<a href=/payroll/'.((!RequestUtilities::getRequestParamValue(UrlParameter::AGENCY)) ? 'agency_landing/' : '').'yeartype/B/year/' . $row['fiscal_year_id'] . RequestUtilities::_getUrlParamString('datasource') . Datasource::getNYCHAUrl() . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_id'] . '/yeartype/B/year/' . $row['fiscal_year_id'] . RequestUtilities::_getUrlParamString('datasource'). '/salamttype/' . $row['amount_basis_id'] . '/abc/' . $row['employee_id'] . '>'. $row['formatted_salary_amount'] .'</a>' : '-'"
+            "expression": " (($row['amount_basis_id'] === 1 AND $row['salaried_amount']) > 0) ? '<a href=/payroll/'.((!RequestUtilities::getRequestParamValue(UrlParameter::AGENCY)) ? 'agency_landing/' : '').'yeartype/B/year/' . $row['fiscal_year_id'] . RequestUtilities::_getUrlParamString('datasource') . Datasource::getNYCHAUrl() . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_id'] . '/yeartype/B/year/' . $row['fiscal_year_id'] . RequestUtilities::_getUrlParamString('datasource'). '/salamttype/' . $row['amount_basis_id'] . '/abc/' . $row['employee_id'] . '>'. $row['formatted_salary_amount'] .'</a>' : '-'"
         },
         "formatted_non_salary_amount": {
             "expression": " $row['amount_basis_id'] === 1 ? '-' : custom_number_formatter_basic_format($row['non_salaried_amount'])"
@@ -100,15 +100,25 @@
             "column":"formatted_payroll_type",
             "sourceColumn":"amount_basis_id",
             "sql":"CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END AS payroll_type"
-        }
+        },
+        {
+        "column":"non_salary_link",
+        "sourceColumn":"non_salaried_amount",
+        "sql":"CASE WHEN amount_basis_id = 3 OR amount_basis_id = 2 THEN CAST(non_salaried_amount AS TEXT) else CAST('-' AS TEXT)  END AS non_salaried_amount"
+        },
+        {
+        "column":"annual_salary_link",
+        "sourceColumn":"salaried_amount",
+        "sql":"CASE WHEN amount_basis_id = 1 AND salaried_amount > 0 THEN CAST(salaried_amount AS TEXT) else CAST('-' AS TEXT)  END AS annual_salarys"
+       }
     ],
     "adjustParameters":"
 
                 $sortingCol = $_REQUEST['iSortCol_0'];
                 if($sortingCol == 3){//annual sal
-                       array_unshift($config->orderBy, 'amount_basis_id');
+                       //array_unshift($config->orderBy, 'amount_basis_id');
                }else if($sortingCol == 4){//hourly rate
-                    array_unshift($config->orderBy, '-amount_basis_id');
+                    //array_unshift($config->orderBy, '-amount_basis_id');
                }
 
                 $adjustedParameters = $parameters;

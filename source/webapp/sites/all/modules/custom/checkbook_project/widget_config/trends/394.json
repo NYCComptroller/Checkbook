@@ -18,7 +18,7 @@
         "bSort":false,
         "sScrollY": 400, 
         "sScrollX": "100%",
-         "sScrollXInner": "1975px",
+         "sScrollXInner": "2000px",
          "bScrollCollapse": false,
          "bAutoWidth": false,
         "fnPreDrawCallback":"##function( oSettings ) {
@@ -33,6 +33,6 @@
        },
  "customJS":"new FixedColumns( oTable, {
  		\"iLeftColumns\": 1,
-		\"iLeftWidth\": 300
+		\"iLeftWidth\": 350
  	} );"
 }

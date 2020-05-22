@@ -32,23 +32,31 @@
     "html_class": "initiative-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:payroll",
-    "columns": ["employee_number.employee_number","payroll_id.payroll_id","agency_name.agency_name","civil_service_title.civil_service_title","annual_salary.annual_salary",
+    "preProcessConfiguration":"
+    $datasource = RequestUtilities::getRequestParamValue('datasource');
+    if($datasource=='checkbook_nycha'){
+    $node->widgetConfig->dataset='checkbook_nycha:payroll';
+    }
+    ",
+    "columns": ["employee_number.employee_number","payroll_id.payroll_id","agency_name.agency_name","civil_service_title.civil_service_title","annual_salary_pay","annual_salary.annual_salary",
       "amount_basis_id.amount_basis_id","payroll_type","pay_frequency.pay_frequency","pay_date.pay_date",
       "gross_pay.gross_pay","base_pay.base_pay","other_payments.other_payments","overtime_pay.overtime_pay",
-      "gross_pay_cytd.gross_pay_cytd","calendar_fiscal_year_id.calendar_fiscal_year_id","agency_id.agency_id","hourly_rate.hourly_rate"],
+      "gross_pay_cytd.gross_pay_cytd","calendar_fiscal_year_id.calendar_fiscal_year_id","agency_id.agency_id",
+      "hourly_rate_amount","daily_wage_pay",
+      "hourly_rate.hourly_rate","daily_wage.daily_wage"],
     "caption":"",
     "derivedColumns": {
-        "formatted_daily_wage_amount": {
-          "expression": "$row['amount_basis_id_amount_basis_id'] == 2 ? custom_number_formatter_basic_format($row['daily_wage_daily_wage'])  : '-'"
+        "formatted_daily_wage_pay": {
+          "expression": "$row['daily_wage_pay'] == NULL ? '-' : custom_number_formatter_basic_format($row['daily_wage_pay'])"
         },
-        "formatted_annual_salary": {
-        "expression": "$row['amount_basis_id_amount_basis_id'] == 1 ? custom_number_formatter_basic_format($row['annual_salary_annual_salary'])  : '-'"
+        "formatted_annual_salary_pay": {
+        "expression": "$row['annual_salary_pay'] == NULL ? '-' : custom_number_formatter_basic_format($row['annual_salary_pay'])"
         },
-      "formatted_hourly_rate": {
-        "expression":" (isset($row['hourly_rate_hourly_rate']) && $row['hourly_rate_hourly_rate'] > 0) ? custom_number_formatter_basic_format($row['hourly_rate_hourly_rate'])  : '-'"
+      "formatted_hourly_rate_amount": {
+        "expression": "$row['hourly_rate_amount'] == NULL ? '-' : custom_number_formatter_basic_format($row['hourly_rate_amount'])"
       },
         "nycha_hourly_rate":{
-          "expression":"(isset($row['hourly_rate_hourly_rate']) && $row['hourly_rate_hourly_rate'] > 0) ? custom_number_formatter_basic_format($row['hourly_rate_hourly_rate'])  : '-'"
+          "expression": "$row['hourly_rate_amount'] == NULL ? '-' : custom_number_formatter_basic_format($row['hourly_rate_amount'])"
         },
         "formatted_gross_pay_amount": {
         "expression": "custom_number_formatter_basic_format($row['gross_pay_gross_pay'])"
@@ -88,9 +96,9 @@
             {"labelAlias": "title","column": "title_name_formatted","sortSourceColumn": "civil_service_title.civil_service_title"},
             {"labelAlias": "agency_name","column": "agency_name_formatted","sortSourceColumn": "agency_name.agency_name"},
             {"labelAlias": "pay_date","column":"pay_date_formatted",  "sortSourceColumn":"pay_date.pay_date"},
-            {"labelAlias": "annual_salary","column": "formatted_annual_salary","sortSourceColumn": "annual_salary.annual_salary"},
-            {"labelAlias": "hourly_rate","column": "formatted_hourly_rate","sortSourceColumn": "hourly_rate.hourly_rate"},
-            {"labelAlias": "daily_wage","column": "formatted_daily_wage_amount","sortSourceColumn": "daily_wage.daily_wage"},
+            {"labelAlias": "annual_salary","column": "formatted_annual_salary_pay","sortSourceColumn": "annual_salary_pay"},
+            {"labelAlias": "hourly_rate","column": "formatted_hourly_rate_amount","sortSourceColumn": "hourly_rate_amount"},
+            {"labelAlias": "daily_wage","column": "formatted_daily_wage_pay","sortSourceColumn": "daily_wage_pay"},
             {"labelAlias": "pay_frequency","column": "pay_frequency_formatted","sortSourceColumn":"pay_frequency.pay_frequency"},
             {"labelAlias": "gross_pay","column": "formatted_gross_pay_amount","sortSourceColumn": "gross_pay.gross_pay"},
             {"labelAlias": "base_pay","column": "formatted_base_pay_amount","sortSourceColumn": "base_pay.base_pay"},
@@ -131,7 +139,6 @@
       }
       $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
       $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
-
     ",
     "adjustParameters":"
         $adjustedParameters = $parameters;

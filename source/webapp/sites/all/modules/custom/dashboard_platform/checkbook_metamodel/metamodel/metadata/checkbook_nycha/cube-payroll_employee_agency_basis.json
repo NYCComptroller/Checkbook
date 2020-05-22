@@ -183,7 +183,7 @@
           "function": "SUM(annual_salary)"
         },
         "total_salaried_amount": {
-          "function": "SUM( CASE WHEN type_of_employment = 'Salaried' THEN COALESCE(annual_salary,0) else NULL END)"
+          "function": "(CASE WHEN type_of_employment = 'Salaried' AND SUM(COALESCE(annual_salary,0)) > 0 THEN SUM(COALESCE(annual_salary,0)) else NULL END)"
         },
         "total_salaried_employees": {
           "function": "COUNT(DISTINCT (CASE WHEN type_of_employment = 'Salaried' THEN employee_number END))"
@@ -210,10 +210,13 @@
           "function": "MAX(annual_salary)"
         },
         "max_hourly_rate":{
-          "function": "MAX(hourly_rate)"
+          "function": "MAX(CASE WHEN hourly_rate > 0 THEN hourly_rate  else NULL END)"
         },
         "max_daily_wage":{
-          "function": "MAX(daily_wage)"
+          "function": "MAX(CASE WHEN daily_wage > 0 THEN daily_wage else NULL END)"
+        },
+        "max_hourly_daily":{
+          "function" :"MAX(CASE WHEN hourly_rate > 0 THEN hourly_rate ELSE daily_wage END)"
         },
         "total_gross_pay": {
           "function": "SUM(gross_pay)"

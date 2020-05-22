@@ -15,10 +15,13 @@
   "autocompleteID":"fvendorId",
   "autocompleteField":"vendor_name",
   "adjustParameters":"
+
       if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
       }
+
       $adjustedParameters['vendor_id.vendor_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+      $adjustedParameters['vendor_customer_code.vendor_customer_code'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
       return $adjustedParameters;
   ",
   "adjustFacetOptions":"

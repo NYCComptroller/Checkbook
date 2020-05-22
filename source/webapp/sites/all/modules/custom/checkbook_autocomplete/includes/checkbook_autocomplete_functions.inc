@@ -424,17 +424,11 @@ function _checkbook_autocomplete_datafeeds_nycha_contracts($solr_field, $purchas
       $year = ltrim($year, 'FY');
       $facetquery .= '&(' . $year . ':[*%20TO%20agreement_start_year]%20AND%20' . $year . ':[agreement_end_year%20TO%20*])';
     }
-    // Update vendor name to vendor code to include code in auto complete
-    if ($solr_field == 'vendor_name') {
-      $solr_field = 'vendor_name_code';
-      $query = "select/?q=vendor_name_code_autocomplete:" . $search_term
-        . "&facet.field=".$solr_field. $facetquery
-        . "&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=phps";
-    } else {
-      $query = "select/?q=" . $solr_field . ":" . $search_term
+
+    $query = "select/?q=" . $solr_field . ":" . $search_term
         . "&facet.field=" . $solr_field . $facetquery
         . "&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=phps";
-    }
+
     //LogHelper::log_debug($query);
     //LogHelper::log_debug($solr_field);
     $matches = _checkbook_autocomplete_solr_results('nycha', $query, $solr_field);
@@ -462,11 +456,17 @@ function _checkbook_autocomplete_datafeeds_nycha_contracts($solr_field, $purchas
  *   Minority type id
  * @param int $industry
  *   Industry type id
+ *  @param int $agg_type
+ *   agreement type code for NYCHA
+ *  @param int $resp_center
+ *   responsibility center code for NYCHA
+ *  @param int $fund_src
+ *   funding source code for NYCHA
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  * @return array
  */
-function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NULL, $agency = NULL, $expense_category = NULL, $dept = NULL, $exptype = NULL, $mwbe_category = NULL, $industry = NULL,$agg_type = NULL, $data_source = Datasource::CITYWIDE)
+function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NULL, $agency = NULL, $expense_category = NULL, $dept = NULL, $exptype = NULL, $mwbe_category = NULL, $industry = NULL,$agg_type = NULL,$resp_center = NULL , $fund_src = NULL, $data_source = Datasource::CITYWIDE)
 {
   if ($year) {
     $query .= _checkbook_autocomplete_get_start_end_dates($year, 'spending');
@@ -492,6 +492,12 @@ function _get_spending_datafeeds_autocomplete_results($facet, $query, $year = NU
   }
   if ($agg_type && $data_source == Datasource::NYCHA ) {
     $query .= '&fq=agreement_type_code:' . $agg_type;
+  }
+  if ($resp_center && $data_source == Datasource::NYCHA ) {
+    $query .= '&fq=responsibility_center_code:' . $resp_center;
+  }
+  if ($fund_src && $data_source == Datasource::NYCHA ) {
+    $query .= '&fq=funding_source_number:' . $fund_src;
   }
   $matches = _checkbook_autocomplete_solr_results($data_source, $query, $facet);
   return $matches;
@@ -522,10 +528,12 @@ function _ckbk_solr_get_all_options($data_source, $domain, $facet)
  *   Minority type id
  * @param int $industry
  *   Industry type id
+ * *  @param int $agg_type
+ *   agreement type code for NYCHA
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_payee($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = Datasource::CITYWIDE)
+function _checkbook_autocomplete_spending_payee($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $agg_type,$resp_center,$fund_src, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $dept = _emptyToZero(urldecode($dept));
@@ -533,17 +541,17 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expense_categor
 
   if (!empty($search_term)) {
     switch ($data_source) {
-      case Datasource::CITYWIDE:
+      /*case Datasource::CITYWIDE:
         $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:spending&wt=phps&facet.limit=10';
-        $matches = _get_spending_datafeeds_autocomplete_results('vendor_name_code', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
-        break;
+        $matches = _get_spending_datafeeds_autocomplete_results('vendor_name_code', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type, $data_source);
+        break;*/
       case Datasource::OGE:
         $query = 'select/?q=vendor_name_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:spending&wt=phps&facet.limit=10';
-        $matches = _get_spending_datafeeds_autocomplete_results('vendor_name', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
+        $matches = _get_spending_datafeeds_autocomplete_results('vendor_name', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type,$resp_center,$fund_src, $data_source);
         break;
-      case Datasource::NYCHA:
+      default:
         $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:spending&wt=phps&facet.limit=10';
-        $matches = _get_spending_datafeeds_autocomplete_results('vendor_name_code', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
+        $matches = _get_spending_datafeeds_autocomplete_results('vendor_name_code', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type,$resp_center,$fund_src, $data_source);
         break;
     }
     drupal_json_output($matches);
@@ -567,17 +575,19 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expense_categor
  *   Minority type id
  * @param int $industry
  *   Industry type id
+ * @param int $agg_type
+ *   agreement type code for NYCHA
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_contractno($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry,$agg_type,$data_source = Datasource::CITYWIDE)
+function _checkbook_autocomplete_spending_contractno($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry,$agg_type,$resp_center,$fund_src,$data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $dept = _emptyToZero(urldecode($dept));
   $expense_category = _emptyToZero(urldecode($expense_category));
   if (!empty($search_term)) {
     $query = 'select/?q=contract_number:' . $search_term . '&facet=true&facet.field=contract_number&fq=domain:spending&facet.limit=10&wt=phps';
-    $matches = _get_spending_datafeeds_autocomplete_results('contract_number', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type, $data_source);
+    $matches = _get_spending_datafeeds_autocomplete_results('contract_number', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type,$resp_center,$fund_src, $data_source);
     drupal_json_output($matches);
   }
 }
@@ -599,17 +609,19 @@ function _checkbook_autocomplete_spending_contractno($year, $agency, $expense_ca
  *   Minority type id
  * @param int $industry
  *   Industry type id
+ * @param int $agg_type
+ *   agreement type code for NYCHA
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = Datasource::CITYWIDE)
+function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry,$agg_type,$resp_center,$fund_src, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $dept = _emptyToZero(urldecode($dept));
   $expense_category = _emptyToZero(urldecode($expense_category));
   if (!empty($search_term)) {
     $query = 'select/?q=reporting_code_autocomplete:' . $search_term . '&facet=true&facet.field=reporting_code&fq=domain:spending&facet.limit=10&wt=phps';
-    $matches = _get_spending_datafeeds_autocomplete_results('reporting_code', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
+    $matches = _get_spending_datafeeds_autocomplete_results('reporting_code', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type,$resp_center,$fund_src, $data_source);
     drupal_json_output($matches);
   }
 }
@@ -631,10 +643,12 @@ function _checkbook_autocomplete_spending_capitalproject($year, $agency, $expens
  *   Minority type id
  * @param int $industry
  *   Industry type id
+ * @param int $agg_type
+ *   agreement type code for NYCHA
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_documentid($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = Datasource::CITYWIDE)
+function _checkbook_autocomplete_spending_documentid($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry,$agg_type,$resp_center,$fund_src, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $dept = _emptyToZero(urldecode($dept));
@@ -642,7 +656,7 @@ function _checkbook_autocomplete_spending_documentid($year, $agency, $expense_ca
   if (!empty($search_term)) {
     $query = 'select/?q=document_id:' . $search_term . '&facet=true&facet.field=document_id&fq=domain:spending&facet.limit=10&wt=phps';
     $matches = _get_spending_datafeeds_autocomplete_results('document_id', $query, $year, $agency,
-      $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
+      $expense_category, $dept, $exptype, $mwbe_category, $industry, $agg_type,$resp_center,$fund_src,$data_source);
     drupal_json_output($matches);
   }
 }
@@ -664,17 +678,19 @@ function _checkbook_autocomplete_spending_documentid($year, $agency, $expense_ca
  *   Minority type id
  * @param int $industry
  *   Industry type id
+ *  @param int $agg_type
+ *   agreement type code for NYCHA
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_entitycontractnum($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = Datasource::CITYWIDE)
+function _checkbook_autocomplete_spending_entitycontractnum($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry,$agg_type,$resp_center,$fund_src, $data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $dept = _emptyToZero(urldecode($dept));
   $expense_category = _emptyToZero(urldecode($expense_category));
   if (!empty($search_term)) {
     $query = 'select/?q=spending_entity_contract_number:' . $search_term . '&facet=true&facet.field=spending_entity_contract_number&fq=domain:spending&facet.limit=10&wt=phps';
-    $matches = _get_spending_datafeeds_autocomplete_results('spending_entity_contract_number', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
+    $matches = _get_spending_datafeeds_autocomplete_results('spending_entity_contract_number', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type,$resp_center,$fund_src, $data_source);
     drupal_json_output($matches);
   }
 }
@@ -696,17 +712,19 @@ function _checkbook_autocomplete_spending_entitycontractnum($year, $agency, $exp
  *   Minority type id
  * @param int $industry
  *   Industry type id
+ *  @param int $agg_type
+ *   agreement type code for NYCHA
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_commodityline($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = Datasource::CITYWIDE)
+function _checkbook_autocomplete_spending_commodityline($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry,$agg_type,$resp_center,$fund_src,$data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $dept = _emptyToZero(urldecode($dept));
   $expense_category = _emptyToZero(urldecode($expense_category));
   if (!empty($search_term)) {
     $query = 'select/?q=spending_commodity_line:' . $search_term . '&facet=true&facet.field=spending_commodity_line&fq=domain:spending&facet.limit=10&wt=phps';
-    $matches = _get_spending_datafeeds_autocomplete_results('spending_commodity_line', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
+    $matches = _get_spending_datafeeds_autocomplete_results('spending_commodity_line', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $agg_type,$resp_center,$fund_src,$data_source);
     drupal_json_output($matches);
   }
 }
@@ -728,17 +746,19 @@ function _checkbook_autocomplete_spending_commodityline($year, $agency, $expense
  *   Minority type id
  * @param int $industry
  *   Industry type id
+ *  @param int $agg_type
+ *   agreement type code for NYCHA
  * @param string $data_source
  *   Data source (checkbook, checkbook_oge)
  */
-function _checkbook_autocomplete_spending_budgetname($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry, $data_source = Datasource::CITYWIDE)
+function _checkbook_autocomplete_spending_budgetname($year, $agency, $expense_category, $dept, $exptype = 0, $mwbe_category = 0, $industry,$agg_type,$resp_center,$fund_src,$data_source = Datasource::CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   $dept = _emptyToZero(urldecode($dept));
   $expense_category = _emptyToZero(urldecode($expense_category));
   if (!empty($search_term)) {
     $query = 'select/?q=spending_budget_name_autocomplete:' . $search_term . '&facet=true&facet.field=spending_budget_name&fq=domain:spending&facet.limit=10&wt=phps';
-    $matches = _get_spending_datafeeds_autocomplete_results('spending_budget_name', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $data_source);
+    $matches = _get_spending_datafeeds_autocomplete_results('spending_budget_name', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry, $agg_type,$resp_center,$fund_src, $data_source);
     drupal_json_output($matches);
   }
 }
@@ -1018,8 +1038,9 @@ function _checkbook_autocomplete_budget_expcategory($agency, $budget_code, $dept
  * @param $expense_category
  * @param $budget_code
  * @param $year
+ * @param $solr_datasource
  */
-function _checkbook_autocomplete_budget_budgetcode($agency, $dept, $expense_category, $budget_code, $year)
+function _checkbook_autocomplete_budget_budgetcode($agency, $dept, $expense_category, $budget_code, $year, $solr_datasource = Datasource::SOLR_CITYWIDE)
 {
   $search_term = _get_autocomplete_search_term();
   if (!empty($search_term)) {
@@ -1356,24 +1377,17 @@ function _checkbook_autocomplete_get_start_end_dates($year, $domain = NULL, $sta
     if ($status == 'A') {
       if (strtolower($year_type) == 'fy') {
         $query .= 'fiscal_year_id:' . $year_id;
-      } elseif (strtolower($year_type) == 'cy') {
-        $start_date = ($year_value) . "-12-31T23:59:59.999Z";
-        $end_date = ($year_value) . "-01-01T00:00:00.999Z";
-        $query .= '(start_date:[*%20TO%20' . $start_date . ']%20AND%20end_date:[' . $end_date . '%20TO%20*])';
       }
     } else {
       if ($status == 'R') {
         if (strtolower($year_type) == 'fy') {
           $query .= 'registered_fiscal_year_id:' . $year_id;
-        } elseif (strtolower($year_type) == 'cy') {
-          $start_date = ($year_value) . "-01-01T00:00:00.999Z";
-          $end_date = ($year_value) . "-12-31T23:59:59.999Z";
-          $query .= '(registration_date:[' . $start_date . '%20TO%20' . $end_date . '])';
         }
       }
     }
   }
-  $query = '&fq=(' . $query . ')';
+  $query = (strlen($query) > 0) ? '&fq=(' . $query . ')' : $query;
+
   return $query;
 }
 

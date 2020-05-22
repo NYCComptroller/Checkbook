@@ -91,7 +91,8 @@ echo eval($node->widgetConfig->header);
     <p>In Fiscal Year 2014 ECF received $7 million in income for option for E. 57th development to extend lease beyond 99 years.</p>
     <p>Operating Expenses exclude Post Employment Benefits accrual.</p>
     <p>Principal in Fiscal Year 2016 does not include the redemption amount  of the 2005 bonds on October 1, 2015.</p>
-    <p>In FY 2017 ECF received a $10 million Participation payment from E57th Street initial condo sales by the developer.</p>
+    <p>In FY 2017 and FY 2018, ECF received participation payments from E. 57th Street condo sales by the developer of $10 million and $18.7 million, respectively.</p>
+    <p>Principal in FY 2019 does not include redemption amount of the 2007 bonds in october 2018.</p>
     <br/>
     <p>Source: New York City Educational Construction Fund</p>
 </div>

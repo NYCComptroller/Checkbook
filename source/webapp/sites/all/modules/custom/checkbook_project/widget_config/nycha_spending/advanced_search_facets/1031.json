@@ -21,6 +21,7 @@
   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
 }
 $adjustedParameters['vendor_name.vendor_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+$adjustedParameters['vendor_customer_code.vendor_customer_code'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 return $adjustedParameters;
 ",
 "template":"individual_filter"

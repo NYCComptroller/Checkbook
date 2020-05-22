@@ -50,10 +50,18 @@
 <?php
 foreach ($facets_render??[] as $facet_name => $facet) {
 
-  // skipping children (sub facets)
-  if ($facet->child??false){
-    continue;
-  }
+    // skipping children (sub facets)
+    if ($facet->child??false){
+      continue;
+    }
+
+    $selected_facet_results['contract_status'] = is_array($selected_facet_results['contract_status']) ? $selected_facet_results['contract_status'] : [];
+    if(in_array('registered', $selected_facet_results['contract_status']) && strtolower($facet_name) == 'facet_year_array'){
+      continue;
+    }
+    if(!in_array('registered', $selected_facet_results['contract_status']) && strtolower($facet_name) == 'registered_fiscal_year'){
+      continue;
+    }
 
     $span='';
     $display_facet = 'none';
@@ -62,6 +70,13 @@ foreach ($facets_render??[] as $facet_name => $facet) {
     if ($facet->selected || in_array($facet_name,['domain'])) {
       $span = 'open';
       $display_facet = 'block';
+      if($solr_datasource == Datasource::SOLR_NYCHA){
+        foreach($facet->results as $facet_value => $count){
+          if(strtolower($facet_value) == 'budget'){
+            unset($facet->results[$facet_value]);
+          }
+        }
+      }
     }
 
     echo '<div class="filter-content-' . $facet_name . ' filter-content">';
@@ -132,6 +147,18 @@ END;
           $sub_facet_name = $child;
           echo '<ul class="sub-category">';
           echo '<div class="subcat-filter-title">By '.htmlentities($sub_facet->title).'</div>';
+          //Set Active and Registered Contracts Counts
+          if($sub_facet_name == 'contract_status'){
+            unset($sub_facet->results['registered']);
+            unset($sub_facet->results['active']);
+            if($registered_contracts > 0 ) {
+              $sub_facet->results['registered'] = $registered_contracts;
+            }
+            if($active_contracts > 0) {
+              $sub_facet->results['active'] = $active_contracts;
+            }
+          }
+
           foreach($sub_facet->results as $sub_facet_value => $sub_count){
 
             $facet_result_title = $sub_facet_value;
@@ -144,15 +171,21 @@ END;
             echo '<li class="row">';
             echo "<label for=\"{$id}\">";
             echo '<div class="checkbox">';
-
             $checked = '';
             if ($sub_facet->selected) {
               $checked = in_array($sub_facet_value, $sub_facet->selected);
-              $checked = $checked ? ' checked="checked" ' : '';
-              $active = $checked ? ' class="active" ' : '';
             }
-            echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$sub_facet_name.'" value="'.
-              htmlentities(urlencode($sub_facet_value)).'" />';
+
+            $checked = $checked ? ' checked="checked" ' : '';
+            $active = $checked ? ' class="active" ' : '';
+
+            if(isset($sub_facet->input) && $sub_facet->input == 'radio'){
+              echo '<input type="radio" name="' . htmlentities($sub_facet->title) . '" ' . 'id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
+              htmlentities(urlencode($sub_facet_value)) . '" />';
+            }else{
+              echo '<input type="checkbox" id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
+                htmlentities(urlencode($sub_facet_value)) . '" />';
+            }
             echo "<label for=\"{$id}\" />";
             echo '</div>';
 

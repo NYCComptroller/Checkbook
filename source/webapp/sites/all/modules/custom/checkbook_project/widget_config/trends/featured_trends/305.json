@@ -182,6 +182,7 @@ jQuery('#property-tax-filter .chartdateto').val(Highcharts.dateFormat('%Y',axis.
 }
 ],
 "yAxis": {
+            "opposite":false,
             "lineWidth": 1,
             "gridLineWidth": 0,
             "startOnTick": true,

@@ -195,7 +195,7 @@ class CheckbookSolr
       return $result;
     }
 
-    $url = $this->solr_url . $query;
+    $url = $this->solr_url . $query;log_error($url);
 
     if ($cached = $this->cached($query)) {
       LogHelper::log_notice("Cache hit: " . $url);

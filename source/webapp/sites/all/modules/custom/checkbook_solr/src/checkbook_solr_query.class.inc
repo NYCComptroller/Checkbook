@@ -371,11 +371,12 @@ class CheckbookSolrQuery
     /**
      * DO NOT CHANGE ORDER, BACKSLASH MUST BE FIRST
      */
-    $escape_chars = explode(' ', '\\ + - & | ! ( ) { } [ ] ^ " ~ * ? : /');
+    $escape_chars = ['\\', '.', '^', '$', '*', '+', '(', ')', '[', ']', '{', '}', '-', '&', '', '|', '!', '"', '?', ':', '/'];
     $replace_to = [];
     foreach ($escape_chars as $char) {
       $replace_to[] = "\\" . $char;
     }
+
     $return = str_replace($escape_chars, $replace_to, $string);
     $return = urlencode(strtolower($return));
 
@@ -479,20 +480,23 @@ class CheckbookSolrQuery
    */
   public function setFqAutocompleteTerm(string $facet, string $term): CheckbookSolrQuery
   {
-    $term = htmlspecialchars_decode($term);
+    $term = htmlspecialchars_decode($term, ENT_QUOTES);
     $this->mapParam($facet);
-    $autocompleteFacet = $this->autocompleteMapping[$facet] ?? $facet;
+    $autoCompleteFacet = $this->autocompleteMapping[$facet] ?? $facet;
 
     unset($this->fq[$facet]);
-    unset($this->fq[$autocompleteFacet]);
-
-    $facetValue = '*';
-    if ($term) {
-      $terms = explode(' ', $term);
-      $term = join('*%20AND%20', $terms);
-      $facetValue = "($term*)";
+    unset($this->fq[$autoCompleteFacet]);
+    $terms = explode(' ', $term);
+    $autoCompleteText = '*';
+    if (count($terms) > 0) {
+      foreach($terms as $value){
+        $autoCompleteText = self::escape($value)."*%20AND%20";
+      }
+      $autoCompleteText = "(". substr($autoCompleteText, 0, -9) . ")";
+    }else{
+      $autoCompleteText = self::escape($autoCompleteText)."*";
     }
-    $this->setFq($facet, $autocompleteFacet . ':' . $facetValue);
+    $this->setFq($facet, $autoCompleteFacet . ':' . $autoCompleteText);
 
     $this->addFacet($facet);
 
