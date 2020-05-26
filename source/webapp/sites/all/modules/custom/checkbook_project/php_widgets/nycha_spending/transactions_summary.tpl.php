@@ -127,7 +127,7 @@ if(isset($url)) {
     // if ($tcode == 'VO' || $tcode == 'AWD' || $tcode == 'DEP'|| $tcode == 'IND'|| $tcode == 'RESC' || $tcode == 'SZ') {
     else{ $tcode_title = NYCHAContractUtil::getTitleByCode($tcode);
       if ( $tcode == 'VO'){ $inv_contractName = $inv_contractDetails['vendor_name']; $tcode_title = 'Vendor';}
-      if ( $tcode == 'AWD'){ $inv_contractName = $inv_contractDetails['award_method_name'];}
+      if ( $tcode == 'AWD'){ $inv_contractName = $inv_contractDetails['award_method_name']; $tcode_title = 'Award Method';}
       if ( $tcode == 'DEP'){ $inv_contractName = $inv_contractDetails['department_name']; $tcode_title = 'Department';}
       if ( $tcode == 'IND'){ $inv_contractName = $inv_contractDetails['display_industry_type_name']; $tcode_title = 'Contracts by Industry';}
       if ( $tcode == 'RESC'){ $inv_contractName = $inv_contractDetails['responsibility_center_descr']; $tcode_title = 'Responsibility Center';}
