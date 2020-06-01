@@ -2131,7 +2131,7 @@ function _checkbook_get_datasource(){
     return 'nycha';
   }
 
-  if (strpos($url, 'agency/9000') || strpos($url, '/edc')) {
+  if (strpos($url, 'agency/9000') || strpos($url, '/edc') || strpos($url, '/checkbook_oge')) {
     return 'edc';
   }
 
