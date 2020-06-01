@@ -40,6 +40,9 @@
           }
         }
         $('#edit-dept').html(html);
+          if(dept_hidden) {
+            $('#edit-dept').val(dept_hidden);
+          }
         }, complete: function () {
           enable_input($('#edit-dept'));
           $('#edit-dept').removeClass('loading');
@@ -91,6 +94,9 @@
             }
           }
           $('#edit-expense-category').html(html);
+          if (expense_category_hidden) {
+            $('#edit-expense-category').val(expense_category_hidden);
+          }
         }, complete: function () {
           enable_input($('#edit-expense-category'));
           $('#edit-expense-category').removeClass('loading');
