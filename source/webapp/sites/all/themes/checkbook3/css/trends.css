@@ -46,7 +46,7 @@ body.page-featured-trends .highcharts-border{
 .featured-trends-filter {
     position: absolute;
     right: 0;
-    top: 37px;
+    top: 15px;
     z-index: 1;
 }
 .featured-trends-filter .filter-container {
