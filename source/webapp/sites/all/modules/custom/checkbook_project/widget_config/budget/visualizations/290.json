@@ -38,17 +38,16 @@
   },
   "cleanURLParameters":[
     "year",
-    "agency"
+    "agency",
+    "dept"
   ],
   "urlParamMap":{
     "year":"year_id.year_id",
-    "agency":"agency_id.agency_id"
+    "agency":"agency_id.agency_id",
+    "dept":"dept_code.dept_code"
   },
   "transformationPHP":"
-  $landing_page =  '/' .  current_path()  ;
-
-
-
+  $landing_page =  '/' .  current_path() ;
   $allZero = TRUE;
   foreach ($node->data as $row) {
     if (abs($row['budget_committed']) > 0){$allZero = FALSE;}
