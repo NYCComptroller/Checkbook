@@ -21,7 +21,7 @@
   "allowRequestParams":["widget"],
   "defaultParameters":{"budget_fiscal_year_id":119},
   "noDataInitialLoad":true,
-  "dataset": "checkbook_nycha:budget_percent_difference",
+  "dataset": "checkbook_nycha:budget_percent_difference_expcat",
   "useList":true,
   "queryAlterFunction":"return NychaBudgetUtil::alterPercentDifferenceQuery($query);",
   "columns": [
