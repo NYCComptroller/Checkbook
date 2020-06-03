@@ -782,25 +782,33 @@ function load_widget_data($node, $resultFormatter) {
             //log_debug($joinedRecords);
         } else {
             if(!isset($node->widgetConfig->getData) || (isset($node->widgetConfig->getData) && $node->widgetConfig->getData)){
+              //Alter Query - For now, this configuration is compatible only for widgets without facets
+              if(isset($node->widgetConfig->queryAlterFunction)){
+                $query = widget_get_db_query($isList, $datasetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
+                $alterFunction = $node->widgetConfig->queryAlterFunction;
+                $query = eval($alterFunction);
+                $node->data = _checkbook_project_execute_sql_by_data_source($query,_get_current_datasource());
+              }else {
                 $node->data = $isList
-                    ? $dataQueryController->queryDataset(
-                            $datasetName,
-                            $columns, $parameters, $orderBy,
-                            $startWith, $limit,
-                            $resultFormatter)
-                    : $dataQueryController->queryCube(
-                            $datasetName,
-                            $columns, $parameters, $orderBy,
-                            $startWith, $limit,
-                            $resultFormatter);
-                $node->nodeAdjustedParamaterConfig = $parameters;
+                  ? $dataQueryController->queryDataset(
+                    $datasetName,
+                    $columns, $parameters, $orderBy,
+                    $startWith, $limit,
+                    $resultFormatter)
+                  : $dataQueryController->queryCube(
+                    $datasetName,
+                    $columns, $parameters, $orderBy,
+                    $startWith, $limit,
+                    $resultFormatter);
+              }
+              $node->nodeAdjustedParamaterConfig = $parameters;
             }
           if ($config->getTotalDataCount) {
               LogHelper::log_info('Count for node # '.$node->nid);
               /**
                * Added config setting in the widget json, if set, the count will only consider distinct columns
                */
-              if(isset($node->widgetConfig->totalDataColumnConfig)) {
+              if(isset($node->widgetConfig->totalDataColumnConfig) || isset($node->widgetConfig->queryAlterFunction)) {
 
                   $distinctColumnArray = array();
                   $distinctMappedColumnsArray  = array();
@@ -824,17 +832,23 @@ function load_widget_data($node, $resultFormatter) {
                       }
                   }
 
-                  $sql = widget_get_count_db_query($isList, $datasetName, $distinctColumns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
-                  $replace_string = "(SELECT ";
-                  $sql = substr_replace($sql,$replace_string."DISTINCT ",strpos($sql,$replace_string),strlen($replace_string));
+                  $query = widget_get_count_db_query($isList, $datasetName, $distinctColumns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
+                  //Alter Query - For now, this configuration is compatible only for widgets without facets
+                  if(isset($node->widgetConfig->queryAlterFunction)) {
+                    $alterFunction = $node->widgetConfig->queryAlterFunction;
+                    $query = eval($alterFunction);
+                  }else{
+                    $replace_string = "(SELECT ";
+                    $query = substr_replace($query, $replace_string . "DISTINCT ", strpos($query, $replace_string), strlen($replace_string));
+                  }
 
-//                  log_info('AFTER***: ' . $sql);
-                  $results = _checkbook_project_execute_sql_by_data_source($sql,_get_current_datasource());
+                  $results = _checkbook_project_execute_sql_by_data_source($query,_get_current_datasource());
                   $node->totalDataCount = $results[0]['record_count'];
-              } else {$node->totalDataCount = $isList
-                  ? $dataQueryController->countDatasetRecords(
-                      $datasetName,$parameters)
-                  : $dataQueryController->countCubeRecords(
+              } else {
+                  $node->totalDataCount = $isList
+                    ? $dataQueryController->countDatasetRecords(
+                      $datasetName, $parameters)
+                    : $dataQueryController->countCubeRecords(
                       $datasetName,
                       $columns, $parameters,
                       $resultFormatter);
@@ -891,7 +905,6 @@ function widget_get_count_db_query($isList, $dataSetName, $columns = NULL, $para
         StatementLogMessageKeeper::reset();
 
         $controller = data_controller_get_instance();
-
         if($isList){
             $controller->countDatasetRecords($dataSetName,$parameters);
         }else{
@@ -942,8 +955,6 @@ function widget_get_db_query($isList, $dataSetName, $columns = NULL, $parameters
 
 function widget_data(&$node) {
 
-	//drupal_set_message('<pre>$$$node->data'. print_r($node->data, TRUE) . '</pre>');
-	//drupal_set_message('<pre>$$$node->widgetConfig'. print_r($node->widgetConfig, TRUE) . '</pre>');
     $resultFormatter = new SpecialCharacterResultFormatter(NULL,new ArrayResultFormatter());
     if($node->widgetConfig->exportData){
         //During data export we do not want to escape data.
@@ -1041,188 +1052,6 @@ function calculateDerivedCell($row, $fulldata, $derivedColumnDefinition,$node) {
     $derivedColumnDefinition->type = 'default';
   }
 	switch($derivedColumnDefinition->type) {
-//		case "percentOfColumn":
-//			$sourceColumn = $derivedColumnDefinition->sourceColumn;
-//			$totalForColumn = calculateTotalOfColumn($fulldata, $sourceColumn);
-//			$result = 100*($row[$sourceColumn]/$totalForColumn);
-//			if (isset($derivedColumnDefinition->decimals)) {
-//				$result = number_format($result, $derivedColumnDefinition->decimals);
-//			}
-//			return $result;
-//			break;
-//		case "isAnyRowNotNull":
-//			$sourceColumn = $derivedColumnDefinition->sourceColumn;
-//			$allRowsAreNull = isAnyRowNotNull($fulldata, $sourceColumn);
-//			return $allRowsAreNull;
-//			break;
-//		case "expression":
-//			$expression = $derivedColumnDefinition->expression;
-//			eval("\$result = \"$expression\";");
-//			return $result;
-//			break;
-//		case "fiscalYearWithQuarter":
-//			$dateCol = $derivedColumnDefinition->sourceColumn;
-//			$dateValues = date_parse($row[$dateCol]);
-//			$year = $dateValues['year'];
-//			$month = $dateValues['month'];
-//			if ($year > 2000) {
-//				$year = $year - 2000;
-//			} else {
-//				$year = $year - 1900;
-//			}
-//			if ($month <=3) {
-//				$result = 'FY'.$year.' Q2';
-//			} else if ($month <= 6) {
-//				$result = 'FY'.$year.' Q3';
-//			} else if ($month <= 9) {
-//				$result = 'FY'.$year.' Q4';
-//			} else {
-//				$year = $year + 1;
-//				$result = 'FY'.$year.' Q1';
-//			}
-//			return $result;
-//			break;
-//		case "trimdayandmonth":
-//			$dateCol = $derivedColumnDefinition->sourceColumn;
-//			$dateValues = date_parse($row[$dateCol]);
-//			$year = $dateValues['year'];
-//			return '01/01/'. $year;
-//			break;
-//		case "valueInMillions":
-//			$expression = $derivedColumnDefinition->expression;
-//			$result = round($row[$expression]/1000000, 2);
-//			return $result;
-//			break;
-//		case "valueInBillions":
-//			$expression = $derivedColumnDefinition->expression;
-//			$result = round($row[$expression]/1000000000, 1);
-//			return $result;
-//			break;
-//		case "fractionAsPercent":
-//			$expression = $derivedColumnDefinition->number;
-//			$result = $row[$expression]*100;
-//			return $result;
-//			break;
-//		case "number_format":
-//			$number = $derivedColumnDefinition->number;
-//			if (!isset($derivedColumnDefinition->decimals))
-//			$decimals = 0;
-//			else
-//			$decimals = $derivedColumnDefinition->decimals;
-//
-//			if (!isset($derivedColumnDefinition->dec_point))
-//			$dec_point = '.';
-//			else
-//			$dec_point = $derivedColumnDefinition->dec_point;
-//
-//			if (!isset($derivedColumnDefinition->thousands_sep))
-//			$thousands_sep = ',';
-//			else
-//			$thousands_sep = $derivedColumnDefinition->thousands_sep;
-//
-//			$result = number_format($row[$number], $decimals, $dec_point, $thousands_sep);
-//			return $result;
-//			break;
-//		case "sum_columns":
-//			$colArray = $derivedColumnDefinition->columns;
-//			$result = 0.0;
-//			foreach ($colArray as $colName) {
-//				$result += $row[$colName];
-//			}
-//			return $result;
-//			break;
-//		case "difference_of_columns":
-//			$colA = $row[$derivedColumnDefinition->colA];
-//			$colB = $row[$derivedColumnDefinition->colB];
-//			$result = $colA - $colB;
-//			return $result;
-//			break;
-//		case "percent_of_two_columns":
-//			$numerator = $derivedColumnDefinition->numerator;
-//			$denominator = $derivedColumnDefinition->denominator;
-//			$denominatorVal = $row[$denominator];
-//			if ($denominatorVal != 0) {
-//				$result = 100*($row[$numerator]/$denominatorVal);
-//			}
-//			else {
-//				$result = 0;
-//			}
-//			return $result;
-//			break;
-//		case "big_money_format":
-//			//assumes number is already in millions
-//			$numberCol = $derivedColumnDefinition->number;
-//			$number = $row[$numberCol];
-//			$suffix = "M";
-//			if ($number > 1000) {
-//				$number = $number/1000;
-//				$suffix = "B";
-//			}
-//			$number_formatted = number_format($number, 2);
-//			$result = "$" . $number_formatted . " " . $suffix;
-//			return $result;
-//			break;
-//		case "null_check":
-//			$checkColumn = $derivedColumnDefinition->checkColumn;
-//			$ifNullColumn = $derivedColumnDefinition->ifNullColumn;
-//			$ifNotNullColumn = $derivedColumnDefinition->ifNotNullColumn;
-//			if ($row[$checkColumn] == NULL) {
-//				$result = $row[$ifNullColumn];
-//			}
-//			else {
-//				$result = $row[$ifNotNullColumn];
-//			}
-//			return $result;
-//		case "map_to_category":
-//			$valueCol = $derivedColumnDefinition->column;
-//			$value = $row[$valueCol];
-//			foreach ($derivedColumnDefinition->mapping as $category => $details) {
-//				if ($derivedColumnDefinition->match_type == 'numeric_range') {
-//					$min = $details->min;
-//					$max = $details->max;
-//					//bounded on both sides
-//					if (isset($min) && isset($max)) {
-//						if ($value >= $min && $value <= $max) {
-//							$result = $category;
-//							break;
-//						}
-//					}
-//					else if (isset($min) && !isset($max)) {
-//						if ($value >= $min) {
-//							$result = $category;
-//							break;
-//						}
-//					}
-//					else if (isset($max) && !isset($min)) {
-//						if ($value <= $max) {
-//							$result = $category;
-//							break;
-//						}
-//					}
-//					else {
-//						//default case
-//						$result = $category;
-//						break;
-//					}
-//				}
-//				else if ($derivedColumnDefinition->match_type == 'exact_string') {
-//					$matchString = $details->match_string;
-//					if (isset($matchString)) {
-//						if ($value == $matchString) {
-//							$result = $category;
-//							break;
-//						}
-//					}
-//					else {
-//						//default case
-//						$result = $category;
-//						break;
-//					}
-//				}
-//			}
-//			return $result;
-//			break;
-//    case "expression2":
     default:
       $expression = $derivedColumnDefinition->expression;
       $result = eval("return $expression;");
@@ -1238,16 +1067,6 @@ function calculateTotalOfColumn($fulldata, $columnName) {
 	}
 	return $total;
 }
-
-//function isAnyRowNotNull($fulldata, $columnName) {
-//	$allNull = 0;
-//	foreach ($fulldata as $row) {
-//		if ($row[$columnName] != NULL) {
-//			$allNull = 1;
-//		}
-//	}
-//	return $allNull;
-//}
 
 
 function widget_config($node) {
