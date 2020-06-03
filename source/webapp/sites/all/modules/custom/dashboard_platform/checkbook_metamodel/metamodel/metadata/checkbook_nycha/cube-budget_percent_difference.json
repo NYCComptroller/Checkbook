@@ -2,151 +2,35 @@
   "datasets":{
     "budget_percent_difference":{
       "datasourceName":"main",
-      "source":"aggregateon_budget_by_year"
-    }
-  },
-  "cubes":{
-    "budget_percent_difference":{
-      "sourceDatasetName":"budget_percent_difference",
-      "dimensions":[
-        {
-          "name": "year_id",
-          "levels": [
-            {
-              "name": "year_id",
-              "sourceColumnName": "budget_fiscal_year_id"
-            }
-          ]
-        },
-        {
-          "name": "expenditure_type_name",
-          "levels": [
-            {
-              "name": "expenditure_type_name",
-              "sourceColumnName": "expenditure_type_name"
-            }
-          ]
-        },
-        {
-          "name": "expenditure_type_id",
-          "levels": [
-            {
-              "name": "expenditure_type_id",
-              "sourceColumnName": "expenditure_type_id"
-            }
-          ]
-        },
-        {
-          "name": "exp_budget",
-          "levels": [
-            {
-              "name": "exp_budget",
-              "datasetName":"exp_budget",
-              "sourceColumnName": "expenditure_type_id"
-            }
-          ]
-        },
-        {
-          "name":"funding_source_id",
-          "levels":[
-            {
-              "name":"funding_source_id",
-              "sourceColumnName":"funding_source_id"
-            }
-          ]
-        },
-        {
-          "name":"funding_budget",
-          "levels":[
-            {
-              "name":"funding_budget",
-              "datasetName":"funding_budget",
-              "sourceColumnName":"funding_source_id"
-            }
-          ]
-        },
-        {
-          "name":"responsibility_center_id",
-          "levels":[
-            {
-              "name":"responsibility_center_id",
-              "sourceColumnName":"responsibility_center_id"
-            }
-          ]
-        },
-        {
-          "name":"resp_budget",
-          "levels":[
-            {
-              "name":"resp_budget",
-              "datasetName": "resp_budget",
-              "sourceColumnName":"responsibility_center_id"
-            }
-          ]
-        },
-        {
-          "name":"program_phase_id",
-          "levels":[
-            {
-              "name":"program_phase_id",
-              "sourceColumnName":"program_phase_id"
-            }
-          ]
-        },
-        {
-          "name":"prog_budget",
-          "levels":[
-            {
-              "name":"prog_budget",
-              "datasetName":"prog_budget",
-              "sourceColumnName":"program_phase_id"
-            }
-          ]
-        },
-        {
-          "name":"gl_project_id",
-          "levels":[
-            {
-              "name":"gl_project_id",
-              "sourceColumnName":"gl_project_id"
-            }
-          ]
-        },
-        {
-          "name":"proj_budget",
-          "levels":[
-            {
-              "name":"proj_budget",
-              "datasetName":"proj_budget",
-              "sourceColumnName":"gl_project_id"
-            }
-          ]
-        }
-      ],
-
-      "measures":{
-        "current_amount": {
-          "function": "SUM(COALESCE(modified_budget_amount,0))"
-        },
-        "previous_amount": {
-          "function": "SUM(COALESCE(modified_budget_amount_py_1,0))"
-        },
-        "previous_1_amount": {
-          "function": "SUM(COALESCE(modified_budget_amount_py_2,0))"
-        },
-        "previous_2_amount": {
-          "function": "SUM(COALESCE(modified_budget_amount_py_3,0))"
-        },
-        "percent_difference1": {
-          "function": "CASE SUM(COALESCE(modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_1,0)))/SUM(COALESCE(modified_budget_amount_py_1,0)))*100 END"
-        },
-        "percent_difference2": {
-          "function": "CASE SUM(COALESCE(modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_2,0)))/SUM(COALESCE(modified_budget_amount_py_2,0)))*100 END"
-        },
-        "percent_difference3": {
-          "function": "CASE SUM(COALESCE(modified_budget_amount_py_3,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(modified_budget_amount,0)) - SUM(COALESCE(modified_budget_amount_py_3,0)))/SUM(COALESCE(modified_budget_amount_py_3,0)))*100 END"
-        }
-      }
+      "source":"
+          SELECT
+            a.budget_fiscal_year_id,
+            ma.modified_budget_amount AS current_amount,
+            ma.modified_budget_amount_py_1 AS previous_amount,
+            ma.modified_budget_amount_py_2 AS previous_1_amount,
+            ma.modified_budget_amount_py_3 AS previous_2_amount,
+            b.expenditure_type_description AS expense_category,
+            b.expenditure_type_id,
+            CASE SUM(COALESCE(ma.modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_1,0)))/SUM(COALESCE(ma.modified_budget_amount_py_1,0)))*100 END AS percent_difference1,
+            CASE SUM(COALESCE(ma.modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_2,0)))/SUM(COALESCE(ma.modified_budget_amount_py_2,0)))*100 END AS percent_difference2,
+            CASE SUM(COALESCE(ma.modified_budget_amount_py_3,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_3,0)))/SUM(COALESCE(ma.modified_budget_amount_py_3,0)))*100 END AS percent_difference3
+          FROM aggregateon_budget_by_year a
+          JOIN (
+            SELECT
+              expenditure_type_id,
+              SUM(COALESCE(a.modified_budget_amount,0)) AS modified_budget_amount,
+              SUM(COALESCE(a.modified_budget_amount_py_1,0)) AS modified_budget_amount_py_1,
+              SUM(COALESCE(a.modified_budget_amount_py_2,0)) AS modified_budget_amount_py_2,
+              SUM(COALESCE(a.modified_budget_amount_py_3,0)) AS modified_budget_amount_py_3
+            FROM aggregateon_budget_by_year a
+            WHERE (a.filter_type = 'H')
+            GROUP BY expenditure_type_id
+          ) ma ON ma.expenditure_type_id = a.expenditure_type_id
+          JOIN ref_expenditure_type b ON a.expenditure_type_id = b.expenditure_type_id
+          WHERE (a.filter_type = 'H' AND a.is_active = 1)
+          GROUP BY a.budget_fiscal_year_id, b.expenditure_type_description, b.expenditure_type_id, ma.modified_budget_amount,
+          ma.modified_budget_amount_py_1, ma.modified_budget_amount_py_2, ma.modified_budget_amount_py_3
+      "
     }
   }
 }
