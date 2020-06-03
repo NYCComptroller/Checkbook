@@ -9,14 +9,7 @@
   "html_class": "initiative-table",
   "getTotalDataCount":true,
   "no_results_content":"No Results Found",
-  "cleanURLParameters":[
-    "year",
-    "expcategory",
-    "respcenter",
-    "fundsrc",
-    "program",
-    "project"
-  ],
+  "cleanURLParameters":["year", "expcategory", "respcenter", "fundsrc", "program", "project"],
   "urlParamMap": {
     "year":"budget_fiscal_year_id",
     "expcategory": "expenditure_type_id",
@@ -28,11 +21,13 @@
   "allowRequestParams":["widget"],
   "defaultParameters":{"budget_fiscal_year_id":119},
   "noDataInitialLoad":true,
-  "dataset": "checkbook_nycha:budget_percent_difference",
+  "dataset": "checkbook_nycha:budget_percent_difference_fundsrc",
+  "useList":true,
+  "queryAlterFunction":"return NychaBudgetUtil::alterPercentDifferenceQuery($query);",
   "columns": [
-    "year_id.year_id",
-    "funding_budget.funding_budget.funding_source_description",
-    "funding_budget.funding_budget.funding_source_id",
+    "budget_fiscal_year_id",
+    "funding_source_description",
+    "funding_source_id",
     "percent_difference1",
     "percent_difference2",
     "percent_difference3",
@@ -75,11 +70,6 @@
   $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
 ",
 "adjustParameters":"
-$type_filter = 'H' ;
-$is_active_flag = 1;
-$parameters['filter_type'] = $type_filter;
-$parameters['is_active'] = $is_active_flag;
-$adjustedParameters = $parameters;
 if(function_exists('_checkbook_project_applyParameterFilters')){
 $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
 }
@@ -90,8 +80,8 @@ return $adjustedParameters;
 "expression":"'<a href=\"/nycha_budget'
 ._checkbook_project_get_url_param_string(\"year\")
 ._checkbook_project_get_url_param_string(\"datasource\")
-.'/fundsrc/'.$row['funding_budget_funding_budget_funding_source_id']
-.'\">'.$row['funding_budget_funding_budget_funding_source_description'].'</a>'"
+.'/fundsrc/'.$row['funding_source_id']
+.'\">'.$row['funding_source_description'].'</a>'"
 },
 "current_amount_formatted":{
 "expression":"custom_number_formatter_basic_format($row['current_amount'])"
@@ -119,7 +109,7 @@ return $adjustedParameters;
 {
 "labelAlias": "funding_source",
 "column": "fund_src_link",
-"sortSourceColumn":"funding_budget_funding_budget_funding_source_description"
+"sortSourceColumn":"funding_source_description"
 },
 {
 "labelAlias":"previous_2_modified",
