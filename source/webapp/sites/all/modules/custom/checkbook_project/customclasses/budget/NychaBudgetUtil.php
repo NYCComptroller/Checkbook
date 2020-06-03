@@ -88,4 +88,39 @@ class NychaBudgetUtil{
     return $title;
   }
 
+  /**
+   * @param $query
+   * @return $query - Alteres query
+   */
+  static public function alterPercentDifferenceQuery($query){
+    //Remove the filters at the end for count query
+    if (strpos($query, 'COUNT(*) AS record_count')) {
+      $filters = substr($query, strpos($query, 'WHERE b.'));
+      $urlFilters = str_replace('WHERE ', '', $filters);
+      $urlFilters = ' AND ' . str_replace('b.', 'a.', $urlFilters);
+      $query = str_replace($filters, "", $query);
+    }else {//Remove the filters at the end for Data query
+      $start = "WHERE b.";
+      $end = "ORDER BY";
+      $filters = explode($start, $query);
+      if (isset($filters[1])) {
+        $filters = explode($end, $filters[1]);
+        $urlFilters = str_replace('WHERE ', '', ($filters[0]));
+        $urlFilters = ' AND ' . str_replace('b.', 'a.', $urlFilters);
+        $query = str_replace('WHERE b.'.$filters[0], "", $query);
+      }
+    }
+
+    //Append URL parameters to dataset queries
+    $dataSetFilter1 = "WHERE (a.filter_type = 'H')";
+    $newFilter1 = str_replace(')', $urlFilters . ')', $dataSetFilter1);
+    $query = str_replace($dataSetFilter1, $newFilter1, $query);
+
+    $dataSetFilter2 = "WHERE (a.filter_type = 'H' AND a.is_active = 1)";
+    $newFilter2 = str_replace(')', $urlFilters . ')', $dataSetFilter2);
+    $query = str_replace($dataSetFilter2, $newFilter2, $query);
+
+    return $query;
+  }
+
 }
