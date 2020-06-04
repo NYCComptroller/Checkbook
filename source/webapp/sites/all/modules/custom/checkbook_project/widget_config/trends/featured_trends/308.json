@@ -147,7 +147,12 @@ dataLabelFormatter^^'formatter':function(){
   }
 }##
 numbers^^"setExtremes": function(event){
-  jQuery('#personal-income-filter .chartdatefrom').val(Highcharts.dateFormat('%Y',event.min));
+
+if(Number(Highcharts.dateFormat('%Y',this.chart.xAxis[0].getExtremes().dataMin)) != Number(Highcharts.dateFormat('%Y',event.min))){
+  jQuery('#personal-income-filter .chartdatefrom').val(Number(Highcharts.dateFormat('%Y',event.min)) + 1);
+} else {
+  jQuery('#personal-income-filter .chartdatefrom').val(Number(Highcharts.dateFormat('%Y',event.min)));
+}
   jQuery('#personal-income-filter .chartdateto').val(Highcharts.dateFormat('%Y',event.max));
 }
 </function>
