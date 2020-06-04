@@ -1,0 +1,36 @@
+{
+  "datasets":{
+    "budget_percent_difference_expcat":{
+      "datasourceName":"main",
+      "source":"
+          SELECT
+            a.budget_fiscal_year_id,
+            ma.modified_budget_amount AS current_amount,
+            ma.modified_budget_amount_py_1 AS previous_amount,
+            ma.modified_budget_amount_py_2 AS previous_1_amount,
+            ma.modified_budget_amount_py_3 AS previous_2_amount,
+            b.expenditure_type_description AS expense_category,
+            b.expenditure_type_id,
+            CASE SUM(COALESCE(ma.modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_1,0)))/SUM(COALESCE(ma.modified_budget_amount_py_1,0)))*100 END AS percent_difference1,
+            CASE SUM(COALESCE(ma.modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_2,0)))/SUM(COALESCE(ma.modified_budget_amount_py_2,0)))*100 END AS percent_difference2,
+            CASE SUM(COALESCE(ma.modified_budget_amount_py_3,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_3,0)))/SUM(COALESCE(ma.modified_budget_amount_py_3,0)))*100 END AS percent_difference3
+          FROM aggregateon_budget_by_year a
+          JOIN (
+            SELECT
+              expenditure_type_id,
+              SUM(COALESCE(a.modified_budget_amount,0)) AS modified_budget_amount,
+              SUM(COALESCE(a.modified_budget_amount_py_1,0)) AS modified_budget_amount_py_1,
+              SUM(COALESCE(a.modified_budget_amount_py_2,0)) AS modified_budget_amount_py_2,
+              SUM(COALESCE(a.modified_budget_amount_py_3,0)) AS modified_budget_amount_py_3
+            FROM aggregateon_budget_by_year a
+            WHERE (a.filter_type = 'H')
+            GROUP BY expenditure_type_id
+          ) ma ON ma.expenditure_type_id = a.expenditure_type_id
+          JOIN ref_expenditure_type b ON a.expenditure_type_id = b.expenditure_type_id
+          WHERE (a.filter_type = 'H' AND a.is_active = 1)
+          GROUP BY a.budget_fiscal_year_id, b.expenditure_type_description, b.expenditure_type_id, ma.modified_budget_amount,
+          ma.modified_budget_amount_py_1, ma.modified_budget_amount_py_2, ma.modified_budget_amount_py_3
+      "
+    }
+  }
+}
