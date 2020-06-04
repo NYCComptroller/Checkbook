@@ -48,6 +48,15 @@
                                 }
                     ]
                 },
+              {
+                "name": "daily_wage",
+                "levels": [
+                  {
+                    "name": "daily_wage",
+                    "sourceColumnName": "daily_wage"
+                  }
+                ]
+              },
                 {
                     "name": "employment_type",
                     "levels": [
