@@ -69,6 +69,8 @@ foreach ($node->data as $row){
 if (abs($row['revenue_recognized_amount']) > 0){$allZero = FALSE;}
 if (abs($row['revenue_funds_available']) > 0){$allZero = FALSE;}
 $categories[] = $row['year_year'];
+$url_committed = null;
+$url_remaining = null;
 $recognized_data[] = array('y' => $row['revenue_recognized_amount'], 'url' => $url_committed);
 $remaining_data[] = array('y' => $row['revenue_funds_available'], 'url' => $url_remaining);
 }
