@@ -28,11 +28,13 @@
   "allowRequestParams":["widget"],
   "defaultParameters":{"budget_fiscal_year_id":119},
   "noDataInitialLoad":true,
-  "dataset": "checkbook_nycha:budget_percent_difference",
+  "dataset": "checkbook_nycha:budget_percent_difference_respcenter",
+  "useList":true,
+  "queryAlterFunction":"return NychaBudgetUtil::alterPercentDifferenceQuery($query);",
   "columns": [
-    "year_id.year_id",
-    "resp_budget.resp_budget.responsibility_center_description",
-    "resp_budget.resp_budget.responsibility_center_id",
+    "budget_fiscal_year_id",
+    "responsibility_center_description",
+    "responsibility_center_id",
     "percent_difference1",
     "percent_difference2",
     "percent_difference3",
@@ -75,11 +77,6 @@
   $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);
 ",
 "adjustParameters":"
-  $type_filter = 'H' ;
-  $is_active_flag = 1;
-  $parameters['filter_type'] = $type_filter;
-  $parameters['is_active'] = $is_active_flag;
-  $adjustedParameters = $parameters;
   if(function_exists('_checkbook_project_applyParameterFilters')){
   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
   }
@@ -90,8 +87,8 @@
 "expression":"'<a href=\"/nycha_budget'
 ._checkbook_project_get_url_param_string(\"year\")
 ._checkbook_project_get_url_param_string(\"datasource\")
-.'/respcenter/'.$row['resp_budget_resp_budget_responsibility_center_id']
-.'\">'.$row['resp_budget_resp_budget_responsibility_center_description'].'</a>'"
+.'/respcenter/'.$row['responsibility_center_id']
+.'\">'.$row['responsibility_center_description'].'</a>'"
 },
 "current_amount_formatted":{
 "expression":"custom_number_formatter_basic_format($row['current_amount'])"
@@ -119,7 +116,7 @@
 {
 "labelAlias": "responsibility_center",
 "column": "resp_center_link",
-"sortSourceColumn":"resp_budget_resp_budget_responsibility_center_description"
+"sortSourceColumn":"responsibility_center_description"
 },
 {
 "labelAlias":"previous_2_modified",

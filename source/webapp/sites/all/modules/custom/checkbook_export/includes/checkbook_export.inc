@@ -469,58 +469,61 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
 
     }
         $newQuery = substr($newQuery, 0, -1);
-        $node->data = str_replace($selectQuery,$newQuery, $node->data);
-
-        /*
-         * For data over the limit of 5000, the sql executes directly from the db.
-         * Columns that are derived do not get selected, this allows us to override the
-         * select value of the column sql directly.
-         * */
-        $sqlOverride = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->exportColumnSqlOverride : $node->widgetConfig->exportColumnSqlOverride;
-        if(isset($sqlOverride)) {
+        $node->data = $query =  str_replace($selectQuery,$newQuery, $node->data);
+        if(isset($node->widgetConfig->queryAlterFunction)) {
+          $alterFunction = $node->widgetConfig->queryAlterFunction;
+          $node->data = eval($alterFunction);
+        }else {
+          /*
+           * For data over the limit of 5000, the sql executes directly from the db.
+           * Columns that are derived do not get selected, this allows us to override the
+           * select value of the column sql directly.
+           * */
+          $sqlOverride = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->exportColumnSqlOverride : $node->widgetConfig->exportColumnSqlOverride;
+          if (isset($sqlOverride)) {
             $override_sql = null;
             $sql = $node->data;
             $table_columns = isset($exportConfigNode) ? $exportConfigNode->widgetConfig->table_columns : $node->widgetConfig->table_columns;
             $export_columns = $sqlOverride;
             $isList = $node->widgetConfig->useList;
 
-            foreach($export_columns as $export_column){
-                $column = $export_column->column;
-                $source_column = $export_column->sourceColumn;
-                foreach($table_columns as $table_column){
-                    if($table_column->column == $column){
-                        $override_sql = $export_column->sql;
-                        $pos = strpos($sql,$source_column);
-                        if ($pos !== false) {
-                            if($isList) {
-                                //Handle alias
-                                $pos -= 3;
-                                $alias_source_column = substr($sql, $pos, strlen($source_column)+3);
-                                $replace = array($source_column=>$alias_source_column);
-                                $override_sql = str_replace(array_keys($replace), array_values($replace), $override_sql);
-                                $source_column = $alias_source_column;
-                            }
-                            $override_sql = substr_replace($sql,$override_sql,$pos,strlen($source_column));
-                            $sql = $override_sql;
-                        }
+            foreach ($export_columns as $export_column) {
+              $column = $export_column->column;
+              $source_column = $export_column->sourceColumn;
+              foreach ($table_columns as $table_column) {
+                if ($table_column->column == $column) {
+                  $override_sql = $export_column->sql;
+                  $pos = strpos($sql, $source_column);
+                  if ($pos !== false) {
+                    if ($isList) {
+                      //Handle alias
+                      $pos -= 3;
+                      $alias_source_column = substr($sql, $pos, strlen($source_column) + 3);
+                      $replace = array($source_column => $alias_source_column);
+                      $override_sql = str_replace(array_keys($replace), array_values($replace), $override_sql);
+                      $source_column = $alias_source_column;
                     }
+                    $override_sql = substr_replace($sql, $override_sql, $pos, strlen($source_column));
+                    $sql = $override_sql;
+                  }
                 }
+              }
             }
-            if($override_sql != null) {
-                $node->data = $sql;
+            if ($override_sql != null) {
+              $node->data = $sql;
             }
-        }
-        if (!empty($node->widgetConfig->export_columns)) {
+          }
+          if (!empty($node->widgetConfig->export_columns)) {
             $node->data = checkbook_export_remove_non_export_columns($node);
-        }
+          }
 
-        //Escaping double quotes explicitly in parameters
-        $queryParts = explode('WHERE', $node->data);
-        if(strlen($queryParts[1]) > 0) {
-          $queryParts[1] = str_replace('"', '\"', $queryParts[1]);
-          $node->data = implode(' WHERE ', array($queryParts[0], $queryParts[1]));
+          //Escaping double quotes explicitly in parameters
+          $queryParts = explode('WHERE', $node->data);
+          if (strlen($queryParts[1]) > 0) {
+            $queryParts[1] = str_replace('"', '\"', $queryParts[1]);
+            $node->data = implode(' WHERE ', array($queryParts[0], $queryParts[1]));
+          }
         }
-
         LogHelper::log_notice("Exporting to file via SQL: \n".$node->data);
 
         $command = _checkbook_psql_command(RequestUtilities::get('datasource'));
