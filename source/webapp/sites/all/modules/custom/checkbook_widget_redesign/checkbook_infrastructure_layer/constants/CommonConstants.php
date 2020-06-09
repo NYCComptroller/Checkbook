@@ -288,7 +288,11 @@ abstract class PageType {
                 $pageType = self::ADVANCED_SEARCH_PAGE;
               }
               break;
-
+            case CheckbookDomain::NYCHA_REVENUE:
+              if(preg_match('/nycha_revenue\/search\/transactions/',$urlPath) || preg_match('/nycha_revenue\/search\/transactions/',$ajaxPath)) {
+                $pageType = self::ADVANCED_SEARCH_PAGE;
+              }
+              break;
         }
         return $pageType;
     }
