@@ -16,7 +16,7 @@
         "sortColumn":"sort_order"
       },
       {
-        "colLabel": "committed",
+        "colLabel": "recognized",
         "column": "revenue_recognized_amount",
         "eval":true
       },
