@@ -190,8 +190,8 @@ foreach($years as $year){
 
     /****** Beginning of Year options for NYCHA****/
     if(Datasource::isNYCHA()) {
-      //For NYCHA Budget, get years only from 2018
-      if (!(preg_match('/nycha_budget/', request_uri()) && $year['year_value'] < 2018)) {
+      //For NYCHA Budget and NYCHA Revenue, get years only from 2018
+      if (!((preg_match('/nycha_budget/', request_uri()) || preg_match('/nycha_revenue/', request_uri()))  && $year['year_value'] < 2018)) {
         //For Transaction pages replace the year ID and Year type in 'expandBottomContURL'
         if (preg_match("/expandBottomContURL/", $link) && (preg_match("/wt_issue_date/", $link))) {
           $link_parts = explode("?expandBottomContURL=", $link);
