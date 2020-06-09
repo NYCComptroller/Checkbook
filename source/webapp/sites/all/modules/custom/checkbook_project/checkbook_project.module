@@ -383,6 +383,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'gridview/budget_highchart',
             'arguments' => array('node' => NULL)
         ),
+      'highchart_nycha_revenue_grid_view' => array(
+        'template' => 'gridview/revenue_nycha_highchart',
+        'arguments' => array('node' => NULL)
+      ),
         'highchart_budget_expenditure_grid_view' => array(
             'template' => 'gridview/budget_expenditure_highchart',
             'arguments' => array('node' => NULL)
