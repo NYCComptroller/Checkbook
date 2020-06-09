@@ -414,6 +414,11 @@ class RequestUtil
                     $path = "revenue/yeartype/B/year/" . $fiscalYearId;
                 }
                 break;
+            case "nycha_revenue":
+              $path = "/nycha_revenue/datasource/".Datasource::NYCHA;
+              $path .="/year/".$fiscalYearId;
+              $path .= Datasource::getNYCHAUrl();
+              break;
         }
 
         if(RequestUtilities::get("vendor") > 0 && in_array($domain, array('contracts','spending'))){

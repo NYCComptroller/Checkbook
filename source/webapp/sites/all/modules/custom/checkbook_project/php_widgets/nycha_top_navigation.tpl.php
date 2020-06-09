@@ -47,6 +47,11 @@ if($node->data[2]['budget_modified'] > 0) {
   $budget_link = l('<span class="nav-title">Budget</span><br>' . custom_number_formatter_format($node->data[2]['budget_modified'], 1, '$'), RequestUtil::getTopNavURL("nycha_budget"), $options);
 }
 
+//Revenue Link
+if($node->data[3]['revenue_recognized_amount'] > 0) {
+  $revenue_link = l('<span class="nav-title">Revenue</span><br>' . custom_number_formatter_format($node->data[3]['revenue_recognized_amount'], 1, '$'), RequestUtil::getTopNavURL("nycha_revenue"), $options);
+}
+
 //Spending Link
 $total_spending = 0;
 foreach($node->data as $key=>$row){
