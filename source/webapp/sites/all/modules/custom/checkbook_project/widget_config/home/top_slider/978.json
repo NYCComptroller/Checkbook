@@ -68,6 +68,15 @@
         "
       },
       {
+        "dataset": "checkbook_nycha:revenue",
+        "columns":["revenue_recognized_amount"],
+        "seriesURLParamMap":{"year":"budget_fiscal_year_id"},
+        "allowedParams":["budget_fiscal_year_id"],
+        "adjustSerieParameters":"
+          return $serieParameters;
+        "
+      },
+      {
         "dataset": "checkbook_nycha:all_disbursement_transactions",
         "columns":["check_amount_sum", "invoice_amount_sum","category.category", "category_name.category_name"],
         "seriesURLParamMap":{"vendor":"vendor_id","year":"issue_date_year_id","agency":"agency_id","industry":"industry_type_id","fundsrc":"funding_source_id"},
