@@ -16,7 +16,7 @@
         "sortColumn":"sort_order"
       },
       {
-        "colLabel": "committed",
+        "colLabel": "recognized",
         "column": "budget_committed",
         "eval":true
       },
