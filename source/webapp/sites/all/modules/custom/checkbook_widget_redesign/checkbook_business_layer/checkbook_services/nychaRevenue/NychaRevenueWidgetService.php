@@ -16,17 +16,47 @@ class NychaRevenueWidgetService extends WidgetDataService implements IWidgetServ
     return new NychaRevenueDataService();
   }
 
-  public function implementDerivedColumn($column_name, $row) {
-    $value = null;
-    $legacy_node_id = $this->getLegacyNodeId();
+    public function implementDerivedColumn($column_name,$row) {
+      $url_param = drupal_get_path_alias($_GET['q']);
+      $value = null;
+      switch($column_name) {
+        case "expense_category_name_link":
+          $column = $row['expense_category'];
+          $url = NychaRevenueUrlService::generateLandingPageUrl('expcategory',$row['expenditure_type_id']);
+          $value = "<a href='{$url}'>{$column}</a>";
+          break;
+        case "responsibility_center_name_link":
+          $column = $row['responsibility_center'];
+          $url = NychaRevenueUrlService::generateLandingPageUrl('respcenter',$row['responsibility_center_id']);
+          $value = "<a href='{$url}'>{$column}</a>";
+          break;
+        case "funding_source_name_link":
+          $column = $row['funding_source'];
+          $url = NychaRevenueUrlService::generateLandingPageUrl('fundsrc',$row['funding_source_id']);
+          $value = "<a href='{$url}'>{$column}</a>";
+          break;
+        case "program_name_link":
+          $column = $row['program_phase_description'];
+          $url = NychaRevenueUrlService::generateLandingPageUrl('program',$row['program_phase_id']);
+          $value = "<a href='{$url}'>{$column}</a>";
+          break;
+        case "project_name_link":
+          $column = $row['gl_project_description'];
+          $url = NychaRevenueUrlService::generateLandingPageUrl('project',$row['gl_project_id']);
+          $value = "<a href='{$url}'>{$column}</a>";
+          break;
+      }
 
-    if(isset($value)) {
+      if(isset($value)) {
       return $value;
     }
     return $value;
   }
 
+  public function adjustParameters($parameters, $urlPath) {
+    return $parameters;
+  }
   public function getWidgetFooterUrl($parameters) {
-    return NychaRevenueUrlService::getFooterUrl($parameters,$this->getLegacyNodeId());
+    return NychaRevenueUrlService::getFooterUrl($parameters);
   }
 }

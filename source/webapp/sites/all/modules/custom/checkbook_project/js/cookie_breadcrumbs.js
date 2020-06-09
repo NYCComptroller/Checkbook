@@ -7,12 +7,12 @@
 				var CookieDomainName = "checkbookHistoryDomain";
 				var HistoryLink = [];
 				var HistoryTitle = [];
-				
+
 				function GetCookie() {
 					var cookiecontent = '';
 					if(document.cookie.length > 0) {
 						var cookiename = CookieName ;
-						cookiecontent = $.cookie(cookiename);						
+						cookiecontent = $.cookie(cookiename);
 					}
 					if(cookiecontent == null)  { return; }
 					cookiecontent = unescape(cookiecontent);
@@ -23,7 +23,7 @@
 						HistoryTitle.push(link[1]);
 					}
 				}
-				
+
 				function PutCookie() {
 					if( HistoryLink.length < 1 ) { return; }
 					var len = HistoryLink.length;
@@ -36,18 +36,18 @@
 						}else{
 							breadcrumbHTML =  breadcrumbHTML + ' >> <span class=\'inline\'><a href=\'' + encodeURI(HistoryLink[i]) +  '\'>'  + HistoryTitle[i] + '</a></span>' ;
 						}
-						
+
 					}
-					var value = pairs.join('@@');				
+					var value = pairs.join('@@');
 					$.cookie(CookieName,value,{ path: '/' });
 					$('#breadcrumb').html(breadcrumbHTML);
 				}
-				
+
 				function RecordCurrentPage() {
 					var link = window.location.pathname ;
 					var title =  $('#breadcrumb-title-hidden').html();
 					var len = HistoryLink.length;
-					
+
 					link = link + window.location.search;
 					if(HistoryLink[len -1] !== link){
 						if( HistoryLink.length === MaximumNumberOfLinks ) {
@@ -55,9 +55,9 @@
 							HistoryTitle[MaximumNumberOfLinks - 1 ] = title ;
 						}else{
 							HistoryLink.push(link);
-							HistoryTitle.push(title);	
+							HistoryTitle.push(title);
 						}
-						
+
 					}
 				}
                 var link = window.location.pathname;
@@ -99,6 +99,10 @@
                           if ($.cookie(CookieDomainName) !== 'nycha_spending')
                             $.cookie(CookieName, null, {path: '/'});
                           $.cookie(CookieDomainName, 'nycha_spending', {path: '/'});
+                        else if (link.match(/nycha_revenue/)) {
+                            if ($.cookie(CookieDomainName) !== 'nycha_revenue')
+                              $.cookie(CookieName, null, {path: '/'});
+                            $.cookie(CookieDomainName, 'nycha_spending', {path: '/'});
                         } else if (link.match(/payroll/) && link.match(/datasource/) && link.match(/checkbook_nycha/)) {
                           if ($.cookie(CookieDomainName) !== 'nycha_payroll')
                             $.cookie(CookieName, null, {path: '/'});
@@ -111,26 +115,26 @@
                 }
 				$('#node-widget-472 .top-navigation-left a').click(function (event) {
 	                $.cookie(CookieName,null,{ path: '/' });
-	            });				
+	            });
 				$('#year_list_chzn li').live("click",function (event) {
-					$.cookie(CookieName,null,{ path: '/' });					
-	            });	
+					$.cookie(CookieName,null,{ path: '/' });
+	            });
 				$('#year_list').change(function (event) {
-					$.cookie(CookieName,null,{ path: '/' });					
-	            });					
+					$.cookie(CookieName,null,{ path: '/' });
+	            });
 				$('.nice-menu a').click(function (event) {
 					$.cookie(CookieName,null,{ path: '/' });
-	            });		
+	            });
 				$('.region-branding a').click(function (event) {
 					$.cookie(CookieName,null,{ path: '/' });
-	            });	
+	            });
 				$('a.homeLink').click(function (event) {
 					$.cookie(CookieName,null,{ path: '/' });
-	            });					
+	            });
             }
-    	};	
+    	};
 	}
-    	
+
 }(jQuery));
 
 
