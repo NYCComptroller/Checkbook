@@ -1,4 +1,26 @@
 {
+    "domain_filter":{
+        "field_type":"radios",
+        "field_name":"advanced_search_domain_filter",
+        "attributes":{
+          "options":{
+            "checkbook":"Citywide Agencies",
+            "checkbook_oge":"New York City Economic Development Corporation",
+            "checkbook_nycha":"New York City Housing Authority"
+          },
+          "default_value":"checkbook"
+        }
+    },
+    "agency":{
+      "field_type":"select",
+      "field_name":"agency",
+      "attributes":{"options":"$agencies", "option_attributes":"$agency_attributes"}
+    },
+    "year":{
+      "field_type":"select",
+      "field_name":"year",
+      "attributes":{"options":"$year_attribute"}
+    },
     "department":{
         "field_type":"select",
         "field_name":"department"
@@ -6,50 +28,32 @@
     "expense_category":{
         "field_type":"select",
         "field_name":"expense_category",
-        "attributes":{
-          "options":"$expense_category_attributes"
-        }
+        "attributes":{"options":"$expense_category_attributes"}
     },
     "expense_type":{
         "field_type":"select",
         "field_name":"expense_type",
-        "attributes":{
-            "title":"Spending Category",
-            "options":"$expense_attributes"
-        }
+        "attributes":{"title":"Spending Category", "options":"$expense_attributes"}
     },
     "payee_name":{
         "field_type":"textfield",
         "field_name":"payee_name",
-        "attributes":{
-            "size":30,
-            "maxlength":100
-        }
+        "attributes":{"size":30, "maxlength":100}
     },
     "check_amount":{
         "field_type":"rangefield",
         "field_name":"check_amount",
-        "attributes":{
-            "size":30,
-            "maxlength":32
-        }
+        "attributes":{"size":30, "maxlength":32}
     },
     "document_id":{
         "field_type":"textfield",
         "field_name":"document_id",
-        "attributes":{
-            "size":30,
-            "maxlength":100,
-            "title":"Document ID"
-        }
+        "attributes":{"size":30, "maxlength":100, "title":"Document ID"}
     },
     "capital_project":{
         "field_type":"textfield",
         "field_name":"capital_project",
-        "attributes":{
-            "size":30,
-            "maxlength":100
-        }
+        "attributes":{"size":30, "maxlength":100}
     },
     "date_filter":{
         "field_type":"date_filter",
@@ -59,160 +63,81 @@
         "field_type":"submit",
         "field_name":"spending"
     },
-    "domain_filter":{
-        "field_type":"radios",
-        "field_name":"advanced_search_domain_filter",
-        "attributes":{
-            "options":{
-                "checkbook":"Citywide Agencies",
-                "checkbook_oge":"New York City Economic Development Corporation",
-                "checkbook_nycha":"New York City Housing Authority"
-            },
-            "default_value":"checkbook"
-        }
-    },
     "status":{
         "field_type":"select",
         "field_name":"status",
-        "attributes":{
-            "options":{
-                "A":"Active",
-                "R":"Registered",
-                "P":"Pending"
-            },
-            "default_value":""
-        }
+        "attributes":{"options":{"A":"Active", "R":"Registered", "P":"Pending"}, "default_value":""}
     },
     "vendor_name":{
         "field_type":"textfield",
         "field_name":"vendor_name",
-        "attributes":{
-            "size":30,
-            "maxlength":150,
-            "title":"Vendor"
-        }
+        "attributes":{"size":30, "maxlength":150, "title":"Vendor"}
     },
     "prime_vendor_name":{
         "field_type":"textfield",
         "field_name":"vendor_name",
-        "attributes":{
-            "size":30,
-            "maxlength":150,
-            "title":"Vendor"
-        }
+        "attributes":{"size":30, "maxlength":150, "title":"Vendor"}
     },
     "type":{
         "field_type":"select",
         "field_name":"type",
-        "attributes":{
-            "options":"$contract_type_attribute",
-            "title":"Contract Type"
-        }
+        "attributes":{"options":"$contract_type_attribute", "title":"Contract Type"}
     },
     "contract_id":{
         "field_type":"textfield",
         "field_name":"contract_num",
-        "attributes":{
-            "size":30,
-            "maxlength":32,
-            "title":"Contract ID"
-        }
+        "attributes":{"size":30, "maxlength":32, "title":"Contract ID"}
     },
     "pin":{
         "field_type":"textfield",
         "field_name":"pin",
-        "attributes":{
-            "size":30,
-            "maxlength":100,
-            "title":"PIN"
-        }
+        "attributes":{"size":30, "maxlength":100, "title":"PIN"}
     },
     "current_contract_amount":{
         "field_type":"rangefield",
         "field_name":"current_contract_amount",
-        "attributes":{
-            "size":30,
-            "maxlength":32,
-            "title":"Current Amount"
-        }
+        "attributes":{"size":30, "maxlength":32, "title":"Current Amount"}
     },
     "end_date":{
         "field_type":"range",
         "field_name":"end_date",
-        "attributes":{
-            "date_year_range":"$year_range"
-        }
+        "attributes":{"date_year_range":"$year_range"}
     },
     "registration_date":{
         "field_type":"range",
         "field_name":"registration_date",
-        "attributes":{
-            "date_year_range":"$year_range"
-        }
+        "attributes":{"date_year_range":"$year_range"}
     },
     "category":{
         "field_type":"select",
         "field_name":"category",
-        "attributes":{
-            "options":{
-                "all":"All",
-                "expense":"Expense",
-                "revenue":"Revenue"
-            }
-        }
+        "attributes":{"options":{"all":"All", "expense":"Expense", "revenue":"Revenue"}}
     },
     "purpose":{
         "field_type":"textfield",
         "field_name":"purpose",
-        "attributes":{
-            "size":30,
-            "maxlength":100
-        }
-    },
-    "agency":{
-        "field_type":"select",
-        "field_name":"agency",
-        "attributes":{
-            "options":"$agencies",
-            "option_attributes":"$agency_attributes"
-        }
+        "attributes":{"size":30, "maxlength":100}
     },
     "apt_pin":{
         "field_type":"textfield",
         "field_name":"apt_pin",
-        "attributes":{
-            "size":30,
-            "maxlength":100,
-            "title":"APT PIN"
-        }
+        "attributes":{"size":30, "maxlength":100, "title":"APT PIN"}
     },
     "award_method":{
         "field_type":"select",
         "field_name":"award_method",
-        "attributes":{
-            "options":"$award_method_attributes"
-        }
+        "attributes":{"options":"$award_method_attributes"}
     },
     "start_date":{
         "field_type":"range",
         "field_name":"start_date",
-        "attributes":{
-            "date_year_range":"$year_range"
+        "attributes":{"date_year_range":"$year_range"
         }
     },
     "received_date":{
         "field_type":"range",
         "field_name":"received_date",
-        "attributes":{
-            "date_year_range":"$year_range"
-        }
-    },
-    "year":{
-        "field_type":"select",
-        "field_name":"year",
-        "attributes":{
-            "options":"$year_attribute"
-        }
+        "attributes":{"date_year_range":"$year_range"}
     },
     "contracts":{
         "field_type":"submit",
@@ -221,52 +146,32 @@
     "entity_contract_number":{
         "field_type":"textfield",
         "field_name":"entity_contract_number",
-        "attributes":{
-            "size":30,
-            "maxlength":32,
-            "title":"Entity Contract #"
-        }
+        "attributes":{"size":30, "maxlength":32, "title":"Entity Contract #"}
     },
     "commodity_line":{
         "field_type":"textfield",
         "field_name":"commodity_line",
-        "attributes":{
-            "size":30,
-            "maxlength":32
-        }
+        "attributes":{"size":30, "maxlength":32}
     },
     "budget_name":{
         "field_type":"textfield",
         "field_name":"budget_name",
-        "attributes":{
-            "size":30,
-            "maxlength":100
-        }
+        "attributes":{"size":30, "maxlength":100}
     },
     "other_government_entities":{
         "field_type":"select",
         "field_name":"agency",
-        "attributes":{
-            "title":"Other Government<br/> Entity",
-            "options":"$agencies",
-            "option_attributes":"$agency_attributes"
-        }
+        "attributes":{"title":"Other Government<br/> Entity", "options":"$agencies", "option_attributes":"$agency_attributes"}
     },
     "mwbe_category":{
         "field_type":"select",
         "field_name":"mwbe_category",
-        "attributes":{
-            "title":"M/WBE Category",
-            "options":"$mwbe_category_attributes"
-        }
+        "attributes":{"title":"M/WBE Category", "options":"$mwbe_category_attributes"}
     },
     "industry":{
         "field_type":"select",
         "field_name":"industry",
-        "attributes":{
-            "title":"Industry",
-            "options":"$industry_attributes"
-        }
+        "attributes":{"title":"Industry", "options":"$industry_attributes"}
     },
     "includes_sub_vendors":{
         "field_type":"select",
@@ -303,35 +208,23 @@
     "responsibility_center":{
       "field_type":"select",
       "field_name":"responsibility_center",
-      "attributes":{
-        "title":"Responsibility<br/>Center",
-        "options":"$responsibility_center_attributes"
-      }
+      "attributes":{"title":"Responsibility<br/>Center", "options":"$responsibility_center_attributes"}
     },
   "fundsrc":{
     "field_type":"select",
     "field_name":"fundsrc",
-    "attributes":{
-      "title":"Funding Source",
-      "options":"$fundsrc_attributes"
+    "attributes":{"title":"Funding Source", "options":"$fundsrc_attributes"
     }
   },
   "amount_spent":{
     "field_type":"rangefield",
     "field_name":"amount_spent",
-    "attributes":{
-      "title":"Amount Spent",
-      "size":30,
-      "maxlength":32
-    }
+    "attributes":{"title":"Amount Spent", "size":30, "maxlength":32}
   },
   "approved_date":{
     "field_type":"range",
     "field_name":"approved_date",
-    "attributes":{
-      "title":"Approved Date",
-      "date_year_range":"$year_range"
-    }
+    "attributes":{"title":"Approved Date", "date_year_range":"$year_range"}
   },
   //Budget specific fields
   "budget_name":{
@@ -345,65 +238,38 @@
   "adopted":{
     "field_type":"rangefield",
     "field_name":"adopted_budget",
-    "attributes":{
-      "title":"Adopted",
-      "size":30,
-      "maxlength":32
-    }
+    "attributes":{"title":"Adopted", "size":30, "maxlength":32}
   },
   "modified":{
     "field_type":"rangefield",
     "field_name":"modified",
-    "attributes":{
-      "title":"Modified",
-      "size":30,
-      "maxlength":32
-    }
+    "attributes":{"title":"Modified", "size":30, "maxlength":32}
   },
   "pre_encumbered":{
     "field_type":"rangefield",
     "field_name":"pre_encumbered",
-    "attributes":{
-      "title":"Pre Encumbered",
-      "size":30,
-      "maxlength":32
+    "attributes":{"title":"Pre Encumbered", "size":30, "maxlength":32
     }
   },
   "encumbered":{
     "field_type":"rangefield",
     "field_name":"encumbered",
-    "attributes":{
-      "title":"Encumbered",
-      "size":30,
-      "maxlength":32
-    }
+    "attributes":{"title":"Encumbered", "size":30, "maxlength":32}
   },
   "accrued_expense":{
     "field_type":"rangefield",
     "field_name":"accrued_expense",
-    "attributes":{
-      "title":"Accrued Expense",
-      "size":30,
-      "maxlength":32
-    }
+    "attributes":{"title":"Accrued Expense", "size":30, "maxlength":32}
   },
   "cash_payments":{
     "field_type":"rangefield",
     "field_name":"cash_payments",
-    "attributes":{
-      "title":"Cash Payments",
-      "size":30,
-      "maxlength":32
-    }
+    "attributes":{"title":"Cash Payments", "size":30, "maxlength":32}
   },
   "post_adjustments":{
     "field_type":"rangefield",
     "field_name":"post_adjustments",
-    "attributes":{
-      "title":"Post Adjustments",
-      "size":30,
-      "maxlength":32
-    }
+    "attributes":{"title":"Post Adjustments", "size":30, "maxlength":32}
   },
   "budget":{
     "field_type":"submit",
@@ -412,23 +278,17 @@
   "program":{
     "field_type":"select",
     "field_name":"program",
-    "attributes":{
-      "options":"$program_attributes"
-    }
+    "attributes":{"options":"$program_attributes"}
   },
   "project":{
     "field_type":"select",
     "field_name":"project",
-    "attributes":{
-      "options":"$project_attributes"
-    }
+    "attributes":{"options":"$project_attributes"}
   },
   "nycha_budget_name":{
     "field_type":"select",
     "field_name":"nycha_budget_name",
-    "attributes":{
-      "title":"Budget Name"
-    }
+    "attributes":{"title":"Budget Name"}
   },
   "budget_type":{
     "field_type":"select",
@@ -437,19 +297,11 @@
   "committed":{
     "field_type":"rangefield",
     "field_name":"committed",
-    "attributes":{
-      "title":"Committed",
-      "size":30,
-      "maxlength":32
-    }
+    "attributes":{"title":"Committed", "size":30, "maxlength":32}
   },
   "actual":{
     "field_type":"rangefield",
     "field_name":"actual",
-    "attributes":{
-      "title":"Actual Amount",
-      "size":30,
-      "maxlength":32
-    }
+    "attributes":{"title":"Actual Amount", "size":30, "maxlength":32}
   }
 }
