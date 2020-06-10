@@ -6,6 +6,7 @@
 #nycha-contracts-transactions .grid-3,
 #nycha-spending-transactions .grid-3,
 #nycha-budget-transactions .grid-3,
+#nycha-revenue-transactions .grid-3,
 .page-node div.filter-content,
 .page-smart-search .smart-search-right{
     border: 1px solid #CACACA;
@@ -23,7 +24,8 @@
 }
 #nycha-contracts-transactions .grid-3,
 #nycha-spending-transactions .grid-3,
-#nycha-budget-transactions .grid-3
+#nycha-budget-transactions .grid-3,
+#nycha-revenue-transactions .grid-3
 {
   margin-top: 47px;
 }
