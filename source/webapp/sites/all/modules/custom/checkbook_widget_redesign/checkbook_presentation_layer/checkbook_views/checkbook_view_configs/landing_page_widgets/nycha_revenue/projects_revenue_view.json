@@ -2,7 +2,7 @@
   "serviceName":"NychaRevenueWidgetService",
   "dataFunc":"GetNychaProjectByRevenue",
   "headerTitle": "Project",
-  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_resp_centers'",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_projects'",
   "table_columns":[
     {"labelAlias":"project","column":"gl_project_description", "tooltip":60, "derivedColumn":"project_name_link"},
     {"labelAlias":"adopted","column":"adopted_amount","format":"dollar"},

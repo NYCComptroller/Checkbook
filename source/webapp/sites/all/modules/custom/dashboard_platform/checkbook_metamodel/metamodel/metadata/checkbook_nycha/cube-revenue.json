@@ -73,6 +73,24 @@
           ]
         },
         {
+          "name":"budget_type",
+          "levels":[
+            {
+              "name":"budget_type",
+              "sourceColumnName":"budget_type"
+            }
+          ]
+        },
+        {
+          "name":"budget_name",
+          "levels":[
+            {
+              "name":"budget_name",
+              "sourceColumnName":"budget_name"
+            }
+          ]
+        },
+        {
           "name":"revenue_category",
           "levels":[
             {
@@ -198,22 +216,40 @@
           "function":"SUM(revenue_amount)"
         },
         "g100m_count": {
-          "function": "SUM(CASE WHEN COALESCE(modified_amount,0) > 100000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 100000000 THEN 1 ELSE 0 END)"
         },
         "g50m_le100m_count": {
-          "function": "SUM(CASE WHEN COALESCE(modified_amount,0) > 50000000 AND COALESCE(modified_amount,0) <= 100000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 50000000 AND COALESCE(revenue_amount,0) <= 100000000 THEN 1 ELSE 0 END)"
         },
         "g25m_le50m_count": {
-          "function": "SUM(CASE WHEN COALESCE(modified_amount,0) > 25000000 AND COALESCE(modified_amount,0) <= 50000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 25000000 AND COALESCE(revenue_amount,0) <= 50000000 THEN 1 ELSE 0 END)"
         },
         "g10m_le25m_count": {
-          "function": "SUM(CASE WHEN COALESCE(modified_amount,0) > 10000000 AND COALESCE(modified_amount,0) <= 25000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 10000000 AND COALESCE(revenue_amount,0) <= 25000000 THEN 1 ELSE 0 END)"
         },
         "ge1m_le10m_count": {
-          "function": "SUM(CASE WHEN COALESCE(modified_amount,0) >= 1000000 AND COALESCE(modified_amount,0) <= 10000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) >= 1000000 AND COALESCE(revenue_amount,0) <= 10000000 THEN 1 ELSE 0 END)"
         },
         "less1m_count": {
-          "function": "SUM(CASE WHEN COALESCE(modified_amount,0) < 1000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) < 1000000 THEN 1 ELSE 0 END)"
+        },
+        "g5b_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 5000000000 THEN 1 ELSE 0 END)"
+        },
+        "g4b_le5b_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 4000000000 AND COALESCE(revenue_amount,0) <= 5000000000 THEN 1 ELSE 0 END)"
+        },
+        "g3b_le4b_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 3000000000 AND COALESCE(revenue_amount,0) <= 4000000000 THEN 1 ELSE 0 END)"
+        },
+        "g2b_le3b_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 2000000000 AND COALESCE(revenue_amount,0) <= 3000000000 THEN 1 ELSE 0 END)"
+        },
+        "g1b_le2b_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) >= 1000000000 AND COALESCE(revenue_amount,0) <= 2000000000 THEN 1 ELSE 0 END)"
+        },
+        "less1b_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) < 1000000000 THEN 1 ELSE 0 END)"
         },
         "recognized_g100m_count": {
           "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 100000000 THEN 1 ELSE 0 END)"
