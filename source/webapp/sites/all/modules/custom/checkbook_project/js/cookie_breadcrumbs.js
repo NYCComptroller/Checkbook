@@ -99,10 +99,10 @@
                           if ($.cookie(CookieDomainName) !== 'nycha_spending')
                             $.cookie(CookieName, null, {path: '/'});
                           $.cookie(CookieDomainName, 'nycha_spending', {path: '/'});
-                        else if (link.match(/nycha_revenue/)) {
+                        } else if (link.match(/nycha_revenue/)) {
                             if ($.cookie(CookieDomainName) !== 'nycha_revenue')
                               $.cookie(CookieName, null, {path: '/'});
-                            $.cookie(CookieDomainName, 'nycha_spending', {path: '/'});
+                            $.cookie(CookieDomainName, 'nycha_revenue', {path: '/'});
                         } else if (link.match(/payroll/) && link.match(/datasource/) && link.match(/checkbook_nycha/)) {
                           if ($.cookie(CookieDomainName) !== 'nycha_payroll')
                             $.cookie(CookieName, null, {path: '/'});

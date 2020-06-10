@@ -73,6 +73,24 @@
           ]
         },
         {
+          "name":"budget_type",
+          "levels":[
+            {
+              "name":"budget_type",
+              "sourceColumnName":"budget_type"
+            }
+          ]
+        },
+        {
+          "name":"budget_name",
+          "levels":[
+            {
+              "name":"budget_name",
+              "sourceColumnName":"budget_name"
+            }
+          ]
+        },
+        {
           "name":"revenue_category",
           "levels":[
             {

@@ -93,6 +93,7 @@ function fnCustomInitCompleteReload() {
         jQuery('#table_979_wrapper .dataTables_scrollHead').css('overflow', 'auto');
         jQuery('#table_1012_wrapper .dataTables_scrollHead').css('overflow', 'auto');
         jQuery('#table_1034_wrapper .dataTables_scrollHead').css('overflow', 'auto');
+        jQuery('#table_1051_wrapper .dataTables_scrollHead').css('overflow', 'auto');
         jQuery('#table_317_wrapper .dataTables_scrollHead').css('overflow', 'auto');
         jQuery('#table_330_wrapper .dataTables_scrollHead').css('overflow', 'auto');
         jQuery('#table_336_wrapper .dataTables_scrollHead').css('overflow', 'auto');
