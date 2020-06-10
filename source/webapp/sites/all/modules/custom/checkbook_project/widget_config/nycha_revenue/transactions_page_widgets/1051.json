@@ -2,14 +2,14 @@
   "widgetType": "data_tables",
   "widgetSubType": "dataTableList",
   "cleanURLParameters": ["year", "expcategory", "respcenter", "fundsrc", "program", "project", "bdgtyp",
-    "bdgnm", "modamt", "modamtr", "comamtr", "adpamt", "encamt", "actual", "agency","revcat","recamt"],
+    "bdgnm","agency","revcat","amtr","agency"],
   "urlParamMap": {
     "year": "budget_fiscal_year_id", "expcategory": "expenditure_type_id", "respcenter": "responsibility_center_id",
     "fundsrc":"funding_source_id", "program": "program_phase_id", "project": "gl_project_id", "bdgtyp": "budget_type",
-    "bdgnm": "budget_name", "recamt":"revenue_amount", "agency": "agency_id","revcat": "revenue_category_id"
+    "bdgnm": "budget_name", "amtr":"revenue_amount", "agency": "agency_id","revcat": "revenue_category_id"
   },
   "paramTypeConfig": {
-    "recamt": "rangeid",
+    "amtr":"rangeid2",
     "bdgnm": "eqignorecase",
     "bdgnm_exact": "eqignorecase"
   },
@@ -242,7 +242,8 @@ var oRespCenterIds = getNamedFilterCriteria('fRespCenter');
 var oFundingIds = getNamedFilterCriteria('fFundingId');
 var oProgramIds = getNamedFilterCriteria('fProgramId');
 var oProjectIds = getNamedFilterCriteria('fProjectId');
-var oRevenueCategoryIds = getNamedFilterCriteria('frevenueCategory');
+var oRevenueCategory = getNamedFilterCriteria('frevenueCategory');
+var oRevenueAmount = getNamedFilterCriteria('frevenueAmount');
 
 var  cUrl = oTable.fnSettings().sAjaxSource;
 cUrl = adjustUrlParameter(cUrl,'agency',oAgencyIds);
@@ -254,6 +255,7 @@ cUrl = adjustUrlParameter(cUrl,'fundsrc',oFundingIds);
 cUrl = adjustUrlParameter(cUrl,'program',oProgramIds);
 cUrl = adjustUrlParameter(cUrl,'project',oProjectIds);
 cUrl = adjustUrlParameter(cUrl,'revcat',oRevenueCategory);
+cUrl = adjustUrlParameter(cUrl,'amtr',oRevenueAmount);
 
 return cUrl;
 }"
