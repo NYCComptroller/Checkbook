@@ -112,7 +112,9 @@ function checkbook_advanced_search_form($form, $form_state)
 
   //<editor-fold desc="Revenue">
 
-  $form['revenue']['revenue_budget_fiscal_year'] = array(
+  $form = _checkbook_advanced_search_get_form($form, Domain::Revenue, $agencies, $agency_attributes, $year_range);
+
+  /*$form['revenue']['revenue_budget_fiscal_year'] = array(
     '#prefix' => '<h3><a >Revenue</a></h3><div id="revenue-advanced-search"><div class="column column-left">',
     '#type' => 'select',
     '#title' => t('Budget FY'),
@@ -227,7 +229,7 @@ function checkbook_advanced_search_form($form, $form_state)
     '#suffix' => '</div></div>',
     '#type' => 'submit',
     '#value' => t('Clear All'),
-  );
+  );*/
 
   //</editor-fold>
 
