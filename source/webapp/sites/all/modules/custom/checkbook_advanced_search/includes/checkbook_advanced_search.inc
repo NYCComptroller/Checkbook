@@ -34,7 +34,8 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
             $form_state['redirect'] = _checkbook_advanced_search_budget_submit($form, $form_state, $data_source);
             break;
         case "revenue_submit":
-            $form_state['redirect'] = _checkbook_advanced_search_revenue_submit($form, $form_state);
+            $data_source = $form_state['values']['revenue_advanced_search_domain_filter'];
+            $form_state['redirect'] = _checkbook_advanced_search_revenue_submit($form, $form_state, $data_source);
             break;
         case "spending_submit":
             $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
@@ -52,7 +53,8 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
             return _checkbook_advanced_search_budget_submit($form, $form_state, $data_source);
             break;
         case "revenue_next":
-            return _checkbook_advanced_search_revenue_submit($form, $form_state, 'next');
+            $data_source = $form_state['values']['revenue_advanced_search_domain_filter'];
+            return _checkbook_advanced_search_revenue_submit($form, $form_state, $data_source);
             break;
         case "spending_next":
             $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
