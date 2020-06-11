@@ -7,7 +7,7 @@
     {"labelAlias":"expense_category","column":"expense_category", "tooltip":60, "derivedColumn":"expense_category_name_link"},
     {"labelAlias":"adopted","column":"adopted_amount","format":"dollar"},
     {"labelAlias":"modified","column":"modified_amount","format":"dollar"},
-    {"labelAlias":"recognized","column":"recognized_amount","format":"dollar"},
+    {"labelAlias":"recognized","column":"recognized_amount","format":"dollar","derivedColumn":"expcat_rev_link"},
     {"labelAlias":"remaining","column":"funds_available","format":"dollar"},
     {"label":"","column":""}
   ],
