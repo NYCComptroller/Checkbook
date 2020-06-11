@@ -45,6 +45,49 @@ class NychaRevenueWidgetService extends WidgetDataService implements IWidgetServ
           $url = NychaRevenueUrlService::generateLandingPageUrl('project',$row['gl_project_id']);
           $value = "<a href='{$url}'>{$column}</a>";
           break;
+        /* Recognized Revenue links */
+        case "expcat_rev_link":
+          $column = $row['recognized_amount'];
+          $class = "bottomContainerReload";
+          $dynamic_parameter = "/expcategory/" . $row["expenditure_type_id"];
+          $url = NychaRevenueUrlService::recRevenueUrl($dynamic_parameter, 'rec_expense_category');
+          $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+          break;
+        case "fundsrc_rev_link":
+          $column = $row['recognized_amount'];
+          $class = "bottomContainerReload";
+          $dynamic_parameter = "/fundsrc/" . $row["funding_source_id"];
+          $url = NychaRevenueUrlService::recRevenueUrl($dynamic_parameter, 'rec_funding_source');
+          $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+          break;
+        case "project_rev_link":
+          $column = $row['recognized_amount'];
+          $class = "bottomContainerReload";
+          $dynamic_parameter = "/project/" . $row["gl_project_id"];
+          $url = NychaRevenueUrlService::recRevenueUrl($dynamic_parameter, 'rec_project');
+          $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+          break;
+        case "program_rev_link":
+          $column = $row['recognized_amount'];
+          $class = "bottomContainerReload";
+          $dynamic_parameter = "/program/" . $row["program_phase_id"];
+          $url = NychaRevenueUrlService::recRevenueUrl($dynamic_parameter, 'rec_program');
+          $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+          break;
+        case "reccat_rev_link":
+          $column = $row['recognized_amount'];
+          $class = "bottomContainerReload";
+          $dynamic_parameter = "/revcat/" . $row["contract_id"];
+          $url = NychaRevenueUrlService::recRevenueUrl($dynamic_parameter, 'rec_reccat');
+          $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+          break;
+        case "respcenter_rev_link":
+          $column = $row['recognized_amount'];
+          $class = "bottomContainerReload";
+          $dynamic_parameter = "/respcenter/" . $row["responsibility_center_id"];
+          $url = NychaRevenueUrlService::recRevenueUrl($dynamic_parameter, 'rec_respcenter');
+          $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+          break;
       }
 
       if(isset($value)) {
