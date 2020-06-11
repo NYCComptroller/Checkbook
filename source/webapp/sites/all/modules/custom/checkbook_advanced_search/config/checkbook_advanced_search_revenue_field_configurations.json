@@ -23,7 +23,7 @@
     {"field_name":"project","column":"column-left"},
     {"field_name":"budget_type","column":"column-left"},
     {"field_name":"nycha_budget_name","column":"column-left"},
-    {"field_name":"revenue_category","column":"column-right"},
+    {"field_name":"nycha_revenue_category","column":"column-right"},
     {"field_name":"revenue_class","column":"column-right"},
     {"field_name":"adopted","column":"column-right"},
     {"field_name":"modified","column":"column-right"},

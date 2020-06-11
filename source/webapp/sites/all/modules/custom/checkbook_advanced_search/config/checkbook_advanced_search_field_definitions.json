@@ -344,6 +344,16 @@
     "field_name":"fund_class",
     "attributes":{"title":"Fund Class", "options":"$revenue_fund_classes"}
   },
+  "remaining":{
+    "field_type":"rangefield",
+    "field_name":"remaining",
+    "attributes":{"title":"Remaining","size":30, "maxlength":32}
+  },
+  "nycha_revenue_category":{
+    "field_type":"textfield",
+    "field_name":"nycha_revenue_category",
+    "attributes":{"size":30, "maxlength":100, "title":"Revenue Category"}
+  },
   "revenue":{
     "field_type":"submit",
     "field_name":"revenue"

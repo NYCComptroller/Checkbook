@@ -1110,7 +1110,19 @@
             'revenue_class': 'input:text[name=' + data_source + '_revenue_revenue_class]',
             'fund_class': 'select[name=' + data_source + '_revenue_fund_class]',
             'modified_from': 'input:text[name=' + data_source + '_revenue_modified_from]',
-            'modified_to': 'input:text[name=' + data_source + '_revenue_modified_to]'
+            'modified_to': 'input:text[name=' + data_source + '_revenue_modified_to]',
+            'expense_category': 'select[name=' + data_source + '_revenue_expense_category]',
+            'resp_center':'select[name=' + data_source + '_budget_responsibility_center]',
+            'fundsrc':'select[name=' + data_source + '_budget_fundsrc]',
+            'program':'select[name=' + data_source + '_budget_program]',
+            'project':'select[name=' + data_source + '_budget_project]',
+            'budget_type':'select[name=' + data_source + '_budget_budget_type]',
+            'budget_type_chosen':'select[name=' + data_source + '_budget_budget_type_chosen]',
+            'nycha_budget_name':'select[name=' + data_source + '_budget_nycha_budget_name]',
+            'nycha_budget_name_chosen':'select[name=' + data_source + '_budget_nycha_budget_name_chosen]',
+            'nycha_revenue_category': 'input:text[name=' + data_source + '_revenue_nycha_revenue_category]',
+            'remaining_from': 'input:text[name=' + data_source + '_revenue_remaining_from]',
+            'remaining_to': 'input:text[name=' + data_source + '_revenue_remaining_to]',
           };
 
           this.data_source = data_source;
