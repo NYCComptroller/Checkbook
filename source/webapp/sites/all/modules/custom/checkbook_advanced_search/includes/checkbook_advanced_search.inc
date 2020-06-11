@@ -980,3 +980,15 @@ function _checkbook_advanced_search_create_alert_header($create_alert_config, $c
     $header_html = "<span class='create-alert-header'>".$header_html."</span>";
     return $header_html;
 }
+
+/**
+ * Returns input value from drupal form
+ *
+ * @param $form
+ * @param $filter_dimension
+ * @param $field_name
+ * @return string
+ */
+function _checkbook_get_selected_value($form, $filter_dimension, $field_name){
+  return trim($form[$filter_dimension][$filter_dimension . '_' .$field_name]['#value']);
+}

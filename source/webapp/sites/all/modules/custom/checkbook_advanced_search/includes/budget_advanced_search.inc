@@ -180,15 +180,3 @@ function _checkbook_advanced_search_nycha_budget_submit($form, &$form_state, $fi
   return $redirectUrl;
 }
 
-/**
- * Returns input value from drupal form
- *
- * @param $form
- * @param $filter_dimension
- * @param $field_name
- * @return string
- */
-function _checkbook_get_selected_value($form, $filter_dimension, $field_name){
-  return trim($form[$filter_dimension][$filter_dimension . '_' .$field_name]['#value']);
-}
-
