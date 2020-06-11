@@ -1118,30 +1118,7 @@
         }
       }
 
-      function advanced_search_revenue_init_autocomplete() {
-        var display_fiscal_year_id = 0; //do not change, this is a needed for the new change
-        var fund_class_id = $('#edit-revenue-fund-class').val() || 0;
-        var agency_id = $('#edit-revenue-agencies').val() || 0;
-        var fiscal_year_id = $('#edit-revenue-budget-fiscal-year').val() || 0;
-        var revenue_category_id = $('#edit-revenue-revenue-category').val() || 0;
-        var funding_class_code = $('#edit-revenue-funding-source').val() || 0;
-        var solr_datasource = 'citywide';
-
-        var filters = {
-          display_fiscal_year_id: display_fiscal_year_id,
-          fund_class_id: fund_class_id,
-          agency_id: agency_id,
-          fiscal_year_id: fiscal_year_id,
-          revenue_category_id: revenue_category_id,
-          funding_class_code: funding_class_code
-        };
-
-        $('#edit-revenue-revenue-class').autocomplete({source: autoCompleteSource(solr_datasource,'revenue_class_name',filters)});
-        $('#edit-revenue-revenue-source').autocomplete({source: autoCompleteSource(solr_datasource,'revenue_source_name',filters)});
-        $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {$(this).parent().next().val(ui.item.label);});
-      }
-
-// advanced-search-revenue
+      // advanced-search-revenue
       function advanced_search_revenue_init() {
         //Hide EDC radio for Revenue data-source
         $('#edit-revenue-advanced-search-domain-filter-checkbook-oge').parent().hide();
@@ -1155,7 +1132,7 @@
             'adopted_to': 'input:text[name=' + data_source + '_revenue_adopted_to]',
             'recognized_from': 'input:text[name=' + data_source + '_revenue_recognized_from]',
             'recognized_to': 'input:text[name=' + data_source + '_revenue_recognized_to]',
-            'revenue_year': 'select[name=' + data_source + '_revenue_year]',
+            'fiscal_year': 'select[name=' + data_source + '_revenue_fiscal_year]',
             'funding_class': 'select[name=' + data_source + '_revenue_funding_class]',
             'revenue_class': 'input:text[name=' + data_source + '_revenue_revenue_class]',
             'fund_class': 'select[name=' + data_source + '_revenue_fund_class]',
@@ -1189,6 +1166,7 @@
           switch (dataSource) {
             case "checkbook_nycha":
               //resetFields(div_checkbook_revenue_nycha.contents());
+              initializeRevenueView(div_checkbook_revenue_nycha, dataSource);
               div_checkbook_revenue.contents().hide();
               div_checkbook_revenue_nycha.contents().show();
 
@@ -1201,17 +1179,66 @@
 
             default:
               //resetFields(div_checkbook_revenue.contents());
+              initializeRevenueView(div_checkbook_revenue, dataSource);
               div_checkbook_revenue.contents().show();
               div_checkbook_revenue_nycha.contents().hide();
           }
         }
-        //advanced_search_revenue_init_autocomplete();
 
-        //$('#revenue-advanced-search').each(function () {
-        //  $(this).focusout(function () {
-        //    advanced_search_revenue_init_autocomplete();
-        //  });
-        //});
+        //Prevent the auto-complete from wrapping un-necessarily
+        function fixAutoCompleteWrapping(divWrapper) {
+          $(divWrapper.children()).find('input.ui-autocomplete-input:text').each(function () {
+            $(this).data("autocomplete")._resizeMenu = function () {
+              (this.menu.element).outerWidth('100%');
+            }
+          });
+        }
+
+        function initializeRevenueViewAutocomplete(div, data_source){
+          //Set Solr datasource for auto-complete
+          let solr_datasource = data_source;
+          if (data_source === 'checkbook_nycha'){
+            solr_datasource = 'nycha'
+          }
+
+          var agency_id = 0;
+          if(data_source === 'checkbook') {
+            agency_id = parseInt((div.ele('agency').val()) ? div.ele('agency').val() : 0);
+            let display_fiscal_year_id = 0; //do not change, this is a needed for the new change
+            let fund_class_id = parseInt((div.ele('fund_class').val()) ? div.ele('fund_class').val() : 0);
+            let fiscal_year_id = parseInt((div.ele('budget_fy').val()) ? div.ele('budget_fy').val() : 0);
+            let revenue_category_id = parseInt((div.ele('revenue_category').val()) ? div.ele('revenue_category').val() : 0);
+            let funding_class_code = parseInt((div.ele('funding_class').val()) ? div.ele('funding_class').val() : 0);
+            let filters = {
+              display_fiscal_year_id: display_fiscal_year_id,
+              fund_class_id: fund_class_id,
+              agency_id: agency_id,
+              fiscal_year_id: fiscal_year_id,
+              revenue_category_id: revenue_category_id,
+              funding_class_code: funding_class_code
+            };
+
+            div.ele('revenue_class').autocomplete({source: autoCompleteSource(solr_datasource,'revenue_class_name',filters)});
+            div.ele('revenue_source').autocomplete({source: autoCompleteSource(solr_datasource,'revenue_source_name',filters)});
+          }
+
+          $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {
+            $(this).parent().next().val(ui.item.label);
+          });
+
+          //prevent the auto-complete from wrapping un-necessarily
+          fixAutoCompleteWrapping(div.contents());
+        }
+
+        //Initialize the field elements in the view based on data source selected
+        function initializeRevenueView(div, dataSource) {
+          initializeRevenueViewAutocomplete(div, dataSource);
+          div_revenue_main.each(function () {
+            $(this).focusout(function () {
+              initializeRevenueViewAutocomplete(div, dataSource);
+            });
+          });
+        }
       }
 
 // advanced-search-spending
