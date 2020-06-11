@@ -1489,12 +1489,12 @@ div.create-alert-schedule-alert select{
 
 #checkbook-advanced-search-form #edit-spending-submit,
 #checkbook-advanced-search-form #edit-spending-clear,
-#checkbook-advanced-search-form #edit-contracts-submit,
-#checkbook-advanced-search-form #edit-contracts-clear,
 #checkbook-advanced-search-form #edit-spending-submit--2,
 #checkbook-advanced-search-form #edit-spending-clear--2,
 #checkbook-advanced-search-form #edit-spending-submit--3,
 #checkbook-advanced-search-form #edit-spending-clear--3,
+#checkbook-advanced-search-form #edit-contracts-submit,
+#checkbook-advanced-search-form #edit-contracts-clear,
 #checkbook-advanced-search-form #edit-contracts-submit--2,
 #checkbook-advanced-search-form #edit-contracts-clear--2,
 #checkbook-advanced-search-form #edit-contracts-submit--3,
@@ -1506,7 +1506,9 @@ div.create-alert-schedule-alert select{
 #checkbook-advanced-search-form #edit-budget-submit--2,
 #checkbook-advanced-search-form #edit-budget-clear--2,
 #checkbook-advanced-search-form #edit-revenue-submit,
-#checkbook-advanced-search-form #edit-revenue-clear{
+#checkbook-advanced-search-form #edit-revenue-clear,
+#checkbook-advanced-search-form #edit-revenue-submit--2,
+#checkbook-advanced-search-form #edit-revenue-clear--2{
     float:none;
 }
 
@@ -1626,7 +1628,9 @@ div.create-alert-schedule-alert select{
     display: none;
 }
 
-#spending-advanced-search .form-item.form-type-select.form-item-spending-fiscal-year{float:left;}
+#spending-advanced-search .form-item.form-type-select.form-item-spending-fiscal-year{
+  float:left;
+}
 #spending-advanced-search #edit-checkbook-spending-fiscal-year,
 #spending-advanced-search #edit-checkbook-spending-fiscal-year--2,
 #spending-advanced-search #edit-checkbook-oge-spending-fiscal-year,
@@ -1729,14 +1733,14 @@ div.create-alert-schedule-alert select{
     text-align: right;
 }
 #checkbook-advanced-search-form .spending-submit input,
-#checkbook-advanced-search-form .contracts-submit input,
-#checkbook-advanced-search-form .payroll-submit input,
-#checkbook-advanced-search-form .revenue-submit input,
-#checkbook-advanced-search-form .budget-submit input,
 #checkbook-advanced-search-form .spending-next input,
+#checkbook-advanced-search-form .contracts-submit input,
 #checkbook-advanced-search-form .contracts-next input,
+#checkbook-advanced-search-form .payroll-submit input,
 #checkbook-advanced-search-form .payroll-next input,
+#checkbook-advanced-search-form .revenue-submit input,
 #checkbook-advanced-search-form .revenue-next input,
+#checkbook-advanced-search-form .budget-submit input,
 #checkbook-advanced-search-form .budget-next input,
 #checkbook-advanced-search-form .create-alert-submit input {
     width: auto;
@@ -4070,7 +4074,8 @@ body.page-data-feeds #div_data_source,
 #checkbook-advanced-search-form #div_spending_data_source,
 #checkbook-advanced-search-form #div_contracts_data_source,
 #checkbook-advanced-search-form #div_payroll_data_source,
-#checkbook-advanced-search-form #div_budget_data_source{
+#checkbook-advanced-search-form #div_budget_data_source,
+#checkbook-advanced-search-form #div_revenue_data_source{
   border: 1px solid #CCCCCC;
   border-radius: 5px;
   padding: 10px;
@@ -4106,7 +4111,8 @@ body.page-data-feeds #div_data_source,
 #checkbook-advanced-search-form #div_spending_data_source .form-item,
 #checkbook-advanced-search-form #div_contracts_data_source .form-item,
 #checkbook-advanced-search-form #div_payroll_data_source .form-item,
-#checkbook-advanced-search-form #div_budget_data_source .form-item{
+#checkbook-advanced-search-form #div_budget_data_source .form-item,
+#checkbook-advanced-search-form #div_revenue_data_source .form-item{
   height: 25px;
   float: left;
   margin-right: 70px;
@@ -4115,7 +4121,8 @@ body.page-data-feeds #div_data_source,
 #checkbook-advanced-search-form #div_spending_data_source,
 #checkbook-advanced-search-form #div_contracts_data_source,
 #checkbook-advanced-search-form #div_payroll_data_source,
-#checkbook-advanced-search-form #div_budget_data_source{
+#checkbook-advanced-search-form #div_budget_data_source,
+#checkbook-advanced-search-form #div_revenue_data_source{
   font-size: 12px;
 }
 
