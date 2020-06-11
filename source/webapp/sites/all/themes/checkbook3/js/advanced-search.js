@@ -459,22 +459,6 @@
           });
         }
 
-        //Reset fields to default values
-        let resetFields = function(divWrapper) {
-          $(divWrapper.children()).find(':input').each(function () {
-            if (this.type == 'text') {
-              $(this).val('');
-            }
-            if (this.type == 'select-one') {
-              var default_option = $(this).attr('default_selected_value');
-              if (!default_option)
-                $(this).find('option:first').attr("selected", "selected");
-              else
-                $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
-            }
-          });
-        }
-
         let onBudgetDataSourceChange = function(dataSource) {
           /* Initialize view by data source */
           switch (dataSource) {
@@ -905,17 +889,6 @@
           });
         }
 
-        function resetFields(divWrapper) {
-          $(divWrapper.children()).find(':input').each(function () {
-            if (this.type === 'text') {
-              $(this).val('');
-            }
-            if (this.type === 'select-one') {
-              $(this).val('');
-            }
-          });
-        }
-
         //On change of "Status"
         div_checkbook_contracts.ele('status').change(function () {
           showHidePrimeAndSubFields(div_checkbook_contracts);
@@ -1165,7 +1138,7 @@
           /* Initialize view by data source */
           switch (dataSource) {
             case "checkbook_nycha":
-              //resetFields(div_checkbook_revenue_nycha.contents());
+              resetFields(div_checkbook_revenue_nycha.contents());
               initializeRevenueView(div_checkbook_revenue_nycha, dataSource);
               div_checkbook_revenue.contents().hide();
               div_checkbook_revenue_nycha.contents().show();
@@ -1178,7 +1151,7 @@
               break;
 
             default:
-              //resetFields(div_checkbook_revenue.contents());
+              resetFields(div_checkbook_revenue.contents());
               initializeRevenueView(div_checkbook_revenue, dataSource);
               div_checkbook_revenue.contents().show();
               div_checkbook_revenue_nycha.contents().hide();
@@ -1721,22 +1694,6 @@
             $(this).focusout(function () {
               initializeSpendingViewAutocomplete(div, dataSource);
             });
-          });
-        }
-
-        //Reset fields to default values
-        function resetFields(divWrapper) {
-          $(divWrapper.children()).find(':input').each(function () {
-            if (this.type == 'text') {
-              $(this).val('');
-            }
-            if (this.type == 'select-one') {
-              var default_option = $(this).attr('default_selected_value');
-              if (!default_option)
-                $(this).find('option:first').attr("selected", "selected");
-              else
-                $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
-            }
           });
         }
 
@@ -2830,6 +2787,21 @@
       }
     });
     return;
+  }
+
+  function resetFields(divWrapper) {
+    $(divWrapper.children()).find(':input').each(function () {
+      if (this.type == 'text') {
+        $(this).val('');
+      }
+      if (this.type == 'select-one') {
+        var default_option = $(this).attr('default_selected_value');
+        if (!default_option)
+          $(this).find('option:first').attr("selected", "selected");
+        else
+          $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
+      }
+    });
   }
 
 }(jQuery));
