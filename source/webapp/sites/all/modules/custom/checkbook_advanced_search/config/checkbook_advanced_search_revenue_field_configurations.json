@@ -7,7 +7,7 @@
     {"field_name":"revenue_source","column":"column-left"},
     {"field_name":"adopted","column":"column-left"},
     {"field_name":"recognized","column":"column-left"},
-    {"field_name":"year","column":"column-right"},
+    {"field_name":"fiscal_year","column":"column-right"},
     {"field_name":"funding_class","column":"column-right"},
     {"field_name":"revenue_class","column":"column-right"},
     {"field_name":"fund_class","column":"column-right"},
