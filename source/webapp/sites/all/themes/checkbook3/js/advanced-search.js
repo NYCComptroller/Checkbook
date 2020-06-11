@@ -71,8 +71,6 @@
           yearRange: '-25:+1'
         });
 
-        //disableInputFields();
-
         bind_create_alert_buttons();
 
         callback();
@@ -122,14 +120,14 @@
           active: active_accordion_window
         });
 
-        /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
+        /* For EDC, Budget, Revenue & Payroll are not applicable and are disabled */
         disableAccordionSections(data_source);
 
         clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
         clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
         clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
         clearInputFieldByDataSource("#budget-advanced-search", 'budget', data_source);
-        clearInputFields("#revenue-advanced-search", 'revenue');
+        clearInputFieldByDataSource("#revenue-advanced-search", 'revenue', data_source);
 
         bootstrap_complete();
 
@@ -194,7 +192,7 @@
         advanced_search_revenue_init();
         advanced_search_spending_init();
         advanced_search_buttons_init();
-        var dataSourceDomains = ["spending", "contracts", "payroll", "budget"];
+        var dataSourceDomains = ["spending", "contracts", "payroll", "budget", "revenue"];
         $.each(dataSourceDomains, function( index, value ) {
           let dataSourceDiv = "div_" + value + "_data_source";
           if($("#"+ dataSourceDiv).length <= 0) {
@@ -271,10 +269,6 @@
         let div_checkbook_budget = new budget_div('checkbook', div_budget_main.children('div.checkbook'));
         let div_checkbook_budget_nycha = new budget_div('checkbook_nycha', div_budget_main.children('div.checkbook-nycha'));
 
-        //On change of data source
-        //$('input:radio[name=budget_advanced_search_domain_filter]').change(function () {
-        //  onBudgetDataSourceChange($('input[name=budget_advanced_search_domain_filter]:checked').val());
-        //});
         //checkbook_advanced_search_clear_button.js sets this value by default
         $('input:radio[name=budget_advanced_search_domain_filter]').click(function () {
           onBudgetDataSourceChange($('input[name=budget_advanced_search_domain_filter]:checked').val());
@@ -672,9 +666,6 @@
         var div_checkbook_contracts_nycha = new contracts_div('checkbook_nycha', div_contracts_main.children('div.checkbook-nycha'));
 
         //On change of data source
-       // $('input:radio[name=contracts_advanced_search_domain_filter]').change(function () {
-        //  onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
-        //});
         ///checkbook_advanced_search_clear_button.js sets this value by default
         $('input:radio[name=contracts_advanced_search_domain_filter]').click(function () {
           onChangeDataSource($('input[name=contracts_advanced_search_domain_filter]:checked').val());
@@ -1088,9 +1079,6 @@
         });
 
         //On change of data source
-        //$('input:radio[name=payroll_advanced_search_domain_filter]').change(function () {
-        //  onChangeDataSource($('input[name=payroll_advanced_search_domain_filter]:checked').val());
-       //});
         ///checkbook_advanced_search_clear_button.js sets this value by default
         $('input:radio[name=payroll_advanced_search_domain_filter]').click(function () {
           onChangeDataSource($('input[name=payroll_advanced_search_domain_filter]:checked').val());
@@ -1155,13 +1143,75 @@
 
 // advanced-search-revenue
       function advanced_search_revenue_init() {
-        advanced_search_revenue_init_autocomplete();
+        //Hide EDC radio for Revenue data-source
+        $('#edit-revenue-advanced-search-domain-filter-checkbook-oge').parent().hide();
+        let revenue_div = function (data_source, div_contents) {
+          this.div_elements = {
+            'budget_fy': 'select[name=' + data_source + '_revenue_budget_fiscal_year]',
+            'agency': 'select[name=' + data_source + '_revenue_agency]',
+            'revenue_category': 'select[name=' + data_source + '_revenue_revenue_category]',
+            'revenue_source': 'input:text[name=' + data_source + '_revenue_revenue_source]',
+            'adopted_from': 'input:text[name=' + data_source + '_revenue_adopted_from]',
+            'adopted_to': 'input:text[name=' + data_source + '_revenue_adopted_to]',
+            'recognized_from': 'input:text[name=' + data_source + '_revenue_recognized_from]',
+            'recognized_to': 'input:text[name=' + data_source + '_revenue_recognized_to]',
+            'revenue_year': 'select[name=' + data_source + '_revenue_year]',
+            'funding_class': 'select[name=' + data_source + '_revenue_funding_class]',
+            'revenue_class': 'input:text[name=' + data_source + '_revenue_revenue_class]',
+            'fund_class': 'select[name=' + data_source + '_revenue_fund_class]',
+            'modified_from': 'input:text[name=' + data_source + '_revenue_modified_from]',
+            'modified_to': 'input:text[name=' + data_source + '_revenue_modified_to]'
+          };
 
-        $('#revenue-advanced-search').each(function () {
-          $(this).focusout(function () {
-            advanced_search_revenue_init_autocomplete();
-          });
+          this.data_source = data_source;
+          this.div_contents = div_contents;
+        };
+        revenue_div.prototype.contents = function () {
+          return this.div_contents;
+        };
+        revenue_div.prototype.ele = function (element_name) {
+          let selector = this.div_elements[element_name];
+          return this.div_contents.find(selector);
+        };
+
+        //Initialise divs for checkbook and checkbook_nycha
+        let div_revenue_main = $("#revenue-advanced-search");
+        let div_checkbook_revenue = new revenue_div('checkbook', div_revenue_main.children('div.checkbook'));
+        let div_checkbook_revenue_nycha = new revenue_div('checkbook_nycha', div_revenue_main.children('div.checkbook-nycha'));
+
+        //checkbook_advanced_search_clear_button.js sets this value by default
+        $('input:radio[name=revenue_advanced_search_domain_filter]').click(function () {
+          onRevenueDataSourceChange($('input[name=revenue_advanced_search_domain_filter]:checked').val());
         });
+
+        let onRevenueDataSourceChange = function(dataSource) {
+          /* Initialize view by data source */
+          switch (dataSource) {
+            case "checkbook_nycha":
+              //resetFields(div_checkbook_revenue_nycha.contents());
+              div_checkbook_revenue.contents().hide();
+              div_checkbook_revenue_nycha.contents().show();
+
+              //Reset Revenue Name and Revenue Code Chosen drop-downs
+              //div_checkbook_revenue_nycha.ele('budget_type').val("0").trigger("chosen:updated");
+              //div_checkbook_revenue_nycha.ele('nycha_budget_name').val("0").trigger("chosen:updated");
+              //reloadBudgetType(div_checkbook_revenue_nycha);
+              //reloadNychaBudgetName(div_checkbook_revenue_nycha);
+              break;
+
+            default:
+              //resetFields(div_checkbook_revenue.contents());
+              div_checkbook_revenue.contents().show();
+              div_checkbook_revenue_nycha.contents().hide();
+          }
+        }
+        //advanced_search_revenue_init_autocomplete();
+
+        //$('#revenue-advanced-search').each(function () {
+        //  $(this).focusout(function () {
+        //    advanced_search_revenue_init_autocomplete();
+        //  });
+        //});
       }
 
 // advanced-search-spending
@@ -1498,9 +1548,6 @@
         }
 
         //On change of data source
-        //$('input:radio[name=spending_advanced_search_domain_filter]').change(function () {
-        //  onChangeDataSource($('input[name=spending_advanced_search_domain_filter]:checked').val());
-        //});
         //checkbook_advanced_search_clear_button.js sets this value by default
         $('input:radio[name=spending_advanced_search_domain_filter]').click(function () {
           onChangeDataSource($('input[name=spending_advanced_search_domain_filter]:checked').val());
@@ -1704,8 +1751,14 @@
           /* Remove focus */
           e.preventDefault();
         });
-        $('#edit-revenue-clear').click(function (e) {
-          clearInputFields('#revenue-advanced-search', 'revenue');
+        $('div.revenue-submit.checkbook').find('input:submit[value="Clear All"]').click(function (e) {
+          clearInputFieldByDataSource("#revenue-advanced-search", 'revenue', 'checkbook');
+          $(this).blur();
+          /* Remove focus */
+          e.preventDefault();
+        });
+        $('div.revenue-submit.checkbook-nycha').find('input:submit[value="Clear All"]').click(function (e) {
+          clearInputFieldByDataSource("#revenue-advanced-search", 'revenue', 'checkbook_nycha');
           $(this).blur();
           /* Remove focus */
           e.preventDefault();
@@ -1764,6 +1817,7 @@
             active_accordion_window = 0;
             break;
           case "revenue":
+          case "nycha_revenue":
             active_accordion_window = 1;
             break;
           case "contracts_revenue_landing":
@@ -1788,7 +1842,7 @@
         clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
         clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
         clearInputFieldByDataSource("#budget-advanced-search", 'budget', data_source);
-        clearInputFields("#revenue-advanced-search", 'revenue');
+        clearInputFieldByDataSource("#revenue-advanced-search", 'revenue', data_source);
 
         return active_accordion_window;
       }
@@ -1853,10 +1907,7 @@
 
       /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
       function disableAccordionSections(data_source) {
-        //Disable Budget and Revenue for EDC/NYCHA
-        if (data_source === "checkbook_nycha") {
-          disableAccordionSection('Revenue');
-        }
+        //Disable Payroll, Budget and Revenue for EDC
         if (data_source === "checkbook_oge") {
           let ogeDisabledDomains = ["budget", "Revenue", "Payroll"];
           if (Array.isArray(ogeDisabledDomains)) {
@@ -1932,14 +1983,14 @@
           active: active_accordion_window
         });
 
-        /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
+        /* For EDC, Budget, Revenue & Payroll are not applicable and are disabled */
         disableAccordionSections(data_source);
 
         clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
         clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
         clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
         clearInputFieldByDataSource("#budget-advanced-search", 'budget', data_source);
-        clearInputFields("#revenue-advanced-search", 'revenue');
+        clearInputFieldByDataSource("#revenue-advanced-search", 'revenue', data_source);
 
         bootstrap_complete();
 
@@ -2705,6 +2756,9 @@
               break;
             case 'budget':
               $(':radio[name="budget_advanced_search_domain_filter"][value="' + dataSource + '"]').click();
+              break;
+            case 'revenue':
+              $(':radio[name="revenue_advanced_search_domain_filter"][value="' + dataSource + '"]').click();
               break;
           }
           break;
