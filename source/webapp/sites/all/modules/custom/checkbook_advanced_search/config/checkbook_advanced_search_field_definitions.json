@@ -309,6 +309,11 @@
     "field_name":"budget_fiscal_year",
     "attributes":{"title":"Budget FY", "options":"$year_attribute"}
   },
+  "fiscal_year":{
+    "field_type":"select",
+    "field_name":"fiscal_year",
+    "attributes":{"title":"Fiscal Year", "options":"$all_fiscal_years"}
+  },
   "revenue_category":{
     "field_type":"select",
     "field_name":"revenue_category",
@@ -327,7 +332,7 @@
   "funding_class":{
     "field_type":"select",
     "field_name":"funding_class",
-    "attributes":{"title":"Funding Class", "options":"$revenue_categories"}
+    "attributes":{"title":"Funding Class", "options":"$revenue_funding_classes"}
   },
   "revenue_class":{
     "field_type":"textfield",
