@@ -187,8 +187,9 @@ jQuery(document).ready(function ($) {
             $('#nycha-contracts-landing .grid-12 .inside').filter(':first').after(pager);
             $('#nycha-spending-landing .grid-12 .inside').filter(':first').after(pager);
             $('#nycha-budget-landing .grid-12 .inside').filter(':first').after(pager);
+            $('#nycha-revenue-landing .grid-12 .inside').filter(':first').after(pager);
 
-            var highSlides = '#nycha-budget-landing .grid-12 .inside,#nycha-spending-landing .grid-12 .inside, #nycha-contracts-landing .grid-12 .inside, #nyc-spending .grid-12 .inside, #nyc-payroll .grid-12 .inside, #nyc-contracts .grid-12 .inside,#nyc-budget .grid-12 .inside, #agency-budget .grid-12 .inside, #agency-expenditure-categories .grid-12 .inside, #nyc-expenditure-categories .grid-12 .inside,#nyc-contracts-revenue-landing .grid-12 .inside,#nyc-revenue-pending-contracts .grid-12 .inside,#nyc-expense-pending-contracts .grid-12 .inside,#dept-budget .grid-12 .inside,#nyc-revenue .grid-12 .inside';
+            var highSlides = '#nycha-revenue-landing .grid-12 .inside,#nycha-budget-landing .grid-12 .inside,#nycha-spending-landing .grid-12 .inside, #nycha-contracts-landing .grid-12 .inside, #nyc-spending .grid-12 .inside, #nyc-payroll .grid-12 .inside, #nyc-contracts .grid-12 .inside,#nyc-budget .grid-12 .inside, #agency-budget .grid-12 .inside, #agency-expenditure-categories .grid-12 .inside, #nyc-expenditure-categories .grid-12 .inside,#nyc-contracts-revenue-landing .grid-12 .inside,#nyc-revenue-pending-contracts .grid-12 .inside,#nyc-expense-pending-contracts .grid-12 .inside,#dept-budget .grid-12 .inside,#nyc-revenue .grid-12 .inside';
 
             if ($(highSlides).filter(":first").length > 0) {
             $(highSlides).filter(":first")

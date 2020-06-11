@@ -7,7 +7,7 @@
     {"labelAlias":"program","column":"program_phase_description", "tooltip":60, "derivedColumn":"program_name_link"},
     {"labelAlias":"adopted","column":"adopted_amount","format":"dollar"},
     {"labelAlias":"modified","column":"modified_amount","format":"dollar"},
-    {"labelAlias":"recognized","column":"recognized_amount","format":"dollar"},
+    {"labelAlias":"recognized","column":"recognized_amount","format":"dollar","derivedColumn":"program_rev_link"},
     {"labelAlias":"remaining","column":"funds_available","format":"dollar"},
     {"label":"","column":""}
   ],
