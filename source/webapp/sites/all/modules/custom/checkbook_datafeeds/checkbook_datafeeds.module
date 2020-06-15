@@ -74,9 +74,9 @@ function checkbook_datafeeds_menu()
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
   );
-  $items['datafeeds/budget/expcat/%/%/%'] = array(
+  $items['datafeeds/%/expcat/%/%/%'] = array(
     'page callback' => '_budget_expcat_options',
-    'page arguments' => array(3, 4, 5),
+    'page arguments' => array(1, 3, 4, 5),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
   );
@@ -998,9 +998,9 @@ function _budget_dept_options($year, $agency)
 /**
  * Get Expenditure Category from Data Controller and format into a FAPI select input #options array.
  *
+ * @param $domain
  * @param $year
  *   Year
- *
  * @param $agency
  *   Agency code
  * @param $dept
@@ -1010,12 +1010,12 @@ function _budget_dept_options($year, $agency)
  * @return mixed Expenditure object codes and expenditure object names, filtered by agency, department, year
  *   Expenditure object codes and expenditure object names, filtered by agency, department, year
  */
-function _budget_expcat_options($year, $agency, $dept, $dataSource = Datasource::CITYWIDE, $feeds = true){
+function _budget_expcat_options($domain, $year, $agency, $dept, $dataSource = Datasource::CITYWIDE, $feeds = true){
   switch ($dataSource){
     case Datasource::NYCHA :
         $query = "SELECT DISTINCT expenditure_type_description || ' [' || expenditure_type_code || ']' AS expenditure_object_code, 
                                   expenditure_type_id, expenditure_type_description 
-                  FROM budget ORDER BY expenditure_object_code ASC";
+                  FROM {$domain} ORDER BY expenditure_object_code ASC";
         $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
         $title = 'Select Expense Category';
         $options[''] = $title;
@@ -1041,7 +1041,7 @@ function _budget_expcat_options($year, $agency, $dept, $dataSource = Datasource:
         $yearString = ($year) ? " AND budget_fiscal_year = " . ltrim($year, 'FY') . " " : "";
         $deptString = ($dept) ? " AND department_code = '" . $dept . "' " : "";
 
-        $query = "SELECT DISTINCT object_class_name || ' [' || object_class_code || ']' expenditure_object_code  FROM budget WHERE"
+        $query = "SELECT DISTINCT object_class_name || ' [' || object_class_code || ']' expenditure_object_code  FROM {$domain} WHERE"
           . $agencyString . $yearString . $deptString . "ORDER BY expenditure_object_code ASC";
         $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
         $options = array();
