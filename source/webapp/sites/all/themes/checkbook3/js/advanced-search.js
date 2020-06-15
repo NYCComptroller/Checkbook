@@ -549,14 +549,14 @@
         div_checkbook_budget_nycha.ele('nycha_budget_name').change(function () {
           reloadBudgetType(div_checkbook_budget_nycha);
           if($(this).val() == 'Select Budget Name' || $(this).val() == '' || $(this).val() === 0){
-            reloadNychaBudgetName();
+            reloadNychaBudgetName(div_checkbook_budget_nycha);
           }
         });
 
         div_checkbook_budget_nycha.ele('budget_type').change(function () {
           reloadNychaBudgetName(div_checkbook_budget_nycha);
           if($(this).val() == 'Select Budget Type' || $(this).val() == '' || $(this).val() === 0){
-            reloadBudgetType();
+            reloadBudgetType(div_checkbook_budget_nycha);
           }
         });
       }
@@ -1112,14 +1112,14 @@
             'modified_from': 'input:text[name=' + data_source + '_revenue_modified_from]',
             'modified_to': 'input:text[name=' + data_source + '_revenue_modified_to]',
             'expense_category': 'select[name=' + data_source + '_revenue_expense_category]',
-            'resp_center':'select[name=' + data_source + '_budget_responsibility_center]',
-            'fundsrc':'select[name=' + data_source + '_budget_fundsrc]',
-            'program':'select[name=' + data_source + '_budget_program]',
-            'project':'select[name=' + data_source + '_budget_project]',
-            'budget_type':'select[name=' + data_source + '_budget_budget_type]',
-            'budget_type_chosen':'select[name=' + data_source + '_budget_budget_type_chosen]',
-            'nycha_budget_name':'select[name=' + data_source + '_budget_nycha_budget_name]',
-            'nycha_budget_name_chosen':'select[name=' + data_source + '_budget_nycha_budget_name_chosen]',
+            'resp_center':'select[name=' + data_source + '_revenue_responsibility_center]',
+            'fundsrc':'select[name=' + data_source + '_revenue_fundsrc]',
+            'program':'select[name=' + data_source + '_revenue_program]',
+            'project':'select[name=' + data_source + '_revenue_project]',
+            'budget_type':'select[name=' + data_source + '_revenue_budget_type]',
+            'budget_type_chosen':'select[name=' + data_source + '_revenue_budget_type_chosen]',
+            'nycha_budget_name':'select[name=' + data_source + '_revenue_nycha_budget_name]',
+            'nycha_budget_name_chosen':'select[name=' + data_source + '_revenue_nycha_budget_name_chosen]',
             'nycha_revenue_category': 'input:text[name=' + data_source + '_revenue_nycha_revenue_category]',
             'remaining_from': 'input:text[name=' + data_source + '_revenue_remaining_from]',
             'remaining_to': 'input:text[name=' + data_source + '_revenue_remaining_to]',
@@ -1141,6 +1141,64 @@
         let div_checkbook_revenue = new revenue_div('checkbook', div_revenue_main.children('div.checkbook'));
         let div_checkbook_revenue_nycha = new revenue_div('checkbook_nycha', div_revenue_main.children('div.checkbook-nycha'));
 
+        let revenueBudgetTypeAlreadyLoaded = false;
+
+        let reloadRevenueBudgetType = function(div) {
+          let budget_name = encodeURIComponent(div.ele('nycha_budget_name').val());
+          let budget_type = div.ele('budget_type').val();
+          let data_source = 'checkbook_nycha';
+
+          let url = '/data-feeds/revenue/budget_type/' + data_source + '/' + budget_name.toString().replace(/\//g, "__") + '/'  + true;
+          if (url === revenueBudgetTypeAlreadyLoaded) {
+            return;
+          }
+          revenueBudgetTypeAlreadyLoaded = url;
+          $.ajax({
+            url: url,
+            success: function(data) {
+              let html = '<option value="" >Select Budget Type</option>';
+              if(data[0]){
+                for (i = 0; i < data.length; i++) {
+                  html = html + '<option value="' + data[i].value + '" title="' + data[i].value + '">' + data[i].text  + '</option>';
+                }
+              }
+              div.ele('budget_type').html(html).val(budget_type).trigger("chosen:updated");
+              if (budget_name !== div.ele('nycha_budget_name').val()) {
+                reloadRevenueBudgetType(div);
+              }
+            }
+          });
+        }
+
+        let nychaRevenueBudgetNamesAlreadyLoaded = false;
+
+        let reloadNychaRevenueBudgetName = function(div) {
+          let budget_type = encodeURIComponent(div.ele('budget_type').val());
+          let budget_name = div.ele('nycha_budget_name').val();
+          let data_source = 'checkbook_nycha';
+
+          let url = '/data-feeds/revenue/budget_name/' + data_source + '/' + budget_type.toString().replace(/\//g, "__") + '/'  + true;
+          if (url === nychaRevenueBudgetNamesAlreadyLoaded) {
+            return;
+          }
+          nychaRevenueBudgetNamesAlreadyLoaded = url;
+          $.ajax({
+            url: url,
+            success: function(data) {
+              let html = '<option value="" >Select Budget Name</option>';
+              if(data[0]){
+                for (i = 0; i < data.length; i++) {
+                  html = html + '<option value="' + data[i].value + '" title="' + data[i].value + '">' + data[i].text  + '</option>';
+                }
+              }
+              div.ele('nycha_budget_name').html(html).val(budget_name).trigger("chosen:updated");
+              if (budget_type !== div.ele('budget_type').val()) {
+                reloadNychaRevenueBudgetName(div);
+              }
+            }
+          });
+        }
+
         //checkbook_advanced_search_clear_button.js sets this value by default
         $('input:radio[name=revenue_advanced_search_domain_filter]').click(function () {
           onRevenueDataSourceChange($('input[name=revenue_advanced_search_domain_filter]:checked').val());
@@ -1156,10 +1214,10 @@
               div_checkbook_revenue_nycha.contents().show();
 
               //Reset Revenue Name and Revenue Code Chosen drop-downs
-              //div_checkbook_revenue_nycha.ele('budget_type').val("0").trigger("chosen:updated");
-              //div_checkbook_revenue_nycha.ele('nycha_budget_name').val("0").trigger("chosen:updated");
-              //reloadBudgetType(div_checkbook_revenue_nycha);
-              //reloadNychaBudgetName(div_checkbook_revenue_nycha);
+              div_checkbook_revenue_nycha.ele('budget_type').val("0").trigger("chosen:updated");
+              div_checkbook_revenue_nycha.ele('nycha_budget_name').val("0").trigger("chosen:updated");
+              reloadRevenueBudgetType(div_checkbook_revenue_nycha);
+              reloadNychaRevenueBudgetName(div_checkbook_revenue_nycha);
               break;
 
             default:
@@ -1224,6 +1282,34 @@
             });
           });
         }
+
+        //NYCHA Revenue- Trigger Chosen input tool for 'Budget Type' and 'Budget Name'
+        div_checkbook_revenue_nycha.ele('budget_type').chosen({
+          no_results_text: "No matches found"
+        });
+        div_checkbook_revenue_nycha.ele('budget_type_chosen').find('.chosen-search-input').attr("placeholder", "Search Budget Type");
+
+        div_checkbook_revenue_nycha.ele('nycha_budget_name').chosen({
+          no_results_text: "No matches found"
+        });
+        div_checkbook_revenue_nycha.ele('nycha_budget_name_chosen').find('.chosen-search-input').attr("placeholder", "Search Budget Name");
+        reloadRevenueBudgetType(div_checkbook_revenue_nycha);
+        reloadNychaRevenueBudgetName(div_checkbook_revenue_nycha);
+
+        //NYCHA Revenue - Drop-down change events
+        div_checkbook_revenue_nycha.ele('nycha_budget_name').change(function () {
+          reloadRevenueBudgetType(div_checkbook_revenue_nycha);
+          if($(this).val() == 'Select Budget Name' || $(this).val() == '' || $(this).val() === 0){
+            reloadNychaRevenueBudgetName(div_checkbook_revenue_nycha);
+          }
+        });
+
+        div_checkbook_revenue_nycha.ele('budget_type').change(function () {
+          reloadNychaRevenueBudgetName(div_checkbook_revenue_nycha);
+          if($(this).val() == 'Select Budget Type' || $(this).val() == '' || $(this).val() === 0){
+            reloadRevenueBudgetType(div_checkbook_revenue_nycha);
+          }
+        });
       }
 
 // advanced-search-spending
