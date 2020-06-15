@@ -95,16 +95,16 @@ function checkbook_datafeeds_menu()
     'type' => MENU_CALLBACK
   );
 
-  $items['data-feeds/budget/budget_name/%/%/%'] = array(
+  $items['data-feeds/%/budget_name/%/%/%'] = array(
     'page callback' => '_budget_name_options',
-    'page arguments' => array(3, 4, 5),
+    'page arguments' => array(1, 3, 4, 5),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
   );
 
-  $items['data-feeds/budget/budget_type/%/%/%'] = array(
+  $items['data-feeds/%/budget_type/%/%/%'] = array(
     'page callback' => '_budget_type_options',
-    'page arguments' => array(3, 4, 5),
+    'page arguments' => array(1, 3, 4, 5),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
   );
@@ -1129,11 +1129,11 @@ function _budget_project_options($dataSource = Datasource::CITYWIDE, $feeds = tr
  * @param $json
  * @return array of Budget Type data
  */
-function _budget_type_options($dataSource = Datasource::CITYWIDE, $budgetName = null, $json = false){
+function _budget_type_options($domain, $dataSource = Datasource::CITYWIDE, $budgetName = null, $json = false){
   switch ($dataSource){
     case Datasource::NYCHA :
       $where = (isset($budgetName) && !in_array($budgetName, array('Select Budget Name', '', 0, '0'), true)) ? "WHERE budget_name = '". $budgetName ."' ":"";
-      $query = "SELECT DISTINCT budget_type FROM budget ". $where ." ORDER BY budget_type ASC";
+      $query = "SELECT DISTINCT budget_type FROM {$domain} {$where} ORDER BY budget_type ASC";
       $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
       $title = 'Select Budget Type';
       $options[''] = $title;
@@ -1161,11 +1161,11 @@ function _budget_type_options($dataSource = Datasource::CITYWIDE, $budgetName = 
  * @param $json
  * @return array of Budget Name data
  */
-function _budget_name_options($dataSource = Datasource::CITYWIDE, $budgetType = null, $json = false){
+function _budget_name_options($domain, $dataSource = Datasource::CITYWIDE, $budgetType = null, $json = false){
   switch ($dataSource){
     case Datasource::NYCHA :
       $where = (isset($budgetType) && !in_array($budgetType, array('Select Budget Type', '', 0, '0'), true)) ? "WHERE budget_type = '". $budgetType ."' ":"";
-      $query = "SELECT DISTINCT budget_name FROM budget ". $where ." ORDER BY budget_name ASC";
+      $query = "SELECT DISTINCT budget_name FROM {$domain} {$where} ORDER BY budget_name ASC";
       $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
       $title = 'Select Budget Name';
       $options[''] = $title;
