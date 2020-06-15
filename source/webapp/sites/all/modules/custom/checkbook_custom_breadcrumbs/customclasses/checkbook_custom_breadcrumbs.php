@@ -396,5 +396,45 @@ class CustomBreadcrumbs
       return $title;
     }
 
+  /** Returns NYCHA Revenue page title and Breadcrumb */
+  public static function getNYCHARevenueBreadcrumbTitle()
+  {
+    $bottomURL = $_REQUEST['expandBottomContURL'];
+    if (!$bottomURL && preg_match('/^nycha_revenue\/search\/transactions/', current_path()) || preg_match('/^nycha_revenue\/all\/transactions/', current_path()))
+    {
+      $title = 'NYCHA RevenueTransactions';
+    } else if ((stripos($bottomURL, 'transactions')) || (stripos($bottomURL, 'details'))){
+      $title = NychaRevenueUtil::getTransactionsTitle($bottomURL);
+    } else if (preg_match('/nycha_revenue/', $bottomURL)) {
+      $title = RequestUtil::getRequestKeyValueFromURL("nycha_revenue", $bottomURL);
+    }
+    else {
+      $lastReqParam = _getLastRequestParamValue();
+      foreach ($lastReqParam as $key => $value) {
+        switch ($key) {
+          case 'expcategory':
+            $title = _checkbook_project_get_name_for_argument("rev_expenditure_type_id", $value);
+            break;
+          case 'respcenter':
+            $title = _checkbook_project_get_name_for_argument("responsibility_center_id", $value);
+            break;
+          case 'fundsrc':
+            $title = _checkbook_project_get_name_for_argument("rev_funding_source_id", $value);
+            break;
+          case 'program':
+            $title = _checkbook_project_get_name_for_argument("rev_program_phase_id", $value);
+            break;
+          case 'project':
+            $title = _checkbook_project_get_name_for_argument("rev_gl_project_id", $value);
+            break;
+          default:
+            $title = "New York City Housing Authority";
+        }
+        $title .= ' Revenue';
+      }
+    }
+    return $title;
+  }
+
 }
 ?>
