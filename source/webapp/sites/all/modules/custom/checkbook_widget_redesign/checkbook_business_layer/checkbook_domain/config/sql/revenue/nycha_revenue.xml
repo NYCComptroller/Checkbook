@@ -156,6 +156,7 @@
     <sql>
       SELECT
       revenue_category AS revenue_category,
+      revenue_category_id AS revenue_category_id,
       SUM(adopted_amount) AS adopted_amount,
       SUM(modified_amount) AS modified_amount,
       SUM(revenue_amount) AS recognized_amount,
@@ -171,7 +172,7 @@
           <exp op="=" dbField="program_phase_id" paramName="program" />
         </exp>
       </where>
-      GROUP BY revenue_category
+      GROUP BY revenue_category,revenue_category_id
     </sql>
   </statement>
 

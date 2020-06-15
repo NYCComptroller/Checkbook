@@ -7,7 +7,7 @@
     {"labelAlias":"revenue_category","column":"revenue_category", "tooltip":60},
     {"labelAlias":"adopted","column":"adopted_amount","format":"dollar"},
     {"labelAlias":"modified","column":"modified_amount","format":"dollar"},
-    {"labelAlias":"recognized","column":"recognized_amount","format":"dollar"},
+    {"labelAlias":"recognized","column":"recognized_amount","format":"dollar","derivedColumn": "reccat_rev_link"},
     {"labelAlias":"remaining","column":"funds_available","format":"dollar"},
     {"label":"","column":""}
   ],

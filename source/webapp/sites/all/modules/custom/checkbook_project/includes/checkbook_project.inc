@@ -439,8 +439,13 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
       return ucwords(strtolower($budget_codes[0]['attribute_name']));
       break;
     case "revenue_category_id":
-      $revcat_ids = _checkbook_project_querydataset($data_source . ':revenue_category', array('revenue_category_id', 'revenue_category_name'), array($keyword => $id));
-      return ucwords(strtolower($revcat_ids[0]['revenue_category_name']));
+      if ($data_source == Datasource::NYCHA) {
+        $revcat_ids = _checkbook_project_querydataset($data_source . ':revenue', array('revenue_category_id', 'revenue_category'), array($keyword => $id));
+        return ucwords(strtolower($revcat_ids[0]['revenue_category']));
+      }else {
+        $revcat_ids = _checkbook_project_querydataset($data_source . ':revenue_category', array('revenue_category_id', 'revenue_category_name'), array($keyword => $id));
+        return ucwords(strtolower($revcat_ids[0]['revenue_category_name']));
+      }
       break;
     case "funding_class_id":
       $fundsrc_ids = _checkbook_project_querydataset($data_source . ':ref_funding_class', array('funding_class_id', 'funding_class_name'), array($keyword => $id));

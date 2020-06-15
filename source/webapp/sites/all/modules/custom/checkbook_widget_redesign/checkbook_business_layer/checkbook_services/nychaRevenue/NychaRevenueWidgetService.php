@@ -77,7 +77,7 @@ class NychaRevenueWidgetService extends WidgetDataService implements IWidgetServ
         case "reccat_rev_link":
           $column = $row['recognized_amount'];
           $class = "bottomContainerReload";
-          $dynamic_parameter = "/revcat/" . $row["contract_id"];
+          $dynamic_parameter = "/revcat/" . $row["revenue_category_id"];
           $url = NychaRevenueUrlService::recRevenueUrl($dynamic_parameter, 'rec_reccat');
           $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
           break;
