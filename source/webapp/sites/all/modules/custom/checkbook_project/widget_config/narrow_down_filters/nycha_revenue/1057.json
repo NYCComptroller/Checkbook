@@ -4,20 +4,20 @@
   "startWith":0,
   "maxSelect":5,
   "limit":100,
-  "columns":["revenue_category.revenue_category", "txcount"],
+  "columns":["revenue_category_id.revenue_category_id","revenue_category.revenue_category", "txcount"],
   "orderBy":"-txcount",
   "filterName":"Revenue Category",
   "facetPager":true,
   "urlParameterName":"revcat",
   "autocompleteParamName":"frevenueCategory_auto",
-  "autocompleteID":"frevenueCategory",
-  "autocompleteField":"revenue_category.revenue_category",
+  "autocompleteID":"frevenueCategoryId",
+  "autocompleteField":"revenue_category_id.revenue_category_id",
   "adjustParameters":"
   checkbook_faceted_search_adjust_param($node);
   if(function_exists('_checkbook_project_applyParameterFilters')){
   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
 }
-$adjustedParameters['revenue_category.revenue_category'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+$adjustedParameters['revenue_category_id.revenue_category_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 return $adjustedParameters;
 ",
 "template":"individual_filter"

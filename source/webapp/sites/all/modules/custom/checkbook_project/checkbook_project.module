@@ -266,6 +266,11 @@ function checkbook_project_theme($existing, $type, $theme, $path){
           'template' => 'php_widgets/nycha_budget/transactions_summary',
           'arguments' => array('node' => NULL)
         ),
+        //NYCHA Budget Transactions
+        'nycha_revenue_transactions_summary' => array(
+          'template' => 'php_widgets/nycha_revenue/transactions_summary',
+          'arguments' => array('node' => NULL)
+        ),
         //payroll Transactions List
         'payroll_nyc_payroll_summary' => array(
             'template' => 'php_widgets/payroll/nyc_payroll_summary',
