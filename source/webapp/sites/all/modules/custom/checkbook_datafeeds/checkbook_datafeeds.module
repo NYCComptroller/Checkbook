@@ -1104,7 +1104,7 @@ function _budget_project_options($dataSource = Datasource::CITYWIDE, $feeds = tr
                 WHERE gl_project_code NOT IN ('SP0024','SP0025') ORDER BY gl_project_description ASC";
       $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
       $title = 'Select Project';
-      $options['Select Project'] = $title;
+      $options[''] = $title;
       $option_attributes[''] = array('title' => $title);
       foreach ($data as $row) {
         if($feeds) {

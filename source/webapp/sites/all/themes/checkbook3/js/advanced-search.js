@@ -1240,11 +1240,7 @@
         function initializeRevenueViewAutocomplete(div, data_source){
           //Set Solr datasource for auto-complete
           let solr_datasource = data_source;
-          if (data_source === 'checkbook_nycha'){
-            solr_datasource = 'nycha'
-          }
-
-          var agency_id = 0;
+          let agency_id = 0;
           if(data_source === 'checkbook') {
             agency_id = parseInt((div.ele('agency').val()) ? div.ele('agency').val() : 0);
             let display_fiscal_year_id = 0; //do not change, this is a needed for the new change
@@ -1260,9 +1256,30 @@
               revenue_category_id: revenue_category_id,
               funding_class_code: funding_class_code
             };
-
             div.ele('revenue_class').autocomplete({source: autoCompleteSource(solr_datasource,'revenue_class_name',filters)});
             div.ele('revenue_source').autocomplete({source: autoCompleteSource(solr_datasource,'revenue_source_name',filters)});
+          }else if (data_source === 'checkbook_nycha'){
+            solr_datasource = 'nycha';
+            let fiscal_year_id = parseInt((div.ele('budget_fy').val()) ? div.ele('budget_fy').val() : 0);
+            let exp_cat = parseInt((div.ele('expense_category').val()) ? div.ele('expense_category').val() : 0);
+            let resp_center = parseInt((div.ele('resp_center').val()) ? div.ele('resp_center').val() : 0);
+            let funding_src = parseInt((div.ele('fundsrc').val()) ? div.ele('fundsrc').val() : 0);
+            let program = parseInt((div.ele('program').val()) ? div.ele('program').val() : 0);
+            let project = parseInt((div.ele('project').val()) ? div.ele('project').val() : 0);
+            let budget_type = (div.ele('budget_type').val() ? encodeURIComponent(div.ele('budget_type').val()) : 0);
+            let budget_name = (div.ele('nycha_budget_name').val() ?encodeURIComponent(div.ele('nycha_budget_name').val()) : 0);
+            let filters = {
+              fiscal_year_id: fiscal_year_id,
+              expenditure_type_id: exp_cat,
+              responsibility_center_id: resp_center,
+              funding_source_id: funding_src,
+              program_phase_id: program,
+              gl_project_id: project,
+              budget_type: budget_type,
+              budget_name: budget_name
+            };
+            div.ele('revenue_class').autocomplete({source: autoCompleteSource(solr_datasource,'revenue_class',filters)});
+            div.ele('nycha_revenue_category').autocomplete({source: autoCompleteSource(solr_datasource,'revenue_category',filters)});
           }
 
           $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {
