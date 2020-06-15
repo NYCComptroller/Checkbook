@@ -19,7 +19,7 @@ class NychaRevenueUtil{
     'rec_project' => 'Project',
     'rec_funding_source' => 'Funding Source',
     'rec_program' => 'Program',
-    'rec_revcat' => 'Revenue Category',
+    'rec_reccat' => 'Revenue Category',
     'wt_year' => 'Year'
   );
 
@@ -72,6 +72,10 @@ class NychaRevenueUtil{
       case 'rec_project':
         $reqParam = RequestUtil::getRequestKeyValueFromURL('project', $bottomURL);
         $title .= _checkbook_project_get_name_for_argument("rev_gl_project_id", $reqParam);
+        break;
+      case 'rec_reccat':
+        $reqParam = RequestUtil::getRequestKeyValueFromURL('revcat', $bottomURL);
+        $title .= _checkbook_project_get_name_for_argument("revenue_category_id", $reqParam);
         break;
       case 'wt_year' :
         $reqParam = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);

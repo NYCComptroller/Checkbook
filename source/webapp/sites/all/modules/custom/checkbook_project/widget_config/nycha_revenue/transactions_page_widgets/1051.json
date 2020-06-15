@@ -242,7 +242,7 @@ var oRespCenterIds = getNamedFilterCriteria('fRespCenter');
 var oFundingIds = getNamedFilterCriteria('fFundingId');
 var oProgramIds = getNamedFilterCriteria('fProgramId');
 var oProjectIds = getNamedFilterCriteria('fProjectId');
-var oRevenueCategory = getNamedFilterCriteria('frevenueCategory');
+var oRevenueCategoryIds = getNamedFilterCriteria('frevenueCategoryId');
 var oRevenueAmount = getNamedFilterCriteria('frevenueAmount');
 
 var  cUrl = oTable.fnSettings().sAjaxSource;
@@ -254,7 +254,7 @@ cUrl = adjustUrlParameter(cUrl,'bdgtyp',obudgetType);
 cUrl = adjustUrlParameter(cUrl,'fundsrc',oFundingIds);
 cUrl = adjustUrlParameter(cUrl,'program',oProgramIds);
 cUrl = adjustUrlParameter(cUrl,'project',oProjectIds);
-cUrl = adjustUrlParameter(cUrl,'revcat',oRevenueCategory);
+cUrl = adjustUrlParameter(cUrl,'revcat',oRevenueCategoryIds);
 cUrl = adjustUrlParameter(cUrl,'amtr',oRevenueAmount);
 
 return cUrl;
