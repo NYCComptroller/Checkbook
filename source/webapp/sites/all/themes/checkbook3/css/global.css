@@ -1344,7 +1344,8 @@ div.bottomContainer{
     margin: 0px;
 }
 
-div#budget-advanced-search {
+div#budget-advanced-search,
+div#revenue-advanced-search{
     overflow: visible !important;
 }
 
