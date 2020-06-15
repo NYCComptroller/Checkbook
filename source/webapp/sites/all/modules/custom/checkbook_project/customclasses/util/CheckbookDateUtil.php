@@ -156,7 +156,7 @@ class CheckbookDateUtil{
   }
 
   /**
-   * Year List for NYCHA Budget
+   * Year List for NYCHA Budget and NYCHA Revenue
    * Returns past 10 years list from current year which are greater than 2017 until current year
    * @param $feeds
    * @return array

@@ -74,9 +74,9 @@ function checkbook_datafeeds_menu()
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
   );
-  $items['datafeeds/budget/expcat/%/%/%'] = array(
+  $items['datafeeds/%/expcat/%/%/%'] = array(
     'page callback' => '_budget_expcat_options',
-    'page arguments' => array(3, 4, 5),
+    'page arguments' => array(1, 3, 4, 5),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
   );
@@ -95,16 +95,16 @@ function checkbook_datafeeds_menu()
     'type' => MENU_CALLBACK
   );
 
-  $items['data-feeds/budget/budget_name/%/%/%'] = array(
+  $items['data-feeds/%/budget_name/%/%/%'] = array(
     'page callback' => '_budget_name_options',
-    'page arguments' => array(3, 4, 5),
+    'page arguments' => array(1, 3, 4, 5),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
   );
 
-  $items['data-feeds/budget/budget_type/%/%/%'] = array(
+  $items['data-feeds/%/budget_type/%/%/%'] = array(
     'page callback' => '_budget_type_options',
-    'page arguments' => array(3, 4, 5),
+    'page arguments' => array(1, 3, 4, 5),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
   );
@@ -998,9 +998,9 @@ function _budget_dept_options($year, $agency)
 /**
  * Get Expenditure Category from Data Controller and format into a FAPI select input #options array.
  *
+ * @param $domain
  * @param $year
  *   Year
- *
  * @param $agency
  *   Agency code
  * @param $dept
@@ -1010,12 +1010,12 @@ function _budget_dept_options($year, $agency)
  * @return mixed Expenditure object codes and expenditure object names, filtered by agency, department, year
  *   Expenditure object codes and expenditure object names, filtered by agency, department, year
  */
-function _budget_expcat_options($year, $agency, $dept, $dataSource = Datasource::CITYWIDE, $feeds = true){
+function _budget_expcat_options($domain, $year, $agency, $dept, $dataSource = Datasource::CITYWIDE, $feeds = true){
   switch ($dataSource){
     case Datasource::NYCHA :
         $query = "SELECT DISTINCT expenditure_type_description || ' [' || expenditure_type_code || ']' AS expenditure_object_code, 
                                   expenditure_type_id, expenditure_type_description 
-                  FROM budget ORDER BY expenditure_object_code ASC";
+                  FROM {$domain} ORDER BY expenditure_object_code ASC";
         $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
         $title = 'Select Expense Category';
         $options[''] = $title;
@@ -1041,7 +1041,7 @@ function _budget_expcat_options($year, $agency, $dept, $dataSource = Datasource:
         $yearString = ($year) ? " AND budget_fiscal_year = " . ltrim($year, 'FY') . " " : "";
         $deptString = ($dept) ? " AND department_code = '" . $dept . "' " : "";
 
-        $query = "SELECT DISTINCT object_class_name || ' [' || object_class_code || ']' expenditure_object_code  FROM budget WHERE"
+        $query = "SELECT DISTINCT object_class_name || ' [' || object_class_code || ']' expenditure_object_code  FROM {$domain} WHERE"
           . $agencyString . $yearString . $deptString . "ORDER BY expenditure_object_code ASC";
         $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
         $options = array();
@@ -1104,7 +1104,7 @@ function _budget_project_options($dataSource = Datasource::CITYWIDE, $feeds = tr
                 WHERE gl_project_code NOT IN ('SP0024','SP0025') ORDER BY gl_project_description ASC";
       $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
       $title = 'Select Project';
-      $options['Select Project'] = $title;
+      $options[''] = $title;
       $option_attributes[''] = array('title' => $title);
       foreach ($data as $row) {
         if($feeds) {
@@ -1129,11 +1129,11 @@ function _budget_project_options($dataSource = Datasource::CITYWIDE, $feeds = tr
  * @param $json
  * @return array of Budget Type data
  */
-function _budget_type_options($dataSource = Datasource::CITYWIDE, $budgetName = null, $json = false){
+function _budget_type_options($domain, $dataSource = Datasource::CITYWIDE, $budgetName = null, $json = false){
   switch ($dataSource){
     case Datasource::NYCHA :
       $where = (isset($budgetName) && !in_array($budgetName, array('Select Budget Name', '', 0, '0'), true)) ? "WHERE budget_name = '". $budgetName ."' ":"";
-      $query = "SELECT DISTINCT budget_type FROM budget ". $where ." ORDER BY budget_type ASC";
+      $query = "SELECT DISTINCT budget_type FROM {$domain} {$where} ORDER BY budget_type ASC";
       $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
       $title = 'Select Budget Type';
       $options[''] = $title;
@@ -1161,11 +1161,11 @@ function _budget_type_options($dataSource = Datasource::CITYWIDE, $budgetName = 
  * @param $json
  * @return array of Budget Name data
  */
-function _budget_name_options($dataSource = Datasource::CITYWIDE, $budgetType = null, $json = false){
+function _budget_name_options($domain, $dataSource = Datasource::CITYWIDE, $budgetType = null, $json = false){
   switch ($dataSource){
     case Datasource::NYCHA :
       $where = (isset($budgetType) && !in_array($budgetType, array('Select Budget Type', '', 0, '0'), true)) ? "WHERE budget_type = '". $budgetType ."' ":"";
-      $query = "SELECT DISTINCT budget_name FROM budget ". $where ." ORDER BY budget_name ASC";
+      $query = "SELECT DISTINCT budget_name FROM {$domain} {$where} ORDER BY budget_name ASC";
       $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
       $title = 'Select Budget Name';
       $options[''] = $title;

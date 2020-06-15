@@ -340,7 +340,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#suffix' => '</div>',
   );
 
-  $expenseCategories = _budget_expcat_options(NUll, NUll, NULL, Datasource::NYCHA);
+  $expenseCategories = _budget_expcat_options(Domain::Budget, NUll, NUll, NULL, Datasource::NYCHA);
   $form['filter']['nycha_expense_category'] = array(
     '#type' => 'select',
     '#title' => t('Expense Category:'),
