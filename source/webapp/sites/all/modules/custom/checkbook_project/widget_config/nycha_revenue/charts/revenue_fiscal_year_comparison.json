@@ -70,14 +70,14 @@
   }
 return $adjustedParameters;",
 "transformationPHP":"
-  $transactions_page = '/' .  current_path()  . '?expandBottomContURL=/panel_html/nycha_budget_transactions/datasource/checkbook_nycha/widget/wt_year';
+  $transactions_page = '/' .  current_path()  . '?expandBottomContURL=/panel_html/nycha_revenue_transactions/nycha_revenue/transactions/datasource/checkbook_nycha/widget/wt_year';
   $expcategory = ($node->widgetConfig->requestParams['expenditure_type_id']) ? '/expcategory/' . $node->widgetConfig->requestParams['expenditure_type_id'] : '';
   $resp = ($node->widgetConfig->requestParams['responsibility_center_id']) ? '/respcenter/' . $node->widgetConfig->requestParams['responsibility_center_id'] : '';
   $fundsrc = ($node->widgetConfig->requestParams['funding_source_id']) ? '/fundsrc/' . $node->widgetConfig->requestParams['funding_source_id'] : '';
   $prog = ($node->widgetConfig->requestParams['program_phase_id']) ? '/program/' . $node->widgetConfig->requestParams['program_phase_id'] : '';
   $proj = ($node->widgetConfig->requestParams['gl_project_id']) ? '/project/' . $node->widgetConfig->requestParams['gl_project_id'] : '';
-  $revenue_recognized_amount = '/budgettype/committed';
-  $revenue_funds_available = '/budgettype/remaining';
+  $revenue_recognized_amount = '/revtype/recognized';
+  $revenue_funds_available = '/revtype/remaining';
 
 $allZero = TRUE;
 foreach ($node->data as $row){
@@ -85,9 +85,9 @@ if (abs($row['revenue_recognized_amount']) > 0){$allZero = FALSE;}
 if (abs($row['revenue_funds_available']) > 0){$allZero = FALSE;}
 $categories[] = $row['year_year'];
 $year = '/year/' . $row['year_id_year_id'];
-$url_committed =  $transactions_page . $revenue_recognized_amount . $year . $expcategory . $resp . $fundsrc . $proj . $prog;
+$url_recognized =  $transactions_page . $revenue_recognized_amount . $year . $expcategory . $resp . $fundsrc . $proj . $prog;
 $url_remaining =  $transactions_page . $revenue_funds_available . $year . $expcategory . $resp . $fundsrc . $proj . $prog;
-$committed_data[] = array('name' => $row['year_year'], 'y' => $row['revenue_recognized_amount'], 'url' => $url_committed);
+$recognized_data[] = array('name' => $row['year_year'], 'y' => $row['revenue_recognized_amount'], 'url' => $url_recognized);
 $remaining_data[] = array('name' => $row['year_year'], 'y' => $row['revenue_funds_available'], 'url' => $url_remaining);
 }
 if($allZero){$node->totalDataCount = 0;}

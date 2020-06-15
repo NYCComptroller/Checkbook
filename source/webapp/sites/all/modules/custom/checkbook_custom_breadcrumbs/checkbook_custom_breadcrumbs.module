@@ -47,6 +47,8 @@ function checkbook_custom_breadcrumbs_page_alter(&$page)
     _set_nycha_spending_breadcrumb_title_drilldown();
   } else if (preg_match('/^nycha_budget/', current_path())) {
     _set_nycha_budget_breadcrumb_title_drilldown();
+  } else if (preg_match('/^nycha_revenue/', current_path())) {
+    _set_nycha_revenue_breadcrumb_title_drilldown();
   }
 
   _checkbook_custom_breadcrumnb_add_breadcrumb_title();
@@ -118,12 +120,21 @@ function _set_nycha_spending_breadcrumb_title_drilldown()
 }
 
 /**
- * Custom function to set title for NYCHA Spending landing pages
+ * Custom function to set title for NYCHA Budget landing pages
  **/
 function _set_nycha_budget_breadcrumb_title_drilldown()
 {
   drupal_set_title(_get_nycha_budget_breadcrumb_title_drilldown(), PASS_THROUGH);
 }
+
+/**
+ * Custom function to set title for NYCHA Revenue landing pages
+ **/
+function _set_nycha_revenue_breadcrumb_title_drilldown()
+{
+  drupal_set_title(_get_nycha_revenue_breadcrumb_title_drilldown(), PASS_THROUGH);
+}
+
 
 /**
  * Custom function to get title for contracts landing pages
@@ -398,6 +409,39 @@ function _get_nycha_budget_breadcrumb_title_drilldown(){
   }
   return $title;
 }
+/**
+ * Custom function to get title for NYCHA Revenu landing pages
+ **/
+function _get_nycha_revenue_breadcrumb_title_drilldown(){
+  $title = NULL;
+  if (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
+    $title = NULL;
+  } else {
+    $lastReqParam = _getLastRequestParamValue();
+    foreach ($lastReqParam as $key => $value) {
+      switch ($key) {
+        case 'expcategory':
+          $title = _checkbook_project_get_name_for_argument("rev_expenditure_type_id", $value);
+          break;
+        case 'respcenter':
+          $title = _checkbook_project_get_name_for_argument("responsibility_center_id", $value);
+          break;
+        case 'fundsrc':
+          $title = _checkbook_project_get_name_for_argument("rev_funding_source_id", $value);
+          break;
+        case 'program':
+          $title = _checkbook_project_get_name_for_argument("rev_program_phase_id", $value);
+          break;
+        case 'project':
+          $title = _checkbook_project_get_name_for_argument("rev_gl_project_id", $value);
+          break;
+        default:
+          $title = "New York City Housing Authority";
+      }
+    }
+  }
+  return $title;
+}
 
 /**
  * Custom function to set title for contracts landing pages
@@ -639,6 +683,8 @@ function _checkbook_custom_breadcrumnb_add_breadcrumb_title()
     $checkbook_breadcrumb_title = CustomBreadcrumbs::getBudgetBreadcrumbTitle();
   } elseif (preg_match('/^nycha_budget/', current_path())) {
     $checkbook_breadcrumb_title = CustomBreadcrumbs::getNYCHABudgetBreadcrumbTitle();
+  } elseif (preg_match('/^nycha_revenue/', current_path())) {
+    $checkbook_breadcrumb_title = CustomBreadcrumbs::getNYCHARevenueBreadcrumbTitle();
   } elseif (preg_match('/^revenue/', current_path())) {
     $checkbook_breadcrumb_title = CustomBreadcrumbs::getRevenueBreadcrumbTitle();
   } elseif (preg_match('/smart_search/', current_path())) {

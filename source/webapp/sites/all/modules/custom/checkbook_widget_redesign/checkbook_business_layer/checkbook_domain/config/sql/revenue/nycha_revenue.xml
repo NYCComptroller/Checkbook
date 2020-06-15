@@ -148,9 +148,15 @@
   <!--Revenue Categories-->
   <statement name="GetNychaRevenueCategoriesByRevenue" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="project" type="string" />
+    <param name="program" type="string" />
     <sql>
       SELECT
       revenue_category AS revenue_category,
+      revenue_category_id AS revenue_category_id,
       SUM(adopted_amount) AS adopted_amount,
       SUM(modified_amount) AS modified_amount,
       SUM(revenue_amount) AS recognized_amount,
@@ -159,9 +165,14 @@
       <where>
         <exp op="AND">
           <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
         </exp>
       </where>
-      GROUP BY revenue_category
+      GROUP BY revenue_category,revenue_category_id
     </sql>
   </statement>
 

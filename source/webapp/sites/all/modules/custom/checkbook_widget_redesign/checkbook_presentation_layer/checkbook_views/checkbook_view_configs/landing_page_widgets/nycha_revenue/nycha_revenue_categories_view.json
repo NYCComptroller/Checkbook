@@ -2,12 +2,12 @@
   "serviceName":"NychaRevenueWidgetService",
   "dataFunc":"GetNychaRevenueCategoriesByRevenue",
   "headerTitle": "Revenue Categories",
-  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_resp_centers'",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_revcat'",
   "table_columns":[
     {"labelAlias":"revenue_category","column":"revenue_category", "tooltip":60},
     {"labelAlias":"adopted","column":"adopted_amount","format":"dollar"},
     {"labelAlias":"modified","column":"modified_amount","format":"dollar"},
-    {"labelAlias":"recognized","column":"recognized_amount","format":"dollar"},
+    {"labelAlias":"recognized","column":"recognized_amount","format":"dollar","derivedColumn": "reccat_rev_link"},
     {"labelAlias":"remaining","column":"funds_available","format":"dollar"},
     {"label":"","column":""}
   ],

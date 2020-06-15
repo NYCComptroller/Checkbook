@@ -194,16 +194,16 @@
 return $adjustedParameters;
 ",
 "adjustDataTableOptions":"
-$budgettype = RequestUtilities::getRequestParamValue('budgettype');
-if(isset($budgettype)) {
-$is_committed_expense = ($budgettype == 'committed');
-$is_remaining_expense = ($budgettype == 'remaining');
+$revtype = RequestUtilities::getRequestParamValue('revtype');
+if(isset($revtype)) {
+$is_committed_expense = ($revtype == 'recognized');
+$is_remaining_expense = ($revtype == 'remaining');
 }
-if($is_committed_expense) {
-$node->widgetConfig->dataTableOptions->aaSorting[0][0] = 7;
+if($is_recognized_expense) {
+$node->widgetConfig->dataTableOptions->aaSorting[0][0] = 3;
 }
 if($is_remaining_expense) {
-$node->widgetConfig->dataTableOptions->aaSorting[0][0] = 8;
+$node->widgetConfig->dataTableOptions->aaSorting[0][0] = 4;
 }
 ",
 "dataTableOptions":{
@@ -255,7 +255,8 @@ var oRespCenterIds = getNamedFilterCriteria('fRespCenter');
 var oFundingIds = getNamedFilterCriteria('fFundingId');
 var oProgramIds = getNamedFilterCriteria('fProgramId');
 var oProjectIds = getNamedFilterCriteria('fProjectId');
-var oRevenueCategoryIds = getNamedFilterCriteria('frevenueCategory');
+var oRevenueCategoryIds = getNamedFilterCriteria('frevenueCategoryId');
+var oRevenueAmount = getNamedFilterCriteria('frevenueAmount');
 
 var  cUrl = oTable.fnSettings().sAjaxSource;
 cUrl = adjustUrlParameter(cUrl,'agency',oAgencyIds);
@@ -266,7 +267,8 @@ cUrl = adjustUrlParameter(cUrl,'bdgtyp',obudgetType);
 cUrl = adjustUrlParameter(cUrl,'fundsrc',oFundingIds);
 cUrl = adjustUrlParameter(cUrl,'program',oProgramIds);
 cUrl = adjustUrlParameter(cUrl,'project',oProjectIds);
-cUrl = adjustUrlParameter(cUrl,'revcat',oRevenueCategory);
+cUrl = adjustUrlParameter(cUrl,'revcat',oRevenueCategoryIds);
+cUrl = adjustUrlParameter(cUrl,'amtr',oRevenueAmount);
 
 return cUrl;
 }"
