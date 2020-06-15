@@ -110,5 +110,79 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state, $dataSou
  * @return string
  */
 function _checkbook_advanced_search_nycha_revenue_submit($form, $form_state, $filterDimension){
-  return "";
+  $redirectUrl = 'nycha_revenue/search/transactions/datasource/checkbook_nycha';
+
+  $budget_fiscal_year = _checkbook_get_selected_value($form, $filterDimension, 'budget_fiscal_year');
+  $redirectUrl .= (!empty($budget_fiscal_year))? _checkbook_advanced_search_generate_redirect_url($budget_fiscal_year, 'year') : "";
+
+  $expenseCategory = _checkbook_get_selected_value($form, $filterDimension, 'expense_category');
+  $expenseCategory = ($expenseCategory == "Select Expense Category") ? 0 : $expenseCategory;
+  $redirectUrl .= (!empty($expenseCategory))? _checkbook_advanced_search_generate_redirect_url($expenseCategory, 'expcategory') : "";
+
+  $responsibilityCenter = _checkbook_get_selected_value($form, $filterDimension, 'responsibility_center');
+  $responsibilityCenter = ($responsibilityCenter == "Select Responsibility Center") ? 0 : $responsibilityCenter;
+  $redirectUrl .= (!empty($responsibilityCenter))? _checkbook_advanced_search_generate_redirect_url($responsibilityCenter, 'respcenter') : "";
+
+  $fundSrc = _checkbook_get_selected_value($form, $filterDimension, 'fundsrc');
+  $fundSrc = ($fundSrc == "Select Funding Source") ? 0 : $fundSrc;
+  $redirectUrl .= (!empty($fundSrc))? _checkbook_advanced_search_generate_redirect_url($fundSrc, 'fundsrc') : "";
+
+  $program = _checkbook_get_selected_value($form, $filterDimension, 'program');
+  $program = ($program == "Select Program") ? 0 : $program;
+  $redirectUrl .= (!empty($program))? _checkbook_advanced_search_generate_redirect_url($program, 'program') : "";
+
+  $project = _checkbook_get_selected_value($form, $filterDimension, 'project');
+  $project = ($project == "Select Project") ? 0 : $project;
+  $redirectUrl .= (!empty($project))? _checkbook_advanced_search_generate_redirect_url($project, 'project') : "";
+
+  $budgetType = _checkbook_get_selected_value($form, $filterDimension, 'budget_type');
+  $budgetType = ($budgetType == "Select Budget Type") ? 0 : $budgetType;
+  $redirectUrl .= (!empty($budgetType))? _checkbook_advanced_search_generate_redirect_url($budgetType, 'bdgtyp') : "";
+
+  $budgetName = _checkbook_get_selected_value($form, $filterDimension, 'nycha_budget_name');
+  $budgetName = ($budgetName == "Select Budget Name") ? 0 : $budgetName;
+  $redirectUrl .= (!empty($budgetName))? _checkbook_advanced_search_generate_redirect_url($budgetName, 'bdgnm') : "";
+
+  $revenue_class = _checkbook_get_selected_value($form, $filterDimension, 'revenue_class');
+  $revenue_class_exact = _checkbook_get_selected_value($form, $filterDimension, 'revenue_class_exact');
+  if (!empty($revenue_class)) {
+    if ($revenue_class == $revenue_class_exact) {
+      $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($revenue_class, 'revclass_nm_exact');
+    } else {
+      $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($revenue_class, 'revclass_nm');
+    }
+  }
+
+  $revenue_cat = _checkbook_get_selected_value($form, $filterDimension, 'nycha_revenue_category');
+  $revenue_cat_exact = _checkbook_get_selected_value($form, $filterDimension, 'nycha_revenue_category_exact');
+  if (!empty($revenue_cat)) {
+    if ($revenue_cat == $revenue_cat_exact) {
+      $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($revenue_cat, 'revcat_nm_exact');
+    } else {
+      $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($revenue_cat, 'revcat_nm');
+    }
+  }
+
+  //URL for ranges
+  $adopted_from = _checkbook_get_selected_value($form, $filterDimension, 'adopted_budget_from');
+  $adopted_to = _checkbook_get_selected_value($form, $filterDimension, 'adopted_budget_to');
+  $adopted_range_array = array('from' => $adopted_from, 'to' => $adopted_to, 'type' => 'amount');
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($adopted_range_array, 'adopted_amt', TRUE);
+
+  $modified_from = _checkbook_get_selected_value($form, $filterDimension, 'modified_from');
+  $modified_to = _checkbook_get_selected_value($form, $filterDimension, 'modified_to');
+  $modified_range_array = array('from' => $modified_from, 'to' => $modified_to, 'type' => 'amount');
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($modified_range_array, 'modified_amt', TRUE);
+
+  $recognized_from = _checkbook_get_selected_value($form, $filterDimension, 'recognized_from');
+  $recognized_to = _checkbook_get_selected_value($form, $filterDimension, 'recognized_to');
+  $recognized_range_array = array('from' => $recognized_from, 'to' => $recognized_to, 'type' => 'amount');
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($recognized_range_array, 'recognized_amt', TRUE);
+
+  $remaining_from = _checkbook_get_selected_value($form, $filterDimension, 'remaining_from');
+  $remaining_to = _checkbook_get_selected_value($form, $filterDimension, 'remaining_to');
+  $remaining_range_array = array('from' => $remaining_from, 'to' => $remaining_to, 'type' => 'amount');
+  $redirectUrl .= _checkbook_advanced_search_generate_redirect_url($remaining_range_array, 'remaining_amt', TRUE);
+
+  return $redirectUrl;
 }
