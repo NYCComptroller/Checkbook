@@ -112,6 +112,9 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state, $dataSou
 function _checkbook_advanced_search_nycha_revenue_submit($form, $form_state, $filterDimension){
   $redirectUrl = 'nycha_revenue/search/transactions/datasource/checkbook_nycha';
 
+  $agencyId = Datasource::getNYCHAId();
+  $redirectUrl .= (!empty($agencyId))? _checkbook_advanced_search_generate_redirect_url($agencyId, 'agency') : "";
+
   $budget_fiscal_year = _checkbook_get_selected_value($form, $filterDimension, 'budget_fiscal_year');
   $redirectUrl .= (!empty($budget_fiscal_year))? _checkbook_advanced_search_generate_redirect_url($budget_fiscal_year, 'year') : "";
 
