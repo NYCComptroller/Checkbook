@@ -256,6 +256,7 @@ var oProgramIds = getNamedFilterCriteria('fProgramId');
 var oProjectIds = getNamedFilterCriteria('fProjectId');
 var oRevenueCategoryIds = getNamedFilterCriteria('frevenueCategoryId');
 var oRevenueAmount = getNamedFilterCriteria('frevenueAmount');
+var oRevCatNms = getNamedFilterCriteria('fRevCatNm');
 
 var  cUrl = oTable.fnSettings().sAjaxSource;
 cUrl = adjustUrlParameter(cUrl,'agency',oAgencyIds);
@@ -268,6 +269,7 @@ cUrl = adjustUrlParameter(cUrl,'program',oProgramIds);
 cUrl = adjustUrlParameter(cUrl,'project',oProjectIds);
 cUrl = adjustUrlParameter(cUrl,'revcat',oRevenueCategoryIds);
 cUrl = adjustUrlParameter(cUrl,'amtr',oRevenueAmount);
+cUrl = adjustUrlParameter(cUrl,'revcat_nm_exact',oRevCatNms);
 
 return cUrl;
 }"
