@@ -5,28 +5,10 @@
       $.fn.formatDatafeedsDatasourceRadio();
 
       //Sets up jQuery UI autocompletes and autocomplete filtering functionality
-      let year = ($('#edit-fiscal-year', context).val() === 'All Years') ? 0 : $('#edit-fiscal-year', context).val();
-      let fundclass = emptyToZero($('#edit-fund-class', context).val());
-      let agency = emptyToZero($('#edit-agency', context).val());
-      let budgetyear = ($('#edit-budget-fiscal-year', context).val() === 'All Years') ? 0 : $('#edit-budget-fiscal-year', context).val();
-      let revcat = emptyToZero($('#edit-revenue-category', context).val());
-      let revclass = emptyToZero($('#edit-revenue-class', context).val());
-      let revsrc = emptyToZero($('#edit-revenue-source', context).val());
-      let fundingsrc = emptyToZero($('#edit-funding-class', context).val());
-      $('#edit-revenue-class', context).autocomplete({source:'/autocomplete/revenue/revenueclass/' + year + '/' + fundclass + '/' + agency + '/' + budgetyear + '/' + revcat + '/' + revsrc + '/' + fundingsrc});
-      $('#edit-revenue-source', context).autocomplete({source:'/autocomplete/revenue/revenuesource/' + year + '/' + fundclass + '/' + agency + '/' + budgetyear + '/' + revcat + '/' + revclass + '/' + fundingsrc});
+      $.fn.initializeAutoComplete();
       $('.watch:input', context).each(function () {
         $(this).focusin(function () {
-          year = ($('#edit-fiscal-year', context).val() === 'All Years') ? 0 : $('#edit-fiscal-year', context).val();
-          fundclass = emptyToZero($('#edit-fund-class', context).val());
-          agency = emptyToZero($('#edit-agency', context).val());
-          budgetyear = ($('#edit-budget-fiscal-year', context).val() === 'All Years') ? 0 : $('#edit-budget-fiscal-year', context).val();
-          revcat = emptyToZero($('#edit-revenue-category', context).val());
-          revclass = emptyToZero($('#edit-revenue-class', context).val());
-          revsrc = emptyToZero($('#edit-revenue-source', context).val());
-          fundingsrc = emptyToZero($('#edit-funding-class', context).val());
-          $("#edit-revenue-class").autocomplete("option", "source", '/autocomplete/revenue/revenueclass/' + year + '/' + fundclass + '/' + agency + '/' + budgetyear + '/' + revcat + '/' + revsrc + '/' + fundingsrc);
-          $("#edit-revenue-source").autocomplete("option", "source", '/autocomplete/revenue/revenuesource/' + year + '/' + fundclass + '/' + agency + '/' + budgetyear + '/' + revcat + '/' + revclass + '/' + fundingsrc);
+          $.fn.initializeAutoComplete();
         });
       });
 
@@ -40,6 +22,33 @@
       $('#ms-edit-column-select a.deselect',context).click(function(){
         $('#edit-column-select',context).multiSelect('deselect_all');
       });
+    }
+  }
+
+  //Initializes auto-completes
+  $.fn.initializeAutoComplete = function (data_source = 'checkbook'){
+    //Set Solr datasource for auto-complete
+    let solr_datasource = data_source;
+    let agency = 0;
+    if(data_source === 'checkbook') {
+      agency = emptyToZero($('#edit-agency').val());
+      let fiscalYear = ($('#edit-fiscal-year').val() === 'All Years') ? 0 : $('#edit-fiscal-year').val();
+      let fundClass = emptyToZero($('#edit-fund-class').val());
+      let budgetYear = ($('#edit-budget-fiscal-year').val() === 'All Years') ? 0 : $('#edit-budget-fiscal-year').val();
+      let revCat = emptyToZero($('#edit-revenue-category').val());
+      let fundingSrc = emptyToZero($('#edit-funding-class').val());
+      let filters = {
+        fiscal_year: fiscalYear,
+        fund_class_code: fundClass,
+        agency_code: agency,
+        revenue_budget_fiscal_year: budgetYear,
+        revenue_category_code: revCat,
+        funding_class_code: fundingSrc
+      };
+      $('#edit-revenue-class').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_class_name',filters)});
+      $('#edit-revenue-source').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_source_name',filters)});
+    }else if (data_source === 'checkbook_nycha') {
+      solr_datasource = 'nycha';
     }
   }
 
