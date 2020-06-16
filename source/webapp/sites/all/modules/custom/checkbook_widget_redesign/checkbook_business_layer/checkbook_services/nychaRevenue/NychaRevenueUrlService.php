@@ -38,4 +38,27 @@ class NychaRevenueUrlService {
 
     return $url;
   }
+
+  /**
+   * Returns NYCHA Revenue recognized link URL
+   * @param $urlParamName
+   * @param $urlParamValue
+   * @param $yearId parameter
+   * @return string
+   */
+  static function recRevenueUrl($dynamic_parameter, $widget) {
+    $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
+    $url = "/panel_html/nycha_revenue_transactions/nycha_revenue/transactions"
+      . RequestUtilities::buildUrlFromParam('year')
+      . RequestUtilities::buildUrlFromParam('expcategory')
+      . RequestUtilities::buildUrlFromParam('project')
+      . RequestUtilities::buildUrlFromParam('program')
+      . RequestUtilities::buildUrlFromParam('fundsrc')
+      . RequestUtilities::buildUrlFromParam('respcenter')
+      . RequestUtilities::buildUrlFromParam('datasource')
+      . '/widget/'. $widget
+      . $dynamic_parameter;
+
+    return $url;
+  }
 }

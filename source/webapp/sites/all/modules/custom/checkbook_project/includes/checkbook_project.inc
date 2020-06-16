@@ -439,8 +439,13 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
       return ucwords(strtolower($budget_codes[0]['attribute_name']));
       break;
     case "revenue_category_id":
-      $revcat_ids = _checkbook_project_querydataset($data_source . ':revenue_category', array('revenue_category_id', 'revenue_category_name'), array($keyword => $id));
-      return ucwords(strtolower($revcat_ids[0]['revenue_category_name']));
+      if ($data_source == Datasource::NYCHA) {
+        $revcat_ids = _checkbook_project_querydataset($data_source . ':revenue', array('revenue_category_id', 'revenue_category'), array($keyword => $id));
+        return ucwords(strtolower($revcat_ids[0]['revenue_category']));
+      }else {
+        $revcat_ids = _checkbook_project_querydataset($data_source . ':revenue_category', array('revenue_category_id', 'revenue_category_name'), array($keyword => $id));
+        return ucwords(strtolower($revcat_ids[0]['revenue_category_name']));
+      }
       break;
     case "funding_class_id":
       $fundsrc_ids = _checkbook_project_querydataset($data_source . ':ref_funding_class', array('funding_class_id', 'funding_class_name'), array($keyword => $id));
@@ -458,6 +463,11 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
         $fundsrc_ids = _checkbook_project_querydataset($data_source . ':funding_source', array('funding_source_id', 'display_funding_source_descr'), array($keyword => $id));
         return ucwords(strtolower($fundsrc_ids[0]['display_funding_source_descr']));
       }
+      break;
+    case "rev_funding_source_id":
+        $keyword ="funding_source_id";
+        $fundsrc_ids = _checkbook_project_querydataset($data_source . ':revenue', array('funding_source_id', 'funding_source_description'), array($keyword => $id));
+        return ucwords(strtolower($fundsrc_ids[0]['funding_source_description']));
       break;
     case "responsibility_center_id":
       $respcenter_ids = _checkbook_project_querydataset($data_source . ':resp_centers', array('responsibility_center_id', 'responsibility_center_description'), array($keyword => $id));
@@ -531,13 +541,28 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
       $exp_categorys = _checkbook_project_querydataset($data_source . ':budget', array('expenditure_type_description', 'expenditure_type_id'), array($keyword => $id));
       return ucwords(strtolower($exp_categorys[0]['expenditure_type_description']));
       break;
+    case "rev_expenditure_type_id":
+      $keyword = "expenditure_type_id";
+      $exp_categorys = _checkbook_project_querydataset($data_source . ':revenue', array('expenditure_type_description', 'expenditure_type_id'), array($keyword => $id));
+      return ucwords(strtolower($exp_categorys[0]['expenditure_type_description']));
+      break;
     case "program_phase_id":
       $exp_categorys = _checkbook_project_querydataset($data_source . ':budget', array('program_phase_description', 'program_phase_id'), array($keyword => $id));
       return ucwords(strtolower($exp_categorys[0]['program_phase_description']));
       break;
+    case "rev_program_phase_id":
+      $keyword = "program_phase_id";
+      $prog_categorys = _checkbook_project_querydataset($data_source . ':revenue', array('program_phase_description', 'program_phase_id'), array($keyword => $id));
+      return ucwords(strtolower($prog_categorys[0]['program_phase_description']));
+      break;
     case "gl_project_id":
       $exp_categorys = _checkbook_project_querydataset($data_source . ':budget', array('gl_project_description', 'gl_project_id'), array($keyword => $id));
       return ucwords(strtolower($exp_categorys[0]['gl_project_description']));
+      break;
+    case "rev_gl_project_id":
+      $keyword ="gl_project_id";
+      $proj_categorys = _checkbook_project_querydataset($data_source . ':revenue', array('gl_project_description', 'gl_project_id'), array($keyword => $id));
+      return ucwords(strtolower($proj_categorys[0]['gl_project_description']));
       break;
     case "agreement_id":
       $contracts = _checkbook_project_querydataset($data_source . ':history_agreement', array('contract_number', 'agreement_id'), array($keyword => $id));

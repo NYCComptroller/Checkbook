@@ -34,7 +34,8 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
             $form_state['redirect'] = _checkbook_advanced_search_budget_submit($form, $form_state, $data_source);
             break;
         case "revenue_submit":
-            $form_state['redirect'] = _checkbook_advanced_search_revenue_submit($form, $form_state);
+            $data_source = $form_state['values']['revenue_advanced_search_domain_filter'];
+            $form_state['redirect'] = _checkbook_advanced_search_revenue_submit($form, $form_state, $data_source);
             break;
         case "spending_submit":
             $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
@@ -52,7 +53,8 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
             return _checkbook_advanced_search_budget_submit($form, $form_state, $data_source);
             break;
         case "revenue_next":
-            return _checkbook_advanced_search_revenue_submit($form, $form_state, 'next');
+            $data_source = $form_state['values']['revenue_advanced_search_domain_filter'];
+            return _checkbook_advanced_search_revenue_submit($form, $form_state, $data_source);
             break;
         case "spending_next":
             $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
@@ -79,7 +81,7 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
  */
 function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = Datasource::CITYWIDE){
     try {
-       if($data_source == Datasource::NYCHA && $domain == Domain::$BUDGET){
+       if($data_source == Datasource::NYCHA && ($domain == Domain::$BUDGET || $domain == Domain::$REVENUE)){
          return CheckbookDateUtil::getNychaBudgetFiscalYears();
        }
         $data = CheckbookDateUtil::getLast10FiscalYearOptions($data_source);
@@ -977,4 +979,16 @@ function _checkbook_advanced_search_create_alert_header($create_alert_config, $c
 
     $header_html = "<span class='create-alert-header'>".$header_html."</span>";
     return $header_html;
+}
+
+/**
+ * Returns input value from drupal form
+ *
+ * @param $form
+ * @param $filter_dimension
+ * @param $field_name
+ * @return string
+ */
+function _checkbook_get_selected_value($form, $filter_dimension, $field_name){
+  return trim($form[$filter_dimension][$filter_dimension . '_' .$field_name]['#value']);
 }
