@@ -416,6 +416,26 @@ function checkbook_project_theme($existing, $type, $theme, $path){
           'template' => 'gridview/nycha_budget_project_highchart',
           'arguments' => array('node' => NULL)
         ),
+      'highchart_nycha_revenue_respcenter_grid_view'=> array(
+        'template' => 'gridview/nycha_revenue_respcenter_highchart',
+        'arguments' => array('node' => NULL)
+      ),
+      'highchart_nycha_revenue_expcategory_grid_view'=> array(
+        'template' => 'gridview/nycha_revenue_expcategory_highchart',
+        'arguments' => array('node' => NULL)
+      ),
+      'highchart_nycha_revenue_programs_grid_view'=> array(
+        'template' => 'gridview/nycha_revenue_program_highchart',
+        'arguments' => array('node' => NULL)
+      ),
+      'highchart_nycha_revenue_fundsrc_grid_view'=> array(
+        'template' => 'gridview/nycha_revenue_fundsrc_highchart',
+        'arguments' => array('node' => NULL)
+      ),
+      'highchart_nycha_revenue_projects_grid_view'=> array(
+        'template' => 'gridview/nycha_revenue_project_highchart',
+        'arguments' => array('node' => NULL)
+      ),
         'highchart_budget_department_grid_view' => array(
             'template' => 'gridview/budget_department_highchart',
             'arguments' => array('node' => NULL)
