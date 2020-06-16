@@ -19,17 +19,22 @@
  */
 
 module_load_include('php', 'checkbook_datafeeds', 'config/util/DatafeedsConfigUtil');
-module_load_include('inc', 'checkbook_datafeeds', 'includes/checkbook_datafeeds_contracts');
-module_load_include('inc', 'checkbook_datafeeds', 'includes/checkbook_datafeeds_spending');
-module_load_include('inc', 'checkbook_datafeeds', 'includes/checkbook_datafeeds_payroll');
-module_load_include('inc', 'checkbook_datafeeds', 'includes/checkbook_datafeeds_budget');
-module_load_include('inc', 'checkbook_datafeeds', 'includes/checkbook_datafeeds_revenue');
+module_load_include('inc', 'checkbook_datafeeds', 'includes/contracts/checkbook_datafeeds_contracts');
+module_load_include('inc', 'checkbook_datafeeds', 'includes/spending/checkbook_datafeeds_spending');
+module_load_include('inc', 'checkbook_datafeeds', 'includes/payroll/checkbook_datafeeds_payroll');
+module_load_include('inc', 'checkbook_datafeeds', 'includes/budget/checkbook_datafeeds_budget');
+module_load_include('inc', 'checkbook_datafeeds', 'includes/revenue/checkbook_datafeeds_revenue');
 module_load_include('inc', 'checkbook_datafeeds', 'includes/checkbook_datafeeds_tracking');
 
 spl_autoload_register(function ($class) {
   if (FALSE !== strpos($class, 'checkbook_datafeeds')) {
     list(, $class) = explode('\\', $class);
-    include_once 'includes/' . $class . '.class.inc';
+    $domain = substr($class, 0, strpos($class, 'Feed'));
+    if(strlen($domain) > 0 ) {
+      include_once 'includes/' .strtolower($domain) . '/' . $class . '.class.inc';
+    }else {
+      include_once 'includes/' . $class . '.class.inc';
+    }
   }
 });
 
