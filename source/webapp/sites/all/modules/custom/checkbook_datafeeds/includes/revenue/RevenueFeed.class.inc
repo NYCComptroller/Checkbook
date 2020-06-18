@@ -187,7 +187,7 @@ abstract class RevenueFeed{
         $multi_select_hidden = isset($form_state['input']['nycha_column_select']) ? '|' . implode('||', $form_state['input']['nycha_column_select']) . '|' : '';
         break;
       default:
-        $multi_select_hidden = isset($form_state['input']['column_select_expense']) ? '|' . implode('||', $form_state['input']['column_select_expense']) . '|' : '';
+        $multi_select_hidden = isset($form_state['input']['column_select']) ? '|' . implode('||', $form_state['input']['column_select']) . '|' : '';
     }
     $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;
 

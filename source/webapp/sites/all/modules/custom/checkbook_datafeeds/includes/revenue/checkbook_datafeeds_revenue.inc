@@ -552,172 +552,10 @@ function checkbook_datafeeds_revenue_next_submit($form, &$form_state){
  *   Renderable array of Payroll confirmation step
  */
 function checkbook_datafeeds_revenue_confirmation($form, &$form_state){
-  $values = $form_state['step_information']['revenue']['stored_values'];
-  $responsetype = $form_state['step_information']['type']['stored_values']['format'];
-  $user_criteria = array();
-  $user_criteria['Type of Data'] = 'Revenue';
-  $user_criteria['Type of File'] = $responsetype;
-  $form['download_feeds'] = array(
-    '#markup' => '<h2 id="edit-description">Download Data</h2>',
-  );
-  $form['columns'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Selected Columns'),
-  );
-  $form['#attributes'] = array(
-    'class' => array(
-      'confirmation-page',
-      'data-feeds-wizard',
-    )
-  );
-
-  $formatted_search_criteria = array();
-  //Used to maintain the order of the columns
-  $selected_columns = checkbook_datafeeds_format_columns();
-  $form_state['step_information']['revenue']['stored_values']['column_select'] = $selected_columns;
-  foreach ($selected_columns as $column) {
-    $form['columns'][$column] = array('#markup' => '<div>' . $column . '</div>');
-    $user_criteria['Columns'][] = $column;
-  }
-  $form['filter'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Search Criteria'),
-  );
-  $form['filter']['data_type'] = array(
-    '#markup' => '<div><strong>Type of Data:</strong> Revenue</div>',
-  );
-  $formatted_search_criteria['Type of Data'] = 'Revenue';
-  $form['filter']['file_type'] = array(
-    '#markup' => '<div><strong>Type of File:</strong> ' . $form_state['step_information']['type']['stored_values']['format'] . '</div>',
-  );
-  $formatted_search_criteria['Type of File'] = $form_state['step_information']['type']['stored_values']['format'];
-  if ($values['budget_fiscal_year']) {
-    $form['filter']['budget_fiscal_year'] = array(
-      '#markup' => '<div><strong>Budget Fiscal Year:</strong> ' . $values['budget_fiscal_year'] . '</div>',
-    );
-    $user_criteria['Budget Fiscal Year'] = $values['budget_fiscal_year'];
-    $formatted_search_criteria['Budget Fiscal Year'] = $values['budget_fiscal_year'];
-  }
-  if ($values['agency']) {
-    $form['filter']['agency'] = array(
-      '#markup' => '<div><strong>Agency:</strong> ' . $values['agency'] . '</div>',
-    );
-    $user_criteria['Agency'] = $values['agency'];
-    $formatted_search_criteria['Agency'] = $values['agency'];
-  }
-  if ($values['revenue_category']) {
-    $form['filter']['revenue_category'] = array(
-      '#markup' => '<div><strong>Revenue Category:</strong> ' . $values['revenue_category'] . '</div>',
-    );
-    $user_criteria['Revenue Category'] = $values['revenue_category'];
-    $formatted_search_criteria['Revenue Category'] = $values['revenue_category'];
-  }
-  if ($values['revenue_source']) {
-    $form['filter']['revenue_source'] = array(
-      '#markup' => '<div><strong>Revenue Source:</strong> ' . $values['revenue_source'] . '</div>',
-    );
-    $user_criteria['Revenue Source'] = $values['revenue_source'];
-    $formatted_search_criteria['Revenue Source'] = $values['revenue_source'];
-  }
-  if ($values['adoptedfrom'] && $values['adoptedto']) {
-    $form['filter']['adopted'] = array(
-      '#markup' => '<div><strong>Adopted:</strong> Greater Than Equal to: $' . $values['adoptedfrom'] . ' Less Than Equal to: $' . $values['adoptedto'] . '</div>',
-    );
-    $user_criteria['Adopted Greater Than'] = $values['adoptedfrom'];
-    $user_criteria['Adopted Less Than'] = $values['adoptedto'];
-    $formatted_search_criteria['Adopted'] = 'Greater Than Equal to: $' . $values['adoptedfrom'] . ' Less Than Equal to: $' . $values['adoptedto'];
-  } elseif ($values['adoptedfrom'] && !$values['adoptedto']) {
-    $form['filter']['adopted'] = array(
-      '#markup' => '<div><strong>Adopted:</strong> Greater Than Equal to: $' . $values['adoptedfrom'] . '</div>',
-    );
-    $user_criteria['Adopted Greater Than'] = $values['adoptedfrom'];
-    $formatted_search_criteria['Adopted'] = 'Greater Than Equal to: $' . $values['adoptedfrom'];
-  } elseif (!$values['adoptedfrom'] && $values['adoptedto']) {
-    $form['filter']['adopted'] = array(
-      '#markup' => '<div><strong>Adopted:</strong> Less Than Equal to: $' . $values['adoptedto'] . '</div>',
-    );
-    $user_criteria['Adopted Less Than'] = $values['adoptedto'];
-    $formatted_search_criteria['Adopted'] = 'Less Than Equal to: $' . $values['adoptedto'];
-  }
-  if ($values['recognizedfrom'] && $values['recognizedto']) {
-    $form['filter']['recognized'] = array(
-      '#markup' => '<div><strong>Recognized:</strong> Greater Than Equal to: $' . $values['recognizedfrom'] . ' Less Than Equal to: $' . $values['recognizedto'] . '</div>',
-    );
-    $user_criteria['Recognized Greater Than'] = $values['recognizedfrom'];
-    $user_criteria['Recognized Less Than'] = $values['recognizedto'];
-    $formatted_search_criteria['Recognized'] = 'Greater Than Equal to: $' . $values['recognizedfrom'] . ' Less Than Equal to: $' . $values['recognizedto'];
-  } elseif ($values['recognizedfrom'] && !$values['recognizedto']) {
-    $form['filter']['recognized'] = array(
-      '#markup' => '<div><strong>Recognized:</strong> Greater Than Equal to: $' . $values['recognizedfrom'] . '</div>',
-    );
-    $user_criteria['Recognized Greater Than'] = $values['recognizedfrom'];
-    $formatted_search_criteria['Recognized'] = 'Greater Than Equal to: $' . $values['recognizedfrom'];
-  } elseif (!$values['recognizedfrom'] && $values['recognizedto']) {
-    $form['filter']['recognized'] = array(
-      '#markup' => '<div><strong>Recognized:</strong> Less Than Equal to: $' . $values['recognizedto'] . '</div>',
-    );
-    $user_criteria['Recognized Less Than'] = $values['recognizedto'];
-    $formatted_search_criteria['Recognized'] = 'Less Than Equal to: $' . $values['recognizedto'];
-  }
-  if ($values['fiscal_year'] && $values['fiscal_year'] != '') {
-    $form['filter']['fiscal_year'] = array(
-      '#markup' => '<div><strong>Fiscal Year:</strong> ' . $values['fiscal_year'] . '</div>',
-    );
-    $user_criteria['Fiscal Year'] = $values['fiscal_year'];
-    $formatted_search_criteria['Fiscal Year'] = $values['fiscal_year'];
-  } else {
-    $form['filter']['fiscal_year'] = array(
-      '#markup' => '<div><strong>Fiscal Year:</strong> All Fiscal Years</div>',
-    );
-    $formatted_search_criteria['Fiscal Year'] = 'All Fiscal Years';
-  }
-  if ($values['funding_class']) {
-    $form['filter']['funding_class'] = array(
-      '#markup' => '<div><strong>Funding Class:</strong> ' . $values['funding_class'] . '</div>',
-    );
-    $user_criteria['Funding Class'] = $values['funding_class'];
-    $formatted_search_criteria['Funding Class'] = $values['funding_class'];
-  }
-  if ($values['revenue_class']) {
-    $form['filter']['revenue_class'] = array(
-      '#markup' => '<div><strong>Revenue Class:</strong> ' . $values['revenue_class'] . '</div>',
-    );
-    $user_criteria['Revenue Class'] = $values['revenue_class'];
-    $formatted_search_criteria['Revenue Class'] = $values['revenue_class'];
-  }
-  if ($values['fund_class']) {
-    $form['filter']['fund_class'] = array(
-      '#markup' => '<div><strong>Fund Class:</strong> ' . $values['fund_class'] . '</div>',
-    );
-    $user_criteria['Fund Class'] = $values['fund_class'];
-    $formatted_search_criteria['Fund Class'] = $values['fund_class'];
-  }
-  if ($values['modifiedfrom'] && $values['modifiedto']) {
-    $form['filter']['modified'] = array(
-      '#markup' => '<div><strong>Modified:</strong> Greater Than Equal to: $' . $values['modifiedfrom'] . ' Less Than Equal to: $' . $values['modifiedto'] . '</div>',
-    );
-    $user_criteria['Modified Greater Than'] = $values['modifiedfrom'];
-    $user_criteria['Modified Less Than'] = $values['modifiedto'];
-    $formatted_search_criteria['Modified'] = 'Greater Than Equal to: $' . $values['modifiedfrom'] . ' Less Than Equal to: $' . $values['modifiedto'];
-  } elseif ($values['modifiedfrom'] && !$values['modifiedto']) {
-    $form['filter']['modified'] = array(
-      '#markup' => '<div><strong>Modified:</strong> Greater Than Equal to: $' . $values['modifiedfrom'] . '</div>',
-    );
-    $user_criteria['Modified Greater Than'] = $values['modifiedfrom'];
-    $formatted_search_criteria['Modified'] = 'Greater Than Equal to: $' . $values['modifiedfrom'];
-  } elseif (!$values['modifiedfrom'] && $values['modifiedto']) {
-    $form['filter']['modified'] = array(
-      '#markup' => '<div><strong>Modified:</strong> Less Than Equal to: $' . $values['modifiedto'] . '</div>',
-    );
-    $user_criteria['Modified Less Than'] = $values['modifiedto'];
-    $formatted_search_criteria['Modified'] = 'Less Than Equal to: $' . $values['modifiedto'];
-  }
-  $user_criteria['Formatted'] = $formatted_search_criteria;
-  $criteria = checkbook_datafeeds_process_revenue_values($form, $form_state);
-  $form_state['step_information']['confirmation']['stored_values']['criteria'] = $criteria;
-  $form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $user_criteria;
-  $modified_form = checkbook_datafeeds_end_of_confirmation_form($form, $form_state, $criteria, $responsetype, Domain::$REVENUE);
-  return $modified_form;
+  //Get current data source
+  $data_source = $form_state['input']['datafeeds-revenue-domain-filter'];
+  $feed = checkbook_datafeeds\FeedFactory::getFeed($data_source, Domain::$REVENUE);
+  return $feed->process_confirmation($form, $form_state);
 }
 
 /**
@@ -728,88 +566,12 @@ function checkbook_datafeeds_revenue_confirmation($form, &$form_state){
  * @param array $form_state
  *   Data Feeds wizard form_state array
  */
-function checkbook_datafeeds_revenue_confirmation_previous_submit($form, &$form_state)
-{
+function checkbook_datafeeds_revenue_confirmation_previous_submit($form, &$form_state){
   $current_step = &$form_state['step'];
   $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
   $current_step = 'revenue';
   $form_state['values'] = $form_state['step_information'][$current_step]['stored_values'];
   $form_state['rebuild'] = TRUE;
-}
-
-/**
- * Convert values from Revenue section of form to an array format expected by API SearchCriteria.
- *
- * @param array $form
- *   Data Feeds wizard form array
- * @param array $form_state
- *   Data Feeds wizard form_state array
- *
- * @return array
- *   Structured array expected by API
- */
-function checkbook_datafeeds_process_revenue_values($form, &$form_state)
-{
-  $values = $form_state['step_information']['revenue']['stored_values'];
-  $pattern = "/.*?(\\[.*?\\])/is";
-  global $conf;
-  $criteria = array(
-    'global' => array(
-      'type_of_data' => 'Revenue',
-      'records_from' => 1,
-      'max_records' => isset($conf['check_book']['data_feeds']['max_record_limit']) ? $conf['check_book']['data_feeds']['max_record_limit'] : 200000,
-    ),
-    'responseColumns' => $values['column_select'],
-  );
-  if ($values['fund_class'] != 'All Fund Classes') {
-    preg_match($pattern, $values['fund_class'], $fcmatches);
-    $criteria['value']['fund_class'] = trim($fcmatches[1], '[ ]');
-  }
-  if ($values['agency'] != 'Citywide (All Agencies)') {
-    preg_match($pattern, $values['agency'], $amatches);
-    $criteria['value']['agency_code'] = trim($amatches[1], '[ ]');
-  }
-  if ($values['budget_fiscal_year'] != 'All Years') {
-    $criteria['value']['budget_fiscal_year'] = $values['budget_fiscal_year'];
-  }
-  if ($values['fiscal_year'] != 'All Fiscal Years' && $values['fiscal_year'] != '') {
-    $criteria['value']['fiscal_year'] = $values['fiscal_year'];
-  }
-  if ($values['revenue_category'] != 'All Revenue Categories') {
-    preg_match($pattern, $values['revenue_category'], $rcmatches);
-    $criteria['value']['revenue_category'] = trim($rcmatches[1], '[ ]');
-  }
-  if ($values['revenue_class']) {
-    preg_match($pattern, $values['revenue_class'], $rclmatches);
-    $criteria['value']['revenue_class'] = trim($rclmatches[1], '[ ]');
-  }
-  if ($values['revenue_source']) {
-    preg_match($pattern, $values['revenue_source'], $rsmatches);
-    $criteria['value']['revenue_source'] = trim($rsmatches[1], '[ ]');
-  }
-  if ($values['funding_class'] != 'All Funding Classes') {
-    preg_match($pattern, $values['funding_class'], $fsmatches);
-    $criteria['value']['funding_class'] = trim($fsmatches[1], '[ ]');
-  }
-  if ($values['modifiedfrom'] !== '' || $values['modifiedto'] !== '') {
-    $criteria['range']['modified'] = array(
-      checknull($values['modifiedfrom']),
-      checknull($values['modifiedto'])
-    );
-  }
-  if ($values['adoptedfrom'] !== '' || $values['adoptedto'] !== '') {
-    $criteria['range']['adopted'] = array(
-      checknull($values['adoptedfrom']),
-      checknull($values['adoptedto'])
-    );
-  }
-  if ($values['recognizedfrom'] !== '' || $values['recognizedto'] !== '') {
-    $criteria['range']['recognized'] = array(
-      checknull($values['recognizedfrom']),
-      checknull($values['recognizedto'])
-    );
-  }
-  return $criteria;
 }
 
 /**
@@ -821,39 +583,47 @@ function checkbook_datafeeds_process_revenue_values($form, &$form_state)
  *   Data Feeds wizard form_state array
  */
 function checkbook_datafeeds_revenue_validate($form, &$form_state){
-  $adoptedfrom = $form_state['values']['adoptedfrom'];
-  $adoptedto = $form_state['values']['adoptedto'];
-  if ($adoptedfrom && !is_numeric($adoptedfrom)) {
-    form_set_error('adoptedfrom', t('Adopted From value must be a number.'));
-  }
-  if ($adoptedto && !is_numeric($adoptedto)) {
-    form_set_error('adoptedto', t('Adopted To value must be a number.'));
-  }
-  if (is_numeric($adoptedfrom) && is_numeric($adoptedto) && $adoptedto < $adoptedfrom) {
-    form_set_error('adoptedto', t('Invalid range for Adopted.'));
-  }
+  $data_source = $form_state['input']['datafeeds-revenue-domain-filter'];
+  $feed = checkbook_datafeeds\FeedFactory::getFeed($data_source, Domain::$REVENUE);
+  $feed->checkbook_datafeeds_revenue_validate($form, $form_state);
+}
 
-  $modifiedfrom = $form_state['values']['modifiedfrom'];
-  $modifiedto = $form_state['values']['modifiedto'];
-  if ($modifiedfrom && !is_numeric($modifiedfrom)) {
-    form_set_error('modifiedfrom', t('Modified From value must be a number.'));
+/**
+ * Filters selected columns to only contain columns configured for this domain and data_source
+ *
+ * @param array $selected_columns
+ *   selected column array
+ * @param string $data_source
+ *   current selected data source (i.e. checkbook, checkbook_nycha)
+ * @param string $response_type
+ *   response type (i.e. csv, xml)
+ * @param $export_order
+ * @return array
+ */
+function checkbook_datafeeds_revenue_filter_selected_columns($selected_columns, $data_source, $response_type, $export_order = null){
+  //Get column configurations
+  switch ($data_source) {
+    case Datasource::NYCHA:
+      $domain = 'revenue_nycha';
+      break;
+    default:
+      $domain = 'revenue';
   }
-  if ($modifiedto && !is_numeric($modifiedto)) {
-    form_set_error('modifiedto', t('Modified To value must be a number.'));
-  }
-  if (is_numeric($modifiedfrom) && is_numeric($modifiedto) && $modifiedto < $modifiedfrom) {
-    form_set_error('modifiedto', t('Invalid range for Modified.'));
-  }
+  $domain_config = ConfigUtil::getDomainConfiguration($domain);
+  //Get columns which should be included for the current data source
+  $columns_included = $domain_config->$domain->dataset->displayConfiguration->$response_type->elementsColumn;
 
-  $recognizedfrom = $form_state['values']['recognizedfrom'];
-  $recognizedto = $form_state['values']['recognizedto'];
-  if ($recognizedfrom && !is_numeric($recognizedfrom)) {
-    form_set_error('recognizedfrom', t('Recognized From value must be a number.'));
+  //Filter out selected columns which are not configured to show for this data source
+  $filtered_columns = array_intersect_key($selected_columns, (array)$columns_included);
+
+  //Only for NYCHA, export order is not same as multi-select options
+  if($data_source == Datasource::NYCHA && isset($export_order)) {
+    $filtered_columns = [];
+    foreach ($columns_included as $key => $value) {
+      if (in_array($key, $selected_columns)) {
+        $filtered_columns[$key] = $key;
+      }
+    }
   }
-  if ($recognizedto && !is_numeric($recognizedto)) {
-    form_set_error('recognizedto', t('Recognized To value must be a number.'));
-  }
-  if (is_numeric($recognizedfrom) && is_numeric($recognizedto) && $recognizedto < $recognizedfrom) {
-    form_set_error('recognizedto', t('Invalid range for Recognized.'));
-  }
+  return $filtered_columns;
 }
