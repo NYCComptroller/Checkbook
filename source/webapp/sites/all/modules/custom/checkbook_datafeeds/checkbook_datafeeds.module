@@ -1129,6 +1129,7 @@ function _budget_project_options($dataSource = Datasource::CITYWIDE, $feeds = tr
 
 /**
  * Get Budget Type from Data Controller and format into a FAPI select input #options array.
+ * @param $domain
  * @param $dataSource
  * @param $budgetName
  * @param $json
