@@ -370,7 +370,7 @@ function checkbook_datafeeds_nycha_revenue_filter_data($form, $form_state, $data
     '#type' => 'select',
     '#title' => t('Budget Type:'),
     '#options' => $budget_type_options['options'],
-    #option_attributes' => $budget_type_options['option_attributes'],
+    '#option_attributes' => $budget_type_options['option_attributes'],
     '#prefix' => '<div class="datafield budgettype nycha">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
