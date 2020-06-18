@@ -31,12 +31,8 @@
  */
 function checkbook_datafeeds_revenue($form, &$form_state){
   $datatype = $form_state['step_information']['type']['stored_values']['format'];
-  $revenue_fys = array('' => "All Fiscal Years");
-  $revenue_fys = $revenue_fys + _checkbook_advanced_search_get_year(Domain::$REVENUE, 'datafeeds');
-  $agency_options = _agency_options(Datasource::CITYWIDE);
 
   //<editor-fold desc="Heading">
-
   $form['loaded'] = array(
     '#markup' => '<div class="updated-date">Last updated: ' . _checkbook_datafeeds_get_updated_date(Domain::$REVENUE) . '</div>',
   );
@@ -49,7 +45,6 @@ function checkbook_datafeeds_revenue($form, &$form_state){
 
   $data_source = $form_state['values']['datafeeds-revenue-domain-filter'] ?? Datasource::CITYWIDE;
   $form['datafeeds-revenue-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, Domain::$REVENUE);
-
   //</editor-fold>
 
   $form['filter'] = array(
@@ -57,11 +52,78 @@ function checkbook_datafeeds_revenue($form, &$form_state){
     '#title' => t('3. Filter the Data:'),
     '#attributes' => array('class' => array('revenue-fieldset')),
   );
+  //<editor-fold desc="CityWide Fields">
+  $form['filter']['checkbook-fields-begin'] = array(
+    '#markup' => '<div class="checkbook_fields">',
+  );
+  $form = checkbook_datafeeds_revenue_filter_data($form, $form_state, Datasource::CITYWIDE);
+  $form['filter']['checkbook-fields-end'] = array(
+    '#markup' => '</div>',
+  );
+  //</editor-fold>
+
+
+  $form['columns'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('4. Select Columns:'),
+  );
+  $form['columns']['column_select'] = array(
+    '#type' => 'select',
+    '#title' => t('Columns'),
+    '#options' => _checkbook_datafeeds_revenue_column_options(DataSource::CITYWIDE, $datatype),
+    '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
+    '#required' => TRUE,
+    '#multiple' => TRUE,
+  );
+  //Hidden Field for multi-select
+  $form['columns']['hidden_multiple_value'] = array(
+    '#value' => isset($form_state['values']['column_select']) ? '|' . implode('||', $form_state['values']['column_select']) . '|' : '',
+    '#type' => 'hidden',
+  );
+  $form['#attached'] = array(
+    'library' => array(
+      array('system', 'ui.autocomplete', FALSE),
+      array('checkbook_datafeeds', 'jquery_multiselect', FALSE),
+    ),
+    'js' => array(
+      'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/revenue.js',
+    )
+  );
+  $form['#validate'] = array('checkbook_datafeeds_revenue_validate');
+  $form['prev'] = array(
+    '#type' => 'submit',
+    '#value' => t('Previous'),
+    '#name' => 'prev',
+    '#submit' => array('previous_submit'),
+    '#limit_validation_errors' => array(),
+  );
+  $form['feeds_revenue_next'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+    '#submit' => array('checkbook_datafeeds_revenue_next_submit'),
+  );
+  $form['#attributes'] = array(
+    'class' => array(
+      'revenue',
+      'data-feeds-wizard',
+    )
+  );
+  return $form;
+}
+
+function checkbook_datafeeds_revenue_filter_data($form, $form_state, $data_source = Datasource::CITYWIDE){
+  $agency_options = _agency_options($data_source);
+  $revenue_fys = array('' => "All Fiscal Years");
+  $revenue_fys = $revenue_fys + _checkbook_advanced_search_get_year(Domain::$REVENUE, 'datafeeds');
+
+  $form['filter']['leftbegin'] = array(
+    '#markup' => '<div class="column column-left">',
+  );
   $form['filter']['budget_fiscal_year'] = array(
     '#type' => 'select',
     '#title' => t('Budget Fiscal Year:'),
     '#options' => CheckbookDateUtil::getLast10fiscalYears(),
-    '#prefix' => '<div class="column column-left"><div class="datafield budgetyear">',
+    '#prefix' => '<div class="datafield budgetyear">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
     '#default_value' => !empty($form_state['values']['budget_fiscal_year']) ? $form_state['values']['budget_fiscal_year'] : CheckbookDateUtil::getCurrentFiscalYear(),
@@ -123,11 +185,14 @@ function checkbook_datafeeds_revenue($form, &$form_state){
     '#suffix' => '</div></div></div>',
     '#default_value' => !empty($form_state['values']['recognizedto']) ? $form_state['values']['recognizedto'] : '',
   );
+  $form['filter']['leftend'] = array(
+    '#markup' => '</div><div class="column column-right">',
+  );
   $form['filter']['fiscal_year'] = array(
     '#type' => 'select',
     '#title' => t('Fiscal Year:'),
     '#options' => $revenue_fys,
-    '#prefix' => '<div class="column column-right"><div class="datafield year">',
+    '#prefix' => '<div class="datafield year">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
     '#default_value' => !empty($form_state['values']['fiscal_year']) ? $form_state['values']['fiscal_year'] : '',
@@ -170,58 +235,15 @@ function checkbook_datafeeds_revenue($form, &$form_state){
     '#title' => t('to'),
     '#size' => 15,
     '#maxlength' => 15,
-    '#suffix' => '</div></div></div>',
+    '#suffix' => '</div></div>',
     '#default_value' => !empty($form_state['values']['modifiedto']) ? $form_state['values']['modifiedto'] : '',
   );
-
-  $form['columns'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('4. Select Columns:'),
-  );
-  $form['columns']['column_select'] = array(
-    '#type' => 'select',
-    '#title' => t('Columns'),
-    '#options' => _checkbook_datafeeds_revenue_column_options(DataSource::CITYWIDE, $datatype),
-    '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
-    '#required' => TRUE,
-    '#multiple' => TRUE,
-  );
-  //Hidden Field for multi-select
-  $form['columns']['hidden_multiple_value'] = array(
-    '#value' => isset($form_state['values']['column_select']) ? '|' . implode('||', $form_state['values']['column_select']) . '|' : '',
-    '#type' => 'hidden',
-  );
-  $form['#attached'] = array(
-    'library' => array(
-      array('system', 'ui.autocomplete', FALSE),
-      array('checkbook_datafeeds', 'jquery_multiselect', FALSE),
-    ),
-    'js' => array(
-      'data' => drupal_get_path('module', 'checkbook_datafeeds') . '/js/revenue.js',
-    )
-  );
-  $form['#validate'] = array('checkbook_datafeeds_revenue_validate');
-  $form['prev'] = array(
-    '#type' => 'submit',
-    '#value' => t('Previous'),
-    '#name' => 'prev',
-    '#submit' => array('previous_submit'),
-    '#limit_validation_errors' => array(),
-  );
-  $form['feeds_revenue_next'] = array(
-    '#type' => 'submit',
-    '#value' => t('Submit'),
-    '#submit' => array('checkbook_datafeeds_revenue_next_submit'),
-  );
-  $form['#attributes'] = array(
-    'class' => array(
-      'revenue',
-      'data-feeds-wizard',
-    )
+  $form['filter']['rightend'] = array(
+    '#markup' => '</div>',
   );
   return $form;
-}
 
+}
 /**
  * Budget column options.
  * @param string $dataSource
