@@ -420,6 +420,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
         'template' => 'gridview/nycha_revenue_respcenter_highchart',
         'arguments' => array('node' => NULL)
       ),
+      'highchart_nycha_revenue_categories_grid_view'=> array(
+        'template' => 'gridview/nycha_revenue_categories_highchart',
+        'arguments' => array('node' => NULL)
+      ),
       'highchart_nycha_revenue_expcategory_grid_view'=> array(
         'template' => 'gridview/nycha_revenue_expcategory_highchart',
         'arguments' => array('node' => NULL)
