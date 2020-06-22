@@ -1,0 +1,92 @@
+{
+    "revenue":{
+        "searchCriteriaMap":{
+            "budget_fiscal_year": "budget_fiscal_year",
+            "expense_category": "expenditure_type_code",
+            "responsibility_center": "responsibility_center_code",
+            "funding_source": "funding_source_code",
+            "program": "program_phase_code",
+            "project": "gl_project_code",
+            "budget_type": "budget_type",
+            "budget_name": "budget_name",
+            "revenue_category": "revenue_category",
+            "revenue_class": "revenue_class",
+            "adopted": "adopted_amount",
+            "modified": "modified_amount",
+            "recognized": "revenue_amount",
+            "remaining": "funds_available"
+        },
+        "dataset":{
+            "sortColumn":["-revenue_amount","-revenue_id"],
+            "name":"checkbook_nycha:revenue",
+            "columnTypes":{
+              "adopted_amount": "range",
+              "modified_amount": "range",
+              "recognized": "range",
+              "funds_available": "range",
+              "revenue_class": "like",
+              "revenue_category": "like"
+            },
+            "displayConfiguration":{
+                "xml":{
+                    "rootElement":"revenue_transactions",
+                    "rowParentElement":"transaction",
+                    "elementsColumn":{
+                      "budget_fiscal_year": "budget_fiscal_year",
+                      "adopted": "adopted_amount",
+                      "expense_category": "expenditure_type_description",
+                      "remaining": "funds_available",
+                      "modified": "modified_amount",
+                      "recognized": "revenue_amount",
+                      "budget_type": "budget_type",
+                      "budget_name": "budget_name",
+                      "funding_source": "funding_source_description",
+                      "responsibility_center": "responsibility_center_description",
+                      "program": "program_phase_description",
+                      "project": "gl_project_description",
+                      "closing_classification_name": "closing_classification_name",
+                      "revenue_category": "revenue_category",
+                      "revenue_class": "revenue_class"
+                    },
+                    "rowElements":["adopted","budget_fiscal_year", "budget_name","budget_type", "closing_classification_name", "expense_category",
+                      "funding_source","modified", "program", "project", "recognized", "remaining", "responsibility_center" ,"revenue_category", "revenue_class"]
+                },
+                "csv":{
+                    "elementsColumn":{                        
+                      "Budget Fiscal Year": "budget_fiscal_year",
+                      "Adopted": "adopted_amount",
+                      "Expense Category": "expenditure_type_description",
+                      "Remaining": "funds_available",
+                      "Modified": "modified_amount",
+                      "Recognized": "revenue_amount",
+                      "Budget Type": "budget_type",
+                      "Budget Name": "budget_name",
+                      "Funding Source": "funding_source_description",
+                      "Responsibility Center": "responsibility_center_description",
+                      "Program": "program_phase_description",
+                      "Project": "gl_project_description",
+                      "Closing Classification Name": "closing_classification_name",
+                      "Revenue Category": "revenue_category",
+                      "Revenue Class": "revenue_class"
+                    }
+                }
+            }
+        },
+        "requestParameters":{
+          "budget_fiscal_year":{"valueType":"value", "dataType":"year", "maxLength":4},
+          "expense_category":{"valueType":"value", "dataType":"text", "maxLength":20},
+          "responsibility_center":{"valueType":"value", "dataType":"text", "maxLength":10},
+          "funding_source":{"valueType":"value", "dataType":"text", "maxLength":4},
+          "program":{"valueType":"value", "dataType":"text", "maxLength":6},
+          "project":{"valueType":"value", "dataType":"text", "maxLength":6},
+          "budget_type":{"valueType":"value", "dataType":"text", "maxLength":20},
+          "budget_name":{"valueType":"value", "dataType":"text", "maxLength":100},
+          "revenue_category": {"valueType":"value", "dataType":"text", "maxLength":50},
+          "revenue_class": {"valueType":"value", "dataType":"text", "maxLength":50},
+          "adopted":{"valueType":"range", "dataType":"amount", "maxLength":18},
+          "modified":{"valueType":"range", "dataType":"amount", "maxLength":18},
+          "recognized":{"valueType":"range", "dataType":"amount", "maxLength":18},
+          "remaining":{"valueType":"range", "dataType":"amount", "maxLength":18}
+        }
+    }
+}
