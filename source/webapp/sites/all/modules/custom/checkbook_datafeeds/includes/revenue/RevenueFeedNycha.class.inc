@@ -298,31 +298,31 @@ class RevenueFeedNycha extends RevenueFeed
     $adoptedFrom = $form_state['values']['nycha_adopted_from'];
     $adoptedTo = $form_state['values']['nycha_adopted_to'];
     if ($adoptedFrom && !is_numeric($adoptedFrom)) {
-      form_set_error('nycha_adopted_from', t('Adopted Revenue From value must be a number.'));
+      form_set_error('nycha_adopted_from', t('Adopted From value must be a number.'));
     }
     if ($adoptedTo && !is_numeric($adoptedTo)) {
-      form_set_error('nycha_adopted_to', t('Adopted Revenue To value must be a number.'));
+      form_set_error('nycha_adopted_to', t('Adopted To value must be a number.'));
     }
     if (is_numeric($adoptedFrom) && is_numeric($adoptedTo) && $adoptedTo < $adoptedFrom) {
-      form_set_error('nycha_adopted_to', t('Invalid range for Adopted Revenue.'));
+      form_set_error('nycha_adopted_to', t('Invalid range for Adopted.'));
     }
 
     //Modified Amount
     $modifiedFrom = $form_state['values']['nycha_modified_from'];
     $modifiedTo = $form_state['values']['nycha_modified_to'];
     if ($modifiedFrom && !is_numeric($modifiedFrom)) {
-      form_set_error('nycha_modified_from', t('Modified Revenue From value must be a number.'));
+      form_set_error('nycha_modified_from', t('Modified From value must be a number.'));
     }
     if ($modifiedTo && !is_numeric($modifiedTo)) {
-      form_set_error('nycha_modified_to', t('Modified Revenue To value must be a number.'));
+      form_set_error('nycha_modified_to', t('Modified To value must be a number.'));
     }
     if (is_numeric($modifiedFrom) && is_numeric($modifiedTo) && $modifiedTo < $modifiedFrom) {
-      form_set_error('nycha_modified_to', t('Invalid range for Modified Revenue.'));
+      form_set_error('nycha_modified_to', t('Invalid range for Modified.'));
     }
 
     //Recognized
     $recognizedFrom = $form_state['values']['nycha_recognized_from'];
-    $recognizedTo = $form_state['values']['nycha_recognized_from'];
+    $recognizedTo = $form_state['values']['nycha_recognized_to'];
     if ($recognizedFrom && !is_numeric($recognizedFrom)) {
       form_set_error('nycha_recognized_from', t('Recognized From value must be a number.'));
     }
