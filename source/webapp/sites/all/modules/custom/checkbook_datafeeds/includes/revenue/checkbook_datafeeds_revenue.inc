@@ -81,7 +81,7 @@ function checkbook_datafeeds_revenue($form, &$form_state){
   //<editor-fold desc="CityWide and NYCHA Multi-select Options">
   $form['columns']['column_select'] = array(
     '#type' => 'select',
-    '#title' => t('Columns'),
+    '#title' => t('Columns<span class="form-required" title="This field is required.">*</span>'),
     '#options' => _checkbook_datafeeds_revenue_column_options(DataSource::CITYWIDE, $format),
     '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
     '#multiple' => TRUE,
