@@ -93,7 +93,7 @@ $remaining_data[] = array('name' => $row['year_year'], 'y' => $row['revenue_fund
 if($allZero){$node->totalDataCount = 0;}
 $node->widgetConfig->chartTitle = 'Fiscal Year Comparisons';
 $node->widgetConfig->chartConfig->xAxis->categories = $categories;
-$node->widgetConfig->chartConfig->series = array(array('name' => 'Recognized', 'data' => $committed_data), array('name' => 'Remaining', 'data' => $remaining_data));
+$node->widgetConfig->chartConfig->series = array(array('name' => 'Recognized', 'data' => $recognized_data), array('name' => 'Remaining', 'data' => $remaining_data));
 return $node->data;
 ",
 "chartConfig":{

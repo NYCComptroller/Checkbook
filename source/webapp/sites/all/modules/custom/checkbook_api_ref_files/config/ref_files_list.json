@@ -233,5 +233,65 @@
     "force_quote": [
       "budget_name"
     ]
+  },
+  "nycha_revenue_expenditure_type_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT expenditure_type_code, expenditure_type_description FROM ref_expenditure_type where account_type ='Revenue' AND expenditure_type_code IS NOT NULL AND expenditure_type_description IS NOT NULL AND expenditure_type_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT expenditure_type_description ~ '^'''",
+    "force_quote": [
+      "expenditure_type_code"
+    ]
+  },
+  "nycha_revenue_funding_source_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT funding_source_code, funding_source_description FROM public.ref_funding_source where funding_source_code IS NOT NULL and funding_source_description IS NOT NULL AND funding_source_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT funding_source_description ~ '^'''",
+    "force_quote": [
+      "funding_source_code"
+    ]
+  },
+  "nycha_revenue_project_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT gl_project_code, gl_project_description FROM public.ref_gl_project where gl_project_code IS NOT NULL and gl_project_description IS NOT NULL AND gl_project_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT gl_project_description ~ '^'''",
+    "force_quote": [
+      "gl_project_code"
+    ]
+  },
+  "nycha_revenue_program_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT program_phase_code, program_phase_description FROM public.ref_program_phase where program_phase_code IS NOT NULL AND program_phase_description IS NOT NULL AND program_phase_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT program_phase_description ~ '^'''",
+    "force_quote": [
+      "program_phase_code"
+    ]
+  },
+  "nycha_revenue_responsibility_center_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT responsibility_center_code, responsibility_center_description FROM public.ref_responsibility_center where responsibility_center_code IS NOT NULL AND responsibility_center_description IS NOT NULL AND responsibility_center_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT responsibility_center_description ~ '^'''",
+    "force_quote": [
+      "responsibility_center_code"
+    ]
+  },
+  "nycha_revenu_budget_type_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT budget_type from public.revenue",
+    "force_quote": [
+      "budget_type"
+    ]
+  },
+  "nycha_revenue_budget_name_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT budget_name from public.revenue",
+    "force_quote": [
+      "budget_name"
+    ]
+  },
+  "nycha_revenue_category_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "select distinct revenue_category_id,revenue_category from public.revenue",
+    "force_quote": [
+      "revenue_category"
+    ]
+  },
+  "nycha_revenue_class_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "select distinct revenue_class from public.revenue"
   }
 }
