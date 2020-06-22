@@ -373,14 +373,8 @@ class CheckbookSolrQuery
      */
     $escape_chars = ['\\', '.', '^', '$', '*', '+', '(', ')', '[', ']', '{', '}', '-', '&', '', '|', '!', '"', '?', ':', '/'];
     $replace_to = [];
-    // "\\" in for partial search text citywide is generting results because \\ get converted '\\\\'
     foreach ($escape_chars as $char) {
-      if (preg_match("/^\*/", $string)){
-        $replace_to[] = $char;
-      }
-      else{
-        $replace_to[] = "\\" . $char;
-      }
+      $replace_to[] = "\\" . $char;
     }
 
     $return = str_replace($escape_chars, $replace_to, $string);
