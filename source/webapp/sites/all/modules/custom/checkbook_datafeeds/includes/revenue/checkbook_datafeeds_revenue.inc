@@ -84,7 +84,6 @@ function checkbook_datafeeds_revenue($form, &$form_state){
     '#title' => t('Columns'),
     '#options' => _checkbook_datafeeds_revenue_column_options(DataSource::CITYWIDE, $format),
     '#default_value' => !empty($form_state['values']['column_select']) ? $form_state['values']['column_select'] : '',
-    '#required' => TRUE,
     '#multiple' => TRUE,
   );
 
@@ -292,13 +291,13 @@ function checkbook_datafeeds_nycha_revenue_filter_data($form, $form_state, $data
   $form['filter']['nycha-leftbegin'] = array(
     '#markup' => '<div class="column column-left">',
   );
-  $form['filter']['nycha_budget_fy'] = array(
+  $form['filter']['nycha_budget_year'] = array(
     '#type' => 'select',
     '#title' => t('Budget FY:'),
     '#options' => CheckbookDateUtil::getNychaBudgetFiscalYears(true),
-    '#default_value' => !empty($form_state['values']['nycha_budget_fy']) ? $form_state['values']['nycha_budget_fy'] : CheckbookDateUtil::getCurrentFiscalYear(),
+    '#default_value' => !empty($form_state['values']['nycha_budget_year']) ? $form_state['values']['nycha_budget_year'] : CheckbookDateUtil::getCurrentFiscalYear(),
     '#attributes' => array('class' => array('watch')),
-    '#prefix' => '<div class="datafield nycha_budget_fy">',
+    '#prefix' => '<div class="datafield nycha_budget_year">',
     '#suffix' => '</div>',
   );
 
@@ -500,7 +499,7 @@ function checkbook_datafeeds_nycha_revenue_filter_data($form, $form_state, $data
   return $form;
 }
 /**
- * Budget column options.
+ * Revenue column options.
  * @param string $dataSource
  * @param string $dataType
  *   Data type (xml or csv)
