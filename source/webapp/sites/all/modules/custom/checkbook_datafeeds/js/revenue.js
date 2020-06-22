@@ -18,6 +18,14 @@
         $('.form-item-nycha-column-select').hide();
         $('.form-item-column-select').show();
     }
+
+    //Sets up jQuery UI autocompletes and autocomplete filtering functionality
+    $.fn.initializeAutoComplete(dataSource);
+    $('.watch:input').each(function () {
+      $(this).focusin(function () {
+        $.fn.initializeAutoComplete(dataSource);
+      });
+    });
   }
 
   //On Data Source Change
@@ -84,19 +92,11 @@
     attach: function (context, settings) {
       //DataSource Filter Formatter
       $.fn.formatDatafeedsDatasourceRadio();
-
-      //Sets up jQuery UI autocompletes and autocomplete filtering functionality
-      $.fn.initializeAutoComplete();
-      $('.watch:input', context).each(function () {
-        $(this).focusin(function () {
-          $.fn.initializeAutoComplete();
-        });
-      });
+      let dataSource = $('input[name="datafeeds-revenue-domain-filter"]:checked', context).val();
 
       reloadBudgetType();
       reloadBudgetName();
 
-      let dataSource = $('input[name="datafeeds-revenue-domain-filter"]:checked', context).val();
       //Display or hide fields based on data source selection
       showHideRevenueFields(dataSource);
 
@@ -172,6 +172,26 @@
       $('#edit-revenue-source').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_source_name_code',filters)});
     }else if (data_source === 'checkbook_nycha') {
       solr_datasource = 'nycha';
+      let budgetFY = ($('#edit-nycha-budget-year').val() === 'All Years') ? 0 : $('#edit-nycha-budget-year').val();
+      let expCat = emptyToZero($('#edit-nycha-expense-category').val());
+      let respCanter = emptyToZero($('#edit-nycha-resp-center').val());
+      let fundingSrc = emptyToZero($('#edit-nycha-funding-source').val());
+      let program = emptyToZero($('#edit-nycha-program').val());
+      let project = emptyToZero($('#edit-nycha-project').val());
+      let budgetType = emptyToZero($('#edit-nycha-budget-type').val());
+      let budgetName = emptyToZero($('#edit-nycha-budget-name').val());
+      let filters = {
+        fiscal_year: budgetFY,
+        expenditure_type_code: expCat,
+        responsibility_center_code: respCanter,
+        funding_source_number: fundingSrc,
+        program_phase_code: program,
+        gl_project_code: project,
+        budget_type: budgetType,
+        budget_name: budgetName,
+      };
+      $('#edit-nycha-rev-cat').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_category',filters)});
+      $('#edit-nycha-rev-class').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_class',filters)});
     }
   }
 
