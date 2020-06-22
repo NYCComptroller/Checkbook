@@ -1,5 +1,5 @@
 {
-    "revenue":{
+    "revenue_nycha":{
         "searchCriteriaMap":{
             "budget_fiscal_year": "budget_fiscal_year",
             "expense_category": "expenditure_type_code",
@@ -79,7 +79,7 @@
           "funding_source":{"valueType":"value", "dataType":"text", "maxLength":4},
           "program":{"valueType":"value", "dataType":"text", "maxLength":6},
           "project":{"valueType":"value", "dataType":"text", "maxLength":6},
-          "budget_type":{"valueType":"value", "dataType":"text", "maxLength":20},
+          "budget_type":{"valueType":"value", "dataType":"text", "maxLength":50},
           "budget_name":{"valueType":"value", "dataType":"text", "maxLength":100},
           "revenue_category": {"valueType":"value", "dataType":"text", "maxLength":50},
           "revenue_class": {"valueType":"value", "dataType":"text", "maxLength":50},
