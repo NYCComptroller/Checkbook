@@ -125,6 +125,7 @@ jQuery(document).ready(function ($) {
         });
     };
 
+    //Formats Data-source filters section
     $.fn.formatDatafeedsDatasourceRadio = function() {
       let oge_datasources = $("#div_data_source .form-item:not(:first-child)");
       let oge_fieldset = $('<fieldset />').addClass('oge-datasource-fieldset');
@@ -135,6 +136,29 @@ jQuery(document).ready(function ($) {
       $('#div_data_source .form-radios').append(oge_fieldset);
       $('#div_data_source').append($('<div />').addClass('clear2'));
     };
+
+    $.fn.extractId = function(param) {
+      if (param && (param.indexOf('id=>') > -1)){
+        return param.split('~')[0].split('=>')[1];
+      }
+      return param;
+    }
+
+    //Generates Solr URL for auto-completes
+    $.fn.autoCompleteSourceUrl = function(solr_datasource, facet, filters) {
+      let url = '/advanced_autocomplete/';
+      let fq = '';
+
+      Object.keys(filters).forEach(function (key) {
+        let val = $.fn.extractId(String(filters[key]));
+        if (val && ("0" !== val)){
+          // remove trailing space from search terms
+          fq += '*!*'+key+'='+val.trim();
+        }
+      });
+      let search_term = '/?search_term=' + fq;
+      return url + solr_datasource + '/' + facet + search_term;
+    }
 
     // Projects & Actions Table Styling
     Drupal.behaviors.styleOverrides = {

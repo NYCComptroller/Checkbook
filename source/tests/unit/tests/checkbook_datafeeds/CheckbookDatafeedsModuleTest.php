@@ -1,7 +1,7 @@
 <?php
 include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/checkbook_datafeeds.module';
-include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/includes/checkbook_datafeeds_budget.inc';
-include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/includes/checkbook_datafeeds_contracts.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/includes/budget/checkbook_datafeeds_budget.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/includes/contracts/checkbook_datafeeds_contracts.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_datafeeds/includes/checkbook_datafeeds_tracking.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/constants/CommonConstants.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
