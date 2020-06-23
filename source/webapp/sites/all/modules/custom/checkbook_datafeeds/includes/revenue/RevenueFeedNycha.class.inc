@@ -113,7 +113,7 @@ class RevenueFeedNycha extends RevenueFeed
       if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['nycha_budget_name'])) {
         $this->values['nycha_budget_name'] = htmlspecialchars($this->values['nycha_budget_name']);
       }
-      $this->form['filter']['nycha_budget_name'] = array('#markup' => '<div><strong>Revenue Name:</strong> ' . $this->values['nycha_budget_name'] . '</div>');
+      $this->form['filter']['nycha_budget_name'] = array('#markup' => '<div><strong>Budget Name:</strong> ' . $this->values['nycha_budget_name'] . '</div>');
       $this->user_criteria['Budget Name'] = $this->values['nycha_budget_name'];
       $this->formatted_search_criteria['Budget Name'] = $this->values['nycha_budget_name'];
     }
@@ -254,7 +254,7 @@ class RevenueFeedNycha extends RevenueFeed
     }
     //Revenue Category
     if ($this->values['nycha_rev_cat']) {
-      $this->criteria['value']['nycha_rev_cat'] = $this->values['nycha_rev_cat'];
+      $this->criteria['value']['revenue_category'] = $this->values['nycha_rev_cat'];
     }
     //Revenue Class
     if ($this->values['nycha_rev_class']) {
