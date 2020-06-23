@@ -199,9 +199,6 @@ class RevenueFeedNycha extends RevenueFeed
       $this->user_criteria['Revenue Class'] = $this->values['nycha_rev_class'];
       $this->formatted_search_criteria['Revenue Class'] = $this->values['nycha_rev_class'];
     }
-    
-    
-    
   }
 
   protected function _process_datasource_values(){
