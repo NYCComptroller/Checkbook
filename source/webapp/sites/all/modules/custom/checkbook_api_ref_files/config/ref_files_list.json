@@ -269,7 +269,7 @@
       "responsibility_center_code"
     ]
   },
-  "nycha_revenu_budget_type_code_list": {
+  "nycha_revenue_budget_type_code_list": {
     "database": "checkbook_nycha",
     "sql": "SELECT DISTINCT budget_type from public.revenue",
     "force_quote": [
