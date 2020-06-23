@@ -131,6 +131,17 @@
       "title": "Fiscal Year",
       "autocomplete": true,
       "sort_by_key": -1
+    },
+    "revenue_amount": {
+      "title": "Recognized",
+      "intervals": {
+        ">5B": "[5000000000,*]",
+        "4B-5B": "[4000000000,4999999999.99]",
+        "3B-4B": "[3000000000,3999999999.99]",
+        "2B-3B": "[2000000000,2999999999.99]",
+        "1B-2B": "[1000000000,1999999999.99]",
+        "<1B": "[*,999999999.99]"
+      }
     }
   },
   "search_results_fields": {
@@ -223,6 +234,24 @@
       "funds_available": "Remaining",
       "adopted_budget": "Adopted",
       "encumbrance_amount": "Encumbered"
+    },
+    "revenue":{
+      "fiscal_year": "Budget Fiscal Year",
+      "adopted_amount": "Adopted",
+      "expenditure_type_description": "Expense Category",
+      "modified_amount": "Modified",
+      "funding_source_name": "Funding Source",
+      "revenue_amount": "Recognized",
+      "responsibility_center_name": "Responsibility Center",
+      "funds_available": "Remaining ",
+      "program_phase_name": "Program",
+      "revenue_category": "Revenue Category",
+      "gl_project_name": "Project",
+      "revenue_class": "Revenue Class",
+      "budget_name": "Budget Name",
+      "closing_classification_name": "Closing Classification Name",
+      "budget_type": "Budget Type",
+      "":""
     }
   },
   "export_fields": {
@@ -315,6 +344,23 @@
       "responsibility_center_name" : "Responsibility Center",
       "program_phase_name": "Program",
       "gl_project_name": "Project"
+    },
+    "revenue":{
+      "fiscal_year": "Budget Fiscal Year",
+      "adopted_amount": "Adopted",
+      "modified_amount": "Modified",
+      "revenue_amount": "Recognized",
+      "funds_available": "Remaining ",
+      "expenditure_type_description": "Expense Category",
+      "funding_source_name": "Funding Source",
+      "responsibility_center_name": "Responsibility Center",
+      "program_phase_name": "Program",
+      "gl_project_name": "Project",
+      "budget_type": "Budget Type",
+      "budget_name": "Budget Name",
+      "revenue_category": "Revenue Category",
+      "revenue_class": "Revenue Class",
+      "closing_classification_name": "Closing Classification Name"
     }
   },
   "autocomplete_terms": {
