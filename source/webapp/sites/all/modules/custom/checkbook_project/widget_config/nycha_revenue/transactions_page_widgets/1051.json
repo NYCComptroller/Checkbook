@@ -7,7 +7,7 @@
   "urlParamMap": {
     "year": "budget_fiscal_year_id", "expcategory": "expenditure_type_id", "respcenter": "responsibility_center_id",
     "fundsrc":"funding_source_id", "program": "program_phase_id", "project": "gl_project_id", "bdgtyp": "budget_type",
-    "bdgnm": "budget_name", "agency": "agency_id","revcat": "revenue_category_id",
+    "bdgnm": "budget_name", "agency": "agency_id","revcat": "revenue_category_id","amtr": "revenue_amount",
     "revcat_nm":"revenue_category", "revcat_nm_exact":"revenue_category", "revclass_nm": "revenue_class",
     "revclass_nm_exact": "revenue_class", "adopted_amt": "adopted_amount", "modified_amt": "modified_amount",
     "recognized_amt": "revenue_amount", "remaining_amt": "funds_available"
