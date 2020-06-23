@@ -33,7 +33,7 @@ class NychaRevenueUtil{
     $widget_titles = self::$widget_titles;
     //Transactions Page main title
     $title = (isset($widget) && ($widget != 'wt_year')) ? $widget_titles[$widget]: "";
-    if ($widget != 'wt_year'){
+    if (strpos($widget, 'rec_') !== false){
       $title .= ' '. "Recognized Revenue Transactions";
     }
     else {
