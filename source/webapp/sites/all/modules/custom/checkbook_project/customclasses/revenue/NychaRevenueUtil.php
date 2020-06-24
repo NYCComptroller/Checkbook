@@ -34,7 +34,7 @@ class NychaRevenueUtil{
     //Transactions Page main title
     $title = (isset($widget) && ($widget != 'wt_year')) ? $widget_titles[$widget]: "";
     if (strpos($widget, 'rec_') !== false){
-      $title .= ' '. "Recognized Revenue Transactions";
+      $title .= ' '. "by Recognized Revenue Transactions";
     }
     else {
       $title .= ' ' . "Revenue Transactions";
