@@ -222,9 +222,9 @@ $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 4;
 "aoColumns":[
 {"sClass":"text","sWidth":"70px","asSorting": [ "desc","asc" ]},
 {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
-{"sClass":"number pad-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
 {"sClass":"number", "sWidth":"135px","asSorting": [ "asc","desc" ]},
-{"sClass":"number-center","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
 {"sClass":"text","sWidth":"135px","asSorting": [ "desc","asc" ]},
 {"sClass":"text", "sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"text", "sWidth":"135px","asSorting": [ "asc","desc" ]},
