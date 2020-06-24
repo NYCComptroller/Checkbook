@@ -6,7 +6,7 @@
   "maxSelect":5,
   "allowZeroValue":true,
   "showAllRecords":true,
-  "allowFacetDeselect":true,
+  "allowFacetDeselect":false,
   "columns":["responsibility_center_id.responsibility_center_id","responsibility_center_description.responsibility_center_description","txcount"],
   "orderBy":"-txcount",
   "facetPager":true,

@@ -5,7 +5,7 @@
   "startWith":0,
   "maxSelect":5,
   "showAllRecords":true,
-  "allowFacetDeselect":true,
+  "allowFacetDeselect":false,
   "columns":["program_phase_id.program_phase_id","program_phase_description.program_phase_description","txcount"],
   "orderBy":"-txcount",
   "facetPager":true,
