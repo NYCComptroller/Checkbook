@@ -64,16 +64,10 @@
   if (abs($row['revenue_funds_available']) > 0){
   $allZero = FALSE;
   }
-  $exp = $node->widgetConfig->requestParams['expenditure_type_id.expenditure_type_id'];
-  $prog = $node->widgetConfig->requestParams['program_phase_id.program_phase_id'];
-  $fundsrc = $node->widgetConfig->requestParams['funding_source_id.funding_source_id'];
-  $proj = $node->widgetConfig->requestParams['gl_project_id.gl_project_id'];
-  if(($exp != null) && ($prog != null) && ($proj!= null) && ($fundsrc != null)){
-  $url = null;
-  }
-  else{
+
+
   $url = $landing_page .  '/respcenter/' . $row['responsibility_center_id_responsibility_center_id'];
-  }
+
 
 $categories[] = html_entity_decode($row['responsibility_center_description_responsibility_center_description'],ENT_QUOTES);
 $recognized_data[] = array('name' => html_entity_decode($row['responsibility_center_description_responsibility_center_description'],ENT_QUOTES), 'y' => $row['revenue_recognized_amount'], 'url' => $url);
@@ -82,12 +76,7 @@ $remaining_data[] = array('name' => html_entity_decode($row['responsibility_cent
 if($allZero){$node->totalDataCount = 0;}
 $node->widgetConfig->chartTitle = 'Top Ten Responsibility Centers by Revenue';
 $node->widgetConfig->chartConfig->xAxis->categories = $categories;
-if($url){
-  $cursor = 'pointer';
-} else {
-  $cursor = null;
-}
-$node->widgetConfig->chartConfig->plotOptions->series->cursor = $cursor;
+
 $node->widgetConfig->chartConfig->series = array(array('name' => 'Recognized', 'data' => $recognized_data),array('name' => 'Remaining', 'data' => $remaining_data));
 return $node->data;
 ",
