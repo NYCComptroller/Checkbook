@@ -57,7 +57,7 @@
     "respcenter": "responsibility_center_id.responsibility_center_id"
   },
   "transformationPHP":"
-  $transactions_page = '/' . current_path()  . '?expandBottomContURL=/panel_html/nycha_revenue_transactions/nycha_revenue/transactions/datasource/checkbook_nycha/widget/wt_year';
+  $transactions_page = '/' . current_path()  . '?expandBottomContURL=/panel_html/nycha_revenue_transactions/nycha_revenue/transactions/datasource/checkbook_nycha';
   $year = ($node->widgetConfig->requestParams['year_id.year_id']) ? '/year/' . $node->widgetConfig->requestParams['year_id.year_id'] : '';
 $expcategory = ($node->widgetConfig->requestParams['expenditure_type_id.expenditure_type_id']) ? '/expcategory/' . $node->widgetConfig->requestParams['expenditure_type_id.expenditure_type_id'] : '';
 $resp = ($node->widgetConfig->requestParams['responsibility_center_id.responsibility_center_id']) ? '/respcenter/' . $node->widgetConfig->requestParams['responsibility_center_id.responsibility_center_id'] : '';
@@ -79,8 +79,8 @@ $url_remaining =  $transactions_page . $rev_remaining . $year . $expcategory . $
   $url = null;
 
 $categories[] = html_entity_decode($row['revenue_category_revenue_category'],ENT_QUOTES);
-$recognized_data[] = array('name' => html_entity_decode($row['revenue_category_revenue_category'],ENT_QUOTES), 'y' => $row['revenue_recognized_amount'], 'url' => $url_recognized);
-$remaining_data[] = array('name' => html_entity_decode($row['revenue_category_revenue_category'],ENT_QUOTES), 'y' => $row['revenue_funds_available'], 'url' => $url_remaining);
+$recognized_data[] = array('name' => html_entity_decode($row['revenue_category_revenue_category'],ENT_QUOTES), 'y' => $row['revenue_recognized_amount'], 'url' => $url_recognized.'/widget/rec_reccat/revcat/'.$row['revenue_category_id_revenue_category_id']);
+$remaining_data[] = array('name' => html_entity_decode($row['revenue_category_revenue_category'],ENT_QUOTES), 'y' => $row['revenue_funds_available'], 'url' => $url_remaining.'/widget/rec_reccat/revcat/'.$row['revenue_category_id_revenue_category_id']);
 }
 if($allZero){$node->totalDataCount = 0;}
 $node->widgetConfig->chartTitle = 'Top Ten Revenue Categories by Revenue';
