@@ -1243,15 +1243,15 @@
           let agency_id = 0;
           if(data_source === 'checkbook') {
             agency_id = parseInt((div.ele('agency').val()) ? div.ele('agency').val() : 0);
-            let display_fiscal_year_id = 0; //do not change, this is a needed for the new change
             let fund_class_id = parseInt((div.ele('fund_class').val()) ? div.ele('fund_class').val() : 0);
-            let fiscal_year_id = parseInt((div.ele('budget_fy').val()) ? div.ele('budget_fy').val() : 0);
+            let budget_fiscal_year_id = parseInt((div.ele('budget_fy').val()) ? div.ele('budget_fy').val() : 0);
+            let fiscal_year_id = parseInt((div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0);
             let revenue_category_id = parseInt((div.ele('revenue_category').val()) ? div.ele('revenue_category').val() : 0);
             let funding_class_code = parseInt((div.ele('funding_class').val()) ? div.ele('funding_class').val() : 0);
             let filters = {
-              display_fiscal_year_id: display_fiscal_year_id,
               fund_class_id: fund_class_id,
               agency_id: agency_id,
+              revenue_budget_fiscal_year_id: budget_fiscal_year_id,
               fiscal_year_id: fiscal_year_id,
               revenue_category_id: revenue_category_id,
               funding_class_code: funding_class_code
