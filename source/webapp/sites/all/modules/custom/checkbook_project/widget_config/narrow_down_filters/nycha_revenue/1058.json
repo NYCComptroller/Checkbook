@@ -7,10 +7,10 @@
   "allowFacetDeselect":true,
   "filterName":"Revenue Recognized",
   "urlParameterName":"amtr",
-  "urlParameterType":"rangeid2",
+  "urlParameterType":"rangeid",
   "showAllRecords":true,
   "autocompleteID":"frevenueAmount",
-  "columns":["g5b_count", "g4b_le5b_count", "g3b_le4b_count", "g2b_le3b_count", "g1b_le2b_count", "less1b_count"],
+  "columns":["g100m_count", "g50m_le100m_count", "g25m_le50m_count", "g10m_le25m_count", "ge1m_le10m_count", "less1m_count"],
   "orderBy":"",
   "adjustParameters":"
   if(function_exists('_checkbook_project_applyParameterFilters')){

@@ -13,7 +13,7 @@
     "recognized_amt": "revenue_amount", "remaining_amt": "funds_available"
   },
   "paramTypeConfig": {
-    "amtr":"rangeid2",
+    "amtr":"rangeid",
     "bdgnm": "eqignorecase",
     "bdgnm_exact": "eqignorecase",
     "revcat_nm": "eqignorecase",
