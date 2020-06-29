@@ -20,7 +20,7 @@
             "name":"checkbook:fact_revenue",
             "columnTypes":{
               "revenue_class_name":"like",
-              "revenue_source":"like"
+              "revenue_source_name":"like"
             },
             "displayConfiguration":{
                 "xml":{
