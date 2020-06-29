@@ -5,7 +5,7 @@
   "maxSelect":5,
   "limit":100,
   "showAllRecords":true,
-  "allowFacetDeselect":false,
+  "allowFacetDeselect": true,
   "columns":["revenue_category_id.revenue_category_id","revenue_category.revenue_category", "txcount"],
   "orderBy":"-txcount",
   "filterName":"Revenue Category",

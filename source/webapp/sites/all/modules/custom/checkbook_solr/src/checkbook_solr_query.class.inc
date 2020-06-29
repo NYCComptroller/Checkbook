@@ -373,16 +373,28 @@ class CheckbookSolrQuery
      */
     $escape_chars = ['\\', '.', '^', '$', '*', '+', '(', ')', '[', ']', '{', '}', '-', '&', '', '|', '!', '"', '?', ':', '/'];
     $replace_to = [];
-    // "\\" in for partial search text citywide is generting results because \\ get converted '\\\\'
+    $setFlag = 0;
+
+    // NYCCHKBK-10081 "\\" in for partial search text citywide is not generating results because \\ get converted '\\\\'
+    // When * is present in the beginning or ending of string do not add \\
+    if ((preg_match("/^\*/", $string)) || (preg_match("/\*$/", $string))){
+      $newString = substr($string,1);
+      // if string has is special characters need to add "\\" in front to escape characters to get the results
+      if (preg_match_all("/['^.$%&()}{\[\]\"#~?><>,|=!:\/_+-]/i",$newString,$matches)){
+        $setFlag = 0;
+      }
+      else{
+        $setFlag = 1;
+      }
+    }
     foreach ($escape_chars as $char) {
-      if (preg_match("/^\*/", $string)){
-        $replace_to[] = $char;
+      if ($setFlag == 1){
+          $replace_to[] = $char;
       }
       else{
         $replace_to[] = "\\" . $char;
       }
     }
-
     $return = str_replace($escape_chars, $replace_to, $string);
     $return = urlencode(strtolower($return));
 

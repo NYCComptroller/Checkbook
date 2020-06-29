@@ -26,9 +26,6 @@ $row = array();
 $rows = array();
 foreach ($revenue_parameter_mapping as $key=>$title){
   $value = $revenue_results[$key];
-  if($key == 'fiscal_year'){
-    $value = $revenue_results[$key][0];
-  }
 
   //highlighting $searchTerm
   if($searchTerm && (strpos(strtoupper($value), strtoupper($searchTerm)) !== FALSE)){
