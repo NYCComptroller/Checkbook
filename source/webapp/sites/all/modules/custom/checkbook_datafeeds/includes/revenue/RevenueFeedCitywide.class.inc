@@ -191,12 +191,7 @@ class RevenueFeedCitywide extends RevenueFeed{
       }
     }
     if ($this->values['revenue_class']) {
-      preg_match($this->bracket_value_pattern, $this->values['revenue_class'], $rclmatches);
-      if ($rclmatches) {
-        $this->criteria['value']['revenue_class'] = trim($rclmatches[1], '[ ]');
-      } else {
-        $this->criteria['value']['revenue_class_name'] = $this->values['revenue_class'];
-      }
+      $this->criteria['value']['revenue_class'] = $this->values['revenue_class'];
     }
     if ($this->values['revenue_source']) {
       preg_match($this->bracket_value_pattern, $this->values['revenue_source'], $rsmatches);
