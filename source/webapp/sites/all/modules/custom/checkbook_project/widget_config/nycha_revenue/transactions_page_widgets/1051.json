@@ -132,6 +132,11 @@
       "sortSourceColumn": "funds_available"
     },
     {
+      "label": "",
+      "column": "",
+      "export": false
+    },
+    {
       "labelAlias": "expense_category",
       "column": "exp_name_formatted",
       "sortSourceColumn": "expenditure_type_description"
@@ -225,6 +230,7 @@ $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 4;
 {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
 {"sClass":"number", "sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"bSortable":false,"sWidth":"18px"},
 {"sClass":"text","sWidth":"135px","asSorting": [ "desc","asc" ]},
 {"sClass":"text", "sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"text", "sWidth":"135px","asSorting": [ "asc","desc" ]},
