@@ -258,8 +258,9 @@ function _checkbook_faceted_search_update_data($node)
   }
 
   // Facet preselection for
-  // The code below disables facet for for amount links
+  // The code below disables facet for for amount links (not for advance search facets )
   // $query_string = $_GET['q']; // does not get the full url hence the allowFacetDeselect condition fails
+  // Need to move the code which introduces functionality for specific conditions  to common utilities function
   $query_string = $_SERVER['HTTP_REFERER'];
   $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
 
