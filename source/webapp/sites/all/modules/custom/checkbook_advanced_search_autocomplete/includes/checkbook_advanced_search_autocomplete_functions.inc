@@ -60,19 +60,19 @@ function _get_spending_advanced_search_autocomplete_results($facet, $query, $yea
  *   Selected agency id
  * @param string $dept
  *   Selected Department Name
- * @param string $spending_cat
+ * @param string $spendingCat
  *   Selected Spending Category Id
  * @param string $year
  *   Year value
- * @param $data_source
+ * @param $dataSource
  *   Data source to get data (i.e checkbook, checkbook_oge)
- *
+ * @param $feeds
  * @return array
  *   Results from Query
  ***/
-function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, $dataSource, $feeds) {
+function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, $dataSource, $dataSource, $feeds) {
   if($feeds){
-    $year = (isset($year) && $year != 0) ? substr($year, 2, strlen($year)) : "all";
+    $year = (isset($year) && $year !== 0) ? substr($year, 2, strlen($year)) : "all";
     $agencyParam = $agency ? " AND agency_code = '" . $agency . "' " : "";
     $spendingCatParam = $spendingCat ? " AND spending_category_id = " .
       _checkbook_project_get_name_for_argument('spending_category_code', $spendingCat, $dataSource) : "";
