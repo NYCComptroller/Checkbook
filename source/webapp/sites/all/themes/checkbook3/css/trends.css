@@ -589,3 +589,7 @@ body.page-trends-node-404 #page-title {
 
 #table_358_wrapper .number.sorting_disabled sup,
 #table_358_wrapper .number > div {text-transform: lowercase;}
+
+#node-chart-308 tspan.highcharts-text-outline {
+  stroke: none;
+}
