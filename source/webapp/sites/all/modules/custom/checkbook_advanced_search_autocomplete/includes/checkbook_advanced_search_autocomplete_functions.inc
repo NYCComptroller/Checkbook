@@ -70,7 +70,7 @@ function _get_spending_advanced_search_autocomplete_results($facet, $query, $yea
  * @return array
  *   Results from Query
  ***/
-function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, $dataSource, $dataSource, $feeds) {
+function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, $dataSource, $feeds) {
   if($feeds){
     $year = (isset($year) && $year !== 0) ? substr($year, 2, strlen($year)) : "all";
     $agencyParam = $agency ? " AND agency_code = '" . $agency . "' " : "";
