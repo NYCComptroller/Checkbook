@@ -124,18 +124,19 @@ function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, 
  *   Year value
  * @param string $agency
  *   Selected agency id
- * @param string $exp_type
- *   Selected Spending Category Id
- * @param string $data_source
+ * @param string $dataSource
  *   Data source (checkbook, checkbook_oge)
- *
+ * @param $spendingCat
+ *   Spending Category
+ * @param $feeds
+ *   set a value if the data is for data-feeds
  * @return mixed Results from Solr
  *   Results from Solr
  *
  */
 function _checkbook_advanced_search_autocomplete_spending_department($year, $agency, $spendingCat, $dataSource = Datasource::CITYWIDE, $feeds = null) {
   if($feeds){
-    $year = (isset($year) && $year != 0) ? substr($year, 2, strlen($year)) : "all";
+    $year = (isset($year) && $year !== 0) ? substr($year, 2, strlen($year)) : "all";
     $spendingCatParam = $spendingCat ? " AND spending_category_id = " .
                         _checkbook_project_get_name_for_argument('spending_category_code', $spendingCat, $dataSource) : "";
     $agencyParam = $agency ? " AND agency_code = '" . $agency . "' " : "";
@@ -156,7 +157,7 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
     $yearParam = ($feeds) ? (($year != 'all') ? " AND fiscal_year = '" . $year . "' " : "")
                  : (($yearId != 'all') ? " AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "");
 
-      $query = "SELECT DISTINCT department_name, department_code
+    $query = "SELECT DISTINCT department_name, department_code
                 FROM disbursement_line_item_details
                 WHERE 1 =1 {$agencyParam} {$yearParam} {$spendingCatParam}
                 ORDER BY department_name ASC";
