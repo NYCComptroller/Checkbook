@@ -349,10 +349,12 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
     $responsibility_center_attributes = _checkbook_advanced_search_get_responsibility_centers($data_source);
     $contract_type_attribute = _checkbook_advanced_search_get_nycha_contract_types($data_source);
     $fundsrc_attributes = checkbook_advanced_search_get_nycha_funding_sources($data_source);
-    $year_attribute = _checkbook_advanced_search_get_year($domain, null, $data_source);
-    $expense_category_attributes = _budget_expcat_options($domain, NUll, NUll, NULL, Datasource::NYCHA, false);
-    $program_attributes = _budget_program_options(Datasource::NYCHA, false);
-    $project_attributes = _budget_project_options(Datasource::NYCHA, false);
+    $year_attribute = _checkbook_advanced_search_get_year($domain, NULL, $data_source);
+    if($domain == Domain::Budget || $domain == Domain::Revenue){
+      $expense_category_attributes = _budget_expcat_options($domain, NULL, NULL, NULL, Datasource::NYCHA, false);
+      $program_attributes = _budget_program_options(Datasource::NYCHA, false);
+      $project_attributes = _budget_project_options(Datasource::NYCHA, false);
+    }
   } else {
     $mwbe_category_attributes = _checkbook_advanced_search_get_mwbe_category_and_id();
     $sub_vendor_status = _checkbook_advanced_search_get_subcontract_approval_status_and_id();
