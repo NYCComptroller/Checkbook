@@ -499,7 +499,7 @@ function checkbook_datafeeds_year_ajax($form, &$form_state)
  * @return mixed
  *   Array of years formatted for FAPI select box #options
  */
-function _year_options($yeartype = NULL, $datasource = Datasource::CITYWIDE)
+function _year_options($yeartype = NULL, $datasource = Datasource::CITYWIDE, $domain = NULL)
 {
   switch ($yeartype) {
     case 'all-years':
@@ -509,6 +509,10 @@ function _year_options($yeartype = NULL, $datasource = Datasource::CITYWIDE)
         $fyarray = array();
         foreach ($fydata as $row) {
           $fyarray['FY' . $row['year_value']] = 'FY ' . $row['year_value'];
+        }
+        //Remove this after Year Filter Separation for Spending Data-feeds
+        if($domain == Domain::$SPENDING){
+          $fyarray = array_merge(array('FY2021' => 'FY 2021'), $fyarray);
         }
         $results = array_merge(array('0' => 'All Years'), $fyarray);
         return $results;

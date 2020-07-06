@@ -76,13 +76,8 @@ class CheckbookDateUtil{
    */
   public static function getCurrentFiscalYear($data_source = Datasource::CITYWIDE){
     self::setCurrentYears();
-    $isNYCHA = (bool)($data_source == Datasource::NYCHA || Datasource::isNYCHA());
-    //For NYCHA, Fiscal Year is Calender Year
-    if ($isNYCHA) {
-      return self::getCurrentDatasourceFiscalYear(Datasource::NYCHA);
-    } else {
-      return self::$currentFiscalYear;
-    }
+    $data_source = ($data_source == Datasource::NYCHA || Datasource::isNYCHA()) ? Datasource::NYCHA : $data_source;
+    return self::getCurrentDatasourceFiscalYear($data_source);
   }
 
   /**
@@ -97,10 +92,10 @@ class CheckbookDateUtil{
   /**
    * @param $data_source
    *
-   * SET THESE VARS ON SERVER:
-   * drush vset current_checkbook_fy 2020
-   * drush vset current_checkbook_oge_fy 2020
-   * drush vset current_checkbook_nycha_fy 2019
+   * SET THESE VARS ON SERVER (AT DATA-SOURCE LEVEL):
+   * drush vset current_checkbook_fy 2021
+   * drush vset current_checkbook_oge_fy 2021
+   * drush vset current_checkbook_nycha_fy 2020
    *
    * @return string
    */
