@@ -482,7 +482,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
  // BY default obtain all the year values setting the datasource as nycha (show /hide handled in javascript)
   $form['filter']['year'] = array(
     '#type' => 'select',
-    '#options' => _year_options('all-years',Datasource::NYCHA),
+    '#options' => _year_options('all-years',Datasource::NYCHA, Domain::$SPENDING),
     '#attributes' => array('class' => array('watch')),
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'year', $first_time_load, 0),
     '#prefix' => '<div id="year"><div class="datafield year">',
