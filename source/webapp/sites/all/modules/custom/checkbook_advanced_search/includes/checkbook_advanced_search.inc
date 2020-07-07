@@ -81,17 +81,14 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
  */
 function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = Datasource::CITYWIDE){
     try {
-        if($data_source == Datasource::NYCHA && ($domain == Domain::$BUDGET || $domain == Domain::$REVENUE)){
-         return CheckbookDateUtil::getNychaBudgetFiscalYears();
-        }
-        $fiscalYears = CheckbookDateUtil::getFiscalYearOptionsRange($data_source);
+        $fiscalYears = CheckbookDateUtil::getFiscalYearOptionsRange($data_source, $domain);
         $calendarYears = CheckbookDateUtil::getCalendarYearOptionsRange($data_source);
         $fiscal_year_array = [];
         $calendar_year_array = [];
 
         //Fiscal Years
         foreach($fiscalYears as $row) {
-          if ($domain != 'revenue' && $domain != 'budget') {
+          if ($domain != Domain::$REVENUE && $domain != Domain::$BUDGET) {
             $fiscal_year_array['fy~' . $row['year_id']] = 'FY ' . $row['year_value'];
           } else {
             if ($form == 'datafeeds')
@@ -114,7 +111,7 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
           arsort($calendar_year_array);
         }
 
-        if ($domain == 'payroll') {
+        if ($domain == Domain::$PAYROLL) {
             if($data_source == Datasource::NYCHA) {
               $fiscal_year_array = $calendar_year_array;
             }else{
@@ -122,7 +119,7 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
             }
         }
 
-        if ($domain == 'contracts' || $domain == 'spending') {
+        if ($domain == Domain::$CONTRACTS || $domain == Domain::$SPENDING) {
             $fiscal_year_array = array_reverse($fiscal_year_array, true);
             $fiscal_year_array['fy~all'] = 'All Years';
             $fiscal_year_array = array_reverse($fiscal_year_array, true);
