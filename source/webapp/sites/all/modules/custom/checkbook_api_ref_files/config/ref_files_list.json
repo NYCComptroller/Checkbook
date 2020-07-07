@@ -285,7 +285,7 @@
   },
   "nycha_revenue_category_code_list": {
     "database": "checkbook_nycha",
-    "sql": "select distinct revenue_category_id,revenue_category from public.revenue",
+    "sql": "select distinct revenue_category from public.revenue",
     "force_quote": [
       "revenue_category"
     ]
