@@ -19,7 +19,7 @@
 */
 
 
-$filter_years = _checkbook_max_data_year();
+$filter_years = CheckbookDateUtil::getCurrentYears();
 $q = request_uri();
 $array_q = explode('/',$q);
 

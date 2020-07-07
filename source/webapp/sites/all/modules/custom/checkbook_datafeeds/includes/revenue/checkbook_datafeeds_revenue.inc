@@ -157,7 +157,7 @@ function checkbook_datafeeds_revenue_filter_data($form, $form_state, $data_sourc
   $form['filter']['budget_fiscal_year'] = array(
     '#type' => 'select',
     '#title' => t('Budget Fiscal Year:'),
-    '#options' => CheckbookDateUtil::getLast10fiscalYears(),
+    '#options' => CheckbookDateUtil::getFiscalYearsRange(),
     '#prefix' => '<div class="datafield budgetyear">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),

@@ -1967,38 +1967,6 @@ function _checkbook_get_year_id($year){
   return CheckbookDateUtil::year2yearId($year);
 }
 
-/**
- * @return array
- */
-function _checkbook_year_list($datasource){
-  $year = CheckbookDateUtil::getCurrentFiscalYear();
-  $return = [];
-  $yearCount = 10;
-  if ($datasource == 'checkbook_nycha'){ $yearCount = 11;}
-  $min = $year - $yearCount;
-  while ($year > $min) {
-    $return[] = [
-      'year_value' => $year,
-      'year_id' => CheckbookDateUtil::year2yearId($year)
-    ];
-    $year--;
-  }
-  return $return;
-}
-
-
-/**
- * @return array
- */
-function _checkbook_max_data_year($data_source = Datasource::CITYWIDE){
-  return [
-    'year_value' => CheckbookDateUtil::getCurrentFiscalYear($data_source),
-    'year_id' => CheckbookDateUtil::getCurrentFiscalYearId($data_source),
-    'cal_year_value' => CheckbookDateUtil::getCurrentCalendarYear(),
-    'cal_year_id' => CheckbookDateUtil::getCurrentCalendarYearId()
-  ];
-}
-
 /*
  * Will add mwbe, subvendor and datasource parameters to url.  Precedence ,$source > $overidden_params > requestparam
  */
