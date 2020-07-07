@@ -4,6 +4,8 @@
   "startWith":0,
   "maxSelect":5,
   "limit":100,
+  "showAllRecords":true,
+  "allowFacetDeselect": true,
   "columns":["revenue_category_id.revenue_category_id","revenue_category.revenue_category", "txcount"],
   "orderBy":"-txcount",
   "filterName":"Revenue Category",
@@ -19,6 +21,15 @@
 }
 $adjustedParameters['revenue_category_id.revenue_category_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 return $adjustedParameters;
+",
+"adjustFacetOptions":"
+if(PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
+$node->widgetConfig->allowFacetDeselect = true;
+$node->widgetConfig->showAllRecords = true;
+}else{
+$node->widgetConfig->allowFacetDeselect = false;
+$node->widgetConfig->showAllRecords = false;
+}
 ",
 "template":"individual_filter"
 }

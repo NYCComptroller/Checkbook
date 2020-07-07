@@ -61,15 +61,9 @@
   if (abs($row['revenue_recognized_amount']) > 0){$allZero = FALSE;}
 if (abs($row['revenue_funds_available']) > 0){$allZero = FALSE;}
 $exp = $node->widgetConfig->requestParams['expenditure_type_id.expenditure_type_id'];
-$prog = $node->widgetConfig->requestParams['program_phase_id.program_phase_id'];
-$resp = $node->widgetConfig->requestParams['responsibility_center_id.responsibility_center_id'];
-$proj = $node->widgetConfig->requestParams['gl_project_id.gl_project_id'];
-if(($exp != null) && ($prog != null) && ($proj!= null) && ($resp != null)){
-$url = null;
-}
-else{
+
 $url = $landing_page .  '/fundsrc/' . $row['funding_source_id_funding_source_id'];
-}
+
 $categories[] = html_entity_decode($row['funding_source_description_funding_source_description'],ENT_QUOTES);
 $recognized_data[] = array('name' => html_entity_decode($row['funding_source_description_funding_source_description'],ENT_QUOTES), 'y' => $row['revenue_recognized_amount'], 'url' => $url);
 $remaining_data[] = array('name' => html_entity_decode($row['funding_source_description_funding_source_description'],ENT_QUOTES), 'y' => $row['revenue_funds_available'], 'url' => $url);
@@ -77,12 +71,7 @@ $remaining_data[] = array('name' => html_entity_decode($row['funding_source_desc
 if($allZero){$node->totalDataCount = 0;}
 $node->widgetConfig->chartTitle = 'Top Ten Funding Sources by Revenue';
 $node->widgetConfig->chartConfig->xAxis->categories = $categories;
-if($url){
-$cursor = 'pointer';
-} else {
-$cursor = null;
-}
-$node->widgetConfig->chartConfig->plotOptions->series->cursor = $cursor;
+
 $node->widgetConfig->chartConfig->series = array(array('name' => 'Recognized', 'data' => $recognized_data),array('name' => 'Remaining', 'data' => $remaining_data));
 return $node->data;
 ",

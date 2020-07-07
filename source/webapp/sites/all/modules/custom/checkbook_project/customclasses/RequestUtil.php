@@ -281,7 +281,7 @@ class RequestUtil
     public static function getTopNavURL($domain)
     {
         $path = '';
-        $fiscalYearId = static::getFiscalYearIdForTopNavigation();
+        $fiscalYearId = CheckbookDateUtil::getFiscalYearIdForTopNavigation();
 
         switch ($domain) {
             case "nycha_contracts":
@@ -345,7 +345,7 @@ class RequestUtil
               }
             break;
             case "payroll":
-                $year = static::getCalYearIdForTopNavigation();
+                $year = CheckbookDateUtil::getCalYearIdForTopNavigation();
                 //Payroll is always redirected to the respective Calendar Year irrespective of the 'yeartpe' paramenter in the URL for all the other Domains
                 if (!preg_match('/payroll/', request_uri())) {
                     $yeartype = 'C';
@@ -440,39 +440,6 @@ class RequestUtil
             }
         }
         return $path;
-    }
-
-    /** Returns Year ID for Spending, Contracts, Budget and Revenue domains navigation URLs from Top Navigation
-     * @return integer $fiscalYearId
-     */
-    public static function getFiscalYearIdForTopNavigation()
-    {
-        $year = RequestUtilities::get("year|calyear");
-        if (!$year) {
-            $year = CheckbookDateUtil::getCurrentFiscalYearId();
-        }
-
-        //For CY 2010 Payroll selection, other domains should be navigated to FY 2011
-        $fiscalYearId = ($year == 111 && strtoupper(RequestUtilities::get("yeartype")) == 'C') ? 112 : $year;
-        return $fiscalYearId;
-    }
-
-    /** Returns Year ID for Payroll domain navigation URLs from Top Navigation
-     * @return integer $calYearId
-     */
-    public static function getCalYearIdForTopNavigation()
-    {
-        $year = null;
-        if (RequestUtilities::get("year") != NULL) {
-            $year = RequestUtilities::get("year");
-        } else if (RequestUtilities::get("calyear") != NULL) {
-            $year = RequestUtilities::get("calyear");
-        }
-        $currentCalYear = CheckbookDateUtil::getCurrentCalendarYearId();
-        if (is_null($year) || $year > $currentCalYear) {
-            $year = $currentCalYear;
-        }
-        return $year;
     }
 
     /** Checks if the current page is NYC level*/
@@ -751,7 +718,7 @@ class RequestUtil
         foreach ($reqParams as $key => $value) {
             $value = RequestUtilities::get($key);
             if ($key == "year") {
-                $value =  static::getFiscalYearIdForTopNavigation();
+                $value =  CheckbookDateUtil::getFiscalYearIdForTopNavigation();
             }
             if ($key == "yeartype") {
                 $value = 'B';
@@ -972,7 +939,7 @@ class RequestUtil
         } else {
             return "";
         }
-        return '/' . RequestUtil::getLandingPageUrl($domain, static::getFiscalYearIdForTopNavigation(), 'B') . "/mwbe/" . MappingUtil::$total_mwbe_cats
+        return '/' . RequestUtil::getLandingPageUrl($domain, CheckbookDateUtil::getFiscalYearIdForTopNavigation(), 'B') . "/mwbe/" . MappingUtil::$total_mwbe_cats
             . "/dashboard/" . $dashboard .
             RequestUtilities::buildUrlFromParam('agency')
             . RequestUtilities::buildUrlFromParam('vendor');
@@ -1040,5 +1007,17 @@ class RequestUtil
       }
       return $url;
     }
+  /** Checks if the URL is widget link for Nycha facet disabling */
+  public static function isNychaAmountLinks()
+  {
+    $setAutoDeselect = 0;
+    $query_string = $_SERVER['HTTP_REFERER'];
+    $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
+    if((strpos($widget, 'wt_') !== false) || (strpos($widget, 'ytd_') !== false) || (strpos($widget, 'comm_') !== false)|| (strpos($widget, 'rec_') !== false)){
+      $setAutoDeselect = 1;
+    }
+    return $setAutoDeselect;
+  }
+
 }
 

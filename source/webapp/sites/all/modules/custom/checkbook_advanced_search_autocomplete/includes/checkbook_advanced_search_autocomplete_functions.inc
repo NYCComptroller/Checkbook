@@ -60,19 +60,19 @@ function _get_spending_advanced_search_autocomplete_results($facet, $query, $yea
  *   Selected agency id
  * @param string $dept
  *   Selected Department Name
- * @param string $spending_cat
+ * @param string $spendingCat
  *   Selected Spending Category Id
  * @param string $year
  *   Year value
- * @param $data_source
+ * @param $dataSource
  *   Data source to get data (i.e checkbook, checkbook_oge)
- *
+ * @param $feeds
  * @return array
  *   Results from Query
  ***/
 function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, $dataSource, $feeds) {
   if($feeds){
-    $year = (isset($year) && $year != 0) ? substr($year, 2, strlen($year)) : "all";
+    $year = (isset($year) && $year !== 0) ? substr($year, 2, strlen($year)) : "all";
     $agencyParam = $agency ? " AND agency_code = '" . $agency . "' " : "";
     $spendingCatParam = $spendingCat ? " AND spending_category_id = " .
       _checkbook_project_get_name_for_argument('spending_category_code', $spendingCat, $dataSource) : "";
@@ -124,18 +124,19 @@ function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, 
  *   Year value
  * @param string $agency
  *   Selected agency id
- * @param string $exp_type
- *   Selected Spending Category Id
- * @param string $data_source
+ * @param string $dataSource
  *   Data source (checkbook, checkbook_oge)
- *
+ * @param $spendingCat
+ *   Spending Category
+ * @param $feeds
+ *   set a value if the data is for data-feeds
  * @return mixed Results from Solr
  *   Results from Solr
  *
  */
 function _checkbook_advanced_search_autocomplete_spending_department($year, $agency, $spendingCat, $dataSource = Datasource::CITYWIDE, $feeds = null) {
   if($feeds){
-    $year = (isset($year) && $year != 0) ? substr($year, 2, strlen($year)) : "all";
+    $year = (isset($year) && $year !== 0) ? substr($year, 2, strlen($year)) : "all";
     $spendingCatParam = $spendingCat ? " AND spending_category_id = " .
                         _checkbook_project_get_name_for_argument('spending_category_code', $spendingCat, $dataSource) : "";
     $agencyParam = $agency ? " AND agency_code = '" . $agency . "' " : "";
@@ -156,7 +157,7 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
     $yearParam = ($feeds) ? (($year != 'all') ? " AND fiscal_year = '" . $year . "' " : "")
                  : (($yearId != 'all') ? " AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "");
 
-      $query = "SELECT DISTINCT department_name, department_code
+    $query = "SELECT DISTINCT department_name, department_code
                 FROM disbursement_line_item_details
                 WHERE 1 =1 {$agencyParam} {$yearParam} {$spendingCatParam}
                 ORDER BY department_name ASC";
@@ -215,38 +216,6 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
     drupal_json_output($matches);
 }
 
-// Year drop down to include 2010 for NYCHA
-/*function _checkbook_advanced_search_autocomplete_spending_year($data_source = Datasource::CITYWIDE, $feeds = null) {
-  $options = _get_spending_year_options($data_source);
-  $matches = array();
-  if(isset($options['label'])) {
-    $matches[] = $options['label'];
-  }
-  else {
-    foreach($options as $key => $value){
-      $value = htmlentities($value);
-      $name = ($feeds) ? $value :_ckbk_excerpt($value);
-      $matches[] = array("code" => $key, "name" => $name);
-    }
-  }
-  drupal_json_output($matches);
-}
-//Future update common function for all the year data across all datafeeds domaina
-
-function _get_spending_year_options($dataSource) {
-  try {
-  $fydata = CheckbookDateUtil::getLast10FiscalYearOptions($dataSource);
-  $fyarray = array();
-  foreach ($fydata as $row) {
-    $fyarray['FY' . $row['year_value']] = 'FY ' . $row['year_value'];
-  }
-  $results = array_merge(array('0' => 'All Years'), $fyarray);
-  return $results;
-  } catch (Exception $e) {
-    log_error("Error getting data from controller: \n" . $e->getMessage());
-    return;
-  }
-}*/
 
 //Contracts autocomplete menu callback functions
 /**

@@ -182,21 +182,26 @@
      onDateFilterChange();
 
      //Add/Remove extra year value
-    resetYearvalue(data_source);
+    resetYearValue(data_source);
   };
 
+  //TO DO: Separate year filters for CITYWIDE/OGE and NYCHA on the form and show/hide based on data-source selected
   // Hide/Show extra year value based obn datsource
-  let resetYearvalue = function (dataSource){
+  let resetYearValue = function (dataSource){
+    //Current FY
+    let currentFY =  $("#edit-year option:eq(1)").val();
     // Get the last year value by index
-    let lastYear =  $("#edit-year option:eq(11)").val();
+    let lastYear =  $("#edit-year option:eq(12)").val();;
     switch (dataSource) {
       case 'checkbook_nycha':
         // Show another year value for NYCHA
         $("#edit-year option[value='"+lastYear+"']").show();
+        $("#edit-year option[value='"+currentFY+"']").hide();
         break;
       default:
         // Hide the extra year for citywide and OGE
         $("#edit-year option[value='"+lastYear+"']").hide();
+        $("#edit-year option[value='"+currentFY+"']").show();
     }
   };
   // Reset Multi select option based on datasource

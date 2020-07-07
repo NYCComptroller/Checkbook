@@ -7,13 +7,13 @@
   "urlParamMap": {
     "year": "budget_fiscal_year_id", "expcategory": "expenditure_type_id", "respcenter": "responsibility_center_id",
     "fundsrc":"funding_source_id", "program": "program_phase_id", "project": "gl_project_id", "bdgtyp": "budget_type",
-    "bdgnm": "budget_name", "agency": "agency_id","revcat": "revenue_category_id",
+    "bdgnm": "budget_name", "agency": "agency_id","revcat": "revenue_category_id","amtr": "revenue_amount",
     "revcat_nm":"revenue_category", "revcat_nm_exact":"revenue_category", "revclass_nm": "revenue_class",
     "revclass_nm_exact": "revenue_class", "adopted_amt": "adopted_amount", "modified_amt": "modified_amount",
     "recognized_amt": "revenue_amount", "remaining_amt": "funds_available"
   },
   "paramTypeConfig": {
-    "amtr":"rangeid2",
+    "amtr":"rangeid",
     "bdgnm": "eqignorecase",
     "bdgnm_exact": "eqignorecase",
     "revcat_nm": "eqignorecase",
@@ -132,6 +132,11 @@
       "sortSourceColumn": "funds_available"
     },
     {
+      "label": "",
+      "column": "",
+      "export": false
+    },
+    {
       "labelAlias": "expense_category",
       "column": "exp_name_formatted",
       "sortSourceColumn": "expenditure_type_description"
@@ -222,9 +227,10 @@ $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 4;
 "aoColumns":[
 {"sClass":"text","sWidth":"70px","asSorting": [ "desc","asc" ]},
 {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
-{"sClass":"number pad-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
 {"sClass":"number", "sWidth":"135px","asSorting": [ "asc","desc" ]},
-{"sClass":"number-center","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"bSortable":false,"sWidth":"18px"},
 {"sClass":"text","sWidth":"135px","asSorting": [ "desc","asc" ]},
 {"sClass":"text", "sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"text", "sWidth":"135px","asSorting": [ "asc","desc" ]},

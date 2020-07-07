@@ -60,16 +60,9 @@
   foreach ($node->data as $row) {
   if (abs($row['revenue_recognized_amount']) > 0){$allZero = FALSE;}
 if (abs($row['revenue_funds_available']) > 0){$allZero = FALSE;}
-$exp = $node->widgetConfig->requestParams['expenditure_type_id.expenditure_type_id'];
-$prog = $node->widgetConfig->requestParams['program_phase_id.program_phase_id'];
-$fundsrc = $node->widgetConfig->requestParams['funding_source_id.funding_source_id'];
-$resp = $node->widgetConfig->requestParams['responsibility_center_id.responsibility_center_id'];
-if(($exp != null) && ($prog != null) && ($resp!= null) && ($fundsrc != null)){
-$url = null;
-}
-else{
+
 $url = $landing_page .  '/project/' . $row['gl_project_id_gl_project_id'];
-}
+
 $categories[] = html_entity_decode($row['gl_project_description_gl_project_description'],ENT_QUOTES);
 $recognized_data[] = array('name' => html_entity_decode($row['gl_project_description_gl_project_description'],ENT_QUOTES), 'y' => $row['revenue_recognized_amount'], 'url' => $url);
 $remaining_data[] = array('name' => html_entity_decode($row['gl_project_description_gl_project_description'],ENT_QUOTES), 'y' => $row['revenue_funds_available'], 'url' => $url);
@@ -77,12 +70,7 @@ $remaining_data[] = array('name' => html_entity_decode($row['gl_project_descript
 if($allZero){$node->totalDataCount = 0;}
 $node->widgetConfig->chartTitle = 'Top Ten Projects by Revenue';
 $node->widgetConfig->chartConfig->xAxis->categories = $categories;
-if($url){
-$cursor = 'pointer';
-} else {
-$cursor = null;
-}
-$node->widgetConfig->chartConfig->plotOptions->series->cursor = $cursor;
+
 $node->widgetConfig->chartConfig->series = array(array('name' => 'Recognized', 'data' => $recognized_data),array('name' => 'Remaining', 'data' => $remaining_data));
 return $node->data;
 ",

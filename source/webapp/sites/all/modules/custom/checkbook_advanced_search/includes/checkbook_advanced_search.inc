@@ -81,28 +81,29 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
  */
 function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = Datasource::CITYWIDE){
     try {
-       if($data_source == Datasource::NYCHA && ($domain == Domain::$BUDGET || $domain == Domain::$REVENUE)){
+        if($data_source == Datasource::NYCHA && ($domain == Domain::$BUDGET || $domain == Domain::$REVENUE)){
          return CheckbookDateUtil::getNychaBudgetFiscalYears();
-       }
-        $data = CheckbookDateUtil::getLast10FiscalYearOptions($data_source);
-        $max_year = _checkbook_max_data_year($data_source);
+        }
+        $fiscalYears = CheckbookDateUtil::getFiscalYearOptionsRange($data_source);
+        $calendarYears = CheckbookDateUtil::getCalendarYearOptionsRange($data_source);
         $fiscal_year_array = [];
-        foreach ($data as $row) {
-            if ($domain != 'revenue' && $domain != 'budget') {
-                if ($row['year_value'] <= $max_year['year_value']) {
-                    $fiscal_year_array['fy~' . $row['year_id']] = 'FY ' . $row['year_value'];
-                }
-                if ($row['year_value'] <= $max_year['cal_year_value']) {
-                    $calendar_year_array['cy~' . $row['year_id']] = 'CY ' . $row['year_value'];
-                }
-            } else {
-                if ($row['year_value'] <= $max_year['year_value']) {
-                    if ($form == 'datafeeds')
-                        $fiscal_year_array[$row['year_value']] = $row['year_value'];
-                    else
-                        $fiscal_year_array[$row['year_id']] = $row['year_value'];
-                }
-            }
+        $calendar_year_array = [];
+
+        //Fiscal Years
+        foreach($fiscalYears as $row) {
+          if ($domain != 'revenue' && $domain != 'budget') {
+            $fiscal_year_array['fy~' . $row['year_id']] = 'FY ' . $row['year_value'];
+          } else {
+            if ($form == 'datafeeds')
+              $fiscal_year_array[$row['year_value']] = $row['year_value'];
+            else
+              $fiscal_year_array[$row['year_id']] = $row['year_value'];
+          }
+        }
+
+        //Calendar Years
+        foreach($calendarYears as $row){
+          $calendar_year_array['cy~' . $row['year_id']] = 'CY ' . $row['year_value'];
         }
 
          if (isset($fiscal_year_array)) {
