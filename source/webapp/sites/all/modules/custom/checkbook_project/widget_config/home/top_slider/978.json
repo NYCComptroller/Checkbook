@@ -34,7 +34,7 @@
         "adjustSerieParameters":"
           //Calculate amount for all years on 'All Years' advanced search results page
           if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear')){
-            $serieParameters['fiscal_year_id'] = RequestUtil:: getFiscalYearIdForTopNavigation();
+            $serieParameters['fiscal_year_id'] = CheckbookDateUtil:: getFiscalYearIdForTopNavigation();
           }
           return $serieParameters;
         ",
