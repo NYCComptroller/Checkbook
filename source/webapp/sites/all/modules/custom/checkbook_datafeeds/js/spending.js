@@ -184,27 +184,17 @@
   let resetYearValue = function (dataSource){
     //Current FY
     let currentFY =  $("#edit-year option:eq(1)").val();
-    let lastYear = 0;
-    let lastYear1 = 0;
+    // Get the last year value by index
+    let lastYear =  $("#edit-year option:eq(12)").val();;
     switch (dataSource) {
       case 'checkbook_nycha':
-        // Get the last year value by index
-        lastYear =  $("#edit-year option:eq(12)").val();
-        lastYear1 =  $("#edit-year option:eq(11)").val();
-
         // Show another year value for NYCHA
         $("#edit-year option[value='"+lastYear+"']").show();
-        $("#edit-year option[value='"+lastYear1+"']").show();
         $("#edit-year option[value='"+currentFY+"']").hide();
         break;
       default:
-        // Get the last year value by index
-        lastYear =  $("#edit-year option:eq(12)").val();
-        lastYear1 =  $("#edit-year option:eq(11)").val();
-
         // Hide the extra year for citywide and OGE
         $("#edit-year option[value='"+lastYear+"']").hide();
-        $("#edit-year option[value='"+lastYear1+"']").hide();
         $("#edit-year option[value='"+currentFY+"']").show();
     }
   };
