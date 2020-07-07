@@ -216,38 +216,6 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
     drupal_json_output($matches);
 }
 
-// Year drop down to include 2010 for NYCHA
-/*function _checkbook_advanced_search_autocomplete_spending_year($data_source = Datasource::CITYWIDE, $feeds = null) {
-  $options = _get_spending_year_options($data_source);
-  $matches = array();
-  if(isset($options['label'])) {
-    $matches[] = $options['label'];
-  }
-  else {
-    foreach($options as $key => $value){
-      $value = htmlentities($value);
-      $name = ($feeds) ? $value :_ckbk_excerpt($value);
-      $matches[] = array("code" => $key, "name" => $name);
-    }
-  }
-  drupal_json_output($matches);
-}
-//Future update common function for all the year data across all datafeeds domaina
-
-function _get_spending_year_options($dataSource) {
-  try {
-  $fydata = CheckbookDateUtil::getLast10FiscalYearOptions($dataSource);
-  $fyarray = array();
-  foreach ($fydata as $row) {
-    $fyarray['FY' . $row['year_value']] = 'FY ' . $row['year_value'];
-  }
-  $results = array_merge(array('0' => 'All Years'), $fyarray);
-  return $results;
-  } catch (Exception $e) {
-    log_error("Error getting data from controller: \n" . $e->getMessage());
-    return;
-  }
-}*/
 
 //Contracts autocomplete menu callback functions
 /**

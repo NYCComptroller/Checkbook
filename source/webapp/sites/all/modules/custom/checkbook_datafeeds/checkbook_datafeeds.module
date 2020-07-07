@@ -504,8 +504,7 @@ function _year_options($yeartype = NULL, $datasource = Datasource::CITYWIDE, $do
   switch ($yeartype) {
     case 'all-years':
       try {
-        $filters = _checkbook_max_data_year($datasource);
-        $fydata = CheckbookDateUtil::getLast10FiscalYearOptions($datasource);
+        $fydata = CheckbookDateUtil::getFiscalYearOptionsRange($datasource);
         $fyarray = array();
         foreach ($fydata as $row) {
           $fyarray['FY' . $row['year_value']] = 'FY ' . $row['year_value'];
@@ -534,8 +533,8 @@ function _year_options($yeartype = NULL, $datasource = Datasource::CITYWIDE, $do
 
     default:
       try {
-        $fydata = CheckbookDateUtil::getLast10FiscalYearOptions($datasource);
-        $cydata = CheckbookDateUtil::getLast10CalendarYearOptions($datasource);
+        $fydata = CheckbookDateUtil::getFiscalYearOptionsRange($datasource);
+        $cydata = CheckbookDateUtil::getCalendarYearOptionsRange($datasource);
         $fyarray = $cyarray = [];
         foreach ($fydata as $row) {
           $fyarray['FY ' . $row['year_value']] = 'FY ' . $row['year_value'];

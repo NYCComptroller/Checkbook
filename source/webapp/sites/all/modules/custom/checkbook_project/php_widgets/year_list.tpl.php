@@ -29,7 +29,7 @@ if((preg_match('/^spending\/search\/transactions/',$_GET['q']) && (RequestUtilit
 }
 
 //Get Year list from DB
-$filter_years = _checkbook_max_data_year();
+$filter_years = CheckbookDateUtil::getCurrentYears();
 
 //$q is the new URL for the Date Filter options
 $q = request_uri();
@@ -78,10 +78,10 @@ if(isset($bottomURL)){
         $expCatId =  filter_xss($pathParams[($index+1)]);
     }
 }
-$datasource = RequestUtilities::get('datasource');
+$datasource = (RequestUtilities::get('datasource')) ? RequestUtilities::get('datasource') : Datasource::CITYWIDE;
 $fiscal_year_data_array = array();
 $calendar_year_data_array = array();
-$years = _checkbook_year_list($datasource);
+$years = CheckbookDateUtil::getFiscalYearOptionsRange($datasource);
 
 // 249.json
 foreach($years as $year){
