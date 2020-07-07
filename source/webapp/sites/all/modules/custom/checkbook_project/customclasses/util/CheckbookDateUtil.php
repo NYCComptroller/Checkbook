@@ -144,7 +144,7 @@ class CheckbookDateUtil{
   public static function getLast10fiscalYears(){
     $last = self::getCurrentFiscalYear();
     $results = [];
-    for ($i = $last; $i > $last - 10; $i--) {
+    for ($i = $last; $i > $last - 11; $i--) {
       $results[$i] = $i;
     }
     return $results;
