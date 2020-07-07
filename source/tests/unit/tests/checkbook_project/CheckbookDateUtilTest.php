@@ -46,7 +46,7 @@ class CheckbookDateUtilTest extends TestCase
     /**
      *
      */
-    public function testCurrentFiscalYear()
+    /*public function testCurrentFiscalYear()
     {
         $year = date('Y');
         if (date('m') > 6) {
@@ -58,14 +58,14 @@ class CheckbookDateUtilTest extends TestCase
     /**
      *
      */
-    public function testCurrentFiscalYearId()
+   /* public function testCurrentFiscalYearId()
     {
         $year = date('Y');
         if (date('m') > 6) {
             $year++;
         }
         $this->assertEquals($year - 1899, CheckbookDateUtil::getCurrentFiscalYearId());
-    }
+    }*/
 
     /**
      *
