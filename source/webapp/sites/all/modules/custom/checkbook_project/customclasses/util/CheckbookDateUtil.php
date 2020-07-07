@@ -122,17 +122,23 @@ class CheckbookDateUtil{
 
   /**
    * @param $data_source
-   *
+   * @param $domain
    * SET THESE VARS ON SERVER (AT DATA-SOURCE LEVEL):
    * drush vset min_checkbook_fy 2011
    * drush vset min_checkbook_oge_fy 2011
    * drush vset min_checkbook_nycha_fy 2010
+   * drush vset min_checkbook_nycha_budget_fy 2018
    *
    * @return string
    */
-  public static function getCurrentDatasourceStartingYear(string $data_source){
+  public static function getCurrentDatasourceStartingYear(string $data_source, $domain = NULL){
     self::setCurrentYears();
-    $key = 'min_' . $data_source . '_fy';
+    if(isset($domain) && $data_source == Datasource::NYCHA && ($domain == Domain::$BUDGET || $domain == Domain::$REVENUE)){
+      $key = 'min_' . $data_source . '_budget_fy';
+    }else{
+      $key = 'min_' . $data_source . '_fy';
+    }
+
     if ($year = _checkbook_dmemcache_get($key)) {
       return $year;
     }
@@ -188,12 +194,13 @@ class CheckbookDateUtil{
 
   /**
    * @param string $data_source
+   * @param string $domain
    * @return mixed
    */
-  public static function getStartingFiscalYear($data_source = Datasource::CITYWIDE){
+  public static function getStartingFiscalYear($data_source = Datasource::CITYWIDE, $domain = NULL){
     self::setCurrentYears();
     $data_source = ($data_source == Datasource::NYCHA || Datasource::isNYCHA()) ? Datasource::NYCHA : $data_source;
-    return self::getCurrentDatasourceStartingYear($data_source);
+    return self::getCurrentDatasourceStartingYear($data_source, $domain);
   }
 
   /**
@@ -243,12 +250,15 @@ class CheckbookDateUtil{
   }
 
   /**
+   * @param $data_source
+   * @param $domain
    * @return array
    */
-  public static function getFiscalYearsRange(){
-    $last = self::getCurrentFiscalYear();
+  public static function getFiscalYearsRange($data_source = Datasource::CITYWIDE, $domain = null){
+    $last = self::getCurrentFiscalYear($data_source);
+    $first = self::getStartingFiscalYear($data_source, $domain);
     $results = [];
-    for ($i = $last; $i > $last - 10; $i--) {
+    for ($i = $last; $i >= $first; $i--) {
       $results[$i] = $i;
     }
     return $results;
@@ -256,11 +266,12 @@ class CheckbookDateUtil{
 
   /**
    * @param string $data_source
+   * @param string $domain
    * @return array
    */
-  public static function getFiscalYearOptionsRange($data_source){
+  public static function getFiscalYearOptionsRange($data_source, $domain = NULL){
     $last = self::getCurrentDatasourceFiscalYear($data_source);
-    $first = self::getStartingFiscalYear($data_source);
+    $first = self::getStartingFiscalYear($data_source, $domain);
 
     $results = [];
     for ($year = $last; $year >= $first; $year--) {
@@ -285,27 +296,6 @@ class CheckbookDateUtil{
         'year_id' => self::year2yearId($year),
         'year_value' => $year
       ];
-    }
-    return $results;
-  }
-
-  /**
-   * Year List for NYCHA Budget and NYCHA Revenue
-   * Returns past 10 years list from current year which are greater than 2017 until current year
-   * @param $feeds
-   * @return array
-   */
-  public static function getNychaBudgetFiscalYears($feeds = false){
-    $last = self::getCurrentFiscalYear(Datasource::NYCHA);
-    $results = [];
-    for ($i = $last; $i > $last - 10; $i--) {
-      if($i > 2017) {
-        if($feeds) {
-          $results[$i] = $i;
-        }else{
-          $results[self::year2yearId($i)] = $i;
-        }
-      }
     }
     return $results;
   }
