@@ -294,8 +294,8 @@ function checkbook_datafeeds_nycha_revenue_filter_data($form, $form_state, $data
   $form['filter']['nycha_budget_year'] = array(
     '#type' => 'select',
     '#title' => t('Budget FY:'),
-    '#options' => CheckbookDateUtil::getNychaBudgetFiscalYears(true),
-    '#default_value' => !empty($form_state['values']['nycha_budget_year']) ? $form_state['values']['nycha_budget_year'] : CheckbookDateUtil::getCurrentFiscalYear(),
+    '#options' => CheckbookDateUtil::getFiscalYearsRange($data_source, Domain::$REVENUE),
+    '#default_value' => !empty($form_state['values']['nycha_budget_year']) ? $form_state['values']['nycha_budget_year'] : CheckbookDateUtil::getCurrentFiscalYear($data_source),
     '#attributes' => array('class' => array('watch')),
     '#prefix' => '<div class="datafield nycha_budget_year">',
     '#suffix' => '</div>',
