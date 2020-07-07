@@ -1040,5 +1040,17 @@ class RequestUtil
       }
       return $url;
     }
+  /** Checks if the URL is widget link for Nycha facet disabling */
+  public static function isNychaAmountLinks()
+  {
+    $setAutoDeselect = 0;
+    $query_string = $_SERVER['HTTP_REFERER'];
+    $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
+    if((strpos($widget, 'wt_') !== false) || (strpos($widget, 'ytd_') !== false) || (strpos($widget, 'comm_') !== false)|| (strpos($widget, 'rec_') !== false)){
+      $setAutoDeselect = 1;
+    }
+    return $setAutoDeselect;
+  }
+
 }
 

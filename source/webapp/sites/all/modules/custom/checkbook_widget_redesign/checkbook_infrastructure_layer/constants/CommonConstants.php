@@ -283,6 +283,11 @@ abstract class PageType {
             case CheckbookDomain::BUDGET:
             case CheckbookDomain::PAYROLL:
                 break;
+          case CheckbookDomain::NYCHA_CONTRACTS:
+            if(preg_match('/nycha_contracts\/search\/transactions/',$urlPath) || preg_match('/nycha_contracts\/search\/transactions/',$ajaxPath)) {
+              $pageType = self::ADVANCED_SEARCH_PAGE;
+            }
+            break;
             case CheckbookDomain::NYCHA_BUDGET:
               if(preg_match('/nycha_budget\/search\/transactions/',$urlPath) || preg_match('/nycha_budget\/search\/transactions/',$ajaxPath)) {
                 $pageType = self::ADVANCED_SEARCH_PAGE;

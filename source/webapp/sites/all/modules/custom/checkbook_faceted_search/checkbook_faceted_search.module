@@ -258,33 +258,28 @@ function _checkbook_faceted_search_update_data($node)
   }
 
   // Facet preselection for
-  // The code below disables facet for for amount links (not for advance search facets )
-  // $query_string = $_GET['q']; // does not get the full url hence the allowFacetDeselect condition fails
-  // Need to move the code which introduces functionality for specific conditions  to common utilities function
-  $query_string = $_SERVER['HTTP_REFERER'];
-  $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
-
-  if((strpos($widget, 'wt_') !== false) || (strpos($widget, 'ytd_') !== false) || (strpos($widget, 'comm_') !== false)|| (strpos($widget, 'rec_') !== false)){
+  $setAutoDeselect= RequestUtil::isNychaAmountLinks();
+  if ($setAutoDeselect == 1) {
     $node->widgetConfig->allowFacetDeselect = false;
   }
   //Facets that have Url parameters that match the current Url will be disabled and show only the default checked items
   $disableFacet = !(isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false);
-  if ($disableFacet) { //only URL parameters count and can be disabled
-    $query_string = $_GET['q'];
-    //print $query_string;
-    $is_new_window = preg_match('/newwindow/i', $query_string);
-    $currentPath = current_path();
-    //To show only default checked items for nycha contracts advanced search
-    if (preg_match('/nycha_contracts\/all\/transactions/', $currentPath) ||
-      preg_match('/nycha_contracts\/search\/transactions/', $currentPath)) {
+
+  if($disableFacet) { //only URL parameters count and can be disabled
+    $domain = CheckbookDomain::getCurrent();
+    $pagetype = PageType::getCurrent();
+    if (($domain == CheckbookDomain::NYCHA_CONTRACTS) && ($pagetype == "advanced_search_page"))
+      {
       $url_ref = $_GET['q'];
       $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
-
-    } else {
-      $url_ref = $is_new_window ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
+      }
+    else
+      {
+      $url_ref = RequestUtil::isNewWindow() ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
       $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
-    }
+      }
   }
+
 
 
   if ($disableFacet) {
