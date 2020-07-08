@@ -102,7 +102,8 @@ foreach($fiscalYears as $key => $value){
 
   //Set year type 'B' for all Fiscal year options
   $link = preg_replace("/yeartype\/./","yeartype/B",$link);
-  $displayText = CheckbookDateUtil::getFullYearString($value['year_id'], 'B');
+  $displayText = ($dataSource == Datasource::NYCHA) ? 'FY ' . $value['year_value'] . ' (Jan 1, ' . $value['year_value'] . ' - Dec 31, ' . $value['year_value'] . ')' :
+                                  'FY '.$value['year_value'].' (Jul 1, '.($value['year_value']-1).' - Jun 30, '.$value['year_value'].')';
   $fyDisplayData[] = array('display_text' => $displayText ,
                           'link' => $link,
                           'value' => $value['year_id'].'~B',
@@ -128,9 +129,9 @@ if(CheckbookDomain::getCurrent() == Domain::$PAYROLL) {
 
     //Set year type 'C' for all calendar year options
     $link = preg_replace("/yeartype\/./", "yeartype/C", $link);
-    $displayText = CheckbookDateUtil::getFullYearString($value['year_id'], 'C');
+    $displayText = 'CY '.$value['year_value'].' (Jan 1, '.$value['year_value'].' - Dec 31, '.$value['year_value'].')';
     $cyDisplayData[] = array('display_text' => $displayText,
-      'value' => $year['year_id'] . '~C',
+      'value' => $value['year_id'] . '~C',
       'link' => $link,
       'selected' => $selectedCY
     );
