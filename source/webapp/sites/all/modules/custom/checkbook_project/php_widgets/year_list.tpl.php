@@ -81,13 +81,12 @@ if(CheckbookDomain::getCurrent() != Domain::$PAYROLL) {
         //For NYCHA Fiscal Year is same as calendar year
         $displayText = 'FY ' . $value['year_value'] . ' (Jan 1, ' . $value['year_value'] . ' - Dec 31, ' . $value['year_value'] . ')';
         //Handling Spending chart links issue date
-        if (isset($bottomURL) && (preg_match("/wt_issue_date/", $link))) {
+        if (isset($bottomURL) && (preg_match("/wt_issue_date/", $q))) {
           $oldIssueDate = RequestUtil::getRequestKeyValueFromURL("issue_date", $bottomURL);
           $issueDate = explode("~", $oldIssueDate);
           $month = date("n", strtotime($issueDate[0]));
           $newIssueDate = $value['year_value'] . "-" . $month . "-01~" . $value['year_value'] . "-" . $month . "-31";
-          $bottom_url = preg_replace("/issue_date\/" . $oldIssueDate . "/", "issue_date/" . $newIssueDate, $bottomURL);
-          $link = $url . '?expandBottomContURL=' . $bottom_url;
+          $q = preg_replace("/issue_date\/" . $oldIssueDate . "/", "issue_date/" . $newIssueDate, $q);
         }
         break;
       default:
@@ -97,7 +96,7 @@ if(CheckbookDomain::getCurrent() != Domain::$PAYROLL) {
           $oldMonthId = RequestUtil::getRequestKeyValueFromURL("month", $bottomURL);
           if (isset($oldMonthId) && isset($value['year_id'])) {
             $newMonthId = _translateMonthIdByYear($oldMonthId, $value['year_id']);
-            $link = preg_replace('/\/month\/' . $oldMonthId . '/', '/month/' . $newMonthId, $link);
+            $q = preg_replace('/\/month\/' . $oldMonthId . '/', '/month/' . $newMonthId, $q);
           }
         }
     }
@@ -113,17 +112,18 @@ if(CheckbookDomain::getCurrent() != Domain::$PAYROLL) {
     }
 
     //Update current URL with year and year type options. (For Trends, append the year value for 'Spending' link)
+    $yearOptionUrl = "";
     if ($trends) {
-      $link = $q . $value['year_id'];
+      $yearOptionUrl = $q . $value['year_id'];
     } else {
-      $link = preg_replace("/year\/" . $yearParamValue . "/", "year/" . $value['year_id'], $q);
+      $yearOptionUrl = preg_replace("/year\/" . $yearParamValue . "/", "year/" . $value['year_id'], $q);
     }
 
     //Set year type 'B' for all Fiscal year options
-    $link = preg_replace("/yeartype\/./", "yeartype/B", $link);
+    $yearOptionUrl = preg_replace("/yeartype\/./", "yeartype/B", $yearOptionUrl);
 
     $fyDisplayData[] = array('display_text' => $displayText,
-      'link' => $link,
+      'link' => $yearOptionUrl,
       'value' => $value['year_id'] . '~B',
       'selected' => $selectedFY,);
   }
@@ -137,21 +137,23 @@ if(CheckbookDomain::getCurrent() == Domain::$PAYROLL) {
       $oldMonthId = RequestUtil::getRequestKeyValueFromURL("month", $bottomURL);
       if (isset($oldMonthId) && isset($value['year_id'])) {
         $newMonthId = _translateMonthIdByYear($oldMonthId, $value['year_id'], "C");
-        $link = preg_replace('/\/month\/' . $oldMonthId . '/', '/month/' . $newMonthId, $link);
+        $q = preg_replace('/\/month\/' . $oldMonthId . '/', '/month/' . $newMonthId, $q);
       }
     }
-    //Calendar Year options are required only for Payroll domain
-    $link = preg_replace("/year\/" . $yearParamValue . "/", "year/" . $value['year_id'], $q);
 
     //Selected Calendar
     $selectedCY = ($value['year_id'] == $yearParamValue && 'C' == $yearTypeParamValue) ? 'selected = yes' : "";
 
+    //Update current URL with year and year type options. (For Trends, append the year value for 'Spending' link)
+    $yearOptionUrl = "";
+    $yearOptionUrl = preg_replace("/year\/" . $yearParamValue . "/", "year/" . $value['year_id'], $q);
+
     //Set year type 'C' for all calendar year options
-    $link = preg_replace("/yeartype\/./", "yeartype/C", $link);
+    $yearOptionUrl = preg_replace("/yeartype\/./", "yeartype/C", $q);
     $displayText = 'CY '.$value['year_value'].' (Jan 1, '.$value['year_value'].' - Dec 31, '.$value['year_value'].')';
     $cyDisplayData[] = array('display_text' => $displayText,
       'value' => $value['year_id'] . '~C',
-      'link' => $link,
+      'link' => $yearOptionUrl,
       'selected' => $selectedCY
     );
   }
