@@ -1788,7 +1788,7 @@
           div.ele('document_id').autocomplete({source: autoCompleteSource(solr_datasource, 'expense_id', filters)});
           div.ele('commodity_line').autocomplete({source: autoCompleteSource(solr_datasource, 'spending_commodity_line', filters)});
           div.ele('budget_name').autocomplete({source: autoCompleteSource(solr_datasource, 'spending_budget_name', filters)});
-          div.ele('entity_contract_number').autocomplete({source: autoCompleteSource(solr_datasource, 'contract_entity_contract_number', filters)});
+          div.ele('entity_contract_number').autocomplete({source: autoCompleteSource(solr_datasource, 'spending_entity_contract_number', filters)});
           div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource, 'vendor_name', filters)});
           div.ele('document_id').autocomplete({source: autoCompleteSource(solr_datasource, 'document_id', filters)});
 
