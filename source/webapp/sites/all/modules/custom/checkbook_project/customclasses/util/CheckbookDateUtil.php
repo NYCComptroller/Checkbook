@@ -339,7 +339,7 @@ class CheckbookDateUtil{
    */
   public static function getFiscalYearIdForTopNavigation()
   {
-    $year = RequestUtilities::get("year|calyear");
+    $year = RequestUtilities::get("year");
     if (!$year) {
       $year = CheckbookDateUtil::getCurrentFiscalYearId();
     }
@@ -358,8 +358,6 @@ class CheckbookDateUtil{
     $year = null;
     if (RequestUtilities::get("year") != NULL) {
       $year = RequestUtilities::get("year");
-    } else if (RequestUtilities::get("calyear") != NULL) {
-      $year = RequestUtilities::get("calyear");
     }
     $currentCalYear = CheckbookDateUtil::getCurrentCalendarYearId();
     if (is_null($year) || $year > $currentCalYear) {
