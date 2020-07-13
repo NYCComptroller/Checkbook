@@ -188,7 +188,7 @@ function checkbook_datafeeds_payroll($form, &$form_state){
   );
   $form['filter']['year'] = array(
     '#type' => 'select',
-    '#options' => _year_options('',Datasource::NYCHA),
+    '#options' => _year_options(),
     '#title' => t('Year:'),
     '#attributes' => array('class' => array('watch')),
     '#prefix' => '<div class="datafield fiscalyear">',

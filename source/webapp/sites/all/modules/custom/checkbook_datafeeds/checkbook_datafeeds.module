@@ -495,7 +495,8 @@ function checkbook_datafeeds_year_ajax($form, &$form_state)
  *
  * @param string|null $yeartype
  *   All Years or Budget Fiscal Years
- *
+ * @param $datasource
+ * @param $domain
  * @return mixed
  *   Array of years formatted for FAPI select box #options
  */
