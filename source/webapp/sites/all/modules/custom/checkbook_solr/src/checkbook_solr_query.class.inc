@@ -498,12 +498,6 @@ class CheckbookSolrQuery
    */
   public function setFqAutocompleteTerm(string $facet, string $term): CheckbookSolrQuery
   {
-    # Fix for NYCCHKBK-9920 term with space displays all the results for autocomplete in advanced search
-    # Check if the link is advanced search autocompletes and trim trailing space to display correct results
-    $setAdvancedAuto= RequestUtil::isAdvancedAutocompleteLinks();
-    if ($setAdvancedAuto == 1){
-      $term = trim($term);
-    }
     $term = htmlspecialchars_decode($term, ENT_QUOTES);
     $this->mapParam($facet);
     $autoCompleteFacet = $this->autocompleteMapping[$facet] ?? $facet;

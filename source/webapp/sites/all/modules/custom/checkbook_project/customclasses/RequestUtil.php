@@ -1019,17 +1019,5 @@ class RequestUtil
     return $setAutoDeselect;
   }
 
-  /** Checks if the URL is advanced  autocomplete url */
-  public static function isAdvancedAutocompleteLinks()
-  {
-    $pageType = $_GET['q'];
-    $isAdvancedAuto = 0;
-    if (preg_match('/^advanced_autocomplete/', $pageType)) {
-      $isAdvancedAuto = 1;
-    }
-    return $isAdvancedAuto;
-
-  }
-
 }
 
