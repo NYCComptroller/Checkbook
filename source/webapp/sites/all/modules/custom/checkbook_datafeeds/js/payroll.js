@@ -51,10 +51,6 @@
       {
         $(this).focusin(function () {
           year = $('#edit-year', context).val();
-          year = year.replace('ALL','').replace('FY','').trim();
-          if(year){
-            year = year.match(/\d+/)[0];
-          }
           agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : emptyToZero($('#edit-agency', context).val());
           payfrequency = ($('#edit-payfrequency', context).val() === 'All Pay Frequencies') ? 0 : $('#edit-payfrequency', context).val();
           dataSource = $('input[name="datafeeds-payroll-domain-filter"]:checked', context).val();
@@ -101,8 +97,7 @@
     datafeedsPayrollShowHideFields(dataSource);
   };
 
-  let datafeedsPayrollShowHideFields = function (dataSource)
-  {
+  let datafeedsPayrollShowHideFields = function (dataSource) {
     //Add/Remove extra year value based on datasource
     resetYearvalue(dataSource);
     if (dataSource == 'checkbook_nycha') {
@@ -116,48 +111,22 @@
     }
   };
 
-  let resetYearvalue = function (dataSource)
-  {
-    let lastYear =  $("#edit-year option:eq(10)").val();
-    let yearValue = lastYear.split(/\s+/);
+  let resetYearvalue = function (dataSource) {
+    //let yearValue = lastYear.split(/\s+/);
     $("#edit-year > option").each(function() {
       if(dataSource === 'checkbook_nycha') {
         if (/^FY/.test(this.value)) {
           // Hide FY for Nycha
           $("#edit-year option[value='" + this.value + "']").hide();
         }
-        // Show extra one year for NYCHA (2010)
-        $("#edit-year option[value='CY "+yearValue[1]+"']").show();
-      }
-      else{
-        // Hide the extra year for citywide (FY AND CY)
-          $("#edit-year option[value='"+this.value+"']").show();
-          $("#edit-year option[value='FY "+yearValue[1]+"']").hide();
-          $("#edit-year option[value='CY "+yearValue[1]+"']").hide();
+      }else{
+        if (/^FY/.test(this.value)) {
+          // Show FY
+          $("#edit-year option[value='" + this.value + "']").show();
+        }
       }
     });
   };
-
-  /*let getPayrollYears = function (dataSource) {
-    var form = 'datafeeds';
-    $.ajax({
-      url: '/payroll/years/' + dataSource + '/' + form
-      , success: function (data) {
-        var html = '';
-        if (data[0]) {
-          if (data[0] !== 'No Matches Found') {
-            $.each(data, function (key, year) {
-              html = html + '<option value="' + year.label +'">' + year.label + '</option>';
-            });
-          }
-          else {
-            html = html + '<option value="">' + data[0] + '</option>';
-          }
-        }
-        $("#edit-year").html(html);
-      }
-    });
-  };*/
 
   $.fn.clearInputFields = function ()
   {

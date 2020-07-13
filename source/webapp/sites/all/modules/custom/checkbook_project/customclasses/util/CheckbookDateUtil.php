@@ -313,20 +313,22 @@ class CheckbookDateUtil{
   }
 
   /**
-   * return full year text value for a give year id ...
+   * return full year text value for a give year id
+   * @param $yearId
+   * @param $yearType
    * @return string
    */
-  public static function getFullYearString(){
-    $yearId = RequestUtilities::get('year');
+  public static function getFullYearString($yearId = null, $yearType=null){
+    $yearId = isset($yearId) ? $yearId : RequestUtilities::get('year');
     $yearId = empty(((empty($yearId))) ? RequestUtilities::get('calyear') : $yearId) ? self::getCurrentFiscalYearId() :  $yearId;
-    $yearType = RequestUtilities::get('yeartype');
+    $yearType = isset($yearType) ? $yearType: RequestUtilities::get('yeartype');
     $yearType = (empty($yearType)) ? 'B' : $yearType;
     $yearValue = _getYearValueFromID($yearId);
     $yearString = ($yearType == 'B') ? "FY $yearValue" : "CY $yearValue";
     if (RequestUtilities::get('datasource') == Datasource::NYCHA) {
       $yearString .= "(January 1, " . ($yearValue) . " - Decemeber 31, $yearValue)";
     } else {
-      $yearString .= ($yearType == 'B') ? " (July 1, " . ($yearValue - 1) . " - June 30, $yearValue)" : " (January 1, {$yearValue} - December 31, $yearValue)";
+      $yearString .= ($yearType == 'B') ? " (July 1, " . ($yearValue - 1) . " - June 30, $yearValue)" : " (January 1, $yearValue - December 31, $yearValue)";
     }
     return $yearString;
   }
@@ -337,7 +339,7 @@ class CheckbookDateUtil{
    */
   public static function getFiscalYearIdForTopNavigation()
   {
-    $year = RequestUtilities::get("year|calyear");
+    $year = RequestUtilities::get("year");
     if (!$year) {
       $year = CheckbookDateUtil::getCurrentFiscalYearId();
     }
@@ -356,8 +358,6 @@ class CheckbookDateUtil{
     $year = null;
     if (RequestUtilities::get("year") != NULL) {
       $year = RequestUtilities::get("year");
-    } else if (RequestUtilities::get("calyear") != NULL) {
-      $year = RequestUtilities::get("calyear");
     }
     $currentCalYear = CheckbookDateUtil::getCurrentCalendarYearId();
     if (is_null($year) || $year > $currentCalYear) {
