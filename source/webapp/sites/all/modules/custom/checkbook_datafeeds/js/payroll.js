@@ -121,7 +121,7 @@
         }
       }else{
         if (/^FY/.test(this.value)) {
-          // Hide FY for Nycha
+          // Show FY
           $("#edit-year option[value='" + this.value + "']").show();
         }
       }
