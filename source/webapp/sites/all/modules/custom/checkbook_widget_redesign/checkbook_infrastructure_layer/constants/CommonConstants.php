@@ -233,13 +233,18 @@ abstract class PageType {
     const LANDING_PAGE = "landing_page";
     const TRANSACTION_PAGE = "transaction_page";
     const ADVANCED_SEARCH_PAGE = "advanced_search_page";
-    const SMART_SEARCH_PAGE = "smart_search";
-
+    const SMART_SEARCH_PAGE = "smart_search_page";
+    const TRENDS_PAGE = "trends_page";
     public static function getCurrent() {
         $urlPath = $_GET['q'];
         $ajaxPath = $_SERVER['HTTP_REFERER'];
-
         $pageType = null;
+        if(preg_match("/trends/", $urlPath) || preg_match("/featured_trends/", $urlPath)){
+          return self::TRENDS_PAGE;
+        }
+        if(preg_match("/smart_search/", $urlPath)){
+          return self::SMART_SEARCH_PAGE;
+        }
         switch(CheckbookDomain::getCurrent()) {
             case CheckbookDomain::SPENDING:
                 /**
