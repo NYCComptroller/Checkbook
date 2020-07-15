@@ -108,7 +108,7 @@
   },
   "table_columns": [
     {
-      "labelAlias": "fiscal_year",
+      "labelAlias": "budget_fiscal_year",
       "column": "budget_fiscal_year"
     },
     {
