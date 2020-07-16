@@ -172,7 +172,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
 
 function generateNYCHASpendingSearchUrl($form){
   $filterDimension = 'checkbook_nycha_spending';
-  $redirectUrl = 'nycha_spending/search/transactions/datasource/' . DataSource::NYCHA;
+  $redirectUrl = 'nycha_spending/search/transactions/datasource/' . DataSource::NYCHA.'/agency/'.Datasource::getNYCHAId();
   //Department
   $department = trim($form[$filterDimension][$filterDimension  . '_department']['#value']);
   $redirectUrl .= ($department != "Select Department" && !empty($department)) ?  _checkbook_advanced_search_generate_redirect_url($department, 'deptnm'): "";
