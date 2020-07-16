@@ -22,14 +22,5 @@
 $adjustedParameters['expenditure_type_id.expenditure_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 return $adjustedParameters;
 ",
-"adjustFacetOptions":"
-if(PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
-$node->widgetConfig->allowFacetDeselect = true;
-$node->widgetConfig->showAllRecords = true;
-}else{
-$node->widgetConfig->allowFacetDeselect = false;
-$node->widgetConfig->showAllRecords = false;
-}
-",
 "template":"individual_filter"
 }

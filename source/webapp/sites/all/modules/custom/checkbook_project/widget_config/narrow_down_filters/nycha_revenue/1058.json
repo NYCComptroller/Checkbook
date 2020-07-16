@@ -18,14 +18,5 @@
 }
 return $adjustedParameters;
 ",
-"adjustFacetOptions":"
-if(PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
-$node->widgetConfig->allowFacetDeselect = true;
-$node->widgetConfig->showAllRecords = true;
-}else{
-$node->widgetConfig->allowFacetDeselect = false;
-$node->widgetConfig->showAllRecords = false;
-}
-",
 "template":"individual_filter"
 }
