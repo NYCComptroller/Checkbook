@@ -62,7 +62,7 @@ $cyDisplayData = array();
 $yearListOptions = array();
 
 //Fiscal Year options (We do not need to calculate Fiscal Years for NYCHA Payroll)
-if(!(CheckbookDomain::getCurrent() == Domain::$PAYROLL && $dataSource == Datasource::NYCHA)) {
+if(!($domain == Domain::$PAYROLL && $dataSource == Datasource::NYCHA)) {
   foreach ($fiscalYears as $key => $value) {
     $selectedFY = ($value['year_id'] == $yearParamValue && 'B' == $yearTypeParamValue) ? 'selected = yes' : "";
 
@@ -111,7 +111,7 @@ if(!(CheckbookDomain::getCurrent() == Domain::$PAYROLL && $dataSource == Datasou
 }
 
 //Calendar Year options: Required only for Payroll domain (Citywide and NYCHA)
-if(CheckbookDomain::getCurrent() == Domain::$PAYROLL) {
+if($domain == Domain::$PAYROLL) {
   foreach ($calendarYears as $key => $value) {
     $selectedCY = ($value['year_id'] == $yearParamValue && 'C' == $yearTypeParamValue) ? 'selected = yes' : "";
     $yearOptionUrl = preg_replace("/\/year\/[^\/]*/","/year/" .  $value['year_id'], $urlPath);
