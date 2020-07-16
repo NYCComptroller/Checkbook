@@ -72,29 +72,36 @@ function _get_spending_advanced_search_autocomplete_results($facet, $query, $yea
  ***/
 function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, $dataSource, $feeds) {
   if($feeds){
-    $year = (isset($year) && $year !== 0) ? substr($year, 2, strlen($year)) : "all";
+    if(isset($year)){//Data-feeds year format: FY2020
+      $year = substr($year, 2, strlen($year));
+      $year = !in_array($year, array('all', '', '0', 0)) ? $year: null;
+    }
     $agencyParam = $agency ? " AND agency_code = '" . $agency . "' " : "";
     $spendingCatParam = $spendingCat ? " AND spending_category_id = " .
       _checkbook_project_get_name_for_argument('spending_category_code', $spendingCat, $dataSource) : "";
     $deptParam = $dept ? " AND department_code='".trim($dept)."' ":"";
   } else {
-    $yearId = (isset($year)) ? substr($year, 3, strlen($year)) : "all";
+    if(isset($year)) {//Advanced Search year format: fy~all, fy~122
+      $yearId = substr($year, 3, strlen($year));
+      $yearId = !in_array($yearId, array('all', '', '0', 0)) ? $yearId : null;
+    }
     $spendingCatParam = $spendingCat ? " AND spending_category_id = '" . $spendingCat . "' " : "";
     $agencyParam = $agency ? " AND agency_id = '" . $agency . "' " : "";
     $deptParam = $dept ? " AND department_name ILIKE '".trim($dept)."' ":"";
   }
 
   if($dataSource == Datasource::NYCHA){
-    $yearParam = ($feeds) ? (($year != 'all') ? " AND issue_date_year = '" . $year . "' " : "")
-      :(($yearId != 'all') ? " AND issue_date_year_id = '" . $yearId . "' " : "");
+    $yearParam = ($feeds) ? (isset($year) ? " AND issue_date_year = '" . $year . "' " : "")
+      :(isset($yearId) ? " AND issue_date_year_id = '" . $yearId . "' " : "");
+
     $query = "SELECT DISTINCT expenditure_type_description AS expenditure_object_name,
                               expenditure_type_code AS expenditure_object_code
               FROM all_disbursement_transactions
               WHERE 1=1 {$yearParam} {$spendingCatParam} {$deptParam}
               ORDER BY expenditure_object_name ASC";
   }else{
-    $yearParam = ($feeds) ? (($year != 'all') ? " AND fiscal_year = '" . $year . "' " : "")
-      : (($yearId != 'all') ? " AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "");
+    $yearParam = ($feeds) ? (isset($year) ? " AND fiscal_year = '" . $year . "' " : "")
+      : (isset($yearId) ? " AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "");
 
     $query = "SELECT DISTINCT expenditure_object_code, expenditure_object_name
               FROM disbursement_line_item_details
@@ -136,26 +143,32 @@ function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, 
  */
 function _checkbook_advanced_search_autocomplete_spending_department($year, $agency, $spendingCat, $dataSource = Datasource::CITYWIDE, $feeds = null) {
   if($feeds){
-    $year = (isset($year) && $year !== 0) ? substr($year, 2, strlen($year)) : "all";
-    $spendingCatParam = $spendingCat ? " AND spending_category_id = " .
-                        _checkbook_project_get_name_for_argument('spending_category_code', $spendingCat, $dataSource) : "";
+    if(isset($year)){//Data-feeds year format: FY2020
+      $year = substr($year, 2, strlen($year));
+      $year = !in_array($year, array('all', '', '0', 0)) ? $year: null;
+    }
+    $spendingCatParam = $spendingCat ? " AND spending_category_id = " . _checkbook_project_get_name_for_argument('spending_category_code', $spendingCat, $dataSource) : "";
     $agencyParam = $agency ? " AND agency_code = '" . $agency . "' " : "";
   } else {
-    $yearId = (isset($year)) ? substr($year, 3, strlen($year)) : "all";
+    if(isset($year)) {//Advanced Search year format: fy~all, fy~122
+      $yearId = substr($year, 3, strlen($year));
+      $yearId = !in_array($yearId, array('all', '', '0', 0)) ? $yearId : null;
+    }
     $spendingCatParam = $spendingCat ? " AND spending_category_id = '" . $spendingCat . "' " : "";
     $agencyParam = $agency ? " AND agency_id = '" . $agency . "' " : "";
   }
 
   if($dataSource == Datasource::NYCHA){
-      $yearParam = ($feeds) ? (($year != 'all') ? " AND issue_date_year = '" . $year . "' " : "")
-                   :(($yearId != 'all') ? " AND issue_date_year_id = '" . $yearId . "' " : "");
+      $yearParam = ($feeds) ? (isset($year) ? " AND issue_date_year = '" . $year . "' " : "")
+                   :(isset($yearId) ? " AND issue_date_year_id = '" . $yearId . "' " : "");
+
       $query = "SELECT DISTINCT department_name, department_code
                 FROM all_disbursement_transactions
                 WHERE 1=1 {$yearParam} {$spendingCatParam}
                 ORDER BY department_name ASC";
   }else {
-    $yearParam = ($feeds) ? (($year != 'all') ? " AND fiscal_year = '" . $year . "' " : "")
-                 : (($yearId != 'all') ? " AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "");
+    $yearParam = ($feeds) ? (isset($year) ? " AND fiscal_year = '" . $year . "' " : "")
+                 : (isset($yearId) ? " AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "");
 
     $query = "SELECT DISTINCT department_name, department_code
                 FROM disbursement_line_item_details
