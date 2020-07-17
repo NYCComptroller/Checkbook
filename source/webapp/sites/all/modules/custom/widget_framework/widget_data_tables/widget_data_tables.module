@@ -564,6 +564,7 @@ function widget_data_tables_widget_view(&$node) {
 function widget_data_tables_add_js($node){
 	require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/PHP2Json.php');
 	$theme_path =  drupal_get_path('theme',$GLOBALS['theme']);
+	//FIX ME: The following customization needs to be moved to a utility class
   $datasource = RequestUtilities::getRequestParamValue('datasource');
   if ('checkbook_nycha'===$datasource){
     if(!empty($node->widgetConfig->stickyHeader)){$node->widgetConfig->stickyHeader='true';}
@@ -621,6 +622,7 @@ function widget_data_tables_add_js($node){
         array("fnInitComplete" => $fnInitComplete) +
         array_slice($oldDataTableOptions, 0, NULL, true);
     }
+    //FIX ME: The following code needs to be moved to a utility class if it cannot be handled in CSS
     //Custom js for sticky headers, top spacing will change if the drupal admin menu is present
    //Custom js for nycha transcation pages top scroll and height adjustments
     if ('checkbook_nycha' === $datasource) {
