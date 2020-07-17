@@ -225,7 +225,7 @@ $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 4;
 },
 "bInfo": true,
 "aoColumns":[
-{"sClass":"text nycha-revenue-transaction","sWidth":"70px","asSorting": [ "desc","asc" ]},
+{"sClass":"text","sWidth":"70px","asSorting": [ "desc","asc" ]},
 {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
 {"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
 {"sClass":"number", "sWidth":"135px","asSorting": [ "asc","desc" ]},
