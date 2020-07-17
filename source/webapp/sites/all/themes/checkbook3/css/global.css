@@ -1875,6 +1875,11 @@ table.dataTable th.sorting_asc span {
 .dataTable th:first-child div {
     margin: 8px 0 8px 15px;
 }
+
+.initiative-table.dataTable th:first-child div{
+    margin: 8px 0 8px 10px;
+}
+
 .dataTable td.text:first-child div {
     margin: 13px 0 13px 15px;
 }
