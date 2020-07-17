@@ -1876,8 +1876,9 @@ table.dataTable th.sorting_asc span {
     margin: 8px 0 8px 15px;
 }
 
-.initiative-table.dataTable th:first-child div{
-    margin: 8px 0 8px 10px;
+/*Only applicable to nycha revenue transaction pages*/
+.dataTable th:first-child.nycha-revenue-transaction div{
+    margin: 8px 0 8px 3px;
 }
 
 .dataTable td.text:first-child div {
@@ -4135,3 +4136,4 @@ body.page-data-feeds #div_data_source,
 #checkbook-advanced-search-form .data_source-label{
   font-weight: bold;
 }
+
