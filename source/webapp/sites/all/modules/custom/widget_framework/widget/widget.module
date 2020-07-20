@@ -439,16 +439,15 @@ function widget_prepare(&$node) {
 					break;
 				}
 			}
-		}
-
-        if(isset($node->widgetConfig->allowRequestParams)){
-            foreach($node->widgetConfig->allowRequestParams as $param){
-                $index = array_search($param,$pathParams);
-                if( $index !== FALSE && ($pathParams[($index + 1)] != '') ){
-                    $node->widgetConfig->allowRequestParamValues[$param] = $pathParams[($index + 1)];
-                }
+		}log_error($node->widgetConfig->originalRequestParams);
+    if(isset($node->widgetConfig->allowRequestParams)){
+        foreach($node->widgetConfig->allowRequestParams as $param){
+            $index = array_search($param,$pathParams);
+            if( $index !== FALSE && ($pathParams[($index + 1)] != '') ){
+                $node->widgetConfig->allowRequestParamValues[$param] = $pathParams[($index + 1)];
             }
         }
+    }
 	}
     if(isset($node->widgetConfig->urlParamMap) && is_array(get_object_vars($node->widgetConfig->urlParamMap))){
         foreach($node->widgetConfig->urlParamMap as $key=>$value){

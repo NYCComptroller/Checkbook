@@ -115,6 +115,7 @@ abstract class Datasource {
     const SOLR_CITYWIDE = 'citywide';
     const SOLR_EDC = 'edc';
     const SOLR_NYCHA = 'nycha';
+    const EDC_TITLE = "NYCEDC";
 
      public static function getCurrent() {
         $datasource = RequestUtilities::get(UrlParameter::DATASOURCE);

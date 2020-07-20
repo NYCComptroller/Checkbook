@@ -70,7 +70,7 @@ class CustomBreadcrumbs
     $title = '';
     $bottomURL = $_REQUEST['expandBottomContURL'];
     if (preg_match('/^spending\/search\/transactions/', current_path())){
-      $title = (Datasource::isOGE()) ? "NYCEDC ": "";
+      $title = (Datasource::isOGE()) ? Datasource::EDC_TITLE . " " : "";
       $title .=  SpendingUtil::getSpendingTransactionsTitle();
     } elseif (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
       $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL);
@@ -109,7 +109,7 @@ class CustomBreadcrumbs
     $title = '';
     $bottomURL = $_REQUEST['expandBottomContURL'];
     //For NYCEDC advanced search results
-    $edcSubTitle = (!isset($bottomURL) && preg_match('/transactions/', $bottomURL) && Datasource::isOGE()) ? 'NYCEDC ' : '';
+    $edcSubTitle = (!isset($bottomURL) && preg_match('/transactions/', $bottomURL) && Datasource::isOGE()) ? Datasource::EDC_TITLE ." " : '';
 
     if (preg_match('/magid/', $bottomURL)) {
       $magid = RequestUtil::getRequestKeyValueFromURL("magid", $bottomURL);
