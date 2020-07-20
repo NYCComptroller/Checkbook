@@ -43,14 +43,14 @@
         yearRange: '-' + (currentYear - 1900) + ':+' + (2500 - currentYear)
       });
       //Sets up autocompletes
-      var year = $('#edit-year', context).val();
+      var year = getYearValue($('#edit-year', context).val());
       var agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : emptyToZero($('#edit-agency', context).val());
       var payfrequency = ($('#edit-payfrequency', context).val() === 'All Pay Frequencies') ? 0 : $('#edit-payfrequency', context).val();
 
       $('.watch:input').each(function ()
       {
         $(this).focusin(function () {
-          year = $('#edit-year', context).val();
+          year = getYearValue($('#edit-year', context).val());
           agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : emptyToZero($('#edit-agency', context).val());
           payfrequency = ($('#edit-payfrequency', context).val() === 'All Pay Frequencies') ? 0 : $('#edit-payfrequency', context).val();
           dataSource = $('input[name="datafeeds-payroll-domain-filter"]:checked', context).val();
@@ -165,6 +165,12 @@
       return code[1];
     }
     return 0;
+  }
+  //Function to retrieve year values ignoring FY and CY
+  function getYearValue(input)
+  {
+    var yeardata = input.split(/(\s)/);
+    return yeardata[2];
   }
 
 }(jQuery));

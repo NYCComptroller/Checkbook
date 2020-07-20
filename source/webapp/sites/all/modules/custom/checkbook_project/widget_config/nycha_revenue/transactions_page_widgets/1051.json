@@ -248,7 +248,7 @@ $node->widgetConfig->dataTableOptions->aaSorting[0][0] = 4;
 "bScrollCollapse": false,
 "fnInitComplete": "##function () { new FixedColumns( oTable, {
 \"iLeftColumns\": 1,
-\"iLeftWidth\": 115
+\"iLeftWidth\": 120
 } );}##"
 },
 "customExternalJS":"function prepareTableListFilterUrl(){
