@@ -292,9 +292,12 @@ class CustomBreadcrumbs
   public static function getNYCHASpendingBreadcrumbTitle()
   {
     $bottomURL = $_REQUEST['expandBottomContURL'];
-    if (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
+    $title = "";
+    if(preg_match('/^nycha_spending\/search\/transactions/', current_path())){
+      $title = 'NYCHA '.NYCHASpendingUtil::getCategoryName().' Spending Transactions';
+    }elseif (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
       $title = NychaSpendingUtil::getTransactionsTitle($bottomURL);
-    }else {
+    }else{
       $lastReqParam = _getLastRequestParamValue();
       foreach ($lastReqParam as $key => $value) {
         switch ($key) {
