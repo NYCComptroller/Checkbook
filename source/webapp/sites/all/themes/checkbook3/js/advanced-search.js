@@ -802,7 +802,7 @@
           let contract_category_name = div.ele('category').val()|| 0;
           let minority_type_id = div.ele('mwbe_category').val() || 0;
           let industry_type_id = div.ele('industry').val() || 0;
-          let agreement_type_id = div.ele('contract_type').val() || 0;
+          let contract_type_id = div.ele('contract_type').val() || 0;
           let agency_id = div.ele('agency').val() || 0;
           let award_method_id = div.ele('award_method').val() || 0;
           let scntrc_status = div.ele('includes_sub_vendors').val() || 0;
@@ -846,7 +846,6 @@
               var filters = {
               contract_status: contract_status,
               contract_category_name: contract_category_name,
-              agreement_type_id: agreement_type_id,
               agency_id: agency_id,
               award_method_id: award_method_id,
               minority_type_id: minority_type_id,
@@ -854,7 +853,8 @@
               scntrc_status: scntrc_status,
               aprv_sta: aprv_sta,
               fiscal_year_id: year_id,
-              registered_fiscal_year_id: reg_year_id
+              registered_fiscal_year_id: reg_year_id,
+                contract_type_id: contract_type_id,
             };
 
             div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name',filters)});
