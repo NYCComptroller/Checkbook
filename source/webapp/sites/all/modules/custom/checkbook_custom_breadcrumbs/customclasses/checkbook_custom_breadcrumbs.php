@@ -69,8 +69,9 @@ class CustomBreadcrumbs
   {
     $title = '';
     $bottomURL = $_REQUEST['expandBottomContURL'];
-    if (preg_match('/transactions/', current_path())) {
-      $title = SpendingUtil::getSpendingTransactionsTitle();
+    if (preg_match('/^spending\/search\/transactions/', current_path())){
+      $title = (Datasource::isOGE()) ? "NYCEDC ": "";
+      $title .=  SpendingUtil::getSpendingTransactionsTitle();
     } elseif (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
       $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL);
       $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
