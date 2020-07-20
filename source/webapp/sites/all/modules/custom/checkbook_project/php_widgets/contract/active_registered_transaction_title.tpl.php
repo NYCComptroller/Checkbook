@@ -49,7 +49,9 @@ if ($contactCategory == 'all') {
 }
 $current_url = explode('/', request_uri());
 if($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url[2] == 'all')&& $current_url[3] == 'transactions'){
-    $summaryTitle = "";
+  $summaryTitle = "";
+  //For NYCEDC advanced search results
+  $edcSubTitle = Datasource::isOGE() ? Datasource::EDC_TITLE . " " : "";
 }else if(_checkbook_check_is_mwbe_page() || $dashboard){
     $summaryTitle = RequestUtil::getDashboardTitle()." ";
 }
@@ -128,8 +130,8 @@ if($dashboard == 'ss' || $dashboard == 'sp'){
             break;
     }
 }else{
-    print "<h2 class='contract-title' class='title'>{$summaryTitle} {$contactStatusLabel} {$contactCategoryLabel} Contracts Transactions</h2>";
-    $checkbook_breadcrumb_title =  "$summaryTitle $contactStatusLabel $contactCategoryLabel Contracts Transactions";
+    print "<h2 class='contract-title' class='title'>{$edcSubTitle} {$summaryTitle} {$contactStatusLabel} {$contactCategoryLabel} Contracts Transactions</h2>";
+    $checkbook_breadcrumb_title =  "$edcSubTitle $summaryTitle $contactStatusLabel $contactCategoryLabel Contracts Transactions";
 }
 
 

@@ -44,7 +44,8 @@ class SpendingUtil{
      */
     static public function getSpendingTransactionsTitle(){
         $categories = self::$spendingCategories;
-        $title = $categories[ RequestUtilities::get('category')]. " Spending Transactions";
+        $category = RequestUtilities::get('category');
+        $title = $categories[isset($category) ? $category : 0]. " Spending Transactions";
         return $title ;
     }
 

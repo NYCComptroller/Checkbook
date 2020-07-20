@@ -69,8 +69,9 @@ class CustomBreadcrumbs
   {
     $title = '';
     $bottomURL = $_REQUEST['expandBottomContURL'];
-    if (preg_match('/transactions/', current_path())) {
-      $title = SpendingUtil::getSpendingTransactionsTitle();
+    if (preg_match('/^spending\/search\/transactions/', current_path())){
+      $title = (Datasource::isOGE()) ? Datasource::EDC_TITLE . " " : "";
+      $title .=  SpendingUtil::getSpendingTransactionsTitle();
     } elseif (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
       $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL);
       $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
@@ -107,6 +108,9 @@ class CustomBreadcrumbs
   {
     $title = '';
     $bottomURL = $_REQUEST['expandBottomContURL'];
+    //For NYCEDC advanced search results
+    $edcSubTitle = (!isset($bottomURL) && preg_match('/transactions/', $bottomURL) && Datasource::isOGE()) ? Datasource::EDC_TITLE ." " : '';
+
     if (preg_match('/magid/', $bottomURL)) {
       $magid = RequestUtil::getRequestKeyValueFromURL("magid", $bottomURL);
       $contract_number = _get_master_agreement_details($magid);
@@ -211,7 +215,7 @@ class CustomBreadcrumbs
       GLOBAL $checkbook_breadcrumb_title;
       $title = $checkbook_breadcrumb_title;
     }
-    return html_entity_decode($title);
+    return html_entity_decode($edcSubTitle . $title);
   }
 
   /** Returns Payroll page title and Breadcrumb */
@@ -292,9 +296,12 @@ class CustomBreadcrumbs
   public static function getNYCHASpendingBreadcrumbTitle()
   {
     $bottomURL = $_REQUEST['expandBottomContURL'];
-    if (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
+    $title = "";
+    if(preg_match('/^nycha_spending\/search\/transactions/', current_path())){
+      $title = 'NYCHA '.NYCHASpendingUtil::getCategoryName().' Spending Transactions';
+    }elseif (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
       $title = NychaSpendingUtil::getTransactionsTitle($bottomURL);
-    }else {
+    }else{
       $lastReqParam = _getLastRequestParamValue();
       foreach ($lastReqParam as $key => $value) {
         switch ($key) {

@@ -115,6 +115,7 @@ abstract class Datasource {
     const SOLR_CITYWIDE = 'citywide';
     const SOLR_EDC = 'edc';
     const SOLR_NYCHA = 'nycha';
+    const EDC_TITLE = "NYCEDC";
 
      public static function getCurrent() {
         $datasource = RequestUtilities::get(UrlParameter::DATASOURCE);
@@ -141,6 +142,12 @@ abstract class Datasource {
         $nychaId = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id'), array('agency_short_name' => 'HOUSING AUTH'));
         $agency_id= $nychaId[0]['agency_id'];
         return $agency_id;
+    }
+
+    public static function getEDCId() {
+      $edcId = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id'), array('agency_short_name' => 'NYC EDC'));
+      $agency_id = $edcId[0]['agency_id'];
+      return $agency_id;
     }
 
     public static function smartSearchDataSource(){
