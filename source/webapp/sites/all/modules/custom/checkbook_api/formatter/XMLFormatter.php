@@ -66,7 +66,11 @@ class XMLFormatter extends AbstractFormatter {
 
       foreach ($row_elements as $row_element_name) {
         if (in_array($row_element_name, $this->responseColumns)) {
-          $this->addElement($record_parent_element, $document, $row_element_name, $data_record[$row_elements_column[$row_element_name]]);
+          $data_set_column = $row_elements_column[$row_element_name];
+          //Handle reference columns in data-set
+          $data_set_column = str_replace('@', '_', $data_set_column);
+          $data_set_column = str_replace(':', '_', $data_set_column);
+          $this->addElement($record_parent_element, $document, $row_element_name, $data_record[$data_set_column]);
         }
       }
 
