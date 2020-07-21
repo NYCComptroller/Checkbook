@@ -133,7 +133,8 @@ class CheckbookDateUtil{
    */
   public static function getCurrentDatasourceStartingYear(string $data_source, $domain = NULL){
     self::setCurrentYears();
-    if(isset($domain) && $data_source == Datasource::NYCHA && ($domain == Domain::$BUDGET || $domain == Domain::$REVENUE)){
+    if($domain == Domain::$NYCHA_BUDGET || $domain == Domain::$NYCHA_REVENUE ||
+      ($data_source == Datasource::NYCHA && ($domain == Domain::$REVENUE || $domain == Domain::$BUDGET))){
       $key = 'min_' . $data_source . '_budget_fy';
     }else{
       $key = 'min_' . $data_source . '_fy';
