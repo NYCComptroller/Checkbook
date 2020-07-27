@@ -521,7 +521,7 @@ function load_widget_data($node, $resultFormatter) {
        */
       $autocomplete_value = $parameters[$config->autocompleteField][0];
       $parameters[$config->autocompleteField] = data_controller_get_operator_factory_instance()->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, [
-        $autocomplete_value,
+        pg_escape_string(htmlspecialchars_decode($autocomplete_value)),
         FALSE,
         TRUE,
       ]);
