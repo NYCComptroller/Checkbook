@@ -30,7 +30,7 @@
         "dataset":"checkbook_nycha:contracts_fy_vendor_summary",
         "columns":["total_maximum_contract_amount"],
         "seriesURLParamMap":{"vendor":"vendor_id","calyear":"fiscal_year_id","year":"fiscal_year_id"},
-        "allowedParams":["vendor_id","fiscal_year_id","calyear","year"],
+        "allowedParams":["vendor_id","fiscal_year_id","calyear"],
         "adjustSerieParameters":"
           //Calculate amount for all years on 'All Years' advanced search results page
           if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear')){
@@ -61,8 +61,8 @@
       {
         "dataset": "checkbook_nycha:budget",
         "columns":["budget_modified"],
-        "seriesURLParamMap":{"year":"budget_fiscal_year_id","calyear":"budget_fiscal_year_id"},
-        "allowedParams":["budget_fiscal_year_id","calyear"],
+        "seriesURLParamMap":{"year":"budget_fiscal_year_id"},
+        "allowedParams":["budget_fiscal_year_id"],
         "adjustSerieParameters":"
           return $serieParameters;
         "
@@ -70,8 +70,8 @@
       {
         "dataset": "checkbook_nycha:revenue",
         "columns":["revenue_recognized_amount"],
-        "seriesURLParamMap":{"year":"budget_fiscal_year_id","calyear":"budget_fiscal_year_id"},
-        "allowedParams":["budget_fiscal_year_id","calyear"],
+        "seriesURLParamMap":{"year":"budget_fiscal_year_id"},
+        "allowedParams":["budget_fiscal_year_id"],
         "adjustSerieParameters":"
           return $serieParameters;
         "
@@ -79,8 +79,8 @@
       {
         "dataset": "checkbook_nycha:all_disbursement_transactions",
         "columns":["check_amount_sum", "invoice_amount_sum","category.category", "category_name.category_name"],
-        "seriesURLParamMap":{"vendor":"vendor_id","year":"issue_date_year_id","agency":"agency_id","calyear":"issue_date_year_id"},
-        "allowedParams":["vendor_id","issue_date_year_id","agency_id","calyear"],
+        "seriesURLParamMap":{"vendor":"vendor_id","year":"issue_date_year_id","agency":"agency_id"},
+        "allowedParams":["vendor_id","issue_date_year_id","agency_id"],
         "adjustSerieParameters":"
             return $serieParameters; "
       }
