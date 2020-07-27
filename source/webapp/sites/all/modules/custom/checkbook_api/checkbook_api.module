@@ -247,145 +247,140 @@ function checkbook_api_adjustNYCHAContractsParams(&$data_set, &$parameters, $cri
  * @param $criteria
  * @param null $datasource
  */
-function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, $criteria,$datasource = null) {
+function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, $criteria, $datasource = null) {
   $contract_status = $criteria['value']['status'];
   $category = $criteria['value']['category'];
-  $type_of_data = ($datasource == 'checkbook_oge') ? "contracts_oge":"";
+  $type_of_data = ($datasource == Datasource::OGE) ? "contracts_oge":"";
 
-    //For Active/Registered Expense Contracts -- CityWide
-    if(($type_of_data != "contracts_oge") && ($category == "expense" || $category == "all") && ($contract_status == "active" || $contract_status == "registered")) {
-        checkbook_api_adjust_expense_contracts_params($parameters, $criteria, $contract_status, $category);
-    }
-    else {//For Active/Registered Expense Contracts -- OGE
-        switch ($contract_status) {
-            case "registered":
-            case "active":
-                $data_controller_instance = data_controller_get_operator_factory_instance();
+  //Display contracts which are active from 2011
+  if($datasource != Datasource::OGE) {
+    $parameters['is_active_eft_2011'] = 1;
+  }
 
-                // Either Fiscal or Calendar year is provided:
-                $fy = checkbook_api_change_datasource($datasource,$parameters['fiscal_year@checkbook:all_contracts_coa_aggregates']);
-                if (isset($fy)) {
+  //For Active/Registered Expense Contracts -- CityWide
+  if(($type_of_data != "contracts_oge") && ($category == "expense" || $category == "all") && ($contract_status == "active" || $contract_status == "registered")) {
+      checkbook_api_adjust_expense_contracts_params($parameters, $criteria, $contract_status, $category);
+  }
+  else {
+      //For Active/Registered Expense Contracts -- OGE
+      switch ($contract_status) {
+          case "registered":
+          case "active":
+              $data_controller_instance = data_controller_get_operator_factory_instance();
 
-                    if ($contract_status == 'registered') {
-                        if(strtolower($type_of_data) == 'contracts_oge')
-                            $parameters[checkbook_api_change_datasource($datasource,'status_flag')] = 'R';
-                        else
-                            $parameters[checkbook_api_change_datasource($datasource,'status_flag@checkbook:all_contracts_coa_aggregates')] = 'R';
-                    }
-                    else {
-                        if ($contract_status == 'active') {
-                            if(strtolower($type_of_data) == 'contracts_oge')
-                                $parameters[checkbook_api_change_datasource($datasource,'status_flag')] = 'A';
-                            else
-                                $parameters[checkbook_api_change_datasource($datasource,'status_flag@checkbook:all_contracts_coa_aggregates')] = 'A';
-                        }
-                    }
+              // Either Fiscal or Calendar year is provided:
+              $fy = checkbook_api_change_datasource($datasource,$parameters['fiscal_year@checkbook:all_contracts_coa_aggregates']);
+              if (isset($fy)) {
 
-                    if(strtolower($type_of_data) == 'contracts_oge'){
-                        // Adjust year and year type for OGE
-                        $req_year = $parameters[checkbook_api_change_datasource($datasource,'fiscal_year')];
-                        $req_years = _checkbook_project_querydataset('checkbook_oge:year',array('year_id','year_value'),array('year_value'=>$req_year));
-                        $req_year = $req_years[0]['year_id'];
-                        $parameters[checkbook_api_change_datasource($datasource,'type_of_year')] = 'B';
+                  if ($contract_status == 'registered') {
+                      if(strtolower($type_of_data) == 'contracts_oge')
+                          $parameters[checkbook_api_change_datasource($datasource,'status_flag')] = 'R';
+                      else
+                          $parameters[checkbook_api_change_datasource($datasource,'status_flag@checkbook:all_contracts_coa_aggregates')] = 'R';
+                  }
+                  else {
+                      if ($contract_status == 'active') {
+                          if(strtolower($type_of_data) == 'contracts_oge')
+                              $parameters[checkbook_api_change_datasource($datasource,'status_flag')] = 'A';
+                          else
+                              $parameters[checkbook_api_change_datasource($datasource,'status_flag@checkbook:all_contracts_coa_aggregates')] = 'A';
+                      }
+                  }
 
-                        //Set vendor flag for OGE
-                        $parameters['is_vendor_flag'] = 'N';
-                    }
-                    else{
-                        // Adjust year and year type for Citywide
-                        $req_year = $parameters[checkbook_api_change_datasource($datasource,'fiscal_year@checkbook:all_contracts_coa_aggregates')];
-                        $parameters[checkbook_api_change_datasource($datasource,'type_of_year@checkbook:all_contracts_coa_aggregates')] = 'B';
-                    }
+                  if(strtolower($type_of_data) == 'contracts_oge'){
+                      // Adjust year and year type for OGE
+                      $req_year = $parameters[checkbook_api_change_datasource($datasource,'fiscal_year')];
+                      $req_years = _checkbook_project_querydataset('checkbook_oge:year',array('year_id','year_value'),array('year_value'=>$req_year));
+                      $req_year = $req_years[0]['year_id'];
+                      $parameters[checkbook_api_change_datasource($datasource,'type_of_year')] = 'B';
 
-                    if (isset($req_year)) {
-                        $ge_condition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
-                        $le_condition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
-                        if(strtolower($type_of_data) == 'contracts_oge'){
-                            $parameters['starting_year_id'] = $le_condition;
-                            $parameters['ending_year_id'] = $ge_condition;
-                        }else{
-                            $parameters['starting_year'] = $le_condition;
-                            $parameters['ending_year'] = $ge_condition;
-                        }
-                        if ($contract_status == 'registered') {
-                            if(strtolower($type_of_data) == 'contracts_oge')
-                                $parameters['registered_year_id'] = $req_year;
-                            else
-                                $parameters['registered_year'] = $req_year;
-                        } else {
-                            if ($contract_status == 'active') {
-                                if(strtolower($type_of_data) == 'contracts_oge'){
-                                    $parameters['effective_begin_year_id'] = $le_condition;
-                                    $parameters['effective_end_year_id'] = $ge_condition;
-                                }
-                                else{
-                                    $parameters['effective_begin_year'] = $le_condition;
-                                    $parameters['effective_end_year'] = $ge_condition;
-                                }
-                            }
-                        }
-                    }
-                }
-                else {
-                    // All years:
-                    $parameters['latest_flag'] = 'Y';
-                    //Hide data for contracts, end date is prior 2011
-                    //TO DO: Move end fiscal year to Drupal variables
-                    $year = _getYearIDFromValue(2011);
-                    $ge_condition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
+                      //Set vendor flag for OGE
+                      $parameters['is_vendor_flag'] = 'N';
+                  }
+                  else{
+                      // Adjust year and year type for Citywide
+                      $req_year = $parameters[checkbook_api_change_datasource($datasource,'fiscal_year@checkbook:all_contracts_coa_aggregates')];
+                      $parameters[checkbook_api_change_datasource($datasource,'type_of_year@checkbook:all_contracts_coa_aggregates')] = 'B';
+                  }
+
+                  if (isset($req_year)) {
+                      $ge_condition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
+                      $le_condition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
                       if(strtolower($type_of_data) == 'contracts_oge'){
-                        $parameters['effective_end_year_id'] = $ge_condition;
+                          $parameters['starting_year_id'] = $le_condition;
+                          $parameters['ending_year_id'] = $ge_condition;
+                      }else{
+                          $parameters['starting_year'] = $le_condition;
+                          $parameters['ending_year'] = $ge_condition;
                       }
-                      else{
-                        //For Citywide Revenue Category
-                        $parameters['effective_end_year'] = $ge_condition;
+                      if ($contract_status == 'registered') {
+                          if(strtolower($type_of_data) == 'contracts_oge')
+                              $parameters['registered_year_id'] = $req_year;
+                          else
+                              $parameters['registered_year'] = $req_year;
+                      } else {
+                          if ($contract_status == 'active') {
+                              if(strtolower($type_of_data) == 'contracts_oge'){
+                                  $parameters['effective_begin_year_id'] = $le_condition;
+                                  $parameters['effective_end_year_id'] = $ge_condition;
+                              }
+                              else{
+                                  $parameters['effective_begin_year'] = $le_condition;
+                                  $parameters['effective_end_year'] = $ge_condition;
+                              }
+                          }
                       }
-                }
-                break;
+                  }
+              }
+              else {
+                  // All years:
+                  $parameters['latest_flag'] = 'Y';
+              }
+              break;
 
-            case "pending":
-                //FIX ME: Hard coded the contract type code for 'Construction' for now since it is not matching with reference table value
-                if(isset($parameters['cont_type_code']) && $parameters['cont_type_code'] == "05"){
-                    $parameters['cont_type_code'] = "5";
-                }
-                break;
+          case "pending":
+              //FIX ME: Hard coded the contract type code for 'Construction' for now since it is not matching with reference table value
+              if(isset($parameters['cont_type_code']) && $parameters['cont_type_code'] == "05"){
+                  $parameters['cont_type_code'] = "5";
+              }
+              break;
 
-            default:
-                break;
-        }
+          default:
+              break;
+      }
 
-        //Set Document Code for OGE
-        $doc_code = strtolower($type_of_data) == 'contracts_oge' ? "document_code" : "document_code@checkbook:ref_document_code";
+      //Set Document Code for OGE
+      $doc_code = strtolower($type_of_data) == 'contracts_oge' ? "document_code" : "document_code@checkbook:ref_document_code";
 
-        if( $category == 'all') {
-            $parameters[checkbook_api_change_datasource($datasource,$doc_code)] = array("MMA1", "MA1", "CT1", "DO1", "CTA1", "MAR", "CTR", "RCT1",);
-        }
-        else if ($category == 'revenue') {
-            $parameters[checkbook_api_change_datasource($datasource,$doc_code)] = 'RCT1';
-        }
-        else if ($category == 'expense') {
-                $parameters[checkbook_api_change_datasource($datasource,$doc_code)] = array("MMA1", "MA1", "CT1", "DO1", "CTA1", "MAR", "CTR",);
-        }
+      if( $category == 'all') {
+          $parameters[checkbook_api_change_datasource($datasource,$doc_code)] = array("MMA1", "MA1", "CT1", "DO1", "CTA1", "MAR", "CTR", "RCT1",);
+      }
+      else if ($category == 'revenue') {
+          $parameters[checkbook_api_change_datasource($datasource,$doc_code)] = 'RCT1';
+      }
+      else if ($category == 'expense') {
+              $parameters[checkbook_api_change_datasource($datasource,$doc_code)] = array("MMA1", "MA1", "CT1", "DO1", "CTA1", "MAR", "CTR",);
+      }
 
-        //Process Minority Type Id parameter
-        if(isset($parameters['minority_type_id'])) {
-          $parameters['minority_type_id'] = explode('~',$parameters['minority_type_id']);
-        }
+      //Process Minority Type Id parameter
+      if(isset($parameters['minority_type_id'])) {
+        $parameters['minority_type_id'] = explode('~',$parameters['minority_type_id']);
+      }
 
-        //Set Agency id for the selected OGE Agency code
-        if(isset($parameters['agency_code@checkbook_oge:oge_agency'])){
-            $agency_id = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id'), array('agency_code' => $parameters['agency_code@checkbook_oge:oge_agency']));
-            $parameters['agency_id'] = $agency_id[0]['agency_id'];
-            unset($parameters['agency_code@checkbook_oge:oge_agency']);
-        }
+      //Set Agency id for the selected OGE Agency code
+      if(isset($parameters['agency_code@checkbook_oge:oge_agency'])){
+          $agency_id = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id'), array('agency_code' => $parameters['agency_code@checkbook_oge:oge_agency']));
+          $parameters['agency_id'] = $agency_id[0]['agency_id'];
+          unset($parameters['agency_code@checkbook_oge:oge_agency']);
+      }
 
-        //Set Award method id for the selected OGE Award method code
-        if(isset($parameters['award_method_code@checkbook_oge:award_method'])){
-           $award_method_id = _checkbook_project_querydataset('checkbook_oge:award_method', array('award_method_id'), array('award_method_code' => $parameters['award_method_code@checkbook_oge:award_method']));
-           $parameters['award_method_id'] = $award_method_id[0]['award_method_id'];
-           unset($parameters['award_method_code@checkbook_oge:award_method']);
-        }
-    }
+      //Set Award method id for the selected OGE Award method code
+      if(isset($parameters['award_method_code@checkbook_oge:award_method'])){
+         $award_method_id = _checkbook_project_querydataset('checkbook_oge:award_method', array('award_method_id'), array('award_method_code' => $parameters['award_method_code@checkbook_oge:award_method']));
+         $parameters['award_method_id'] = $award_method_id[0]['award_method_id'];
+         unset($parameters['award_method_code@checkbook_oge:award_method']);
+      }
+  }
 }
 
 /**
@@ -421,14 +416,9 @@ function checkbook_api_adjust_expense_contracts_params(&$parameters, $criteria, 
                 $parameters['registered_year_id']= array($req_year);
                 break;
         }
-        //unset($parameters['year']);
     }
     else {
         $parameters['latest_flag'] = 'Y';
-        //Hide Active Expense/All contracts, end date is prior 2011
-          $yearId = _getYearIDFromValue(2011);
-          $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($yearId));
-          $parameters['effective_end_year_id'] = $geCondition;
     }
 
     //Document Code

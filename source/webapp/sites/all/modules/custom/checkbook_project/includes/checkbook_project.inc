@@ -690,18 +690,6 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
     default:
       break;
   }
-
-  if($contractType == 'active_registered_all') {
-    //Hide data for contracts, end date is prior 2011
-    //TO DO: Move end fiscal year to Drupal variables
-    $year = _getYearIDFromValue(2011);
-    $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
-    if (isset($dimension)) {
-      $parameters[$dimension . '.' . $dimension . '.effective_end_year_id'] = $geCondition;
-    } else {
-      $parameters['effective_end_year_id'] = $geCondition;
-    }
-  }
 }
 
 /**
