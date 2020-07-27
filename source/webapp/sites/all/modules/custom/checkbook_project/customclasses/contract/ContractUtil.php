@@ -830,17 +830,6 @@ namespace { //global
             }
             else {
                 $parameters['latest_flag'] = 'Y';
-                //Hide data for contracts, end date is prior 2011
-                //TO DO: Move end fiscal year to Drupal variables
-                $year = _getYearIDFromValue(2011);
-                $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
-                  if(self::showSubVendorData()){
-                    $parameters['sub_effective_end_year_id']= $geCondition;
-                  }else if(!isset($dashboard) && !isset($smnid)){
-                    $parameters['effective_end_year_id']= $geCondition;
-                  }else{
-                    $parameters['prime_effective_end_year_id']= $geCondition;
-                  }
             }
 
             //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code

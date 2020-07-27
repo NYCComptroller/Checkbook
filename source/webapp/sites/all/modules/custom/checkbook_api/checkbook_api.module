@@ -329,17 +329,6 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                 else {
                     // All years:
                     $parameters['latest_flag'] = 'Y';
-                    //Hide data for contracts, end date is prior 2011
-                    //TO DO: Move end fiscal year to Drupal variables
-                    $year = _getYearIDFromValue(2011);
-                    $ge_condition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
-                      if(strtolower($type_of_data) == 'contracts_oge'){
-                        $parameters['effective_end_year_id'] = $ge_condition;
-                      }
-                      else{
-                        //For Citywide Revenue Category
-                        $parameters['effective_end_year'] = $ge_condition;
-                      }
                 }
                 break;
 
@@ -421,14 +410,9 @@ function checkbook_api_adjust_expense_contracts_params(&$parameters, $criteria, 
                 $parameters['registered_year_id']= array($req_year);
                 break;
         }
-        //unset($parameters['year']);
     }
     else {
         $parameters['latest_flag'] = 'Y';
-        //Hide Active Expense/All contracts, end date is prior 2011
-          $yearId = _getYearIDFromValue(2011);
-          $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($yearId));
-          $parameters['effective_end_year_id'] = $geCondition;
     }
 
     //Document Code
