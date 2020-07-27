@@ -174,9 +174,9 @@ function _checkbook_faceted_search_update_data($node)
                 $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns, "|")));
                 break;
             }
-
           } else {
             $param = checkbook_faceted_search_replaceSlash($param);
+            $param = pg_escape_string(htmlspecialchars_decode($param));
             $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $param));
           }
           $resultFormatter = new SpecialCharacterResultFormatter(NULL, new ArrayResultFormatter());
