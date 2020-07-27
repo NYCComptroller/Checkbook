@@ -793,7 +793,9 @@ namespace { //global
             $data_controller_instance = data_controller_get_operator_factory_instance();
             $dashboard = RequestUtilities::get('dashboard');
             $smnid = RequestUtilities::get('smnid');
-            $vendor_types = isset($parameters['vendor_type']) ? $parameters['vendor_type'] :NULL;
+
+            //Display contracts which are active from 2011
+            $parameters['is_active_eft_2011'] = 1;
 
             if(isset($reqYear)){
                 $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
