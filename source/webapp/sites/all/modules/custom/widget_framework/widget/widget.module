@@ -901,12 +901,17 @@ function widget_data(&$node) {
   $config = $node->widgetConfig;
   $requestParams = $config->requestParams;
   $originalReqParams = $config->originalRequestParams;
-  foreach ($requestParams as $key => $value){
-    $requestParams[$key] = pg_escape_string(htmlspecialchars_decode($value));
+  if(isset($requestParams)) {
+    foreach ($requestParams as $key => $value) {
+      $requestParams[$key] = pg_escape_string(htmlspecialchars_decode($value));
+    }
   }
   $config->requestParams = $requestParams;
-  foreach ($originalReqParams as $key => $value){
-    $originalReqParams[$key] = pg_escape_string(htmlspecialchars_decode($value));
+
+  if(isset($originalReqParams)) {
+    foreach ($originalReqParams as $key => $value) {
+      $originalReqParams[$key] = pg_escape_string(htmlspecialchars_decode($value));
+    }
   }
   $config->originalRequestParams = $originalReqParams;
 
