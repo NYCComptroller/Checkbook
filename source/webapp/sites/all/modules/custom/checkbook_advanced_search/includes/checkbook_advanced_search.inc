@@ -831,7 +831,7 @@ function _checkbook_advanced_search_year_arg(string $year_arg)
     if ($year_type == 'fy') {
         $year_url = '/yeartype/B/year/' . $year_id;
     } elseif ($year_type == 'cy') {
-        $year_url = '/yeartype/C/calyear/' . $year_id;
+        $year_url = '/yeartype/C/calyear/' . $year_id.'/year/'.$year_id;
     }
 
     return $year_url;

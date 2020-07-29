@@ -132,6 +132,7 @@ class DataSetHandler {
    * @param $config_type
    */
   private function prepareParameterConfiguration(&$parameters, $column, $value, $config_type) {
+    $value = pg_escape_string(htmlspecialchars_decode($value));
     switch ($config_type) {
       case "range":
         $conditions[] = data_controller_get_operator_factory_instance()->initiateHandler(RangeOperatorHandler::$OPERATOR__NAME, array(
