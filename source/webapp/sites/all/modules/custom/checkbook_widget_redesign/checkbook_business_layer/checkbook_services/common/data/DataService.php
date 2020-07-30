@@ -18,7 +18,7 @@ abstract class DataService implements IDataService {
      * @return DataService
      */
     public function configure($dataFunction, $parameters, $limit = null, $orderBy = null, $sqlConfigPath) {
-        return static::setDataFunction($dataFunction)
+        return self::setDataFunction($dataFunction)
             ->setSqlConfigPath($sqlConfigPath)
             ->setParameters($parameters)
             ->setLimit($limit)
@@ -76,7 +76,8 @@ abstract class DataService implements IDataService {
         $orderBy = isset($orderBy) ? $orderBy : $this->orderBy;
         $fnData = $this->fnData;
         LogHelper::log_info("Get By DataSet: ".$fnData);
-        $cacheKey = 'get_by_dataset_'.md5(serialize([$parameters, $limit, $orderBy, $fnData]));
+        $dataSource = Datasource::getCurrent();
+        $cacheKey = 'get_by_dataset_' . $dataSource . '_' .md5(serialize([$parameters, $limit, $orderBy, $fnData]));
         if ($data = _checkbook_dmemcache_get($cacheKey)) {
           return $data;
         }
@@ -88,8 +89,9 @@ abstract class DataService implements IDataService {
     public function getByDatasetRowCount($parameters = null) {
         $parameters = isset($parameters) ? $parameters : $this->parameters;
         $fnData = $this->fnData;
-        LogHelper::log_info("Get By RecordCount: ".$fnData);
-        $cacheKey = 'get_by_record_count_'.md5(serialize([$parameters, $fnData]));
+        LogHelper::log_info("Get By RecordCount: ".$fnData);log_error($parameters);
+        $dataSource = Datasource::getCurrent();
+        $cacheKey = 'get_by_record_count_' . $dataSource . '_' .md5(serialize([$parameters, $fnData]));
         if ($data = _checkbook_dmemcache_get($cacheKey)) {
           return $data;
         }

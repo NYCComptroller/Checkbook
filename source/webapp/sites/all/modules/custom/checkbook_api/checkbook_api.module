@@ -253,7 +253,7 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
   $type_of_data = ($datasource == Datasource::OGE) ? "contracts_oge":"";
 
   //Display contracts which are active from 2011
-  if($datasource != Datasource::OGE) {
+  if($datasource != Datasource::OGE && $contract_status != 'pending') {
     $parameters['is_active_eft_2011'] = 1;
   }
 
