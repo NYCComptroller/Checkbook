@@ -1666,8 +1666,8 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
 //      phpunit
     return _checkbook_project_execute_sql_test($sql);
   }
-
-  $cacheKey = '_checkbook_query_' . md5($sql . $db_name . $data_source);
+  $dataSource = Datasource::getCurrent();
+  $cacheKey = '_checkbook_query_' . $dataSource . '_' . md5($sql . $db_name . $data_source);
   if ($result = _checkbook_dmemcache_get($cacheKey)) {
     LogHelper::log_info($sql);
     LogHelper::log_info(' PROCESSED CACHED (' . sizeof($result) . ' records)');
