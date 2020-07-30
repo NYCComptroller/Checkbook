@@ -359,23 +359,19 @@ class CustomBreadcrumbs
         $title .= ' Contracts';
       }
     }
-    return $title;
+    return html_entity_decode($title);
   }
 
 
   /** Returns NYCHA Budget page title and Breadcrumb */
-  public static function getNYCHABudgetBreadcrumbTitle()
-  {
+  public static function getNYCHABudgetBreadcrumbTitle(){
+    $title = "";
     $bottomURL = $_REQUEST['expandBottomContURL'];
-    if (!$bottomURL && preg_match('/^nycha_budget\/search\/transactions/', current_path()) || preg_match('/^nycha_budget\/all\/transactions/', current_path()))
-    {
+    if (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
       $title = 'NYCHA Expense Budget Transactions';
-    } else if ((stripos($bottomURL, 'transactions')) || (stripos($bottomURL, 'details'))){
+    } else if (isset($bottomURL)){
       $title = NychaBudgetUtil::getTransactionsTitle($bottomURL);
-    } else if (preg_match('/nycha_budget/', $bottomURL)) {
-      $title = RequestUtil::getRequestKeyValueFromURL("nycha_budget", $bottomURL);
-    }
-    else {
+    } else {
         $lastReqParam = _getLastRequestParamValue();
         foreach ($lastReqParam as $key => $value) {
           switch ($key) {
@@ -400,22 +396,18 @@ class CustomBreadcrumbs
           $title .= ' Budget';
         }
       }
-      return $title;
+      return html_entity_decode($title);
     }
 
   /** Returns NYCHA Revenue page title and Breadcrumb */
-  public static function getNYCHARevenueBreadcrumbTitle()
-  {
+  public static function getNYCHARevenueBreadcrumbTitle(){
+    $title = "";
     $bottomURL = $_REQUEST['expandBottomContURL'];
-    if (!$bottomURL && preg_match('/^nycha_revenue\/search\/transactions/', current_path()) || preg_match('/^nycha_revenue\/all\/transactions/', current_path()))
-    {
+    if (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
       $title = 'NYCHA RevenueTransactions';
-    } else if ((stripos($bottomURL, 'transactions')) || (stripos($bottomURL, 'details'))){
+    } else if (isset($bottomURL)){
       $title = NychaRevenueUtil::getTransactionsTitle($bottomURL);
-    } else if (preg_match('/nycha_revenue/', $bottomURL)) {
-      $title = RequestUtil::getRequestKeyValueFromURL("nycha_revenue", $bottomURL);
-    }
-    else {
+    }else {
       $lastReqParam = _getLastRequestParamValue();
       foreach ($lastReqParam as $key => $value) {
         switch ($key) {
@@ -440,7 +432,7 @@ class CustomBreadcrumbs
         $title .= ' Revenue';
       }
     }
-    return $title;
+    return html_entity_decode($title);
   }
 
 }
