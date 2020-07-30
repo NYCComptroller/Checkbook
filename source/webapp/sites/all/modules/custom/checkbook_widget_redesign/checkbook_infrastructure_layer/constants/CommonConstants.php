@@ -259,10 +259,9 @@ abstract class PageType {
                  * TRANSACTION_PAGE - spending/transactions, contract/spending/transactions
                  * LANDING_PAGE - spending_landing
                  */
-                if(preg_match('/spending\/search\/transactions/',$urlPath) || preg_match('/spending\/search\/transactions/',$ajaxPath)) {
+                if(preg_match('/spending\/search\/transactions/',$urlPath)) {
                     $pageType = self::ADVANCED_SEARCH_PAGE;
-                }
-                else if(preg_match('/spending\/transactions/',$urlPath) || preg_match('/spending\/transactions/',$ajaxPath) ||
+                } else if(preg_match('/spending\/transactions/',$urlPath) || preg_match('/spending\/transactions/',$ajaxPath) ||
                     preg_match('/contract\/spending\/transactions/',$urlPath) || preg_match('/contract\/spending\/transactions/',$ajaxPath)) {
                     $pageType = self::TRANSACTION_PAGE;
                 }
@@ -277,8 +276,7 @@ abstract class PageType {
                  * TRANSACTION_PAGE - contract/transactions
                  * LANDING_PAGE - contracts_landing, contracts_revenue_landing, contracts_pending_landing, contracts_pending_exp_landing, contracts_pending_rev_landing
                  */
-                if(preg_match('/contract\/all\/transactions/',$urlPath) || preg_match('/contract\/all\/transactions/',$ajaxPath) ||
-                    preg_match('/contract\/search\/transactions/',$urlPath) || preg_match('/contract\/search\/transactions/',$ajaxPath)) {
+                if(preg_match('/contract\/all\/transactions/',$urlPath) || preg_match('/contract\/search\/transactions/',$urlPath) ) {
                     $pageType = self::ADVANCED_SEARCH_PAGE;
                 }
                 else if(preg_match('/contract\/transactions/',$urlPath) || preg_match('/contract\/transactions/',$ajaxPath)) {
@@ -296,17 +294,17 @@ abstract class PageType {
             case CheckbookDomain::PAYROLL:
                 break;
           case CheckbookDomain::NYCHA_CONTRACTS:
-            if(preg_match('/nycha_contracts\/search\/transactions/',$urlPath) || preg_match('/nycha_contracts\/search\/transactions/',$ajaxPath)) {
+            if(preg_match('/nycha_contracts\/search\/transactions/',$urlPath)) {
               $pageType = self::ADVANCED_SEARCH_PAGE;
             }
             break;
             case CheckbookDomain::NYCHA_BUDGET:
-              if(preg_match('/nycha_budget\/search\/transactions/',$urlPath) || preg_match('/nycha_budget\/search\/transactions/',$ajaxPath)) {
+              if(preg_match('/nycha_budget\/search\/transactions/',$urlPath)) {
                 $pageType = self::ADVANCED_SEARCH_PAGE;
               }
               break;
             case CheckbookDomain::NYCHA_REVENUE:
-              if(preg_match('/nycha_revenue\/search\/transactions/',$urlPath) || preg_match('/nycha_revenue\/search\/transactions/',$ajaxPath)) {
+              if(preg_match('/nycha_revenue\/search\/transactions/',$urlPath)) {
                 $pageType = self::ADVANCED_SEARCH_PAGE;
               }
               break;
