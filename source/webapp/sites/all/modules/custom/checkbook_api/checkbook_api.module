@@ -253,7 +253,7 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
   $type_of_data = ($datasource == Datasource::OGE) ? "contracts_oge":"";
 
   //Display contracts which are active from 2011
-  if($datasource != Datasource::OGE) {
+  if($datasource != Datasource::OGE && $contract_status != 'pending') {
     $parameters['is_active_eft_2011'] = 1;
   }
 
@@ -689,7 +689,7 @@ function checkbook_api_adjustNYCHAContractSql(&$sql_query){
     $line_level_hyphens = array('number_of_releases', 'release_total_amount', 'release_original_amount', 'release_spend_to_date', 'agreement_total_amount',
     'agreement_original_amount', 'agreement_spend_to_date');
 
-    $text_columns = array('number_of_releases', 'release_number', 'shipment_number', 'item_qty_ordered',
+    $text_columns = array('number_of_releases', 'release_number','line_number', 'shipment_number', 'item_qty_ordered',
                       'release_line_total_amount', 'release_line_original_amount', 'release_line_spend_to_date',
                      'release_total_amount', 'release_original_amount', 'release_spend_to_date',
                      'agreement_total_amount', 'agreement_original_amount', 'agreement_spend_to_date',

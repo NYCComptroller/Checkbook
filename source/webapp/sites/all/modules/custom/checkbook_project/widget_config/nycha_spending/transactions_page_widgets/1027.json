@@ -95,6 +95,16 @@
       "
     },
     {
+      "column":"adj_distribution_line_amount",
+      "sourceColumn":"adj_distribution_line_amount",
+      "sql":"
+      CASE
+      WHEN adj_distribution_line_amount IS NULL THEN '-'
+      ELSE CAST(adj_distribution_line_amount AS TEXT)
+      END AS adj_distribution_line_amount
+      "
+    },
+    {
       "column":"contract_purpose",
       "sourceColumn":"contract_purpose",
       "sql":"
@@ -114,16 +124,6 @@
       END AS display_industry_type_name
       "
     },
-    /*{
-      "column":"department_name",
-      "sourceColumn":"department_name",
-      "sql":"
-      CASE
-      WHEN department_name IS NULL THEN '-'
-      ELSE department_name
-      END AS department_name
-      "
-    },*/
     {
       "column":"funding_source_description",
       "sourceColumn":"funding_source_description",

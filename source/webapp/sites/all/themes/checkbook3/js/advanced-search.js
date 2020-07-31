@@ -627,7 +627,7 @@
             'year': 'select[name="' + data_source + '_contracts_year"]',
             'commodity_line': 'input:text[name=' + data_source + '_contracts_commodity_line]',
             'entity_contract_number': 'input:text[name=' + data_source + '_contracts_entity_contract_number]',
-            'budget_name': 'input:text[name=' + data_source + '_contracts_budget_name]',
+            'budget_name': 'input:text[name=' + data_source + '_contracts_budget_name_text]',
             'purchase_order_type': 'select[name="' + data_source + '_contracts_purchase_order_type"]',
             'responsibility_center': 'select[name="' + data_source + '_contracts_responsibility_center"]',
             'approved_date': 'input:text[name="' + data_source + '_contracts_approved_date"]'
@@ -1362,7 +1362,7 @@
             'issue_date_to': 'input:text[name="' + data_source + '_spending_issue_date_to[date]"]',
             'commodity_line': 'input:text[name=' + data_source + '_spending_commodity_line]',
             'entity_contract_number': 'input:text[name=' + data_source + '_spending_entity_contract_number]',
-            'budget_name': 'input:text[name=' + data_source + '_spending_budget_name]',
+            'budget_name': 'input:text[name=' + data_source + '_spending_budget_name_text]',
             'fundsrc': 'select[name=' + data_source + '_spending_fundsrc]',
             'resp_center': 'select[name=' + data_source + '_spending_responsibility_center]',
             'vendor_name': 'input:text[name=' + data_source + '_spending_vendor_name]',
