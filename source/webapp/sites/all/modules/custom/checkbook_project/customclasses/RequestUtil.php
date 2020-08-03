@@ -890,7 +890,8 @@ class RequestUtil
         $sql = 'select count(*) count
 				    from ' . $table . ' a1
 				   ' . $where_filter;
-        $cacheKey = '_top_nav_count_'.md5($sql);
+        $dataSource = Datasource::getCurrent();
+        $cacheKey = '_top_nav_count_'. $dataSource . '_' .md5($sql);
         $count = _checkbook_dmemcache_get($cacheKey);
         if (is_numeric($count)) {
           return $count;

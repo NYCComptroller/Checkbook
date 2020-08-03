@@ -59,8 +59,8 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
   $entity_contract_number_exact = trim($form[$filter_dimension][$filter_dimension .'_entity_contract_number_exact']['#value']);
   $commodity_line = trim($form[$filter_dimension][$filter_dimension .'_commodity_line']['#value']);
   $commodity_line_exact = trim($form[$filter_dimension][$filter_dimension .'_commodity_line_exact']['#value']);
-  $budget_name = trim($form[$filter_dimension][$filter_dimension .'_budget_name']['#value']);
-  $budget_name_exact = trim($form[$filter_dimension][$filter_dimension .'_budget_name_exact']['#value']);
+  $budget_name = trim($form[$filter_dimension][$filter_dimension .'_budget_name_text']['#value']);
+  $budget_name_exact = trim($form[$filter_dimension][$filter_dimension .'_budget_name_text_exact']['#value']);
   $year = trim($form[$filter_dimension][$filter_dimension .'_year']['#value']);
   $mwbe_category = trim($form[$filter_dimension][$filter_dimension .'_mwbe_category']['#value']);
   $mwbe_category = $mwbe_category == "Select Category" ? 0 : $mwbe_category;
