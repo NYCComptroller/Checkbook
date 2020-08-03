@@ -155,8 +155,8 @@
     },
     "budget_name_text":{
         "field_type":"textfield",
-        "field_name":"budget_name",
-        "attributes":{"size":30, "maxlength":100}
+        "field_name":"budget_name_text",
+        "attributes":{"title":"Budget Name", "size":30, "maxlength":100}
     },
     "other_government_entities":{
         "field_type":"select",
