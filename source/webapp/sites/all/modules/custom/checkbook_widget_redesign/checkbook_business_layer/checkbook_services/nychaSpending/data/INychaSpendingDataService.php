@@ -12,5 +12,5 @@ interface INychaSpendingDataService {
   function GetNychaSpendingByIndustries($parameters, $limit = null, $orderBy = null);
   function GetNychaSpendingByDepartment($parameters, $limit = null, $orderBy = null);
   function GetNychaSpendingByFundingSource($parameters, $limit = null, $orderBy = null);
-  function GetCountContracts($parameters);
+  function GetCountNychaContracts($parameters);
 }

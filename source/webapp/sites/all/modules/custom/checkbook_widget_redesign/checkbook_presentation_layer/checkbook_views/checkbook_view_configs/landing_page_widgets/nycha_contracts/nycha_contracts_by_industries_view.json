@@ -1,7 +1,7 @@
 {
   "serviceName":"NychaContractsWidgetService",
   "dataFunc":"GetContractsByIndustries",
-  "countFunc":"GetCountContracts",
+  "countFunc":"GetCountNychaContracts",
   "table_title":"Contracts by Industries",
   "headerSubTitle":"Contracts",
   "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::TypeUrl('IND')",
