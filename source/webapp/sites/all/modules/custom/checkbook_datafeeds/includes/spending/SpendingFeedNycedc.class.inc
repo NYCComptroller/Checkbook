@@ -35,7 +35,7 @@ class SpendingFeedNycedc extends SpendingFeed
     $this->form['filter']['agency'] = array(
       '#markup' => '<div><strong>' . $this->oge_label .':</strong> ' . $this->oge_name_code . '</div>',
     );
-    $this->formatted_search_criteria[$this->oge_label] = $this->oge_name;
+    $this->formatted_search_criteria[$this->oge_label] = $this->oge_name_code;
 
     //Department
     if ($this->values['dept'] && $this->values['dept'] != 'Select Department' && $this->values['dept'] != '0') {
