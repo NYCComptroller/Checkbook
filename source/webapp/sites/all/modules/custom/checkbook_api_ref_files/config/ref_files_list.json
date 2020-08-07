@@ -243,7 +243,7 @@
   },
   "nycha_revenue_funding_source_code_list": {
     "database": "checkbook_nycha",
-    "sql": "SELECT DISTINCT funding_source_code, funding_source_description FROM public.ref_funding_source where funding_source_code IS NOT NULL and funding_source_description IS NOT NULL AND funding_source_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT funding_source_description ~ '^'''",
+    "sql": "SELECT DISTINCT funding_source_code, display_funding_source_descr FROM public.ref_funding_source where funding_source_code IS NOT NULL and display_funding_source_descr IS NOT NULL AND display_funding_source_descr NOT IN (' ','<Unknown>','xxxxxxx') AND NOT display_funding_source_descr ~ '^'''",
     "force_quote": [
       "funding_source_code"
     ]
