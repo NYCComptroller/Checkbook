@@ -10,7 +10,7 @@
             ma.modified_budget_amount_py_2 AS previous_1_amount,
             ma.modified_budget_amount_py_3 AS previous_2_amount,
             a.funding_source_code,
-            b.funding_source_description AS funding_source_description,
+            b.display_funding_source_descr AS funding_source_description,
             b.funding_source_id,
             CASE SUM(COALESCE(ma.modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_1,0)))/SUM(COALESCE(ma.modified_budget_amount_py_1,0)))*100 END AS percent_difference1,
             CASE SUM(COALESCE(ma.modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_2,0)))/SUM(COALESCE(ma.modified_budget_amount_py_2,0)))*100 END AS percent_difference2,
@@ -29,7 +29,7 @@
           ) ma  ON ma.funding_source_id = a.funding_source_id
           JOIN ref_funding_source b ON a.funding_source_id = b.funding_source_id
           WHERE (a.filter_type = 'H' AND a.is_active = 1)
-          GROUP BY a.budget_fiscal_year_id, a.funding_source_code, b.funding_source_description, b.funding_source_id, ma.modified_budget_amount,
+          GROUP BY a.budget_fiscal_year_id, a.funding_source_code, b.display_funding_source_descr, b.funding_source_id, ma.modified_budget_amount,
             ma.modified_budget_amount_py_1, ma.modified_budget_amount_py_2, ma.modified_budget_amount_py_3
       "
     }

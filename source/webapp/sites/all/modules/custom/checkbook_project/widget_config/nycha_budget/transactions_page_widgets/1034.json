@@ -47,7 +47,7 @@
     "budget_name",
     "encumbrance_amount",
     "actual_amount",
-    "funding_source_description",
+    "display_funding_source_descr",
     "responsibility_center_description",
     "program_phase_description",
     "gl_project_description"
@@ -91,7 +91,7 @@
       "expression": "_get_tooltip_markup($row['responsibility_center_description'],36)"
     },
     "funding_source_formatted":{
-      "expression": "_get_tooltip_markup($row['funding_source_description'],36)"
+      "expression": "_get_tooltip_markup($row['display_funding_source_descr'],36)"
     },
     "program_formatted":{
       "expression": "_get_tooltip_markup($row['program_phase_description'],36)"
@@ -153,7 +153,7 @@
     {
       "labelAlias": "funding_source",
       "column": "funding_source_formatted",
-      "sortSourceColumn": "funding_source_description"
+      "sortSourceColumn": "display_funding_source_descr"
     },
     {
       "labelAlias": "responsibility_center",
