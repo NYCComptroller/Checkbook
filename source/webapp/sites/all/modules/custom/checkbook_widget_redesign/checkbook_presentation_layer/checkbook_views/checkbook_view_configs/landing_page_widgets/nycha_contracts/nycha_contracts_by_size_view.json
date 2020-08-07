@@ -2,7 +2,7 @@
   "serviceName":"NychaContractsWidgetService",
   "dataFunc":"GetContractsBySize",
   "table_title":"Contracts by Size",
-  "countFunc":"GetCountContracts",
+  "countFunc":"GetCountNychaContracts",
   "headerSubTitle":"Contracts",
   "footerUrl":"_widget_controller_footer_url($node).NychaContractsUrlService::TypeUrl('SZ')",
   "table_columns":[

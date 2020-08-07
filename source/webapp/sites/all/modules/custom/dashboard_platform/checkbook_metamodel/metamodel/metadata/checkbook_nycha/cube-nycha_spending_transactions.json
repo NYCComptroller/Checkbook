@@ -144,11 +144,11 @@
           ]
         },
         {
-          "name": "funding_source_description",
+          "name": "display_funding_source_descr",
           "levels": [
             {
-              "name": "funding_source_description",
-              "sourceColumnName": "funding_source_description"
+              "name": "display_funding_source_descr",
+              "sourceColumnName": "display_funding_source_descr"
             }
           ]
         },

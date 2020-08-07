@@ -55,7 +55,7 @@ switch($solr_datasource){
       $payroll_results['hourly_rate'] = $payroll_results['daily_wage'];
     }
     $linkable_fields = [
-      "agency_name" => "/payroll/agency_landing/yeartype/C/year/" . $fiscal_year_id . "/agency/" . $agency_id,
+      "agency_name" => "/payroll/agency_landing/yeartype/". $yeartype ."/year/" . $fiscal_year_id . "/agency/" . $agency_id,
     ];
     $agencyLandingUrl = "";
     $dataSourceUrl = "";

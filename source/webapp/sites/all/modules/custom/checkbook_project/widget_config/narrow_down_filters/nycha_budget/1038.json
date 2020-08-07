@@ -6,14 +6,14 @@
   "maxSelect":5,
   "showAllRecords":true,
   "allowFacetDeselect":true,
-  "columns":["funding_source_id.funding_source_id","funding_source_description.funding_source_description","txcount"],
+  "columns":["funding_source_id.funding_source_id","display_funding_source_descr.display_funding_source_descr","txcount"],
   "orderBy":"-txcount",
   "facetPager":true,
   "filterName":"Funding source ",
   "urlParameterName":"fundsrc",
   "autocompleteParamName":"fundsrc_auto",
   "autocompleteID":"fFundingId",
-  "autocompleteField":"funding_source_description",
+  "autocompleteField":"display_funding_source_descr",
   "adjustParameters":"
     if(function_exists('_checkbook_project_applyParameterFilters')){
       $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);

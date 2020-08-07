@@ -40,7 +40,7 @@
                       "recognized": "revenue_amount",
                       "budget_type": "budget_type",
                       "budget_name": "budget_name",
-                      "funding_source": "funding_source_description",
+                      "funding_source": "display_funding_source_descr",
                       "responsibility_center": "responsibility_center_description",
                       "program": "program_phase_description",
                       "project": "gl_project_description",
@@ -52,7 +52,7 @@
                       "funding_source","modified", "program", "project", "recognized", "remaining", "responsibility_center" ,"revenue_category", "revenue_class"]
                 },
                 "csv":{
-                    "elementsColumn":{                        
+                    "elementsColumn":{
                       "Budget Fiscal Year": "budget_fiscal_year",
                       "Adopted": "adopted_amount",
                       "Expense Category": "expenditure_type_description",
@@ -61,7 +61,7 @@
                       "Recognized": "revenue_amount",
                       "Budget Type": "budget_type",
                       "Budget Name": "budget_name",
-                      "Funding Source": "funding_source_description",
+                      "Funding Source": "display_funding_source_descr",
                       "Responsibility Center": "responsibility_center_description",
                       "Program": "program_phase_description",
                       "Project": "gl_project_description",
