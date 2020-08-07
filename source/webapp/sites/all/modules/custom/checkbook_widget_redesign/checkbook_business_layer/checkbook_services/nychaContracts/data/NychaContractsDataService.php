@@ -142,7 +142,7 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param $parameters
      * @return DataService
      */
-    function GetCountContracts($parameters){
+    function GetCountNychaContracts($parameters){
         return $this->configureNycha(__FUNCTION__,$parameters);
     }
 
