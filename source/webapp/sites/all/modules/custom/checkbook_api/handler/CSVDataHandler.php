@@ -198,6 +198,31 @@ class CSVDataHandler extends AbstractDataHandler {
                       $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
                     }
                     break;
+              case "release_number":
+              case "line_number":
+              case "item_description":
+              case "item_qty_ordered":
+              case "shipment_number":
+              case "release_approved_date":
+              case "release_line_total_amount":
+              case "release_line_original_amount":
+              case "release_line_spend_to_date":
+                $new_column = "CASE WHEN  lower(record_type) = 'agreement' OR lower(record_type) ='release' THEN CAST('-' AS Text) ELSE CAST (". $column . " AS TEXT) END";
+                $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
+                break;
+              case "number_of_releases":
+              case "agreement_total_amount":
+              case "agreement_original_amount":
+              case "agreement_spend_to_date":
+              $new_column = "CASE WHEN  lower(record_type) = 'release' OR lower(record_type) ='line' THEN CAST('-' AS Text) ELSE CAST( ". $column . " AS TEXT) END" ;
+              $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
+              break;
+              case "release_total_amount":
+              case "release_original_amount":
+              case "release_spend_to_date":
+              $new_column = "CASE WHEN  lower(record_type) = 'agreement' OR lower(record_type ='line') THEN CAST('-' AS Text) ELSE CAST (". $column . " AS TEXT) END";
+              $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
+              break;
                 default:
                     $new_select_part .= $alias . $column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
                     break;
