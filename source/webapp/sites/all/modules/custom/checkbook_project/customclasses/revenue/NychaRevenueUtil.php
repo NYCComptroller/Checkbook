@@ -63,7 +63,7 @@ class NychaRevenueUtil{
         break;
       case 'rec_funding_source':
         $reqParam = RequestUtil::getRequestKeyValueFromURL('fundsrc', $bottomURL);
-        $title .= _checkbook_project_get_name_for_argument("rev_funding_source_id", $reqParam);
+        $title .= _checkbook_project_get_name_for_argument("funding_source_id", $reqParam);
         break;
       case 'rec_program':
         $reqParam = RequestUtil::getRequestKeyValueFromURL('program', $bottomURL);

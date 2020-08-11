@@ -19,7 +19,7 @@
     ]
   },
   "mwbe_code_list": {
-    "sql": "SELECT DISTINCT minority_type_id, minority_type_name FROM ref_minority_type ORDER BY minority_type_id"
+      "sql": "SELECT distinct '2~3~4~5~9' as minority_type_id , 'Total M/WBE' as minority_type_name FROM ref_minority_type union SELECT distinct cast(minority_type_id as text) , CASE WHEN minority_type_id = 2 THEN 'Black American' WHEN minority_type_id = 3 THEN 'Hispanic American' WHEN minority_type_id = 4 THEN 'Asian American' WHEN minority_type_id = 5 THEN 'Asian American' WHEN minority_type_id = 7 THEN 'Non-M/WBE' WHEN minority_type_id = 9 THEN 'Women' WHEN minority_type_id = 11 THEN 'Individuals & Others' END AS minority_type_name FROM ref_minority_type where minority_type_id in (2,3,4,5,7,9,11)"
   },
   "industry_code_list": {
     "sql": "SELECT DISTINCT t1.industry_type_id, t1.industry_type_name FROM ref_industry_type t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.industry_type_id = t1.industry_type_id ) ORDER BY t1.industry_type_id"
@@ -194,7 +194,7 @@
   },
   "nycha_budget_funding_source_code_list": {
     "database": "checkbook_nycha",
-    "sql": "SELECT DISTINCT funding_source_code, funding_source_description FROM public.ref_funding_source where funding_source_code IS NOT NULL and funding_source_description IS NOT NULL AND funding_source_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT funding_source_description ~ '^'''",
+    "sql": "SELECT DISTINCT funding_source_code, display_funding_source_descr FROM public.ref_funding_source where funding_source_code IS NOT NULL and display_funding_source_descr IS NOT NULL AND display_funding_source_descr NOT IN (' ','<Unknown>','xxxxxxx') AND NOT display_funding_source_descr ~ '^'''",
     "force_quote": [
       "funding_source_code"
     ]
@@ -243,7 +243,7 @@
   },
   "nycha_revenue_funding_source_code_list": {
     "database": "checkbook_nycha",
-    "sql": "SELECT DISTINCT funding_source_code, funding_source_description FROM public.ref_funding_source where funding_source_code IS NOT NULL and funding_source_description IS NOT NULL AND funding_source_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT funding_source_description ~ '^'''",
+    "sql": "SELECT DISTINCT funding_source_code, display_funding_source_descr FROM public.ref_funding_source where funding_source_code IS NOT NULL and display_funding_source_descr IS NOT NULL AND display_funding_source_descr NOT IN (' ','<Unknown>','xxxxxxx') AND NOT display_funding_source_descr ~ '^'''",
     "force_quote": [
       "funding_source_code"
     ]

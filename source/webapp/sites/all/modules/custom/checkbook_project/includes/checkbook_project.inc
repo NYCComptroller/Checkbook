@@ -455,7 +455,7 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
       $revcat_codes = _checkbook_project_querydataset($data_source . ':funding_class', array('funding_class_code', 'funding_class_name'), array($keyword => $id));
       return ucwords(strtolower($revcat_codes[0]['funding_class_name']));
       break;
-    case "funding_source_id":
+    /*case "funding_source_id":
       if ($data_source == Datasource::NYCHA) {
         $fundsrc_ids = _checkbook_project_querydataset($data_source . ':budget', array('funding_source_id', 'funding_source_description'), array($keyword => $id));
         return ucwords(strtolower($fundsrc_ids[0]['funding_source_description']));
@@ -463,11 +463,15 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
         $fundsrc_ids = _checkbook_project_querydataset($data_source . ':funding_source', array('funding_source_id', 'display_funding_source_descr'), array($keyword => $id));
         return ucwords(strtolower($fundsrc_ids[0]['display_funding_source_descr']));
       }
-      break;
-    case "rev_funding_source_id":
+      break;*/
+    /*case "rev_funding_source_id":
         $keyword ="funding_source_id";
         $fundsrc_ids = _checkbook_project_querydataset($data_source . ':revenue', array('funding_source_id', 'funding_source_description'), array($keyword => $id));
         return ucwords(strtolower($fundsrc_ids[0]['funding_source_description']));
+      break;*/
+    case "funding_source_id":
+        $fundsrc_ids = _checkbook_project_querydataset($data_source . ':funding_source', array('funding_source_id', 'display_funding_source_descr'), array($keyword => $id));
+        return ucwords(strtolower($fundsrc_ids[0]['display_funding_source_descr']));
       break;
     case "responsibility_center_id":
       $respcenter_ids = _checkbook_project_querydataset($data_source . ':resp_centers', array('responsibility_center_id', 'responsibility_center_description'), array($keyword => $id));

@@ -32,7 +32,7 @@
                 {"field_name":"contract_id","column":"column-left"},
                 {"field_name":"commodity_line","column":"column-left"},
                 {"field_name":"entity_contract_number","column":"column-left"},
-                {"field_name":"budget_name","column":"column-left"},
+                {"field_name":"budget_name_text","column":"column-left"},
                 {"field_name":"current_contract_amount","column":"column-left"},
                 {"field_name":"received_date","column":"column-left","disabled":true},
                 {"field_name":"category","column":"column-right"},

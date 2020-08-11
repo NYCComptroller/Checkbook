@@ -34,7 +34,7 @@ class SpendingFeedNycha extends SpendingFeed
 
     //OGE Display
     $this->form['filter']['agency'] = array('#markup' => '<div><strong>' . $this->oge_label .':</strong> ' . $this->oge_name_code . '</div>',);
-    $this->formatted_search_criteria[$this->oge_label] = $this->oge_name;
+    $this->formatted_search_criteria[$this->oge_label] = $this->oge_name_code;
 
     //Expense Category
     if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category' && $this->values['expense_category'] != '0') {
@@ -69,25 +69,25 @@ class SpendingFeedNycha extends SpendingFeed
     if ($this->values['funding_source'] && $this->values['funding_source'] != 'Select Funding Source') {
       $funding_source = $this->values['funding_source'];
       $this->form['filter']['funding_source'] = array('#markup' => '<div><strong>Funding Source:</strong> ' . $funding_source . '</div>');
-      $this->user_criteria['funding_source'] = $funding_source;
-      $this->formatted_search_criteria['funding_source'] = $funding_source;
+      $this->user_criteria['Funding Source'] = $funding_source;
+      $this->formatted_search_criteria['Funding Source'] = $funding_source;
     }
 
     //Responsibility Center
     if ($this->values['resp_center'] && $this->values['resp_center'] != 'Select Responsibility Center') {
       $resp_center = $this->values['resp_center'];
       $this->form['filter']['resp_center'] = array('#markup' => '<div><strong>Responsibility Center:</strong> ' . $resp_center . '</div>');
-      $this->user_criteria['resp_center'] = $resp_center;
-      $this->formatted_search_criteria['resp_center'] = $resp_center;
+      $this->user_criteria['Responsibility Center'] = $resp_center;
+      $this->formatted_search_criteria['Responsibility Center'] = $resp_center;
     }
 
     //Vendor
     if ($this->values['payee_name']) {
       $this->form['filter']['payee_name'] = array(
-        '#markup' => '<div><strong>Payee Name:</strong> ' . $this->values['payee_name'] . '</div>',
+        '#markup' => '<div><strong>Vendor:</strong> ' . $this->values['payee_name'] . '</div>',
       );
-      $this->user_criteria['Payee Name'] = $this->values['payee_name'];
-      $this->formatted_search_criteria['Payee Name'] = $this->values['payee_name'];
+      $this->user_criteria['Vendor'] = $this->values['payee_name'];
+      $this->formatted_search_criteria['Vendor'] = $this->values['payee_name'];
     }
 
     //Check Amount
@@ -138,8 +138,8 @@ class SpendingFeedNycha extends SpendingFeed
     if ($this->values['purchase_order_type']) {
       $po_type = trim($this->values['purchase_order_type']);
       $this->form['filter']['purchase_order_type'] = array('#markup' => '<div><strong>Purchase Order Type:</strong> ' . $po_type . '</div>');
-      $this->user_criteria['purchase_order_type'] = $po_type;
-      $this->formatted_search_criteria['purchase_order_type'] = $po_type;
+      $this->user_criteria['Purchase Order Type'] = $po_type;
+      $this->formatted_search_criteria['Purchase Order Type'] = $po_type;
     }
 
     //Contract ID

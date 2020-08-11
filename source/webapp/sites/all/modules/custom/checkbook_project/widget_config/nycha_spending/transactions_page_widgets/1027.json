@@ -17,7 +17,7 @@
     {"labelAlias":"spending_category","column":"display_spending_category_name"},
     {"labelAlias":"industry_name","column":"display_industry_type_name"},
     //{"labelAlias":"dept_name","column":"department_name"},
-    {"labelAlias":"funding_source","column":"funding_source_description"},
+    {"labelAlias":"funding_source","column":"display_funding_source_descr"},
     {"labelAlias":"responsibility_center", "column":"responsibility_center_description"},
     {"labelAlias":"expense_category","column":"expenditure_type_description"},
     {"labelAlias":"program", "column":"program_phase_description"},
@@ -125,13 +125,13 @@
       "
     },
     {
-      "column":"funding_source_description",
-      "sourceColumn":"funding_source_description",
+      "column":"display_funding_source_descr",
+      "sourceColumn":"display_funding_source_descr",
       "sql":"
       CASE
-      WHEN funding_source_description IS NULL THEN '-'
-      ELSE funding_source_description
-      END AS funding_source_description
+      WHEN display_funding_source_descr IS NULL THEN '-'
+      ELSE display_funding_source_descr
+      END AS display_funding_source_descr
       "
     },
     {

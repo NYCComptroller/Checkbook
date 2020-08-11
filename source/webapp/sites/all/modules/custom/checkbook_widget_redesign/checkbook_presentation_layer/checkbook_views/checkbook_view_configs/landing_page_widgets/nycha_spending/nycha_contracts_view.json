@@ -1,7 +1,7 @@
 {
   "serviceName":"NychaSpendingWidgetService",
   "dataFunc":"GetNychaSpendingByContracts",
-  "countFunc":"GetCountContracts",
+  "countFunc":"GetCountNychaContracts",
   "headerTitle":"Contracts",
   "headerSubTitle":"Contracts",
   "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_contracts'",
