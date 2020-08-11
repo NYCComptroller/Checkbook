@@ -174,7 +174,7 @@ class XMLDataHandler extends AbstractDataHandler
         $select_part = substr($query,0,$end);
         $where_part = substr($query,$end,strlen($query)-1);
         $select_part = str_replace("SELECT", "", $select_part);
-        $sql_parts = explode(",", $select_part);
+        $sql_parts = explode(",\n", $select_part);
 
         $new_select_part = "'<".$rowParentElement.">'";
         foreach($sql_parts as $sql_part) {
