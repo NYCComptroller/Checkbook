@@ -151,8 +151,12 @@ class XMLDataHandler extends AbstractDataHandler
      */
     function getJobCommand($query) {
         global $conf;
-        $criteria = $this->requestSearchCriteria->getCriteria();
-
+        //Adjust query if applicable (adjustSQL functions have $sql_query as parameter)
+        if (isset($this->requestDataSet->adjustSql)) {
+          $sql_query = $query;
+          eval($this->requestDataSet->adjustSql);
+          $query = $sql_query;
+        }
         //map tags and build sql
         $rootElement = $this->requestDataSet->displayConfiguration->xml->rootElement;
         $rowParentElement = $this->requestDataSet->displayConfiguration->xml->rowParentElement;
@@ -178,67 +182,31 @@ class XMLDataHandler extends AbstractDataHandler
             $column = $sql_part;
             $alias = "";
 
-            //Remove "AS"
-            if (strpos($sql_part,"AS") !== false) {
-                $pos = strpos($column, " AS");
-                $sql_part = substr($sql_part,0,$pos);
-            }
-            //get only column
-            if (strpos($sql_part,".") !== false) {
-                $select_column_parts = explode('.', trim($sql_part));
-                $alias = $select_column_parts[0] . '.';
-                $column = $select_column_parts[1];
-            }
+          //Remove "AS"
+          $selectColumn = NULL;
+          if (strpos($sql_part,"AS") !== false) {
+            $pos = strrpos($column, " AS");
+            //Get Column name from derived columns
+            $selectColumn = trim(substr($sql_part, $pos + strlen(" AS")));
+            $sql_part = substr($sql_part,0,$pos);
+          }
 
-            //Handle derived columns
-            $tag = $columnMappings[$column];
-            $new_select_part .= "\n||'<".$tag.">' || ";
-            switch($column) {
-                case "prime_vendor_name":
-                    $new_select_part .=  "CASE WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " IS NULL THEN 'N/A' ELSE " . $alias . $column . " END";
-                    break;
-                case "minority_type_name":
-                    $new_select_part .=  "CASE \n";
-                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 2 THEN 'Black American' \n";
-                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 3 THEN 'Hispanic American' \n";
-                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 7 THEN 'Non-M/WBE' \n";
-                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 9 THEN 'Women' \n";
-                    $new_select_part .= "WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " = 11 THEN 'Individuals and Others' \n";
-                    $new_select_part .= "ELSE 'Asian American' END";
-                    break;
-                case "vendor_type":
-                    $new_select_part .= "CASE WHEN " . "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')" . " ~* 's' THEN 'Yes' ELSE 'No' END";
-                    break;
-                case "amount_basis_id":
-                $new_select_part .=  "CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END";
-                break;
-                case "salaried_amount":
-                  $new_select_part .= "CASE WHEN  amount_basis_id = 1 THEN CAST(salaried_amount AS VARCHAR) ELSE CAST('-' AS VARCHAR) END";
-                break;
-                case "non_salaried_amount":
-                  if($this->requestDataSet->data_source == Datasource::NYCHA) {
-                    $new_select_part .= "CASE WHEN amount_basis_id = 2  THEN CAST(non_salaried_amount AS VARCHAR) ELSE CAST('-' AS VARCHAR) END";
-                  }
-                  else{
-                    $new_select_part .= "CASE WHEN amount_basis_id != 1  THEN CAST(non_salaried_amount AS VARCHAR) ELSE CAST('-' AS VARCHAR) END";
-                  }
-                break;
-                case "hourly_rate":
-                  if($this->requestDataSet->data_source == Datasource::NYCHA) {
-                    $new_select_part .= "CASE WHEN amount_basis_id = 3  THEN CAST(non_salaried_amount AS VARCHAR) ELSE CAST('-' AS VARCHAR) END";
-                  }
-                break;
-                case "release_approved_year":
-                    if($criteria['global']['type_of_data'] == 'Contracts_NYCHA'){
-                      $new_select_part .= $criteria['value']['fiscal_year'];
-                    }
-                    break;
-                default:
-                    $new_select_part .= "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')";
-                    break;
-            }
-            $new_select_part .= " || '</".$tag.">'";
+          //Get only column
+          if (strpos($sql_part,".") !== false) {
+            $select_column_parts = explode('.', trim($sql_part));
+            $alias = $select_column_parts[0] . '.';
+            $column = $select_column_parts[1];
+          }else{
+            $column = $sql_part;
+          }
+
+          $data_set_column = isset($selectColumn) ? $selectColumn : $column;
+          $tag = $columnMappings[$data_set_column];
+          $new_select_part .= "\n||'<".$tag.">' || ";
+          $new_select_part .= "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')";
+          $new_select_part .= " || '</".$tag.">'";
         }
+
         $new_select_part .= "||'</".$rowParentElement.">'";
         $new_select_part = "SELECT ".ltrim($new_select_part,"\n||")."\n";
         $query = $new_select_part;
