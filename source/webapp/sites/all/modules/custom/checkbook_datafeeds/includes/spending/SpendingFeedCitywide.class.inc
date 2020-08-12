@@ -75,7 +75,7 @@ class SpendingFeedCitywide extends SpendingFeed
       preg_match("/.*?(\\[.*?])/is", $this->values['industry'], $matches);
       $industry_type_name = str_replace($matches[1], "", $matches[0]);
       $industry_type_id = trim($matches[1], '[ ]');
-      $this->form['filter']['industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type_name . '</div>');
+      $this->form['filter']['industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $this->values['industry'] . '</div>');
       $this->user_criteria['Industry'] = $industry_type_id;
       $this->formatted_search_criteria['Industry'] = $industry_type_name;
     }
