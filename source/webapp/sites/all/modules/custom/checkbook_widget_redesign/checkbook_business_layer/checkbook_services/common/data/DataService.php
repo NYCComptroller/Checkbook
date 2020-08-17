@@ -89,7 +89,7 @@ abstract class DataService implements IDataService {
     public function getByDatasetRowCount($parameters = null) {
         $parameters = isset($parameters) ? $parameters : $this->parameters;
         $fnData = $this->fnData;
-        LogHelper::log_info("Get By RecordCount: ".$fnData);log_error($parameters);
+        LogHelper::log_info("Get By RecordCount: ".$fnData);
         $dataSource = Datasource::getCurrent();
         $cacheKey = 'get_by_record_count_' . $dataSource . '_' .md5(serialize([$parameters, $fnData]));
         if ($data = _checkbook_dmemcache_get($cacheKey)) {

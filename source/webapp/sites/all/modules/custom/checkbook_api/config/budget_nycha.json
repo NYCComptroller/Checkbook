@@ -34,7 +34,7 @@
                     "committed": "committed",
                     "remaining": "funds_available",
                     "expense_category": "expenditure_type_description",
-                    "funding_source": "funding_source_description",
+                    "funding_source": "display_funding_source_descr",
                     "responsibility_center": "responsibility_center_description",
                     "program": "program_phase_description",
                     "project": "gl_project_description"
@@ -57,7 +57,7 @@
                     "Committed": "committed",
                     "Remaining": "funds_available",
                     "Expense Category": "expenditure_type_description",
-                    "Funding Source": "funding_source_description",
+                    "Funding Source": "display_funding_source_descr",
                     "Responsibility Center": "responsibility_center_description",
                     "Program": "program_phase_description",
                     "Project": "gl_project_description"
