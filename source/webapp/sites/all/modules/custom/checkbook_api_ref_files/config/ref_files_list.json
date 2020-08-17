@@ -19,7 +19,7 @@
     ]
   },
   "mwbe_code_list": {
-      "sql": "SELECT distinct '2~3~4~5~9' as minority_type_id , 'Total M/WBE' as minority_type_name FROM ref_minority_type union SELECT distinct cast(minority_type_id as text) , CASE WHEN minority_type_id = 2 THEN 'Black American' WHEN minority_type_id = 3 THEN 'Hispanic American' WHEN minority_type_id = 4 THEN 'Asian American' WHEN minority_type_id = 5 THEN 'Asian American' WHEN minority_type_id = 7 THEN 'Non-M/WBE' WHEN minority_type_id = 9 THEN 'Women' WHEN minority_type_id = 11 THEN 'Individuals & Others' END AS minority_type_name FROM ref_minority_type where minority_type_id in (2,3,4,5,7,9,11)"
+      "sql": "select minority_type_id,minority_type_name from (select minority_type_id::text,CASE WHEN minority_type_id = 2 THEN 'Black American' WHEN minority_type_id = 3 THEN 'Hispanic American' WHEN minority_type_id = 4 THEN 'Asian American' WHEN minority_type_id = 5 THEN 'Asian American' WHEN minority_type_id = 7 THEN 'Non-M/WBE' WHEN minority_type_id = 9 THEN 'Women' WHEN minority_type_id = 11 THEN 'Individuals & Others' END AS minority_type_name FROM ref_minority_type where minority_type_id in (2,3,4,5,7,9,11) union SELECT  '2~3~4~5~9' as minority_type_id , 'Total M/WBE' as minority_type_name )A order by idx(array['2','3','4','5','7','9','11','2~3~4~5~9'],minority_type_id)"
   },
   "industry_code_list": {
     "sql": "SELECT DISTINCT t1.industry_type_id, t1.industry_type_name FROM ref_industry_type t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.industry_type_id = t1.industry_type_id ) ORDER BY t1.industry_type_id"
