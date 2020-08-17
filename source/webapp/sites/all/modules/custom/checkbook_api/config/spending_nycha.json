@@ -106,7 +106,8 @@
             "Project": "gl_project_description"
           }
         }
-      }
+      },
+      "adjustSql":"if(function_exists('checkbook_api_adjustNYCHASpendingSql')){checkbook_api_adjustNYCHASpendingSql($sql_query);}"
     },
     "requestParameters": {
       "other_government_entities_code": {"valueType": "value", "dataType": "text", "maxLength": "3"},
