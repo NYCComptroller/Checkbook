@@ -1407,7 +1407,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         preg_match("/.*?(\\[.*?\\])/is", $values['industry'], $matches);
         $industry_type_name = str_replace($matches[1], "", $matches[0]);
         $industry = trim($matches[1], '[ ]');
-        $form['filter']['industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $industry_type_name . '</div>');
+        $form['filter']['industry'] = array('#markup' => '<div><strong>Industry:</strong> ' . $values['industry'] . '</div>');
         $user_criteria['Industry'] = $industry;
         $formatted_search_criteria['Industry'] = $industry_type_name;
       }

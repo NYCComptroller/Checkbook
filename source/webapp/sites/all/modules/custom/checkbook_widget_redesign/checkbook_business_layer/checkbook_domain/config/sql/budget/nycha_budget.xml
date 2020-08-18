@@ -241,13 +241,15 @@
     <param name="project" type="string" />
     <sql>
       SELECT
-      funding_source_description AS funding_source_description,
-      funding_source_id,
+      a.funding_source_id,
+      b.display_funding_source_descr AS funding_source_description,
       SUM(adopted_budget) AS adopted_budget,
       SUM(modified_budget) AS modified_budget,
       SUM(committed) AS committed,
       SUM(funds_available) AS funds_available
-      FROM budget
+      FROM budget a
+      JOIN ref_funding_source b
+      ON a.funding_source_id = b.funding_source_id
       <where>
         <exp op="AND">
           <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
@@ -257,7 +259,7 @@
           <exp op="=" dbField="gl_project_id" paramName="project" />
         </exp>
       </where>
-      GROUP BY funding_source_description, funding_source_id
+      GROUP BY b.display_funding_source_descr, a.funding_source_id
     </sql>
   </statement>
 
@@ -269,12 +271,14 @@
     <param name="project" type="string" />
     <sql>
       SELECT
-      funding_source_description AS funding_source_description,
-      funding_source_id,
+      a.funding_source_id,
+      b.display_funding_source_descr AS funding_source_description,
       SUM(committed) AS committed,
       SUM(encumbrance_amount) AS encumbrance_amount,
       SUM(actual_amount) AS actual_amount
-      FROM budget
+      FROM budget a
+      JOIN ref_funding_source b
+      ON a.funding_source_id = b.funding_source_id
       <where>
         <exp op="AND">
           <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
@@ -284,7 +288,7 @@
           <exp op="=" dbField="gl_project_id" paramName="project" />
         </exp>
       </where>
-      GROUP BY funding_source_description, funding_source_id
+      GROUP BY b.display_funding_source_descr, a.funding_source_id
     </sql>
   </statement>
 
@@ -302,7 +306,7 @@
       ma.modified_budget_amount_py_2 AS previous_1_amount,
       ma.modified_budget_amount_py_3 AS previous_2_amount,
       a.funding_source_code,
-      b.funding_source_description AS funding_source_description,
+      b.display_funding_source_descr AS funding_source_description,
       b.funding_source_id,
       CASE SUM(COALESCE(ma.modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_1,0)))/SUM(COALESCE(ma.modified_budget_amount_py_1,0)))*100 END AS percent_difference1,
       CASE SUM(COALESCE(ma.modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_2,0)))/SUM(COALESCE(ma.modified_budget_amount_py_2,0)))*100 END AS percent_difference2,
@@ -342,7 +346,7 @@
           <exp op="=" dbField="a.gl_project_id" paramName="project" />
         </exp>
       </where>
-      GROUP BY a.budget_fiscal_year, a.funding_source_code, b.funding_source_description, b.funding_source_id, ma.modified_budget_amount,
+      GROUP BY a.budget_fiscal_year, a.funding_source_code, b.display_funding_source_descr, b.funding_source_id, ma.modified_budget_amount,
       ma.modified_budget_amount_py_1,
       ma.modified_budget_amount_py_2,
       ma.modified_budget_amount_py_3

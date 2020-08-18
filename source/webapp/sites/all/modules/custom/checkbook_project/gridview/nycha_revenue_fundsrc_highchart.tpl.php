@@ -31,7 +31,7 @@ include_once('export_link.php');
         echo "<tr><th class='text'>" . WidgetUtil::generateLabelMapping("funding_source") . "</th>
         <th class='number'>"  .WidgetUtil::generateLabelMapping("recognized")  .  " </th>
         <th class='number'>" . WidgetUtil::generateLabelMapping("remaining"). "</th>
-        <th>&nbsp;</th>        
+        <th>&nbsp;</th>
         </tr>\n";
     ?>
     </thead>
@@ -41,7 +41,7 @@ include_once('export_link.php');
         if (isset($node->data) && is_array($node->data)) {
             foreach ($node->data as $datarow) {
                 echo "<tr>";
-                   echo '<td>' . $datarow['funding_source_description_funding_source_description'] . '</td>';
+                   echo '<td>' . $datarow['display_funding_source_descr_display_funding_source_descr'] . '</td>';
                    echo '<td>' . $datarow['revenue_recognized_amount'] . '</td>';
                    echo '<td>' . $datarow['revenue_funds_available'] . '</td>';
                    echo "<td>&nbsp;</td>";
@@ -71,15 +71,15 @@ echo eval($node->widgetConfig->gridConfig->footer);
                                 "aTargets": [0],
                                 "mDataProp": function ( source, type, val ) {
                                     if (type == "set") {
-                                        source.funding_source_description_funding_source_description = val;
-                                        source.funding_source_description_funding_source_description = "<div>" + val + "</div>";
+                                        source.display_funding_source_descr_display_funding_source_descr = val;
+                                        source.display_funding_source_descr_display_funding_source_descr = "<div>" + val + "</div>";
                                         return;
                                     }else if (type == "display") {
-                                        return source.funding_source_description_funding_source_description;
+                                        return source.display_funding_source_descr_display_funding_source_descr;
                                     }else if (type == "sort") {
-                                        return source.funding_source_description_funding_source_description;
+                                        return source.display_funding_source_descr_display_funding_source_descr;
                                     }
-                                    return source.funding_source_description_funding_source_description;
+                                    return source.display_funding_source_descr_display_funding_source_descr;
                                 },
                                 "asSorting": [ "desc","asc" ],
                                 "sClass":"text"
