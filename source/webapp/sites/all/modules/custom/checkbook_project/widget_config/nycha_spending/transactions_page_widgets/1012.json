@@ -228,6 +228,7 @@
     {"labelAlias":"responsibility_center","column":"responsibility_center_formatted", "sortSourceColumn":"responsibility_center_description"},
     {"label": "", "column": "", "export": false},
     {"labelAlias":"expense_category","column":"expenditure_type_name_formatted","sortSourceColumn":"expenditure_type_description"},
+    {"label": "", "column": "", "export": false},
     {"labelAlias":"program","column":"program_formatted", "sortSourceColumn":"program_phase_description"},
     {"labelAlias":"project","column":"project_formatted", "sortSourceColumn":"gl_project_description"},
     {"label":"","column":"", "export":false}
@@ -281,7 +282,8 @@
       {"bSortable":false,"sWidth":"10px"},
       {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"10px"},
-      {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"bSortable":false,"sWidth":"10px"},
       {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"2px"}
