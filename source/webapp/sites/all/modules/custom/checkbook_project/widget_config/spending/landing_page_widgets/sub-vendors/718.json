@@ -2,7 +2,7 @@
     "widgetType": "data_tables",
     "widgetSubType":"ajaxSimple",
     "no_results_content":"No Results Found",
-    "defaultParameters":{"type_of_year":"B","spending_category_id":null},
+    "defaultParameters":{"type_of_year":"B"},
     "cleanURLParameters":["year","agency","yeartype","calyear","vendor","subvendor","category","agid","magid","mwbe","industry"],
     "urlParamMap":{
         "year":"year_id",
