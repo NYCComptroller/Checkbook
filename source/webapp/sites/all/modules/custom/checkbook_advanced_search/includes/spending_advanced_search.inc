@@ -79,8 +79,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
   $redirect_url = 'spending/search/transactions';
   //append data source if not default (checkbook)
   $redirect_url .= ($data_source != DataSource::CITYWIDE) ? '/datasource/' . $data_source : "";
-  //TODO: Enable the following line once EDC is confirmed to have only one agency
-  //$redirect_url .= ($data_source = Datasource::OGE) ? '/agency/'. Datasource::getEDCId() : "";
+  $redirect_url .= ($data_source = Datasource::OGE) ? '/agency/'. Datasource::getEDCId() : "";
 
   if (!empty($spending_mwbe_category)) {
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_mwbe_category, 'mwbe');
