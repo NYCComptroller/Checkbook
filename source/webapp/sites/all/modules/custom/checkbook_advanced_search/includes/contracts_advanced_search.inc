@@ -212,6 +212,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 
   //append data source if not default (checkbook)
   if($data_source != DataSource::CITYWIDE) $redirect_url .= '/datasource/' . $data_source;
+  $redirect_url .= ($data_source = Datasource::OGE) ? '/agency/'. Datasource::getEDCId() : "";
 
   $redirect_url .= _checkbook_advanced_search_generate_redirect_url($registration_date_range_array, 'regdate', TRUE);
 
