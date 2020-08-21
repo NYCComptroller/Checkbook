@@ -60,7 +60,6 @@ $summaryContent =  <<<EOD
 <div class="contract-details-heading">
 	<div class="contract-id">
 		<h2 class="contract-title">{$title}</h2>
-		<div class="spending-tx-subtitle"><b>{$label}</b>: {$value}<br><b>{$mwbe_category_label}</b>: {$mwbe_category} {$associated_prime_vendor}</div>
 	</div>
 	<div class="dollar-amounts">
 	    <div class="total-spending-contract-amount">
@@ -80,6 +79,16 @@ $summaryContent =  <<<EOD
             <div class="amount-title">{$no_of_subcontracts}</div>
         </div>
     </div>
+</div>
+<div class="contract-information">
+	<ul>
+	    <li class="spendingtxsubtitle">
+	        <span class="gi-list-item"><b>{$label}</b>:</span> {$value}
+	    </li>
+		<li class="contract-purpose">
+			<span class="gi-list-item"><b>{$mwbe_category_label}</b>:</span> {$mwbe_category} {$associated_prime_vendor}
+        </li>
+	</ul>
 </div>
 EOD;
 
