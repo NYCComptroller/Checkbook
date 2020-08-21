@@ -376,21 +376,20 @@ function hyphen_data_export_results($result,$domain){
           }
           break;
         case "nycha_spending":
-          $hyphen_fields=[];
-          array_push($hyphen_fields,"agreement_type_name", "contract_number", "release_number", "contract_purpose");
           $amount_hyphen_fields = array("check_invoice_net_amount", "distribution_line_number", "invoice_line_number");
           if ($headers[$key] == 'document_id') {
             if ($field == null) {
               $field = "N/A";
             }
           }
-          if (($headers[$key] == 'spending_category')) {
-            if (($field == 'Other') || ($field == 'Section 8')) {
-              $category_hyphen = array("industry_type_name");
+          if ($headers[$key] == 'spending_category') {
+            if ($field == 'Other') {
+              $hyphen_fields = array("agreement_type_name", "contract_number", "release_number", "contract_purpose", "industry_type_name", "department_name");
+            } elseif ($field == 'Section 8') {
+              $hyphen_fields = array("agreement_type_name", "contract_number", "release_number", "contract_purpose", "industry_type_name", "department_name");
             } elseif ($field == 'Payroll') {
-              $category_hyphen = array( "invoice_number", "contract_spent_amount","industry_type_name", "funding_source_name", "responsibility_center_name", "program_phase_name", "gl_project_name");
-            } else{
-              $hyphen_fields = [];
+              $hyphen_fields = array("agreement_type_name", "contract_number", "release_number", "invoice_number", "contract_spent_amount", "contract_purpose",
+                "industry_type_name", "funding_source_name", "responsibility_center_name", "program_phase_name", "gl_project_name");
             }
           }
           break;
@@ -419,12 +418,7 @@ function hyphen_data_export_results($result,$domain){
       }
 
       if(isset($hyphen_fields) && in_array($headers[$key], $hyphen_fields)) {
-        if ($field == null) {
-          $field = '-';
-        }
-      }
-      if(isset($category_hyphen) && in_array($headers[$key], $category_hyphen)) {
-        if ($field == null) {
+        if ($field == null || $field <= 0 ) {
           $field = '-';
         }
       }
