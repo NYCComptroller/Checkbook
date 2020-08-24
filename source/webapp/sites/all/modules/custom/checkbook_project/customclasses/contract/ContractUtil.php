@@ -793,7 +793,9 @@ namespace { //global
             $data_controller_instance = data_controller_get_operator_factory_instance();
             $dashboard = RequestUtilities::get('dashboard');
             $smnid = RequestUtilities::get('smnid');
-            $vendor_types = isset($parameters['vendor_type']) ? $parameters['vendor_type'] :NULL;
+
+            //Display contracts which are active from 2011
+            $parameters['is_active_eft_2011'] = 1;
 
             if(isset($reqYear)){
                 $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
@@ -830,17 +832,6 @@ namespace { //global
             }
             else {
                 $parameters['latest_flag'] = 'Y';
-                //Hide data for contracts, end date is prior 2011
-                //TO DO: Move end fiscal year to Drupal variables
-                $year = _getYearIDFromValue(2011);
-                $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
-                if(self::showSubVendorData()){
-                    $parameters['sub_effective_end_year_id']= $geCondition;
-                  }else if(!isset($dashboard) && !isset($smnid)){
-                    $parameters['effective_end_year_id']= $geCondition;
-                  }else{
-                    $parameters['prime_effective_end_year_id']= $geCondition;
-                  }
                 }
 
             //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code

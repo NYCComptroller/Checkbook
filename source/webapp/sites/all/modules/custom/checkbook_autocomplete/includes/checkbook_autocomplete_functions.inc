@@ -400,33 +400,33 @@ function _checkbook_autocomplete_contracts_budgetname($status, $category, $contr
 function _checkbook_autocomplete_datafeeds_nycha_contracts($solr_field, $purchase_order_type, $responsibility_center, $contract_type, $award_method, $industry, $agency, $year, $data_source)
 {
   $search_term = _get_autocomplete_search_term();
-  $facetquery = "";
+  $facetQuery = "";
   if (!empty($search_term)) {
     if ($purchase_order_type && $purchase_order_type != 'All') {
-      $facetquery .= '&fq=agreement_type_code:' . $purchase_order_type;
+      $facetQuery .= '&fq=agreement_type_code:' . $purchase_order_type;
     }
     if ($responsibility_center) {
-      $facetquery .= '&fq=responsibility_center_code:' . $responsibility_center;
+      $facetQuery .= '&fq=responsibility_center_code:' . $responsibility_center;
     }
     if ($contract_type) {
-      $facetquery .= '&fq=contract_type_code:' . $contract_type;
+      $facetQuery .= '&fq=contract_type_code:' . $contract_type;
     }
     if ($award_method) {
-      $facetquery .= '&fq=award_method_code:' . $award_method;
+      $facetQuery .= '&fq=award_method_code:' . $award_method;
     }
     if ($industry) {
-      $facetquery .= '&fq=industry_type_code:' . $industry;
+      $facetQuery .= '&fq=industry_type_code:' . $industry;
     }
     if ($agency) {
-      $facetquery .= '&fq=agency_code:' . $agency;
+      $facetQuery .= '&fq=agency_code:' . $agency;
     }
     if ($year && $year != 'ALL') {
       $year = ltrim($year, 'FY');
-      $facetquery .= '&(' . $year . ':[*%20TO%20agreement_start_year]%20AND%20' . $year . ':[agreement_end_year%20TO%20*])';
+      $facetQuery .= '&fq=(agreement_start_year:[*%20TO%20'. $year.']%20AND%20agreement_end_year:['.$year .'%20TO%20*])';
     }
 
     $query = "select/?q=" . $solr_field . ":" . $search_term
-        . "&facet.field=" . $solr_field . $facetquery
+        . "&facet.field=" . $solr_field . $facetQuery
         . "&q.op=AND&rows=0&facet=true&facet.mincount=1&facet.limit=10&wt=phps";
 
     //LogHelper::log_debug($query);
