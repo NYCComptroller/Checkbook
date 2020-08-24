@@ -784,7 +784,6 @@ function checkbook_advanced_search_block_view($delta = '')
   switch ($delta) {
     case 'checkbook_advanced_search_form':
       $block['content'] = '<!-- ajax form goes here -->';
-//            $block['content'] = drupal_get_form('checkbook_advanced_search_form');
       break;
   }
   return $block;
