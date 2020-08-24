@@ -250,7 +250,12 @@ function checkbook_api_adjustNYCHAContractsParams(&$data_set, &$parameters, $cri
 function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, $criteria,$datasource = null) {
   $contract_status = $criteria['value']['status'];
   $category = $criteria['value']['category'];
-  $type_of_data = ($datasource == 'checkbook_oge') ? "contracts_oge":"";
+  $type_of_data = ($datasource == Datasource::OGE) ? "contracts_oge":"";
+
+  //Display contracts which are active from 2011
+  if($datasource != Datasource::OGE && $contract_status != 'pending') {
+    $parameters['is_active_eft_2011'] = 1;
+  }
 
     //For Active/Registered Expense Contracts -- CityWide
     if(($type_of_data != "contracts_oge") && ($category == "expense" || $category == "all") && ($contract_status == "active" || $contract_status == "registered")) {
@@ -329,17 +334,6 @@ function checkbook_api_adjustContractParameterFilters(&$data_set, &$parameters, 
                 else {
                     // All years:
                     $parameters['latest_flag'] = 'Y';
-                    //Hide data for contracts, end date is prior 2011
-                    //TO DO: Move end fiscal year to Drupal variables
-                    $year = _getYearIDFromValue(2011);
-                    $ge_condition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($year));
-                      if(strtolower($type_of_data) == 'contracts_oge'){
-                        $parameters['effective_end_year_id'] = $ge_condition;
-                      }
-                      else{
-                        //For Citywide Revenue Category
-                        $parameters['effective_end_year'] = $ge_condition;
-                    }
                 }
                 break;
 
@@ -421,14 +415,9 @@ function checkbook_api_adjust_expense_contracts_params(&$parameters, $criteria, 
                 $parameters['registered_year_id']= array($req_year);
                 break;
         }
-        //unset($parameters['year']);
     }
     else {
         $parameters['latest_flag'] = 'Y';
-        //Hide Active Expense/All contracts, end date is prior 2011
-          $yearId = _getYearIDFromValue(2011);
-          $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($yearId));
-          $parameters['effective_end_year_id'] = $geCondition;
     }
 
     //Document Code
