@@ -505,12 +505,9 @@ class CheckbookSolrQuery
     unset($this->fq[$facet]);
     unset($this->fq[$autoCompleteFacet]);
     $terms = explode(' ', $term);
-    # Removing the * as we are already adding * for each term in the foreach loop.
     $autoCompleteText = '';
     if (count($terms) > 0) {
       foreach($terms as $value){
-        # NYCCHKBK 9920 the terms were not getting added properly in the query.
-        # The query only had the last term in the foreach loop.
         $autoCompleteText .= self::escape($value)."*%20AND%20";
       }
       $autoCompleteText = "(". substr($autoCompleteText, 0, -9) . ")";
