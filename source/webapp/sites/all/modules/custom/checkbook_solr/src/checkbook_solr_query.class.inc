@@ -505,10 +505,10 @@ class CheckbookSolrQuery
     unset($this->fq[$facet]);
     unset($this->fq[$autoCompleteFacet]);
     $terms = explode(' ', $term);
-    $autoCompleteText = '';
+    $autoCompleteText = '*';
     if (count($terms) > 0) {
       foreach($terms as $value){
-        $autoCompleteText .= self::escape($value)."*%20AND%20";
+        $autoCompleteText = self::escape($value)."*%20AND%20";
       }
       $autoCompleteText = "(". substr($autoCompleteText, 0, -9) . ")";
     }else{
