@@ -56,7 +56,12 @@ class SqlUtil {
     public static function executeSqlQuery(sqlStatementModel $model) {
 
         try {
+            $cacheKey = 'get_by_dataset' . '_' . md5($model->query . $model->datasource);
+            if ($results = _checkbook_dmemcache_get($cacheKey)) {
+              return $results;
+            }
             $results = self::executeSqlFetchAssoc($model->query, $model->datasource);
+            _checkbook_dmemcache_set($cacheKey, $results);
             log_info("SQL Statement Name: ".$model->name."\nSQL Trace:\n".$model->query."\n");
         }
         catch (Exception $e) {
@@ -74,7 +79,12 @@ class SqlUtil {
     public static function executeCountSqlQuery(sqlStatementModel $model) {
 
         try {
+            $cacheKey = 'get_by_record_count' . '_' . md5($model->countQuery . $model->datasource);
+            if ($results = _checkbook_dmemcache_get($cacheKey)) {
+              return $results;
+            }
             $results = self::executeSqlFetchAssoc($model->countQuery, $model->datasource);
+            _checkbook_dmemcache_set($cacheKey, $results);
             log_notice("SQL Statement Name: ".$model->name."\nSQL Trace:\n".$model->countQuery."\n");
         }
         catch (Exception $e) {
