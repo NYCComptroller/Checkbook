@@ -63,10 +63,10 @@ class CheckbookDataServiceTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue(new MockRepository()));
         $this->assertEquals('SQL_RESULT_D_1', $DataService->getByDataset([1, 2, 3]));
         $expected = [
-            'get_by_dataset_checkbook_dc2be19d32fd6f7333c5e4425211ecfe' => 'SQL_RESULT_D_1',
+            'get_by_dataset_checkbook_3c331db6fdf5144951e537b6fb563529' => 'SQL_RESULT_D_1',
         ];
         $this->assertEquals($expected, $phpunit_cache);
-        $phpunit_cache['get_by_dataset_checkbook_dc2be19d32fd6f7333c5e4425211ecfe'] = 'CACHED_SQL_RESULT_D_1';
+        $phpunit_cache['get_by_dataset_checkbook_3c331db6fdf5144951e537b6fb563529'] = 'CACHED_SQL_RESULT_D_1';
 
         $this->assertEquals('CACHED_SQL_RESULT_D_1', $DataService->getByDataset([1,2,3]));
     }
