@@ -92,9 +92,9 @@ abstract class DataService implements IDataService {
         LogHelper::log_info("Get By RecordCount: ".$fnData);
         $dataSource = Datasource::getCurrent();
         $cacheKey = 'get_by_record_count_' . '_' .md5(serialize([$parameters, $fnData, $dataSource]));
-        if ($count = _checkbook_dmemcache_get($cacheKey)) {
-          return $count;
-        }
+        //if ($count = _checkbook_dmemcache_get($cacheKey)) {
+        //  return $count;
+        //}
         $count = $this->getRepository()->getByDatasetRowCount($parameters, $fnData);
         _checkbook_dmemcache_set($cacheKey, $count);
         return $count;
