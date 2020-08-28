@@ -150,6 +150,12 @@ abstract class Datasource {
       return $agency_id;
     }
 
+    public static function getEDCCode() {
+      $edcCode = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_code'), array('agency_short_name' => 'NYC EDC'));
+      $agency_code = $edcCode[0]['agency_code'];
+      return $agency_code;
+    }
+
     public static function smartSearchDataSource(){
       $solr_datasource = _checkbook_get_datasource();
       switch($solr_datasource) {
