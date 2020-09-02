@@ -12,7 +12,7 @@
       expenditure_type_description AS expense_category,
       expenditure_type_id,
       SUM(adopted_budget) AS adopted_budget,
-      SUM(modified_budget) AS modified_budget,
+      SUM(adopted_budget) AS modified_budget,
       SUM(funds_available)AS funds_available,
       SUM(committed)AS committed
       FROM budget
@@ -128,7 +128,7 @@
       responsibility_center_description AS responsibility_center,
       responsibility_center_id,
       SUM(adopted_budget) AS adopted_budget,
-      SUM(modified_budget) AS modified_budget,
+      SUM(adopted_budget) AS modified_budget,
       SUM(committed) AS committed,
       SUM(funds_available) AS funds_available
       FROM budget
@@ -244,7 +244,7 @@
       a.funding_source_id,
       b.display_funding_source_descr AS funding_source_description,
       SUM(adopted_budget) AS adopted_budget,
-      SUM(modified_budget) AS modified_budget,
+      SUM(adopted_budget) AS modified_budget,
       SUM(committed) AS committed,
       SUM(funds_available) AS funds_available
       FROM budget a
@@ -364,7 +364,7 @@
       program_phase_description AS program_phase_description,
       program_phase_id,
       SUM(adopted_budget) AS adopted_budget,
-      SUM(modified_budget) AS modified_budget,
+      SUM(adopted_budget) AS modified_budget,
       SUM(committed) AS committed,
       SUM(funds_available) AS funds_available
       FROM budget
@@ -480,7 +480,7 @@
       gl_project_description AS gl_project_description,
       gl_project_id,
       SUM(adopted_budget) AS adopted_budget,
-      SUM(modified_budget) AS modified_budget,
+      SUM(adopted_budget) AS modified_budget,
       SUM(committed) AS committed,
       SUM(funds_available) AS funds_available
       FROM budget
