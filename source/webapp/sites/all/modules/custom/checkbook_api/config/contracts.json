@@ -307,7 +307,7 @@
             "current_amount":"amount_id"
         },
         "dataset":{
-            "sortColumn":["-registered_date", "-agreement_id"],
+            "sortColumn":["vendor_record_type", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions_by_prime_sub_vendor",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
@@ -1292,7 +1292,7 @@
             "current_amount":"amount_id"
         },
         "dataset":{
-            "sortColumn":["-registered_date", "-agreement_id"],
+            "sortColumn":["vendor_record_type", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions_by_prime_sub_vendor",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
