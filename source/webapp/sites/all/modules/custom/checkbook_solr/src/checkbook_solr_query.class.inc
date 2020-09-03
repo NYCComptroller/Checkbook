@@ -191,6 +191,18 @@ class CheckbookSolrQuery
   }
 
   /**
+   * @param string $autoCompleteFacet
+   * @param string $autoCompleteText
+   * @return CheckbookSolrQuery
+   */
+  public function setAutoQ(string $autoCompleteFacet ,string $autoCompleteText): CheckbookSolrQuery
+  {
+    if (isset($autoCompleteFacet)){
+      $this->q = $autoCompleteFacet . ':' . $autoCompleteText;
+    }
+    return $this;
+  }
+  /**
    * @return string
    */
   public function getWt(): string
@@ -346,15 +358,26 @@ class CheckbookSolrQuery
       $query['sort'] = $this->sort;
     }
 
+    // Construct the q for solr query
     if ('*:*' == $this->q) {
       $q = 'q=*:*';
-    } else {
-      $q = 'q=text:' . $this->q;
+    }
+    else{
+      if(preg_match('/^[a-zA-Z_]+:/', $this->q)){
+        $q= 'q='.$this->q;
+      }
+      else {
+        $q = 'q=text:' . $this->q;
+      }
     }
 
     /**
-     * ex.
+     * ex. old
      * http://sdw5.reisys.com:18983/solr/checkbook_dev.public.solr_index_full/select/?q=*:*&facet=true&facet.sort=count&facet.field=fiscal_year&wt=phps&facet.mincount=1
+     * ex. new advanced search autocomplete
+     * http://sdw6.reisys.com:18986/solr/checkbook_dev.public.solr_citywide/select/?q=vendor_name_autocomplete:(tobay*)&fq=contract_status:"pending"&facet=true&facet.mincount=1&facet.sort=count&facet.limit=10&facet.field=vendor_name&start=0&rows=0&sort=domain_ordering+asc%2C+date_ordering+desc%2C+check_eft_issued_date+desc%2C+revenue_budget_fiscal_year+desc%2C+current_budget_amount+desc%2C+id+desc&wt=php
+     * ex. smart search facet autocomplete
+     * http://sdw4.reisys.com:18985/solr/checkbook_nycha_dev.public.solr_nycha/select/?q=funding_source_name_autocomplete:(lihtc*%20AND%20%5C-*%20AND%20castle*%20AND%20hill*)&fq=domain:"revenue"&facet=true&facet.mincount=1&facet.sort=count&facet.limit=10&facet.field=funding_source_name&start=0&rows=0&sort=domain_ordering+asc%2C+sort_sequence+asc%2C+check_issue_date+desc%2C+document_id+desc%2C+date_ordering+desc%2C+invoice_number+asc%2C+invoice_line_number+asc%2C+distribution_line_number+asc%2C+id+desc&wt=php
      */
 
     $this->query = $q . $fq . $sort . $facets . $intervals . '&' . http_build_query($query) . '&wt=' . $this->wt . $csv_mv_separator;
@@ -504,20 +527,11 @@ class CheckbookSolrQuery
 
     unset($this->fq[$facet]);
     unset($this->fq[$autoCompleteFacet]);
-    $terms = explode(' ', $term);
-    $autoCompleteText = '*';
-    if (count($terms) > 0) {
-      foreach($terms as $value){
-        $autoCompleteText = self::escape($value)."*%20AND%20";
-      }
-      $autoCompleteText = "(". substr($autoCompleteText, 0, -9) . ")";
-    }else{
-      $autoCompleteText = self::escape($autoCompleteText)."*";
-    }
-    $this->setFq($facet, $autoCompleteFacet . ':' . $autoCompleteText);
+    $autoCompleteText = _get_autocomplete_search_term($term);
 
+    // Set the value of q based on the autocomplete field
+    $this->setAutoQ($autoCompleteFacet ,$autoCompleteText);
     $this->addFacet($facet);
-
     $this->setFacetLimit((int)$this->autoSuggestionsLimit);
 
     return $this;
