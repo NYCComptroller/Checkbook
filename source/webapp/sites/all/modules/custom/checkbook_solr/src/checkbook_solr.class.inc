@@ -121,17 +121,6 @@ class CheckbookSolr
    */
   private static function getSmartSearchConfig($config): object
   {
-    switch ($config){
-      case 'checkbook':
-        $config = 'citywide';
-        break;
-      case 'checkbook_oge':
-        $config = 'edc';
-        break;
-      case 'checkbook_nycha':
-        $config = 'nycha';
-        break;
-    }
     $facet_json_config = file_get_contents(__DIR__ . '/../config/'. $config .'.json');
     $config = json_decode($facet_json_config);
 
