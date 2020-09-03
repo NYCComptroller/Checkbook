@@ -1,7 +1,7 @@
 {
   "serviceName":"NychaRevenueWidgetService",
   "dataFunc":"GetNychaProjectByRevenue",
-  "headerTitle": "Project",
+  "headerTitle": "Projects",
   "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_projects'",
   "table_columns":[
     {"labelAlias":"project","column":"gl_project_description", "tooltip":60, "derivedColumn":"project_name_link"},

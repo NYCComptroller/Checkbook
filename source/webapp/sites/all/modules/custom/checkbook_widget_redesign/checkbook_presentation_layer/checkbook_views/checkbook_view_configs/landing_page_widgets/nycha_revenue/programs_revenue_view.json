@@ -1,7 +1,7 @@
 {
   "serviceName":"NychaRevenueWidgetService",
   "dataFunc":"GetNychaProgramByRevenue",
-  "headerTitle": "Program",
+  "headerTitle": "Programs",
   "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_program'",
   "table_columns":[
     {"labelAlias":"program","column":"program_phase_description", "tooltip":60, "derivedColumn":"program_name_link"},
