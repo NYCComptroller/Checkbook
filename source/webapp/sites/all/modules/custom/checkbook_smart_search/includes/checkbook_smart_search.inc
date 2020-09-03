@@ -377,7 +377,7 @@ function hyphen_data_export_results($result,$domain){
           break;
         case "nycha_spending":
           $hyphen_fields=[];
-          array_push($hyphen_fields,"agreement_type_name", "contract_number", "release_number", "contract_purpose","invoice_number");
+          array_push($hyphen_fields,"agreement_type_name", "contract_number", "release_number", "contract_purpose");
           $amount_hyphen_fields = array("check_invoice_net_amount", "distribution_line_number", "invoice_line_number");
           if ($headers[$key] == 'document_id') {
             if ($field == null) {
@@ -386,10 +386,9 @@ function hyphen_data_export_results($result,$domain){
           }
           if (($headers[$key] == 'spending_category')) {
             if (($field == 'Other') || ($field == 'Section 8')) {
-              array_pop($hyphen_fields);
               $category_hyphen = array("industry_type_name");
             } elseif ($field == 'Payroll') {
-              $category_hyphen = array( "contract_spent_amount","industry_type_name", "funding_source_name", "responsibility_center_name", "program_phase_name", "gl_project_name");
+              $category_hyphen = array( "invoice_number", "contract_spent_amount","industry_type_name", "funding_source_name", "responsibility_center_name", "program_phase_name", "gl_project_name");
             } else{
               $hyphen_fields = [];
             }
