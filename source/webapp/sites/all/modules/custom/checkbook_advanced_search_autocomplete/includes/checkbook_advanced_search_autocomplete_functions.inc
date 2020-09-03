@@ -72,8 +72,6 @@ function _get_spending_advanced_search_autocomplete_results($facet, $query, $yea
  ***/
 function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, $dataSource, $feeds) {
   if($feeds){
-    //For EDC, set agency code
-    $agency = ($dataSource == Datasource::OGE) ? Datasource::getEDCCode() : $agency;
     if(isset($year)){//Data-feeds year format: FY2020
       $year = substr($year, 2, strlen($year));
       $year = !in_array($year, array('all', '', '0', 0)) ? $year: null;
@@ -83,8 +81,6 @@ function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, 
       _checkbook_project_get_name_for_argument('spending_category_code', $spendingCat, $dataSource) : "";
     $deptParam = $dept ? " AND department_code='".trim($dept)."' ":"";
   } else {
-    //For EDC, set agency Id
-    $agency = ($dataSource == Datasource::OGE) ? Datasource::getEDCId() : $agency;
     if(isset($year)) {//Advanced Search year format: fy~all, fy~122
       $yearId = substr($year, 3, strlen($year));
       $yearId = !in_array($yearId, array('all', '', '0', 0)) ? $yearId : null;
@@ -147,8 +143,6 @@ function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, 
  */
 function _checkbook_advanced_search_autocomplete_spending_department($year, $agency, $spendingCat, $dataSource = Datasource::CITYWIDE, $feeds = null) {
   if($feeds){
-    //For EDC, set agency code
-    $agency = ($dataSource == Datasource::OGE) ? Datasource::getEDCCode() : $agency;
     if(isset($year)){//Data-feeds year format: FY2020
       $year = substr($year, 2, strlen($year));
       $year = !in_array($year, array('all', '', '0', 0)) ? $year: null;
@@ -156,8 +150,6 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
     $spendingCatParam = $spendingCat ? " AND spending_category_id = " . _checkbook_project_get_name_for_argument('spending_category_code', $spendingCat, $dataSource) : "";
     $agencyParam = $agency ? " AND agency_code = '" . $agency . "' " : "";
   } else {
-    //For EDC, set agency Id
-    $agency = ($dataSource == Datasource::OGE) ? Datasource::getEDCId() : $agency;
     if(isset($year)) {//Advanced Search year format: fy~all, fy~122
       $yearId = substr($year, 3, strlen($year));
       $yearId = !in_array($yearId, array('all', '', '0', 0)) ? $yearId : null;
