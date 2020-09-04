@@ -16,6 +16,7 @@
     "revenue_class_name": "revenue_class_name_autocomplete",
     "revenue_source_name": "revenue_source_name_autocomplete",
     "expenditure_type_description": "expenditure_type_description_autocomplete",
-    "funding_source_name": "funding_source_name_autocomplete"
+    "funding_source_name": "funding_source_name_autocomplete",
+    "responsibility_center_name": "responsibility_center_name_autocomplete"
   }
 }
