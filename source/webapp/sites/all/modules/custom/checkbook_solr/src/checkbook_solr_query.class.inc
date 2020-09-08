@@ -105,6 +105,11 @@ class CheckbookSolrQuery
   private $facetLimit = 500;
 
   /**
+   * @var string
+   */
+  private $facetPrefix = '';
+
+  /**
    * @var int
    */
   private $autoSuggestionsLimit = 10;
@@ -259,6 +264,15 @@ class CheckbookSolrQuery
     $this->facetLimit = $limit;
     return $this;
   }
+  /**
+   * @param int $prefixValue
+   * @return CheckbookSolrQuery
+   */
+  public function setFacetPrefix(string $prefixValue): CheckbookSolrQuery
+  {
+    $this->facetPrefix = $prefixValue;
+    return $this;
+  }
 
   /**
    * @param array $termFieldArray
@@ -340,6 +354,10 @@ class CheckbookSolrQuery
           $facets .= '&' . http_build_query(['facet.field' => $tag . $facet]);
         }
       }
+
+      if ($this->facetPrefix != ''){
+        $facets .= '&facet.prefix='.$this->facetPrefix;
+      }
       if ($this->intervals) {
         foreach ($this->intervals as $facet => $intervalArray) {
           $tag = isset($this->tags[$facet]) ? '{!ex=' . $this->tags[$facet] . '}' : '';
@@ -378,6 +396,8 @@ class CheckbookSolrQuery
      * http://sdw6.reisys.com:18986/solr/checkbook_dev.public.solr_citywide/select/?q=vendor_name_autocomplete:(tobay*)&fq=contract_status:"pending"&facet=true&facet.mincount=1&facet.sort=count&facet.limit=10&facet.field=vendor_name&start=0&rows=0&sort=domain_ordering+asc%2C+date_ordering+desc%2C+check_eft_issued_date+desc%2C+revenue_budget_fiscal_year+desc%2C+current_budget_amount+desc%2C+id+desc&wt=php
      * ex. smart search facet autocomplete
      * http://sdw4.reisys.com:18985/solr/checkbook_nycha_dev.public.solr_nycha/select/?q=funding_source_name_autocomplete:(lihtc*%20AND%20%5C-*%20AND%20castle*%20AND%20hill*)&fq=domain:"revenue"&facet=true&facet.mincount=1&facet.sort=count&facet.limit=10&facet.field=funding_source_name&start=0&rows=0&sort=domain_ordering+asc%2C+sort_sequence+asc%2C+check_issue_date+desc%2C+document_id+desc%2C+date_ordering+desc%2C+invoice_number+asc%2C+invoice_line_number+asc%2C+distribution_line_number+asc%2C+id+desc&wt=php
+     * ex. query after unsetting sort for autocompletes
+     * http://sdw4.reisys.com:18983/solr/checkbook_nycha_dev.public.solr_nycha/select/?q=facet_year_array:(2011*)&facet=true&facet.mincount=1&facet.sort=count&facet.limit=10&facet.field=facet_year_array&facet.prefix=2011&start=0&rows=0&wt=php
      */
 
     $this->query = $q . $fq . $sort . $facets . $intervals . '&' . http_build_query($query) . '&wt=' . $this->wt . $csv_mv_separator;
@@ -524,7 +544,8 @@ class CheckbookSolrQuery
     $term = htmlspecialchars_decode($term, ENT_QUOTES);
     $this->mapParam($facet);
     $autoCompleteFacet = $this->autocompleteMapping[$facet] ?? $facet;
-
+    $facetPrefixValue = $this->get_facet_prefix($facet,$term);
+    if (isset($facetPrefixValue)){$this->setFacetPrefix($facetPrefixValue);}
     unset($this->fq[$facet]);
     unset($this->fq[$autoCompleteFacet]);
     $autoCompleteText = _get_autocomplete_search_term($term);
@@ -533,6 +554,7 @@ class CheckbookSolrQuery
     $this->setAutoQ($autoCompleteFacet ,$autoCompleteText);
     $this->addFacet($facet);
     $this->setFacetLimit((int)$this->autoSuggestionsLimit);
+    unset($this->sort);
 
     return $this;
   }
@@ -644,5 +666,20 @@ class CheckbookSolrQuery
         return 'registered';
         break;
     }
+  }
+
+  /**
+   * @param $param,
+   * @param $value,
+   * @return string
+   */
+  private function get_facet_prefix($param,$value)
+  {
+    // Add array fields which need facet.prefix to be set
+    $prefix_fields = array("contract_entity_contract_number","contract_commodity_line","facet_year_array");
+     if(in_array($param, $prefix_fields)){
+     $fPrefix = $value;
+    }
+     return $fPrefix;
   }
 }
