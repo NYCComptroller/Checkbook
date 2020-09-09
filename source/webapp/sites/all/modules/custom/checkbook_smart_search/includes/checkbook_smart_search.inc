@@ -517,7 +517,16 @@ function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'cit
   $search_term = htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES);
   $search_term = strtolower($search_term);
 
-  $search_term = '(.* ' . $search_term . '.*)|(^' . $search_term . '.*)';
+  // NYCCHKBK - 10039 handling smart search text box autocomplete with special characters.
+  $autoCompleteSearchTerm ='';
+  $terms = explode(' ', $search_term);
+  if (count($terms) > 0) {
+    foreach($terms as $value){
+      $autoCompleteSearchTerm .= CheckbookSolrQuery::escape($value).' ';
+    }
+  }
+
+  $search_term = '(.* ' . urldecode(trim($autoCompleteSearchTerm)). '.*)|(^' . urldecode(trim($autoCompleteSearchTerm)). '.*)';
 
   $query = new CheckbookSolrQuery($solr_datasource);
 
