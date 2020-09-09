@@ -502,13 +502,17 @@ function checkbook_datafeeds_process_revenue_values($form, &$form_state)
     preg_match($pattern, $values['revenue_category'], $rcmatches);
     $criteria['value']['revenue_category'] = trim($rcmatches[1], '[ ]');
   }
+
   if ($values['revenue_class']) {
     preg_match($pattern, $values['revenue_class'], $rclmatches);
-    $criteria['value']['revenue_class'] = trim($rclmatches[1], '[ ]');
+    if($rclmatches) {
+      $criteria['value']['revenue_class'] = trim($rclmatches[1], '[ ]');
+    }else{
+      $criteria['value']['revenue_class_name'] = $values['revenue_class'];
+    }
   }
   if ($values['revenue_source']) {
-    preg_match($pattern, $values['revenue_source'], $rsmatches);
-    $criteria['value']['revenue_source'] = trim($rsmatches[1], '[ ]');
+    $criteria['value']['revenue_source'] = $values['revenue_source'];
   }
   if ($values['funding_class'] != 'All Funding Classes') {
     preg_match($pattern, $values['funding_class'], $fsmatches);
