@@ -640,10 +640,10 @@ function checkbook_api_adjustNYCHASpendingSql(&$sql_query){
 
   $select_part =  str_replace("document_id", "CASE WHEN document_id IS NULL THEN CAST('N/A' AS TEXT) ELSE CAST (document_id AS TEXT) END AS document_id",$select_part);
   $spending_sect8_other_hyphens = array('agreement_type_name', 'contract_id', 'release_number', 'contract_purpose', 'display_industry_type_name');
-  $spending_payroll_hyphens = array('agreement_type_name', 'contract_id', 'release_number', 'invoice_number','contract_purpose',
+  $spending_payroll_hyphens = array('agreement_type_name', 'contract_id', 'release_number', 'invoice_number','contract_purpose','distribution_line_number',
     'display_industry_type_name', 'display_funding_source_descr','expenditure_type_description', 'responsibility_center_description', 'program_phase_description', 'gl_project_description');
 
-  $text_columns = array('agreement_type_name', 'contract_id', 'release_number', 'invoice_number','contract_purpose',
+  $text_columns = array('agreement_type_name', 'contract_id', 'release_number', 'invoice_number','contract_purpose','distribution_line_number',
     'display_industry_type_name', 'display_funding_source_descr','expenditure_type_description', 'responsibility_center_description', 'program_phase_description', 'gl_project_description');
 
   foreach($text_columns as $key => $value){
