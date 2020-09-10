@@ -835,9 +835,9 @@
               fiscal_year_id: year_id
             };
 
-            div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name', nycha_filters)});
-            div.ele('contract_id').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number', nycha_filters)});
-            div.ele('pin').autocomplete({source: autoCompleteSource(solr_datasource,'pin', nycha_filters)});
+            div.ele('vendor_name').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'vendor_name', nycha_filters)});
+            div.ele('contract_id').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'contract_number', nycha_filters)});
+            div.ele('pin').autocomplete({source:$.fn.autoCompleteSourceUrl(solr_datasource,'pin', nycha_filters)});
           }else {
               if (contract_status == 'R') {
                 reg_year_id = year_id;
@@ -857,13 +857,13 @@
                 contract_type_id: contract_type_id,
             };
 
-            div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource,'vendor_name',filters)});
-            div.ele('contract_id').autocomplete({source: autoCompleteSource(solr_datasource,'contract_number', filters)});
-            div.ele('apt_pin').autocomplete({source: autoCompleteSource(solr_datasource,'apt_pin',filters)});
-            div.ele('pin').autocomplete({source: autoCompleteSource(solr_datasource,'pin',filters)});
-            div.ele('entity_contract_number').autocomplete({source: autoCompleteSource(solr_datasource,'contract_entity_contract_number',filters)});
-            div.ele('commodity_line').autocomplete({source: autoCompleteSource(solr_datasource,'contract_commodity_line',filters)});
-            div.ele('budget_name').autocomplete({source: autoCompleteSource(solr_datasource,'contract_budget_name',filters)});
+            div.ele('vendor_name').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'vendor_name',filters)});
+            div.ele('contract_id').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'contract_number', filters)});
+            div.ele('apt_pin').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'apt_pin',filters)});
+            div.ele('pin').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'pin',filters)});
+            div.ele('entity_contract_number').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'contract_entity_contract_number',filters)});
+            div.ele('commodity_line').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'contract_commodity_line',filters)});
+            div.ele('budget_name').autocomplete({source:$.fn.autoCompleteSourceUrl(solr_datasource,'contract_budget_name',filters)});
           }
 
           $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {$(this).parent().next().val(ui.item.label);});
@@ -1036,7 +1036,7 @@
           pay_frequency: pay_frequency
         };
 
-        $('#edit-payroll-employee-name').autocomplete({source: autoCompleteSource(solr_datasource,'civil_service_title',filters)});
+        $('#edit-payroll-employee-name').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'civil_service_title',filters)});
         $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {$(this).parent().next().val(ui.item.label);});
 
       }
@@ -1256,8 +1256,8 @@
               revenue_category_id: revenue_category_id,
               funding_class_code: funding_class_code
             };
-            div.ele('revenue_class').autocomplete({source: autoCompleteSource(solr_datasource,'revenue_class_name',filters)});
-            div.ele('revenue_source').autocomplete({source: autoCompleteSource(solr_datasource,'revenue_source_name',filters)});
+            div.ele('revenue_class').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_class_name',filters)});
+            div.ele('revenue_source').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_source_name',filters)});
           }else if (data_source === 'checkbook_nycha'){
             solr_datasource = 'nycha';
             let fiscal_year_id = parseInt((div.ele('budget_fy').val()) ? div.ele('budget_fy').val() : 0);
@@ -1278,8 +1278,8 @@
               budget_type: budget_type,
               budget_name: budget_name
             };
-            div.ele('revenue_class').autocomplete({source: autoCompleteSource(solr_datasource,'revenue_class',filters)});
-            div.ele('nycha_revenue_category').autocomplete({source: autoCompleteSource(solr_datasource,'revenue_category',filters)});
+            div.ele('revenue_class').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_class',filters)});
+            div.ele('nycha_revenue_category').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_category',filters)});
           }
 
           $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {
@@ -1782,15 +1782,15 @@
             funding_source_id:fund_src_id
           };
 
-          div.ele('payee_name').autocomplete({source: autoCompleteSource(solr_datasource, 'vendor_name', filters)});
-          div.ele('contract_id').autocomplete({source: autoCompleteSource(solr_datasource, 'contract_number', filters)});
-          div.ele('capital_project').autocomplete({source: autoCompleteSource(solr_datasource, 'reporting_code', filters)});
-          div.ele('document_id').autocomplete({source: autoCompleteSource(solr_datasource, 'expense_id', filters)});
-          div.ele('commodity_line').autocomplete({source: autoCompleteSource(solr_datasource, 'spending_commodity_line', filters)});
-          div.ele('budget_name').autocomplete({source: autoCompleteSource(solr_datasource, 'spending_budget_name', filters)});
-          div.ele('entity_contract_number').autocomplete({source: autoCompleteSource(solr_datasource, 'spending_entity_contract_number', filters)});
-          div.ele('vendor_name').autocomplete({source: autoCompleteSource(solr_datasource, 'vendor_name', filters)});
-          div.ele('document_id').autocomplete({source: autoCompleteSource(solr_datasource, 'document_id', filters)});
+          div.ele('payee_name').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'vendor_name', filters)});
+          div.ele('contract_id').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'contract_number', filters)});
+          div.ele('capital_project').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'reporting_code', filters)});
+          div.ele('document_id').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'expense_id', filters)});
+          div.ele('commodity_line').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'spending_commodity_line', filters)});
+          div.ele('budget_name').autocomplete({source:$.fn.autoCompleteSourceUrl(solr_datasource, 'spending_budget_name', filters)});
+          div.ele('entity_contract_number').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'spending_entity_contract_number', filters)});
+          div.ele('vendor_name').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'vendor_name', filters)});
+          div.ele('document_id').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'document_id', filters)});
 
 
           $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {
@@ -1986,7 +1986,8 @@
         return param;
       }
 
-      function autoCompleteSource(solr_datasource, facet, filters) {
+      /* autoCompleteSourceUrl function exist in global.js
+      /*  function autoCompleteSource(solr_datasource, facet, filters) {
         let url = '/advanced_autocomplete/';
 
         let fq = '';
@@ -2002,7 +2003,7 @@
         let search_term = '/?search_term=' + fq;
 
         return url+solr_datasource+'/'+facet+search_term;
-      }
+      }*/
 
       /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
       function disableAccordionSections(data_source) {
