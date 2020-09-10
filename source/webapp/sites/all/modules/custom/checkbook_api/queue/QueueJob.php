@@ -400,7 +400,7 @@ class QueueJob {
                 $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
             }
             else {
-                $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat.($this->responseFormat == 'xml') ? '.zip' : '';
+                $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . (($this->responseFormat == 'xml') ? 'zip' : $this->responseFormat);
             }
         }
 
