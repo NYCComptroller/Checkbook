@@ -9,7 +9,7 @@
     "fundsrc":"funding_source_id", "program": "program_phase_id", "project": "gl_project_id", "bdgtyp": "budget_type",
     "bdgnm": "budget_name", "agency": "agency_id","revcat": "revenue_category_id","amtr": "revenue_amount",
     "revcat_nm":"revenue_category", "revcat_nm_exact":"revenue_category", "revclass_nm": "revenue_class",
-    "revclass_nm_exact": "revenue_class", "adopted_amt": "adopted_amount", "modified_amt": "modified_amount",
+    "revclass_nm_exact": "revenue_class", "adopted_amt": "adopted_amount", "modified_amt": "adopted_amount",
     "recognized_amt": "revenue_amount", "remaining_amt": "funds_available"
   },
   "paramTypeConfig": {
@@ -70,7 +70,7 @@
       "expression": "custom_number_formatter_basic_format($row['adopted_amount'])"
     },
     "formatted_modified_budget": {
-      "expression": "custom_number_formatter_basic_format($row['modified_amount'])"
+      "expression": "custom_number_formatter_basic_format($row['adopted_amount'])"
     },
     "formatted_funds_available": {
       "expression": "custom_number_formatter_basic_format($row['funds_available'])"
@@ -119,7 +119,7 @@
     {
       "labelAlias": "modified",
       "column": "formatted_modified_budget",
-      "sortSourceColumn": "modified_amount"
+      "sortSourceColumn": "adopted_amount"
     },
     {
       "labelAlias": "recognized",
