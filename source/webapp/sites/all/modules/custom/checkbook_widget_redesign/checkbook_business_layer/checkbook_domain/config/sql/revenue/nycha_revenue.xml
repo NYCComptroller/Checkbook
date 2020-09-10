@@ -12,7 +12,7 @@
       expenditure_type_description AS expense_category,
       expenditure_type_id,
       SUM(adopted_amount) AS adopted_amount,
-      SUM(modified_amount) AS modified_amount,
+      SUM(modified_amount) AS adopted_amount,
       SUM(revenue_amount) AS recognized_amount,
       SUM(funds_available)AS funds_available
       FROM revenue
@@ -41,7 +41,7 @@
       responsibility_center_description AS responsibility_center,
       responsibility_center_id,
       SUM(adopted_amount) AS adopted_amount,
-      SUM(modified_amount) AS modified_amount,
+      SUM(modified_amount) AS adopted_amount,
       SUM(revenue_amount) AS recognized_amount,
       SUM(funds_available)AS funds_available
       FROM revenue
@@ -70,7 +70,7 @@
       a.funding_source_id,
       b.display_funding_source_descr AS funding_source,
       SUM(adopted_amount) AS adopted_amount,
-      SUM(modified_amount) AS modified_amount,
+      SUM(modified_amount) AS adopted_amount,
       SUM(revenue_amount) AS recognized_amount,
       SUM(funds_available)AS funds_available
       FROM revenue a
@@ -101,7 +101,7 @@
       gl_project_description AS gl_project_description,
       gl_project_id,
       SUM(adopted_amount) AS adopted_amount,
-      SUM(modified_amount) AS modified_amount,
+      SUM(modified_amount) AS adopted_amount,
       SUM(revenue_amount) AS recognized_amount,
       SUM(funds_available)AS funds_available
       FROM revenue
@@ -130,7 +130,7 @@
       program_phase_description AS program_phase_description,
       program_phase_id,
       SUM(adopted_amount) AS adopted_amount,
-      SUM(modified_amount) AS modified_amount,
+      SUM(modified_amount) AS adopted_amount,
       SUM(revenue_amount) AS recognized_amount,
       SUM(funds_available)AS funds_available
       FROM revenue
@@ -160,7 +160,7 @@
       revenue_category AS revenue_category,
       revenue_category_id AS revenue_category_id,
       SUM(adopted_amount) AS adopted_amount,
-      SUM(modified_amount) AS modified_amount,
+      SUM(modified_amount) AS adopted_amount,
       SUM(revenue_amount) AS recognized_amount,
       SUM(funds_available)AS funds_available
       FROM revenue
