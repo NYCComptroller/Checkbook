@@ -5,10 +5,12 @@
             "fiscal_year":"fiscal_year",
             "agency_code":"agency_code",
             "revenue_class":"revenue_class_code",
+            "revenue_class_name": "revenue_class_name",
             "fund_class":"fund_class_code",
             "funding_class":"funding_class_code",
             "revenue_category":"revenue_category_code",
-            "revenue_source":"revenue_source_code",
+            "revenue_source":"revenue_source_name",
+            //"revenue_source_name":"revenue_source_name",
             "adopted":"adopted_amount",
             "modified":"current_modified_budget_amount",
             "recognized":"posting_amount"
@@ -16,6 +18,10 @@
         "dataset":{
             "sortColumn":["-posting_amount","-revenue_id"],
             "name":"checkbook:fact_revenue",
+            "columnTypes":{
+              "revenue_class_name":"like",
+              "revenue_source_name":"like"
+            },
             "displayConfiguration":{
                 "xml":{
                     "rootElement":"revenue_transactions",
@@ -29,8 +35,8 @@
                         "revenue_class":"revenue_class_name",
                         "budget_fiscal_year":"budget_fiscal_year",
                         "fiscal_year":"fiscal_year",
-					    "adopted":"adopted_amount",
-					    "modified":"current_modified_budget_amount",                        
+                        "adopted":"adopted_amount",
+                        "modified":"current_modified_budget_amount",
                         "recognized":"posting_amount",
                         "closing_classification_name":"closing_classification_name"
                     },
@@ -71,31 +77,13 @@
                 "dataType":"text",
                 "maxLength":3
             },
-            "revenue_class":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":3
-            },
-            "fund_class":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":4
-            },
-            "funding_class":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":4
-            },
-            "revenue_category":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":2
-            },
-            "revenue_source":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":5
-            },
+           "revenue_class":{"valueType":"value", "dataType":"text", "maxLength":3},
+           "revenue_class_name":{"valueType":"value", "dataType":"text", "maxLength":100},
+           "fund_class":{"valueType":"value", "dataType":"text", "maxLength":4},
+           "funding_class":{"valueType":"value", "dataType":"text", "maxLength":4},
+           "revenue_category":{"valueType":"value", "dataType":"text", "maxLength":2},
+           "revenue_source":{"valueType":"value", "dataType":"text", "maxLength":100},
+            //"revenue_source_name":{"valueType":"value", "dataType":"text", "maxLength":100},
             "recognized":{
                 "valueType":"range",
                 "dataType":"amount",
