@@ -81,7 +81,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       $disabled = '';
 
       echo '<div class="autocomplete">
-              <input id="' . $autocomplete_id . '" ' . $disabled . ' type="text" class="solr_autocomplete" facet="'.$facet_name.'" /> 
+              <input id="' . $autocomplete_id . '" ' . $disabled . ' type="text" class="solr_autocomplete" facet="'.$facet_name.'" />
             </div>';
 //      placeholder="Autocomplete '.htmlentities($facet->title).'..."
     }
@@ -109,13 +109,17 @@ END;
 
       $lowercase_selected = $facet->selected ? array_map('strtolower', $facet->selected) : [];
 
-      $checked = '';
       if ($facet->selected) {
         $checked = $facet->selected && in_array(strtolower($facet_value), $lowercase_selected);
         $checked = $checked ? ' checked="checked" ' : '';
         $active = $checked ? ' class="active" ' : '';
+        $disabled ='';
       }
-      echo '<input type="checkbox" id="'.$id.'" '.$checked . ' facet="'.$facet_name.'" value="'.
+      if($checked == '' && (count($lowercase_selected) >= 5)){
+        $disabled = " DISABLED=true";
+      }
+
+      echo '<input type="checkbox" id="'.$id.'" '.$checked . $disabled.' facet="'.$facet_name.'" value="'.
         htmlentities(urlencode($facet_value)).'" />';
       echo <<<END
 
