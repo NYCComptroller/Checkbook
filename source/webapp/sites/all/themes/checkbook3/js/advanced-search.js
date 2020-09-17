@@ -917,9 +917,6 @@
           onChangeDataSource($('input[name=payroll_advanced_search_domain_filter]:checked').val());
         });
 
-        //TO DO: We do not this line when NYCHA is unhidden
-        getPayrollYears('checkbook');
-
         function getPayrollYears(data_source){
           $.ajax({
             url: '/payroll/years/' + data_source
