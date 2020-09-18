@@ -406,19 +406,19 @@ function checkbook_advanced_search_form($form, $form_state)
 
   //<editor-fold desc="Payroll">
 
-  /*$form['payroll']['payroll_advanced_search_domain_filter'] = array(
+  $form['payroll']['payroll_advanced_search_domain_filter'] = array(
     '#type' => 'radios',
     '#options' => array('checkbook' => 'Citywide Agencies', 'checkbook_nycha' => 'New York City Housing Authority'),
     '#default_value' => !isset($data_source) ? 'checkbook' : $data_source,
     '#prefix' => '<h3><a href="#">Payroll</a></h3><div id="payroll-advanced-search">',
-  );*/
+  );
 
   $form['payroll']['payroll_employee_name'] = array(
     '#type' => 'textfield',
     '#title' => t('Title'),
     '#size' => 30,
     '#maxlength' => 100,
-    '#prefix' => '<h3><a href="#">Payroll</a></h3><div id="payroll-advanced-search"><div class="column column-left">',
+    '#prefix' => '<div class="column column-left">',
   );
   $form['payroll']['payroll_employee_name_exact'] = array(
     '#type' => 'hidden'
