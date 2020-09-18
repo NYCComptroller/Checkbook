@@ -72,7 +72,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       $display_facet = 'block';
       if($solr_datasource == Datasource::SOLR_NYCHA){
         foreach($facet->results as $facet_value => $count){
-          if(strtolower($facet_value) == 'budget'){
+          if(strtolower($facet_value) == 'budget' || strtolower($facet_value) == 'revenue'){
             unset($facet->results[$facet_value]);
           }
         }
