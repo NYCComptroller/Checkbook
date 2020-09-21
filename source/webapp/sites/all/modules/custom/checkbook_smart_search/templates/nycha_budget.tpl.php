@@ -24,6 +24,7 @@ $count = 1;
 $row = array();
 $rows = array();
 foreach ($budget_parameter_mapping as $key=>$title){
+  $key = ($key == 'modified_budget') ? "adopted_budget" : $key;
   $value = $budget_results[$key];
 
   if($searchTerm){
