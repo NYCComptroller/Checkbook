@@ -60,7 +60,7 @@
       },
       {
         "dataset": "checkbook_nycha:budget",
-        "columns":["budget_modified"],
+        "columns":["budget_adopted_amount"],
         "seriesURLParamMap":{"year":"budget_fiscal_year_id"},
         "allowedParams":["budget_fiscal_year_id"],
         "adjustSerieParameters":"

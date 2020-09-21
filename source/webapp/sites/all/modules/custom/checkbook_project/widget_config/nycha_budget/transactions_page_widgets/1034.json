@@ -6,7 +6,7 @@
   "urlParamMap": {
     "year": "budget_fiscal_year_id", "expcategory": "expenditure_type_id", "respcenter": "responsibility_center_id",
     "fundsrc":"funding_source_id", "program": "program_phase_id", "project": "gl_project_id", "bdgtyp": "budget_type",
-    "bdgnm": "budget_name", "modamt": "modified_budget", "modamtr": "modified_budget", "comamt": "committed", "comamtr": "committed",
+    "bdgnm": "budget_name", "modamt": "adopted_budget", "modamtr": "adopted_budget", "comamt": "committed", "comamtr": "committed",
     "encamt":"encumbrance_amount", "actual":"actual_amount", "adpamt": "adopted_budget", "agency": "agency_id"
   },
   "paramTypeConfig": {
@@ -67,7 +67,7 @@
       "expression": "custom_number_formatter_basic_format($row['adopted_budget'])"
     },
     "formatted_modified_budget": {
-      "expression": "custom_number_formatter_basic_format($row['modified_budget'])"
+      "expression": "custom_number_formatter_basic_format($row['adopted_budget'])"
     },
     "formatted_committed": {
       "expression": "custom_number_formatter_basic_format($row['committed'])"
@@ -113,7 +113,7 @@
     {
       "labelAlias": "modified",
       "column": "formatted_modified_budget",
-      "sortSourceColumn": "modified_budget"
+      "sortSourceColumn": "adopted_budget"
     },
     {
       "labelAlias": "budget_type",

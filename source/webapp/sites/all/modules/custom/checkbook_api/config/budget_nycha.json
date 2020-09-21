@@ -10,13 +10,13 @@
           "budget_type": "budget_type",
           "budget_name": "budget_name",
           "adopted": "adopted_budget",
-          "modified":"modified_budget",
+          "modified":"adopted_budget",
           "committed":"committed",
           "encumbered":"encumbrance_amount",
           "actual_amount": "actual_amount"
       },
       "dataset":{
-          "sortColumn":["-modified_budget","-budget_id"],
+          "sortColumn":["-adopted_budget","-budget_id"],
           "name":"checkbook_nycha:budget",
           "data_source":"checkbook_nycha",
           "displayConfiguration":{
@@ -26,7 +26,7 @@
                   "elementsColumn":{
                     "year": "budget_fiscal_year",
                     "adopted": "adopted_budget",
-                    "modified": "modified_budget",
+                    "modified": "adopted_budget",
                     "budget_type": "budget_type",
                     "budget_name": "budget_name",
                     "encumbered": "encumbrance_amount",
@@ -49,7 +49,7 @@
                   "elementsColumn":{
                     "Year": "budget_fiscal_year",
                     "Adopted": "adopted_budget",
-                    "Modified": "modified_budget",
+                    "Modified": "adopted_budget",
                     "Budget Type": "budget_type",
                     "Budget Name": "budget_name",
                     "Encumbered": "encumbrance_amount",

@@ -116,7 +116,7 @@
         "<1M": "[*,999999.99]"
       }
     },
-    "modified_budget": {
+    "adopted_budget": {
       "title": "Modified Expense Budget",
       "intervals": {
         ">100M": "[100000000,*]",
