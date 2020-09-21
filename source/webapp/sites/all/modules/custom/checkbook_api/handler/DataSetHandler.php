@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -132,7 +132,10 @@ class DataSetHandler {
    * @param $config_type
    */
   private function prepareParameterConfiguration(&$parameters, $column, $value, $config_type) {
-    $value = pg_escape_string(htmlspecialchars_decode($value));
+    if($config_type != "range") {
+      // Do not escape special characters for range values
+      $value = pg_escape_string(htmlspecialchars_decode($value));
+    }
     switch ($config_type) {
       case "range":
         $conditions[] = data_controller_get_operator_factory_instance()->initiateHandler(RangeOperatorHandler::$OPERATOR__NAME, array(

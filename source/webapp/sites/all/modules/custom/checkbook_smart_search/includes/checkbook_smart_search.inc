@@ -397,6 +397,16 @@ function hyphen_data_export_results($result,$domain){
           break;
         case "nycha_payroll":
           $hyphen_fields = array("annual_salary", "hourly_rate", "daily_wage");
+          break;
+        case "nycha_revenue":
+          if ($headers[$key] == 'adopted_amount') {
+            $adopted_amount = $field;
+          }
+          if ($headers[$key] == 'modified_amount')
+          {
+            $field = $adopted_amount;
+          }
+          break;
         case "citywide_payroll":
           // Display daily wage is hourly rate is zero or '-' if both are zero
           if ($headers[$key] == 'daily_wage') {
@@ -483,7 +493,7 @@ function _checkbook_smart_search_export_data(string $solr_datasource){
     }
 
     // Process records before display
-    if ($domain == "nycha_contracts" || $domain == "nycha_payroll" || $domain == "nycha_spending" || $domain == "citywide_payroll"){
+    if ($domain == "nycha_contracts" || $domain == "nycha_payroll" || $domain == "nycha_spending" || $domain == "nycha_revenue"|| $domain == "citywide_payroll"){
       $csv_result = hyphen_data_export_results($result,$domain);
       //print($results);
     }
@@ -517,7 +527,16 @@ function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'cit
   $search_term = htmlspecialchars_decode($_REQUEST['term'], ENT_QUOTES);
   $search_term = strtolower($search_term);
 
-  $search_term = '(.* ' . $search_term . '.*)|(^' . $search_term . '.*)';
+  // NYCCHKBK - 10039 handling smart search text box autocomplete with special characters.
+  $autoCompleteSearchTerm ='';
+  $terms = explode(' ', $search_term);
+  if (count($terms) > 0) {
+    foreach($terms as $value){
+      $autoCompleteSearchTerm .= CheckbookSolrQuery::escape($value).' ';
+    }
+  }
+
+  $search_term = '(.* ' . urldecode(trim($autoCompleteSearchTerm)). '.*)|(^' . urldecode(trim($autoCompleteSearchTerm)). '.*)';
 
   $query = new CheckbookSolrQuery($solr_datasource);
 
