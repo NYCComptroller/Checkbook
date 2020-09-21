@@ -19,6 +19,8 @@
  */
 
 $revenue_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'revenue');
+// Map modified amount to adopted amount in 10124
+$revenue_results['modified_amount'] = $revenue_results['adopted_amount'];
 $amount_fields = array("adopted_amount", "modified_amount", "revenue_amount", "funds_available");
 
 $count = 1;

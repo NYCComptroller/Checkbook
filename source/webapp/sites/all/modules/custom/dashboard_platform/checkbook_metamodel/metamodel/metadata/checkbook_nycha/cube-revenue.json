@@ -213,7 +213,7 @@
           "function": "COUNT(*)"
         },
         "revenue_modified":{
-          "function":"SUM(COALESCE(modified_amount,0))"
+          "function":"SUM(COALESCE(adopted_amount,0))"
         },
         "revenue_funds_available":{
           "function":"SUM(funds_available)"
