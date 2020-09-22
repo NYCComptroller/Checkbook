@@ -26,7 +26,7 @@
                   "elementsColumn":{
                     "year": "budget_fiscal_year",
                     "adopted": "adopted_budget",
-                    "modified": "adopted_budget",
+                    "modified": "modified_budget",
                     "budget_type": "budget_type",
                     "budget_name": "budget_name",
                     "encumbered": "encumbrance_amount",
@@ -49,7 +49,7 @@
                   "elementsColumn":{
                     "Year": "budget_fiscal_year",
                     "Adopted": "adopted_budget",
-                    "Modified": "adopted_budget",
+                    "Modified": "modified_budget",
                     "Budget Type": "budget_type",
                     "Budget Name": "budget_name",
                     "Encumbered": "encumbrance_amount",
@@ -64,8 +64,8 @@
 
                   }
               }
-          }
-          //,"adjustParameters":"if(function_exists('checkbook_api_adjustBudgetParameterFilters')){checkbook_api_adjustBudgetParameterFilters($data_set,$parameters,$criteria);}"
+          },
+          "adjustSql":"if(function_exists('checkbook_api_adjustNYCHABudgetSql')){checkbook_api_adjustNYCHABudgetSql($sql_query);}"
       },
       "requestParameters":{
           "year":{"valueType":"value", "dataType":"year", "maxLength":4},
