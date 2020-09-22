@@ -593,6 +593,10 @@ function checkbook_api_adjustSpendingDataSetResults(&$data_records) {
 
 }
 
+/***
+ * @param $sql_query
+ * @return string
+ */
 function checkbook_api_adjustSpendingSql(&$sql_query) {
     $alias = '';
     if (strpos($sql_query,'l1.') !== false) {
@@ -632,6 +636,10 @@ SQLEND;
     return $sql_query;
 
 }
+
+/***
+ * @param $sql_query
+ */
 function checkbook_api_adjustNYCHASpendingSql(&$sql_query){
   $year = NULL;
   $sql_parts = explode("WHERE", $sql_query);
@@ -661,8 +669,12 @@ function checkbook_api_adjustNYCHASpendingSql(&$sql_query){
                                                    END AS ".$value, $select_part);
   }
   $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
-
 }
+
+/***
+ * @param $sql_query
+ * @return string
+ */
 function checkbook_api_adjustContractSql(&$sql_query) {
     $sql_parts = explode("WHERE", $sql_query);
     $select_part = $sql_parts[0];
@@ -686,6 +698,10 @@ function checkbook_api_adjustContractSql(&$sql_query) {
   $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
 }
 
+/***
+ * @param $sql_query
+ * @return string
+ */
 function checkbook_api_adjustNYCHAContractSql(&$sql_query){
     $year = NULL;
     $sql_parts = explode("WHERE", $sql_query);
@@ -749,6 +765,10 @@ function checkbook_api_adjustNYCHAContractSql(&$sql_query){
     $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
 }
 
+/***
+ * @param $sql_query
+ * @return string
+ */
 function checkbook_api_adjustPayrollSql(&$sql_query) {
   $sql_parts = explode("FROM", $sql_query);
   $select_part = $sql_parts[0];
@@ -758,6 +778,11 @@ function checkbook_api_adjustPayrollSql(&$sql_query) {
   $select_part = preg_replace('/\bnon_salaried_amount\b/', 'CASE WHEN amount_basis_id = 1 THEN  CAST(\'-\' AS text) ELSE CAST(non_salaried_amount AS Text) END AS non_salaried_amount', $select_part);
   $sql_query = $select_part."FROM".$from_part;
 }
+
+/***
+ * @param $sql_query
+ * @return string
+ */
 function checkbook_api_adjustNYCHAPayrollSql(&$sql_query) {
   $sql_parts = explode("FROM", $sql_query);
   $select_part = $sql_parts[0];
@@ -768,6 +793,20 @@ function checkbook_api_adjustNYCHAPayrollSql(&$sql_query) {
   $select_part =  str_replace("hourly_rate", "CASE WHEN amount_basis_id = 3 AND non_salaried_amount > 0 THEN  CAST(non_salaried_amount AS text) ELSE CAST('-' AS Text) END AS hourly_rate",$select_part);
   $sql_query = $select_part."FROM".$from_part;
 }
+
+/***
+ * @param $sql_query
+ * @return string
+ */
+function checkbook_api_adjustNYCHABudgetSql(&$sql_query){
+  $sql_parts = explode("WHERE", $sql_query);
+  $select_part = $sql_parts[0];
+  $where_part = $sql_parts[1];
+  $select_part =  str_replace("modified_budget", "adopted_budget AS modified_budget", $select_part);
+  $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
+}
+
+
 function checkbook_api_change_datasource($datasource,$param){
 	if($datasource != null){
 		return str_replace("checkbook:", $datasource . ":",$param);
