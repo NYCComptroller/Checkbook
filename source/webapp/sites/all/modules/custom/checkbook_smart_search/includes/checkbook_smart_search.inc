@@ -342,18 +342,18 @@ function _checkbook_smart_search_export_download(string $solr_datasource){
 }
 
 /**
+ * Processes hyphen fields and special case values for export results
  * @param string $result
+ * @param $domain
  * @return string $modified_result
  */
-// Process hyphen fields and special case values for export results
-function hyphen_data_export_results($result,$domain){
+function adjustExportResults($result,$domain){
   $lines = explode("\n", $result);
   $headers = str_getcsv(array_shift($lines));
-  $modified_result;
+  $modified_result = "";
   foreach ($lines as $line) {
     $row = array();
     foreach (str_getcsv($line) as $key => $field) {
-
       switch($domain) {
         case "nycha_contracts":
           if ($headers[$key] == 'agreement_type_name') {
@@ -402,8 +402,15 @@ function hyphen_data_export_results($result,$domain){
           if ($headers[$key] == 'adopted_amount') {
             $adopted_amount = $field;
           }
-          if ($headers[$key] == 'modified_amount')
-          {
+          if ($headers[$key] == 'modified_amount') {
+            $field = $adopted_amount;
+          }
+          break;
+        case "nycha_budget":
+          if ($headers[$key] == 'adopted_budget') {
+            $adopted_amount = $field;
+          }
+          if ($headers[$key] == 'modified_budget') {
             $field = $adopted_amount;
           }
           break;
@@ -449,13 +456,11 @@ function hyphen_data_export_results($result,$domain){
       }
       $row[$headers[$key]] = $field;
     }
-    if($domain == "citywide_payroll")
-    {
+    if($domain == "citywide_payroll") {
       unset($row['daily_wage']);
     }
     $rows = implode(",", $row);
     $modified_result .= $rows . "\n";
-    $rows = "";
   }
   return($modified_result);
 }
@@ -493,11 +498,9 @@ function _checkbook_smart_search_export_data(string $solr_datasource){
     }
 
     // Process records before display
-    if ($domain == "nycha_contracts" || $domain == "nycha_payroll" || $domain == "nycha_spending" || $domain == "nycha_revenue"|| $domain == "citywide_payroll"){
-      $csv_result = hyphen_data_export_results($result,$domain);
-      //print($results);
-    }
-    else{
+    if (in_array($domain, array('nycha_contracts', 'nycha_payroll', 'nycha_spending', 'nycha_revenue', 'nycha_budget', 'citywide_payroll'))){
+      $csv_result = adjustExportResults($result,$domain);
+    } else{
       $results = explode("\n", $result);
       unset($results[0]);
       $csv_result = implode("\n", $results);
