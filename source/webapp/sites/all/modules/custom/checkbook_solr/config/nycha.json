@@ -332,7 +332,7 @@
     "budget":{
       "fiscal_year": "Fiscal Year",
       "adopted_budget": "Adopted",
-      "adopted_budget": "Modified",
+      "modified_budget": "Modified",
       "budget_type": "Budget Type",
       "budget_name": "Budget Name",
       "encumbrance_amount": "Encumbered",
