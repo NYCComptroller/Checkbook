@@ -195,22 +195,22 @@
           "function":"SUM(COALESCE(adopted_budget,0))"
         },
         "g100m_count": {
-          "function": "SUM(CASE WHEN COALESCE(modified_budget,0) > 100000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE(adopted_budget,0) > 100000000 THEN 1 ELSE 0 END)"
         },
         "g50m_le100m_count": {
-          "function": "SUM(CASE WHEN COALESCE(modified_budget,0) > 50000000 AND COALESCE(modified_budget,0) <= 100000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE(adopted_budget,0) > 50000000 AND COALESCE(adopted_budget,0) <= 100000000 THEN 1 ELSE 0 END)"
         },
         "g25m_le50m_count": {
-          "function": "SUM(CASE WHEN COALESCE(modified_budget,0) > 25000000 AND COALESCE(modified_budget,0) <= 50000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE(adopted_budget,0) > 25000000 AND COALESCE(adopted_budget,0) <= 50000000 THEN 1 ELSE 0 END)"
         },
         "g10m_le25m_count": {
-          "function": "SUM(CASE WHEN COALESCE(modified_budget,0) > 10000000 AND COALESCE(modified_budget,0) <= 25000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE(adopted_budget,0) > 10000000 AND COALESCE(adopted_budget,0) <= 25000000 THEN 1 ELSE 0 END)"
         },
         "ge1m_le10m_count": {
-          "function": "SUM(CASE WHEN COALESCE(modified_budget,0) >= 1000000 AND COALESCE(modified_budget,0) <= 10000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE(adopted_budget,0) >= 1000000 AND COALESCE(adopted_budget,0) <= 10000000 THEN 1 ELSE 0 END)"
         },
         "less1m_count": {
-          "function": "SUM(CASE WHEN COALESCE(modified_budget,0) < 1000000 THEN 1 ELSE 0 END)"
+          "function": "SUM(CASE WHEN COALESCE(adopted_budget,0) < 1000000 THEN 1 ELSE 0 END)"
         },
         "committed_g100m_count": {
           "function": "SUM(CASE WHEN COALESCE(committed,0) > 100000000 THEN 1 ELSE 0 END)"
