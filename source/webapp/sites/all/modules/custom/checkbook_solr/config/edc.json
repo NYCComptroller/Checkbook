@@ -130,6 +130,6 @@
 
   },
   "sort": {
-    "sort_by":"domain_ordering asc, check_eft_issued_date_export desc, date_ordering desc"
+    "sort_by":"domain_ordering asc, date_ordering desc, check_amount desc, disbursement_line_item_id desc"
   }
 }
