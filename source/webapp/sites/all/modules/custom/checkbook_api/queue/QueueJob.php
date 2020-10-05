@@ -250,10 +250,10 @@ class QueueJob {
 
             if ($is_derived_column) {
                 $sql_part = substr_replace($sql_part, "", $pos);
-                $new_select_part .= str_replace($alias . $column,"REPLACE(REPLACE(REPLACE(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''),'&','&amp;'),'>','&gt;'),'<','&lt;')",$sql_part);
+                $new_select_part .= str_replace($alias . $column,"REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g'))),'&','&amp;'),'>','&gt;'),'<','&lt;')",$sql_part);
             }
             else {
-                $new_select_part .= "REPLACE(REPLACE(REPLACE(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''),'&','&amp;'),'>','&gt;'),'<','&lt;')";
+                $new_select_part .= "REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g'))),'&','&amp;'),'>','&gt;'),'<','&lt;')";
             }
 
             //column close tag
