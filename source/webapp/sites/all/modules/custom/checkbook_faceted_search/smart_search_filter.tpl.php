@@ -63,6 +63,16 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       continue;
     }
 
+    // Donot display future year in the fiscal year facet
+    $current_year = CheckbookDateUtil::getCurrentFiscalYear();;
+    if(strtolower($facet_name) == 'facet_year_array'){
+      foreach($facet->results as $fvalue => $fcount) {
+        if ($fvalue > $current_year) {
+          unset($facet->results[$fvalue]);
+        }
+      }
+    }
+
     $span='';
     $display_facet = 'none';
 
