@@ -60,7 +60,6 @@
     "html_class": "initiative-table transaction-table",
     "no_results_content":"No Results Found",
     "dataset": "checkbook:spending_transactions_all",
-   // "uniqueSortColumn":"disbursement_line_item_id",
     "columns": [
         "disbursement_number",
         "agency_id",
