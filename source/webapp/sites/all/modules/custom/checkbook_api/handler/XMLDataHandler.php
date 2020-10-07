@@ -203,7 +203,7 @@ class XMLDataHandler extends AbstractDataHandler
           $data_set_column = isset($selectColumn) ? $selectColumn : $column;
           $tag = $columnMappings[$data_set_column];
           $new_select_part .= "\n||'<".$tag.">' || ";
-          $new_select_part .= "COALESCE(CAST(" . $alias . $column . " AS VARCHAR),'')";
+          $new_select_part .= "regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g')";
           $new_select_part .= " || '</".$tag.">'";
         }
 

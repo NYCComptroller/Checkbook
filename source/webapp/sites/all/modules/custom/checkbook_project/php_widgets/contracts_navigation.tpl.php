@@ -84,7 +84,7 @@ if(!_checkbook_check_isNYCHAPage()) {
             $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), $contracts_url, $options);
         } else {
             $contracts_url = RequestUtil::getTopNavURL("contracts");
-            $contracts_link = ($contracts_url) ? l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), $contracts_url, $options) : l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), '', $options_disabled);
+            $contracts_link = ($contracts_url && ($node->data[14]['total_contracts'] !=0 )) ? l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), $contracts_url, $options) : l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), '', $options_disabled);
         }
     } else {
         $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format($contract_amount, 1, '$'), RequestUtil::getTopNavURL("contracts"), $options);

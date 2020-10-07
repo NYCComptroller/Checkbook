@@ -56,29 +56,28 @@ class QueueJob {
 
         try {
             $this->prepareQueueJob();
+            $commands = NULL;
             switch($this->responseFormat) {
                 case "csv":
                     if($this->recordCount > $this->fileLimit) {
                         $commands = $this->getCSVCommands();
                         $compressed_filename  = $this->prepareFileName();
                         $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
-                        $this->processCommands($commands);
                     }
                     else {
                         $filename = $this->prepareFileName();
                         $commands[$filename][] = $this->getCSVJobCommand($filename);
                         $commands[$filename][] = $this->getCSVHeaderCommand($filename);
                         $commands[$filename][] = $this->getMoveCommand($filename);
-                        $this->processCommands($commands);
                     }
-                    break;
+                  break;
                 case "xml":
                     $filename = $this->prepareFileName();
                     $commands = $this->getXMLJobCommands($filename);
                     $commands[$filename][] = $this->getMoveCommand($filename, 'xml.zip');
-                    $this->processCommands($commands);
                     break;
             }
+            $this->processCommands($commands);
         }
         catch (Exception $e) {
             LogHelper::log_error("{$this->logId}: Exception occurred while processing job '{$this->jobDetails['job_id']}' Exception is: " . $e);
@@ -251,10 +250,10 @@ class QueueJob {
 
             if ($is_derived_column) {
                 $sql_part = substr_replace($sql_part, "", $pos);
-                $new_select_part .= str_replace($alias . $column,"REPLACE(REPLACE(REPLACE(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''),'&','&amp;'),'>','&gt;'),'<','&lt;')",$sql_part);
+                $new_select_part .= str_replace($alias . $column,"REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g'))),'&','&amp;'),'>','&gt;'),'<','&lt;')",$sql_part);
             }
             else {
-                $new_select_part .= "REPLACE(REPLACE(REPLACE(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''),'&','&amp;'),'>','&gt;'),'<','&lt;')";
+                $new_select_part .= "REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g')),'&','&amp;'),'>','&gt;'),'<','&lt;')";
             }
 
             //column close tag
@@ -391,16 +390,19 @@ class QueueJob {
     }
 
     /**
+    * Returns the name of output file generated
     * @return string
     */
     function getFilename() {
         static $app_file_name = NULL;
         if (!isset($app_file_name)) {
             if($this->responseFormat == "csv" && $this->recordCount > $this->fileLimit) {
+                // For CSV, if the record count is greater than the fileLimit(1M), records will be exported into multiple files and zipped
                 $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
-            }
-            else {
-                $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . (($this->responseFormat == 'xml') ? 'zip' : $this->responseFormat);
+            } else {
+              // For XML, output file is zipped (filename.xml.zip) irrespective of the record count.
+              //For CSV, if the record count is less than the fileLimit(1M), a single file CSV file will be generated
+                $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat . (($this->responseFormat == 'xml') ? '.zip' : '');
             }
         }
 

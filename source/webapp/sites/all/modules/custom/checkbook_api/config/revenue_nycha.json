@@ -12,7 +12,7 @@
             "revenue_category": "revenue_category",
             "revenue_class": "revenue_class",
             "adopted": "adopted_amount",
-            "modified": "modified_amount",
+            "modified": "adopted_amount",
             "recognized": "revenue_amount",
             "remaining": "funds_available"
         },
