@@ -27,7 +27,7 @@
 
         },
         "dataset":{
-            "sortColumn":["-registered_date", "-agreement_id"],
+            "sortColumn":["-contract_number", "vendor_record_type", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions_by_prime_sub_vendor_datafeeds",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
@@ -307,7 +307,7 @@
             "current_amount":"amount_id"
         },
         "dataset":{
-            "sortColumn":["vendor_record_type", "-agreement_id"],
+            "sortColumn":["-contract_number", "vendor_record_type", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions_by_prime_sub_vendor",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
@@ -627,7 +627,7 @@
             "associated_prime_vendor":"associated_prime_vendor"
         },
         "dataset":{
-            "sortColumn":["-registered_date", "-agreement_id"],
+            "sortColumn":["-contract_number", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
                 "contract_number":"like",
@@ -823,7 +823,7 @@
             "associated_prime_vendor":"associated_prime_vendor"
         },
         "dataset":{
-            "sortColumn":["-registered_date", "-agreement_id"],
+            "sortColumn":["-contract_number", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
                 "contract_number":"like",
@@ -1009,7 +1009,7 @@
             "current_amount":"amount_id"
         },
         "dataset":{
-            "sortColumn":["-registered_date", "-agreement_id"],
+            "sortColumn":["-contract_number", "vendor_record_type", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions_by_prime_sub_vendor_datafeeds",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
@@ -1292,7 +1292,7 @@
             "current_amount":"amount_id"
         },
         "dataset":{
-            "sortColumn":["vendor_record_type", "-agreement_id"],
+            "sortColumn":["-contract_number", "vendor_record_type", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions_by_prime_sub_vendor",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
@@ -1609,7 +1609,7 @@
             "industry":"industry_type_id"
         },
         "dataset":{
-            "sortColumn":["-cif_received_date","-contract_number","-version_number"],
+            "sortColumn":["-revised_maximum_amount","-contract_number","-version_number"],
             "name":"checkbook:pending_contracts",
             "columnTypes":{
                 "contract_number":"like",
