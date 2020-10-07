@@ -32,7 +32,7 @@
 $pagetype = PageType::getCurrent();
 $domain = CheckbookDomain::getCurrent();
 $setAutoDeselect= RequestUtil::isNychaAmountLinks();
-
+$urlParameter = $node->widgetConfig->urlParameterName;
 // Set disbaleFacet variable to true when the page is not advanced search and allowFacetDeselect is not set
 if (($pagetype != 'advanced_search_page') && (!(isset($node->widgetConfig->allowFacetDeselect)) || ($setAutoDeselect == 1))){
   $disableFacet = true;
@@ -42,7 +42,7 @@ if (($pagetype != 'advanced_search_page') && (!(isset($node->widgetConfig->allow
 // Disable only url parameters
 if($disableFacet) { //only URL parameters count and can be disabled
     $url_ref = RequestUtil::isNewWindow() ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
-    $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName. '/"', $url_ref);
+    $disableFacet = preg_match('"/' . $urlParameter. '/"', $url_ref);
 }
 
 if(isset($node->widgetConfig->maxSelect) && !$disableFacet){
