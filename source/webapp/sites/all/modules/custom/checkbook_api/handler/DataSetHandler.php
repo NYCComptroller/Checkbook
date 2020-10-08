@@ -132,8 +132,8 @@ class DataSetHandler {
    * @param $config_type
    */
   private function prepareParameterConfiguration(&$parameters, $column, $value, $config_type) {
-    if($config_type != "range") {
-      // Do not escape special characters for range values
+    // Do not escape special characters for range values and values which donot have config_type set
+    if(isset($config_type) && ($config_type != "range")) {
       $value = pg_escape_string(htmlspecialchars_decode($value));
     }
     switch ($config_type) {
@@ -144,7 +144,6 @@ class DataSetHandler {
         ));
         $parameters[$column] = $conditions;
         break;
-
       case "like":
         $parameters[$column] = data_controller_get_operator_factory_instance()->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array(
           $value,
@@ -152,7 +151,6 @@ class DataSetHandler {
           TRUE,
         ));
         break;
-
       case "trueLike":
         $parameters[$column] = data_controller_get_operator_factory_instance()->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array(
           $value,
@@ -165,7 +163,6 @@ class DataSetHandler {
           $pattern = "(.* $value .*)|(.* $value$)|(^$value.*)|(.* $value.*)";
           $parameters[$column] = data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
         break;
-
       default:
         $parameters[$column] = $value;
         break;
