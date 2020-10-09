@@ -44,30 +44,6 @@ class CheckbookDateUtilTest extends TestCase
     }
 
     /**
-     * Tests getCurrentFiscalYear function
-     */
-    public function testCurrentFiscalYear()
-    {
-        $year = date('Y');
-        if (date('m') > 6) {
-            $year++;
-        }
-        $this->assertEquals($year, CheckbookDateUtil::getCurrentFiscalYear(Datasource::CITYWIDE));
-    }
-
-    /**
-     * Tests getCurrentFiscalYearId function
-     */
-     public function testCurrentFiscalYearId()
-    {
-        $year = date('Y');
-        if (date('m') > 6) {
-            $year++;
-        }
-        $this->assertEquals($year - 1899, CheckbookDateUtil::getCurrentFiscalYearId(Datasource::CITYWIDE));
-    }
-
-    /**
      * Tests year2yearId function
      */
     public function testYear2Id()
