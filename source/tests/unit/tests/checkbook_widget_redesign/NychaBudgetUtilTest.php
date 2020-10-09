@@ -2,6 +2,7 @@
 
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/budget/NychaBudgetUtil.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/constants/Constants.php';
+include_once CUSTOM_MODULES_DIR . '/widget_framework/widget/widget.module';
 
 use PHPUnit\Framework\TestCase;
 /**
