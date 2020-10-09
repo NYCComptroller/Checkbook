@@ -4,6 +4,24 @@ include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/budget/Nycha
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/constants/Constants.php';
 include_once CUSTOM_MODULES_DIR . '/widget_framework/widget/widget.module';
 
+$module_data_controller_path = realpath(drupal_get_path('module', 'data_controller'));
+
+require_once($module_data_controller_path . '/common/pattern/AbstractObject.php');
+require_once($module_data_controller_path . '/common/object/comparator/Comparator.php');
+require_once($module_data_controller_path . '/common/object/comparator/handler/AbstractComparator.php');
+require_once($module_data_controller_path . '/common/object/comparator/handler/AbstractValueComparator.php');
+require_once($module_data_controller_path . '/common/object/comparator/handler/PropertyBasedComparator.php');
+require_once($module_data_controller_path . '/common/object/comparator/handler/DefaultPropertyBasedComparator.php');
+require_once($module_data_controller_path . '/common/object/exception/UnsupportedOperationException.php');
+require_once($module_data_controller_path . '/datasource/formatter/ResultFormatter.php');
+require_once($module_data_controller_path . '/datasource/formatter/handler/SpecialCharacterResultFormatter.php');
+require_once($module_data_controller_path .'/common/object/converter/DataConverter.php');
+require_once($module_data_controller_path .'/common/object/converter/handler/AbstractDataConverter.php');
+require_once($module_data_controller_path .'/common/object/converter/handler/AbstractJson2PHP.php');
+require_once($module_data_controller_path .'/common/object/converter/handler/PHP2Json.php');
+require_once($module_data_controller_path .'/common/object/converter/handler/AbstractJson2PHP.php');
+require_once($module_data_controller_path .'/common/object/converter/handler/Json2PHP.php');
+
 use PHPUnit\Framework\TestCase;
 /**
  * Class NychaBudgetUtilTest
