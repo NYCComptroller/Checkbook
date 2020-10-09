@@ -551,8 +551,9 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
       return ucwords(strtolower($exp_categorys[0]['expenditure_type_description']));
       break;
     case "program_phase_id":
-      $exp_categorys = _checkbook_project_querydataset($data_source . ':budget', array('program_phase_description', 'program_phase_id'), array($keyword => $id));
-      return ucwords(strtolower($exp_categorys[0]['program_phase_description']));
+      $program = _checkbook_project_querydataset($data_source . ':budget', array('program_phase_description', 'program_phase_id'), array($keyword => $id));
+      $result = isset($program[0]['program_phase_description']) ? ucwords(strtolower($program[0]['program_phase_description'])) : NULL;
+      return $result;
       break;
     case "rev_program_phase_id":
       $keyword = "program_phase_id";
@@ -560,8 +561,8 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
       return ucwords(strtolower($prog_categorys[0]['program_phase_description']));
       break;
     case "gl_project_id":
-      $exp_categorys = _checkbook_project_querydataset($data_source . ':budget', array('gl_project_description', 'gl_project_id'), array($keyword => $id));
-      return ucwords(strtolower($exp_categorys[0]['gl_project_description']));
+      $project = _checkbook_project_querydataset($data_source . ':budget', array('gl_project_description', 'gl_project_id'), array($keyword => $id));
+      return ucwords(strtolower($project[0]['gl_project_description']));
       break;
     case "rev_gl_project_id":
       $keyword ="gl_project_id";
