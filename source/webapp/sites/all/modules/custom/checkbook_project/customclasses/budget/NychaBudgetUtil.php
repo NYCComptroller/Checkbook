@@ -51,8 +51,8 @@ class NychaBudgetUtil{
   }
 
   /**
-   * @param $widget Widget Name
-   * @param $bottomURL
+   * @param $widget string Widget Name
+   * @param $bottomURL string
    * @return null|string -- Returns Sub Title for Committed Transactions Details
    */
   static public function getTransactionsSubTitle($widget, $bottomURL){
@@ -89,10 +89,10 @@ class NychaBudgetUtil{
   }
 
   /**
-   * @param $query
-   * @return $query - Alteres query
+   * @param $query string
+   * @return string Altered Query
    */
-  static public function alterPercentDifferenceQuery($query){
+  static public function alterPercentDifferenceQuery($query){log_error($query);
     //Remove the filters at the end for count query
     if (strpos($query, 'COUNT(*) AS record_count')) {
       $filters = substr($query, strpos($query, 'WHERE b.'));
@@ -118,7 +118,7 @@ class NychaBudgetUtil{
 
     $dataSetFilter2 = "WHERE (a.filter_type = 'H' AND a.is_active = 1)";
     $newFilter2 = str_replace(')', $urlFilters . ')', $dataSetFilter2);
-    $query = str_replace($dataSetFilter2, $newFilter2, $query);
+    $query = str_replace($dataSetFilter2, $newFilter2, $query);log_error($query);die;
 
     return $query;
   }
