@@ -2,6 +2,7 @@
 
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/budget/NychaBudgetUtil.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/constants/Constants.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/RequestUtil.php';
 
 
 use PHPUnit\Framework\TestCase;
@@ -25,7 +26,7 @@ class NychaBudgetUtilTest extends TestCase
     public function test_getTransactionsSubTitle()
     {
         $result = NychaBudgetUtil::getTransactionsSubTitle('comm_prgm', 'panel_html/nycha_budget_transactions/nycha_budget/transactions/year/121/datasource/checkbook_nycha/widget/comm_prgm/budgettype/committed/program/29');
-        $this->assertEquals("<b>Program:</b>Default", $result);
+        $this->assertEquals("<b>Program: </b>Default", $result);
     }
 
     public function test_alterPercentDifferenceQuery(){
