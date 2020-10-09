@@ -92,7 +92,7 @@ class NychaBudgetUtil{
    * @param $query string
    * @return string Altered Query
    */
-  static public function alterPercentDifferenceQuery($query){log_error($query);
+  static public function alterPercentDifferenceQuery($query){
     //Remove the filters at the end for count query
     if (strpos($query, 'COUNT(*) AS record_count')) {
       $filters = substr($query, strpos($query, 'WHERE b.'));
@@ -118,7 +118,7 @@ class NychaBudgetUtil{
 
     $dataSetFilter2 = "WHERE (a.filter_type = 'H' AND a.is_active = 1)";
     $newFilter2 = str_replace(')', $urlFilters . ')', $dataSetFilter2);
-    $query = str_replace($dataSetFilter2, $newFilter2, $query);log_error($query);die;
+    $query = str_replace($dataSetFilter2, $newFilter2, $query);
 
     return $query;
   }
