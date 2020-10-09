@@ -397,7 +397,7 @@ final class File extends Renderer
                 continue;
             }
 
-            [$token, $value] = $token;
+            list($token, $value) = $token;
 
             $value = \str_replace(
                 ["\t", ' '],
