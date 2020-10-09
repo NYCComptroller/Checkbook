@@ -2463,3 +2463,23 @@ function _ckbk_excerpt($text='', int $len=20):string{
   if(!$text){return '';}
   return (strlen($text) > $len) ? substr($text, 0, $len) . '...' : $text;
 }
+
+/**
+ * @param $datasetName
+ * @param bool $keepOriginalDatasource
+ * @return mixed
+ */
+function _update_dataset_datasource($datasetName,$keepOriginalDatasource = false){
+  if($keepOriginalDatasource == true){
+    return $datasetName;
+  }
+  $datasource = RequestUtilities::getRequestParamValue('datasource');
+  if('checkbook_oge' === $datasource){
+    $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
+  }else if('checkbook_nycha' === $datasource){
+    $database = str_replace("checkbook:", "checkbook_nycha:",$datasetName);
+  }else{
+    $database = $datasetName;
+  }
+  return $database;
+}
