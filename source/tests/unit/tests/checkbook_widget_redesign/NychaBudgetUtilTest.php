@@ -15,7 +15,7 @@ class NychaBudgetUtilTest extends TestCase
      */
     public function test_getTransactionsTitle()
     {
-        $result = NychaBudgetUtil::getTransactionsTitle('/panel_html/nycha_budget_transactions/nycha_budget/transactions/year/121/datasource/checkbook_nycha/widget/wt_program');
+        $result = NychaBudgetUtil::getTransactionsTitle('panel_html/nycha_budget_transactions/nycha_budget/transactions/year/121/datasource/checkbook_nycha/widget/wt_program');
         $this->assertEquals('Programs Expense Budget Transactions', $result);
     }
 
@@ -24,7 +24,7 @@ class NychaBudgetUtilTest extends TestCase
      */
     public function test_getTransactionsSubTitle()
     {
-        $result = NychaBudgetUtil::getTransactionsSubTitle('comm_prgm', '/panel_html/nycha_budget_transactions/nycha_budget/transactions/year/121/datasource/checkbook_nycha/widget/comm_prgm/budgettype/committed/program/29');
+        $result = NychaBudgetUtil::getTransactionsSubTitle('comm_prgm', 'panel_html/nycha_budget_transactions/nycha_budget/transactions/year/121/datasource/checkbook_nycha/widget/comm_prgm/budgettype/committed/program/29');
         $this->assertEquals("<b>Program:</b>Default", $result);
     }
 
