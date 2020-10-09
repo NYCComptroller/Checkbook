@@ -3,7 +3,12 @@
 
 class NychaRevenueUrlService {
 
-    static function getFooterUrl($parameters = null) {
+  /**
+   * Returns Footer URL for widget
+   * @param null $parameters
+   * @return string
+   */
+  public static function getFooterUrl($parameters = null) {
       $url = "/panel_html/nycha_revenue_transactions/nycha_revenue/transactions"
         . RequestUtilities::buildUrlFromParam('year')
         . RequestUtilities::buildUrlFromParam('expcategory')
@@ -22,7 +27,7 @@ class NychaRevenueUrlService {
    * @param $yearId parameter
    * @return string
    */
-  static function generateLandingPageUrl($urlParamName, $urlParamValue, $yearId = null)
+  public static function generateLandingPageUrl($urlParamName, $urlParamValue, $yearId = null)
   {
     $yearId = (isset($yearId)) ? $yearId : RequestUtilities::getRequestParamValue('year');
     $yearURL = '/year/'. ((isset($yearId)) ? $yearId : CheckbookDateUtil::getCurrentFiscalYearId(Datasource::NYCHA));
@@ -46,7 +51,7 @@ class NychaRevenueUrlService {
    * @param $yearId parameter
    * @return string
    */
-  static function recRevenueUrl($dynamic_parameter, $widget) {
+  public static function recRevenueUrl($dynamic_parameter, $widget) {
     $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
     $url = "/panel_html/nycha_revenue_transactions/nycha_revenue/transactions"
       . RequestUtilities::buildUrlFromParam('year')

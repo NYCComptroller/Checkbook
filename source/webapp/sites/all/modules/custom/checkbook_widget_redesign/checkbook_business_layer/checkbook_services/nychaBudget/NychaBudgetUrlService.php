@@ -2,8 +2,12 @@
 
 
 class NychaBudgetUrlService {
-
-    static function getFooterUrl($parameters = null) {
+  /**
+   * Returns Footer URL for widget
+   * @param null $parameters
+   * @return string
+   */
+    public static function getFooterUrl($parameters = null) {
       $url = "/panel_html/nycha_budget_transactions/nycha_budget/transactions"
         . RequestUtilities::buildUrlFromParam('year')
         . RequestUtilities::buildUrlFromParam('datasource')
@@ -21,9 +25,9 @@ class NychaBudgetUrlService {
    * @param $widget
    * @return string
    */
-  static function getPercentDiffFooterUrl($footerUrl, $widget){
+  public static function getPercentDiffFooterUrl($footerUrl, $widget){
     $url = null;
-    switch($widget){
+    switch($widget) {
       case "exp_details":
         $url = "/panel_html/nycha_budget_percent_difference_details/nycha_budget/details/budgettype/percdiff/widget/exp_details";
         break;
@@ -55,7 +59,7 @@ class NychaBudgetUrlService {
   * @param $budgetype
   * @return string
   */
-  static function committedBudgetUrl($dynamic_parameter, $widget, $budgetype) {
+  public static function committedBudgetUrl($dynamic_parameter, $widget, $budgetype) {
     $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
     $url = "/panel_html/nycha_budget_transactions/nycha_budget/transactions"
       . RequestUtilities::buildUrlFromParam('year')
@@ -79,7 +83,7 @@ class NychaBudgetUrlService {
    * @param $urlParamValue
    * @return string
    */
-  static function generateLandingPageUrl($urlParamName, $urlParamValue)
+  public static function generateLandingPageUrl($urlParamName, $urlParamValue)
   {
     $url = '/nycha_budget'
       .RequestUtilities::buildUrlFromParam('year')
