@@ -51,8 +51,8 @@ class NychaBudgetUtil{
   }
 
   /**
-   * @param $widget Widget Name
-   * @param $bottomURL
+   * @param $widget string Widget Name
+   * @param $bottomURL string
    * @return null|string -- Returns Sub Title for Committed Transactions Details
    */
   static public function getTransactionsSubTitle($widget, $bottomURL){
@@ -89,8 +89,8 @@ class NychaBudgetUtil{
   }
 
   /**
-   * @param $query
-   * @return $query - Alteres query
+   * @param $query string
+   * @return string Altered Query
    */
   static public function alterPercentDifferenceQuery($query){
     //Remove the filters at the end for count query
