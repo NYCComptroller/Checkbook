@@ -671,6 +671,7 @@ function checkbook_api_adjustNYCHASpendingSql(&$sql_query,$criteria){
     }
   }
   $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
+  print ($sql_query);
 }
 
 /***
