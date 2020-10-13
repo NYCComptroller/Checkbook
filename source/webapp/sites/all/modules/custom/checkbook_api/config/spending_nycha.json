@@ -107,7 +107,7 @@
           }
         }
       },
-      "adjustSql":"if(function_exists('checkbook_api_adjustNYCHASpendingSql')){checkbook_api_adjustNYCHASpendingSql($sql_query);}"
+      "adjustSql":"$criteria=$this->requestSearchCriteria->getCriteria();if(function_exists('checkbook_api_adjustNYCHASpendingSql')){checkbook_api_adjustNYCHASpendingSql($sql_query,$criteria);}"
     },
     "requestParameters": {
       "other_government_entities_code": {"valueType": "value", "dataType": "text", "maxLength": "3"},
