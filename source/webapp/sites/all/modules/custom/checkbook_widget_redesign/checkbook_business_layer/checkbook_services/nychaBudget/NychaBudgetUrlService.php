@@ -25,24 +25,26 @@ class NychaBudgetUrlService {
    * @param $widget
    * @return string
    */
-  public static function getPercentDiffFooterUrl($footerUrl, $widget){
+  public static function getPercentDiffFooterUrl($footerUrl, $widget = null){
     $url = null;
-    switch($widget) {
-      case "exp_details":
-        $url = "/panel_html/nycha_budget_percent_difference_details/nycha_budget/details/budgettype/percdiff/widget/exp_details";
-        break;
-      case "resp_details":
-        $url = "/panel_html/nycha_budget_respcenter_details/nycha_budget/respcenter_details/budgettype/percdiff/widget/resp_details";
-        break;
-      case "prgm_details":
-        $url = "/panel_html/nycha_budget_program_details/nycha_budget/program_details/budgettype/percdiff/widget/prgm_details";
-        break;
-      case "fund_details":
-        $url = "/panel_html/nycha_budget_fundsrc_details/nycha_budget/fundsrc_details/budgettype/percdiff/widget/fund_details";
-        break;
-      case "proj_details":
-        $url = "/panel_html/nycha_budget_project_details/nycha_budget/project_details/budgettype/percdiff/widget/proj_details";
-        break;
+    if(isset($widget)) {
+      switch ($widget) {
+        case "exp_details":
+          $url = "/panel_html/nycha_budget_percent_difference_details/nycha_budget/details/budgettype/percdiff/widget/exp_details";
+          break;
+        case "resp_details":
+          $url = "/panel_html/nycha_budget_respcenter_details/nycha_budget/respcenter_details/budgettype/percdiff/widget/resp_details";
+          break;
+        case "prgm_details":
+          $url = "/panel_html/nycha_budget_program_details/nycha_budget/program_details/budgettype/percdiff/widget/prgm_details";
+          break;
+        case "fund_details":
+          $url = "/panel_html/nycha_budget_fundsrc_details/nycha_budget/fundsrc_details/budgettype/percdiff/widget/fund_details";
+          break;
+        case "proj_details":
+          $url = "/panel_html/nycha_budget_project_details/nycha_budget/project_details/budgettype/percdiff/widget/proj_details";
+          break;
+      }
     }
     if(isset($url)){
       return str_replace("/panel_html/nycha_budget_transactions/nycha_budget/transactions", $url, $footerUrl);
