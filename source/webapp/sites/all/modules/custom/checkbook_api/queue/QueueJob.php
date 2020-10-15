@@ -247,14 +247,21 @@ class QueueJob {
 
             //column open tag
             $new_select_part .= "\n||'<".$tag.">' || ";
-
             if ($is_derived_column) {
+            $sql_part = substr_replace($sql_part, "", $pos);
+            $cast_section = "regexp_replace(COALESCE(CAST(" . $sql_part . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g')";
+            $new_select_part .= "REPLACE(REPLACE(REPLACE(". $cast_section .",'&','&amp;'),'>','&gt;'),'<','&lt;')";
+            }
+            else {
+            $new_select_part .= "REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g'),'&','&amp;'),'>','&gt;'),'<','&lt;')";
+            }
+            /*if ($is_derived_column) {
                 $sql_part = substr_replace($sql_part, "", $pos);
                 $new_select_part .= str_replace($alias . $column,"REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g'))),'&','&amp;'),'>','&gt;'),'<','&lt;')",$sql_part);
             }
             else {
                 $new_select_part .= "REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g')),'&','&amp;'),'>','&gt;'),'<','&lt;')";
-            }
+            }*/
 
             //column close tag
             $new_select_part .= " || '</".$tag.">'";
