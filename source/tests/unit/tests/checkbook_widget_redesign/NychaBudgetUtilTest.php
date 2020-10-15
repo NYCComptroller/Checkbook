@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class NychaBudgetUtilTest
  */
-class NychaBudgetUtilTest extends TestCase
+class NychaBudgetUtilTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests getTransactionsTitle() function
