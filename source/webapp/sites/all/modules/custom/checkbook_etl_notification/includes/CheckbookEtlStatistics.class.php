@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class CheckbookEtlStatisticss
+ * Class CheckbookEtlStatistics
  */
 class CheckbookEtlStatistics
 {
