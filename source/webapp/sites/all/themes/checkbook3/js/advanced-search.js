@@ -1027,7 +1027,7 @@
         if ('checkbook_nycha' == data_source) {
           solr_datasource = 'nycha';
         }else{
-          agency_id = $("edit-checkbook-payroll-agencies").val() || 0;
+          agency_id = $("#edit-checkbook-payroll-agencies").val() || 0;
         }
 
         var filters = {
