@@ -530,21 +530,6 @@ function checkbook_api_adjustPayrollParameterFilters(&$data_set, &$parameters, $
 }
 
 /**
- * Used to adjust columns in the data set after sql call.  This is to handle derived columns
- * @param $data_records
- */
-function checkbook_api_adjustPayrollDataSetResults(&$data_records) {
-
-    foreach($data_records as $key => $data_record) {
-
-        //Derive payroll type from amount_basis_id
-        if(isset($data_record['amount_basis_id'])) {
-            $data_records[$key]['amount_basis_id'] = PayrollUtil::getEmploymentTypeByAmountBasisId($data_record['amount_basis_id']);
-        }
-    }
-}
-
-/**
  * Function to adjust the parameters before for the api sql call for spending
  *
  * @param $data_set
