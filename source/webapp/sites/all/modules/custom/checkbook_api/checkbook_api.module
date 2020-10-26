@@ -216,11 +216,11 @@ function checkbook_api_adjustBudgetParameterFilters(&$data_set, &$parameters, $c
     if(!isset($parameters['budget_code']) && isset($parameters['budget_code_name'])) {
         $logicalOrColumns[] = array("budget_code","budget_code_name");
         $parameters['budget_code'] = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $parameters['budget_code_name']);
-        // NYCCHKBK -9988 Escape the special chartacters for proper sql query formation
-        $parameters['budget_code_name'] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, "(^" . pg_escape_string(htmlspecialchars_decode(_checkbook_regex_replace_pattern($parameters['budget_code_name']))). "$)");
-        }else if(isset($parameters['budget_code_name'])){
-        $parameters['budget_code_name'] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, "(^" . pg_escape_string(htmlspecialchars_decode(_checkbook_regex_replace_pattern($parameters['budget_code_name']))). "$)");
-        }
+        $parameters['budget_code_name'] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($parameters['budget_code_name'], false, true));
+    }else if(isset($parameters['budget_code_name'])){
+        $parameters['budget_code_name'] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($parameters['budget_code_name'], false, true));
+    }
+
     if(isset($logicalOrColumns) && count($logicalOrColumns) > 0) {
         $parameters['logicalOrColumns'] = $logicalOrColumns;
     }
