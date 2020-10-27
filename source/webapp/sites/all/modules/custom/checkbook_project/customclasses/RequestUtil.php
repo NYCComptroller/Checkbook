@@ -156,129 +156,40 @@ class RequestUtil
         return '';
     }
 
-    /**
-     * Returns chart title for a prime or sub vendor page based on 'category'/'featured dashboard'/'domain'
-     * using values from current path.
-     *
-     * The page title above the visualization for Prime vendor Level and Sub vendor level pages:
-     *
-     * 1. Follow a three-line format when the M/WBE Category is equal to any of the following:
-     *    Asian American, Black American, Women or Hispanic
-     * 2. Follow a two-line format when the M/WBE Category is equal to any of the following:
-     *    Individual & Others or Non M/WBE
-     *
-     * @param string $domain
-     * @param string $defaultTitle
-     * @return string
-     */
-    /*public static function getTitleByVendorType($domain, $defaultTitle = 'Total Spending')
-    {
-        if (_checkbook_check_is_mwbe_page()) {
-            $minority_type_id = RequestUtilities::get('mwbe');
-        } else {
-            $lastReqParam = _getLastRequestParamValue();
-            $minority_type_id = '';
-            foreach ($lastReqParam as $key => $value) {
-                switch ($key) {
-                    case 'vendor':
-                        $minority_type_id = self::getLatestMinorityTypeByVendorType($domain, $value, VendorType::$PRIME_VENDOR);
-                        break;
-                    case 'subvendor':
-                        if ($value != 'all')
-                            $minority_type_id = self::getLatestMinorityTypeByVendorType($domain, $value, VendorType::$SUB_VENDOR);
-                        break;
-                    default:
-                }
-            }
-        }
-        $minority_type_ids = explode('~', $minority_type_id);
-        $minority_category = MappingUtil::getCurrenEthnicityName($minority_type_ids);
-        $MWBE_certified = MappingUtil::isMWBECertified($minority_type_ids);
-        $title = $MWBE_certified
-            ? '<p class="sub-chart-title">M/WBE Category: ' . $minority_category . '</p>'
-            : $minority_category . ' ';
-        $title .= SpendingUtil::getSpendingCategoryName($defaultTitle);
-        return html_entity_decode($title);
-    }*/
-
-    /**
-     * returns the latest minority category by domain, vendor type and the selected year.
-     *
-     * @param $domain
-     * @param $vendor_id
-     * @param $vendor_type
-     * @return mixed
-     */
-    /*public static function getLatestMinorityTypeByVendorType($domain, $vendor_id, $vendor_type)
-    {
-        $year_id = RequestUtilities::get('year');
-        $type_of_year = 'B';
-
-        if (empty($year_id)) $year_id = RequestUtilities::get('calyear');
-        if (empty($type_of_year)) $type_of_year = 'B';
-        if (empty($year_id)) $year_id = CheckbookDateUtil::getCurrentFiscalYearId();
-
-        $data_set = "";
-        switch ($domain) {
-            case Domain::$SPENDING:
-                $data_set = "checkbook:spending_vendor_latest_mwbe_category";
-                break;
-            case Domain::$CONTRACTS:
-                $data_set = "checkbook:contract_vendor_latest_mwbe_category";
-                break;
-        }
-        $parameters = array('vendor_id' => $vendor_id, "is_prime_or_sub" => $vendor_type, 'type_of_year' => $type_of_year, 'year_id' => $year_id);
-        $minority_types = _checkbook_project_querydataset($data_set, array('minority_type_id'), $parameters);
-        $minority_type_id = $minority_types[0]['minority_type_id'];
-
-        return $minority_type_id;
-    }*/
-
-
-    /**
-     * @return string
-     */
-   /* public static function getRevenueNoRecordsMsg()
-    {
-        $title = '';
-        $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
-        $find = '_' . $bottomURL . current_path();
-        if (
-            stripos($bottomURL, 'transactions')
-            || stripos($find, 'agency_revenue_by_cross_year_collections_details')
-            || stripos($find, 'revenue_category_revenue_by_cross_year_collections_details')
-            || stripos($find, 'funding_class_revenue_by_cross_year_collections_details')
-            || stripos('_' . current_path(), 'revenue_transactions')
-        ) {
-            $smnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", current_path());
-            $dtsmnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("dtsmnid", current_path());
-            if ($smnid > 0 || $dtsmnid > 0) {
-                if ($dtsmnid > 0) {
-                    $title = "There are no records to be displayed.";
-                } else {
-                    $bottomURL = $bottomURL ?: current_path();
-                    $last_id = _getLastRequestParamValue($bottomURL);
-                    if ($last_id["agency"] > 0) {
-                        $title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL));
-                    } elseif ($last_id["revcat"] > 0) {
-                        $title = _checkbook_project_get_name_for_argument("revenue_category_id", RequestUtil::getRequestKeyValueFromURL("revcat", $bottomURL));
-                    } elseif (isset($last_id["fundsrccode"])) {
-                        $title = _checkbook_project_get_name_for_argument("funding_class_code", RequestUtil::getRequestKeyValueFromURL("fundsrccode", $bottomURL));
-                    }
-                    $title = 'There are no records to be displayed for ' . $title . '.';
-                }
-            }
-        } else {
-            $title = "There are no revenue details.";
-        }
-        return html_entity_decode($title);
-    }*/
+   /** Returns Contracts Bottom Slider path which has data
+   * @param $domain
+   * @return string
+   */
+    public static function getContractsBottomSliderPath(){
+      //Get 'Contracts Bottom Slider' amounts
+      $node = node_load(363);
+      widget_config($node);
+      widget_prepare($node);
+      widget_invoke($node, 'widget_prepare');
+      widget_data($node);
+      $contracts_landing_path = NULL;
+      if ($node->data[0]['total_contracts'] > 0 || $node->data[0]['current_amount_sum'] > 0) {
+        $contracts_landing_path = "contracts_landing/status/A";
+      } else if ($node->data[1]['total_contracts'] > 0 || $node->data[1]['current_amount_sum'] > 0) {
+        $contracts_landing_path = "contracts_landing/status/R";
+      } else if ($node->data[2]['total_contracts'] > 0 || $node->data[2]['current_amount_sum'] > 0) {
+        $contracts_landing_path = "contracts_revenue_landing/status/A";
+      } else if ($node->data[3]['total_contracts'] > 0 || $node->data[3]['current_amount_sum'] > 0) {
+        $contracts_landing_path = "contracts_revenue_landing/status/R";
+      } else if ($node->data[5]['total_contracts'] > 0 || $node->data[5]['current_amount_sum'] > 0) {
+        $contracts_landing_path = "contracts_pending_exp_landing";
+      } else if ($node->data[6]['total_contracts'] > 0 || $node->data[6]['current_amount_sum'] > 0) {
+        $contracts_landing_path = "contracts_pending_rev_landing";
+      }
+      return $contracts_landing_path;
+    }
 
     /** Returns top navigation URL
      * @param $domain
+     * @param $contracts_url
      * @return string
      */
-    public static function getTopNavURL($domain)
+    public static function getTopNavURL($domain, $contracts_url = NULL)
     {
         $path = '';
         $fiscalYearId = CheckbookDateUtil::getFiscalYearIdForTopNavigation();
@@ -293,28 +204,7 @@ class RequestUtil
                 }
                 break;
             case "contracts":
-                //Get 'Contracts Bottom Slider' amounts
-                $node = node_load(363);
-                widget_config($node);
-                widget_prepare($node);
-                widget_invoke($node, 'widget_prepare');
-                widget_data($node);
-                //default value for landing path if all values are zero
-                $contracts_landing_path = "contracts_landing/status/A";
-                if ($node->data[0]['total_contracts'] > 0 || $node->data[0]['current_amount_sum'] > 0) {
-                    $contracts_landing_path = "contracts_landing/status/A";
-                } else if ($node->data[1]['total_contracts'] > 0 || $node->data[1]['current_amount_sum'] > 0) {
-                    $contracts_landing_path = "contracts_landing/status/R";
-                } else if ($node->data[2]['total_contracts'] > 0 || $node->data[2]['current_amount_sum'] > 0) {
-                    $contracts_landing_path = "contracts_revenue_landing/status/A";
-                } else if ($node->data[3]['total_contracts'] > 0 || $node->data[3]['current_amount_sum'] > 0) {
-                    $contracts_landing_path = "contracts_revenue_landing/status/R";
-                } else if ($node->data[5]['total_contracts'] > 0 || $node->data[5]['current_amount_sum'] > 0) {
-                    $contracts_landing_path = "contracts_pending_exp_landing";
-                } else if ($node->data[6]['total_contracts'] > 0 || $node->data[6]['current_amount_sum'] > 0) {
-                    $contracts_landing_path = "contracts_pending_rev_landing";
-                }
-
+                $contracts_landing_path = isset($contracts_url) ? $contracts_url : "contracts_landing/status/A";
                 $path = $contracts_landing_path . "/yeartype/B/year/" . $fiscalYearId . _checkbook_append_url_params(null, array(), true);
                 if (RequestUtilities::get("agency") > 0) {
                     $path = $path . "/agency/" . RequestUtilities::get("agency");
