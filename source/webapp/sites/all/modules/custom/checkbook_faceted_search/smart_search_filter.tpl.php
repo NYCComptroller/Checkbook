@@ -90,10 +90,14 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       $autocomplete_id = "autocomplete_" . $facet_name;
       $disabled = '';
 
+      //NYCCHKBK-9957 : Disable autocomplete search box if 5 or more options are selected
+      var_dump($facet->selected ? array_map('strtolower', $facet->selected) : []);
+      $no_of_selected_options = count($facet->selected ? array_map('strtolower', $facet->selected) : []);
+      if($no_of_selected_options >= 5) $disabled = " DISABLED=true";
+
       echo '<div class="autocomplete">
               <input id="' . $autocomplete_id . '" ' . $disabled . ' type="text" class="solr_autocomplete" facet="'.$facet_name.'" />
             </div>';
-//      placeholder="Autocomplete '.htmlentities($facet->title).'..."
     }
 
     echo '<div class="options">';
@@ -125,7 +129,9 @@ END;
         $active = $checked ? ' class="active" ' : '';
         $disabled ='';
       }
-      if($checked == '' && (count($lowercase_selected) >= 5)){
+
+      //Disable unchecked options if 5 or more options from the same category are already selected
+      if((!$checked || $checked == '')  && (count($lowercase_selected) >= 5)){
         $disabled = " DISABLED=true";
       }
 
