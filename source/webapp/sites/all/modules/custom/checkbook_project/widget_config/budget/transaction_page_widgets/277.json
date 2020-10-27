@@ -288,7 +288,7 @@
            agencyIds = document.getElementById('fHideAgencyId').value;
       }
       var oDeptNms = getNamedFilterCriteria('fdeptNm');
-      var oDeptIds = getNamedFilterCriteria('fdeptid');
+      var oDeptIds = getNamedFilterCriteria('fdept');
       var oExpCategoryNms = getNamedFilterCriteria('fExpCategoryNm');
       var oExpCategoryIds = getNamedFilterCriteria('fExpCategory');
       var oCurAmount = getNamedFilterCriteria('fCurAmount');
