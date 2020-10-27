@@ -95,7 +95,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       $facet->selected  = array_unique($facet->selected? $facet->selected:[]);
 
       //NYCCHKBK-9957 : Disable autocomplete search box if 5 or more options are selected
-      $no_of_selected_options = count($facet->selected ? array_map('strtolower', $facet->selected) : []);
+      $no_of_selected_options = count($facet->selected ? $facet->selected: []);
       if($no_of_selected_options >= 5) $disabled = " DISABLED=true";
 
       echo '<div class="autocomplete">
