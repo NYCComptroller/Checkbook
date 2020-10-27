@@ -157,11 +157,10 @@ class RequestUtil
     }
 
    /** Returns Contracts Bottom Slider path which has data
-   * @param $domain
    * @return string
    */
     public static function getContractsBottomSliderPath(){
-      //Get 'Contracts Bottom Slider' amounts
+      //Get 'Contracts Bottom Slider' Counts
       $node = node_load(363);
       widget_config($node);
       widget_prepare($node);
