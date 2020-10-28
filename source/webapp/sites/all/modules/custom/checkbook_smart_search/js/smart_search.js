@@ -222,6 +222,14 @@
       //Sets up jQuery UI autocompletes and autocomplete filtering functionality for agency name facet
       $('.solr_autocomplete', context).each(function () {
         var facet_name = $(this).attr('facet');
+        $selectedoptions = decodeURIComponent(decodeURIComponent(window.location.href))
+                            .split(facet_name+"=")[1]
+                            .replaceAll("+"," ")
+                            .split(/(\*!\*)/)[0]
+                            .split("~")
+                            .filter((s) => s.match(/^[A-Z0-9]/ig));
+        
+        console.log($selectedoptions);
         $(this).autocomplete({
           source: "/solr_autocomplete/" + solr_datasource + "/" + facet_name + "/" + search_term,
           focus: function (event, ui) {
