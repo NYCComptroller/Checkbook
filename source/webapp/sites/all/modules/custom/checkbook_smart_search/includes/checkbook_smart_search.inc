@@ -645,11 +645,20 @@ function _checkbook_autocomplete(string $solr_datasource, string $facet): array{
 
   if ($results['response']['numFound'] != 0 && ($results['facet_counts']['facet_fields'] ?? false)) {
     $facet_results = array_shift($results['facet_counts']['facet_fields']);
+    //NYCCHKBK-9957 - The autocomplete displayed facets that were already selected. Hence, remove such facets.
+    $selected_facets = $solr_query->getSelectedFacets()[$facet];
+    LogHelper::log_info($selected_facets);
+    $selected_facets_object = [];
+    foreach($selected_facets as $key => $val) $selected_facets_object[$val] = $val;
+    $facet_results = array_filter($facet_results, function($k) use ($selected_facets_object) {
+                    return !isset($selected_facets_object[$k]);
+                  }, ARRAY_FILTER_USE_KEY);
+
     $matches = [];
     foreach (array_keys($facet_results) as $key) {
       array_push($matches, ["url" => "", "category" => $facet, "label" => $key, "value" => $key]);
     }
-    return $matches;
+    if(count($matches)>0) return $matches;
   }
   return [['label' => 'No Matches Found', 'value' => '']];
 }
