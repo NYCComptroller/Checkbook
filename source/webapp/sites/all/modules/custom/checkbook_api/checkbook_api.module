@@ -530,21 +530,6 @@ function checkbook_api_adjustPayrollParameterFilters(&$data_set, &$parameters, $
 }
 
 /**
- * Used to adjust columns in the data set after sql call.  This is to handle derived columns
- * @param $data_records
- */
-function checkbook_api_adjustPayrollDataSetResults(&$data_records) {
-
-    foreach($data_records as $key => $data_record) {
-
-        //Derive payroll type from amount_basis_id
-        if(isset($data_record['amount_basis_id'])) {
-            $data_records[$key]['amount_basis_id'] = PayrollUtil::getEmploymentTypeByAmountBasisId($data_record['amount_basis_id']);
-        }
-    }
-}
-
-/**
  * Function to adjust the parameters before for the api sql call for spending
  *
  * @param $data_set
@@ -698,6 +683,19 @@ function checkbook_api_adjustContractSql(&$sql_query) {
     }
 
   $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
+}
+/***
+ * @param $sql_query
+ * @return string
+ */
+function checkbook_api_adjustContractActiveSql(&$sql_query) {
+  $sql_parts = explode("ORDER BY", $sql_query);
+  $select_part = $sql_parts[0];
+  $order_by_part = $sql_parts[1];
+  if (strpos($order_by_part,'contract_number') !== false) {
+    $order_by_part =  str_replace("contract_number", "l4.contract_number",$order_by_part);
+  }
+  $sql_query = (count($sql_parts) > 1) ? implode(' ORDER BY ', array($select_part, $order_by_part)) : $select_part;
 }
 
 /***
