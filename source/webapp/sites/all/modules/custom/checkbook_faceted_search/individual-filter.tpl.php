@@ -41,7 +41,7 @@ if (($pagetype != 'advanced_search_page') && (!(isset($node->widgetConfig->allow
 //$disableFacet = isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false;
 // Disable only url parameters
 if($disableFacet) { //only URL parameters count and can be disabled
-    $url_ref = RequestUtil::isNewWindow() ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
+    $url_ref = RequestUtil::isNewWindow() ? $_SERVER['HTTP_REFERER'] :$_GET['q'];
     $disableFacet = preg_match('"/' . $urlParameter. '/"', $url_ref);
 }
 
