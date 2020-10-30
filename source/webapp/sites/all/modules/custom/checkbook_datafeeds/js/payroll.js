@@ -154,7 +154,7 @@
           break;
         case 'checkbox':
         case 'radio':
-          $('#edit-salary-type-all').attr('checked', 'checked');
+          $('#edit-salary-type-').attr('checked', 'checked');
           break;
       }
     });
