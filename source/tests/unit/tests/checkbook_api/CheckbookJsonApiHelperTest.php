@@ -100,50 +100,6 @@ class CheckbookJsonApiHelperTest extends TestCase
         $this->assertEquals('B', $this->helper->validate_year_type([0, 0, 'weirdo']));
         $this->assertEquals('C', $this->helper->validate_year_type([0, 0, 'weirdo'], 'C'));
     }
-
-    /**
-     *
-     */
-    public function test_get_prod_etl_status()
-    {
-        global $conf;
-        $conf['etl-status-path'] = __DIR__ . '/files/';
-        $expected = [
-            'success' => true,
-            'data' => 'great success',
-            'message' => '',
-            "invalid_records" => array_map('str_getcsv',
-                file($conf['etl-status-path'] . 'invalid_records_details.csv')),
-            'invalid_records_timestamp' => filemtime(
-                $conf['etl-status-path'] . 'invalid_records_details.csv'),
-            'audit_status' => ['OK'],
-            'audit_status_timestamp' => filemtime(
-                $conf['etl-status-path'] . 'audit_status.txt'),
-            'match_status' => [
-                'PMSSummary' => 'unknown',
-                'COAExpenditureObject' => 'unknown',
-                'COARevenueSource' => '7 days ago',
-                'MAG' => '5 days ago',
-                'Some Incredible Name' => 'unknown data source name',
-            ],
-            'match_status_timestamp' => filemtime(
-                $conf['etl-status-path'] . 'file_data_statistics.csv'),
-        ];
-        $fakeToday = '2222-12-22';
-        $this->helper->timeNow = strtotime($fakeToday);
-        $this->helper->dataSourceLastSuccess = serialize([
-            'MAG' => '2222-12-17',
-            'COARevenueSource' => '2222-12-15',
-        ]);
-        $this->assertEquals($expected, $this->helper->getProdEtlStatus());
-        $expected = [
-            'COARevenueSource' => '2222-12-15',
-            'MAG' => '2222-12-17',
-            'PendingContracts' => $fakeToday,
-            'PMS' => $fakeToday,
-        ];
-        $this->assertEquals($expected, unserialize($this->helper->dataSourceLastSuccess));
-    }
 }
 
 /**

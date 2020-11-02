@@ -505,7 +505,6 @@
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
             "adjustDataSetResults":"if(function_exists('checkbook_api_adjustContractDataSetResults')){checkbook_api_adjustContractDataSetResults($data_records);}",
-            "adjustSql":"if(function_exists('checkbook_api_adjustContractActiveSql')){checkbook_api_adjustContractActiveSql($sql_query);}"
         },
         "requestParameters":{
             "agency_code":{
@@ -1492,7 +1491,6 @@
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
             "adjustDataSetResults":"if(function_exists('checkbook_api_adjustContractDataSetResults')){checkbook_api_adjustContractDataSetResults($data_records);}",
-            "adjustSql":"if(function_exists('checkbook_api_adjustContractActiveSql')){checkbook_api_adjustContractActiveSql($sql_query);}"
         },
         "requestParameters":{
             "agency_code":{
