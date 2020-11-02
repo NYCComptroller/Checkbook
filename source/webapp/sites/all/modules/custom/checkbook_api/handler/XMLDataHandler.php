@@ -165,12 +165,9 @@ class XMLDataHandler extends AbstractDataHandler
         //Handle referenced columns
         foreach($columnMappings as $key=>$value) {
             if (strpos($value,"@") !== false) {
-                //$column_parts = explode("@", $value);
               $data_set_column = str_replace('@', '_', $value);
               $data_set_column = str_replace(':', '_', $data_set_column);
-              //print_r($column_parts);
-                print($columnMappings[$key]);
-                $columnMappings[$key] = $data_set_column;
+              $columnMappings[$key] = $data_set_column;
             }
         }
         $columnMappings = array_flip($columnMappings);
