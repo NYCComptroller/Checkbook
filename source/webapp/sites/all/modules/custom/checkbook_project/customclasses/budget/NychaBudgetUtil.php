@@ -38,10 +38,10 @@ class NychaBudgetUtil{
     $budgetType = RequestUtil::getRequestKeyValueFromURL('budgettype', $url);
     //Transactions Page main title
     $title = (isset($widget) && ($widget != 'wt_year')) ? $widget_titles[$widget]: "";
-    if ($budgetType == 'committed' && $widget != 'wt_year'){
+    if ($title && $budgetType == 'committed' && $widget != 'wt_year'){
       $title .= ' '."by Committed ".' '. "Expense Budget Transactions";
     }
-    elseif ($budgetType == 'percdiff'){
+    elseif ($title && $budgetType == 'percdiff'){
       $title .= ' '."by Percent Difference ".' '. "Expense Budget Transactions";
     }
     else {
