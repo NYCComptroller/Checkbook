@@ -6,15 +6,49 @@
 function checkbook_etl_notification_menu(){
   $items['etl_stats'] = array(
     'title' => 'Checkbook ETL Statistics',
-    'page callback' => 'checkbook_etl_notification_mail',
+    'page callback' => 'checkbook_gather_data',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
   return $items;
 }
 
-function checkbook_etl_notification_mail(){
-  var_dump(CheckbookEtlStatistics::gatherData($message));
+function checkbook_gather_data(){
+  drupal_mail('checkbook_etl_notification', 'notice', 'sgade@reisys.com', user_preferred_language($account), $params);
+}
+
+/**
+ * Implements hook_mail().
+ *
+ */
+function checkbook_etl_notification_mail($key, &$message, $params){
+  CheckbookEtlStatistics::gatherData($message);
+}
+
+/**
+ * Implements hook_mail_alter().
+ *
+ * Adds priority headers to messages passing condition.
+ * @param $message
+ * @throws Exception
+ */
+function checkbook_etl_notification_mail_alter(&$message)
+{
+  // Apply this hook only for `checkbook_etl_status` module
+  if ('checkbook_etl_notification' !== $message['module']) {
+    return;
+  }
+  if (stripos($message['subject'], 'Fail')) {
+    $message['headers']['X-Priority'] = '1 (Highest)';
+    $message['headers']['X-MSMail-Priority'] = 'High';
+    $message['headers']['Importance'] = 'High';
+  }
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+  $message['body'] = theme('etl_status_notification_mail', $message['body']);
+  //if (defined('CHECKBOOK_DEV')) {
+    echo($message['body']);
+  //  $message['send'] = false;
+  //}
 }
 
 /**
@@ -29,7 +63,7 @@ function checkbook_etl_notification_theme($existing, $type, $theme, $path)
 {
   if ($type == 'module') {
     return array(
-      'etl_status_email' => array(
+      'etl_status_notification_mail' => array(
         'variables' => array(
           'uat_status' => NULL,
           'prod_status' => NULL,

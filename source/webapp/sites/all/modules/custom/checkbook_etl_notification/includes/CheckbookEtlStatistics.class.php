@@ -16,6 +16,16 @@ class CheckbookEtlStatistics
   public static $successSubject = 'Success';
 
   /**
+   * @var string
+   */
+  public static $prodStatus = 'Success';
+
+  /**
+   * @var string
+   */
+  public static $uatStatus = 'Success';
+
+  /**
    * Last ETL must successfully finish within last 12 hours
    */
   const SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO = 60 * 60 * 12;
@@ -48,22 +58,40 @@ class CheckbookEtlStatistics
   }
 
 
-  public function getEtlStatistics(){
-    $sql = "SELECT * FROM jobs WHERE DATE(load_end_time) = CURRENT_DATE - 1";
+  public function getEtlStatistics($environment){
+    $sql = "SELECT *,
+            CASE WHEN (process_abort_flag_yn = 'N' AND shard_refresh_flag_yn = 'Y' AND index_refresh_flag_yn = 'Y') 
+                  THEN 'Success'
+	               ELSE 'Fail'
+            END AS status FROM jobs WHERE DATE(load_end_time) = CURRENT_DATE - 1 AND host_environment = '{$environment}'";
     $results = _checkbook_project_execute_sql_by_data_source($sql, 'etl_statistics');
+    $databases = array('checkbook' => 'Citywide', 'checkbook_ogent' => 'NYC EDC', 'checkbook_nycha' => 'NYCHA');
     $etlStatus = [];
     foreach($results as $result){
-      $etlStatus['database_name']['host_environment'] = array(
-        'Database' => $result['database_name'],
+      $etlStatus[$result['database_name']] = array(
+        'Database' => $databases[$result['database_name']],
         'Environment' => $result['host_environment'],
         'Last Run Date' => $result['load_end_time'],
-        'Last Run Success?' => '',
+        'Last Run Success?' => $result['status'],
         'Last Success Date' => $result['load_end_time'],
         'Last File Load Date' => $result['last_successful_load_date'],
         'Shards Refreshed?' => $result['shard_refresh_flag_yn'],
-        'Solr Refreshed?' => $result['index_refresh_flag_yn'],);
+        'Solr Refreshed?' => $result['index_refresh_flag_yn'],
+        'Status' => $result['status'], );
+
+      if($environment == 'prod'){
+        self::$prodStatus = (self::$prodStatus == 'Fail') ? self::$prodStatus : $result['status'];
+      }
+
+      if($environment == 'uat'){
+        self::$uatStatus = (self::$uatStatus == 'Fail') ? self::$uatStatus : $result['status'];
+      }
     }
-    return $etlStatus;
+    $data = [];
+    foreach($databases as $key => $value){
+      $data[$key] = $etlStatus[$key];
+    }
+    return $data;
   }
 
   /**
@@ -74,14 +102,14 @@ class CheckbookEtlStatistics
   {
     global $conf;
     if (!self::$message_body) {
-      $data = self::getEtlStatistics();
-      $formattedStatus = self::formatStatus($data);
-
+      $prodStats = self::getEtlStatistics('PROD');
+      $uatStats = self::getEtlStatistics('UAT');
+      //$formattedStatus = self::formatStatus();
+      self::$successSubject = (self::$prodStatus == 'Fail' || self::$uatStatus == 'Fail') ? 'Fail' : self::$successSubject;
       self::$message_body =
         [
-          //'uat_status' => $uat_status,
-          //'prod_status' => $prod_status,
-          'status' => $formattedStatus,
+          'uat_stats' => $uatStats,
+          'prod_stats' => $prodStats,
           'subject' => self::$successSubject,
         ];
     }
@@ -91,7 +119,8 @@ class CheckbookEtlStatistics
 
     $date = self::get_date('Y-m-d');
 
-    $msg['subject'] = "[{$conf['CHECKBOOK_ENV']}] ETL Status: " . self::$successSubject . " ($date)";
+    //$msg['subject'] = "[{$conf['CHECKBOOK_ENV']}] ETL Status: " . self::$successSubject . " ($date)";
+    $msg['subject'] = "ETL Status: " . self::$successSubject . " ($date)";
 
     $message = array_merge($message, $msg);
 
@@ -102,8 +131,8 @@ class CheckbookEtlStatistics
    * @param $data
    * @return string
    */
-  public function formatStatus($data)
-  { var_dump($data);
+  /*public function formatStatus()
+  {
     global $conf;
     $now = self::timeNow();
 
@@ -121,7 +150,7 @@ class CheckbookEtlStatistics
       $data['hint'] = 'Could not get data from server';
     }
     return $data;
-  }
+  }*/
 
   /**
    * @param $date

@@ -16,44 +16,30 @@
       margin-right: auto;
     }
 
-    table.status {
-      font-size: larger;
-      background: #ddd;
+    table.title{
+      font-size: 13px;
+      font-weight: bolder;
+      border: none;
+      color:#3c5e7c;
     }
+
+    table.status tr:nth-child(even){background-color: #f2f2f2;}
+
+    table.status tr:hover {background-color: #ddd;}
 
     table.status th {
       text-align: right;
-    }
-
-    thead tr.header th, tbody th.env {
-      text-transform: uppercase;
       background: #3c6e95;
       color: #fff;
+      padding: 4px;
     }
 
-    td.bytesize, tr.bytesize {
-      text-align: right;
+    table.status td{
+      padding-left: 2px;
     }
 
-    table.dbconnections tr.header th, table.dbconnections th.env {
-      background: #8e9eac;
-    }
-
-    thead tr.filename th {
-      color: darkred;
-      text-align: right;
-    }
-
-    tbody tr.even {
-      background: #ddd;
-    }
-
-    tbody tr.odd {
-      background: #eee;
-    }
-
-    tr.today td {
-      color: darkgreen;
+    table.status td.flag {
+      text-align: center;
     }
 
     footer {
@@ -95,15 +81,15 @@
   <?php include("_main_status.tpl.php"); ?>
   <br/>
   <br/>
-  <?php include("_prod_uat_match.tpl.php"); ?>
+  <?php //include("_prod_uat_match.tpl.php"); ?>
   <br/>
   <br/>
-  <?php include("_fisa_files.tpl.php"); ?>
+  <?php //include("_fisa_files.tpl.php"); ?>
   <br/>
   <br/>
   <br/>
 
-  <?php if ($dev_mode ?? false) { include("_dev_debug.tpl.php"); } ?>
+  <?php //if ($dev_mode ?? false) { include("_dev_debug.tpl.php"); } ?>
 </main>
 
 <footer>
