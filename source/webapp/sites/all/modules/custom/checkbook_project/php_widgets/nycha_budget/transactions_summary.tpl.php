@@ -26,9 +26,13 @@ $title = NychaBudgetUtil::getTransactionsTitle();
 $url = $_REQUEST['expandBottomContURL'];
 $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
 $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
+$widget = isset($widget) ? $widget : RequestUtil::getRequestKeyValueFromURL('year', $url);
 
 if((strpos($widget, 'comm_') !== false) || ($widget == 'wt_year')) {
   $subTitle = NychaBudgetUtil::getTransactionsSubTitle($widget, $url);
+}
+elseif(is_numeric($widget)){
+  $subTitle = NychaBudgetUtil::getTransactionsSubTitle('wt_year', $url);
 }
 $subTitle = isset($subTitle) ? $subTitle : ' ';
 
