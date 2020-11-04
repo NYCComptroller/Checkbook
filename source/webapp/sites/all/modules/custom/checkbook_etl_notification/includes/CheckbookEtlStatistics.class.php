@@ -30,7 +30,6 @@ class CheckbookEtlStatistics
    */
   const SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO = 60 * 60 * 12;
 
-
   /**
    * @param $format
    * @return false|string
@@ -41,8 +40,8 @@ class CheckbookEtlStatistics
   }
 
   /**
-   * @param $url
-   * @return bool|string
+   * @param $environment
+   * @return array
    */
   public function get_contents($url)
   {
@@ -63,9 +62,9 @@ class CheckbookEtlStatistics
             CASE WHEN (process_abort_flag_yn = 'N' AND shard_refresh_flag_yn = 'Y' AND index_refresh_flag_yn = 'Y') 
                   THEN 'Success'
 	               ELSE 'Fail'
-            END AS status FROM jobs WHERE DATE(load_end_time) = CURRENT_DATE - 1 AND host_environment = '{$environment}'";
+            END AS status FROM jobs WHERE DATE(load_end_time) = CURRENT_DATE AND host_environment = '{$environment}'";
     $results = _checkbook_project_execute_sql_by_data_source($sql, 'etl_statistics');
-    $databases = array('checkbook' => 'Citywide', 'checkbook_ogent' => 'NYC EDC', 'checkbook_nycha' => 'NYCHA');
+    $databases = array('checkbook' => 'Citywide', 'checkbook_ogent' => 'NYCEDC', 'checkbook_nycha' => 'NYCHA');
     $etlStatus = [];
     foreach($results as $result){
       $etlStatus[$result['database_name']] = array(
@@ -79,11 +78,11 @@ class CheckbookEtlStatistics
         'Solr Refreshed?' => $result['index_refresh_flag_yn'],
         'Status' => $result['status'], );
 
-      if($environment == 'prod'){
+      if($environment == 'PROD'){
         self::$prodStatus = (self::$prodStatus == 'Fail') ? self::$prodStatus : $result['status'];
       }
 
-      if($environment == 'uat'){
+      if($environment == 'UAT'){
         self::$uatStatus = (self::$uatStatus == 'Fail') ? self::$uatStatus : $result['status'];
       }
     }
@@ -100,12 +99,18 @@ class CheckbookEtlStatistics
    */
   public function gatherData(&$message)
   {
-    global $conf;
     if (!self::$message_body) {
       $prodStats = self::getEtlStatistics('PROD');
       $uatStats = self::getEtlStatistics('UAT');
-      //$formattedStatus = self::formatStatus();
-      self::$successSubject = (self::$prodStatus == 'Fail' || self::$uatStatus == 'Fail') ? 'Fail' : self::$successSubject;
+
+      if(self::$prodStatus == 'Fail' && self::$uatStatus == 'Fail'){
+        self::$successSubject = "PROD Fail";
+      }else if(self::$uatStatus == 'Fail' && self::$prodStatus == 'Success'){
+        self::$successSubject = "UAT Fail";
+      }else if(self::$prodStatus == 'Fail' && self::$uatStatus == 'Success'){
+        self::$successSubject = "PROD Fail";
+      }
+
       self::$message_body =
         [
           'uat_stats' => $uatStats,
@@ -117,56 +122,12 @@ class CheckbookEtlStatistics
     $msg = [];
     $msg['body'] = self::$message_body;
 
-    $date = self::get_date('Y-m-d');
-
-    //$msg['subject'] = "[{$conf['CHECKBOOK_ENV']}] ETL Status: " . self::$successSubject . " ($date)";
+    $date = self::get_date('m-d-Y');
     $msg['subject'] = "ETL Status: " . self::$successSubject . " ($date)";
 
     $message = array_merge($message, $msg);
 
     return $message;
-  }
-
-  /**
-   * @param $data
-   * @return string
-   */
-  /*public function formatStatus()
-  {
-    global $conf;
-    $now = self::timeNow();
-
-    if (!empty($data['success']) && true == $data['success']) {
-      $data['hint'] = self::niceDisplayDateDiff($data['data']);
-
-      if (($now - strtotime($data['data'])) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO) {
-        $data['hint'] = 'Last success: ' . $data['hint'];
-        $data['success'] = false;
-        self::$successSubject = 'Fail';
-      }
-    } else {
-      self::$successSubject = 'Fail';
-      $data['success'] = false;
-      $data['hint'] = 'Could not get data from server';
-    }
-    return $data;
-  }*/
-
-  /**
-   * @param $date
-   * @return false|string
-   */
-  public function niceDisplayDateDiff($date)
-  {
-    if (!$date) {
-      return 'never';
-    }
-    if (is_numeric($date)) {
-      $date = date('c', $date);
-    }
-    $date1 = date_create($date);
-    $interval = date_diff($date1, date_create(self::get_date("Y-m-d H:i:s")));
-    return $interval->format('%a day(s) %h hour(s) ago');
   }
 
 }

@@ -14,7 +14,9 @@ function checkbook_etl_notification_menu(){
 }
 
 function checkbook_gather_data(){
-  drupal_mail('checkbook_etl_notification', 'notice', 'sgade@reisys.com', user_preferred_language($account), $params);
+  global $conf;
+  $toEmail = $conf['checkbook_ETL_emails'];
+  drupal_mail('checkbook_etl_notification', 'notice', $toEmail, user_preferred_language($toEmail), $params);
 }
 
 /**
