@@ -36,9 +36,6 @@
 
     table.status td{
       padding-left: 2px;
-    }
-
-    table.status td.flag {
       text-align: center;
     }
 
@@ -81,15 +78,9 @@
   <?php include("_main_status.tpl.php"); ?>
   <br/>
   <br/>
-  <?php //include("_prod_uat_match.tpl.php"); ?>
-  <br/>
-  <br/>
-  <?php //include("_fisa_files.tpl.php"); ?>
   <br/>
   <br/>
   <br/>
-
-  <?php //if ($dev_mode ?? false) { include("_dev_debug.tpl.php"); } ?>
 </main>
 
 <footer>
