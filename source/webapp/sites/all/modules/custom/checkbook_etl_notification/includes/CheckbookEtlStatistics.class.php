@@ -164,7 +164,7 @@ class CheckbookEtlStatistics
       }
 
       variable_set(self::CRON_LAST_RUN_DRUPAL_VAR, $today);
-      //return $this->sendmail();
+      return $this->sendmail();
     }
 
     /**
