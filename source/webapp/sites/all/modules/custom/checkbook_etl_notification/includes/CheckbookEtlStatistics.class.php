@@ -145,10 +145,10 @@ class CheckbookEtlStatistics
         return false;
       }
 
-      //if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['UAT','PHPUNIT'])) {
+      if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['DEV2'])) {
         // we run this cron only on UAT and PHPUNIT
-        //return false;
-      //}
+        return false;
+      }
 
       $today = self::get_date('Y-m-d');
       $current_hour = (int)self::get_date('H');
