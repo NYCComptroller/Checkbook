@@ -21,22 +21,22 @@
         <?php echo $prod_stat['Database'] ?>
       </td>
       <td>
-        <?php echo date('Y-m-d', strtotime($prod_stat['Last Run Date'])) ?>
+        <?php echo date('m-d-Y', strtotime($prod_stat['Last Run Date'])) ?>
       </td>
       <td class = "flag">
         <?php echo($prod_stat['Status'] == 'Success' ? '✅' : '❌'); ?>
       </td>
       <td>
-        <?php echo date('Y-m-d', strtotime($prod_stat['Last Success Date'])) ?>
+        <?php echo date('m-d-Y', strtotime($prod_stat['Last Success Date'])) ?>
       </td>
       <td>
-        <?php echo date('Y-m-d', strtotime($prod_stat['Last File Load Date'])) ?>
+        <?php echo date('m-d-Y', strtotime($prod_stat['Last File Load Date'])) ?>
       </td>
       <td class = "flag">
-        <?php echo($prod_stat['Shards Refreshed?'] ? '✅' : '❌'); ?>
+        <?php echo($prod_stat['Shards Refreshed?'] == 'Y' ? '✅' : '❌'); ?>
       </td>
       <td class = "flag">
-        <?php echo($prod_stat['Solr Refreshed?'] ? '✅' : '❌'); ?>
+        <?php echo($prod_stat['Solr Refreshed?'] == 'Y' ? '✅' : '❌'); ?>
       </td>
     </tr>
   <?php endforeach; ?>
@@ -67,22 +67,22 @@
         <?php echo $uat_stat['Database'] ?>
       </td>
       <td>
-        <?php echo date('Y-m-d', strtotime($uat_stat['Last Run Date'])) ?>
+        <?php echo date('m-d-Y', strtotime($uat_stat['Last Run Date'])) ?>
       </td>
       <td class = "flag">
         <?php echo(($uat_stat['Status'] == 'Success') ? '✅' : '❌'); ?>
       </td>
       <td>
-        <?php echo date('Y-m-d', strtotime($uat_stat['Last Success Date'])) ?>
+        <?php echo date('m-d-Y', strtotime($uat_stat['Last Success Date'])) ?>
       </td>
       <td>
-        <?php echo date('Y-m-d', strtotime($uat_stat['Last File Load Date'])) ?>
+        <?php echo date('m-d-Y', strtotime($uat_stat['Last File Load Date'])) ?>
       </td>
       <td class = "flag">
-        <?php echo($uat_stat['Shards Refreshed?'] ? '✅' : '❌'); ?>
+        <?php echo($uat_stat['Shards Refreshed?'] == 'Y' ? '✅' : '❌'); ?>
       </td>
       <td class = "flag">
-        <?php echo($uat_stat['Solr Refreshed?'] ? '✅' : '❌'); ?>
+        <?php echo($uat_stat['Solr Refreshed?'] == 'Y' ? '✅' : '❌'); ?>
       </td>
     </tr>
   <?php endforeach; ?>

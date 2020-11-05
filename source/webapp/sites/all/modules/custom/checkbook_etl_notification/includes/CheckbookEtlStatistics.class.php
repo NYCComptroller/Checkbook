@@ -30,6 +30,7 @@ class CheckbookEtlStatistics
    */
   const SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO = 60 * 60 * 12;
 
+  const CRON_LAST_RUN_DRUPAL_VAR = 'checkbook_etl_status_last_run';
 
   /**
    * @param $format
@@ -41,15 +42,6 @@ class CheckbookEtlStatistics
   }
 
   /**
-   * @param $url
-   * @return bool|string
-   */
-  public function get_contents($url)
-  {
-    return file_get_contents($url);
-  }
-
-  /**
    * @return int
    */
   public function timeNow()
@@ -57,15 +49,19 @@ class CheckbookEtlStatistics
     return time();
   }
 
-
+  /**
+   * @param $environment
+   * @return array
+   */
   public function getEtlStatistics($environment){
+    //Get ETL Statistics in the last 12 hours
     $sql = "SELECT *,
             CASE WHEN (process_abort_flag_yn = 'N' AND shard_refresh_flag_yn = 'Y' AND index_refresh_flag_yn = 'Y') 
                   THEN 'Success'
 	               ELSE 'Fail'
-            END AS status FROM jobs WHERE DATE(load_end_time) = CURRENT_DATE - 1 AND host_environment = '{$environment}'";
+            END AS status FROM jobs WHERE load_end_time >= (NOW() - INTERVAL '12 hours' ) AND host_environment = '{$environment}'";
     $results = _checkbook_project_execute_sql_by_data_source($sql, 'etl_statistics');
-    $databases = array('checkbook' => 'Citywide', 'checkbook_ogent' => 'NYC EDC', 'checkbook_nycha' => 'NYCHA');
+    $databases = array('checkbook' => 'Citywide', 'checkbook_ogent' => 'NYCEDC', 'checkbook_nycha' => 'NYCHA');
     $etlStatus = [];
     foreach($results as $result){
       $etlStatus[$result['database_name']] = array(
@@ -79,11 +75,11 @@ class CheckbookEtlStatistics
         'Solr Refreshed?' => $result['index_refresh_flag_yn'],
         'Status' => $result['status'], );
 
-      if($environment == 'prod'){
+      if($environment == 'PROD'){
         self::$prodStatus = (self::$prodStatus == 'Fail') ? self::$prodStatus : $result['status'];
       }
 
-      if($environment == 'uat'){
+      if($environment == 'UAT'){
         self::$uatStatus = (self::$uatStatus == 'Fail') ? self::$uatStatus : $result['status'];
       }
     }
@@ -96,16 +92,22 @@ class CheckbookEtlStatistics
 
   /**
    * @param $message
-   * @return bool
+   * @return string
    */
   public function gatherData(&$message)
   {
-    global $conf;
     if (!self::$message_body) {
       $prodStats = self::getEtlStatistics('PROD');
       $uatStats = self::getEtlStatistics('UAT');
-      //$formattedStatus = self::formatStatus();
-      self::$successSubject = (self::$prodStatus == 'Fail' || self::$uatStatus == 'Fail') ? 'Fail' : self::$successSubject;
+
+      if(self::$prodStatus == 'Fail' && self::$uatStatus == 'Fail'){
+        self::$successSubject = "PROD Fail";
+      }else if(self::$uatStatus == 'Fail' && self::$prodStatus == 'Success'){
+        self::$successSubject = "UAT Fail";
+      }else if(self::$prodStatus == 'Fail' && self::$uatStatus == 'Success'){
+        self::$successSubject = "PROD Fail";
+      }
+
       self::$message_body =
         [
           'uat_stats' => $uatStats,
@@ -117,9 +119,7 @@ class CheckbookEtlStatistics
     $msg = [];
     $msg['body'] = self::$message_body;
 
-    $date = self::get_date('Y-m-d');
-
-    //$msg['subject'] = "[{$conf['CHECKBOOK_ENV']}] ETL Status: " . self::$successSubject . " ($date)";
+    $date = self::get_date('m-d-Y');
     $msg['subject'] = "ETL Status: " . self::$successSubject . " ($date)";
 
     $message = array_merge($message, $msg);
@@ -127,46 +127,74 @@ class CheckbookEtlStatistics
     return $message;
   }
 
-  /**
-   * @param $data
-   * @return string
-   */
-  /*public function formatStatus()
-  {
-    global $conf;
-    $now = self::timeNow();
+    /**
+     * @return bool
+     */
+    public function run_cron()
+    {
+      global $conf;
 
-    if (!empty($data['success']) && true == $data['success']) {
-      $data['hint'] = self::niceDisplayDateDiff($data['data']);
+      date_default_timezone_set('America/New_York');
 
-      if (($now - strtotime($data['data'])) > self::SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO) {
-        $data['hint'] = 'Last success: ' . $data['hint'];
-        $data['success'] = false;
-        self::$successSubject = 'Fail';
+      //always run cron for developer
+      if (defined('CHECKBOOK_DEV')) {
+        return self::sendmail();
       }
-    } else {
-      self::$successSubject = 'Fail';
-      $data['success'] = false;
-      $data['hint'] = 'Could not get data from server';
-    }
-    return $data;
-  }*/
+      if (!isset($conf['checkbook_dev_group_email'])) {
+        //error_log("ETL STATUS MAIL CRON skips. Reason: \$conf['checkbook_dev_group_email'] not defined");
+        return false;
+      }
 
-  /**
-   * @param $date
-   * @return false|string
-   */
-  public function niceDisplayDateDiff($date)
-  {
-    if (!$date) {
-      return 'never';
+      if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['DEV2'])) {
+        // we run this cron only on UAT and PHPUNIT
+        return false;
+      }
+
+      $today = self::get_date('Y-m-d');
+      $current_hour = (int)self::get_date('H');
+
+      if (variable_get(self::CRON_LAST_RUN_DRUPAL_VAR) == $today) {
+        //error_log("ETL STATUS MAIL CRON skips. Reason: already ran today :: $today :: ".variable_get($variable_name));
+        return false;
+      }
+
+      if ($current_hour < 9 || $current_hour > 10) {
+        //error_log("ETL STATUS MAIL CRON skips. Reason: will run between 9 AM and 11 AM EST :: current hour: $current_hour");
+        return false;
+      }
+
+      variable_set(self::CRON_LAST_RUN_DRUPAL_VAR, $today);
+      return self::sendmail();
     }
-    if (is_numeric($date)) {
-      $date = date('c', $date);
+
+    /**
+     * @return bool
+     */
+    public function sendmail()
+    {
+      global $conf;
+
+      $from = $conf['email_from'];
+
+      if (isset($conf['checkbook_dev_group_email'])){
+        $to_dev = $conf['checkbook_dev_group_email'];
+
+        try{
+          drupal_mail('checkbook_etl_notification', 'send-dev-status', $to_dev, null, ['dev_mode'=> true], $from);
+        } catch(Exception $ex1){
+          error_log($ex1->getMessage());
+        }
+      }
+
+      if (isset($conf['checkbook_ETL_emails'])) {
+        $to_client = $conf['checkbook_ETL_emails'];
+        try{
+          drupal_mail('checkbook_etl_notification', 'send-client-status', $to_client, null, ['dev_mode'=> false], $from);
+        } catch(Exception $ex2){
+          error_log($ex2->getMessage());
+        }
+      }
+      return true;
     }
-    $date1 = date_create($date);
-    $interval = date_diff($date1, date_create(self::get_date("Y-m-d H:i:s")));
-    return $interval->format('%a day(s) %h hour(s) ago');
-  }
 
 }
