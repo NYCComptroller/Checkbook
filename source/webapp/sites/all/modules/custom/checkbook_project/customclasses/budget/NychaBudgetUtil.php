@@ -82,7 +82,7 @@ class NychaBudgetUtil{
         break;
       case 'wt_year' :
         $reqParam = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
-        $title .= _getYearValueFromID($reqParam);
+        $title .= 'FY ' . _getYearValueFromID($reqParam);
     }
 
     return $title;
