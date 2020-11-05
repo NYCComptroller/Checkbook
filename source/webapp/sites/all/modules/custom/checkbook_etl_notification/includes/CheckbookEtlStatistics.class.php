@@ -145,13 +145,13 @@ class CheckbookEtlStatistics
         return false;
       }
 
-      if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['UAT','PHPUNIT'])) {
+      //if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['UAT','PHPUNIT'])) {
         // we run this cron only on UAT and PHPUNIT
-        return false;
-      }
+        //return false;
+      //}
 
-      $today = $this->get_date('Y-m-d');
-      $current_hour = (int)$this->get_date('H');
+      $today = self::get_date('Y-m-d');
+      $current_hour = (int)self::get_date('H');
 
       if (variable_get(self::CRON_LAST_RUN_DRUPAL_VAR) == $today) {
         //error_log("ETL STATUS MAIL CRON skips. Reason: already ran today :: $today :: ".variable_get($variable_name));
@@ -164,7 +164,7 @@ class CheckbookEtlStatistics
       }
 
       variable_set(self::CRON_LAST_RUN_DRUPAL_VAR, $today);
-      return $this->sendmail();
+      return self::sendmail();
     }
 
     /**
