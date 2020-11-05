@@ -69,8 +69,8 @@ class CheckbookEtlStatistics
         'Environment' => $result['host_environment'],
         'Last Run Date' => $result['load_end_time'],
         'Last Run Success?' => $result['status'],
-        'Last Success Date' => $result['load_end_time'],
-        'Last File Load Date' => $result['last_successful_load_date'],
+        'Last Success Date' => $result['last_successful_load_date'],
+        'Last File Load Date' => $result['load_end_time'],
         'Shards Refreshed?' => $result['shard_refresh_flag_yn'],
         'Solr Refreshed?' => $result['index_refresh_flag_yn'],
         'Status' => $result['status'], );
