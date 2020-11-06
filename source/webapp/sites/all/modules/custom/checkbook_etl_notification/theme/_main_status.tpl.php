@@ -24,7 +24,7 @@
         <?php echo date('m-d-Y', strtotime($prod_stat['Last Run Date'])) ?>
       </td>
       <td class = "flag">
-        <?php echo($prod_stat['Status'] == 'Success' ? '✅' : '❌'); ?>
+        <?php echo($prod_stat['Last Run Success?'] == 'Success' ? '✅' : '❌'); ?>
       </td>
       <td>
         <?php echo date('m-d-Y', strtotime($prod_stat['Last Success Date'])) ?>
@@ -70,7 +70,7 @@
         <?php echo date('m-d-Y', strtotime($uat_stat['Last Run Date'])) ?>
       </td>
       <td class = "flag">
-        <?php echo(($uat_stat['Status'] == 'Success') ? '✅' : '❌'); ?>
+        <?php echo(($uat_stat['Last Run Success?'] == 'Success') ? '✅' : '❌'); ?>
       </td>
       <td>
         <?php echo date('m-d-Y', strtotime($uat_stat['Last Success Date'])) ?>
