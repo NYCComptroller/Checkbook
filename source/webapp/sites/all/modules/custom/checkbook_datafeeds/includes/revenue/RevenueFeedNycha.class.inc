@@ -135,16 +135,16 @@ class RevenueFeedNycha extends RevenueFeed
     }
 
     //Modified
-    if ($this->values['nycha_modified_from'] && $this->values['nycha_modified_to']) {
+    if (($this->values['nycha_modified_from'] || $this->values['nycha_modified_from'] === "0") && ($this->values['nycha_modified_to'] || $this->values['nycha_modified_to'] === "0")) {
       $this->form['filter']['modified_revenue'] = array('#markup' => '<div><strong>Modified:</strong> Greater Than Equal to: $' . $this->values['nycha_modified_from'] . ' Less Than Equal to: $' . $this->values['nycha_modified_to'] . '</div>');
       $this->user_criteria['Modified Greater Than'] = $this->values['nycha_modified_from'];
       $this->user_criteria['Modified Less Than'] = $this->values['nycha_modified_to'];
       $this->formatted_search_criteria['Modified'] = 'Greater Than Equal to: $' . $this->values['nycha_modified_from'] . ' Less Than Equal to: $' . $this->values['nycha_modified_to'];
-    } elseif (!$this->values['nycha_modified_from'] && $this->values['nycha_modified_to']) {
+    } elseif (!$this->values['nycha_modified_from'] && ($this->values['nycha_modified_to'] || $this->values['nycha_modified_to'] === "0")) {
       $this->form['filter']['modified_revenue'] = array('#markup' => '<div><strong>Modified:</strong> Less Than Equal to: $' . $this->values['nycha_modified_to'] . '</div>');
       $this->user_criteria['Modified Less Than'] = $this->values['nycha_modified_to'];
       $this->formatted_search_criteria['Modified'] = 'Less Than Equal to: $' . $this->values['nycha_modified_to'];
-    } elseif ($this->values['nycha_modified_from'] && !$this->values['nycha_modified_to']) {
+    } elseif (($this->values['nycha_modified_from'] || $this->values['nycha_modified_from'] === "0") && !$this->values['nycha_modified_to']) {
       $this->form['filter']['modified_revenue'] = array('#markup' => '<div><strong>Modified:</strong> Greater Than Equal to: $' . $this->values['nycha_modified_from'] . '</div>');
       $this->user_criteria['Modified Greater Than'] = $this->values['nycha_modified_from'];
       $this->formatted_search_criteria['Modified'] = 'Greater Than Equal to: $' . $this->values['nycha_modified_from'];
