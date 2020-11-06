@@ -119,16 +119,16 @@ class RevenueFeedNycha extends RevenueFeed
     }
 
     //Adopted
-    if ($this->values['nycha_adopted_from'] && $this->values['nycha_adopted_to']) {
+    if (($this->values['nycha_adopted_from'] || $this->values['nycha_adopted_from'] === "0") && ($this->values['nycha_adopted_to'] || $this->values['nycha_adopted_to'] === "0")) {
       $this->form['filter']['adopted_revenue'] = array('#markup' => '<div><strong>Adopted:</strong> Greater Than Equal to: $' . $this->values['nycha_adopted_from'] . ' Less Than Equal to: $' . $this->values['nycha_adopted_to'] . '</div>');
       $this->user_criteria['Adopted Greater Than'] = $this->values['nycha_adopted_from'];
       $this->user_criteria['Adopted Less Than'] = $this->values['nycha_adopted_to'];
       $this->formatted_search_criteria['Adopted'] = 'Greater Than Equal to: $' . $this->values['nycha_adopted_from'] . ' Less Than Equal to: $' . $this->values['nycha_adopted_to'];
-    } elseif (!$this->values['nycha_adopted_from'] && $this->values['nycha_adopted_to']) {
+    } elseif (!$this->values['nycha_adopted_from'] && ($this->values['nycha_adopted_to'] || $this->values['nycha_adopted_to'] === "0")) {
       $this->form['filter']['adopted_revenue'] = array('#markup' => '<div><strong>Adopted:</strong> Less Than Equal to: $' . $this->values['nycha_adopted_to'] . '</div>');
       $this->user_criteria['Adopted Less Than'] = $this->values['nycha_adopted_to'];
       $this->formatted_search_criteria['Adopted'] = 'Less Than Equal to: $' . $this->values['nycha_adopted_to'];
-    } elseif ($this->values['nycha_adopted_from'] && !$this->values['nycha_adopted_to']) {
+    } elseif (($this->values['nycha_adopted_from'] || $this->values['nycha_adopted_from'] === "0") && !$this->values['nycha_adopted_to']) {
       $this->form['filter']['adopted_revenue'] = array('#markup' => '<div><strong>Adopted:</strong> Greater Than Equal to: $' . $this->values['nycha_adopted_from'] . '</div>');
       $this->user_criteria['Adopted Greater Than'] = $this->values['nycha_adopted_from'];
       $this->formatted_search_criteria['Adopted'] = 'Greater Than Equal to: $' . $this->values['nycha_adopted_from'];
@@ -151,32 +151,32 @@ class RevenueFeedNycha extends RevenueFeed
     }
 
     //Recognized
-    if ($this->values['nycha_recognized_from'] && $this->values['nycha_recognized_to']) {
+    if (($this->values['nycha_recognized_from'] || $this->values['nycha_recognized_from'] === "0") && ($this->values['nycha_recognized_to'] || $this->values['nycha_recognized_to'] === "0")) {
       $this->form['filter']['recognized_revenue'] = array('#markup' => '<div><strong>Recognized:</strong> Greater Than Equal to: $' . $this->values['nycha_recognized_from'] . ' Less Than Equal to: $' . $this->values['nycha_recognized_to'] . '</div>');
       $this->user_criteria['Recognized Greater Than'] = $this->values['nycha_recognized_from'];
       $this->user_criteria['Recognized Less Than'] = $this->values['nycha_recognized_to'];
       $this->formatted_search_criteria['Recognized'] = 'Greater Than Equal to: $' . $this->values['nycha_recognized_from'] . ' Less Than Equal to: $' . $this->values['nycha_recognized_to'];
-    } elseif (!$this->values['nycha_recognized_from'] && $this->values['nycha_recognized_to']) {
+    } elseif (!$this->values['nycha_recognized_from'] && ($this->values['nycha_recognized_to'] || $this->values['nycha_recognized_to'] === "0")) {
       $this->form['filter']['recognized_revenue'] = array('#markup' => '<div><strong>Recognized:</strong> Less Than Equal to: $' . $this->values['nycha_recognized_to'] . '</div>');
       $this->user_criteria['Recognized Less Than'] = $this->values['nycha_recognized_to'];
       $this->formatted_search_criteria['Recognized'] = 'Less Than Equal to: $' . $this->values['nycha_recognized_to'];
-    } elseif ($this->values['nycha_recognized_from'] && !$this->values['nycha_recognized_to']) {
+    } elseif (($this->values['nycha_recognized_from'] || $this->values['nycha_recognized_from'] === "0") && !$this->values['nycha_recognized_to']) {
       $this->form['filter']['recognized_revenue'] = array('#markup' => '<div><strong>Recognized:</strong> Greater Than Equal to: $' . $this->values['nycha_recognized_from'] . '</div>');
       $this->user_criteria['Recognized Greater Than'] = $this->values['nycha_recognized_from'];
       $this->formatted_search_criteria['Recognized'] = 'Greater Than Equal to: $' . $this->values['nycha_recognized_from'];
     }
 
     //Remaining
-    if ($this->values['nycha_remaining_from'] && $this->values['nycha_remaining_to']) {
+    if (($this->values['nycha_remaining_from'] || $this->values['nycha_remaining_from'] === "0") && ($this->values['nycha_remaining_to'] || $this->values['nycha_remaining_to'] === "0")) {
       $this->form['filter']['remaining_revenue'] = array('#markup' => '<div><strong>Remaining:</strong> Greater Than Equal to: $' . $this->values['nycha_remaining_from'] . ' Less Than Equal to: $' . $this->values['nycha_remaining_to'] . '</div>');
       $this->user_criteria['Remaining Greater Than'] = $this->values['nycha_remaining_from'];
       $this->user_criteria['Remaining Less Than'] = $this->values['nycha_remaining_to'];
       $this->formatted_search_criteria['Remaining'] = 'Greater Than Equal to: $' . $this->values['nycha_remaining_from'] . ' Less Than Equal to: $' . $this->values['nycha_remaining_to'];
-    } elseif (!$this->values['nycha_remaining_from'] && $this->values['nycha_remaining_to']) {
+    } elseif (!$this->values['nycha_remaining_from'] && ($this->values['nycha_remaining_to'] || $this->values['nycha_remaining_to'] === "0")) {
       $this->form['filter']['remaining_revenue'] = array('#markup' => '<div><strong>Remaining:</strong> Less Than Equal to: $' . $this->values['nycha_remaining_to'] . '</div>');
       $this->user_criteria['Remaining Less Than'] = $this->values['nycha_remaining_to'];
       $this->formatted_search_criteria['Remaining'] = 'Less Than Equal to: $' . $this->values['nycha_remaining_to'];
-    } elseif ($this->values['nycha_remaining_from'] && !$this->values['nycha_remaining_to']) {
+    } elseif (($this->values['nycha_remaining_from'] || $this->values['nycha_remaining_from'] === "0") && !$this->values['nycha_remaining_to']) {
       $this->form['filter']['remaining_revenue'] = array('#markup' => '<div><strong>Remaining:</strong> Greater Than Equal to: $' . $this->values['nycha_remaining_from'] . '</div>');
       $this->user_criteria['Remaining Greater Than'] = $this->values['nycha_remaining_from'];
       $this->formatted_search_criteria['Remaining'] = 'Greater Than Equal to: $' . $this->values['nycha_remaining_from'];
