@@ -53,10 +53,10 @@ class BudgetFeedCitywide extends BudgetFeed{
       $this->formatted_search_criteria['Year'] = $this->values['fiscal_year'];
     }
     if ($this->values['currentfrom'] && $this->values['currentto']) {
-      $this->form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong> Greater Than Equal to: $' . $this->values['currentfrom'] . ' Less Than Equal to: $' . $this->values['currentto'] . '</div>');
+      $this->form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong> Greater Than Equal to: $' . $this->values['currentfrom'] . ' and Less than Equal to: $' . $this->values['currentto'] . '</div>');
       $this->user_criteria['Modified Budget Greater Than'] = $this->values['currentfrom'];
       $this->user_criteria['Modified Budget Less Than'] = $this->values['currentto'];
-      $this->formatted_search_criteria['Modified Budget'] = 'Greater Than Equal to: $' . $this->values['currentfrom'] . ' Less Than Equal to: $' . $this->values['currentto'];
+      $this->formatted_search_criteria['Modified Budget'] = 'Greater Than Equal to: $' . $this->values['currentfrom'] . ' and Less than Equal to: $' . $this->values['currentto'];
     } elseif (!$this->values['currentfrom'] && $this->values['currentto']) {
       $this->form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong> Less Than Equal to: $' . $this->values['currentto'] . '</div>');
       $this->user_criteria['Modified Budget Less Than'] = $this->values['currentto'];
@@ -67,10 +67,10 @@ class BudgetFeedCitywide extends BudgetFeed{
       $this->formatted_search_criteria['Modified Budget'] = 'Greater Than Equal to: $' . $this->values['currentfrom'];
     }
     if (($this->values['adoptedfrom'] || $this->values['adoptedfrom'] === "0") && ($this->values['adoptedto'] || $this->values['adoptedto'] === "0")) {
-      $this->form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Greater Than Equal to: $' . $this->values['adoptedfrom'] . ' Less Than Equal to: $' . $this->values['adoptedto'] . '</div>');
+      $this->form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Greater Than Equal to: $' . $this->values['adoptedfrom'] . ' and Less than Equal to: $' . $this->values['adoptedto'] . '</div>');
       $this->user_criteria['Adopted Budget Greater Than'] = $this->values['adoptedfrom'];
       $this->user_criteria['Adopted Budget Less Than'] = $this->values['adoptedto'];
-      $this->formatted_search_criteria['Adopted Budget'] = 'Greater Than Equal to: $' . $this->values['adoptedfrom'] . ' Less Than Equal to: $' . $this->values['adoptedto'];
+      $this->formatted_search_criteria['Adopted Budget'] = 'Greater Than Equal to: $' . $this->values['adoptedfrom'] . ' and Less than Equal to: $' . $this->values['adoptedto'];
     } elseif (!$this->values['adoptedfrom'] && ($this->values['adoptedto'] || $this->values['adoptedto'] === "0")) {
       $this->form['filter']['adopted_budget'] = array('#markup' => '<div><strong>Adopted Budget:</strong> Less Than Equal to: $' . $this->values['adoptedto'] . '</div>');
       $this->user_criteria['Adopted Budget Less Than'] = $this->values['adoptedto'];
@@ -81,10 +81,10 @@ class BudgetFeedCitywide extends BudgetFeed{
       $this->formatted_search_criteria['Adopted Budget'] = 'Greater Than Equal to: $' . $this->values['adoptedfrom'];
     }
     if (($this->values['preencumberedfrom'] || $this->values['preencumberedfrom'] === "0") && ($this->values['preencumberedto'] || $this->values['preencumberedto'] === "0")) {
-      $this->form['filter']['preencumbered'] = array('#markup' => '<div><strong>Pre-encumbered:</strong> Greater Than Equal to: $' . $this->values['preencumberedfrom'] . ' Less Than Equal to: $' . $this->values['preencumberedto'] . '</div>');
+      $this->form['filter']['preencumbered'] = array('#markup' => '<div><strong>Pre-encumbered:</strong> Greater Than Equal to: $' . $this->values['preencumberedfrom'] . ' and Less than Equal to: $' . $this->values['preencumberedto'] . '</div>');
       $this->user_criteria['Pre-encumbered Greater Than'] = $this->values['preencumberedfrom'];
       $this->user_criteria['Pre-encumbered Less Than'] = $this->values['preencumberedto'];
-      $this->formatted_search_criteria['Pre-encumbered'] = 'Greater Than Equal to: $' . $this->values['preencumberedfrom'] . ' Less Than Equal to: $' . $this->values['preencumberedto'];
+      $this->formatted_search_criteria['Pre-encumbered'] = 'Greater Than Equal to: $' . $this->values['preencumberedfrom'] . ' and Less than Equal to: $' . $this->values['preencumberedto'];
     } elseif (!$this->values['preencumberedfrom'] && ($this->values['preencumberedto'] || $this->values['preencumberedto'] === "0")) {
       $this->form['filter']['preencumbered'] = array('#markup' => '<div><strong>Pre-encumbered:</strong> Less Than Equal to: $' . $this->values['preencumberedto'] . '</div>');
       $this->user_criteria['Pre-encumbered Less Than'] = $this->values['preencumberedto'];
@@ -95,10 +95,10 @@ class BudgetFeedCitywide extends BudgetFeed{
       $this->formatted_search_criteria['Pre-encumbered'] = 'Greater Than Equal to: $' . $this->values['preencumberedfrom'];
     }
     if (($this->values['encumberedfrom'] || $this->values['encumberedfrom'] === "0") && ($this->values['encumberedto'] || $this->values['encumberedto'] === "0")) {
-      $this->form['filter']['encumbered'] = array('#markup' => '<div><strong>Encumbered:</strong> Greater Than Equal to: $' . $this->values['encumberedfrom'] . ' Less Than Equal to: $' . $this->values['encumberedto'] . '</div>');
+      $this->form['filter']['encumbered'] = array('#markup' => '<div><strong>Encumbered:</strong> Greater Than Equal to: $' . $this->values['encumberedfrom'] . ' and Less than Equal to: $' . $this->values['encumberedto'] . '</div>');
       $this->user_criteria['Encumbered Greater Than'] = $this->values['encumberedfrom'];
       $this->user_criteria['Encumbered Less Than'] = $this->values['encumberedto'];
-      $this->formatted_search_criteria['Encumbered'] = 'Greater Than Equal to: $' . $this->values['encumberedfrom'] . ' Less Than Equal to: $' . $this->values['encumberedto'];
+      $this->formatted_search_criteria['Encumbered'] = 'Greater Than Equal to: $' . $this->values['encumberedfrom'] . ' and Less than Equal to: $' . $this->values['encumberedto'];
     } elseif (!$this->values['encumberedfrom'] && $this->values['encumberedto']) {
       $this->form['filter']['encumbered'] = array('#markup' => '<div><strong>Encumbered:</strong> Less Than Equal to: $' . $this->values['encumberedto'] . '</div>');
       $this->user_criteria['Encumbered Less Than'] = $this->values['encumberedto'];
@@ -109,10 +109,10 @@ class BudgetFeedCitywide extends BudgetFeed{
       $this->formatted_search_criteria['Encumbered'] = 'Greater Than Equal to: $' . $this->values['encumberedfrom'];
     }
     if (($this->values['accruedexpensefrom'] || $this->values['accruedexpensefrom'] === "0") && ($this->values['accruedexpenseto'] || $this->values['accruedexpenseto'] === "0")) {
-      $this->form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Greater Than Equal to: $' . $this->values['accruedexpensefrom'] . ' Less Than Equal to: $' . $this->values['accruedexpenseto'] . '</div>');
+      $this->form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Greater Than Equal to: $' . $this->values['accruedexpensefrom'] . ' and Less than Equal to: $' . $this->values['accruedexpenseto'] . '</div>');
       $this->user_criteria['Accrued Expense Greater Than'] = $this->values['accruedexpensefrom'];
       $this->user_criteria['Accrued Expense Less Than'] = $this->values['accruedexpenseto'];
-      $this->formatted_search_criteria['Accrued Expense'] = 'Greater Than Equal to: $' . $this->values['accruedexpensefrom'] . ' Less Than Equal to: $' . $this->values['accruedexpenseto'];
+      $this->formatted_search_criteria['Accrued Expense'] = 'Greater Than Equal to: $' . $this->values['accruedexpensefrom'] . ' and Less than Equal to: $' . $this->values['accruedexpenseto'];
     } elseif (!$this->values['accruedexpensefrom'] && ($this->values['accruedexpenseto'] || $this->values['accruedexpenseto'] === "0")) {
       $this->form['filter']['accrued_expense'] = array('#markup' => '<div><strong>Accrued Expense:</strong> Less Than Equal to: $' . $this->values['accruedexpenseto'] . '</div>');
       $this->user_criteria['Accrued Expense Less Than'] = $this->values['accruedexpenseto'];
@@ -123,10 +123,10 @@ class BudgetFeedCitywide extends BudgetFeed{
       $this->formatted_search_criteria['Accrued Expense'] = 'Greater Than Equal to: $' . $this->values['accruedexpensefrom'];
     }
     if (($this->values['cashfrom'] || $this->values['cashfrom'] === "0") && ($this->values['cashto'] || $this->values['cashto'] === "0")) {
-      $this->form['filter']['cash_amount'] = array('#markup' => '<div><strong>Cash Expense:</strong> Greater Than Equal to: $' . $this->values['cashfrom'] . ' Less Than Equal to: $' . $this->values['cashto'] . '</div>');
+      $this->form['filter']['cash_amount'] = array('#markup' => '<div><strong>Cash Expense:</strong> Greater Than Equal to: $' . $this->values['cashfrom'] . ' and Less than Equal to: $' . $this->values['cashto'] . '</div>');
       $this->user_criteria['Cash Expense Greater Than'] = $this->values['cashfrom'];
       $this->user_criteria['Cash Expense Less Than'] = $this->values['cashto'];
-      $this->formatted_search_criteria['Cash Expense'] = 'Greater Than Equal to: $' . $this->values['cashfrom'] . ' Less Than Equal to: $' . $this->values['cashto'];
+      $this->formatted_search_criteria['Cash Expense'] = 'Greater Than Equal to: $' . $this->values['cashfrom'] . ' and Less than Equal to: $' . $this->values['cashto'];
     } elseif (!$this->values['cashfrom'] && ($this->values['cashto'] || $this->values['cashto'] === "0")) {
       $this->form['filter']['cash_amount'] = array('#markup' => '<div><strong>Cash Expense:</strong> Less Than Equal to: $' . $this->values['cashto'] . '</div>');
       $this->user_criteria['Cash Expense Less Than'] = $this->values['cashto'];
@@ -137,10 +137,10 @@ class BudgetFeedCitywide extends BudgetFeed{
       $this->formatted_search_criteria['Cash Expense'] = 'Greater Than Equal to: $' . $this->values['cashfrom'];
     }
     if (($this->values['postadjustmentsfrom'] || $this->values['postadjustmentsfrom'] === "0") && ($this->values['postadjustmentsto'] || $this->values['postadjustmentsto'] === "0")) {
-      $this->form['filter']['post_adjustments'] = array('#markup' => '<div><strong>Post Adjustments:</strong> Greater Than Equal to: $' . $this->values['postadjustmentsfrom'] . ' Less Than Equal to: $' . $this->values['postadjustmentsto'] . '</div>');
+      $this->form['filter']['post_adjustments'] = array('#markup' => '<div><strong>Post Adjustments:</strong> Greater Than Equal to: $' . $this->values['postadjustmentsfrom'] . ' and Less than Equal to: $' . $this->values['postadjustmentsto'] . '</div>');
       $this->user_criteria['Post Adjustments Greater Than'] = $this->values['postadjustmentsfrom'];
       $this->user_criteria['Post Adjustments Less Than'] = $this->values['postadjustmentsto'];
-      $this->formatted_search_criteria['Post Adjustments'] = 'Greater Than Equal to: $' . $this->values['postadjustmentsfrom'] . ' Less Than Equal to: $' . $this->values['postadjustmentsto'];
+      $this->formatted_search_criteria['Post Adjustments'] = 'Greater Than Equal to: $' . $this->values['postadjustmentsfrom'] . ' and Less than Equal to: $' . $this->values['postadjustmentsto'];
     } elseif (!$this->values['postadjustmentsfrom'] && ($this->values['postadjustmentsto'] || $this->values['postadjustmentsto'] === "0")) {
       $this->form['filter']['post_adjustments'] = array('#markup' => '<div><strong>Post Adjustments:</strong> Less Than Equal to: $' . $this->values['postadjustmentsto'] . '</div>');
       $this->user_criteria['Post Adjustments Less Than'] = $this->values['postadjustmentsto'];
