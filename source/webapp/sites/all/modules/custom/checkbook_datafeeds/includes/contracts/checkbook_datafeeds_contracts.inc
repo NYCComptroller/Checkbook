@@ -1047,10 +1047,10 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $formatted_search_criteria['Budget Name'] = $values['budget_name'];
       }
       if (($values['currentamtfrom'] || $values['currentamtfrom'] === "0") && ($values['currentamtto'] || $values['currentamtto'] === "0")) {
-        $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Greater Than Equal to: $' . $values['currentamtfrom'] . ' Less Than Equal to: $' . $values['currentamtto'] . '</div>');
+        $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Greater Than Equal to: $' . $values['currentamtfrom'] . ' and Less than Equal to: $' . $values['currentamtto'] . '</div>');
         $user_criteria['Current Amount Greater Than'] = $values['currentamtfrom'];
         $user_criteria['Current Amount Less Than'] = $values['currentamtto'];
-        $formatted_search_criteria['Current Amount'] = 'Greater Than Equal to: $' . $values['currentamtfrom'] . ' Less Than Equal to: $' . $values['currentamtto'];
+        $formatted_search_criteria['Current Amount'] = 'Greater Than Equal to: $' . $values['currentamtfrom'] . ' and Less than Equal to: $' . $values['currentamtto'];
       } elseif (!$values['currentamtfrom'] && ($values['currentamtto'] || $values['currentamtto'] === "0")) {
         $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Less Than Equal to: $' . $values['currentamtto'] . '</div>');
         $user_criteria['Current Amount Less Than'] = $values['currentamtto'];
@@ -1198,10 +1198,10 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         }
       }
       if (($values['nycha_currentamtfrom'] || $values['nycha_currentamtfrom'] === "0") && ($values['nycha_currentamtto'] || $values['nycha_currentamtto'] === "0")) {
-        $form['filter']['nycha_current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Greater Than Equal to: $' . $values['nycha_currentamtfrom'] . ' Less Than Equal to: $' . $values['nycha_currentamtto'] . '</div>');
+        $form['filter']['nycha_current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Greater Than Equal to: $' . $values['nycha_currentamtfrom'] . ' and Less than Equal to: $' . $values['nycha_currentamtto'] . '</div>');
         $user_criteria['Current Amount Greater Than'] = $values['nycha_currentamtfrom'];
         $user_criteria['Current Amount Less Than'] = $values['nycha_currentamtto'];
-        $formatted_search_criteria['Current Amount'] = 'Greater Than Equal to: $' . $values['nycha_currentamtfrom'] . ' Less Than Equal to: $' . $values['nycha_currentamtto'];
+        $formatted_search_criteria['Current Amount'] = 'Greater Than Equal to: $' . $values['nycha_currentamtfrom'] . ' and Less than Equal to: $' . $values['nycha_currentamtto'];
       } elseif (!$values['nycha_currentamtfrom'] && ($values['nycha_currentamtto'] || $values['nycha_currentamtto'] === "0")) {
         $form['filter']['nycha_current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Less Than Equal to: $' . $values['nycha_currentamtto'] . '</div>');
         $user_criteria['Current Amount Less Than'] = $values['currentamtto'];
@@ -1335,10 +1335,10 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $formatted_search_criteria['PIN'] = $values['pin'];
       }
       if (($values['currentamtfrom'] || $values['currentamtfrom'] === "0") && ($values['currentamtto'] || $values['currentamtto'] === "0")) {
-        $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Greater Than Equal to: $' . $values['currentamtfrom'] . ' Less Than Equal to: $' . $values['currentamtto'] . '</div>');
+        $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Greater Than Equal to: $' . $values['currentamtfrom'] . ' and Less than Equal to: $' . $values['currentamtto'] . '</div>');
         $user_criteria['Current Amount Greater Than'] = $values['currentamtfrom'];
         $user_criteria['Current Amount Less Than'] = $values['currentamtto'];
-        $formatted_search_criteria['Current Amount'] = 'Greater Than Equal to: $' . $values['currentamtfrom'] . ' Less Than Equal to: $' . $values['currentamtto'];
+        $formatted_search_criteria['Current Amount'] = 'Greater Than Equal to: $' . $values['currentamtfrom'] . ' and Less than Equal to: $' . $values['currentamtto'];
       } elseif (!$values['currentamtfrom'] && ($values['currentamtto'] || $values['currentamtto'] === "0")) {
         $form['filter']['current_amount'] = array('#markup' => '<div><strong>Current Amount:</strong> Less Than Equal to: $' . $values['currentamtto'] . '</div>');
         $user_criteria['Current Amount Less Than'] = $values['currentamtto'];
