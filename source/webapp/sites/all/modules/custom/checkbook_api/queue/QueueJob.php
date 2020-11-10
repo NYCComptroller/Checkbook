@@ -58,23 +58,40 @@ class QueueJob {
             $this->prepareQueueJob();
             $commands = NULL;
             switch($this->responseFormat) {
-                case "csv":
-                    if($this->recordCount > $this->fileLimit) {
-                        $commands = $this->getCSVCommands();
-                        $compressed_filename  = $this->prepareFileName();
-                        $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
-                    }
-                    else {
-                        $filename = $this->prepareFileName();
-                        $commands[$filename][] = $this->getCSVJobCommand($filename);
-                        $commands[$filename][] = $this->getCSVHeaderCommand($filename);
-                        $commands[$filename][] = $this->getMoveCommand($filename);
-                    }
-                  break;
-                case "xml":
-                    $filename = $this->prepareFileName();
-                    $commands = $this->getXMLJobCommands($filename);
-                    $commands[$filename][] = $this->getMoveCommand($filename, 'xml.zip');
+              case "csv":
+                if ($this->recordCount > $this->fileLimit) {
+                  $commands = $this->getCSVCommands();
+                  $compressed_filename = $this->prepareFileName();
+                  $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
+                } else {
+                  $filename = $this->prepareFileName();
+                  $commands[$filename][] = $this->getCSVJobCommand($filename);
+                  $commands[$filename][] = $this->getCSVHeaderCommand($filename);
+                  $commands[$filename][] = $this->getMoveCommand($filename);
+                }
+                break;
+              case "xml":
+                if ($this->recordCount > $this->fileLimit) {
+                  $num_files = ceil($this->recordCount/$this->fileLimit);
+                  $commands = array();
+                  $compressed_filename  = $this->prepareFileName();
+
+                  for($i=0;$i<$num_files;$i++) {
+                    $offset = $i*$this->fileLimit;
+                    $filename = $this->prepareFileName().'_part_'.$i;
+
+                    //sql command
+                    $commands[$filename][] = $this->getXMLJobCommands($filename, $this->fileLimit, $offset);
+
+                    //append file to zip and delete the file
+                    $commands[$filename][] = $this->getAppendToZipAndRemoveCommand($filename, $compressed_filename);
+                  }
+                  $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
+                } else{
+                  $filename = $this->prepareFileName();
+                  $commands = $this->getXMLJobCommands($filename);
+                  $commands[$filename][] = $this->getMoveCommand($filename, 'xml.zip');
+                }
                     break;
             }
             $this->processCommands($commands);
@@ -199,9 +216,11 @@ class QueueJob {
      * This function modifies the sql to handle derived columns dynamically.
      *
      * @param $filename
+     * @param $limit
+     * @param $offset
      * @return array
      */
-    private function getXMLJobCommands($filename) {
+    private function getXMLJobCommands($filename, $limit = 'ALL',$offset = 0) {
         $query = $this->jobDetails['data_command'];
         $request_criteria = $this->jobDetails['request_criteria'];
         $search_criteria = new SearchCriteria($request_criteria, $this->responseFormat);
@@ -255,13 +274,6 @@ class QueueJob {
             else {
             $new_select_part .= "REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g'),'&','&amp;'),'>','&gt;'),'<','&lt;')";
             }
-            /*if ($is_derived_column) {
-                $sql_part = substr_replace($sql_part, "", $pos);
-                $new_select_part .= str_replace($alias . $column,"REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g'))),'&','&amp;'),'>','&gt;'),'<','&lt;')",$sql_part);
-            }
-            else {
-                $new_select_part .= "REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g')),'&','&amp;'),'>','&gt;'),'<','&lt;')";
-            }*/
 
             //column close tag
             $new_select_part .= " || '</".$tag.">'";
@@ -286,6 +298,9 @@ class QueueJob {
         if(stripos($this->jobDetails['name'], '_oge')) {
           $database = "checkbook_oge";
         }
+
+        //Add limit to query
+        $query .= " LIMIT " . $limit . " OFFSET " . $offset;
 
         //sql command
         $command = _checkbook_psql_command($database);
@@ -403,7 +418,7 @@ class QueueJob {
     function getFilename() {
         static $app_file_name = NULL;
         if (!isset($app_file_name)) {
-            if($this->responseFormat == "csv" && $this->recordCount > $this->fileLimit) {
+            if($this->recordCount > $this->fileLimit) {
                 // For CSV, if the record count is greater than the fileLimit(1M), records will be exported into multiple files and zipped
                 $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
             } else {
