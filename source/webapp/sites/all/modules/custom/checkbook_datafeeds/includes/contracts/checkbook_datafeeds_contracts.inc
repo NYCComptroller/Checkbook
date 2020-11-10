@@ -1615,7 +1615,8 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
   }
 
   if ($data_source != Datasource::NYCHA) {
-    if ($values['year'] && $values['year'] != '0') {
+
+    if ($values['year'] && $values['year'] != '0' && $values['df_contract_status'] != 'pending') {
       if (startsWith($values['year'], 'F')) {
         $criteria['value']['fiscal_year'] = ltrim($values['year'], 'FY');
       } elseif (startsWith($values['year'], 'C')) {
