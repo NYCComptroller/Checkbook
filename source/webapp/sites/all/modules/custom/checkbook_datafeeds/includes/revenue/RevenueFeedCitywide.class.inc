@@ -62,20 +62,20 @@ class RevenueFeedCitywide extends RevenueFeed{
     }
 
     //Adopted
-    if ($this->values['adoptedfrom'] && $this->values['adoptedto']) {
+    if (($this->values['adoptedfrom'] || $this->values['adoptedfrom'] === "0") && ($this->values['adoptedto'] || $this->values['adoptedto'] === "0")) {
       $this->form['filter']['adopted'] = array(
         '#markup' => '<div><strong>Adopted:</strong> Greater Than Equal to: $' . $this->values['adoptedfrom'] . ' Less Than Equal to: $' . $this->values['adoptedto'] . '</div>',
       );
       $this->user_criteria['Adopted Greater Than'] = $this->values['adoptedfrom'];
       $this->user_criteria['Adopted Less Than'] = $this->values['adoptedto'];
       $this->formatted_search_criteria['Adopted'] = 'Greater Than Equal to: $' . $this->values['adoptedfrom'] . ' Less Than Equal to: $' . $this->values['adoptedto'];
-    } elseif ($this->values['adoptedfrom'] && !$this->values['adoptedto']) {
+    } elseif (($this->values['adoptedfrom'] || $this->values['adoptedfrom'] === "0") && !$this->values['adoptedto']) {
       $this->form['filter']['adopted'] = array(
         '#markup' => '<div><strong>Adopted:</strong> Greater Than Equal to: $' . $this->values['adoptedfrom'] . '</div>',
       );
       $this->user_criteria['Adopted Greater Than'] = $this->values['adoptedfrom'];
       $this->formatted_search_criteria['Adopted'] = 'Greater Than Equal to: $' . $this->values['adoptedfrom'];
-    } elseif (!$this->values['adoptedfrom'] && $this->values['adoptedto']) {
+    } elseif (!$this->values['adoptedfrom'] && ($this->values['adoptedto'] || $this->values['adoptedto'] === "0")) {
       $this->form['filter']['adopted'] = array(
         '#markup' => '<div><strong>Adopted:</strong> Less Than Equal to: $' . $this->values['adoptedto'] . '</div>',
       );
@@ -84,20 +84,20 @@ class RevenueFeedCitywide extends RevenueFeed{
     }
 
     //Recognized
-    if ($this->values['recognizedfrom'] && $this->values['recognizedto']) {
+    if (($this->values['recognizedfrom'] || $this->values['recognizedfrom'] === "0") && ($this->values['recognizedto'] || $this->values['recognizedto'] === "0")) {
       $this->form['filter']['recognized'] = array(
         '#markup' => '<div><strong>Recognized:</strong> Greater Than Equal to: $' . $this->values['recognizedfrom'] . ' Less Than Equal to: $' . $this->values['recognizedto'] . '</div>',
       );
       $this->user_criteria['Recognized Greater Than'] = $this->values['recognizedfrom'];
       $this->user_criteria['Recognized Less Than'] = $this->values['recognizedto'];
       $this->formatted_search_criteria['Recognized'] = 'Greater Than Equal to: $' . $this->values['recognizedfrom'] . ' Less Than Equal to: $' . $this->values['recognizedto'];
-    } elseif ($this->values['recognizedfrom'] && !$this->values['recognizedto']) {
+    } elseif (($this->values['recognizedfrom'] || $this->values['recognizedfrom'] === "0") && !$this->values['recognizedto']) {
       $this->form['filter']['recognized'] = array(
         '#markup' => '<div><strong>Recognized:</strong> Greater Than Equal to: $' . $this->values['recognizedfrom'] . '</div>',
       );
       $this->user_criteria['Recognized Greater Than'] = $this->values['recognizedfrom'];
       $this->formatted_search_criteria['Recognized'] = 'Greater Than Equal to: $' . $this->values['recognizedfrom'];
-    } elseif (!$this->values['recognizedfrom'] && $this->values['recognizedto']) {
+    } elseif (!$this->values['recognizedfrom'] && ($this->values['recognizedto'] || $this->values['recognizedto'] === "0")) {
       $this->form['filter']['recognized'] = array(
         '#markup' => '<div><strong>Recognized:</strong> Less Than Equal to: $' . $this->values['recognizedto'] . '</div>',
       );
@@ -147,20 +147,20 @@ class RevenueFeedCitywide extends RevenueFeed{
     }
 
     //Modified
-    if ($this->values['modifiedfrom'] && $this->values['modifiedto']) {
+    if (($this->values['modifiedfrom'] || $this->values['modifiedfrom'] === "0") && ($this->values['modifiedto'] || $this->values['modifiedto'] === "0")) {
       $this->form['filter']['modified'] = array(
         '#markup' => '<div><strong>Modified:</strong> Greater Than Equal to: $' . $this->values['modifiedfrom'] . ' Less Than Equal to: $' . $this->values['modifiedto'] . '</div>',
       );
       $this->user_criteria['Modified Greater Than'] = $this->values['modifiedfrom'];
       $this->user_criteria['Modified Less Than'] = $this->values['modifiedto'];
       $this->formatted_search_criteria['Modified'] = 'Greater Than Equal to: $' . $this->values['modifiedfrom'] . ' Less Than Equal to: $' . $this->values['modifiedto'];
-    } elseif ($this->values['modifiedfrom'] && !$this->values['modifiedto']) {
+    } elseif (($this->values['modifiedfrom'] || $this->values['modifiedfrom'] === "0") && !$this->values['modifiedto']) {
       $this->form['filter']['modified'] = array(
         '#markup' => '<div><strong>Modified:</strong> Greater Than Equal to: $' . $this->values['modifiedfrom'] . '</div>',
       );
       $this->user_criteria['Modified Greater Than'] = $this->values['modifiedfrom'];
       $this->formatted_search_criteria['Modified'] = 'Greater Than Equal to: $' . $this->values['modifiedfrom'];
-    } elseif (!$this->values['modifiedfrom'] && $this->values['modifiedto']) {
+    } elseif (!$this->values['modifiedfrom'] && ($this->values['modifiedto'] || $this->values['modifiedto'] === "0")) {
       $this->form['filter']['modified'] = array(
         '#markup' => '<div><strong>Modified:</strong> Less Than Equal to: $' . $this->values['modifiedto'] . '</div>',
       );
