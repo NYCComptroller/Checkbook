@@ -97,20 +97,20 @@ class SpendingFeedCitywide extends SpendingFeed
     }
 
     //Check Amount
-    if ($this->values['check_amt_from'] && $this->values['check_amt_to']) {
+    if (($this->values['check_amt_from'] || $this->values['check_amt_from'] === "0") && ($this->values['check_amt_to'] || $this->values['check_amt_to'] === "0")) {
       $this->form['filter']['chkamount'] = array(
         '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->values['check_amt_from'] . ' Less Than Equal to: $' . $this->values['check_amt_to'] . '</div>',
       );
       $this->user_criteria['Check Amount Greater Than'] = $this->values['check_amt_from'];
       $this->user_criteria['Check Amount Less Than'] = $this->values['check_amt_to'];
       $this->formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $this->values['check_amt_from'] . ' Less Than Equal to: $' . $this->values['check_amt_to'];
-    } elseif (!$this->values['check_amt_from'] && $this->values['check_amt_to']) {
+    } elseif (!$this->values['check_amt_from'] && ($this->values['check_amt_to'] || $this->values['check_amt_to'] === "0")) {
       $this->form['filter']['chkamount'] = array(
         '#markup' => '<div><strong>Check Amount:</strong> Less Than Equal to: $' . $this->values['check_amt_to'] . '</div>',
       );
       $this->user_criteria['Check Amount Less Than'] = $this->values['check_amt_to'];
       $this->formatted_search_criteria['Check Amount'] = 'Less Than Equal to: $' . $this->values['check_amt_to'];
-    } elseif ($this->values['check_amt_from'] && !$this->values['check_amt_to']) {
+    } elseif (($this->values['check_amt_from'] || $this->values['check_amt_from'] === "0") && !$this->values['check_amt_to']) {
       $this->form['filter']['chkamount'] = array(
         '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->values['check_amt_from'] . '</div>',
       );
