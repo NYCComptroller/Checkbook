@@ -18,7 +18,7 @@
 ;  Copyright 2009-2011 United States Government.
 ;
 name = "Checkbook ETL Status Mailing"
-description = "Module to email ETL Status every morning"
+description = "Module to email Prod/UAT ETL Status every morning"
 php = 7.2
 package = NYC Checkbook
 core = 7.x
