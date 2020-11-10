@@ -471,6 +471,9 @@
         $.fn.resetSelectedColumns();
         $.fn.hideShow(csval, catval, datasource);
         $.fn.showHidePrimeAndSubIcon();
+        if (csval == 'pending') {
+          $('#edit-year option:selected').removeAttr('selected');
+        }
       });
 
       //Contract Category Drop-down

@@ -55,32 +55,48 @@ class CheckbookEtlStatistics
    */
   public function getEtlStatistics($environment){
     //Get ETL Statistics in the last 12 hours
-    $sql = "SELECT *,
+    /*$sql = "SELECT *,
             CASE WHEN (process_abort_flag_yn = 'N' AND shard_refresh_flag_yn = 'Y' AND index_refresh_flag_yn = 'Y') 
                   THEN 'Success'
 	               ELSE 'Fail'
             END AS status FROM jobs WHERE load_end_time >= (NOW() - INTERVAL '12 hours' ) AND host_environment = '{$environment}'";
-    $results = _checkbook_project_execute_sql_by_data_source($sql, 'etl_statistics');
+    */
+
+    $sql = "SELECT database_name, host_environment, 
+                  ((CURRENT_DATE-1)::text||' 21:00:00.0')::TIMESTAMP 	AS last_run_date, 
+                  CASE WHEN database_name = 'checkbook_ogent'
+			                  THEN 'Fail' --Force OGE to fail until firewall issue gets fixed!
+		                   WHEN last_success_date > ((CURRENT_DATE-2)::text||' 21:00:00.0')::TIMESTAMP
+			                  THEN (CASE WHEN success_yn = 'N' THEN 'Fail' ELSE 'Success' END) 
+			                  ELSE 'Fail'
+			            END as last_run_success,
+			            last_success_date,
+                  last_successful_load_date,
+                  shard_refresh_flag_yn,
+                  index_refresh_flag_yn
+            FROM latest_stats_vw WHERE host_environment = '{$environment}'";
+    $results = _checkbook_project_execute_sql_by_data_source($sql, 'etl_statistics');log_error($results);
     $databases = array('checkbook' => 'Citywide', 'checkbook_ogent' => 'NYCEDC', 'checkbook_nycha' => 'NYCHA');
     $etlStatus = [];
     foreach($results as $result){
       $etlStatus[$result['database_name']] = array(
         'Database' => $databases[$result['database_name']],
         'Environment' => $result['host_environment'],
-        'Last Run Date' => $result['load_end_time'],
-        'Last Run Success?' => $result['status'],
-        'Last Success Date' => $result['last_successful_load_date'],
-        'Last File Load Date' => $result['load_end_time'],
+        'Last Run Date' => $result['last_run_date'],
+        'Last Run Success?' => $result['last_run_success'],
+        'Last Success Date' => $result['last_success_date'],
+        'Last File Load Date' => $result['last_successful_load_date'],
         'Shards Refreshed?' => $result['shard_refresh_flag_yn'],
         'Solr Refreshed?' => $result['index_refresh_flag_yn'],
-        'Status' => $result['status'], );
-
-      if($environment == 'PROD'){
-        self::$prodStatus = (self::$prodStatus == 'Fail') ? self::$prodStatus : $result['status'];
+      );
+      //Ignore OGE until firewall issue gets fixed!
+      if($environment == 'PROD' && $result['database_name'] != 'checkbook_ogent'){
+        self::$prodStatus = (self::$prodStatus == 'Fail') ? self::$prodStatus : $result['last_run_success'];
       }
 
-      if($environment == 'UAT'){
-        self::$uatStatus = (self::$uatStatus == 'Fail') ? self::$uatStatus : $result['status'];
+      //Ignore OGE until firewall issue gets fixed
+      if($environment == 'UAT' && $result['database_name'] != 'checkbook_ogent'){
+        self::$uatStatus = (self::$uatStatus == 'Fail') ? self::$uatStatus : $result['last_run_success'];
       }
     }
     $data = [];
@@ -146,7 +162,7 @@ class CheckbookEtlStatistics
       }
 
       if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['DEV2'])) {
-        // we run this cron only on UAT and PHPUNIT
+        // we run this cron only on DEV2 and PHPUNIT
         return false;
       }
 
