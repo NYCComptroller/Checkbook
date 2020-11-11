@@ -57,42 +57,53 @@ class QueueJob {
         try {
             $this->prepareQueueJob();
             $commands = NULL;
+            $filename = $this->prepareFileName();
             switch($this->responseFormat) {
-              case "csv":
-                if ($this->recordCount > $this->fileLimit) {
-                  $commands = $this->getCSVCommands();
-                  $compressed_filename = $this->prepareFileName();
-                  $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
-                } else {
-                  $filename = $this->prepareFileName();
-                  $commands[$filename][] = $this->getCSVJobCommand($filename);
-                  $commands[$filename][] = $this->getCSVHeaderCommand($filename);
-                  $commands[$filename][] = $this->getMoveCommand($filename);
-                }
-                break;
-              case "xml":
-                if ($this->recordCount > $this->fileLimit) {
-                  $num_files = ceil($this->recordCount/$this->fileLimit);
-                  $commands = array();
-                  $compressed_filename  = $this->prepareFileName();
+                case "csv":
+                    if($this->recordCount > $this->fileLimit) {
+                        $commands = $this->getCSVCommands($filename);
+                        $commands[$filename][] = $this->getMoveCommand($filename, 'zip');
+                    } else {
+                        $commands[$filename][] = $this->getCSVJobCommand($filename);
+                        $commands[$filename][] = $this->getCSVHeaderCommand($filename);
+                        $commands[$filename][] = $this->getMoveCommand($filename);
+                    }
+                  break;
+                case "xml":
+                  if($this->recordCount > $this->fileLimit) {
+                    $commands = $this->getXMLCommands($filename);
+                    $commands[$filename][] = $this->getMoveCommand($filename, 'zip');
+                  }else {
+                    $commands[$filename][] = $this->getXMLJobCommand($filename);
+                    //append Open close tags
+                   // $commands[$filename][] = $this->getXMLTagsCommand($filename);
+                    $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
+                    $request_criteria = $this->jobDetails['request_criteria'];
+                    $search_criteria = new SearchCriteria($request_criteria, $this->responseFormat);
+                    $config = ConfigUtil::getConfiguration($request_criteria['global']['type_of_data'], $search_criteria->getConfigKey());
 
-                  for($i=0;$i<$num_files;$i++) {
-                    $offset = $i*$this->fileLimit;
-                    $filename = $this->prepareFileName().'_part_'.$i;
+                    //map tags and build sql
+                    $rootElement = $config->dataset->displayConfiguration->xml->rootElement;
 
-                    //sql command
-                    $commands[$filename][] = $this->getXMLJobCommands($filename, $this->fileLimit, $offset);
+                    //open/close tags
+                    $open_tags = "<?xml version=\"1.0\"?><response><status><result>success</result></status>";
+                    $open_tags .= "<result_records><record_count>".$this->getRecordCount()."</record_count><".$rootElement.">";
+                    $close_tags = "</".$rootElement."></result_records></response>";
+                    //prepend open tags command
+                    $command = "sed -i '1i " . $open_tags . "' " . $file;
+                    $commands[$filename][] = $command;
 
-                    //append file to zip and delete the file
-                    $commands[$filename][] = $this->getAppendToZipAndRemoveCommand($filename, $compressed_filename);
+                    //append close tags command
+                    $command = "sed -i '$"."a" . $close_tags . "' " . $file;
+                    $commands[$filename][] = $command;
+
+                    //Zip XML file
+                    $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
+                    $commands[$filename][] = "zip f.zip $file";
+                    $commands[$filename][] = "rm $file";
+                    $commands[$filename][] = $this->getMoveCommand($filename, 'xml.zip');
                   }
-                  $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
-                } else{
-                  $filename = $this->prepareFileName();
-                  $commands = $this->getXMLJobCommands($filename);
-                  $commands[$filename][] = $this->getMoveCommand($filename, 'xml.zip');
-                }
-                    break;
+                  break;
             }
             $this->processCommands($commands);
         }
@@ -138,12 +149,10 @@ class QueueJob {
      * Generates the unix commands to create multiple files from the data source directly.
      * @return array
      */
-    private function getCSVCommands() {
+    private function getCSVCommands($compressed_filename) {
 
         $num_files = ceil($this->recordCount/$this->fileLimit);
         $commands = array();
-
-        $compressed_filename  = $this->prepareFileName();
 
         for($i=0;$i<$num_files;$i++) {
             $offset = $i*$this->fileLimit;
@@ -211,23 +220,97 @@ class QueueJob {
         return $command;
     }
 
+  /**
+   * Given the filename, returns an array of commands to execute for xml file creation,
+   * This function modifies the sql to handle derived columns dynamically.
+   * @param $compressed_filename
+   * @return array
+   */
+    private function getXMLCommands($compressed_filename) {
+      $num_files = ceil($this->recordCount/$this->fileLimit);
+      $commands = array();
+
+      $request_criteria = $this->jobDetails['request_criteria'];
+      $search_criteria = new SearchCriteria($request_criteria, $this->responseFormat);
+      $config = ConfigUtil::getConfiguration($request_criteria['global']['type_of_data'], $search_criteria->getConfigKey());
+
+      //map tags and build sql
+      $rootElement = $config->dataset->displayConfiguration->xml->rootElement;
+
+      //open/close tags
+      $open_tags = "<?xml version=\"1.0\"?><response><status><result>success</result></status>";
+      $open_tags .= "<result_records><record_count>".$this->getRecordCount()."</record_count><".$rootElement.">";
+      $close_tags = "</".$rootElement."></result_records></response>";
+
+
+      for($i=0;$i<$num_files;$i++) {
+        $offset = $i*$this->fileLimit;
+        $filename = $this->prepareFileName().'_part_'.$i;
+        $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
+
+        //sql command
+        $commands[$filename][] = $this->getXMLJobCommand($filename, $this->fileLimit, $offset);
+
+        //prepend open tags command
+        $command = "sed -i '1i " . $open_tags . "' " . $file;
+        $commands[$filename][] = $command;
+
+        //append close tags command
+        $command = "sed -i '$"."a" . $close_tags . "' " . $file;
+        $commands[$filename][] = $command;
+
+        //append file to zip and delete the file
+        $commands[$filename][] = $this->getAppendToZipAndRemoveCommand($filename, $compressed_filename);
+      }
+      return $commands;
+    }
+
+    /**
+     * Given the filename, will return an executable command ot add CSV header row.
+     * @param $filename
+     * @return string
+     */
+    private function getXMLTagsCommand($filename) {
+      $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
+      $request_criteria = $this->jobDetails['request_criteria'];
+      $search_criteria = new SearchCriteria($request_criteria, $this->responseFormat);
+      $config = ConfigUtil::getConfiguration($request_criteria['global']['type_of_data'], $search_criteria->getConfigKey());
+
+      //map tags and build sql
+      $rootElement = $config->dataset->displayConfiguration->xml->rootElement;
+      
+      //open/close tags
+      $open_tags = "<?xml version=\"1.0\"?><response><status><result>success</result></status>";
+      $open_tags .= "<result_records><record_count>".$this->getRecordCount()."</record_count><".$rootElement.">";
+      $close_tags = "</".$rootElement."></result_records></response>";
+
+      //prepend open tags command
+      $command = "sed -i '1i " . $open_tags . "' " . $file;
+      $commands[$filename][] = $command;
+
+      //append close tags command
+      $command = "sed -i '$"."a" . $close_tags . "' " . $file;
+      $commands[$filename][] = $command;
+
+      return $commands;
+    }
+
     /**
      * Given the filename, returns an array of commands to execute for xml file creation,
      * This function modifies the sql to handle derived columns dynamically.
      *
      * @param $filename
-     * @param $limit
-     * @param $offset
+     * @param string $limit
+     * @param int $offset
      * @return array
      */
-    private function getXMLJobCommands($filename, $limit = 'ALL',$offset = 0) {
+    private function getXMLJobCommand($filename, $limit = 'ALL',$offset = 0) {
         $query = $this->jobDetails['data_command'];
         $request_criteria = $this->jobDetails['request_criteria'];
         $search_criteria = new SearchCriteria($request_criteria, $this->responseFormat);
         $config = ConfigUtil::getConfiguration($request_criteria['global']['type_of_data'], $search_criteria->getConfigKey());
 
         //map tags and build sql
-        $rootElement = $config->dataset->displayConfiguration->xml->rootElement;
         $rowParentElement = $config->dataset->displayConfiguration->xml->rowParentElement;
         $elementsColumn = $config->dataset->displayConfiguration->xml->elementsColumn;
         $elementsColumn =  (array)$elementsColumn;
@@ -282,13 +365,7 @@ class QueueJob {
         $new_select_part = "SELECT ".ltrim($new_select_part,"\n||")."\n";
         $query = substr_replace($query, $new_select_part, 0, $end);
 
-        //open/close tags
-        $open_tags = "<?xml version=\"1.0\"?><response><status><result>success</result></status>";
-        $open_tags .= "<result_records><record_count>".$this->getRecordCount()."</record_count><".$rootElement.">";
-        $close_tags = "</".$rootElement."></result_records></response>";
-
         $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
-        $commands = [];
 
         $database = 'checkbook';
         if(stripos($this->jobDetails['name'], '_nycha')) {
@@ -307,32 +384,9 @@ class QueueJob {
         $command .= " -c \"\\\\COPY (" . $query . ") TO '"
                     . $file
                     . "' \" ";
-        LogHelper::log_notice("DataFeeds :: QueueJob::getXMLJobCommands() cmd: ".$command);
-        $filenameZip = $filename.'.zip';
-        $commands[$filename][] = $command;
+        LogHelper::log_notice("DataFeeds :: QueueJob::getXMLJobCommand() cmd: ".$command);
 
-        //prepend open tags command
-        $command = "sed -i '1i " . $open_tags . "' " . $file;
-        $commands[$filename][] = $command;
-
-        //append close tags command
-        $command = "sed -i '$"."a" . $close_tags . "' " . $file;
-        $commands[$filename][] = $command;
-
-//        //xmllint command to format the xml
-//        $formatted_filename = $this->tmpFileOutputDir .'/formatted_'. $filename . '.xml';
-//        $maxmem = 1024 * 1024 * 1024 * 8;  // 8 GB
-//        $command = "xmllint --format $file --output $formatted_filename --maxmem $maxmem";
-//        $commands[$filename][] = $command;
-
-        $commands[$filename][] = "zip $file.zip $file";
-
-//        $command = "rm $formatted_filename";
-//        $commands[$filename][] = $command;
-//
-        $commands[$filename][] = "rm $file";
-
-        return $commands;
+        return $command;
     }
 
     /**
@@ -419,10 +473,10 @@ class QueueJob {
         static $app_file_name = NULL;
         if (!isset($app_file_name)) {
             if($this->recordCount > $this->fileLimit) {
-                // For CSV, if the record count is greater than the fileLimit(1M), records will be exported into multiple files and zipped
+                // If the record count is greater than the fileLimit(1M), records will be exported into multiple files and zipped
                 $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
             } else {
-              // For XML, output file is zipped (filename.xml.zip) irrespective of the record count.
+              // For XML, output file is zipped (filename.xml.zip)
               //For CSV, if the record count is less than the fileLimit(1M), a single file CSV file will be generated
                 $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat . (($this->responseFormat == 'xml') ? '.zip' : '');
             }
