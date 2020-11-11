@@ -626,19 +626,21 @@
       const nycha_contract_type = $.fn.emptyToZero($('select[name="nycha_contract_type"]', context).val());
       const nycha_award_method = $.fn.emptyToZero($('select[name="nycha_awd_method"]', context).val());
       const nycha_industry = $.fn.emptyToZero($('select[name="nycha_industry"]', context).val());
-      const nycha_year = $.fn.emptyToZero($('select[name="nycha_year"]', context).val());
+      const nycha_year = getYearValue($('select[name="nycha_year"]', context).val());
+      let nycha_filters = {
+        agreement_start_year:nycha_year,
+        agreement_end_year:nycha_year,
+        contract_type_code:nycha_contract_type,
+        award_method_code:nycha_award_method,
+        industry_type_code:nycha_industry,
+        agency_code:agency,
+        agreement_type_code:purchase_order,
+        responsibility_center_code: responsibility_center,
+      };
 
-      $('#edit-nycha-vendor', context).autocomplete({
-        source: '/autocomplete/nycha_contracts/vendor_name/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + agency + '/' + nycha_year + '/' + datasource
-      });
-
-      $('#edit-nycha-contract-id', context).autocomplete({
-        source: '/autocomplete/nycha_contracts/contract_number/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + agency + '/' + nycha_year + '/' + datasource
-      });
-
-      $('#edit-nycha-apt-pin', context).autocomplete({
-        source: '/autocomplete/nycha_contracts/pin/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + agency + '/' + nycha_year + '/' + datasource
-      });
+      $('#edit-nycha-vendor').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'vendor_name_code',nycha_filters)});
+      $('#edit-nycha-contract-id').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_number',nycha_filters)});
+      $('#edit-nycha-apt-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'pin',nycha_filters)});
 
       $('.watch:input', context).each(function () {
         $(this).focusin(function () {
@@ -668,20 +670,21 @@
           const nycha_contract_type = $.fn.emptyToZero($('select[name="nycha_contract_type"]', context).val());
           const nycha_award_method = $.fn.emptyToZero($('select[name="nycha_awd_method"]', context).val());
           const nycha_industry = $.fn.emptyToZero($('select[name="nycha_industry"]', context).val());
-          const nycha_year = $('select[name="nycha_year"]', context).val();
+          const nycha_year = getYearValue($('select[name="nycha_year"]', context).val());
+          let nycha_filters = {
+            agreement_start_year:nycha_year,
+            agreement_end_year:nycha_year,
+            contract_type_code:nycha_contract_type,
+            award_method_code:nycha_award_method,
+            industry_type_code:nycha_industry,
+            agency_code:agency,
+            agreement_type_code:purchase_order,
+            responsibility_center_code: responsibility_center,
+          };
 
-          $('#edit-nycha-vendor', context).autocomplete({
-            source: '/autocomplete/nycha_contracts/vendor_name/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + agency + '/' + nycha_year + '/' + datasource
-          });
-
-          $('#edit-nycha-contract-id', context).autocomplete({
-            source: '/autocomplete/nycha_contracts/contract_number/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + agency + '/' + nycha_year + '/' + datasource
-          });
-
-          $('#edit-nycha-apt-pin', context).autocomplete({
-            source: '/autocomplete/nycha_contracts/pin/' + purchase_order + '/' + responsibility_center + '/' + nycha_contract_type + '/' + nycha_award_method + '/' + nycha_industry + '/' + agency + '/' + nycha_year + '/' + datasource
-          });
-
+          $('#edit-nycha-vendor').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'vendor_name_code',nycha_filters)});
+          $('#edit-nycha-contract-id').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_number',nycha_filters)});
+          $('#edit-nycha-apt-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'pin',nycha_filters)});
         });
       });
       //Year Drop-down
@@ -801,6 +804,12 @@
     }
     return output;
   };
+
+  //Function to retrieve numeric year value
+  function getYearValue(input) {
+    var year_value = input.split('FY');
+    return year_value[1];
+  }
 
   //Function to clear text fields and drop-downs
   $.fn.clearInputFields = function (dataSource) {
