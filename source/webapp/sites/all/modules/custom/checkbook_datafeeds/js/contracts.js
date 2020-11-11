@@ -805,7 +805,7 @@
     return output;
   };
 
-  //Function to retrieve values enclosed in brackets or return zero if none
+  //Function to retrieve numeric year value
   function getYearValue(input) {
     var year_value = input.split('FY');
     return year_value[1];
