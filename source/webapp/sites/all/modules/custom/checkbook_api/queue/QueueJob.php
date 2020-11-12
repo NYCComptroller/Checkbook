@@ -201,7 +201,12 @@ class QueueJob {
     return $command;
   }
 
-  private function generateXMLQuery(){
+  /**
+   * Given the filename, returns an array of commands to execute for xml file creation,
+   * This function modifies the sql to handle derived columns dynamically.
+   * @return array
+   */
+  private function getXMLJobCommands() {
     $query = $this->jobDetails['data_command'];
     $request_criteria = $this->jobDetails['request_criteria'];
     $search_criteria = new SearchCriteria($request_criteria, $this->responseFormat);
@@ -261,19 +266,6 @@ class QueueJob {
     $new_select_part .= "||'</".$rowParentElement.">'";
     $new_select_part = "SELECT ".ltrim($new_select_part,"\n||")."\n";
     $query = substr_replace($query, $new_select_part, 0, $end);
-    return $query;
-  }
-
-  /**
-   * Given the filename, returns an array of commands to execute for xml file creation,
-   * This function modifies the sql to handle derived columns dynamically.
-   * @return array
-   */
-  private function getXMLJobCommands() {
-    $query = $this->generateXMLQuery();
-    $request_criteria = $this->jobDetails['request_criteria'];
-    $search_criteria = new SearchCriteria($request_criteria, $this->responseFormat);
-    $config = ConfigUtil::getConfiguration($request_criteria['global']['type_of_data'], $search_criteria->getConfigKey());
 
     //map tags and build sql
     $rootElement = $config->dataset->displayConfiguration->xml->rootElement;
@@ -295,7 +287,7 @@ class QueueJob {
     }
 
     $num_files = ceil($this->recordCount/$this->fileLimit);
-    $commands = array();
+    //$commands = array();
 
     $compressed_filename  = $this->prepareFileName();
 
@@ -336,10 +328,65 @@ class QueueJob {
    * @return array
    */
   private function getXMLJobCommand($filename) {
-    $query = $this->generateXMLQuery();
+    $query = $this->jobDetails['data_command'];
     $request_criteria = $this->jobDetails['request_criteria'];
     $search_criteria = new SearchCriteria($request_criteria, $this->responseFormat);
     $config = ConfigUtil::getConfiguration($request_criteria['global']['type_of_data'], $search_criteria->getConfigKey());
+
+    //map tags and build sql
+    $rowParentElement = $config->dataset->displayConfiguration->xml->rowParentElement;
+    $elementsColumn = $config->dataset->displayConfiguration->xml->elementsColumn;
+    $elementsColumn =  (array)$elementsColumn;
+    $columnMappings = array_flip($elementsColumn);
+
+    $end = strpos($query, 'FROM');
+    $select_part = substr($query,0,$end);
+    $select_part = str_replace("SELECT", "", $select_part);
+    $sql_parts = explode(",", $select_part);
+
+    $new_select_part = "'<".$rowParentElement.">'";
+    foreach($sql_parts as $sql_part) {
+      $sql_part = trim($sql_part);
+      $is_derived_column = strpos(strtoupper($sql_part), "CASE WHEN") !== FALSE;
+
+      //get column and alias
+      $alias = "";
+      if($is_derived_column) {
+        $pos = strpos($sql_part, " AS");
+        $column = trim(str_replace("AS","",substr($sql_part,$pos)));
+      }
+      else {
+        $pos = strpos($sql_part, " AS");
+        $pos = $pos !== FALSE ? $pos : strlen($sql_part);
+        $column = substr($sql_part, 0, $pos);
+      }
+
+      if (strpos($sql_part,".") !== false) {
+        $alias_pos = strpos($sql_part,".");
+        $alias = substr($sql_part, $alias_pos-2, 3);
+        $column = str_replace($alias,"",$column);
+      }
+
+      //Handle derived columns
+      $tag = $columnMappings[$column] == "" ? $column : $columnMappings[$column];
+
+      //column open tag
+      $new_select_part .= "\n||'<".$tag.">' || ";
+      if ($is_derived_column) {
+        $sql_part = substr_replace($sql_part, "", $pos);
+        $cast_section = "regexp_replace(COALESCE(CAST(" . $sql_part . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g')";
+        $new_select_part .= "REPLACE(REPLACE(REPLACE(". $cast_section .",'&','&amp;'),'>','&gt;'),'<','&lt;')";
+      }
+      else {
+        $new_select_part .= "REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g'),'&','&amp;'),'>','&gt;'),'<','&lt;')";
+      }
+
+      //column close tag
+      $new_select_part .= " || '</".$tag.">'";
+    }
+    $new_select_part .= "||'</".$rowParentElement.">'";
+    $new_select_part = "SELECT ".ltrim($new_select_part,"\n||")."\n";
+    $query = substr_replace($query, $new_select_part, 0, $end);
 
     //map tags and build sql
     $rootElement = $config->dataset->displayConfiguration->xml->rootElement;
