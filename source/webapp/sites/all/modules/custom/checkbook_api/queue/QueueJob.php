@@ -415,7 +415,6 @@ class QueueJob {
       . $file
       . "' \" ";
     LogHelper::log_notice("DataFeeds :: QueueJob::getXMLJobCommand() cmd: ".$command);
-    $filenameZip = $filename.'.zip';
     $commands[$filename][] = $command;
 
     //prepend open tags command
