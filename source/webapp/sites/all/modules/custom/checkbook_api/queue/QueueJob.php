@@ -520,14 +520,14 @@ class QueueJob {
           if($this->recordCount > $this->xmlFileLimit){
             $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
           }else{
-            $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat;
+            $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat . '.zip';
           }
           break;
         case 'csv':
           if($this->recordCount > $this->csvFileLimit){
             $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
           }else{
-            $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat . '.zip';
+            $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat;
           }
           break;
       }
