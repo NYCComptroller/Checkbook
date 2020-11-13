@@ -79,7 +79,6 @@ class QueueJob {
             $commands = $this->getXMLJobCommands();
             $compressed_filename  = $this->prepareFileName();
             $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
-
           }else{
             $filename = $this->prepareFileName();
             $commands = $this->getXMLJobCommand($filename);
@@ -520,14 +519,14 @@ class QueueJob {
           if($this->recordCount > $this->xmlFileLimit){
             $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
           }else{
-            $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat;
+            $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat . '.zip';
           }
           break;
         case 'csv':
           if($this->recordCount > $this->csvFileLimit){
             $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
           }else{
-            $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat . '.zip';
+            $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat;
           }
           break;
       }
