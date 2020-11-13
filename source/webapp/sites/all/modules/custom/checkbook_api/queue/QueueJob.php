@@ -289,14 +289,14 @@ class QueueJob {
       $database = "checkbook_oge";
     }
 
-    $num_files = ceil($this->recordCount/$this->csvFileLimit);
+    $num_files = ceil($this->recordCount/$this->xmlFileLimit);
     $compressed_filename  = $this->prepareFileName();
 
     for($i=0;$i<$num_files;$i++) {
-      $offset = $i*$this->csvFileLimit;
+      $offset = $i*$this->xmlFileLimit;
       $filename = $this->prepareFileName().'_part_'.$i;
       $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
-      $updated_query = $query . " LIMIT " . $this->csvFileLimit . " OFFSET " . $offset;
+      $updated_query = $query . " LIMIT " . $this->xmlFileLimit . " OFFSET " . $offset;
 
       //sql command
       $command = _checkbook_psql_command($database);
