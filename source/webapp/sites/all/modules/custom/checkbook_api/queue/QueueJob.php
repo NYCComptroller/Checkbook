@@ -79,7 +79,6 @@ class QueueJob {
             $commands = $this->getXMLJobCommands();
             $compressed_filename  = $this->prepareFileName();
             $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
-
           }else{
             $filename = $this->prepareFileName();
             $commands = $this->getXMLJobCommand($filename);
