@@ -283,7 +283,7 @@ class XMLDataHandler extends AbstractDataHandler
             $commands[] = $command;
 
             //xmllint command to format the xml
-            $maxmem = 1024 * 1024 * 500;  // 500 MB
+            $maxmem = 1024 * 1024 * 750;  // 750 MB
             $command = "xmllint --format $tempOutputFile --output $formattedOutputFile --maxmem $maxmem";
             $commands[] = $command;
 

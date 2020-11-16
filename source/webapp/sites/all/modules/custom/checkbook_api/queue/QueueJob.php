@@ -34,13 +34,16 @@ class QueueJob {
 
   private $recordCount;
 
-  private $fileLimit;
+  private $csvFileLimit;
+
+  private $xmlFileLimit;
 
   private $responseFormat;
 
   function __construct($jobDetails) {
     $this->jobDetails = $jobDetails;
-    $this->fileLimit = 1000000;
+    $this->csvFileLimit = 500000;
+    $this->xmlFileLimit = 250000;
     $this->recordCount = $this->getRecordCount();
   }
 
@@ -59,7 +62,7 @@ class QueueJob {
       $commands = NULL;
       switch($this->responseFormat) {
         case "csv":
-          if($this->recordCount > $this->fileLimit) {
+          if($this->recordCount > $this->csvFileLimit) {
             $commands = $this->getCSVCommands();
             $compressed_filename  = $this->prepareFileName();
             $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
@@ -72,11 +75,10 @@ class QueueJob {
           }
           break;
         case "xml":
-          if($this->recordCount > $this->fileLimit) {
+          if($this->recordCount > $this->xmlFileLimit) {
             $commands = $this->getXMLJobCommands();
             $compressed_filename  = $this->prepareFileName();
             $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
-
           }else{
             $filename = $this->prepareFileName();
             $commands = $this->getXMLJobCommand($filename);
@@ -130,17 +132,17 @@ class QueueJob {
    */
   private function getCSVCommands() {
 
-    $num_files = ceil($this->recordCount/$this->fileLimit);
+    $num_files = ceil($this->recordCount/$this->csvFileLimit);
     $commands = array();
 
     $compressed_filename  = $this->prepareFileName();
 
     for($i=0;$i<$num_files;$i++) {
-      $offset = $i*$this->fileLimit;
+      $offset = $i*$this->csvFileLimit;
       $filename = $this->prepareFileName().'_part_'.$i;
 
       //sql command
-      $commands[$filename][] = $this->getCSVJobCommand($filename, $this->fileLimit, $offset);
+      $commands[$filename][] = $this->getCSVJobCommand($filename, $this->csvFileLimit, $offset);
 
       //append header command
       $commands[$filename][] = $this->getCSVHeaderCommand($filename);
@@ -286,16 +288,14 @@ class QueueJob {
       $database = "checkbook_oge";
     }
 
-    $num_files = ceil($this->recordCount/$this->fileLimit);
-    //$commands = array();
-
+    $num_files = ceil($this->recordCount/$this->xmlFileLimit);
     $compressed_filename  = $this->prepareFileName();
 
     for($i=0;$i<$num_files;$i++) {
-      $offset = $i*$this->fileLimit;
+      $offset = $i*$this->xmlFileLimit;
       $filename = $this->prepareFileName().'_part_'.$i;
       $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
-      $updated_query = $query . " LIMIT " . $this->fileLimit . " OFFSET " . $offset;
+      $updated_query = $query . " LIMIT " . $this->xmlFileLimit . " OFFSET " . $offset;
 
       //sql command
       $command = _checkbook_psql_command($database);
@@ -414,7 +414,6 @@ class QueueJob {
       . $file
       . "' \" ";
     LogHelper::log_notice("DataFeeds :: QueueJob::getXMLJobCommand() cmd: ".$command);
-    $filenameZip = $filename.'.zip';
     $commands[$filename][] = $command;
 
     //prepend open tags command
@@ -515,12 +514,21 @@ class QueueJob {
   function getFilename() {
     static $app_file_name = NULL;
     if (!isset($app_file_name)) {
-      if($this->recordCount > $this->fileLimit) {
-        // If the record count is greater than the fileLimit(1M), records will be exported into multiple files and zipped
-        $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
-      } else {
-        //If the record count is less than the fileLimit(1M), a single file file will be generated (XML file will be zipped)
-        $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat . (($this->responseFormat == 'xml') ? '.zip' : '');
+      switch ($this->responseFormat){
+        case 'xml':
+          if($this->recordCount > $this->xmlFileLimit){
+            $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
+          }else{
+            $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat . '.zip';
+          }
+          break;
+        case 'csv':
+          if($this->recordCount > $this->csvFileLimit){
+            $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.zip';
+          }else{
+            $app_file_name = $this->prepareFilePath() . '/' . $this->prepareFileName() . '.' . $this->responseFormat;
+          }
+          break;
       }
     }
     return $app_file_name;
@@ -617,8 +625,6 @@ class QueueJob {
   function setLogId($log_id) {
     $this->logId = $log_id;
   }
-
-
 }
 
 class JobRecoveryException extends Exception {
