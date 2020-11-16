@@ -1,14 +1,15 @@
 {
     "widgetType":"phpparser",
-   	"parentNid":477,    
+   	"parentNid":477,
     "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
     "orderBy":"-txcount",
     "facetNoPager":true,
     "filterName":"Agency",
     "urlParameterName":"agency",
-    "autocompleteParamName":"agency_auto",    
+    "autocompleteParamName":"agency_auto",
+    "allowFacetDeselect": true,
     "autocompleteID":"fagencyId",
-    "autocompleteField":"agency.agency.agency_name", 
+    "autocompleteField":"agency.agency.agency_name",
     "maxSelect":5,
     "urlParamMap":{
 				"doctype":"document_code.document_code.document_code"
@@ -24,6 +25,6 @@
     }
     $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
     return $adjustedParameters;
-    ",   
+    ",
     "template":"individual_filter"
 }

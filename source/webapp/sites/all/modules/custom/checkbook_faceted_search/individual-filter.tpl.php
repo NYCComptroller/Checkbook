@@ -416,19 +416,28 @@ if(!$checked){
     $display_facet ="block";
     $span = "open";
 }
-
+$datasource = RequestUtilities::get('datasource');
 if(strtolower($filter_name) == 'agency' || strtolower($filter_name) == 'citywide agency'){
-    if(_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage()){
+    if(_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage() || ($datasource == DATASOURCE::OGE)){
         $filter_name = 'Other Government Entity';
     }else{
         $filter_name = 'Citywide Agency';
     }
 }
-if(strtolower($filter_name) == 'vendor'){
-    if(_checkbook_check_isEDCPage()){
+if(strtolower($filter_name) == 'vendor' || strtolower($filter_name) == 'payee' ){
+
+    if(_checkbook_check_isEDCPage() || $datasource == DATASOURCE::OGE){
         $filter_name = 'Prime Vendor';
     }
 }
+
+if($node->widgetConfig->filterName == 'Expense Type'){
+
+  if(_checkbook_check_isEDCPage() || $datasource == 'checkbook_oge'){
+    $filter_name = 'Spending Category';
+  }
+}
+
 $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
 ?>
 <div name="<?php print $urlParameter; ?>" id="<?php print $autocomplete_id; ?>" class="filter-content <?php if( $hide_filter != "") print "disabled"; ?>">
