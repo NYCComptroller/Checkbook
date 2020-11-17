@@ -216,10 +216,10 @@
           ]
         },
         {
-          "name": "responsibility_center_name",
+          "name": "responsibility_center_description",
           "levels": [
             {
-              "name": "responsibility_center_name",
+              "name": "responsibility_center_description",
               "sourceColumnName": "responsibility_center_description"
             }
           ]

@@ -58,8 +58,12 @@
           let filter = new URLSearchParams();
           if(agency){filter.set('agency_code',agency)}
           if(payfrequency){filter.set('pay_frequency', payfrequency)}
-          if(year){filter.set('calendar_fiscal_year',year)}
-
+          // Set the correct autocomplete year fields
+          if(year[0] == 'CY') {
+            filter.set('calendar_fiscal_year', year[2]);
+          }else{
+            filter.set('fiscal_year', year[2]);
+          }
           $("#edit-title").autocomplete({
             source: '/solr_options/'+dataSource+'/payroll/civil_service_title?'+filter,
             select: function (event, ui) {
@@ -150,7 +154,7 @@
           break;
         case 'checkbox':
         case 'radio':
-          $('#edit-salary-type-all').attr('checked', 'checked');
+          $('#edit-salary-type-').attr('checked', 'checked');
           break;
       }
     });
@@ -170,7 +174,7 @@
   function getYearValue(input)
   {
     var yeardata = input.split(/(\s)/);
-    return yeardata[2];
+    return yeardata;
   }
 
 }(jQuery));

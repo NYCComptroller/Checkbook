@@ -269,7 +269,7 @@ function _checkbook_faceted_search_update_data($node)
   }
 
   if ($disableFacet) { //only URL parameters count and can be disabled
-      $url_ref = RequestUtil::isNewWindow() ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
+      $url_ref = $_SERVER['HTTP_REFERER'];
       $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
   }
 
