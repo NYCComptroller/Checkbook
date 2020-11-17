@@ -168,6 +168,7 @@ function _checkbook_faceted_search_update_data($node)
               default:
                 $patterns = array();
                 foreach ($paramValues as $value) {
+                  $value = str_replace("'","''",$value);
                   $value = checkbook_faceted_search_replaceSlash($value);
                   $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
                 }
