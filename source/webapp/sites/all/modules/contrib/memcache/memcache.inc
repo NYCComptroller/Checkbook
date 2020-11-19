@@ -73,7 +73,7 @@ class MemCacheDrupal implements DrupalCacheInterface {
     // Clean up.
     $this->garbageCollection();
     $results = dmemcache_get_multi($cids, $this->bin, $this->memcache);
-    foreach ($results as $cid => $result) {
+    foreach ($results as $cid => &$result) {
       if (!$this->valid($cid, $result)) {
         // This object has expired, so don't return it.
         unset($results[$cid]);
@@ -115,16 +115,43 @@ class MemCacheDrupal implements DrupalCacheInterface {
    * @param string $cid
    *   The cache id of the item
    * @param mixed $cache
-   *   The cache item.
+   *   The cache item, which will be updated if needed.
    *
    * @return bool
    *   Whether the item is valid.
    */
-  protected function valid($cid, $cache) {
+  protected function valid($cid, &$cache) {
     if ($cache) {
+      // Legacy support
+      if (!isset($cache->expire)) {
+        $cache->expire = CACHE_TEMPORARY;
+      }
+      if (!isset($cache->created)) {
+        $cache->created = 0;
+      }
+
+      // Session storage is used to simulate a cache clear for the current user
+      // when cache_lifetime is greater than 0.
       $cache_tables = isset($_SESSION['cache_flush']) ? $_SESSION['cache_flush'] : NULL;
-      // Items that have expired are invalid.
-      if (isset($cache->expire) && $cache->expire !== CACHE_PERMANENT && $cache->expire <= REQUEST_TIME) {
+
+      // Items that have expired are invalid. This includes CACHE_TEMPORARY
+      // items that were set prior to the last garbage collection, and
+      // timestamp set items.
+      //
+      // Test whether this cache has been garbage collected (general cache
+      // flush) longer ago than the cache_lifetime setting.
+      $cache_garbage_collected = $cache->created + $this->cache_lifetime <= $this->cache_temporary_flush;
+
+      // Depending on value of memcache_expire_wait_gc, test if a timestamp
+      // cached item has expired:
+      // If memcache_expired_wait_gc is true, this includes any timestamp items
+      // that expired more than cache_lifetime seconds before the last garbage
+      // collection. If memcache_expire_wait_gc is false, this includes any
+      // items that expired before present time.
+      $cache_timestamp_expired = variable_get('memcache_expire_wait_gc', FALSE) ? ($cache->expire + $this->cache_lifetime <= $this->cache_temporary_flush) : ($cache->expire <= REQUEST_TIME);
+
+      // Test for expired items.
+      if (($cache->expire == CACHE_TEMPORARY && $cache_garbage_collected) || ($cache->expire > 0 && $cache_timestamp_expired)) {
         // If the memcache_stampede_protection variable is set, allow one
         // process to rebuild the cache entry while serving expired content to
         // the rest. Note that core happily returns expired cache items as valid
@@ -144,7 +171,7 @@ class MemCacheDrupal implements DrupalCacheInterface {
       }
       // Items created before the last full wildcard flush against this bin are
       // invalid.
-      elseif (!isset($cache->created) || $cache->created <= $this->cache_flush) {
+      elseif ($cache->created <= $this->cache_flush) {
         $cache = FALSE;
       }
       // Items created before the last content flush on this bin i.e.
@@ -156,12 +183,6 @@ class MemCacheDrupal implements DrupalCacheInterface {
       // invalid.
       elseif ($cache->expire != CACHE_PERMANENT && is_array($cache_tables) && isset($cache_tables[$this->bin]) && $cache_tables[$this->bin] >= $cache->created) {
         // Cache item expired, return FALSE.
-        $cache = FALSE;
-      }
-      // Temporary items created before the cache was last flushed by
-      // cache_clear_all(NULL, $bin) are invalid.
-      elseif (!empty($cache->temporary) && $cache->created + $this->cache_lifetime <= $this->cache_temporary_flush) {
-        // CACHE_TEMPORARY item expired, return FALSE.
         $cache = FALSE;
       }
       // Finally, check for wildcard clears against this cid.
@@ -217,44 +238,47 @@ class MemCacheDrupal implements DrupalCacheInterface {
   public function set($cid, $data, $expire = CACHE_PERMANENT) {
     $created_microtime = round(microtime(TRUE), 3);
 
+    // Positive expiration values of less than 30 days are seconds. Convert to
+    // an absolute timestamp.
+    if ($expire > 0 && $expire < 2592000) {
+      $expire = REQUEST_TIME + $expire;
+    }
+
     // Create new cache object.
     $cache = new stdClass();
     $cache->cid = $cid;
     $cache->data = is_object($data) ? clone $data : $data;
     $cache->created = REQUEST_TIME;
     $cache->created_microtime = $created_microtime;
+    $cache->expire = $expire;
     // Record the previous number of wildcard flushes affecting our cid.
     $cache->flushes = $this->wildcardFlushes($cid);
-    if ($expire == CACHE_TEMPORARY) {
-      // Convert CACHE_TEMPORARY (-1) into something that will live in memcache
-      // until the next flush.
-      $cache->expire = REQUEST_TIME + 2591999;
-      // This is a temporary cache item.
-      $cache->temporary = TRUE;
-    }
-    // Expire time is in seconds if less than 30 days, otherwise is a timestamp.
-    elseif ($expire != CACHE_PERMANENT && $expire < 2592000) {
-      // Expire is expressed in seconds, convert to the proper future timestamp
-      // as expected in dmemcache_get().
-      $cache->expire = REQUEST_TIME + $expire;
-      $cache->temporary = FALSE;
-    }
-    else {
-      $cache->expire = $expire;
-      $cache->temporary = FALSE;
-    }
 
-    // Manually track the expire time in $cache->expire.  When the object
-    // expires, if stampede protection is enabled, it may be served while one
-    // process rebuilds it. The ttl sent to memcache is set to the expire twice
-    // as long into the future, this allows old items to be expired by memcache
-    // rather than evicted along with a sufficient period for stampede
-    // protection to continue to work.
-    if ($cache->expire == CACHE_PERMANENT) {
-      $memcache_expire = $cache->expire;
+    // Determine stored memcache item lifetime.
+    if ($expire == CACHE_PERMANENT) {
+      // Set memcache item to never expire.
+      $memcache_expire = 0;
+    }
+    elseif (variable_get('memcache_expire_wait_gc', FALSE) || $expire == CACHE_TEMPORARY) {
+      // The cache_set() API states that an item set with a timestamp, once
+      // expired, behaves the same as CACHE_TEMPORARY: not removed till next
+      // general cache wipe (which is actually a garbage collection on each
+      // cache bin). However, the memcache module has traditionally treated
+      // timestamp-set items as expiring at that exact time. If
+      // memcache_expire_wait_gc is enabled, treat timestamp items the same as
+      // CACHE_TEMPORARY, and set the memcache expiration to something that
+      // keeps the item valid until the next garbage collection (30 days).
+      $memcache_expire = REQUEST_TIME + 2591999;
+    }
+    elseif (variable_get('memcache_stampede_protection', FALSE)) {
+      // If stampede protection is enabled, set the item expiration to twice
+      // its intended lifetime. The expired object may be served while one
+      // process rebuilds it.
+      $memcache_expire = REQUEST_TIME + (($expire - REQUEST_TIME) * 2);
     }
     else {
-      $memcache_expire = $cache->expire + (($cache->expire - REQUEST_TIME) * 2);
+      // Allow the memcache item to expire at the exact absolute timestamp.
+      $memcache_expire = $expire;
     }
     dmemcache_set($cid, $cache, $memcache_expire, $this->bin, $this->memcache);
 
