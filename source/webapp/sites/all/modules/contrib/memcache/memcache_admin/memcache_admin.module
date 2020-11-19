@@ -60,7 +60,7 @@ function memcache_admin_menu() {
   $memcache_servers = variable_get('memcache_servers', array('127.0.0.1:11211' => 'default'));
   $clusters = array();
   foreach ($memcache_servers as $server => $bin) {
-    if ($cluster = dmemcache_object_cluster($bin)) {
+    if (function_exists('dmemcache_object_cluster') && $cluster = dmemcache_object_cluster($bin)) {
       $name = $cluster['cluster'];
       $clusters[$name]['servers'][] = $server;
       $clusters[$name]['bin'] = _memcache_admin_get_bin_for_cluster($cluster['cluster']);
@@ -594,7 +594,7 @@ function theme_memcache_admin_stats_raw_table($variables) {
       }
     }
   }
-  $output = !empty($links) ? implode($links, ' | ') : '';
+  $output = !empty($links) ? implode(' | ', $links) : '';
 
   $headers = array(t('Property'), t('Value'));
   $rows = array();
@@ -766,7 +766,7 @@ function memcache_admin_shutdown() {
     if (!empty($output)) {
       // This makes sure all of the HTML is within the <body> even though this
       // <script> is outside it.
-      print '<div id="memcache-devel"><h2>' . t('Memcache statistics') . '</h2>' . $output . '</div>';
+      print '<div id="memcache-devel"><h2>' . t('Memcache statistics for @url', array('@url' => current_path())) . '</h2>' . $output . '</div>';
     }
   }
 }
