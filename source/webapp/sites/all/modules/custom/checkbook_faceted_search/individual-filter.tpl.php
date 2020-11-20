@@ -216,7 +216,7 @@ if(isset($logicalOrFacet) && $logicalOrFacet) {
 }
 
 //Remove N/A from Prime/Sub Industry facets
-if($node->widgetConfig->filterName == 'Prime Industry' || $node->widgetConfig->filterName == 'Sub Industry'){
+if($node->widgetConfig->filterName == 'Prime Industry' || $node->widgetConfig->filterName == 'Sub Industry' || $node->widgetConfig->filterName == 'Budget Type' || $node->widgetConfig->filterName == 'Budget Name') {
     foreach($unchecked as $key => $value){
         if($value[1] == null) {
             unset($unchecked[$key]);
