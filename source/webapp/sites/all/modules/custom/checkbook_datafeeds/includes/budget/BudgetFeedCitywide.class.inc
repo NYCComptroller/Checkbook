@@ -52,7 +52,7 @@ class BudgetFeedCitywide extends BudgetFeed{
       $this->user_criteria['Year'] = $this->values['fiscal_year'];
       $this->formatted_search_criteria['Year'] = $this->values['fiscal_year'];
     }
-    if ($this->values['currentfrom'] && $this->values['currentto']) {
+    if (($this->values['currentfrom'] || $this->values['currentfrom'] === "0") && ($this->values['currentto'] || $this->values['currentto'] === "0")) {
       $this->form['filter']['current_budget'] = array('#markup' => '<div><strong>Modified Budget:</strong> Greater Than Equal to: $' . $this->values['currentfrom'] . ' and Less Than Equal to: $' . $this->values['currentto'] . '</div>');
       $this->user_criteria['Modified Budget Greater Than'] = $this->values['currentfrom'];
       $this->user_criteria['Modified Budget Less Than'] = $this->values['currentto'];
