@@ -139,8 +139,8 @@ memcache cluster unless you explicitly configure a 'semaphore' cluster.
 
 ## STAMPEDE PROTECTION ##
 
-Memcache includes stampede protection for rebuilding expired and invalid cache
-items.  To enable stampede protection, define the following in settings.php:
+Memcache includes stampede protection for rebuilding expired cache items. To
+enable stampede protection, define the following in settings.php:
 
   $conf['memcache_stampede_protection'] = TRUE;
 
@@ -236,6 +236,28 @@ this causes you problems you can disable persistent connections by adding the
 following to your settings.php:
 
   $conf['memcache_persistent'] = FALSE;
+
+## STRICT COMPATIBILITY WITH DB CACHE EXPIRATIONS ##
+
+Due to the way database caching works, the native Drupal cache will return
+expired cache objects which were set to expire in the future even after their
+expiration timestamp, because it doesn't clean up cache entries until the
+cache bins are garbage collected (normally during a cron.php run's general
+cache wipe). However, memcache can expire cached items at the specific time
+requested. Therefore the default behavior of the memcache module does not
+match the Drupal API for cache_set, which states that cache items set to
+expire in the future are kept at least until the given timestamp, after which
+they behave like CACHE_TEMPORARY (removed at the next general cache wipe).
+
+If you wish to return to the behavior described in the cache_set API, and
+allow expired entries to appear valid until a general cache wipe, define the
+following in settings.php:
+
+  $conf['memcache_expire_wait_gc'] = TRUE;
+
+This setting works independently from stampede support, though it changes the
+time at which timestamp-cached items are considered expired, and therefore
+affects the time at which stampede behavior happens (if enabled).
 
 ## EXAMPLES ##
 
@@ -641,18 +663,20 @@ default options (selected through performance testing). These options will be
 set unless overridden in settings.php.
 
   $conf['memcache_options'] = array(
-    Memcached::OPT_COMPRESSION => FALSE,
     Memcached::OPT_DISTRIBUTION => Memcached::DISTRIBUTION_CONSISTENT,
   );
 
 These are as follows:
 
- * Turn off compression, as this takes more CPU cycles than it's worth for most
-   users
  * Turn on consistent distribution, which allows you to add/remove servers
    easily
 
 Other options you could experiment with:
+ + Memcached::OPT_COMPRESSION => FALSE,
+    * This disables compression in the Memcached extension. This may save some
+      CPU cost, but can result in significantly more data being transmitted and
+      stored. See: https://www.drupal.org/project/memcache/issues/2958403
+
  + Memcached::OPT_BINARY_PROTOCOL => TRUE,
     * This enables the Memcache binary protocol (only available in Memcached
       1.4 and later). Note that some users have reported SLOWER performance
@@ -667,7 +691,11 @@ Other options you could experiment with:
       tells the TCP stack to send packets immediately and without waiting for
       a full payload, reducing per-packet network latency (disabling "Nagling").
 
-It's possible to enable SASL authentication as documented here:
+### Authentication
+
+#### Binary Protocol SASL Authentication
+
+SASL authentication can be enabled as documented here:
   http://php.net/manual/en/memcached.setsaslauthdata.php
   https://code.google.com/p/memcached/wiki/SASLHowto
 
@@ -683,6 +711,38 @@ memcache_sasl_username and memcache_sasl_password in settings.php. For example:
   );
   $conf['memcache_sasl_username'] = 'yourSASLUsername';
   $conf['memcache_sasl_password'] = 'yourSASLPassword';
+
+#### ASCII Protocol Authentication
+
+If you do not want to enable the binary protocol, you can instead enable
+token authentication with the default ASCII protocol.
+
+ASCII protocol authentication requires Memcached version 1.5.15 or greater
+started with the -Y flag, and the PECL memcached client. It was originally
+documented in the memcached 1.5.15 release notes:
+  https://github.com/memcached/memcached/wiki/ReleaseNotes1515
+
+While it will work with 1.5.15 or greater, it's strongly recommended you
+use memcached 1.6.4 or greater due to the following bug fix:
+  https://github.com/memcached/memcached/wiki/ReleaseNotes164
+
+Additional detail about this feature can be found in the protocol documentation:
+  https://github.com/memcached/memcached/blob/master/doc/protocol.txt
+
+All your memcached servers need to be started with the -Y option to specify
+a local path to an authfile which can contain up to 8 "username:pasword"
+pairs, any of which can be used for authentication. For example, a simple
+authfile may look as follows:
+
+  foo:bar
+
+You can then configure your website to authenticate with this username and
+password as follows:
+
+  $conf['memcache_ascii_auth'] = 'foo bar';
+
+Enabling ASCII protocol authentication during load testing resulted in less than
+1% overhead.
 
 ## Amazon Elasticache
 

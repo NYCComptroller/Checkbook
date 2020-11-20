@@ -551,8 +551,9 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
       return ucwords(strtolower($exp_categorys[0]['expenditure_type_description']));
       break;
     case "program_phase_id":
-      $exp_categorys = _checkbook_project_querydataset($data_source . ':budget', array('program_phase_description', 'program_phase_id'), array($keyword => $id));
-      return ucwords(strtolower($exp_categorys[0]['program_phase_description']));
+      $program = _checkbook_project_querydataset($data_source . ':budget', array('program_phase_description', 'program_phase_id'), array($keyword => $id));
+      $result = isset($program[0]['program_phase_description']) ? ucwords(strtolower($program[0]['program_phase_description'])) : NULL;
+      return $result;
       break;
     case "rev_program_phase_id":
       $keyword = "program_phase_id";
@@ -560,8 +561,8 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
       return ucwords(strtolower($prog_categorys[0]['program_phase_description']));
       break;
     case "gl_project_id":
-      $exp_categorys = _checkbook_project_querydataset($data_source . ':budget', array('gl_project_description', 'gl_project_id'), array($keyword => $id));
-      return ucwords(strtolower($exp_categorys[0]['gl_project_description']));
+      $project = _checkbook_project_querydataset($data_source . ':budget', array('gl_project_description', 'gl_project_id'), array($keyword => $id));
+      return ucwords(strtolower($project[0]['gl_project_description']));
       break;
     case "rev_gl_project_id":
       $keyword ="gl_project_id";
@@ -2462,4 +2463,24 @@ function _emptyToZero($input){
 function _ckbk_excerpt($text='', int $len=20):string{
   if(!$text){return '';}
   return (strlen($text) > $len) ? substr($text, 0, $len) . '...' : $text;
+}
+
+/**
+ * @param $datasetName
+ * @param bool $keepOriginalDatasource
+ * @return mixed
+ */
+function _update_dataset_datasource($datasetName,$keepOriginalDatasource = false){
+  if($keepOriginalDatasource == true){
+    return $datasetName;
+  }
+  $datasource = RequestUtilities::getRequestParamValue('datasource');
+  if('checkbook_oge' === $datasource){
+    $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
+  }else if('checkbook_nycha' === $datasource){
+    $database = str_replace("checkbook:", "checkbook_nycha:",$datasetName);
+  }else{
+    $database = $datasetName;
+  }
+  return $database;
 }

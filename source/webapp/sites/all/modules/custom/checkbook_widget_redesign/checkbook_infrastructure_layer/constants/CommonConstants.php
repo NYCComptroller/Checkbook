@@ -296,10 +296,26 @@ abstract class PageType {
                 break;
 
             case CheckbookDomain::REVENUE:
+              if(preg_match('/revenue\/search\/transactions/',$urlPath)) {
+                $pageType = self::ADVANCED_SEARCH_PAGE;
+              }
+              break;
             case CheckbookDomain::BUDGET:
+              if(preg_match('/budget\/search\/transactions/',$urlPath)) {
+              $pageType = self::ADVANCED_SEARCH_PAGE;
+              }
+              break;
             case CheckbookDomain::PAYROLL:
-                break;
-          case CheckbookDomain::NYCHA_CONTRACTS:
+            if(preg_match('/payroll\/search\/transactions/',$urlPath)) {
+              $pageType = self::ADVANCED_SEARCH_PAGE;
+            }
+            break;
+            case CheckbookDomain::NYCHA_SPENDING:
+            if(preg_match('/nycha_spending\/search\/transactions/',$urlPath)) {
+              $pageType = self::ADVANCED_SEARCH_PAGE;
+            }
+            break;
+            case CheckbookDomain::NYCHA_CONTRACTS:
             if(preg_match('/nycha_contracts\/search\/transactions/',$urlPath)) {
               $pageType = self::ADVANCED_SEARCH_PAGE;
             }

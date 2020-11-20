@@ -85,7 +85,9 @@ function checkbook_project_token_info(){
  */
 function checkbook_project_tokens($type, $tokens, array $data = array(), array $options = array()) {
   $replacements = array();
-  $replacements[$tokens['year_string']] = substr(_checkbook_project_get_year_url_param_string(),1);
+  if(isset($tokens['year_string'])) {
+    $replacements[$tokens['year_string']] = substr(_checkbook_project_get_year_url_param_string(), 1);
+  }
   return $replacements;
 }
 

@@ -30,7 +30,7 @@ if ('<unknown department>[001]' == $emp_id && is_numeric($payroll_results['emplo
   $emp_id = $payroll_results['employee_name'];
 }
 
-$fiscal_year_id = is_array($payroll_results['fiscal_year_id']) ? $payroll_results['fiscal_year_id'][0] : $payroll_results['fiscal_year_id'];
+$fiscal_year_id = is_array($payroll_results['calendar_fiscal_year_id']) ? $payroll_results['calendar_fiscal_year_id'][0] : $payroll_results['calendar_fiscal_year_id'];
 
 $fiscal_year_id = _checkbook_get_year_id($fiscal_year_id);
 

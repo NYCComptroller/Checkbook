@@ -169,6 +169,7 @@ function _checkbook_faceted_search_update_data($node)
                 $patterns = array();
                 foreach ($paramValues as $value) {
                   $value = checkbook_faceted_search_replaceSlash($value);
+                  $value = pg_escape_string(htmlspecialchars_decode($value));
                   $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
                 }
                 $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns, "|")));
@@ -257,30 +258,20 @@ function _checkbook_faceted_search_update_data($node)
     }
   }
 
-  // Facet preselection for
+  // Facet preselection for NYCHA amount links
   $setAutoDeselect= RequestUtil::isNychaAmountLinks();
-  if ($setAutoDeselect == 1) {
-    $node->widgetConfig->allowFacetDeselect = false;
-  }
+  $pagetype = PageType::getCurrent();
+
   //Facets that have Url parameters that match the current Url will be disabled and show only the default checked items
-  $disableFacet = !(isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false);
-
-  if($disableFacet) { //only URL parameters count and can be disabled
-    $domain = CheckbookDomain::getCurrent();
-    $pagetype = PageType::getCurrent();
-    if (($domain == CheckbookDomain::NYCHA_CONTRACTS) && ($pagetype == "advanced_search_page"))
-      {
-      $url_ref = $_GET['q'];
-      $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
-      }
-    else
-      {
-      $url_ref = RequestUtil::isNewWindow() ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
-      $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
-      }
+  //$disableFacet = isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false;
+  if (($pagetype != 'advanced_search_page') && (!(isset($node->widgetConfig->allowFacetDeselect)) || ($setAutoDeselect == 1))){
+    $disableFacet = true;
   }
 
-
+  if ($disableFacet) { //only URL parameters count and can be disabled
+      $url_ref = $_SERVER['HTTP_REFERER'];
+      $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
+  }
 
   if ($disableFacet) {
     $output['unchecked'] = null;

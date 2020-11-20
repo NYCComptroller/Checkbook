@@ -6,14 +6,14 @@
   "startWith":0,
   "maxSelect":5,
   "allowZeroValue":true,
-  "columns":["responsibility_center_id.responsibility_center_id","responsibility_center_name.responsibility_center_name","txcount"],
+  "columns":["responsibility_center_id.responsibility_center_id","responsibility_center_description.responsibility_center_description","txcount"],
   "orderBy":"-txcount",
   "facetPager":true,
   "filterName":"Responsibility Center",
   "urlParameterName":"resp_center",
-  "autocompleteParamName":"responsibility_center_name_auto",
+  "autocompleteParamName":"responsibility_center_description_auto",
   "autocompleteID":"fRespCenter",
-  "autocompleteField":"responsibility_center_name",
+  "autocompleteField":"responsibility_center_description",
   "adjustParameters":"
   if(function_exists('_checkbook_project_applyParameterFilters')){
   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);

@@ -163,12 +163,12 @@
     },
     {
       "labelAlias": "budget_type",
-      "column": "budget_type",
+      "column": "budget_type_formatted",
       "sortSourceColumn": "budget_type"
     },
     {
       "labelAlias": "budget_name",
-      "column": "budget_name",
+      "column": "budget_name_formatted",
       "sortSourceColumn": "budget_name"
     },
     {
