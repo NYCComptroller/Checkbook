@@ -372,6 +372,6 @@
     "expenditure_type_description": "Expense Categories"
   },
   "sort": {
-    "sort_by": "domain_ordering asc, sort_sequence asc, check_issue_date desc, document_id desc, date_ordering desc, invoice_number asc, invoice_line_number asc, distribution_line_number asc, id desc"
+    "sort_by": "domain_ordering asc, sort_sequence asc, check_issue_date desc, document_id desc, date_ordering desc, invoice_number asc, invoice_line_number asc, distribution_line_number asc, revenue_budget_fiscal_year desc, budget_fiscal_year desc, revenue_amount desc, adopted_budget desc, revenue_id desc,budget_id desc, id desc"
   }
 }
