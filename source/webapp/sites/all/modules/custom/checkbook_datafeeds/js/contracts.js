@@ -626,17 +626,16 @@
       const nycha_contract_type = $.fn.emptyToZero($('select[name="nycha_contract_type"]', context).val());
       const nycha_award_method = $.fn.emptyToZero($('select[name="nycha_awd_method"]', context).val());
       const nycha_industry = $.fn.emptyToZero($('select[name="nycha_industry"]', context).val());
-      const nycha_year = getYearValue($('select[name="nycha_year"]', context).val());
+      const nycha_year = getYearValue($('#edit-nycha-year').val());
       let nycha_filters = {
-        agreement_start_year:nycha_year,
-        agreement_end_year:nycha_year,
-        contract_type_code:nycha_contract_type,
-        award_method_code:nycha_award_method,
-        industry_type_code:nycha_industry,
-        agency_code:agency,
-        agreement_type_code:purchase_order,
-        responsibility_center_code: responsibility_center,
-      };
+          agreement_start_year: nycha_year,
+          contract_type_code: nycha_contract_type,
+          award_method_code: nycha_award_method,
+          industry_type_code: nycha_industry,
+          agency_code: agency,
+          agreement_type_code: purchase_order,
+          responsibility_center_code: responsibility_center,
+        };
 
       $('#edit-nycha-vendor').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'vendor_name_code',nycha_filters)});
       $('#edit-nycha-contract-id').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_number',nycha_filters)});
@@ -670,17 +669,16 @@
           const nycha_contract_type = $.fn.emptyToZero($('select[name="nycha_contract_type"]', context).val());
           const nycha_award_method = $.fn.emptyToZero($('select[name="nycha_awd_method"]', context).val());
           const nycha_industry = $.fn.emptyToZero($('select[name="nycha_industry"]', context).val());
-          const nycha_year = getYearValue($('select[name="nycha_year"]', context).val());
+          const nycha_year = getYearValue($('#edit-nycha-year').val());
           let nycha_filters = {
-            agreement_start_year:nycha_year,
-            agreement_end_year:nycha_year,
-            contract_type_code:nycha_contract_type,
-            award_method_code:nycha_award_method,
-            industry_type_code:nycha_industry,
-            agency_code:agency,
-            agreement_type_code:purchase_order,
-            responsibility_center_code: responsibility_center,
-          };
+              agreement_start_year: nycha_year,
+              contract_type_code: nycha_contract_type,
+              award_method_code: nycha_award_method,
+              industry_type_code: nycha_industry,
+              agency_code: agency,
+              agreement_type_code: purchase_order,
+              responsibility_center_code: responsibility_center,
+            };
 
           $('#edit-nycha-vendor').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'vendor_name_code',nycha_filters)});
           $('#edit-nycha-contract-id').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_number',nycha_filters)});
