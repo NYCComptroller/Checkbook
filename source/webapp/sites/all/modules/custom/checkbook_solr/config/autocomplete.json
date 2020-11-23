@@ -4,6 +4,7 @@
     "oge_agency_name": "oge_agency_name_autocomplete",
     "vendor_name": "vendor_name_autocomplete",
     "expenditure_object_name": "expenditure_object_name_autocomplete",
+    "expense_category_name": "expenditure_category_name_autocomplete",
     "display_industry_type_name": "industry_type_name_autocomplete",
     "budget_code_name_code": "budget_code_name_code_autocomplete",
     "vendor_name_code": "vendor_name_code_autocomplete",
@@ -17,6 +18,7 @@
     "revenue_source_name": "revenue_source_name_autocomplete",
     "expenditure_type_description": "expenditure_type_description_autocomplete",
     "funding_source_name": "funding_source_name_autocomplete",
-    "responsibility_center_name": "responsibility_center_name_autocomplete"
+    "responsibility_center_name": "responsibility_center_name_autocomplete",
+    "industry_type_name": "industry_type_name_autocomplete"
   }
 }
