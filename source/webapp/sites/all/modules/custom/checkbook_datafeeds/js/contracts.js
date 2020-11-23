@@ -401,26 +401,26 @@
     if($.inArray(sub_vendor_status, valid_status)) {
       if(includes_sub_vendors === 2){
         $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
-          '<option value="2" selected>Yes</option>');
+          '<option value="2" selected>Yes[2]</option>');
       } else {
         $('#edit-contract_includes_sub_vendors_id').html('<option value="0" selected>Select Status</option>' +
-          '<option value="2">Yes</option>');
+          '<option value="2">Yes[2]</option>');
       }
     }
 
     if(sub_vendor_status === 0) {
       if(includes_sub_vendors === 2){
         $('#edit-contract_includes_sub_vendors_id').html('<option value="0">Select Status</option>' +
-          '<option value="2" selected>Yes</option>' +
-          '<option value="3">No</option>' +
-          '<option value="1">No Data Entered</option>' +
-          '<option value="4">Not Required</option>');
+          '<option value="2" selected>Yes[2]</option>' +
+          '<option value="3">No[3]</option>' +
+          '<option value="1">No Data Entered[1]</option>' +
+          '<option value="4">Not Required[4]</option>');
       } else {
         $('#edit-contract_includes_sub_vendors_id').html('<option value="0" selected>Select Status</option>' +
-          '<option value="2">Yes</option>' +
-          '<option value="3">No</option>' +
-          '<option value="1">No Data Entered</option>' +
-          '<option value="4">Not Required</option>');
+          '<option value="2">Yes[2]</option>' +
+          '<option value="3">No[3]</option>' +
+          '<option value="1">No Data Entered[1]</option>' +
+          '<option value="4">Not Required[4]</option>');
       }
     }
     $('#edit-contract_includes_sub_vendors_id').val(includes_sub_vendors);

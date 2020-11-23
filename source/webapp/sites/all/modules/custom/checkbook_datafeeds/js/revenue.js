@@ -169,7 +169,7 @@
         funding_class_code: fundingSrc
       };
       $('#edit-revenue-class').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_class_name_code',filters)});
-      $('#edit-revenue-source').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_source_name',filters)});
+      $('#edit-revenue-source').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_source_name_code',filters)});
     }else if (data_source === 'checkbook_nycha') {
       solr_datasource = 'nycha';
       let budgetFY = ($('#edit-nycha-budget-year').val() === 'All Years') ? 0 : $('#edit-nycha-budget-year').val();
@@ -178,7 +178,7 @@
       let fundingSrc = emptyToZero($('#edit-nycha-funding-source').val());
       let program = emptyToZero($('#edit-nycha-program').val());
       let project = emptyToZero($('#edit-nycha-project').val());
-      let budgetType = emptyToZero($('#edit-nycha-budget-type').val());
+      let budgetType = emptyToZero($('#edit-nycha-budget-type').val());Oab
       let budgetName = emptyToZero($('#edit-nycha-budget-name').val());
       let filters = {
         fiscal_year: budgetFY,

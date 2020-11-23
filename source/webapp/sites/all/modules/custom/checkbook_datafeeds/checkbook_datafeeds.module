@@ -658,7 +658,7 @@ function _sub_vendor_status_in_pip()
 
     foreach ($data as $row) {
       if ($row['aprv_sta_id'] != "7") {
-        $option = $row['aprv_sta_value'];
+        $option = $row['aprv_sta_value'].'['.$row['aprv_sta_id'] .']';
         //Menu options
         $menu_options[$row['aprv_sta_id']] = _ckbk_excerpt($option);
         //Menu option titles
@@ -673,6 +673,7 @@ function _sub_vendor_status_in_pip()
     return;
   }
 }
+
 
 /**
  * Get Fund Classes from Data Controller and format into a FAPI select input #options array.
