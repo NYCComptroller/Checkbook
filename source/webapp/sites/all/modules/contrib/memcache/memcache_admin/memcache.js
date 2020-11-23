@@ -1,11 +1,21 @@
 /**
  * @file
- * Helper functions for memcache_admin module.
+ * Defines the behavior of the Memcache Admin module.
  */
 
-// Global Killswitch
-if (Drupal.jsEnabled) {
-  $(document).ready(function() {
-    $("body").append($("#memcache-devel"));
-  });
-}
+(function ($) {
+
+  'use strict';
+
+  /**
+   * Append the memcache debug info to the page.
+   *
+   * @type {Drupal~behavior}
+   */
+  Drupal.behaviors.memcacheAdmin = {
+    attach: function attach() {
+      $("body").append($("#memcache-devel"));
+    }
+  };
+
+})(jQuery);
