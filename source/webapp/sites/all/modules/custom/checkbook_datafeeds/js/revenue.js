@@ -178,7 +178,7 @@
       let fundingSrc = emptyToZero($('#edit-nycha-funding-source').val());
       let program = emptyToZero($('#edit-nycha-program').val());
       let project = emptyToZero($('#edit-nycha-project').val());
-      let budgetType = emptyToZero($('#edit-nycha-budget-type').val());Oab
+      let budgetType = emptyToZero($('#edit-nycha-budget-type').val());
       let budgetName = emptyToZero($('#edit-nycha-budget-name').val());
       let filters = {
         fiscal_year: budgetFY,
