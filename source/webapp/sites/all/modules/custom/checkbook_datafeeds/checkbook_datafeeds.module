@@ -1150,9 +1150,7 @@ function _budget_type_options($domain, $dataSource = Datasource::CITYWIDE, $budg
         $text = $row['budget_type'];
         $option_attributes[$text] = array('title' => $text);
         $options[$text] = _ckbk_excerpt($text);
-        if( $text != 'N/A') {
-          $matches[] = array('value' => $text, 'text' => $options[$text]);
-        }
+        $matches[] = array('value'=> $text, 'text'=> $options[$text]);
       }
       if($json) {
         drupal_json_output($matches);
@@ -1184,9 +1182,7 @@ function _budget_name_options($domain, $dataSource = Datasource::CITYWIDE, $budg
         $text = $row['budget_name'];
         $option_attributes[$text] = array('title' => $text);
         $options[$text] = _ckbk_excerpt($text);
-        if($text != 'N/A') {
-          $matches[] = array('value' => $text, 'text' => $options[$text]);
-        }
+        $matches[] = array('value'=> $text, 'text'=> $options[$text]);
       }
       if($json) {
         drupal_json_output($matches);
