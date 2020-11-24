@@ -106,6 +106,12 @@ foreach ($facets_render??[] as $facet_name => $facet) {
     echo '<div class="options">';
     echo '<ul class="rows">';
     $index = 0;
+    $lowercase_selected = [];
+    if($facet->selected){
+      foreach($facet->selected as $facet_val){
+        $lowercase_selected[strtolower($facet_val)] = strtolower($facet_val);
+      }
+    }
 
     foreach($facet->results as $facet_value => $count) {
 
@@ -124,13 +130,15 @@ foreach ($facets_render??[] as $facet_name => $facet) {
 
 END;
 
-      $lowercase_selected = $facet->selected ? array_map('strtolower', $facet->selected) : [];
-
-      if ($facet->selected) {
-        $checked = $facet->selected && in_array(strtolower($facet_value), $lowercase_selected);
-        $checked = $checked ? ' checked="checked" ' : '';
-        $active = $checked ? ' class="active" ' : '';
-        $disabled ='';
+      if ($lowercase_selected && isset($lowercase_selected[strtolower($facet_value)])) {
+        $checked = ' checked="checked" ';
+        $active = ' class="active" ';
+        $disabled = '';
+      }
+      else{
+        $checked = '';
+        $active = '';
+        $disabled = '';
       }
 
       //Disable unchecked options if 5 or more options from the same category are already selected
