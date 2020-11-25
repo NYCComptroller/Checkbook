@@ -2251,7 +2251,7 @@ function _get_contract_includes_subvendors_data($attributes = NULL){
       if ($attributes) {
         $statuses[$value['scntrc_status']] = array('title' => $value['scntrc_status_name']);
       } else {
-        $statuses[$value['scntrc_status']] = _ckbk_excerpt($value['scntrc_status_name']);
+        $statuses[$value['scntrc_status']] = _ckbk_excerpt($value['scntrc_status_name'].'['.$value['scntrc_status'].']');
       }
     }
     return $statuses;

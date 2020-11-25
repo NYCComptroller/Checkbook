@@ -447,6 +447,13 @@ function checkbook_api_adjust_expense_contracts_params(&$parameters, $criteria, 
             );
             break;
     }
+
+    //Current Amount
+    if(isset($parameters['amount_id'])) {
+        $parameters['maximum_contract_amount'] = $parameters['amount_id'];
+        unset($parameters['amount_id']);
+    }
+
     //Update columns which will be applied as an OR condition
     $logicalOrColumns = array();
 
@@ -472,13 +479,6 @@ function checkbook_api_adjust_expense_contracts_params(&$parameters, $criteria, 
         $parameters['prime_mwbe_adv_search_id'] = $condition;
         $parameters['sub_minority_type_id'] = $condition;
         unset($parameters['minority_type_id']);
-    }
-    //Current Amount
-    if(isset($parameters['amount_id'])) {
-        $logicalOrColumns[] = array("prime_maximum_contract_amount","sub_maximum_contract_amount");
-        $parameters['prime_maximum_contract_amount'] = $parameters['amount_id'];
-        $parameters['sub_maximum_contract_amount'] = $parameters['amount_id'];
-        unset($parameters['amount_id']);
     }
 
     if(count($logicalOrColumns) > 0) {

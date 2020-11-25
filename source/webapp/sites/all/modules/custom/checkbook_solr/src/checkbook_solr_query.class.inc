@@ -508,6 +508,15 @@ class CheckbookSolrQuery
     } elseif ('department_name' == $param) {
       $value = str_replace('__', '/', $value);
     }
+    elseif('agreement_start_year' == $param ){
+      if ($value != 'undefined'){
+        $value = '(agreement_start_year:[*%20TO%20'. $value.']%20AND%20agreement_end_year:['.$value .'%20TO%20*])';
+      }
+      else{
+        unset($this->selectedFacets['agreement_start_year']);
+        $value = '';
+      }
+    }
 
     $values = explode('~', $value);
 
@@ -521,8 +530,13 @@ class CheckbookSolrQuery
         $fq[] = $minus . $param . ':' . $value;
         continue;
       }
-
-      $fq[] = $minus . $param . ':"' . self::escape($value) . '"';
+      elseif ($param == 'agreement_start_year'){
+        $fq[] = $value;
+        unset($this->selectedFacets['agreement_start_year']);
+      }
+      else {
+        $fq[] = $minus . $param . ':"' . self::escape($value) . '"';
+      }
     }
 
     if ($exclude) {
