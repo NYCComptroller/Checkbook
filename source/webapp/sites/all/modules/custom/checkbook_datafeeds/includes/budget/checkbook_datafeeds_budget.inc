@@ -453,7 +453,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield nycha_adopted_from datarange"><label>Adopted:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['nycha_adopted_from']) ? $form_state['values']['nycha_adopted_from'] : '',
+    '#default_value' => !empty($form_state['values']['nycha_adopted_from']) || $form_state['values']['nycha_adopted_from'] === "0" ? $form_state['values']['nycha_adopted_from'] : '',
   );
   $form['filter']['nycha_adopted_to'] = array(
     '#type' => 'textfield',
@@ -461,7 +461,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['nycha_adopted_to']) ? $form_state['values']['nycha_adopted_to'] : '',
+    '#default_value' => !empty($form_state['values']['nycha_adopted_to']) || $form_state['values']['nycha_adopted_to'] === "0" ? $form_state['values']['nycha_adopted_to'] : '',
   );
   //Modified Amount
   $form['filter']['nycha_modified_from'] = array(
@@ -469,7 +469,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield nycha_modified_from datarange"><label>Modified:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['nycha_modified_from']) ? $form_state['values']['nycha_modified_from'] : '',
+    '#default_value' => !empty($form_state['values']['nycha_modified_from']) || $form_state['values']['nycha_modified_from'] === "0" ? $form_state['values']['nycha_modified_from'] : '',
   );
   $form['filter']['nycha_modified_to'] = array(
     '#type' => 'textfield',
@@ -477,7 +477,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['nycha_modified_to']) ? $form_state['values']['nycha_modified_to'] : '',
+    '#default_value' => !empty($form_state['values']['nycha_modified_to']) || $form_state['values']['nycha_modified_to'] === "0" ? $form_state['values']['nycha_modified_to'] : '',
   );
   //Committed Amount
   $form['filter']['nycha_committed_from'] = array(
@@ -485,7 +485,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield nycha_committed_from datarange"><label>Committed:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['nycha_committed_from']) ? $form_state['values']['nycha_committed_from'] : '',
+    '#default_value' => !empty($form_state['values']['nycha_committed_from']) || $form_state['values']['nycha_committed_from'] === "0" ? $form_state['values']['nycha_committed_from'] : '',
   );
   $form['filter']['nycha_committed_to'] = array(
     '#type' => 'textfield',
@@ -493,7 +493,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['nycha_committed_to']) ? $form_state['values']['nycha_committed_to'] : '',
+    '#default_value' => !empty($form_state['values']['nycha_committed_to']) || $form_state['values']['nycha_committed_to'] === "0" ? $form_state['values']['nycha_committed_to'] : '',
   );
   //Encumbered  Amount
   $form['filter']['nycha_encumbered_from'] = array(
@@ -501,7 +501,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield nycha_encumbered_from datarange"><label>Encumbered:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['nycha_encumbered_from']) ? $form_state['values']['nycha_encumbered_from'] : '',
+    '#default_value' => !empty($form_state['values']['nycha_encumbered_from']) || $form_state['values']['nycha_encumbered_from'] === "0" ? $form_state['values']['nycha_encumbered_from'] : '',
   );
   $form['filter']['nycha_encumbered_to'] = array(
     '#type' => 'textfield',
@@ -509,7 +509,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['nycha_encumbered_to']) ? $form_state['values']['nycha_encumbered_to'] : '',
+    '#default_value' => !empty($form_state['values']['nycha_encumbered_to']) || $form_state['values']['nycha_encumbered_to'] === "0" ? $form_state['values']['nycha_encumbered_to'] : '',
   );
   //Actual Amount
   $form['filter']['nycha_actual_from'] = array(
@@ -517,7 +517,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield nycha_actual_from datarange"><label>Actual Amount:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['nycha_actual_from']) ? $form_state['values']['nycha_actual_from'] : '',
+    '#default_value' => !empty($form_state['values']['nycha_actual_from']) || $form_state['values']['nycha_actual_from'] === "0" ? $form_state['values']['nycha_actual_from'] : '',
   );
   $form['filter']['nycha_actual_to'] = array(
     '#type' => 'textfield',
@@ -525,7 +525,7 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, $form_state, $data_
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['nycha_actual_to']) ? $form_state['values']['nycha_actual_to'] : '',
+    '#default_value' => !empty($form_state['values']['nycha_actual_to']) || $form_state['values']['nycha_actual_to'] === "0" ? $form_state['values']['nycha_actual_to'] : '',
   );
   $form['filter']['nycha-rightend'] = array(
     '#markup' => '</div>',
