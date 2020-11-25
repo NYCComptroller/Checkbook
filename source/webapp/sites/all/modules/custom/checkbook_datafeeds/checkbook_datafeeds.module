@@ -464,7 +464,7 @@ function checkbook_datafeeds_filter_get_default_value($form_state, $field_name, 
   if ($first_time_load) {
     return $default_val;
   }
-  return isset($form_state['values'][$field_name]) || $form_state['values'][$field_name] === "0" ? $form_state['values'][$field_name] : $default_val;
+  return (isset($form_state['values'][$field_name]) || $form_state['values'][$field_name] === "0") ? $form_state['values'][$field_name] : $default_val;
 }
 
 
