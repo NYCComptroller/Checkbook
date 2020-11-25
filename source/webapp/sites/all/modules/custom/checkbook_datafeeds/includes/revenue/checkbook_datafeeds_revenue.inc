@@ -195,7 +195,7 @@ function checkbook_datafeeds_revenue_filter_data($form, $form_state, $data_sourc
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield adopted datarange"><label>Adopted:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['adoptedfrom']) ? $form_state['values']['adoptedfrom'] : '',
+    '#default_value' => (!empty($form_state['values']['adoptedfrom']) || $form_state['values']['adoptedfrom'] === "0") ? $form_state['values']['adoptedfrom'] : '',
   );
   $form['filter']['adoptedto'] = array(
     '#type' => 'textfield',
@@ -203,14 +203,14 @@ function checkbook_datafeeds_revenue_filter_data($form, $form_state, $data_sourc
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['adoptedto']) ? $form_state['values']['adoptedto'] : '',
+    '#default_value' => (!empty($form_state['values']['adoptedto']) || $form_state['values']['adoptedto'] === "0") ? $form_state['values']['adoptedto'] : '',
   );
   $form['filter']['recognizedfrom'] = array(
     '#type' => 'textfield',
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield recognized datarange"><label>Recognized:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['recognizedfrom']) ? $form_state['values']['recognizedfrom'] : '',
+    '#default_value' => (!empty($form_state['values']['recognizedfrom']) || $form_state['values']['recognizedfrom'] === "0") ? $form_state['values']['recognizedfrom'] : '',
   );
   $form['filter']['recognizedto'] = array(
     '#type' => 'textfield',
@@ -218,7 +218,7 @@ function checkbook_datafeeds_revenue_filter_data($form, $form_state, $data_sourc
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['recognizedto']) ? $form_state['values']['recognizedto'] : '',
+    '#default_value' => (!empty($form_state['values']['recognizedto']) || $form_state['values']['recognizedto'] === "0") ? $form_state['values']['recognizedto'] : '',
   );
   $form['filter']['leftend'] = array(
     '#markup' => '</div><div class="column column-right">',
@@ -263,7 +263,7 @@ function checkbook_datafeeds_revenue_filter_data($form, $form_state, $data_sourc
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield modified datarange"><label>Modified:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['modifiedfrom']) ? $form_state['values']['modifiedfrom'] : '',
+    '#default_value' => (!empty($form_state['values']['modifiedfrom']) || $form_state['values']['modifiedfrom'] === "0") ? $form_state['values']['modifiedfrom'] : '',
   );
   $form['filter']['modifiedto'] = array(
     '#type' => 'textfield',
@@ -271,7 +271,7 @@ function checkbook_datafeeds_revenue_filter_data($form, $form_state, $data_sourc
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['modifiedto']) ? $form_state['values']['modifiedto'] : '',
+    '#default_value' => (!empty($form_state['values']['modifiedto']) || $form_state['values']['modifiedto'] === "0") ? $form_state['values']['modifiedto'] : '',
   );
   $form['filter']['rightend'] = array(
     '#markup' => '</div>',
@@ -435,7 +435,7 @@ function checkbook_datafeeds_nycha_revenue_filter_data($form, $form_state, $data
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield nycha_adopted_from datarange"><label>Adopted:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['nycha_adopted_from']) ? $form_state['values']['nycha_adopted_from'] : '',
+    '#default_value' => (!empty($form_state['values']['nycha_adopted_from']) || $form_state['values']['nycha_adopted_from'] === "0") ? $form_state['values']['nycha_adopted_from'] : '',
   );
   $form['filter']['nycha_adopted_to'] = array(
     '#type' => 'textfield',
@@ -443,7 +443,7 @@ function checkbook_datafeeds_nycha_revenue_filter_data($form, $form_state, $data
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['nycha_adopted_to']) ? $form_state['values']['nycha_adopted_to'] : '',
+    '#default_value' => (!empty($form_state['values']['nycha_adopted_to']) || $form_state['values']['nycha_adopted_to'] === "0") ? $form_state['values']['nycha_adopted_to'] : '',
   );
   //Modified Amount
   $form['filter']['nycha_modified_from'] = array(
@@ -451,7 +451,7 @@ function checkbook_datafeeds_nycha_revenue_filter_data($form, $form_state, $data
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield nycha_modified_from datarange"><label>Modified:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['nycha_modified_from']) ? $form_state['values']['nycha_modified_from'] : '',
+    '#default_value' => (!empty($form_state['values']['nycha_modified_from']) || $form_state['values']['nycha_modified_from'] === "0") ? $form_state['values']['nycha_modified_from'] : '',
   );
   $form['filter']['nycha_modified_to'] = array(
     '#type' => 'textfield',
@@ -459,7 +459,7 @@ function checkbook_datafeeds_nycha_revenue_filter_data($form, $form_state, $data
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['nycha_modified_to']) ? $form_state['values']['nycha_modified_to'] : '',
+    '#default_value' => (!empty($form_state['values']['nycha_modified_to']) || $form_state['values']['nycha_modified_to'] === "0") ? $form_state['values']['nycha_modified_to'] : '',
   );
   //Recognized Amount
   $form['filter']['nycha_recognized_from'] = array(
@@ -467,7 +467,7 @@ function checkbook_datafeeds_nycha_revenue_filter_data($form, $form_state, $data
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield nycha_recognized_from datarange"><label>Recognized:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['nycha_recognized_from']) ? $form_state['values']['nycha_recognized_from'] : '',
+    '#default_value' => (!empty($form_state['values']['nycha_recognized_from']) || $form_state['values']['nycha_recognized_from'] === "0") ? $form_state['values']['nycha_recognized_from'] : '',
   );
   $form['filter']['nycha_recognized_to'] = array(
     '#type' => 'textfield',
@@ -475,7 +475,7 @@ function checkbook_datafeeds_nycha_revenue_filter_data($form, $form_state, $data
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['nycha_recognized_to']) ? $form_state['values']['nycha_recognized_to'] : '',
+    '#default_value' => (!empty($form_state['values']['nycha_recognized_to']) || $form_state['values']['nycha_recognized_to'] === "0") ? $form_state['values']['nycha_recognized_to'] : '',
   );
   //Remaining  Amount
   $form['filter']['nycha_remaining_from'] = array(
@@ -483,7 +483,7 @@ function checkbook_datafeeds_nycha_revenue_filter_data($form, $form_state, $data
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield nycha_remaining_from datarange"><label>Remaining:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['nycha_remaining_from']) ? $form_state['values']['nycha_remaining_from'] : '',
+    '#default_value' => (!empty($form_state['values']['nycha_remaining_from']) || $form_state['values']['nycha_remaining_from'] === "0") ? $form_state['values']['nycha_remaining_from'] : '',
   );
   $form['filter']['nycha_remaining_to'] = array(
     '#type' => 'textfield',
@@ -491,7 +491,7 @@ function checkbook_datafeeds_nycha_revenue_filter_data($form, $form_state, $data
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['nycha_remaining_to']) ? $form_state['values']['nycha_remaining_to'] : '',
+    '#default_value' => (!empty($form_state['values']['nycha_remaining_to']) || $form_state['values']['nycha_remaining_to'] === "0") ? $form_state['values']['nycha_remaining_to'] : '',
   );
   $form['filter']['nycha-rightend'] = array(
     '#markup' => '</div>',
