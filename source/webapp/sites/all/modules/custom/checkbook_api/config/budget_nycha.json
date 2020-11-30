@@ -19,6 +19,10 @@
           "sortColumn":["-adopted_budget","-budget_id"],
           "name":"checkbook_nycha:budget",
           "data_source":"checkbook_nycha",
+          "columnTypes":{
+          "budget_type": "contains",
+          "budget_name":"contains"
+        },
           "displayConfiguration":{
               "xml":{
                   "rootElement":"budget_transactions",
