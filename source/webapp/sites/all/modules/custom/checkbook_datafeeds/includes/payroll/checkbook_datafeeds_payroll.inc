@@ -81,7 +81,7 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield otherpay datarange"><label>Other Payments:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['otherfrom']) ? $form_state['values']['otherfrom'] : '',
+    '#default_value' => (!empty($form_state['values']['otherfrom']) || $form_state['values']['otherfrom'] === "0") ? $form_state['values']['otherfrom'] : '',
   );
   $form['filter']['otherto'] = array(
     '#type' => 'textfield',
@@ -89,14 +89,14 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['otherto']) ? $form_state['values']['otherto'] : '',
+    '#default_value' => (!empty($form_state['values']['otherto']) || $form_state['values']['otherto'] === "0") ? $form_state['values']['otherto'] : '',
   );
   $form['filter']['grossfrom'] = array(
     '#type' => 'textfield',
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield grosspay datarange"><label>Gross Pay:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['grossfrom']) ? $form_state['values']['grossfrom'] : '',
+    '#default_value' => (!empty($form_state['values']['grossfrom']) || $form_state['values']['grossfrom'] === "0") ? $form_state['values']['grossfrom'] : '',
   );
   $form['filter']['grossto'] = array(
     '#type' => 'textfield',
@@ -104,14 +104,14 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['grossto']) ? $form_state['values']['grossto'] : '',
+    '#default_value' => (!empty($form_state['values']['grossto']) || $form_state['values']['grossto'] === "0") ? $form_state['values']['grossto'] : '',
   );
   $form['filter']['totalgrossfrom'] = array(
     '#type' => 'textfield',
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield totalgross datarange"><label>Gross Pay YTD:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['totalgrossfrom']) ? $form_state['values']['totalgrossfrom'] : '',
+    '#default_value' => (!empty($form_state['values']['totalgrossfrom']) || $form_state['values']['totalgrossfrom'] === "0") ? $form_state['values']['totalgrossfrom'] : '',
   );
   $form['filter']['totalgrossto'] = array(
     '#type' => 'textfield',
@@ -119,14 +119,14 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['totalgrossto']) ? $form_state['values']['totalgrossto'] : '',
+    '#default_value' => (!empty($form_state['values']['totalgrossto']) || $form_state['values']['totalgrossto'] === "0") ? $form_state['values']['totalgrossto'] : '',
   );
   $form['filter']['salaryfrom'] = array(
     '#type' => 'textfield',
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield salary datarange"><label>Amount:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['salaryfrom']) ? $form_state['values']['salaryfrom'] : '',
+    '#default_value' => (!empty($form_state['values']['salaryfrom']) || $form_state['values']['salaryfrom'] === "0")  ? $form_state['values']['salaryfrom'] : '',
   );
   $form['filter']['salaryto'] = array(
     '#type' => 'textfield',
@@ -134,7 +134,7 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['salaryto']) ? $form_state['values']['salaryto'] : '',
+    '#default_value' => (!empty($form_state['values']['salaryto']) || $form_state['values']['salaryto'] === "0") ? $form_state['values']['salaryto'] : '',
   );
   $form['filter']['salary_type'] = array(
     '#type' => 'radios',
@@ -152,7 +152,7 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="column column-right"><div class="datafield basepay datarange"><label>Base Pay:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['basepayfrom']) ? $form_state['values']['basepayfrom'] : '',
+    '#default_value' => (!empty($form_state['values']['basepayfrom']) || $form_state['values']['basepayfrom'] === "0") ? $form_state['values']['basepayfrom'] : '',
   );
   $form['filter']['basepayto'] = array(
     '#type' => 'textfield',
@@ -160,14 +160,14 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['basepayto']) ? $form_state['values']['basepayto'] : '',
+    '#default_value' => (!empty($form_state['values']['basepayto']) || $form_state['values']['basepayfrom'] === "0") ? $form_state['values']['basepayto'] : '',
   );
   $form['filter']['overtimefrom'] = array(
     '#type' => 'textfield',
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield overtime datarange"><label>Overtime Payments:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['overtimefrom']) ? $form_state['values']['overtimefrom'] : '',
+    '#default_value' => (!empty($form_state['values']['overtimefrom']) || $form_state['values']['overtimefrom'] === "0") ? $form_state['values']['overtimefrom'] : '',
   );
   $form['filter']['overtimeto'] = array(
     '#type' => 'textfield',
@@ -175,7 +175,7 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['overtimeto']) ? $form_state['values']['overtimeto'] : '',
+    '#default_value' => (!empty($form_state['values']['overtimeto']) || $form_state['values']['overtimeto'] === "0") ? $form_state['values']['overtimeto'] : '',
   );
   $form['filter']['payfrequency'] = array(
     '#type' => 'select',
