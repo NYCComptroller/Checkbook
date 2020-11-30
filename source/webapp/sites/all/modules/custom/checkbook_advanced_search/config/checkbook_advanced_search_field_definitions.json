@@ -168,6 +168,11 @@
         "field_name":"mwbe_category",
         "attributes":{"title":"M/WBE Category", "options":"$mwbe_category_attributes"}
     },
+    "catastrophic_event":{
+      "field_type":"select",
+      "field_name":"catastrophic_event",
+      "attributes":{"title":"Catastrophic Event", "options":"$catastrophic_event_attributes"}
+    },
     "industry":{
         "field_type":"select",
         "field_name":"industry",

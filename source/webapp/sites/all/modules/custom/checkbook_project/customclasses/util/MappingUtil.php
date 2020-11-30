@@ -91,6 +91,9 @@ class MappingUtil {
         'Individuals and Others' => array(11),
     );
 
+    private static $catastrophic_events_map_multi = array(
+        'COVID-19' => array(1)
+    );
 
     static $mwbe_prefix = "M/WBE" ;
 
@@ -135,6 +138,10 @@ class MappingUtil {
     /** Returns the M/WBE category name and it's minority_type_id mapping as an array */
     static function getMinorityCategoryMappings() {
         return self::$minority_type_category_map_multi;
+    }
+
+    static function getCatastrophicEventMappings(){
+        return self::$catastrophic_events_map_multi;
     }
 
     /**
