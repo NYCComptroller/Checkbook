@@ -11,6 +11,7 @@
   "orderBy":"-txcount",
   "filterName":"Budget Type",
   "urlParameterName":"bdgtyp",
+  "urlParameterNameType":"eqtext",
   "autocompleteParamName":"bdgtyp_auto",
   "autocompleteID":"fbdgtyp",
   "autocompleteField":"budget_type",

@@ -72,7 +72,8 @@
                       "Revenue Class": "revenue_class"
                     }
                 }
-            }
+            },
+          "adjustSql":"if(function_exists('checkbook_api_adjustNYCHABudgetRevenueSql')){checkbook_api_adjustNYCHABudgetRevenueSql($sql_query);}"
         },
         "requestParameters":{
           "budget_fiscal_year":{"valueType":"value", "dataType":"year", "maxLength":4},

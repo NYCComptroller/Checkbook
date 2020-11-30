@@ -803,7 +803,7 @@ function checkbook_api_adjustNYCHAPayrollSql(&$sql_query,$criteria) {
  * @param $sql_query
  * @return string
  */
-function checkbook_api_adjustNYCHABudgetSql(&$sql_query){
+function checkbook_api_adjustNYCHABudgetRevenueSql(&$sql_query){
   $sql_parts = explode("WHERE", $sql_query);
   $select_part = $sql_parts[0];
   $where_part = $sql_parts[1];

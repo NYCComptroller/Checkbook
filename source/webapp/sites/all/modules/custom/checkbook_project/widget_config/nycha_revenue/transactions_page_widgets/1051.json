@@ -16,6 +16,7 @@
     "amtr":"rangeid",
     "bdgnm": "eqignorecase",
     "bdgnm_exact": "eqignorecase",
+    "bdgtyp": "eqignorecase",
     "revcat_nm": "eqignorecase",
     "revcat_nm_exact": "eqignorecase",
     "revclass_nm": "eqignorecase",
