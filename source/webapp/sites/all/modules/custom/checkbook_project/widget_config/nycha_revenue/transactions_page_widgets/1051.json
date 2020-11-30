@@ -16,6 +16,7 @@
     "amtr":"rangeid",
     "bdgnm": "eqignorecase",
     "bdgnm_exact": "eqignorecase",
+    "bdgtyp": "eqignorecase",
     "revcat_nm": "eqignorecase",
     "revcat_nm_exact": "eqignorecase",
     "revclass_nm": "eqignorecase",
@@ -64,7 +65,7 @@
       "expression": "_get_tooltip_markup($row['expenditure_type_description'], 28)"
     },
     "budget_type_formatted": {
-      "expression": "_get_tooltip_markup($row['budget_type'], 36)"
+      "expression": "($row['budget_type'] == null) ? 'N/A' : _get_tooltip_markup($row['budget_type'], 36)"
     },
     "formatted_adopted_amount": {
       "expression": "custom_number_formatter_basic_format($row['adopted_amount'])"
@@ -82,7 +83,7 @@
       "expression": "_get_tooltip_markup($row['expenditure_type_description'],36)"
     },
     "budget_name_formatted":{
-      "expression": "_get_tooltip_markup($row['budget_name'],36)"
+      "expression": "($row['budget_name'] == null) ? 'N/A' :_get_tooltip_markup($row['budget_name'],36)"
     },
     "resp_center_formatted":{
       "expression": "_get_tooltip_markup($row['responsibility_center_description'],36)"
