@@ -168,8 +168,8 @@
         revenue_category_code: revCat,
         funding_class_code: fundingSrc
       };
-      $('#edit-revenue-class').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_class_name_code',filters)});
-      $('#edit-revenue-source').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_source_name_code',filters)});
+      $('#edit-revenue-class').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_class_name_code_autocomplete',filters)});
+      $('#edit-revenue-source').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_source_name_code_autocomplete',filters)});
     }else if (data_source === 'checkbook_nycha') {
       solr_datasource = 'nycha';
       let budgetFY = ($('#edit-nycha-budget-year').val() === 'All Years') ? 0 : $('#edit-nycha-budget-year').val();
