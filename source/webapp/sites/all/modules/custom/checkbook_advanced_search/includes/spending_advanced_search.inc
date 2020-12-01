@@ -69,6 +69,9 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
   $spending_mwbe_category = trim($form[$filter_dimension][$data_source . '_spending_mwbe_category']['#value']);
   $spending_mwbe_category = $spending_mwbe_category == "Select Category" ? 0 : $spending_mwbe_category;
 
+  $spending_catastrophic_event = trim($form[$filter_dimension][$data_source . '_spending_catastrophic_event']['#value']);
+  $spending_catastrophic_event = $spending_catastrophic_event == "Select Event" ? 0 :  $spending_catastrophic_event;
+
   $spending_industry_type_id = trim($form[$filter_dimension][$data_source . '_spending_industry']['#value']);
   $spending_industry_type_id = $spending_industry_type_id == "Select Industry" ? 0 : $spending_industry_type_id;
 
@@ -83,6 +86,9 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
 
   if (!empty($spending_mwbe_category)) {
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_mwbe_category, 'mwbe');
+  }
+  if(!empty($spending_catastrophic_event)){
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_catastrophic_event, 'catastrophic_event');
   }
   if (!empty($spending_industry_type_id)) {
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_industry_type_id, 'industry');

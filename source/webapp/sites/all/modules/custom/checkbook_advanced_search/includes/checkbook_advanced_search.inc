@@ -225,6 +225,13 @@ function _checkbook_advanced_search_get_mwbe_category_and_id()
     return $results;
 }
 
+/**
+ * Get Catastrophic event name and id using mapping
+ *
+ * COVID-19 1
+ *
+ * @return array
+ */
 function _checkbook_advanced_search_get_catastrophic_events(){
     $catastrophic_events_map = MappingUtil::getCatastrophicEventMappings();
     $results = array('' => 'Select Event');

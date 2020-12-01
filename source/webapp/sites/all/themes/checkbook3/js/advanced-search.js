@@ -1341,6 +1341,7 @@
             'spending_category': 'select[name=' + data_source + '_spending_expense_type]',
             'industry': 'select[name=' + data_source + '_spending_industry]',
             'mwbe_category': 'select[name=' + data_source + '_spending_mwbe_category]',
+            'catastrophic_event' : 'select[name=' + data_source + '_spending_catastrophic_event]',
             'payee_name': 'input:text[name=' + data_source + '_spending_payee_name]',
             'check_amt_from': 'input:text[name=' + data_source + '_spending_check_amount_from]',
             'check_amt_to': 'input:text[name=' + data_source + '_spending_check_amount_to]',
