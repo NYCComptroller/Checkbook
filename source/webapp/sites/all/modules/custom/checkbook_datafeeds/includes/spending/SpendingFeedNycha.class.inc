@@ -49,7 +49,7 @@ class SpendingFeedNycha extends SpendingFeed
 
     //Nycha year
     if ($this->values['nycha_year']) {
-      $this->form['filter']['nycha_year'] = array('#markup' => '<div><strong>Year:</strong> ' . $this->values['nycha_year'] . '</div>');
+      $this->form['filter']['nycha_year'] = array('#markup' => '<div><strong>Year:</strong> ' . substr($this->values['nycha_year'], 0, -4) .' '. substr($this->values['nycha_year'],-4) . '</div>');
       $this->user_criteria['fiscal_year'] = $this->values['nycha_year'];
       $this->formatted_search_criteria['Year'] = $this->values['nycha_year'];
     }

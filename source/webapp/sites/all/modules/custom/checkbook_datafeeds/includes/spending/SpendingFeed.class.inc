@@ -186,13 +186,13 @@ abstract class SpendingFeed
     if ($this->values['date_filter'] == 0 && $this->values['year'] && $this->values['year'] !== '0') {
       if (startsWith($this->values['year'], 'F')) {
         $this->form['filter']['year'] = array(
-          '#markup' => '<div><strong>Year:</strong> ' . $this->values['year'] . '</div>',
+          '#markup' => '<div><strong>Year:</strong> ' . substr($this->values['year'], 0, -4) .' '. substr($this->values['year'],-4) .'</div>',
         );
         $this->user_criteria['Fiscal Year'] = $this->values['year'];
         $this->formatted_search_criteria['Year'] = $this->values['year'];
       } elseif (startsWith($this->values['year'], 'C')) {
         $this->form['filter']['year'] = array(
-          '#markup' => '<div><strong>Year:</strong> ' . $this->values['year'] . '</div>',
+          '#markup' => '<div><strong>Year:</strong> ' . substr($this->values['year'], 0, -4) .' '. substr($this->values['year'],-4) . '</div>',
         );
         $this->user_criteria['Calendar Year'] = $this->values['year'];
         $this->formatted_search_criteria['Year'] = $this->values['year'];
