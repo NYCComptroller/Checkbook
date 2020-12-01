@@ -26,7 +26,7 @@
           "associated_prime_vendor": "associated_prime_vendor",
           "capital_project": "capital_project",
           "check_amount": "check_amount",
-          "contract_ID": "contract_ID",
+          "contract_id": "contract_id",
           "contract_purpose": "contract_purpose",
           "department": "department",
           "document_id": "document_id",
