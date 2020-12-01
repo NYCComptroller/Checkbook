@@ -1148,7 +1148,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
           $formatted_search_criteria['Year'] = 'All Years';
         } else {
           $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
+            '#markup' => '<div><strong>Year:</strong> ' . substr($values['year'], 0, -4) .' '. substr($values['year'],-4) . '</div>',
           );
           $formatted_search_criteria['Year'] = $values['year'];
         }
@@ -1284,7 +1284,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
           $form['filter']['nycha_year'] = array('#markup' => '<div><strong>Year:</strong> All Years</div>',);
           $formatted_search_criteria['Year'] = 'All Years';
         } else {
-          $form['filter']['nycha_year'] = array('#markup' => '<div><strong>Year:</strong> ' . $values['nycha_year'] . '</div>',);
+          $form['filter']['nycha_year'] = array('#markup' => '<div><strong>Year:</strong> ' . substr($values['nycha_year'], 0, -4) .' '. substr($values['nycha_year'],-4). '</div>',);
           $formatted_search_criteria['Year'] = $values['nycha_year'];
         }
       }
@@ -1461,7 +1461,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
           $formatted_search_criteria['Year'] = 'All Years';
         } else {
           $form['filter']['year'] = array(
-            '#markup' => '<div><strong>Year:</strong> ' . $values['year'] . '</div>',
+            '#markup' => '<div><strong>Year:</strong> ' . substr($values['year'], 0, -4) .' '. substr($values['year'],-4) . '</div>',
           );
           $formatted_search_criteria['Year'] = $values['year'];
         }
