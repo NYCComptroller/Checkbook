@@ -234,7 +234,7 @@ function _checkbook_advanced_search_get_mwbe_category_and_id()
  */
 function _checkbook_advanced_search_get_catastrophic_events(){
     $catastrophic_events_map = MappingUtil::getCatastrophicEventMappings();
-    $results = array('' => 'Select Event');
+    $results = array('0' => 'Select Event');
     foreach($catastrophic_events_map as $event_name => $event_ids) {
         $results[implode('~',$event_ids)] = $event_name;
     }

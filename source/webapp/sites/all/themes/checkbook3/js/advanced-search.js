@@ -1545,17 +1545,17 @@
           }else {
             //CITYWIDE and OGE - disabling fields based on Spending category selected
             if (exptype === '2') {
-              disable_input([div.ele('contract_id'), div.ele('payee_name')]);
+              disable_input([div.ele('contract_id'),div.ele('payee_name'),div.ele('catastrophic_event')]);
               div.ele('contract_id').val("");
               div.ele('payee_name').val("");
             }
             else if (exptype === '4') {
-              disable_input(div.ele('contract_id'));
+              disable_input([div.ele('contract_id'),div.ele('catastrophic_event')]);
               div.ele('contract_id').val("");
               enable_input(div.ele('payee_name'));
             }
             else {
-              enable_input([div.ele('contract_id'), div.ele('payee_name')]);
+              enable_input([div.ele('contract_id'), div.ele('payee_name'),div.ele('catastrophic_event')]);
             }
           }
         }
@@ -2881,6 +2881,14 @@
           $(this).attr('storedvalue', $(this).val());
         }
         $(this).val('');
+      }
+
+      if (this.type == 'select-one') {
+        var default_option = $(this).attr('default_selected_value');
+        if (!default_option)
+          $(this).find('option:first').attr("selected", "selected");
+        else
+          $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
       }
     });
     return;
