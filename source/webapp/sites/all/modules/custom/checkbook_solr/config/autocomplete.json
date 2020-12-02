@@ -3,6 +3,7 @@
     "agency_name": "agency_name_autocomplete",
     "oge_agency_name": "oge_agency_name_autocomplete",
     "vendor_name": "vendor_name_autocomplete",
+    "vendor_name_search": "vendor_name_autocomplete",
     "expenditure_object_name": "expenditure_object_name_autocomplete",
     "expense_category_name": "expense_category_name_autocomplete",
     "display_industry_type_name": "industry_type_name_autocomplete",
