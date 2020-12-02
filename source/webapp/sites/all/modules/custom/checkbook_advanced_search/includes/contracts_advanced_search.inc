@@ -35,6 +35,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 
   $status = trim($form[$filter_dimension][$filter_dimension .'_status']['#value']);
   $category = trim($form[$filter_dimension][$filter_dimension .'_category']['#value']);
+  $catastrophic_event = trim($form[$filter_dimension][$filter_dimension .'catastrophic_events']['#value']);
   $vendor_name = trim($form[$filter_dimension][$filter_dimension .'_vendor_name']['#value']);
   $vendor_name_exact = trim($form[$filter_dimension][$filter_dimension .'_vendor_name_exact']['#value']);
   $purpose = trim($form[$filter_dimension][$filter_dimension .'_purpose']['#value']);
@@ -89,6 +90,9 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
   if (!empty($mwbe_category)) {
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($mwbe_category, 'mwbe');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($mwbe_category, 'psmwbe');
+  }
+  if (!empty($catastrophic_event)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($mwbe_category, 'cevent');
   }
   if (!empty($industry_type_id)) {
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($industry_type_id, 'cindustry');
