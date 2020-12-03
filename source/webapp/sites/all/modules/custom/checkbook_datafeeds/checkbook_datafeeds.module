@@ -1137,6 +1137,7 @@ function _budget_project_options($dataSource = Datasource::CITYWIDE, $feeds = tr
  * @return array of Budget Type data
  */
 function _budget_type_options($domain, $dataSource = Datasource::CITYWIDE, $budgetName = null, $json = false){
+  $budgetName = str_replace("__", "/", $budgetName);
   switch ($dataSource){
     case Datasource::NYCHA :
       $where = (isset($budgetName) && !in_array($budgetName, array('Select Budget Name', '', 0, '0'), true)) ? "WHERE budget_name = '". $budgetName ."' ":"";
@@ -1169,6 +1170,7 @@ function _budget_type_options($domain, $dataSource = Datasource::CITYWIDE, $budg
  * @return array of Budget Name data
  */
 function _budget_name_options($domain, $dataSource = Datasource::CITYWIDE, $budgetType = null, $json = false){
+  $budgetType = str_replace("__", "/", $budgetType);
   switch ($dataSource){
     case Datasource::NYCHA :
       $where = (isset($budgetType) && !in_array($budgetType, array('Select Budget Type', '', 0, '0'), true)) ? "WHERE budget_type = '". $budgetType ."' ":"";

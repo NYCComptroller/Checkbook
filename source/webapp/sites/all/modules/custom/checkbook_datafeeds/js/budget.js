@@ -98,12 +98,12 @@
     }
 
     let reloadBudgetType = function(){
-      let budget_name = encodeURIComponent($('#edit-nycha-budget-name').val());
+      let budget_name = $('#edit-nycha-budget-name').val();
       let budget_type_hidden = $('input:hidden[name="nycha_budget_type_hidden"]').val();
       let data_source = 'checkbook_nycha';
 
       $.ajax({
-        url: 'data-feeds/budget/budget_type/' + data_source + '/' + budget_name + '/'  + true,
+        url: 'data-feeds/budget/budget_type/' + data_source + '/' + budget_name.toString().replace(/\//g, "__") + '/' + true,
         success: function(data) {
           let html = '<option value="" >Select Budget Type</option>';
           if(data[0]){
@@ -120,12 +120,12 @@
     }
 
     let reloadBudgetName = function(){
-      let budget_type = encodeURIComponent($('#edit-nycha-budget-type').val());
+      let budget_type = $('#edit-nycha-budget-type').val();
       let budget_name_hidden = $('input:hidden[name="nycha_budget_name_hidden"]').val();
       let data_source = 'checkbook_nycha';
 
       $.ajax({
-        url: 'data-feeds/budget/budget_name/' + data_source + '/' + budget_type + '/'  + true,
+        url: 'data-feeds/budget/budget_name/' + data_source + '/' +  budget_type.toString().replace(/\//g, "__") + '/' + true,
         success: function(data) {
           let html = '<option value="" >Select Budget Name</option>';
           if(data[0]){

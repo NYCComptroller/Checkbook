@@ -404,7 +404,7 @@
         let budgetTypeAlreadyLoaded = false;
 
         let reloadBudgetType = function(div) {
-          let budget_name = encodeURIComponent(div.ele('nycha_budget_name').val());
+          let budget_name = div.ele('nycha_budget_name').val();
           let budget_type = div.ele('budget_type').val();
           let data_source = 'checkbook_nycha';
 
@@ -433,7 +433,7 @@
         let nychaBudgetNamesAlreadyLoaded = false;
 
         let reloadNychaBudgetName = function(div) {
-          let budget_type = encodeURIComponent(div.ele('budget_type').val());
+          let budget_type = div.ele('budget_type').val();
           let budget_name = div.ele('nycha_budget_name').val();
           let data_source = 'checkbook_nycha';
 
@@ -1144,7 +1144,7 @@
         let revenueBudgetTypeAlreadyLoaded = false;
 
         let reloadRevenueBudgetType = function(div) {
-          let budget_name = encodeURIComponent(div.ele('nycha_budget_name').val());
+          let budget_name = div.ele('nycha_budget_name').val();
           let budget_type = div.ele('budget_type').val();
           let data_source = 'checkbook_nycha';
 
@@ -1173,7 +1173,7 @@
         let nychaRevenueBudgetNamesAlreadyLoaded = false;
 
         let reloadNychaRevenueBudgetName = function(div) {
-          let budget_type = encodeURIComponent(div.ele('budget_type').val());
+          let budget_type = div.ele('budget_type').val();
           let budget_name = div.ele('nycha_budget_name').val();
           let data_source = 'checkbook_nycha';
 
