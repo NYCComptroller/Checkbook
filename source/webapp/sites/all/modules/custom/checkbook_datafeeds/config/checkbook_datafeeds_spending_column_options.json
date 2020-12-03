@@ -64,7 +64,7 @@
           "capital_project": "capital_project",
           "check_amount": "check_amount",
           "commodity_line": "commodity_line",
-          "contract_ID": "contract_ID",
+          "contract_id": "contract_id",
           "contract_purpose": "contract_purpose",
           "department": "department",
           "entity_contract_number": "entity_contract_number",
