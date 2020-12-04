@@ -73,7 +73,8 @@ class CheckbookEtlStatistics
 			            last_success_date,
                   last_successful_load_date,
                   shard_refresh_flag_yn,
-                  index_refresh_flag_yn
+                  index_refresh_flag_yn,
+                  process_abort_flag_yn
             FROM latest_stats_vw WHERE host_environment = '{$environment}'";
     $results = _checkbook_project_execute_sql_by_data_source($sql, 'etl_statistics');log_error($results);
     $databases = array('checkbook' => 'Citywide', 'checkbook_ogent' => 'NYCEDC', 'checkbook_nycha' => 'NYCHA');
@@ -88,6 +89,7 @@ class CheckbookEtlStatistics
         'Last File Load Date' => $result['last_successful_load_date'],
         'Shards Refreshed?' => $result['shard_refresh_flag_yn'],
         'Solr Refreshed?' => $result['index_refresh_flag_yn'],
+        'All Files Processed?' => $result['process_abort_flag_yn'],
       );
       //Ignore OGE until firewall issue gets fixed!
       if($environment == 'PROD' && $result['database_name'] != 'checkbook_ogent'){

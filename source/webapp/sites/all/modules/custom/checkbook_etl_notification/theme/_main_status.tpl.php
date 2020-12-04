@@ -34,7 +34,7 @@
         <?php echo date('m-d-Y', strtotime($prod_stat['Last File Load Date'])) ?>
       </td>
       <td class = "flag">
-        <?php echo($prod_stat['All Files Processed?'] == 'Y' ? '✅' : '❌'); ?>
+        <?php echo($prod_stat['All Files Processed?'] == 'N' ? '✅' : '❌'); ?>
       </td>
       <td class = "flag">
         <?php echo($prod_stat['Shards Refreshed?'] == 'Y' ? '✅' : '❌'); ?>
@@ -84,7 +84,7 @@
         <?php echo date('m-d-Y', strtotime($uat_stat['Last File Load Date'])) ?>
       </td>
       <td class = "flag">
-        <?php echo($uat_stat['All Files Processed?'] == 'Y' ? '✅' : '❌'); ?>
+        <?php echo($uat_stat['All Files Processed?'] == 'N' ? '✅' : '❌'); ?>
       </td>
       <td class = "flag">
         <?php echo($uat_stat['Shards Refreshed?'] == 'Y' ? '✅' : '❌'); ?>
