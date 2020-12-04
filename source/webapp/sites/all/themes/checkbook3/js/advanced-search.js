@@ -1560,6 +1560,34 @@
           }
         }
 
+        //On change of "Catastrophic event"
+        div_checkbook_spending.ele('catastrophic_event').change(function(){
+          onCatastrophicEventChange(div_checkbook_spending);
+        });
+
+        function onCatastrophicEventChange(div){
+            //Selecting 'COVID-19' option causes the following changes:
+            //Data within following fields update: Payee Name, Contract ID, Document ID, Capital Project
+            
+            //If COVID-19 event selected, limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
+            //Else, display all the years
+            let fiscal_year = div.ele('fiscal_year').attr("name");
+            fiscal_year = document.getElementsByName(fiscal_year)[0];
+
+            if(div.ele('catastrophic_event').val() === "1"){              
+              for (let i = 0; i < fiscal_year.length; i++) {
+                let year = fiscal_year.options[i].text.toLowerCase();
+                let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
+                fiscal_year.options[i].style.display = include ? '':'none';
+              }
+            }
+            else{
+              for (let i = 0; i < fiscal_year.length; i++) {
+                fiscal_year.options[i].style.display = '';
+              }
+            } 
+        }
+
         //On change of "Fiscal Year"
         div_checkbook_spending.ele('fiscal_year').change(function () {
           onFiscalYearChange(div_checkbook_spending);
@@ -1576,6 +1604,9 @@
           var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
           var agency = 0;
           if(data_source == 'checkbook') {
+            let fiscal_year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
+            if(fiscal_year && !(fiscal_year === "fy~all" || fiscal_year === "fy~122" || fiscal_year === "fy~121")) disable_input(div.ele('catastrophic_event'));
+            else enable_input(div.ele('catastrophic_event'));
             agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
             if(agency == 0)
               return;
