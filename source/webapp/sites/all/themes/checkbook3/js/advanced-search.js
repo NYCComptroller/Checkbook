@@ -910,6 +910,7 @@
               div.ele('registration_date_to').val('').attr("disabled", "disabled");
             }
             div.ele('year').attr("disabled", "disabled");
+            div.ele('year').val("");
             div.ele('received_date_from').removeAttr("disabled");
             div.ele('received_date_to').removeAttr("disabled");
           }  else {
@@ -934,6 +935,7 @@
         });
 
         function onCategoryChange(div) {
+          updateEventsField(div);
           updateSubVendorFields(div);
         }
 
@@ -945,13 +947,7 @@
             div.ele('includes_sub_vendors').attr("disabled", "disabled");
             div.ele('sub_vendor_status').attr("disabled", "disabled");
           }
-          else if(contract_category === 'all'){
-            div.ele('catastrophic_events').attr("disabled", "disabled");
-            div.ele('catastrophic_events').val('0');
-
-          }
           else {
-            div.ele('catastrophic_events').removeAttr("disabled");
             div.ele('includes_sub_vendors').removeAttr("disabled");
             div.ele('sub_vendor_status').removeAttr("disabled");
           }
@@ -980,6 +976,19 @@
           onSubvendorStatusChange(div_checkbook_contracts);
         });
 
+        function updateEventsField(div) {
+          var contract_category = div.ele('category').val();
+
+          if(contract_category === 'all'){
+            div.ele('catastrophic_events').attr("disabled", "disabled");
+            div.ele('catastrophic_events').val('0');
+            updateYearValue(div_checkbook_contracts,'0');
+          }
+          else {
+            div.ele('catastrophic_events').removeAttr("disabled");
+          }
+
+        }
         //On change of event value update the the year options
         div_checkbook_contracts.ele('catastrophic_events').change(function () {
           var catas_event = div_checkbook_contracts.ele('catastrophic_events').val();
@@ -992,7 +1001,6 @@
 
         function updateYearValue(div,cevent) {
           $("#edit-checkbook-contracts-year option").each(function() {
-            //var year_value = this.text;
             var yval =  (this.text).split(' ')[1];
             if ( yval < '2020' && cevent === '1'){
                $(" option[value='" + $(this).val() + "']").hide();
