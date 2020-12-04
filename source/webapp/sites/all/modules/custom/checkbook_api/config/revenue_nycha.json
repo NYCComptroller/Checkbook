@@ -19,6 +19,7 @@
         "dataset":{
             "sortColumn":["-revenue_amount","-revenue_id"],
             "name":"checkbook_nycha:revenue",
+            "data_source":"checkbook_nycha",
             "columnTypes":{
               "adopted_amount": "range",
               "modified_amount": "range",
