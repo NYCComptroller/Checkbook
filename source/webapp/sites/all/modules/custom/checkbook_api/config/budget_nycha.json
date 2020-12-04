@@ -69,7 +69,7 @@
                   }
               }
           },
-          "adjustSql":"if(function_exists('checkbook_api_adjustNYCHABudgetRevenueSql')){checkbook_api_adjustNYCHABudgetRevenueSql($sql_query);}"
+          "adjustSql":"if(function_exists('checkbook_api_adjustNYCHABudgetSql')){checkbook_api_adjustNYCHABudgetSql($sql_query);}"
       },
       "requestParameters":{
           "year":{"valueType":"value", "dataType":"year", "maxLength":4},
