@@ -1796,6 +1796,7 @@
           spending_category_id = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
           minority_type_id = (div.ele('mwbe_category').val()) ? (div.ele('mwbe_category').val()) : 0;
           industry_type_id = (div.ele('industry').val()) ? (div.ele('industry').val()) : 0;
+          let catastrophic_event_id = (div.ele('catastrophic_event').val()) ? div.ele('catastrophic_event').val() : 0;
           datasource = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
           // enable purchase order filter for nycha
           let agreement_type_code = (div.ele('po_type').val()) ? (div.ele('po_type').val()) : 0;
@@ -1811,7 +1812,8 @@
             fiscal_year_id: year_id,
             agreement_type_code: agreement_type_code,
             responsibility_center_id:resp_center_id,
-            funding_source_id:fund_src_id
+            funding_source_id:fund_src_id,
+            event_id: catastrophic_event_id
           };
 
           div.ele('payee_name').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'vendor_name', filters)});
