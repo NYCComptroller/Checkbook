@@ -1566,10 +1566,10 @@
         });
 
         function onCatastrophicEventChange(div){
-            //Selecting 'COVID-19' option causes the following changes:
+            //Selecting 'COVID19' option causes the following changes:
             //Data within following fields update: Payee Name, Contract ID, Document ID, Capital Project
             
-            //If COVID-19 event selected, limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
+            //If COVID19 event selected, limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
             //Else, display all the years
             let fiscal_year = div.ele('fiscal_year').attr("name");
             fiscal_year = document.getElementsByName(fiscal_year)[0];
@@ -1825,7 +1825,6 @@
           div.ele('entity_contract_number').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'spending_entity_contract_number', filters)});
           div.ele('vendor_name').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'vendor_name', filters)});
           div.ele('document_id').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'document_id', filters)});
-
 
           $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {
             $(this).parent().next().val(ui.item.label);
