@@ -120,6 +120,13 @@ function _checkbook_faceted_search_node_autocomplete()
   $output = array();
 
   foreach ($node->data['unchecked'] as $row) {
+    // Show 'n/a' in autocompletes for budget type and name (NYHCA)
+    if($nid == '1044' || $nid == '1043' || $nid == '1059' || $nid == '1060'){
+      if(isset($row[2]) && $row[1] == null)
+      {
+        $row[1] = $row[0] = 'N/A';
+      }
+    }
     if (isset($row[1]))
       $output[] = array("value" => urlencode(html_entity_decode($row[0], ENT_QUOTES)), 'label' => html_entity_decode($row[1], ENT_QUOTES) . " (" . $row[2] . ")");
   }

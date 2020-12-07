@@ -19,13 +19,16 @@
         "dataset":{
             "sortColumn":["-revenue_amount","-revenue_id"],
             "name":"checkbook_nycha:revenue",
+            "data_source":"checkbook_nycha",
             "columnTypes":{
               "adopted_amount": "range",
               "modified_amount": "range",
               "recognized": "range",
               "funds_available": "range",
               "revenue_class": "like",
-              "revenue_category": "like"
+              "revenue_category": "like",
+              "budget_name": "contains",
+              "budget_type": "contains"
             },
             "displayConfiguration":{
                 "xml":{
@@ -36,7 +39,7 @@
                       "adopted": "adopted_amount",
                       "expense_category": "expenditure_type_description",
                       "remaining": "funds_available",
-                      "modified": "adopted_amount",
+                      "modified": "modified_amount",
                       "recognized": "revenue_amount",
                       "budget_type": "budget_type",
                       "budget_name": "budget_name",
@@ -57,7 +60,7 @@
                       "Adopted": "adopted_amount",
                       "Expense Category": "expenditure_type_description",
                       "Remaining": "funds_available",
-                      "Modified": "adopted_amount",
+                      "Modified": "modified_amount",
                       "Recognized": "revenue_amount",
                       "Budget Type": "budget_type",
                       "Budget Name": "budget_name",
@@ -70,7 +73,8 @@
                       "Revenue Class": "revenue_class"
                     }
                 }
-            }
+            },
+          "adjustSql":"if(function_exists('checkbook_api_adjustNYCHARevenueSql')){checkbook_api_adjustNYCHARevenueSql($sql_query);}"
         },
         "requestParameters":{
           "budget_fiscal_year":{"valueType":"value", "dataType":"year", "maxLength":4},

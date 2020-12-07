@@ -11,6 +11,7 @@
   "orderBy":"-txcount",
   "filterName":"Budget Name",
   "urlParameterName":"bdgnm",
+  "urlParameterNameType":"eqtext",
   "autocompleteParamName":"bdgname_auto",
   "autocompleteID":"fbdgnm",
   "autocompleteField":"budget_name",
@@ -18,7 +19,6 @@
   if(function_exists('_checkbook_project_applyParameterFilters')){
   $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
 }
-$adjustedParameters['budget_name.budget_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
 return $adjustedParameters;
 ",
 "template":"individual_filter"

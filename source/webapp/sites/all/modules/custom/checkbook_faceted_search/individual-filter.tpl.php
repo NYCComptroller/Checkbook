@@ -141,6 +141,23 @@ if($node->widgetConfig->filterName == 'Document ID') {
     }
 }
 
+//Document ID filter display N/A for null values
+if($node->widgetConfig->filterName == 'Budget Name' || $node->widgetConfig->filterName == 'Budget Type') {
+  if ($unchecked && $unchecked)
+    foreach($unchecked as $key => $value) {
+      if($value[1] == null ) {
+        $unchecked[$key][0] = "N/A";
+        $unchecked[$key][1] = "N/A";
+      }
+    }
+  if (isset($checked) && $checked)
+    foreach($checked as $key => $value) {
+      if($value[1] == null) {
+        $checked[$key][0] = "N/A";
+        $checked[$key][1] = "N/A";
+      }
+    }
+}
 // NYCHA Contracts special condition in advanced search disable purchase order when selected.
 if($node->widgetConfig->filterName == 'Purchase Order Type') {
   $disableFacet = !(isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false);
@@ -216,7 +233,7 @@ if(isset($logicalOrFacet) && $logicalOrFacet) {
 }
 
 //Remove N/A from Prime/Sub Industry facets
-if($node->widgetConfig->filterName == 'Prime Industry' || $node->widgetConfig->filterName == 'Sub Industry' || $node->widgetConfig->filterName == 'Budget Type' || $node->widgetConfig->filterName == 'Budget Name') {
+if($node->widgetConfig->filterName == 'Prime Industry' || $node->widgetConfig->filterName == 'Sub Industry'){
     foreach($unchecked as $key => $value){
         if($value[1] == null) {
             unset($unchecked[$key]);

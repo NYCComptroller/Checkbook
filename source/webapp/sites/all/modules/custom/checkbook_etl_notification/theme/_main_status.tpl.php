@@ -12,6 +12,7 @@
       <th>Last Run Success?</th>
       <th>Last Success Date</th>
       <th>Last File Load Date</th>
+      <th>All Files Processed?</th>
       <th>Shards Refreshed?</th>
       <th>Solr Refreshed?</th>
     </tr>
@@ -31,6 +32,9 @@
       </td>
       <td>
         <?php echo date('m-d-Y', strtotime($prod_stat['Last File Load Date'])) ?>
+      </td>
+      <td class = "flag">
+        <?php echo($prod_stat['All Files Processed?'] == 'N' ? '✅' : '❌'); ?>
       </td>
       <td class = "flag">
         <?php echo($prod_stat['Shards Refreshed?'] == 'Y' ? '✅' : '❌'); ?>
@@ -58,6 +62,7 @@
     <th>Last Run Success?</th>
     <th>Last Success Date</th>
     <th>Last File Load Date</th>
+    <th>All Files Processed?</th>
     <th>Shards Refreshed?</th>
     <th>Solr Refreshed?</th>
   </tr>
@@ -77,6 +82,9 @@
       </td>
       <td>
         <?php echo date('m-d-Y', strtotime($uat_stat['Last File Load Date'])) ?>
+      </td>
+      <td class = "flag">
+        <?php echo($uat_stat['All Files Processed?'] == 'N' ? '✅' : '❌'); ?>
       </td>
       <td class = "flag">
         <?php echo($uat_stat['Shards Refreshed?'] == 'Y' ? '✅' : '❌'); ?>

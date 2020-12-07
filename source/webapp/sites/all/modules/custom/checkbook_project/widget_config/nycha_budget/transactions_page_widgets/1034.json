@@ -17,6 +17,7 @@
     "adpamt": "range",
     "encamt": "range",
     "actual": "range",
+    "bdgtyp": "eqignorecase",
     "bdgnm": "eqignorecase",
     "bdgnm_exact": "eqignorecase"
   },
@@ -88,7 +89,7 @@
       "expression": "($row['budget_name'] == null) ? 'N/A' : _get_tooltip_markup($row['budget_name'],36)"
     },
     "budget_type_formatted":{
-      "expression": "($row['budget_type'] == null) ? 'N/A' : _get_tooltip_markup($row['budget_type'],36)"
+      "expression": "($row['budget_type'] == null) ? 'N/A' :_get_tooltip_markup($row['budget_type'],36)"
     },
     "resp_center_formatted":{
       "expression": "_get_tooltip_markup($row['responsibility_center_description'],36)"
