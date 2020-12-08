@@ -60,7 +60,7 @@ class MappingUtil {
     }
 
     private static $catastrophic_events_map = array(
-        1 => 'COVID19'
+        1 => 'COVID-19'
     );
 
     private static $minority_type_category_map = array(
@@ -96,7 +96,7 @@ class MappingUtil {
     );
 
     private static $catastrophic_events_map_multi = array(
-        'COVID19' => array(1)
+        'COVID-19' => array(1)
     );
 
     static $mwbe_prefix = "M/WBE" ;

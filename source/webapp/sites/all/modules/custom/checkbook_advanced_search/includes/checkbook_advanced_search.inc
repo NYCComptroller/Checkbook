@@ -228,7 +228,7 @@ function _checkbook_advanced_search_get_mwbe_category_and_id()
 /**
  * Get Catastrophic event name and id using mapping
  *
- * COVID19 1
+ * COVID-19 1
  *
  * @return array
  */
