@@ -1568,9 +1568,7 @@
         function onCatastrophicEventChange(div){
             //Selecting 'COVID19' option causes the following changes:
             //Data within following fields update: Payee Name, Contract ID, Document ID, Capital Project
-            
-            //If COVID19 event selected, limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
-            //Else, display all the years
+            //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
             let fiscal_year = div.ele('fiscal_year').attr("name");
             fiscal_year = document.getElementsByName(fiscal_year)[0];
 
