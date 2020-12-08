@@ -253,7 +253,7 @@ Steps to install:
     **Highstock:**
     - Download version 8.2.2 from <http://www.highcharts.com/products/highstock>:
 
-            $ wget https://code.highcharts.com/zips/Highstock-8.2.2.zip
+            $ wget https://code.highcharts.com/zips/Highcharts-Stock-8.2.2.zip
     - Unpack it:
 
             $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/
