@@ -43,8 +43,7 @@
         "subvendorstatus":"aprv_sta",
         "contnum":"contract_number",
         "contnum_exact":"contract_number",
-        "year":"year",
-        "cevent":"event_id"
+        "year":"year"
     },
     "allowRequestParams": [
       "smnid",
