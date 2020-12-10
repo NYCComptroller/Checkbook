@@ -59,10 +59,6 @@ class MappingUtil {
         return self::$vendor_type_name_map[$vendor_type];
     }
 
-    private static $catastrophic_events_map = array(
-        1 => 'COVID-19'
-    );
-
     private static $minority_type_category_map = array(
         2 => 'Black American',
         3 => 'Hispanic American',
@@ -93,10 +89,6 @@ class MappingUtil {
 //        array('?') =>'Emerging'
         'Non-M/WBE' => array(7),
         'Individuals and Others' => array(11),
-    );
-
-    private static $catastrophic_events_map_multi = array(
-        'COVID-19' => array(1)
     );
 
     static $mwbe_prefix = "M/WBE" ;
@@ -131,14 +123,6 @@ class MappingUtil {
         return self::$minority_type_category_map[$minority_type_id];
     }
 
-     /** Returns the Catastrophic event name based on the event_id mapping
-     * @param $event_id
-     * @return mixed
-     */
-    static function getCatastrophicEventById($event_id) {
-        return self::$catastrophic_events_map[$event_id];
-    }
-
     /** Returns the M/WBE category name based on the minority_type_id mapping
      * @param $minority_type_name
      * @return mixed
@@ -150,11 +134,6 @@ class MappingUtil {
     /** Returns the M/WBE category name and it's minority_type_id mapping as an array */
     static function getMinorityCategoryMappings() {
         return self::$minority_type_category_map_multi;
-    }
-
-     /** Returns the Catastrophic event name and it's event id mapping as an array */
-    static function getCatastrophicEventMappings(){
-        return self::$catastrophic_events_map_multi;
     }
 
     /**
