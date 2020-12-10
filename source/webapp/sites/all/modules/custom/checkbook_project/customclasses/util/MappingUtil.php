@@ -91,7 +91,6 @@ class MappingUtil {
         'Individuals and Others' => array(11),
     );
 
-
     static $mwbe_prefix = "M/WBE" ;
 
     static $total_mwbe_cats = "2~3~4~5~9";
