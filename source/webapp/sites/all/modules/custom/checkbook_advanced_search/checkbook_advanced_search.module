@@ -356,9 +356,6 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
       $project_attributes = _budget_project_options(Datasource::NYCHA, false);
     }
   } else {
-    if($domain == Domain::Spending){
-      $catastrophic_event_attributes = _checkbook_advanced_search_get_event_name_and_id();
-    }
     $mwbe_category_attributes = _checkbook_advanced_search_get_mwbe_category_and_id();
     $sub_vendor_status = _checkbook_advanced_search_get_subcontract_approval_status_and_id();
     $sub_vendor_status_attributes = _checkbook_advanced_search_get_subcontract_approval_status_and_id('attributes');
@@ -411,9 +408,6 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
             break;
           case '$mwbe_category_attributes':
             $field_definition_configs[$i]['attributes']['options'] = $mwbe_category_attributes;
-            break;
-          case '$catastrophic_event_attributes':
-            $field_definition_configs[$i]['attributes']['options'] = $catastrophic_event_attributes;
             break;
           case '$industry_attributes':
             $field_definition_configs[$i]['attributes']['options'] = $industry_attributes['options'];

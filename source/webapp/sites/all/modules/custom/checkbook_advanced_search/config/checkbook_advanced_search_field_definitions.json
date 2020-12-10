@@ -116,7 +116,7 @@
     "catastrophic_events":{
     "field_type":"select",
     "field_name":"catastrophic_events",
-      "attributes":{"title":"Catostrophic<br>Events", "options":"$event_type_attributes"}
+      "attributes":{"title":"Catastrophic<br>Events", "options":"$event_type_attributes"}
   },
     "purpose":{
         "field_type":"textfield",
@@ -172,11 +172,6 @@
         "field_type":"select",
         "field_name":"mwbe_category",
         "attributes":{"title":"M/WBE Category", "options":"$mwbe_category_attributes"}
-    },
-    "catastrophic_event":{
-      "field_type":"select",
-      "field_name":"catastrophic_event",
-      "attributes":{"title":"Catastrophic Event", "options":"$catastrophic_event_attributes"}
     },
     "industry":{
         "field_type":"select",
