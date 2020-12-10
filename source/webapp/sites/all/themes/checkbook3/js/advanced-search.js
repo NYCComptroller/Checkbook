@@ -1652,7 +1652,7 @@
           var agency = 0;
           if(data_source == 'checkbook') {
             let fiscal_year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
-            if(fiscal_year && !(fiscal_year === "fy~all" || fiscal_year === "fy~122" || fiscal_year === "fy~121")) disable_input(div.ele('catastrophic_event'));
+            if(fiscal_year && !(fiscal_year === "fy~all" || fiscal_year === "fy~122" || fiscal_year === "fy~121")) disable_input(div.ele('catastrophic_events'));
             else enable_input(div.ele('catastrophic_events'));
             agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
             if(agency == 0)
