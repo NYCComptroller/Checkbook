@@ -213,6 +213,15 @@
                     ]
                 },
                 {
+                    "name": "contnum",
+                    "levels": [
+                        {
+                            "name": "contnum",
+                            "sourceColumnName": "reference_document_number"
+                        }
+                    ]
+                },
+                {
                     "name": "vendor",
                     "levels": [
                         {
