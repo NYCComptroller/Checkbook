@@ -179,7 +179,7 @@ class QueueJob {
     $command = _checkbook_psql_command($database);
     $command .= " -c \"\\\\COPY (" . $query . ") TO '"
       . $file
-      . "'  WITH DELIMITER ',' CSV QUOTE '\\\"' ESCAPE '\\\"' \" ";
+      . "'  WITH DELIMITER ',' CSV \" 2>&1";
     LogHelper::log_notice("DataFeeds :: QueueJob::getCSVJobCommand() cmd: ".$command);
     return $command;
   }
