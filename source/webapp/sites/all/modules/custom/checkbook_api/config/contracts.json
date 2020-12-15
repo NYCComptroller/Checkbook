@@ -12,6 +12,7 @@
             "end_date":"prime_effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code",
+            "catastrophic_event":"event_id",
             "pin":"prime_pin",
             "apt_pin":"prime_apt_pin",
             "industry":"industry_type_id",
