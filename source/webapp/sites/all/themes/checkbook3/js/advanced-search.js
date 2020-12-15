@@ -1341,6 +1341,7 @@
             'spending_category': 'select[name=' + data_source + '_spending_expense_type]',
             'industry': 'select[name=' + data_source + '_spending_industry]',
             'mwbe_category': 'select[name=' + data_source + '_spending_mwbe_category]',
+            'catastrophic_events' : 'select[name=' + data_source + '_spending_catastrophic_events]',
             'payee_name': 'input:text[name=' + data_source + '_spending_payee_name]',
             'check_amt_from': 'input:text[name=' + data_source + '_spending_check_amount_from]',
             'check_amt_to': 'input:text[name=' + data_source + '_spending_check_amount_to]',
@@ -1544,19 +1545,45 @@
           }else {
             //CITYWIDE and OGE - disabling fields based on Spending category selected
             if (exptype === '2') {
-              disable_input([div.ele('contract_id'), div.ele('payee_name')]);
+              disable_input([div.ele('contract_id'),div.ele('payee_name'),div.ele('catastrophic_events')]);
               div.ele('contract_id').val("");
               div.ele('payee_name').val("");
             }
             else if (exptype === '4') {
-              disable_input(div.ele('contract_id'));
+              disable_input([div.ele('contract_id'),div.ele('catastrophic_events')]);
               div.ele('contract_id').val("");
               enable_input(div.ele('payee_name'));
             }
             else {
-              enable_input([div.ele('contract_id'), div.ele('payee_name')]);
+              enable_input([div.ele('contract_id'), div.ele('payee_name'),div.ele('catastrophic_events')]);
             }
           }
+        }
+
+        //On change of "Catastrophic event"
+        div_checkbook_spending.ele('catastrophic_events').change(function(){
+          onCatastrophicEventChange(div_checkbook_spending);
+        });
+
+        function onCatastrophicEventChange(div){
+            //Selecting 'COVID-19' option causes the following changes:
+            //Data within following fields update: Payee Name, Contract ID, Document ID, Capital Project
+            //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
+            let fiscal_year = div.ele('fiscal_year').attr("name");
+            fiscal_year = document.getElementsByName(fiscal_year)[0];
+
+            if(div.ele('catastrophic_events').val() === "1"){              
+              for (let i = 0; i < fiscal_year.length; i++) {
+                let year = fiscal_year.options[i].text.toLowerCase();
+                let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
+                fiscal_year.options[i].style.display = include ? '':'none';
+              }
+            }
+            else{
+              for (let i = 0; i < fiscal_year.length; i++) {
+                fiscal_year.options[i].style.display = '';
+              }
+            } 
         }
 
         //On change of "Fiscal Year"
@@ -1575,6 +1602,9 @@
           var data_source = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
           var agency = 0;
           if(data_source == 'checkbook') {
+            let fiscal_year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
+            if(fiscal_year && !(fiscal_year === "fy~all" || fiscal_year === "fy~122" || fiscal_year === "fy~121")) disable_input(div.ele('catastrophic_events'));
+            else enable_input(div.ele('catastrophic_events'));
             agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
             if(agency == 0)
               return;
@@ -1764,6 +1794,7 @@
           spending_category_id = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
           minority_type_id = (div.ele('mwbe_category').val()) ? (div.ele('mwbe_category').val()) : 0;
           industry_type_id = (div.ele('industry').val()) ? (div.ele('industry').val()) : 0;
+          let catastrophic_event_id = (div.ele('catastrophic_events').val()) ? div.ele('catastrophic_events').val() : 0;
           datasource = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
           // enable purchase order filter for nycha
           let agreement_type_code = (div.ele('po_type').val()) ? (div.ele('po_type').val()) : 0;
@@ -1779,7 +1810,8 @@
             fiscal_year_id: year_id,
             agreement_type_code: agreement_type_code,
             responsibility_center_id:resp_center_id,
-            funding_source_id:fund_src_id
+            funding_source_id:fund_src_id,
+            event_id: catastrophic_event_id
           };
 
           div.ele('payee_name').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'vendor_name', filters)});
@@ -1791,7 +1823,6 @@
           div.ele('entity_contract_number').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'spending_entity_contract_number', filters)});
           div.ele('vendor_name').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'vendor_name', filters)});
           div.ele('document_id').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'document_id', filters)});
-
 
           $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {
             $(this).parent().next().val(ui.item.label);
@@ -2880,6 +2911,14 @@
           $(this).attr('storedvalue', $(this).val());
         }
         $(this).val('');
+      }
+
+      if (this.type == 'select-one') {
+        var default_option = $(this).attr('default_selected_value');
+        if (!default_option)
+          $(this).find('option:first').attr("selected", "selected");
+        else
+          $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
       }
     });
     return;

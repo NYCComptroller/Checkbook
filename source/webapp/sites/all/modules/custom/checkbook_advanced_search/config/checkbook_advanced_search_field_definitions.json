@@ -113,6 +113,11 @@
         "field_name":"category",
         "attributes":{"options":{"all":"All", "expense":"Expense", "revenue":"Revenue"}}
     },
+    "catastrophic_events":{
+    "field_type":"select",
+    "field_name":"catastrophic_events",
+      "attributes":{"title":"Catastrophic<br>Events", "options":"$event_type_attributes"}
+  },
     "purpose":{
         "field_type":"textfield",
         "field_name":"purpose",
