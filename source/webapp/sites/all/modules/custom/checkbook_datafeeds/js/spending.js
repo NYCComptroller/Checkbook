@@ -172,7 +172,7 @@
 
         //Move Issue Date fields to left column for Citywide
         $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
-        $('#df-payeename').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
+        $('#df-payeename').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
         $('label[for=edit-payee-name]').text('Payee Name:');
         $('label[for=edit-agency]').text('Agency:');
     }
