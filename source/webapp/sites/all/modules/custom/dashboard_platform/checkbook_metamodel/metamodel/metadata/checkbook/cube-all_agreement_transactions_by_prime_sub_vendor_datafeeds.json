@@ -98,6 +98,22 @@
                         }]
                 },
                 {
+                    "name":"event_id",
+                    "levels": [
+                    {
+                    "name":"event_id",
+                    "sourceColumnName":"event_id"
+                    }]
+                },
+                {
+                "name":"industry_type_name",
+                "levels": [
+                  {
+                    "name":"industry_type_name",
+                    "sourceColumnName":"industry_type_name"
+                  }]
+                },
+                {
                     "name":"award_method_id",
                     "levels": [
                         {
