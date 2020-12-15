@@ -110,6 +110,59 @@
     }
   };
 
+  //On Catastrophic Event filter change
+  function onCatastrophicEventChange(){
+    //Selecting 'COVID-19' option causes the following changes:
+    //Data within following fields update: Payee Name, Contract ID, Document ID, Capital Project
+    //Limit year filter options to 'FY 2020', 'FY 2021' and 'All years'
+    let fiscal_year = document.getElementById("edit-year");
+    let catastrophic_event = document.getElementById("edit-catastrophic-event");
+
+    if(catastrophic_event.value === "1"){    
+      for (let i = 0; i < fiscal_year.length; i++) {
+        let year = fiscal_year.options[i].text.toLowerCase();
+        let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
+        fiscal_year.options[i].style.display = include ? '':'none';
+      }
+    }
+    else{
+      for (let i = 0; i < fiscal_year.length; i++) {
+        fiscal_year.options[i].style.display = '';
+      }
+    }
+    fiscal_year.value = "0"; 
+}
+
+  //On Year filter dropdown change
+  let onYearFilterChange = function(){
+    let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
+    if(data_source != 'checkbook') return;
+    //if fiscal year is other than all years, 2020, 2021, then disable COVID-19 dropdown field
+    //If no dropdown available, then disable catastrophic events dropdown
+    let fiscal_year = document.getElementById("edit-year").value.toLowerCase();
+    let catastrophic_event = document.getElementById("edit-catastrophic-event");
+    let enabled_count = catastrophic_event.length;
+
+    if(!(fiscal_year === "0" || fiscal_year === "fy2021" || fiscal_year === "fy2020")){
+      for (let i = 0; i < catastrophic_event.length; i++) {
+        let event = catastrophic_event.options[i].text.toLowerCase();
+        catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
+        if(catastrophic_event.options[i].style.display === 'none') enabled_count--;
+      }
+      if(enabled_count <=1) disable_input($('select[name="catastrophic_event"]'));
+    }  
+    else{
+      for (let i = 0; i < catastrophic_event.length; i++) {
+        let event = catastrophic_event.options[i].text.toLowerCase();
+        if(event === 'covid-19'){
+          catastrophic_event.options[i].style.display = "";
+          break;
+        }
+      }
+      enable_input($('select[name="catastrophic_event"]')); 
+    } 
+  }
+
   //On Data Source Change
   let onSpendingDataSourceChange = function (dataSource) {
     //Remove all the validation errors when data source is changed
@@ -127,7 +180,10 @@
     enable_input($('input[name="payee_name"]'));
     enable_input($('input[name="contractno"]'));
 
+    onCatastrophicEventChange();
     onYearFilterChange();
+    reloadSpendingDepartments();
+    reloadSpendingExpenceCategories();
   };
 
   //ShowHide fields based on selected data source
@@ -345,36 +401,6 @@
     $('select[name="nycha_year"]').val("0");
   };
 
-  //On Year Filter dropdown change
-  let onYearFilterChange = function(){
-    let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
-    if(data_source != 'checkbook') return;
-    //if fiscal year is other than all years, 2020, 2021, then disable COVID-19 dropdown field
-    //If no dropdown available, then disable catastrophic events dropdown
-    let fiscal_year = document.getElementById("edit-year").value.toLowerCase();
-    let catastrophic_event = document.getElementById("edit-catastrophic-event");
-    let enabled_count = catastrophic_event.length;
-
-    if(!(fiscal_year === "0" || fiscal_year === "fy2021" || fiscal_year === "fy2020")){
-      for (let i = 0; i < catastrophic_event.length; i++) {
-        let event = catastrophic_event.options[i].text.toLowerCase();
-        catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
-        if(catastrophic_event.options[i].style.display === 'none') enabled_count--;
-      }
-      if(enabled_count <=1) disable_input($('select[name="catastrophic_event"]'));
-    }  
-    else{
-      for (let i = 0; i < catastrophic_event.length; i++) {
-        let event = catastrophic_event.options[i].text.toLowerCase();
-        if(event === 'covid-19'){
-          catastrophic_event.options[i].style.display = "";
-          break;
-        }
-      }
-      enable_input($('select[name="catastrophic_event"]')); 
-    } 
-  }
-
   Drupal.behaviors.spendingDataFeeds = {
     attach: function (context) {
       let dataSource = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
@@ -431,11 +457,11 @@
       onSpendingCategoryChange();
 
       //Data Source change event
-      $('input:radio[name=datafeeds-spending-domain-filter]', context).change(function () {
-        $('input:hidden[name="hidden_multiple_value"]', context).val("");
-        $('input:hidden[name="dept_hidden"]', context).val("");
-        $('input:hidden[name="expense_category_hidden"]', context).val("");
-        $('input:hidden[name="date_filter_hidden"]', context).val("0");
+      $('input[type="radio"][name="datafeeds-spending-domain-filter"]', context).change(function () {
+        $('input[type="hidden"][name="hidden_multiple_value"]', context).val("");
+        $('input[type="hidden"][name="dept_hidden"]', context).val("");
+        $('input[type="hidden"][name="expense_category_hidden"]', context).val("");
+        $('input[type="hidden"][name="date_filter_hidden"]', context).val("0");
         clearDateFilterInputs();
         onSpendingDataSourceChange($(this, context).val());
       });
@@ -480,28 +506,6 @@
       $('select[name="catastrophic_event"]', context).change(function(){
         onCatastrophicEventChange();
       });
-
-      function onCatastrophicEventChange(){
-          //Selecting 'COVID-19' option causes the following changes:
-          //Data within following fields update: Payee Name, Contract ID, Document ID, Capital Project
-          //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
-          let fiscal_year = document.getElementById("edit-year");
-          let catastrophic_event = document.getElementById("edit-catastrophic-event");
-
-          if(catastrophic_event.value === "1"){        
-            for (let i = 0; i < fiscal_year.length; i++) {
-              let year = fiscal_year.options[i].text.toLowerCase();
-              let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
-              fiscal_year.options[i].style.display = include ? '':'none';
-            }
-          }
-          else{
-            for (let i = 0; i < fiscal_year.length; i++) {
-              fiscal_year.options[i].style.display = '';
-            }
-          }
-          fiscal_year.value = "0"; 
-      }
 
       //On Date Filter change
       $("#edit-date-filter", context).change(function () {
