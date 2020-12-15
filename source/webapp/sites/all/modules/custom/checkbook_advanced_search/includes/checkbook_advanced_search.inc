@@ -613,6 +613,8 @@ function _checkbook_advanced_search_get_contract_type_and_id($data_source = Data
     }
 }
 
+// _get_event_name_and_id can be used common function for both datafeeds and advanced.
+// can be removed once implemented both in spending and contracts
 /**
  * Get event name and id using the data controller
  *
