@@ -488,8 +488,8 @@
         csval = $('select[name="df_contract_status"]', context).val();
         catval = $('#edit-category', context).val();
         datasource = $('input[name="datafeeds-contracts-domain-filter"]:checked',context).val();
+        // disable event filed when category is all
         if (catval == 'all' ) {
-          //$('#edit-catastrophic_event option:selected').removeAttr('selected');
           $("#edit-catastrophic_event").attr('disabled', 'disabled');
           let cevent = $('#edit-catastrophic_event', context).val();
           updateYearValue(cevent);
@@ -499,7 +499,7 @@
         $.fn.showHidePrimeAndSubIcon();
       })
 
-      // On Catastrophic event change
+      // On Catastrophic event change reload year drop down
       $('#edit-catastrophic_event', context).change(function () {
         let cevent = $('#edit-catastrophic_event', context).val();
         updateYearValue(cevent);
@@ -633,7 +633,7 @@
       const industry = $.fn.emptyToZero($('#edit-industry', context).val());
       const includes_sub_vendors = $.fn.emptyToZero($('#edit-contract_includes_sub_vendors_id', context).val());
       const sub_vendor_status = $.fn.emptyToZero($('#edit-sub_vendor_status_in_pip_id', context).val());
-
+      // Refactoring autocomplete for citywide similar to Nycha to use common autocomplete function
       let filters = {
         "contract_status":status,
         "contract_category_name":category,
@@ -770,6 +770,7 @@
           $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-all option[value="Year"]', context).attr('disabled', 'disabled');
+          // disable event field when category is all and year value is all years
           if (catval == 'all'){
           $("#edit-catastrophic_event").attr('disabled', 'disabled');
           }
@@ -783,6 +784,7 @@
           $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', '');
           $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', '');
           $('#edit-column-select-all option[value="Year"]', context).attr('disabled', '');
+          // disable event field when category is all and year value is less than 2020
           if (catval == 'all' || year_value < 2020){
             $("#edit-catastrophic_event").attr('disabled', 'disabled');
           }
