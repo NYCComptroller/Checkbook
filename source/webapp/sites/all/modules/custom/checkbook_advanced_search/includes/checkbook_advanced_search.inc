@@ -627,7 +627,7 @@ function _checkbook_advanced_search_get_event_name_and_id()
       'event_id',
       'event_name'
     ), NULL, 'event_name');
-    $results = array('0' => 'All Events');
+    $results = array('0' => 'Select Event');
     foreach ($data as $row) {
       $results[$row['event_id']] = $row['event_name'];
     }
