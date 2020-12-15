@@ -1798,13 +1798,13 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
       if ($values['mwbe_category'] && $values['mwbe_category'] != 'Select Category') {
         $criteria['value']['mwbe_category'] = $values['mwbe_category'];
       }
-      if ($values['catastrophic_event'] && $values['catastrophic_event'] != '0' ) {
-        preg_match($pattern, $values['catastrophic_event'], $ematches);
-        $criteria['value']['catastrophic_event'] = trim($ematches[1], '[ ]');;
-      }
       if ($values['industry'] && $values['industry'] != 'Select Industry') {
         preg_match($pattern, $values['industry'], $imatches);
         $criteria['value']['industry'] = trim($imatches[1], '[ ]');
+      }
+      if ($values['catastrophic_event'] && $values['catastrophic_event'] != '0' ) {
+        preg_match($pattern, $values['catastrophic_event'], $ematches);
+        $criteria['value']['catastrophic_event'] = trim($ematches[1], '[ ]');;
       }
       if ($values['contract_includes_sub_vendors_id'] != '' && $values['contract_includes_sub_vendors_id'] != 0) {
         $criteria['value']['contract_includes_sub_vendors_id'] = $values['contract_includes_sub_vendors_id'];
