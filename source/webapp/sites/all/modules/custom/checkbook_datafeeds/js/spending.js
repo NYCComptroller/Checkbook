@@ -182,8 +182,6 @@
 
     onCatastrophicEventChange();
     onYearFilterChange();
-    reloadSpendingDepartments();
-    reloadSpendingExpenceCategories();
   };
 
   //ShowHide fields based on selected data source
