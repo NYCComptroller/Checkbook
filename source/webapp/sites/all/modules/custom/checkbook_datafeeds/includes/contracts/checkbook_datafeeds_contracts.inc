@@ -475,7 +475,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'catastrophic_event', $first_time_load, 0),
     '#states' => array(
       'disabled' => array(
-        'select[name="category"]' => array('value' => 'all')
+        'select[name="category"]' => array('value' => 'revenue')
       )
     )
   );
