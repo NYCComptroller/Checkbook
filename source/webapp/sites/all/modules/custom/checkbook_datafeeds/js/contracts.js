@@ -489,7 +489,7 @@
         catval = $('#edit-category', context).val();
         datasource = $('input[name="datafeeds-contracts-domain-filter"]:checked',context).val();
         // disable event filed when category is all
-        if (catval == 'all' ) {
+        if (catval == 'revenue' ) {
           $("#edit-catastrophic_event").attr('disabled', 'disabled');
           let cevent = $('#edit-catastrophic_event', context).val();
           updateYearValue(cevent);
@@ -764,19 +764,11 @@
       });
       //Year Drop-down
       $('#edit-year', context).change(function () {
-        let cevent = $('#edit-catastrophic_event', context).val();
         if ($(this).val() === '0') {
           $('#edit-column-select-expense option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-all option[value="Year"]', context).attr('disabled', 'disabled');
-          // disable event field when category is all and year value is all years
-          if (catval == 'all'){
-          $("#edit-catastrophic_event").attr('disabled', 'disabled');
-          }
-          else{
-          $("#edit-catastrophic_event").removeAttr('disabled');
-          }
         }
         else {
           let year_value = getYearValue($('#edit-year', context).val());
@@ -785,7 +777,7 @@
           $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', '');
           $('#edit-column-select-all option[value="Year"]', context).attr('disabled', '');
           // disable event field when category is all and year value is less than 2020
-          if (catval == 'all' || year_value < 2020){
+          if (catval == 'revenue' || year_value < 2020){
             $("#edit-catastrophic_event").attr('disabled', 'disabled');
           }
           else{

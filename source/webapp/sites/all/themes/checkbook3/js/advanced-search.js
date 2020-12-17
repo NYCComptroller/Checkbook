@@ -978,8 +978,7 @@
 
         function updateEventsField(div) {
           var contract_category = div.ele('category').val();
-
-          if(contract_category === 'all'){
+          if(contract_category === 'revenue'){
             div.ele('catastrophic_events').attr("disabled", "disabled");
             div.ele('catastrophic_events').val('0');
             updateYearValue(div_checkbook_contracts,'0');
@@ -1621,7 +1620,7 @@
             let fiscal_year = div.ele('fiscal_year').attr("name");
             fiscal_year = document.getElementsByName(fiscal_year)[0];
 
-            if(div.ele('catastrophic_events').val() === "1"){              
+            if(div.ele('catastrophic_events').val() === "1"){
               for (let i = 0; i < fiscal_year.length; i++) {
                 let year = fiscal_year.options[i].text.toLowerCase();
                 let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
@@ -1632,7 +1631,7 @@
               for (let i = 0; i < fiscal_year.length; i++) {
                 fiscal_year.options[i].style.display = '';
               }
-            } 
+            }
         }
 
         //On change of "Fiscal Year"
