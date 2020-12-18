@@ -224,6 +224,7 @@
             'budget_code_chosen': 'select[name=' + data_source + '_budget_budget_code_chosen]',
             'budget_name': 'select[name=' + data_source + '_budget_budget_name]',
             'budget_name_chosen': 'select[name=' + data_source + '_budget_budget_name_chosen]',
+            'catastrophic_events': 'select[name=' + data_source + '_budget_catastrophic_events]',
             'year': 'select[name=' + data_source + '_budget_year]',
             'adopted_from': 'input:text[name=' + data_source + '_budget_adopted_from]',
             'adopted_to': 'input:text[name=' + data_source + '_budget_adopted_to]',
@@ -336,9 +337,13 @@
           let exp_cat = div.ele('expense_category').val() || 0;
           let budget_code = div.ele('budget_code').val() || 0;
           let budget_name = div.ele('budget_name').val() || 0;
+          let catastrophic_events = div.ele('catastrophic_events').val() || 0;
 
           let url = '/advanced-search/autocomplete/budget/budgetcode/' + fiscal_year + '/' + agency + '/' +
-            dept.toString().replace(/\//g, "__") + '/' + exp_cat.toString().replace(/\//g, "__") + '/' + budget_name.toString().replace(/\//g, "__");
+            dept.toString().replace(/\//g, "__") + '/' +
+            exp_cat.toString().replace(/\//g, "__") + '/' +
+            budget_name.toString().replace(/\//g, "__") + '/' +
+            catastrophic_events ;
 
           if (url === budgetCodeAlreadyLoaded) {
             return;
@@ -373,9 +378,12 @@
           let exp_cat = div.ele('expense_category').val() || 0;
           let budget_code = div.ele('budget_code').val() || 0;
           let budget_name = div.ele('budget_name').val() || 0;
+          let catastrophic_events = div.ele('catastrophic_events').val() || 0;
 
           let url = '/advanced-search/autocomplete/budget/budgetname/' + fiscal_year + '/' + agency + '/' +
-            dept.toString().replace(/\//g, "__") + '/' + exp_cat.toString().replace(/\//g, "__") + '/' + budget_code;
+            dept.toString().replace(/\//g, "__") + '/' +
+            exp_cat.toString().replace(/\//g, "__") + '/' +
+            budget_code + '/' + catastrophic_events;
 
           if (url === budgetNamesAlreadyLoaded) {
             return;
@@ -528,8 +536,25 @@
         });
 
         div_checkbook_budget.ele('year').change(function () {
+          let yval =  $(this).find("option:selected").text();
           reloadBudgetCode(div_checkbook_budget);
           reloadBudgetName(div_checkbook_budget);
+          if ( yval < 2020){
+            div_checkbook_budget.ele('catastrophic_events').attr("disabled", "disabled");
+            div_checkbook_budget.ele('catastrophic_events').val('0');
+          }
+          else {
+            div_checkbook_budget.ele('catastrophic_events').removeAttr("disabled");
+          }
+        });
+
+        //Reload budget type and budget code on catastrophic event reload
+        div_checkbook_budget.ele('catastrophic_events').change(function () {
+          let cevent = div_checkbook_budget.ele('catastrophic_events').val();
+          //let div_val = "#edit-checkbook-budget-year option";
+          reloadBudgetCode(div_checkbook_budget);
+          reloadBudgetName(div_checkbook_budget);
+          updateEventYearValue("#edit-checkbook-budget-year option",cevent);
         });
 
         //NYCHA Budget- Trigger Chosen input tool for 'Budget Type' and 'Budget Name'
@@ -977,11 +1002,11 @@
         });
 
         function updateEventsField(div) {
-          var contract_category = div.ele('category').val();
-          if(contract_category === 'revenue'){
+          let contract_category = div.ele('category').val();
+          if(contract_category == 'revenue'){
             div.ele('catastrophic_events').attr("disabled", "disabled");
-            div.ele('catastrophic_events').val('0');
-            updateYearValue(div_checkbook_contracts,'0');
+            let catas_event = div_checkbook_contracts.ele('catastrophic_events').val();
+            updateYearValue("#edit-checkbook-contracts-year option",catas_event);
           }
           else {
             div.ele('catastrophic_events').removeAttr("disabled");
@@ -990,30 +1015,19 @@
         }
         //On change of event value update the the year options
         div_checkbook_contracts.ele('catastrophic_events').change(function () {
-          var catas_event = div_checkbook_contracts.ele('catastrophic_events').val();
-            updateYearValue(div_checkbook_contracts,catas_event);
+          let catas_event = div_checkbook_contracts.ele('catastrophic_events').val();
+          updateEventYearValue("#edit-checkbook-contracts-year option",catas_event);
         });
 
         function onSubvendorStatusChange(div) {
           updateIncludeSubvendorsField(div);
         }
 
-        function updateYearValue(div,cevent) {
-          $("#edit-checkbook-contracts-year option").each(function() {
-            var yval =  (this.text).split(' ')[1];
-            if ( yval < '2020' && cevent === '1'){
-               $(" option[value='" + $(this).val() + "']").hide();
-             }
-             else{
-               $(" option[value='" + $(this).val() + "']").show();
-             }
-          });
-        }
-
         //On year of "year" if chosen year is less than 2020 disable catastrophic event field
         div_checkbook_contracts.ele('year').change(function () {
-          var yval =  ($(this).find("option:selected").text()).split(' ')[1];
-          if ( yval < '2020' ){
+          let yval =  ($(this).find("option:selected").text()).split(' ')[1];
+          let contract_category = div_checkbook_contracts.ele('category').val();
+          if ( contract_category == 'revenue' || yval < 2020){
             div_checkbook_contracts.ele('catastrophic_events').attr("disabled", "disabled");
             div_checkbook_contracts.ele('catastrophic_events').val('0');
           }
@@ -3003,6 +3017,19 @@
           $(this).find('option:first').attr("selected", "selected");
         else
           $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
+      }
+    });
+  }
+
+  // updateYearValue - change year value display for catastrophic events
+  function updateEventYearValue(div_val,cevent) {
+    $(div_val).each(function() {
+      var yval =  (this.text).split(' ')[1] ;
+      if ((this.text < '2020' || yval < '2020') && cevent != 0){
+        $(" option[value='" + $(this).val() + "']").hide();
+      }
+      else{
+        $(" option[value='" + $(this).val() + "']").show();
       }
     });
   }
