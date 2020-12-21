@@ -350,9 +350,13 @@
         disable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('select[name="catastrophic_event"]')]);
 
       }
-      if (exptype === 'Others [o]') {
+      else if (exptype === 'Others [o]') {
         //Disable ContractID and Catastrophic event field for Others Spending Category
         disable_input([$('input[name="contractno"]'), $('select[name="catastrophic_event"]')]);
+      }
+      else{
+        //For every other option, enable Payee Name, ContractID, and Catastrophic event field
+        enable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('select[name="catastrophic_event"]')]);
       }
     }
   };
@@ -692,6 +696,14 @@
           $(this).attr('storedvalue', $(this).val());
         }
         $(this).val('');
+      }
+      
+      if (this.type == 'select-one') {
+        var default_option = $(this).attr('default_selected_value');
+        if (!default_option)
+          $(this).find('option:first').attr("selected", "selected");
+        else
+          $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
       }
     })
   }
