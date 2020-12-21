@@ -358,6 +358,7 @@
       else{
         //For every other option, enable Payee Name, ContractID, and Catastrophic event field
         enable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('select[name="catastrophic_event"]')]);
+        onYearFilterChange();
       }
     }
   };
