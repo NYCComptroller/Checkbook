@@ -348,11 +348,12 @@
       if (exptype === 'Payroll [p]') {
         //Disable Payee Name, ContractID, and Catastrophic event field for Payroll Spending Category
         disable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('select[name="catastrophic_event"]')]);
-
+        onCatastrophicEventChange();
       }
       else if (exptype === 'Others [o]') {
         //Disable ContractID and Catastrophic event field for Others Spending Category
         disable_input([$('input[name="contractno"]'), $('select[name="catastrophic_event"]')]);
+        onCatastrophicEventChange();
       }
       else{
         //For every other option, enable Payee Name, ContractID, and Catastrophic event field
