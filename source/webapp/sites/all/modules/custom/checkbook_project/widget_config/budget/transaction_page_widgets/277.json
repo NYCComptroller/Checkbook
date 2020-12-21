@@ -22,7 +22,8 @@
     "postamt",
     "acramt",
     "curamt",
-    "curamtr"
+    "curamtr",
+    "cevent"
   ],
   "urlParamMap": {
     "deptnm_facet": "department_name",
@@ -46,7 +47,8 @@
     "postamt": "post_closing_adjustment_amount",
     "acramt": "accrued_expense_amount",
     "curamt": "current_budget_amount",
-    "curamtr": "current_budget_amount"
+    "curamtr": "current_budget_amount",
+    "cevent": "event_id"
   },
   "paramTypeConfig": {
     "curamt": "range",

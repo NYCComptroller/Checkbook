@@ -40,6 +40,8 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state, $data_sou
   $expense_category = ($expense_category == "Select Expense Category") ? 0 : $expense_category;
   $budget_code = _checkbook_get_selected_value($form, $filter_dimension, 'budget_code');
   $budget_name = _checkbook_get_selected_value($form, $filter_dimension, 'budget_name');
+  $catastrophic_event = _checkbook_get_selected_value($form, $filter_dimension, 'catastrophic_events');
+  $catastrophic_event = ($catastrophic_event == "Select Event") ? 0 : $catastrophic_event;
   $fiscal_year = _checkbook_get_selected_value($form, $filter_dimension, 'year');
   $adopted_budget_from = _checkbook_get_selected_value($form, $filter_dimension, 'adopted_budget_from');
   $adopted_budget_to = _checkbook_get_selected_value($form, $filter_dimension, 'adopted_budget_to');
@@ -72,6 +74,9 @@ function _checkbook_advanced_search_budget_submit($form, &$form_state, $data_sou
   }
   if (!empty($budget_name)) {
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($budget_name, 'bdgcodenm');
+  }
+  if (!empty($catastrophic_event)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($catastrophic_event, 'cevent');
   }
 
 
