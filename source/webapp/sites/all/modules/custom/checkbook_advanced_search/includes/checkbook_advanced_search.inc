@@ -621,7 +621,7 @@ function _checkbook_advanced_search_get_contract_type_and_id($data_source = Data
  * @param string $data_source
  * @return array|void
  */
-function _checkbook_advanced_search_get_event_name_and_id()
+function _get_event_name_and_id()
 {
   try {
     $dataController = data_controller_get_instance();
