@@ -613,32 +613,6 @@ function _checkbook_advanced_search_get_contract_type_and_id($data_source = Data
     }
 }
 
-// _get_event_name_and_id can be used common function for both datafeeds and advanced.
-// can be removed once implemented both in spending and contracts
-/**
- * Get event name and id using the data controller
- *
- * @param string $data_source
- * @return array|void
- */
-function _get_event_name_and_id()
-{
-  try {
-    $dataController = data_controller_get_instance();
-    $data = $dataController->queryDataset('checkbook:ref_event', array(
-      'event_id',
-      'event_name'
-    ), NULL, 'event_name');
-    $results = array('0' => 'Select Event');
-    foreach ($data as $row) {
-      $results[$row['event_id']] = $row['event_name'];
-    }
-    return array_unique($results);
-  } catch (Exception $e) {
-    log_error("Error getting data from controller: \n" . $e->getMessage());
-    return;
-  }
-}
 /**
  * Get Responsibility center options for NYCHA Contracts
  *
