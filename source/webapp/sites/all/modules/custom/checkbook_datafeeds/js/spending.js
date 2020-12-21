@@ -346,13 +346,13 @@
       let exptype = $('select[name="expense_type"]').val();
       enable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('#edit-document-id')]);
       if (exptype === 'Payroll [p]') {
-        //Disable Payee Name and ContractID fields for Payroll Spending Category
-        disable_input([$('input[name="contractno"]'), $('input[name="payee_name"]')]);
+        //Disable Payee Name, ContractID, and Catastrophic event field for Payroll Spending Category
+        disable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('select[[name="catastrophic_event"]')]);
 
       }
       if (exptype === 'Others [o]') {
-        //Disable ContractID field for Others Spending Category
-        disable_input([$('input[name="contractno"]')]);
+        //Disable ContractID and Catastrophic event field for Others Spending Category
+        disable_input([$('input[name="contractno"]'), $('select[[name="catastrophic_event"]')]);
       }
     }
   };
