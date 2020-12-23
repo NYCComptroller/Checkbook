@@ -1163,6 +1163,7 @@
             'agency': 'select[name=' + data_source + '_revenue_agency]',
             'revenue_category': 'select[name=' + data_source + '_revenue_revenue_category]',
             'revenue_source': 'input:text[name=' + data_source + '_revenue_revenue_source]',
+            'catastrophic_events' : 'select[name=' + data_source + '_revenue_catastrophic_events]',
             'adopted_from': 'input:text[name=' + data_source + '_revenue_adopted_budget_from]',
             'adopted_to': 'input:text[name=' + data_source + '_revenue_adopted_budget_to]',
             'recognized_from': 'input:text[name=' + data_source + '_revenue_recognized_from]',
@@ -1290,6 +1291,66 @@
           }
         }
 
+        function onRevenueFiscalYearChange(div) {
+          //Setting data source value
+          let data_source = $('input[type=radio][name=revenue_advanced_search_domain_filter]:checked').val();
+          if(data_source == 'checkbook') {
+            let fiscal_year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
+            let catastrophic_event = document.getElementById("edit-checkbook-revenue-catastrophic-events");
+            console.log(catastrophic_event);
+            console.log(fiscal_year);
+            let enabled_count = catastrophic_event.length;
+
+            if(!(fiscal_year === "0" || fiscal_year === "122" || fiscal_year === "121")){
+              for (let i = 0; i < catastrophic_event.length; i++) {
+                let event = catastrophic_event.options[i].text.toLowerCase();
+                catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
+                if(catastrophic_event.options[i].style.display === 'none') enabled_count--;
+              }
+              if(enabled_count <=1) disable_input(div.ele('catastrophic_events'));
+            }  
+            else{
+              for (let i = 0; i < catastrophic_event.length; i++) {
+                let event = catastrophic_event.options[i].text.toLowerCase();
+                if(event === 'covid-19'){
+                  catastrophic_event.options[i].style.display = "";
+                  break;
+                }
+              }
+              enable_input(div.ele('catastrophic_events'));
+            } 
+          }
+        }
+
+        function onRevenueCatastrophicEventChange(div){
+          //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
+          let fiscal_year = div.ele('fiscal_year').attr("name");
+          fiscal_year = document.getElementsByName(fiscal_year)[0];
+
+          if(div.ele('catastrophic_events').val() === "1"){
+            for (let i = 0; i < fiscal_year.length; i++) {
+              let year = fiscal_year.options[i].text.toLowerCase();
+              let include = (year === "all fiscal years" || year === "2021" || year === "2020");
+              fiscal_year.options[i].style.display = include ? '':'none';
+            }
+          }
+          else{
+            for (let i = 0; i < fiscal_year.length; i++) {
+              fiscal_year.options[i].style.display = '';
+            }
+          }
+      }
+
+        //On change of "Catastrophic event"
+        div_checkbook_revenue.ele('catastrophic_events').change(function(){
+          onRevenueCatastrophicEventChange(div_checkbook_revenue);
+        });
+
+        //On change of "Fiscal Year"
+        div_checkbook_revenue.ele('fiscal_year').change(function(){
+          onRevenueFiscalYearChange(div_checkbook_revenue);
+        });
+
         //Prevent the auto-complete from wrapping un-necessarily
         function fixAutoCompleteWrapping(divWrapper) {
           $(divWrapper.children()).find('input.ui-autocomplete-input:text').each(function () {
@@ -1310,13 +1371,15 @@
             let fiscal_year_id = parseInt((div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0);
             let revenue_category_id = parseInt((div.ele('revenue_category').val()) ? div.ele('revenue_category').val() : 0);
             let funding_class_code = parseInt((div.ele('funding_class').val()) ? div.ele('funding_class').val() : 0);
+            let catastrophic_event_id = (div.ele('catastrophic_events').val()) ? div.ele('catastrophic_events').val() : 0;
             let filters = {
               fund_class_id: fund_class_id,
               agency_id: agency_id,
               revenue_budget_fiscal_year_id: budget_fiscal_year_id,
               fiscal_year_id: fiscal_year_id,
               revenue_category_id: revenue_category_id,
-              funding_class_code: funding_class_code
+              funding_class_code: funding_class_code,
+              event_id: catastrophic_event_id
             };
             div.ele('revenue_class').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_class_name',filters)});
             div.ele('revenue_source').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_source_name',filters)});
