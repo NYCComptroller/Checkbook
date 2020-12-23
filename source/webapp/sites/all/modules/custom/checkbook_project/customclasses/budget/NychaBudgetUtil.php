@@ -123,4 +123,22 @@ class NychaBudgetUtil{
     return $query;
   }
 
+  // NYCCHKBK - 10215
+  // Requirement for Transactions Page results - budget_type and budget_name to display null as null and 'n/a' as 'n/a'
+  static public function getBudgetName($budgetId)
+  {
+    $where = "WHERE budget_id = '" . $budgetId . "' AND budget_name IS NOT NULL";
+    $query = "SELECT budget_name FROM budget {$where} ";
+    $data = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_nycha');
+    $result = isset($data[0]['budget_name'])? $data[0]['budget_name'] : null;
+    return $result;
+  }
+  static public function getBudgetType($budgetId)
+  {
+    $where = "WHERE budget_id = '" . $budgetId . "' AND budget_type IS NOT NULL";
+    $query = "SELECT budget_type FROM budget {$where} ";
+    $data = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_nycha');
+    $result = isset($data[0]['budget_type'])? $data[0]['budget_type'] : null;
+    return $result;
+  }
 }

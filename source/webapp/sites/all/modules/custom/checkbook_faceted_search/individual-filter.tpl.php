@@ -142,8 +142,9 @@ if($node->widgetConfig->filterName == 'Document ID') {
     }
 }
 
-//Document ID filter display N/A for null values
-if($node->widgetConfig->filterName == 'Budget Name' || $node->widgetConfig->filterName == 'Budget Type') {
+//Budget Name and Budget Type filter display N/A values as N/A for Nycha budget and Nycha revenue fields
+if( $node->nid == '1043' || $node->nid == '1044' || $node->nid == '1059' || $node->nid == '1060')
+{
   if ($unchecked && $unchecked)
     foreach($unchecked as $key => $value) {
       if($value[1] == null ) {
