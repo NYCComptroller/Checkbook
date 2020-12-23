@@ -363,6 +363,15 @@
                             "sourceColumnName": "disbursement_line_item_id"
                         }
                     ]
+                },
+                {
+                    "name":"event_id",
+                    "levels": [
+                        {
+                            "name":"event_id",
+                            "sourceColumnName":"event_id"
+                        }
+                    ]
                 }
             ],
             "measures": {
