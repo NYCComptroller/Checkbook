@@ -1291,17 +1291,15 @@
           }
         }
 
-        function onRevenueFiscalYearChange(div) {
+        function onRevenueBudgetFiscalYearChange(div) {
           //Setting data source value
           let data_source = $('input[type=radio][name=revenue_advanced_search_domain_filter]:checked').val();
           if(data_source == 'checkbook') {
-            let fiscal_year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
+            let budget_fiscal_year = (div.ele('budget_fiscal_year').val()) ? div.ele('budget_fiscal_year').val() : 0;
             let catastrophic_event = document.getElementById("edit-checkbook-revenue-catastrophic-events");
-            console.log(catastrophic_event);
-            console.log(fiscal_year);
             let enabled_count = catastrophic_event.length;
 
-            if(!(fiscal_year === "0" || fiscal_year === "122" || fiscal_year === "121")){
+            if(!(budget_fiscal_year === "0" || budget_fiscal_year === "122" || budget_fiscal_year === "121")){
               for (let i = 0; i < catastrophic_event.length; i++) {
                 let event = catastrophic_event.options[i].text.toLowerCase();
                 catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
@@ -1324,19 +1322,19 @@
 
         function onRevenueCatastrophicEventChange(div){
           //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
-          let fiscal_year = div.ele('fiscal_year').attr("name");
-          fiscal_year = document.getElementsByName(fiscal_year)[0];
+          let budget_fiscal_year = div.ele('budget_fiscal_year').attr("name");
+          budget_fiscal_year = document.getElementsByName(budget_fiscal_year)[0];
 
           if(div.ele('catastrophic_events').val() === "1"){
-            for (let i = 0; i < fiscal_year.length; i++) {
-              let year = fiscal_year.options[i].text.toLowerCase();
+            for (let i = 0; i < budget_fiscal_year.length; i++) {
+              let year = budget_fiscal_year.options[i].text.toLowerCase();
               let include = (year === "all fiscal years" || year === "2021" || year === "2020");
-              fiscal_year.options[i].style.display = include ? '':'none';
+              budget_fiscal_year.options[i].style.display = include ? '':'none';
             }
           }
           else{
-            for (let i = 0; i < fiscal_year.length; i++) {
-              fiscal_year.options[i].style.display = '';
+            for (let i = 0; i < budget_fiscal_year.length; i++) {
+              budget_fiscal_year.options[i].style.display = '';
             }
           }
 
@@ -1352,9 +1350,9 @@
           onRevenueCatastrophicEventChange(div_checkbook_revenue);
         });
 
-        //On change of "Fiscal Year"
-        div_checkbook_revenue.ele('fiscal_year').change(function(){
-          onRevenueFiscalYearChange(div_checkbook_revenue);
+        //On change of "Budget Fiscal Year"
+        div_checkbook_revenue.ele('budget_fiscal_year').change(function(){
+          onRevenueBudgetFiscalYearChange(div_checkbook_revenue);
         });
 
         //Prevent the auto-complete from wrapping un-necessarily
