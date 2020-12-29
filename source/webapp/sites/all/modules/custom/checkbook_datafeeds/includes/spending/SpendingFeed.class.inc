@@ -263,6 +263,10 @@ abstract class SpendingFeed
       $this->criteria['value']['entity_contract_number'] = $this->values['entity_contract_number'];
     }
 
+    if($this->values['catastrophic_event']){
+      $this->criteria['value']['catastrophic_event'] = $this->values['catastrophic_event'];
+    }
+
     if ($this->values['date_filter'] == '0') {
       if (($this->values['year'] && $this->values['year'] != '0') || ($this->values['nycha_year'] && $this->values['nycha_year'] != '0')) {
         if ((startsWith($this->values['year'], 'F')) || (startsWith($this->values['nycha_year'], 'F'))) {
