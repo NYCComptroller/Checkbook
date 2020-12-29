@@ -94,6 +94,15 @@
                     ]
                 },
                 {
+                    "name":"event_id",
+                    "levels":[
+                      {
+                        "name":"event_id",
+                        "sourceColumnName":"event_id"
+                      }
+                    ]
+                },
+                {
                     "name": "class_name",
                     "levels": [
                                 {
