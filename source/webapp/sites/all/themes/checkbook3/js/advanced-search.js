@@ -1295,7 +1295,7 @@
           //Setting data source value
           let data_source = $('input[type=radio][name=revenue_advanced_search_domain_filter]:checked').val();
           if(data_source == 'checkbook') {
-            let budget_fiscal_year = (div.ele('budget_fiscal_year').val()) ? div.ele('budget_fiscal_year').val() : 0;
+            let budget_fiscal_year = (div.ele('budget_fy').val()) ? div.ele('budget_fy').val() : 0;
             let catastrophic_event = document.getElementById("edit-checkbook-revenue-catastrophic-events");
             let enabled_count = catastrophic_event.length;
 
@@ -1322,7 +1322,7 @@
 
         function onRevenueCatastrophicEventChange(div){
           //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
-          let budget_fiscal_year = div.ele('budget_fiscal_year').attr("name");
+          let budget_fiscal_year = div.ele('budget_fy').attr("name");
           budget_fiscal_year = document.getElementsByName(budget_fiscal_year)[0];
 
           if(div.ele('catastrophic_events').val() === "1"){
@@ -1351,7 +1351,7 @@
         });
 
         //On change of "Budget Fiscal Year"
-        div_checkbook_revenue.ele('budget_fiscal_year').change(function(){
+        div_checkbook_revenue.ele('budget_fy').change(function(){
           onRevenueBudgetFiscalYearChange(div_checkbook_revenue);
         });
 
