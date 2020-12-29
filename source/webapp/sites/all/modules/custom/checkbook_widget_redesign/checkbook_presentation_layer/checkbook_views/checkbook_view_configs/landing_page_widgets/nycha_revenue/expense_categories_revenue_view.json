@@ -1,7 +1,7 @@
 {
   "serviceName":"NychaRevenueWidgetService",
   "dataFunc":"GetNychaExpenseCategoriesByRevenue",
-  "headerTitle": "Expense Categories",
+  "headerTitle": "Revenue Expense Categories",
   "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_expense_categories'",
   "table_columns":[
     {"labelAlias":"expense_category","column":"expense_category", "tooltip":60, "derivedColumn":"expense_category_name_link"},
