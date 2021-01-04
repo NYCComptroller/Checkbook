@@ -1212,6 +1212,7 @@
               initializeRevenueView(div_checkbook_revenue_nycha, dataSource);
               div_checkbook_revenue.contents().hide();
               div_checkbook_revenue_nycha.contents().show();
+              $('label[for=edit-checkbook-nycha-revenue-expense-category]').html('Revenue<br/>Expense Category');
 
               //Reset Revenue Name and Revenue Code Chosen drop-downs
               div_checkbook_revenue_nycha.ele('budget_type').val("0").trigger("chosen:updated");
