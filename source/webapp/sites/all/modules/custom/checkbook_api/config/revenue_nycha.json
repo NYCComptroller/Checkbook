@@ -2,7 +2,7 @@
     "revenue_nycha":{
         "searchCriteriaMap":{
             "budget_fiscal_year": "budget_fiscal_year",
-            "expense_category": "expenditure_type_code",
+            "revenue_expense_category": "expenditure_type_code",
             "responsibility_center": "responsibility_center_code",
             "funding_source": "funding_source_code",
             "program": "program_phase_code",
@@ -37,7 +37,7 @@
                     "elementsColumn":{
                       "budget_fiscal_year": "budget_fiscal_year",
                       "adopted": "adopted_amount",
-                      "expense_category": "expenditure_type_description",
+                      "revenue_expense_category": "expenditure_type_description",
                       "remaining": "funds_available",
                       "modified": "modified_amount",
                       "recognized": "revenue_amount",
@@ -51,14 +51,14 @@
                       "revenue_category": "revenue_category",
                       "revenue_class": "revenue_class"
                     },
-                    "rowElements":["adopted","budget_fiscal_year", "budget_name","budget_type", "closing_classification_name", "expense_category",
+                    "rowElements":["adopted","budget_fiscal_year", "budget_name","budget_type", "closing_classification_name", "revenue_expense_category",
                       "funding_source","modified", "program", "project", "recognized", "remaining", "responsibility_center" ,"revenue_category", "revenue_class"]
                 },
                 "csv":{
                     "elementsColumn":{
                       "Budget Fiscal Year": "budget_fiscal_year",
                       "Adopted": "adopted_amount",
-                      "Expense Category": "expenditure_type_description",
+                      "Revenue Expense Category": "expenditure_type_description",
                       "Remaining": "funds_available",
                       "Modified": "modified_amount",
                       "Recognized": "revenue_amount",
@@ -78,7 +78,7 @@
         },
         "requestParameters":{
           "budget_fiscal_year":{"valueType":"value", "dataType":"year", "maxLength":4},
-          "expense_category":{"valueType":"value", "dataType":"text", "maxLength":20},
+          "revenue_expense_category":{"valueType":"value", "dataType":"text", "maxLength":20},
           "responsibility_center":{"valueType":"value", "dataType":"text", "maxLength":10},
           "funding_source":{"valueType":"value", "dataType":"text", "maxLength":4},
           "program":{"valueType":"value", "dataType":"text", "maxLength":6},

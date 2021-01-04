@@ -318,6 +318,7 @@ class WidgetUtil
         "check_status" => "Check<br/>Status",
         "agreement_type" => "Agreement<br/>Type",
         "budget_type" => "Budget<br/>Type",
+        "revenue_expense_category" => "Revenue<br/>Expense Category",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting

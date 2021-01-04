@@ -68,7 +68,7 @@ $recognized_data[] = array('name' => html_entity_decode($row['expenditure_type_d
 $remaining_data[] = array('name' => html_entity_decode($row['expenditure_type_description_expenditure_type_description'],ENT_QUOTES), 'y' => $row['revenue_funds_available'], 'url' => $url);
 }
 if($allZero){$node->totalDataCount = 0;}
-$node->widgetConfig->chartTitle = 'Top Ten Expense Categories by Revenue';
+$node->widgetConfig->chartTitle = 'Top Ten Revenue Expense Categories by Revenue';
 $node->widgetConfig->chartConfig->xAxis->categories = $categories;
 
 $node->widgetConfig->chartConfig->series = array(array('name' => 'Recognized', 'data' => $recognized_data),array('name' => 'Remaining', 'data' => $remaining_data));

@@ -138,7 +138,7 @@
       "export": false
     },
     {
-      "labelAlias": "expense_category",
+      "labelAlias": "revenue_expense_category",
       "column": "exp_name_formatted",
       "sortSourceColumn": "expenditure_type_description"
     },
