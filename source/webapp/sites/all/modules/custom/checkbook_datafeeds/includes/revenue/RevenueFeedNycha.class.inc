@@ -42,12 +42,12 @@ class RevenueFeedNycha extends RevenueFeed
       $this->formatted_search_criteria['Budget Fiscal Year'] = $this->values['nycha_budget_year'];
     }
     //Expense Category
-    if ($this->values['nycha_expense_category'] && $this->values['nycha_expense_category'] != 'Select Expense Category' && $this->values['nycha_expense_category'] != '0') {
+    if ($this->values['nycha_expense_category'] && $this->values['nycha_expense_category'] != 'Select Revenue Expense Category' && $this->values['nycha_expense_category'] != '0') {
       // converts special characters to HTML entities
       if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['nycha_expense_category'])) {
         $this->values['nycha_expense_category'] = htmlspecialchars($this->values['nycha_expense_category']);
       }
-      $this->form['filter']['nycha_expense_category'] = array('#markup' => '<div><strong>Expense Category:</strong> ' . $this->values['nycha_expense_category'] . '</div>');
+      $this->form['filter']['nycha_expense_category'] = array('#markup' => '<div><strong>Revenue Expense Category:</strong> ' . $this->values['nycha_expense_category'] . '</div>');
       $this->user_criteria['Expense Category'] = $this->values['nycha_expense_category'];
       $this->formatted_search_criteria['Expense Category'] = $this->values['nycha_expense_category'];
     }
@@ -210,7 +210,7 @@ class RevenueFeedNycha extends RevenueFeed
     if ($this->values['nycha_expense_category']) {
       preg_match($this->bracket_value_pattern, $this->values['nycha_expense_category'], $ecmatches);
       if ($ecmatches) {
-        $this->criteria['value']['expense_category'] = trim($ecmatches[1], '[ ]');
+        $this->criteria['value']['revenue_expense_category'] = trim($ecmatches[1], '[ ]');
       }
     }
     //Responsibility Center

@@ -304,13 +304,13 @@ function checkbook_datafeeds_nycha_revenue_filter_data($form, $form_state, $data
   $expenseCategories = _budget_expcat_options(Domain::$REVENUE, NUll, NUll, NULL, Datasource::NYCHA);
   $form['filter']['nycha_expense_category'] = array(
     '#type' => 'select',
-    '#title' => t('Expense Category:'),
+    '#title' => t('Revenue<br/>Expense Category:'),
     '#options' => $expenseCategories['options'],
     '#option_attributes' => $expenseCategories['option_attributes'],
     '#prefix' => '<div id="expense-category" class="datafield expensecategory">',
     '#suffix' => '</div>',
     '#validated' => TRUE,
-    '#default_value' => !empty($form_state['values']['nycha_expense_category']) ? $form_state['values']['nycha_expense_category'] : 'Select Expense Category',
+    '#default_value' => !empty($form_state['values']['nycha_expense_category']) ? $form_state['values']['nycha_expense_category'] : 'Select Revenue Expense Category',
   );
 
   $resp_center_options = _checkbook_advanced_search_get_responsibility_centers(Datasource::NYCHA, true);
