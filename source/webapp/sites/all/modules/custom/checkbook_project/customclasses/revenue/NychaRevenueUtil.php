@@ -8,7 +8,7 @@
 
 class NychaRevenueUtil{
   static $widget_titles = array(
-    'wt_expense_categories' => 'Expense Categories',
+    'wt_expense_categories' => 'Revenue Expense Categories',
     'wt_resp_centers' => 'Responsibility Centers',
     'wt_projects' => 'Projects',
     'wt_funding_sources' => 'Funding Sources',

@@ -8,7 +8,7 @@
   "allowFacetDeselect": true,
   "columns":["expenditure_type_id.expenditure_type_id","expenditure_type_description.expenditure_type_description", "txcount"],
   "orderBy":"-txcount",
-  "filterName":"Expense Category",
+  "filterName":"Revenue Expense Category",
   "facetPager":true,
   "urlParameterName":"expcategory",
   "autocompleteParamName":"expcategory_auto",
