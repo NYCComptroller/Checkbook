@@ -4,7 +4,7 @@
   "headerTitle": "Revenue Expense Categories",
   "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_expense_categories'",
   "table_columns":[
-    {"labelAlias":"expense_category","column":"expense_category", "tooltip":60, "derivedColumn":"expense_category_name_link"},
+    {"labelAlias":"revenue_expense_category","column":"expense_category", "tooltip":60, "derivedColumn":"expense_category_name_link"},
     {"labelAlias":"adopted","column":"adopted_amount","format":"dollar"},
     {"labelAlias":"modified","column":"modified_amount","format":"dollar"},
     {"labelAlias":"recognized","column":"recognized_amount","format":"dollar","derivedColumn":"expcat_rev_link"},
