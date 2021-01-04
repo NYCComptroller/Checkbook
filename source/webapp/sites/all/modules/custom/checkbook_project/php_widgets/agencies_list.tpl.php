@@ -35,10 +35,9 @@ foreach($node->data as $key=>$value){
 $oge_filter_highlight = (_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage()) ? 'agency_filter_highlight' : '';
 $city_filter_highlight = (!(_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage())) ? 'agency_filter_highlight' : '';
 
-$current_fy_year = (RequestUtilities::get('year')) ? RequestUtilities::get('year') :  _getFiscalYearID() ;
-$current_cal_year = (RequestUtilities::get('year'))
-  ? min(RequestUtilities::get('year'), CheckbookDateUtil::getCurrentCalendarYearId())
-  : CheckbookDateUtil::getCurrentCalendarYearId();
+$yearUrlValue = RequestUtilities::get('year');
+$current_fy_year = isset($yearUrlValue) ? $yearUrlValue :  _getFiscalYearID() ;
+$current_cal_year = $yearUrlValue ? min($yearUrlValue, CheckbookDateUtil::getCurrentCalendarYearId()) : CheckbookDateUtil::getCurrentCalendarYearId();
 
 $current_url = explode('/',request_uri());
 $url = $current_url[1];
@@ -102,8 +101,10 @@ if($current_url[1] == 'contracts_landing')
 else
     $edc_url = "spending_landing";
 
-//NYCHA Agencies: Set NYCHA default URL to Contracts
-$nycha_url = "nycha_spending/year/".$current_cal_year."/datasource/checkbook_nycha";
+//NYCHA Agencies: Set NYCHA default URL to Spending
+$nychaCurrentFY = CheckbookDateUtil::getCurrentFiscalYearId(Datasource::NYCHA);
+$nychaFY = (isset($yearUrlValue) && $yearUrlValue <= $nychaCurrentFY) ? $yearUrlValue : $nychaCurrentFY;
+$nychaUrl = "nycha_spending/year/". $nychaFY ."/datasource/checkbook_nycha";
 
 $agency_list_other = "<div id='agency-list-other' class='agency-nav-dropdowns'>
   <div class='agency-list-open'><span id='other-agency-list-open' class='".$oge_filter_highlight."'>Other Government Entities</span></div>
@@ -115,7 +116,7 @@ foreach($edc_agencies as $key => $edc_agency){
     $agency_list_other .= "<li><a href='/". $edc_url .'/yeartype/B/year/'.$current_fy_year."/datasource/checkbook_oge/agency/".$edc_agency['agency_id']. "'>". $edc_agency['agency_name'] ."</a></li>";
 }
 foreach($nycha_agencies as $key => $nycha_agency){
-    $agency_list_other .= "<li><a href='/". $nycha_url .'/agency/'.$nycha_agency['agency_id'] ."'>". $nycha_agency['agency_name'] ."</a></li>";
+    $agency_list_other .= "<li><a href='/". $nychaUrl .'/agency/'.$nycha_agency['agency_id'] ."'>". $nycha_agency['agency_name'] ."</a></li>";
 }
 $agency_list_other .= "</ul>
         </div>

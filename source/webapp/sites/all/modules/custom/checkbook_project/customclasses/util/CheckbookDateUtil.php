@@ -214,10 +214,21 @@ class CheckbookDateUtil{
 
   /**
    * @return mixed
+   * drush vset current_calendar_year_cy 2020
    */
   public static function getCurrentCalendarYear(){
     self::setCurrentYears();
-    return self::$currentCalendarYear;
+    $key = 'current_calendar_year_cy';
+    if ($year = _checkbook_dmemcache_get($key)) {
+      return $year;
+    }
+    $year = variable_get($key, FALSE);
+    if (FALSE === $year) {
+      LogHelper::log_warn('Drush variable ' . $key . ' not found!');
+      $year = self::$currentCalendarYear;
+    }
+    _checkbook_dmemcache_set($key, $year);
+    return $year;
   }
 
   /**
