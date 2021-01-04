@@ -28,22 +28,6 @@ use PHPUnit\Framework\TestCase;
 class CheckbookDateUtilTest extends TestCase
 {
     /**
-     * Tests getCurrentCalendarYear() function
-     */
-    public function testCurrentCalendarYear()
-    {
-        $this->assertEquals(date('Y'), CheckbookDateUtil::getCurrentCalendarYear());
-    }
-
-    /**
-     * Tests getCurrentCalendarYearId() function
-     */
-    public function testCurrentCalendarYearId()
-    {
-        $this->assertEquals(date('Y') - 1899, CheckbookDateUtil::getCurrentCalendarYearId());
-    }
-
-    /**
      * Tests year2yearId function
      */
     public function testYear2Id()
