@@ -28,7 +28,7 @@ include_once('export_link.php');
 <table id="table_<?php echo widget_unique_identifier($node) ?>" class="<?php echo $node->widgetConfig->gridConfig->html_class ?>">
     <thead>
     <?php
-        echo "<tr><th class='text'>" . WidgetUtil::generateLabelMapping("expense_category") . "</th>
+        echo "<tr><th class='text'>" . WidgetUtil::generateLabelMapping("revenue_expense_category") . "</th>
         <th class='number'>"  .WidgetUtil::generateLabelMapping("recognized")  .  " </th>
         <th class='number'>" . WidgetUtil::generateLabelMapping("remaining"). "</th>
         <th>&nbsp;</th>        
