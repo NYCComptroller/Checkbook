@@ -1023,7 +1023,7 @@ function _budget_expcat_options($domain, $year, $agency, $dept, $dataSource = Da
                                   expenditure_type_id, expenditure_type_description
                   FROM {$domain} ORDER BY expenditure_object_code ASC";
         $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
-        $title = 'Select Expense Category';
+        $title = ($domain == Domain::$REVENUE) ? 'Select Revenue Expense Category' : 'Select Expense Category';
         $options[''] = $title;
         $option_attributes = array($title => array('title' => $title));
         foreach ($results as $row) {
