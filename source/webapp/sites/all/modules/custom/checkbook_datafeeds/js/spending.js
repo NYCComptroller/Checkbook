@@ -425,6 +425,12 @@
         reloadSpendingExpenceCategories();
       });
 
+      //NYCHA Year drop-down change event
+      $('select[name="nycha_year"]', context).change(function () {
+        $('input:hidden[name="expense_category_hidden"]', context).val("");
+        reloadSpendingExpenceCategories();
+      });
+
       //Department drop-down change event
       $('select[name="dept"]', context).change(function () {
         $('input:hidden[name="dept_hidden"]', context).val($(this, context).val());

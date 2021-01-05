@@ -135,7 +135,7 @@ class SpendingFeedNycha extends SpendingFeed
     }
 
     //Purchase Order Type
-    if ($this->values['purchase_order_type']) {
+    if ($this->values['purchase_order_type'] && $this->values['nycha_expense_type'] != 'Payroll [PAYROLL]' && $this->values['nycha_expense_type'] != 'Section 8 [SECTION8]') {
       $po_type = trim($this->values['purchase_order_type']);
       $this->form['filter']['purchase_order_type'] = array('#markup' => '<div><strong>Purchase Order Type:</strong> ' . $po_type . '</div>');
       $this->user_criteria['Purchase Order Type'] = $po_type;
@@ -163,11 +163,12 @@ class SpendingFeedNycha extends SpendingFeed
     //Year
     if ($this->values['nycha_year']) {
       $this->form['filter']['nycha_year'] = array('#markup' => '<div><strong>Year:</strong> ' . substr($this->values['nycha_year'], 0, -4) .' '. substr($this->values['nycha_year'],-4) . '</div>');
+      $this->formatted_search_criteria['Year'] = $this->values['nycha_year'];
     }else{
       $this->form['filter']['nycha_year'] = array('#markup' => '<div><strong>Year:</strong> All Years</div>');
+      $this->formatted_search_criteria['Year'] = 'All Years';
     }
     $this->user_criteria['Year'] = $this->values['nycha_year'];
-    $this->formatted_search_criteria['Year'] = $this->values['nycha_year'];
   }
 
   protected function _process_datasource_values()
