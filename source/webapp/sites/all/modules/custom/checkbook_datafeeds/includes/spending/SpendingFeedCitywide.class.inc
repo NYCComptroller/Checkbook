@@ -144,6 +144,22 @@ class SpendingFeedCitywide extends SpendingFeed
       $this->user_criteria['Capital Project'] = $this->values['capital_project'];
       $this->formatted_search_criteria['Capital Project'] = $this->values['capital_project'];
     }
+
+    //Year Filter
+    if($this->values['date_filter'] == 0) {
+      if ($this->values['year'] && $this->values['year'] !== '0') {
+        $this->form['filter']['year'] = array(
+          '#markup' => '<div><strong>Year:</strong> ' . substr($this->values['year'], 0, -4) . ' ' . substr($this->values['year'], -4) . '</div>',
+        );
+        $this->user_criteria['Fiscal Year'] = $this->values['year'];
+        $this->formatted_search_criteria['Year'] = $this->values['year'];
+      } else{
+        $this->form['filter']['year'] = array(
+          '#markup' => '<div><strong>Year:</strong> All Years</div>',
+        );
+        $this->formatted_search_criteria['Year'] = ' All Years';
+      }
+    }
   }
 
   protected function _process_datasource_values()
@@ -167,6 +183,10 @@ class SpendingFeedCitywide extends SpendingFeed
 
     if ($this->values['capital_project']) {
       $this->criteria['value']['capital_project_code'] = $this->values['capital_project'];
+    }
+
+    if ($this->values['year'] && $this->values['year'] != '0') {
+      $this->criteria['value']['fiscal_year'] = ltrim($this->values['year'], 'FY');
     }
   }
 
