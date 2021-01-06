@@ -74,6 +74,7 @@ class RequestUtil
     public static function isNewWindow()
     {
         $referer = $_SERVER['HTTP_REFERER'];
+        $referer = isset($referer) ? $referer : $_GET['q'];
         return preg_match('/newwindow/i', $referer);
     }
 
