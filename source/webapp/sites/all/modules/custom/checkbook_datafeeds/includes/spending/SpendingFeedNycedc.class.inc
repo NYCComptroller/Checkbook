@@ -145,6 +145,20 @@ class SpendingFeedNycedc extends SpendingFeed
       $this->formatted_search_criteria['Budget Name'] = $this->values['budget_name'];
     }
 
+    //Year Filter
+    if ($this->values['year'] && $this->values['year'] !== '0') {
+      $this->form['filter']['year'] = array(
+        '#markup' => '<div><strong>Year:</strong> ' . substr($this->values['year'], 0, -4) . ' ' . substr($this->values['year'], -4) . '</div>',
+      );
+      $this->user_criteria['Fiscal Year'] = $this->values['year'];
+      $this->formatted_search_criteria['Year'] = $this->values['year'];
+    } else{
+      $this->form['filter']['year'] = array(
+        '#markup' => '<div><strong>Year:</strong> All Years</div>',
+      );
+      $this->formatted_search_criteria['Year'] = ' All Years';
+    }
+
   }
 
   protected function _process_datasource_values()
@@ -164,6 +178,10 @@ class SpendingFeedNycedc extends SpendingFeed
 
     if ($this->values['budget_name']) {
       $this->criteria['value']['budget_name'] = $this->values['budget_name'];
+    }
+
+    if ($this->values['year'] && $this->values['year'] != '0') {
+      $this->criteria['value']['fiscal_year'] = ltrim($this->values['year'], 'FY');
     }
   }
 
