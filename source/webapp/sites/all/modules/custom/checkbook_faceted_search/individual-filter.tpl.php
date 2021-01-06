@@ -42,7 +42,6 @@ if (($pagetype != 'advanced_search_page') && (!(isset($node->widgetConfig->allow
 // Disable only url parameters
 if($disableFacet) { //only URL parameters count and can be disabled
     $url_ref = $_GET['q'];
-    //RequestUtil::isNewWindow and RequestUtilities::isNewWindow not gentrating correct results hence check for newwindow parameter in url
     $is_new_window = preg_match('/newwindow/i', $url_ref);
     $url_ref = ($is_new_window != 0) ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
     $disableFacet = preg_match('"/' . $urlParameter. '/"', $url_ref);
