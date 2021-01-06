@@ -216,7 +216,7 @@ class SpendingFeedNycha extends SpendingFeed
       );
     }
 
-    if ($this->values['date_filter'] == '0' && $this->values['nycha_year'] && $this->values['nycha_year'] != '0') {
+    if ($this->values['nycha_year'] && $this->values['nycha_year'] != '0') {
         $this->criteria['value']['fiscal_year'] = ltrim($this->values['nycha_year'], 'FY') ;
     }
   }
