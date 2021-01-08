@@ -627,9 +627,15 @@ SQLEND;
  */
 function checkbook_api_adjustNYCHASpendingSql(&$sql_query,$criteria){
   $year = NULL;
-  $sql_parts = explode("WHERE", $sql_query);
-  $select_part = $sql_parts[0];
-  $where_part = $sql_parts[1];
+  if(strpos($sql_query, 'WHERE')) {
+    $sql_parts = explode("WHERE", $sql_query);
+    $select_part = $sql_parts[0];
+    $where_part = $sql_parts[1];
+  }else{//When there is no where condition, avoid replacing ORDER BY columns with data formatting conditions
+    $sql_parts = explode("ORDER BY", $sql_query);
+    $select_part = $sql_parts[0];
+    $where_part = $sql_parts[1];
+  }
   // Add hyphens only for csv
   if (strtolower($criteria['global']['response_format']) == 'csv') {
     $select_part = str_replace("document_id", "CASE WHEN document_id IS NULL THEN 'N/A' ELSE document_id END AS document_id", $select_part);
@@ -655,7 +661,11 @@ function checkbook_api_adjustNYCHASpendingSql(&$sql_query,$criteria){
                                                    END AS " . $value, $select_part);
     }
   }
-  $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
+  if(strpos($sql_query, 'WHERE')) {
+    $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
+  }else{
+    $sql_query = (count($sql_parts) > 1) ? implode(' ORDER BY  ', array($select_part, $where_part)) : $select_part;
+  }
 }
 
 /***
