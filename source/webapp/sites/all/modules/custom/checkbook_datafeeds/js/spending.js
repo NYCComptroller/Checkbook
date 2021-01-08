@@ -576,7 +576,7 @@
         "event_id":catastrophic_event_id
       };  
 
-      $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
+      $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name', filters)});
       $('#edit-contractno', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'contract_number', filters)});
       $('#edit-document-id', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'document_id', filters)});
       $('#edit-capital-project', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'reporting_code', filters)});
@@ -633,7 +633,7 @@
             "event_id":catastrophic_event_id
           };
           
-          $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
+          $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name', filters)});
           $('#edit-contractno', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'contract_number', filters)});
           $('#edit-document-id', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'document_id', filters)});
           $('#edit-capital-project', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'reporting_code', filters)});
