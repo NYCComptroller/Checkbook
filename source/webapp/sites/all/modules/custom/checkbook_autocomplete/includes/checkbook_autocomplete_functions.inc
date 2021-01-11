@@ -550,8 +550,8 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expense_categor
         $matches = _get_spending_datafeeds_autocomplete_results('vendor_name', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type,$resp_center,$fund_src, $data_source);
         break;
       default:
-        $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:spending&wt=phps&facet.limit=10';
-        $matches = _get_spending_datafeeds_autocomplete_results('vendor_name_code', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type,$resp_center,$fund_src, $data_source);
+        $query = 'select/?q=vendor_name_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:spending&wt=phps&facet.limit=10';
+        $matches = _get_spending_datafeeds_autocomplete_results('vendor_name', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type,$resp_center,$fund_src, $data_source);
         break;
     }
     drupal_json_output($matches);
