@@ -30,10 +30,18 @@ class NychaRevenueUtil{
   static public function getTransactionsTitle($url = null){
     $url = isset($url) ? $url : drupal_get_path_alias($_GET['q']);
     $widget = RequestUtil::getRequestKeyValueFromURL('widget', $url);
+    $revenue_type = RequestUtil::getRequestKeyValueFromURL('revtype', $url);
     $widget_titles = self::$widget_titles;
+
     //Transactions Page main title
     $title = (isset($widget) && ($widget != 'wt_year')) ? $widget_titles[$widget]: "";
-    if (strpos($widget, 'rec_') !== false){
+
+    // Visualizations links for revenue category transactions title
+    if (isset($revenue_type)){
+      $title = '';
+    }
+
+    if (strpos($widget, 'rec_') !== false && $revenue_type == ''){
       $title .= ' '. "by Recognized Revenue Transactions";
     }
     else {
