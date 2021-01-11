@@ -418,7 +418,7 @@ class CustomBreadcrumbs
             $title = _checkbook_project_get_name_for_argument("responsibility_center_id", $value);
             break;
           case 'fundsrc':
-            $title = _checkbook_project_get_name_for_argument("rev_funding_source_id", $value);
+            $title = _checkbook_project_get_name_for_argument("funding_source_id", $value);
             break;
           case 'program':
             $title = _checkbook_project_get_name_for_argument("rev_program_phase_id", $value);
