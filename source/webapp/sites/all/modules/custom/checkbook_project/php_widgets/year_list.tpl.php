@@ -104,7 +104,7 @@ foreach($years as $year){
         }
     }
     /*********  Begining of Fiscal Year Options   ********/
-    if($year['year_value'] <= $filter_years['year_value']){
+    if($year['year_value'] <= $filter_years['year_value'] && $year['year_value'] > 2010){
 
         $display_text = 'FY '.$year['year_value'].' (Jul 1, '.($year['year_value']-1).' - Jun 30, '.$year['year_value'].')';
 

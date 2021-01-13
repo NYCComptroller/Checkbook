@@ -106,7 +106,7 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
         if(isset($calendar_year_array)) {
           arsort($calendar_year_array);
         }
-
+        $calendar_year_array['cy~' . _getYearIDFromValue('2010')] = 'CY 2010';
         if ($domain == 'payroll') {
             if($data_source == Datasource::NYCHA) {
               $fiscal_year_array = $calendar_year_array;
@@ -116,6 +116,9 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
         }
 
         if ($domain == 'contracts' || $domain == 'spending') {
+          if($data_source == Datasource::NYCHA) {
+            $fiscal_year_array['fy~' .  _getYearIDFromValue('2010')] = 'FY 2010';
+          }
             $fiscal_year_array = array_reverse($fiscal_year_array, true);
             $fiscal_year_array['fy~all'] = 'All Years';
             $fiscal_year_array = array_reverse($fiscal_year_array, true);

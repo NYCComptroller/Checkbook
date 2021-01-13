@@ -118,7 +118,7 @@
 
   let resetYearvalue = function (dataSource)
   {
-    let lastYear =  $("#edit-year option:eq(10)").val();
+    let lastYear =  $("#edit-year option:eq(12)").val();
     let yearValue = lastYear.split(/\s+/);
     $("#edit-year > option").each(function() {
       if(dataSource === 'checkbook_nycha') {
@@ -126,38 +126,16 @@
           // Hide FY for Nycha
           $("#edit-year option[value='" + this.value + "']").hide();
         }
-        // Show extra one year for NYCHA (2010)
-        $("#edit-year option[value='CY "+yearValue[1]+"']").show();
+        //$("#edit-year option[value='CY "+yearValue[1]+"']").hide();
       }
       else{
         // Hide the extra year for citywide (FY AND CY)
           $("#edit-year option[value='"+this.value+"']").show();
-          $("#edit-year option[value='FY "+yearValue[1]+"']").hide();
-          $("#edit-year option[value='CY "+yearValue[1]+"']").hide();
+          //$("#edit-year option[value='FY "+yearValue[1]+"']").hide();
+          //$("#edit-year option[value='CY "+yearValue[1]+"']").hide();
       }
     });
   };
-
-  /*let getPayrollYears = function (dataSource) {
-    var form = 'datafeeds';
-    $.ajax({
-      url: '/payroll/years/' + dataSource + '/' + form
-      , success: function (data) {
-        var html = '';
-        if (data[0]) {
-          if (data[0] !== 'No Matches Found') {
-            $.each(data, function (key, year) {
-              html = html + '<option value="' + year.label +'">' + year.label + '</option>';
-            });
-          }
-          else {
-            html = html + '<option value="">' + data[0] + '</option>';
-          }
-        }
-        $("#edit-year").html(html);
-      }
-    });
-  };*/
 
   $.fn.clearInputFields = function ()
   {

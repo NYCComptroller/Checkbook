@@ -1919,7 +1919,7 @@ function _checkbook_get_year_id($year){
 function _checkbook_year_list($datasource){
   $year = CheckbookDateUtil::getCurrentFiscalYear();
   $return = [];
-  $yearCount = 11;
+  $yearCount = 12;
   //if ($datasource == 'checkbook_nycha'){ $yearCount = 11;}
   $min = $year - $yearCount;
   while ($year > $min) {
