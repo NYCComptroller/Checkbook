@@ -95,7 +95,7 @@ class CheckbookDateUtil{
    * SET THESE VARS ON SERVER (AT DATA-SOURCE LEVEL):
    * drush vset current_checkbook_fy 2021
    * drush vset current_checkbook_oge_fy 2021
-   * drush vset current_checkbook_nycha_fy 2020
+   * drush vset current_checkbook_nycha_fy 2021
    *
    * @return string
    */
@@ -158,8 +158,8 @@ class CheckbookDateUtil{
     // For NYCHA Fiscal Year is Calendar Year
     $last = self::getCurrentDatasourceFiscalYear($data_source);
     $yearCount = 11;
-    //$isNYCHA = (bool)($data_source == Datasource::NYCHA || Datasource::isNYCHA());
-    //if ($isNYCHA){ $yearCount =11;}
+    $isNYCHA = (bool)($data_source == Datasource::NYCHA || Datasource::isNYCHA());
+    if ($isNYCHA){ $yearCount =11;}
     $results = [];
     for ($year = $last; $year > $last - $yearCount; $year--) {
       $results[] = [
@@ -175,11 +175,11 @@ class CheckbookDateUtil{
    */
   public static function getLast10CalendarYearOptions($data_source){
     $last = self::getCurrentCalendarYear();
-    $yearCount = 11;
+    $yearCount = 12;
     //$isNYCHA = (bool)($data_source == Datasource::NYCHA || Datasource::isNYCHA());
-    //if ($isNYCHA){ $yearCount =11;}
+    //if ($isNYCHA){ $yearCount =13;}
     $results = [];
-    for ($year = $last; $year > $last - $yearCount; $year--) {
+    for ($year = $last; $year >= $last - $yearCount; $year--) {
       $results[] = [
         'year_id' => self::year2yearId($year),
         'year_value' => $year

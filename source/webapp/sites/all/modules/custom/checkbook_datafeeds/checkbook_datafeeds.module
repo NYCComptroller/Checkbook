@@ -483,8 +483,12 @@ function _year_options($yeartype = NULL, $datasource = Datasource::CITYWIDE, $do
         foreach ($fydata as $row) {
           $fyarray['FY' . $row['year_value']] = 'FY ' . $row['year_value'];
         }
+        if($domain != Domain::$SPENDING && $datasource == DataSource::NYCHA) {
+          $fyarray['FY2010'] = 'FY 2010';
+        }
         //Remove this after Year Filter Separation for Spending Data-feeds
         if($domain == Domain::$SPENDING){
+          $fyarray['FY2010'] = 'FY 2010';
           $fyarray = array_merge(array('FY2021' => 'FY 2021'), $fyarray);
         }
         $results = array_merge(array('0' => 'All Years'), $fyarray);
