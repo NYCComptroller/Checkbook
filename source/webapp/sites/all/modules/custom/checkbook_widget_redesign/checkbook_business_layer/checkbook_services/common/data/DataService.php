@@ -18,7 +18,7 @@ abstract class DataService implements IDataService {
      * @return DataService
      */
     public function configure($dataFunction, $parameters, $limit = null, $orderBy = null, $sqlConfigPath) {
-        return self::setDataFunction($dataFunction)
+        return static::setDataFunction($dataFunction)
             ->setSqlConfigPath($sqlConfigPath)
             ->setParameters($parameters)
             ->setLimit($limit)
