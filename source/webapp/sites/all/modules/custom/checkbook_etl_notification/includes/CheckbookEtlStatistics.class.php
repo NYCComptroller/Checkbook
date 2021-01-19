@@ -64,8 +64,9 @@ class CheckbookEtlStatistics
 
     $sql = "SELECT database_name, host_environment, 
                   ((CURRENT_DATE-1)::text||' 21:00:00.0')::TIMESTAMP 	AS last_run_date, 
-                  CASE WHEN database_name = 'checkbook_ogent'
-			                  THEN 'Fail' --Force OGE to fail until firewall issue gets fixed!
+                  CASE 
+                       --WHEN database_name = 'checkbook_ogent'
+			                 --THEN 'Fail' --Force OGE to fail until firewall issue gets fixed!
 		                   WHEN last_success_date > ((CURRENT_DATE-2)::text||' 21:00:00.0')::TIMESTAMP
 			                  THEN (CASE WHEN success_yn = 'N' THEN 'Fail' ELSE 'Success' END) 
 			                  ELSE 'Fail'
