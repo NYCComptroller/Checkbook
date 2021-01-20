@@ -41,14 +41,9 @@
 
       function show_advanced_search_form(callback) {
         show_loading_spinner();
-
-        if ($('#checkbook-advanced-search-form').length) {
-          callback();
-        } else {
           $('.block-checkbook-advanced-search .content').load('/advanced-search-ajax', function () {
-            common_run_after_ajax_once(callback);
+              common_run_after_ajax_once(callback);
           });
-        }
       }
 
       function common_run_after_ajax_once(callback) {
