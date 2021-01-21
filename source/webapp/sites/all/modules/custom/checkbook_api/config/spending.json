@@ -10,6 +10,7 @@
             "department_code":"department_code",
             "check_amount":"check_amount",
             "expense_category":"expenditure_object_code",
+            "catastrophic_event":"event_id",
             "contract_id":"reference_document_number",
             "contract_purpose":"purpose",
             "capital_project_code":"reporting_code",
@@ -133,6 +134,11 @@
                 "valueType":"range",
                 "dataType":"date",
                 "format":"YYYY-MM-DD"
+            },
+            "catastrophic_event":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"20"
             },
             "department_code":{
                 "valueType":"value",

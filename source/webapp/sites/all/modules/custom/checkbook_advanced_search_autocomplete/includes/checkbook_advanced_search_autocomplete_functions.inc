@@ -385,7 +385,7 @@ function _checkbook_advanced_search_autocomplete_budget_expcategory($fiscal_year
  * @param $budget_name
  * @return mixed for budget code based on selected agency, department, expense category, year and budget name
  */
-function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year, $agency, $dept, $expcategory, $budget_name) {
+function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year, $agency, $dept, $expcategory, $budget_name,$catastrophic_events) {
 
     $params =  array("budget_fiscal_year_id"=>$fiscal_year);
     if($agency != '0' ) {
@@ -399,6 +399,9 @@ function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year,
     }
     if($budget_name != '0' ) {
         $params["budget_code_name"] = str_replace('__','/',$budget_name);
+    }
+    if($catastrophic_events != '0' ) {
+    $params["event_id"] = $catastrophic_events;
     }
     $results = get_db_results(false, 'checkbook:budget', array("budget_code_code.budget_code_code"), $params,"budget_code_code.budget_code_code");
     if(count($results) == 0 && $agency != '0'){
@@ -425,7 +428,7 @@ function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year,
  * @param $budget_code
  * @return mixed for budget name based on selected agency, department, expense category, year and budget code
  */
-function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year, $agency, $dept, $expcategory, $budget_code) {
+function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year, $agency, $dept, $expcategory, $budget_code,$catastrophic_events) {
     $params =  array("budget_fiscal_year_id"=>$fiscal_year);
     if($agency != '0' ) {
         $params["agency_id"] = $agency;
@@ -438,6 +441,9 @@ function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year,
     }
     if($budget_code != '0' ) {
         $params["budget_code"] = $budget_code;
+    }
+    if($catastrophic_events != '0' ) {
+       $params["event_id"] = $catastrophic_events;
     }
     $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name", "budget_code_code.budget_code_code"), $params,"budget_code_name.budget_code_name");
     if(count($results) == 0 && $agency != '0'){

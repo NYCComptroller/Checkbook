@@ -17,6 +17,7 @@
         $('.default-fields .datafield.scntrc_status').hide();
         $('.default-fields .datafield.regdate').hide();
         $('.default-fields .datafield.sub_vendor_status_in_pip_id').hide();
+        $('.default-fields .datafield.catastrophic_event').hide();
         $('.default-fields .datafield.industry').hide();
 
         $("#edit-df-contract-status").children("option[value='pending']").hide();
@@ -48,6 +49,7 @@
         $('.default-fields .datafield.scntrc_status').show();
         $('.default-fields .datafield.regdate').show();
         $('.default-fields .datafield.sub_vendor_status_in_pip_id').show();
+        $('.default-fields .datafield.catastrophic_event').show();
         $('.default-fields .datafield.industry').show();
 
         $("#edit-df-contract-status").children("option[value='pending']").show();
@@ -437,6 +439,8 @@
       const $category = $('#edit-category', context);
       let csval = $('select[name="df_contract_status"]', context).val();
       let catval = $('#edit-category', context).val();
+      let cevent = $('#edit-catastrophic_event', context).val();
+
 
       $.fn.reloadAgencies(datasource);
 
@@ -445,6 +449,9 @@
 
       //Show Sub or Prime vendor icon
       $.fn.showHidePrimeAndSubIcon();
+
+      //Reload year based on the event value
+      updateYearValue(cevent);
 
       // Display multi-select
       $.fn.hideShow(csval, catval, datasource);
@@ -481,9 +488,21 @@
         csval = $('select[name="df_contract_status"]', context).val();
         catval = $('#edit-category', context).val();
         datasource = $('input[name="datafeeds-contracts-domain-filter"]:checked',context).val();
+        // disable event filed when category is all
+        if (catval == 'revenue' ) {
+          $("#edit-catastrophic_event").attr('disabled', 'disabled');
+          let cevent = $('#edit-catastrophic_event', context).val();
+          updateYearValue(cevent);
+        }
         $.fn.resetSelectedColumns();
         $.fn.hideShow(csval, catval, datasource);
         $.fn.showHidePrimeAndSubIcon();
+      })
+
+      // On Catastrophic event change reload year drop down
+      $('#edit-catastrophic_event', context).change(function () {
+        let cevent = $('#edit-catastrophic_event', context).val();
+        updateYearValue(cevent);
       });
 
       //Set up jQuery datepickers
@@ -501,6 +520,7 @@
         $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', 'disabled');
         $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', 'disabled');
         $('#edit-column-select-all option[value="Year"]', context).attr('disabled', 'disabled');
+
       } else {
         $('#edit-column-select-expense option[value="Year"]', context).attr('disabled', '');
         $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', '');
@@ -604,6 +624,7 @@
 
       const status = $('select[name="df_contract_status"]', context).val();
       const category = $('#edit-category', context).val();
+      const catastrophic_event = $.fn.emptyToZero($('#edit-catastrophic_event', context).val());
       const contract_type = $.fn.emptyToZero($('#edit-contract-type', context).val());
       const agency = $.fn.emptyToZero($('#edit-agency', context).val());
       const award_method = $.fn.emptyToZero($('#edit-award-method', context).val());
@@ -612,14 +633,32 @@
       const industry = $.fn.emptyToZero($('#edit-industry', context).val());
       const includes_sub_vendors = $.fn.emptyToZero($('#edit-contract_includes_sub_vendors_id', context).val());
       const sub_vendor_status = $.fn.emptyToZero($('#edit-sub_vendor_status_in_pip_id', context).val());
-
-      $('#edit-vendor', context).autocomplete({source: '/autocomplete/contracts/vendor/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + datasource});
-      $('#edit-contractno', context).autocomplete({source: '/autocomplete/contracts/contract_number/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + datasource});
-      $('#edit-apt-pin', context).autocomplete({source: '/autocomplete/contracts/apt_pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + datasource});
-      $('#edit-pin', context).autocomplete({source: '/autocomplete/contracts/pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + datasource});
-      $('#edit-entity-contract-number', context).autocomplete({source: '/autocomplete/contracts/entitycontractnum/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + datasource});
-      $('#edit-commodity-line', context).autocomplete({source: '/autocomplete/contracts/commodityline/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + datasource});
-      $('#edit-budget-name', context).autocomplete({source: '/autocomplete/contracts/budgetname/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + datasource});
+      // Refactoring autocomplete for citywide similar to Nycha to use common autocomplete function
+      let filters = {
+        "contract_status":status,
+        "contract_category_name":category,
+        "contract_type_id":contract_type,
+        "event_id":catastrophic_event,
+        "agency_code":agency,
+        "award_method_id":award_method,
+        "fiscal_year_id":year,
+        "minority_type_id" :mwbecat,
+        "scntrc_status":includes_sub_vendors,
+        "aprv_sta":sub_vendor_status,
+        "industry_type_id":industry,
+      };
+      if (datasource === 'checkbook_oge') {
+        $('#edit-vendor').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name', filters)});
+      }
+      else {
+        $('#edit-vendor').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name_code', filters)});
+      }
+      $('#edit-contractno').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_number',filters)});
+      $('#edit-apt-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'apt_pin',filters)});
+      $('#edit-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'pin',filters)});
+      $('#edit-entity-contract-number').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'entitycontractnum',filters)});
+      $('#edit-commodity-line').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'commodityline',filters)});
+      $('#edit-budget-name').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'budgetname',filters)});
 
       const purchase_order = $.fn.emptyToZero($('select[name="purchase_order_type"]', context).val());
       const responsibility_center = $.fn.emptyToZero($('select[name="resp_center"]', context).val());
@@ -646,6 +685,7 @@
           const status = $('select[name="df_contract_status"]', context).val();
           const category = $('#edit-category', context).val();
           const contract_type = $.fn.emptyToZero($('#edit-contract-type', context).val());
+          const catastrophic_event = $.fn.emptyToZero($('#edit-catastrophic_event', context).val());
           const agency = $.fn.emptyToZero($('#edit-agency', context).val());
           const award_method = $.fn.emptyToZero($('#edit-award-method', context).val());
           const year = ($('#edit-year', context).attr('disabled')) ? 0 : $('#edit-year', context).val();
@@ -656,13 +696,31 @@
           const includes_sub_vendors = $.fn.emptyToZero($('#edit-contract_includes_sub_vendors_id', context).val());
           const sub_vendor_status = $.fn.emptyToZero($('#edit-sub_vendor_status_in_pip_id', context).val());
 
-          $('#edit-vendor', context).autocomplete('option', 'source', '/autocomplete/contracts/vendor/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + datasource);
-          $('#edit-contractno', context).autocomplete('option', 'source', '/autocomplete/contracts/contract_number/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + datasource);
-          $('#edit-apt-pin', context).autocomplete('option', 'source', '/autocomplete/contracts/apt_pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + datasource);
-          $('#edit-pin', context).autocomplete('option', 'source', '/autocomplete/contracts/pin/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + datasource);
-          $('#edit-entity-contract-number', context).autocomplete('option', 'source', '/autocomplete/contracts/entitycontractnum/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + datasource);
-          $('#edit-commodity-line', context).autocomplete('option', 'source', '/autocomplete/contracts/commodityline/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + datasource);
-          $('#edit-budget-name', context).autocomplete('option', 'source', '/autocomplete/contracts/budgetname/' + status + '/' + category + '/' + contract_type + '/' + agency + '/' + award_method + '/' + year + '/' + mwbecat + '/' + industry + '/' + includes_sub_vendors + '/' + sub_vendor_status + '/' + datasource);
+          let filters = {
+            "contract_status":status,
+            "contract_category_name":category,
+            "contract_type_id":contract_type,
+            "event_id":catastrophic_event,
+            "agency_code":agency,
+            "award_method_id":award_method,
+            "fiscal_year_id":year,
+            "minority_type_id" :mwbecat,
+            "scntrc_status":includes_sub_vendors,
+            "aprv_sta":sub_vendor_status,
+            "industry_type_id":industry,
+          };
+          if (datasource === 'checkbook_oge') {
+            $('#edit-vendor').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name', filters)});
+          }
+          else {
+            $('#edit-vendor').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name_code', filters)});
+          }
+          $('#edit-contractno').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_number',filters)});
+          $('#edit-apt-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'apt_pin',filters)});
+          $('#edit-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'pin',filters)});
+          $('#edit-entity-contract-number').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'entitycontractnum',filters)});
+          $('#edit-commodity-line').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'commodityline',filters)});
+          $('#edit-budget-name').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'budgetname',filters)});
 
           const purchase_order = $.fn.emptyToZero($('select[name="purchase_order_type"]', context).val());
           const responsibility_center = $.fn.emptyToZero($('select[name="resp_center"]', context).val());
@@ -711,11 +769,20 @@
           $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-all option[value="Year"]', context).attr('disabled', 'disabled');
-        } else {
+        }
+        else {
+          let year_value = getYearValue($('#edit-year', context).val());
           $('#edit-column-select-expense option[value="Year"]', context).attr('disabled', '');
           $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', '');
           $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', '');
           $('#edit-column-select-all option[value="Year"]', context).attr('disabled', '');
+          // disable event field when category is all and year value is less than 2020
+          if (catval == 'revenue' || year_value < 2020){
+            $("#edit-catastrophic_event").attr('disabled', 'disabled');
+          }
+          else{
+            $("#edit-catastrophic_event").removeAttr('disabled');
+          }
         }
         $('#edit-column-select-expense', context).multiSelect('refresh');
         if (!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")) {
@@ -809,6 +876,18 @@
     return year_value[1];
   }
 
+  // update year drop down when event is chosen
+  function updateYearValue(cevent) {
+    $("#edit-year option").each(function() {
+      var yval =  (this.text).split(' ')[1];
+      if ( yval < 2020 && cevent != 0){
+        $(" option[value='" + $(this).val() + "']").hide();
+      }
+      else{
+        $(" option[value='" + $(this).val() + "']").show();
+      }
+    });
+  }
   //Function to clear text fields and drop-downs
   $.fn.clearInputFields = function (dataSource) {
     $('.fieldset-wrapper').find(':input').each(function () {
