@@ -34,7 +34,7 @@ class CustomBreadcrumbs
       $title = _get_budget_breadcrumb_title_drilldown() . ' Revenue';
     }
 
-    return $title;
+    return html_entity_decode($title);
   }
 
   /** Returns Budget page title and Breadcrumb */
@@ -61,7 +61,7 @@ class CustomBreadcrumbs
       }
     }
 
-    return $title;
+    return html_entity_decode($title);
   }
 
   /** Returns Spending page title and Breadcrumb */
@@ -100,7 +100,7 @@ class CustomBreadcrumbs
       $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' '.SpendingUtil::getSpendingCategoryName();
     }
 
-    return $title;
+    return html_entity_decode($title);
   }
 
   /** Returns Contracts page title and Breadcrumb */
@@ -289,7 +289,7 @@ class CustomBreadcrumbs
       GLOBAL $checkbook_breadcrumb_title;
       $title = $checkbook_breadcrumb_title;
     }
-    return $title;
+    return html_entity_decode($title);
   }
 
   /** Returns NYCHA Spending page title and Breadcrumb */
@@ -320,7 +320,7 @@ class CustomBreadcrumbs
         $title .= ' '. NYCHASpendingUtil::getCategoryName() .' Spending';
       }
     }
-    return $title;
+    return html_entity_decode($title);
   }
 
   /** Returns NYCHA Contracts page title and Breadcrumb */
@@ -359,7 +359,7 @@ class CustomBreadcrumbs
         $title .= ' Contracts';
       }
     }
-    return $title;
+    return html_entity_decode($title);
   }
 
 
@@ -396,7 +396,7 @@ class CustomBreadcrumbs
           $title .= ' Budget';
         }
       }
-      return $title;
+      return html_entity_decode($title);
     }
 
   /** Returns NYCHA Revenue page title and Breadcrumb */
@@ -432,7 +432,7 @@ class CustomBreadcrumbs
         $title .= ' Revenue';
       }
     }
-    return $title;
+    return html_entity_decode($title);
   }
 
 }
