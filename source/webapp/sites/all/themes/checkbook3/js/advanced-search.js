@@ -1002,11 +1002,13 @@
         });
 
         function updateEventsField(div) {
+          let yval = (div_checkbook_contracts.ele('year').find("option:selected").text()).split(' ')[1];
           let contract_category = div.ele('category').val();
-          if(contract_category == 'revenue'){
+          if(contract_category == 'revenue' || yval < 2020 ){
             div.ele('catastrophic_events').attr("disabled", "disabled");
+            div.ele('catastrophic_events').val("");
             let catas_event = div_checkbook_contracts.ele('catastrophic_events').val();
-            updateYearValue("#edit-checkbook-contracts-year option",catas_event);
+            updateEventYearValue("#edit-checkbook-contracts-year option",'0');
           }
           else {
             div.ele('catastrophic_events').removeAttr("disabled");
@@ -1306,7 +1308,7 @@
                 if(catastrophic_event.options[i].style.display === 'none') enabled_count--;
               }
               if(enabled_count <=1) disable_input(div.ele('catastrophic_events'));
-            }  
+            }
             else{
               for (let i = 0; i < catastrophic_event.length; i++) {
                 let event = catastrophic_event.options[i].text.toLowerCase();
@@ -1316,7 +1318,7 @@
                 }
               }
               enable_input(div.ele('catastrophic_events'));
-            } 
+            }
           }
         }
 

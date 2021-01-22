@@ -487,10 +487,12 @@
       $category.change(function () {
         csval = $('select[name="df_contract_status"]', context).val();
         catval = $('#edit-category', context).val();
+        var year_value = getYearValue($('#edit-year', context).val());
         datasource = $('input[name="datafeeds-contracts-domain-filter"]:checked',context).val();
         // disable event filed when category is all
-        if (catval == 'revenue' ) {
+        if (catval == 'revenue' || (year_value < 2020 && year_value != 0)) {
           $("#edit-catastrophic_event").attr('disabled', 'disabled');
+          $("#edit-catastrophic_event").val('');
           let cevent = $('#edit-catastrophic_event', context).val();
           updateYearValue(cevent);
         }
@@ -769,6 +771,12 @@
           $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-all option[value="Year"]', context).attr('disabled', 'disabled');
+          if (catval == 'revenue') {
+            $("#edit-catastrophic_event").attr('disabled', 'disabled');
+          }
+          else{
+            $("#edit-catastrophic_event").removeAttr('disabled');
+          }
         }
         else {
           let year_value = getYearValue($('#edit-year', context).val());
