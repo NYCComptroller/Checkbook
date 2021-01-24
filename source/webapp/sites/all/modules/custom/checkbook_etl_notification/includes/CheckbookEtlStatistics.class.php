@@ -65,8 +65,6 @@ class CheckbookEtlStatistics
     $sql = "SELECT database_name, host_environment, 
                   ((CURRENT_DATE-1)::text||' 21:00:00.0')::TIMESTAMP 	AS last_run_date, 
                   CASE 
-                       --WHEN database_name = 'checkbook_ogent'
-			                 --THEN 'Fail' --Force OGE to fail until firewall issue gets fixed!
 		                   WHEN last_success_date > ((CURRENT_DATE-2)::text||' 21:00:00.0')::TIMESTAMP
 			                  THEN (CASE WHEN success_yn = 'N' THEN 'Fail' ELSE 'Success' END) 
 			                  ELSE 'Fail'
@@ -92,13 +90,12 @@ class CheckbookEtlStatistics
         'Solr Refreshed?' => $result['index_refresh_flag_yn'],
         'All Files Processed?' => $result['process_abort_flag_yn'],
       );
-      //Ignore OGE until firewall issue gets fixed!
-      if($environment == 'PROD' && $result['database_name'] != 'checkbook_ogent'){
+
+      if($environment == 'PROD'){
         self::$prodStatus = (self::$prodStatus == 'Fail') ? self::$prodStatus : $result['last_run_success'];
       }
 
-      //Ignore OGE until firewall issue gets fixed
-      if($environment == 'UAT' && $result['database_name'] != 'checkbook_ogent'){
+      if($environment == 'UAT'){
         self::$uatStatus = (self::$uatStatus == 'Fail') ? self::$uatStatus : $result['last_run_success'];
       }
     }
