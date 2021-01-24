@@ -54,13 +54,6 @@ class CheckbookEtlStatistics
    * @return array
    */
   public function getEtlStatistics($environment){
-    //Get ETL Statistics in the last 12 hours
-    /*$sql = "SELECT *,
-            CASE WHEN (process_abort_flag_yn = 'N' AND shard_refresh_flag_yn = 'Y' AND index_refresh_flag_yn = 'Y') 
-                  THEN 'Success'
-	               ELSE 'Fail'
-            END AS status FROM jobs WHERE load_end_time >= (NOW() - INTERVAL '12 hours' ) AND host_environment = '{$environment}'";
-    */
 
     $sql = "SELECT database_name, host_environment, 
                   ((CURRENT_DATE-1)::text||' 21:00:00.0')::TIMESTAMP 	AS last_run_date, 
