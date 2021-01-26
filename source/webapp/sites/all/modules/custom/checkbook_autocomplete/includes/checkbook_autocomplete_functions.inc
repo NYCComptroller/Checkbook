@@ -559,10 +559,15 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expense_categor
         if(count($matches) < 10){  
           $query = 'select/?q=vendor_name_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:spending&wt=phps&facet.limit=10';
           $matches_name = _get_spending_datafeeds_autocomplete_results('vendor_name', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type,$resp_center,$fund_src, $data_source);
-        
+          $nomatch = [];
+
           //"No matches found" is represented as an array in the first index
-          if(gettype($matches[0])=="array"){
-              array_shift($matches);
+          if(gettype($matches[0]) == "array"){
+            $nomatch = array_shift($matches);
+          }
+
+          if(gettype($matches_name[0]) == "array"){
+            array_shift($matches_name);
           }
 
           $index = 0;
@@ -575,12 +580,7 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expense_categor
             $matches_map[$vendor_name] = $matches[$index++];
           }
 
-          //"No matches found" is represented as an array in the first index
-          if(gettype($matches_name[0])=="array"){
-            array_shift($matches_name);
-          }
-
-          $index  = 0;
+          $index = 0;
 
           //Add vendor names fetched from the latest Solr query to the final result, while skipping duplicates if any
           while(count($matches) < 10 && $index < count($matches_name)){
@@ -589,6 +589,11 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expense_categor
                 $matches_map[$matches_name[$index]] = $matches_name[$index];
               }              
               $index++;
+          }
+          
+          //Both the queries have no matches found
+          if(count($matches) < 1){
+              array_push($matches, $nomatch);
           }
         }
         break;
