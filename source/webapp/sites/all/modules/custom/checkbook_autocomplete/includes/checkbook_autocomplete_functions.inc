@@ -577,6 +577,7 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expense_categor
 
           $index  = 0;
 
+          //Add vendor names fetched from the latest Solr query to the final result, while skipping duplicates if any
           while(count($matches) < 10 && $index < count($matches_name)){
               if(!isset($matches_map[$matches_name[$index]])){
                 array_push($matches, $matches_name[$index]);
