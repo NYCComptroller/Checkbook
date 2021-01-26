@@ -2365,12 +2365,12 @@ function _checkbook_dmemcache_get($key, $bin = 'cache', $mc = NULL){
 /**
  * @param $key
  * @param $value
- * @param int $exp - set to 12 hrs
+ * @param int $exp - set to 15 hrs
  * @param string $bin
  * @param null $mc
  * @return bool
  */
-function _checkbook_dmemcache_set($key, $value, $exp = 43200, $bin = 'cache', $mc = NULL){
+function _checkbook_dmemcache_set($key, $value, $exp = 54000, $bin = 'cache', $mc = NULL){
   if (defined('PHPUNIT_RUNNING') && PHPUNIT_RUNNING) {
     global $phpunit_cache;
     $phpunit_cache[$key] = $value;
