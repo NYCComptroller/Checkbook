@@ -575,6 +575,11 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expense_categor
             $matches_map[$vendor_name] = $matches[$index++];
           }
 
+          //"No matches found" is represented as an array in the first index
+          if(gettype($matches_name[0])=="array"){
+            array_shift($matches_name);
+          }
+
           $index  = 0;
 
           //Add vendor names fetched from the latest Solr query to the final result, while skipping duplicates if any
