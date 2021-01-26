@@ -550,8 +550,41 @@ function _checkbook_autocomplete_spending_payee($year, $agency, $expense_categor
         $matches = _get_spending_datafeeds_autocomplete_results('vendor_name', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type,$resp_center,$fund_src, $data_source);
         break;
       default:
-        $query = 'select/?q=vendor_name_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:spending&wt=phps&facet.limit=10';
-        $matches = _get_spending_datafeeds_autocomplete_results('vendor_name', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type,$resp_center,$fund_src, $data_source);
+        $query = 'select/?q=vendor_name_code_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name_code&fq=domain:spending&wt=phps&facet.limit=10&sort=vendor_name%20asc';
+        $matches = _get_spending_datafeeds_autocomplete_results('vendor_name_code', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type,$resp_center,$fund_src, $data_source);
+        
+        //NYCCHKBK-10301 : For some records, 'vendor_name_code' attribute doesn't exist in Solr, so they don't show up in autocomplete suggestions
+        //So, if query results are less than 10, then run a query for 'vendor_name' and add its results
+        //but do not let the total number of results exceed over 10
+        if(count($matches) < 10){  
+          $query = 'select/?q=vendor_name_autocomplete:' . $search_term . '&facet=true&facet.field=vendor_name&fq=domain:spending&wt=phps&facet.limit=10&sort=vendor_name%20asc';
+          $matches_name = _get_spending_datafeeds_autocomplete_results('vendor_name', $query, $year, $agency, $expense_category, $dept, $exptype, $mwbe_category, $industry,$agg_type,$resp_center,$fund_src, $data_source);
+        
+          //"No matches found" is represented as an array in the first index
+          if(gettype($matches[0])=="array"){
+              array_shift($matches);
+          }
+
+          $index = 0;
+          $matches_map = [];
+          
+          //Storing 'vendor name' and 'vendor name[code]' as key value pairs
+          while($index < count($matches)){
+            $len = strpos($matches[$index], '[');
+            $vendor_name = substr($matches[$index], 0, $len);
+            $matches_map[$vendor_name] = $matches[$index++];
+          }
+
+          $index  = 0;
+
+          while(count($matches) < 10 && $index < count($matches_name)){
+              if(!isset($matches_map[$matches_name[$index]])){
+                array_push($matches, $matches_name[$index]);
+                $matches_map[$matches_name[$index]] = $matches_name[$index];
+              }              
+              $index++;
+          }
+        }
         break;
     }
     drupal_json_output($matches);
