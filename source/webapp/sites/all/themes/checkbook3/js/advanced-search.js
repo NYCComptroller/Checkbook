@@ -1679,14 +1679,17 @@
               disable_input([div.ele('contract_id'),div.ele('payee_name'),div.ele('catastrophic_events')]);
               div.ele('contract_id').val("");
               div.ele('payee_name').val("");
+              onCatastrophicEventChange(div);
             }
             else if (exptype === '4') {
               disable_input([div.ele('contract_id'),div.ele('catastrophic_events')]);
               div.ele('contract_id').val("");
               enable_input(div.ele('payee_name'));
+              onCatastrophicEventChange(div);
             }
             else {
               enable_input([div.ele('contract_id'), div.ele('payee_name'),div.ele('catastrophic_events')]);
+              onFiscalYearChange(div);
             }
           }
         }
@@ -1740,7 +1743,9 @@
           var agency = 0;
           if(data_source == 'checkbook') {
             let fiscal_year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
+            let exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
             if(fiscal_year && !(fiscal_year === "fy~all" || fiscal_year === "fy~122" || fiscal_year === "fy~121")) disable_input(div.ele('catastrophic_events'));
+            else if(exptype == '2' || exptype == '4') disable_input(div.ele('catastrophic_events'));
             else enable_input(div.ele('catastrophic_events'));
             agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
             if(agency == 0)
