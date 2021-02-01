@@ -733,9 +733,6 @@
     })
   }
 
-  //When 'previous' button is clicked from datafeeds results page, the state of the drupal form is restored,
-  //but the 'disabled or limited options' of dropdown filters isn't restored
-  //So restore the state of these filters by explicity invoking events 
   $(document).ready(function () {
     onSpendingCategoryChange();
     onCatastrophicEventChange();
