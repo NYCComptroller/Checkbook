@@ -1733,13 +1733,6 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
     $form['count']['no_records'] = array(
       '#markup' => 'There are no records for the search criteria.',
     );
-    $form['prev'] = array(
-      '#type' => 'submit',
-      '#value' => t('Previous'),
-      '#name' => 'prev',
-      '#submit' => array('checkbook_datafeeds_' . $domain . '_confirmation_previous_submit'),
-      '#limit_validation_errors' => array(),
-    );
     $form['start_over'] = array(
       '#type' => 'submit',
       '#value' => t('Cancel'),
