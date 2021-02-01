@@ -1341,10 +1341,8 @@
           }
 
           //Clear autocomplete fields
-          div.ele('payee_name').val("");
-          div.ele('contract_id').val("");
-          div.ele('document_id').val("");
-          div.ele('capital_project').val("");
+          div.ele('revenue_source').val("");
+          div.ele('revenue_class').val("");
       }
 
         //On change of "Catastrophic event"
