@@ -457,7 +457,7 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
       break;
     case "funding_source_id":
         $fundsrc_ids = _checkbook_project_querydataset($data_source . ':funding_source', array('funding_source_id', 'display_funding_source_descr'), array($keyword => $id));
-        return ucwords(strtolower($fundsrc_ids[0]['display_funding_source_descr']));
+        return isset($fundsrc_ids[0]['display_funding_source_descr']) ? ucwords(strtolower($fundsrc_ids[0]['display_funding_source_descr'])) :'';
       break;
     case "responsibility_center_id":
       $respcenter_ids = _checkbook_project_querydataset($data_source . ':resp_centers', array('responsibility_center_id', 'responsibility_center_description'), array($keyword => $id));

@@ -64,7 +64,6 @@ class NychaRevenueUtilTest extends \PHPUnit\Framework\TestCase
     public function test_getTransactionsSubTitle()
     {
         $result = NychaRevenueUtil::getTransactionsSubTitle('rec_funding_source', '/panel_html/nycha_revenue_transactions/nycha_revenue/transactions/year/121/datasource/checkbook_nycha/widget/rec_funding_source/fundsrc/527');
-        log_error($result);
         $this->assertEquals("<b>Funding Source: </b>", $result);
     }
 
