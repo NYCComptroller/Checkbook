@@ -130,7 +130,6 @@
         fiscal_year.options[i].style.display = '';
       }
     }
-    fiscal_year.value = "0"; 
 }
 
   //On Year filter dropdown change
@@ -142,8 +141,13 @@
     let fiscal_year = document.getElementById("edit-year").value.toLowerCase();
     let catastrophic_event = document.getElementById("edit-catastrophic-event");
     let enabled_count = catastrophic_event.length;
+    let spending_cat = ($('select[name="expense_type"]').val()) ? $('select[name="expense_type"]').val() : 0;
 
-    if(!(fiscal_year === "0" || fiscal_year === "fy2021" || fiscal_year === "fy2020")){
+    if (spending_cat === "Payroll [p]" || spending_cat === "Others [o]"){
+      disable_input($('select[name="catastrophic_event"]'));
+      return;
+    }
+    else if(!(fiscal_year === "0" || fiscal_year === "fy2021" || fiscal_year === "fy2020")){
       for (let i = 0; i < catastrophic_event.length; i++) {
         let event = catastrophic_event.options[i].text.toLowerCase();
         catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
@@ -728,5 +732,11 @@
       }
     })
   }
+
+  $(document).ready(function () {
+    onSpendingCategoryChange();
+    onCatastrophicEventChange();
+    onYearFilterChange();
+  });
 
 }(jQuery));
