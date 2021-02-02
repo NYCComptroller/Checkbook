@@ -66,9 +66,10 @@ class CheckbookEtlStatistics
                   last_successful_load_date,
                   shard_refresh_flag_yn,
                   index_refresh_flag_yn,
-                  process_abort_flag_yn
+                  process_abort_flag_yn,
+                  process_error_count
             FROM latest_stats_vw WHERE host_environment = '{$environment}'";
-    $results = _checkbook_project_execute_sql_by_data_source($sql, 'etl_statistics');log_error($results);
+    $results = _checkbook_project_execute_sql_by_data_source($sql, 'etl_statistics');
     $databases = array('checkbook' => 'Citywide', 'checkbook_ogent' => 'NYCEDC', 'checkbook_nycha' => 'NYCHA');
     $etlStatus = [];
     foreach($results as $result){
@@ -82,6 +83,7 @@ class CheckbookEtlStatistics
         'Shards Refreshed?' => $result['shard_refresh_flag_yn'],
         'Solr Refreshed?' => $result['index_refresh_flag_yn'],
         'All Files Processed?' => $result['process_abort_flag_yn'],
+        'Process Errors?' => $result['process_error_count']
       );
 
       if($environment == 'PROD'){
