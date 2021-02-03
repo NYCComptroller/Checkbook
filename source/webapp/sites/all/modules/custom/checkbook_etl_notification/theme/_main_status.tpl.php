@@ -2,7 +2,7 @@
 $prod_process_errors = FALSE;
 foreach ($prod_stats as $prod_stat) {
   if ($prod_stat['Last Run Success?'] == 'Fail') {
-    if ($prod_stat['All Files Processed?'] == 'N' && $prod_stat['Shards Refreshed?'] == 'Y' && $prod_stat['Shards Refreshed?'] == 'Y') {
+    if ($prod_stat['All Files Processed?'] == 'N' && $prod_stat['Shards Refreshed?'] == 'Y' && $prod_stat['Solr Refreshed?'] == 'Y') {
       $prod_process_errors = TRUE;
     }
   }
@@ -10,7 +10,7 @@ foreach ($prod_stats as $prod_stat) {
 $uat_process_errors = FALSE;
 foreach ($uat_stats as $uat_stat) {
   if ($uat_stat['Last Run Success?'] == 'Fail') {
-    if ($uat_stat['All Files Processed?'] == 'N' && $uat_stat['Shards Refreshed?'] == 'Y' && $uat_stat['Shards Refreshed?'] == 'Y') {
+    if ($uat_stat['All Files Processed?'] == 'N' && $uat_stat['Shards Refreshed?'] == 'Y' && $uat_stat['Solr Refreshed?'] == 'Y') {
       $uat_process_errors = TRUE;
     }
   }
