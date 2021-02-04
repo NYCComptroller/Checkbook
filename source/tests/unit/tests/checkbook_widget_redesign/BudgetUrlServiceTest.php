@@ -1,20 +1,23 @@
 <?php
 
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_business_layer/checkbook_services/budget/BudgetUrlService.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/utilities/RequestUtilities.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/util/CheckbookDateUtil.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class BudgetUrlServiceTest
  */
-class BudgetUrlServiceTest extends \PHPUnit\Framework\TestCase
+class BudgetUrlServiceTest extends TestCase
 {
     /**
      * Tests getFooterUrl() function
      */
     public function test_getFooterUrl()
-    {
-        $result = BudgetUrlService::getFooterUrl(null, 558);
+    {   
+        $result = BudgetUrlService::getFooterUrl(588);
         $this->assertEquals("/panel_html/budget_transactions/budget/transactions/dtsmnid/558", substr($result, 0, 63));
 
         $result = BudgetUrlService::getFooterUrl();
@@ -38,7 +41,7 @@ class BudgetUrlServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function test_committedBudgetUrl()
     {
-        $result = BudgetUrlService::committedBudgetUrl();
+        $result = BudgetUrlService::committedBudgetUrl(NULL, NULL);
         $this->assertEquals("/panel_html/budget_transactions/budget/transactions", substr($result, 0, 51));
 
         $result = BudgetUrlService::committedBudgetUrl(NULL, 558);
@@ -49,7 +52,7 @@ class BudgetUrlServiceTest extends \PHPUnit\Framework\TestCase
      * Tests departmentUrl() function
      */
     public function test_departmentUrl(){
-        $result = BudgetUrlService::departmentUrl(001);
+        $result = BudgetUrlService::departmentUrl("001");
         $this->assertEquals("/dept/001", substr($result, -9));
     }
 
@@ -66,6 +69,6 @@ class BudgetUrlServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function test_agencyNameUrl(){
         $result = BudgetUrlService::agencyNameUrl(198);
-        $this->assertEquals("/agency/198", substr($result, -12));
+        $this->assertEquals("/agency/198", substr($result, -11));
     }
 }
