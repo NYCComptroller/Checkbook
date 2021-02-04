@@ -26,7 +26,7 @@ class BudgetUrlServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function test_getPercentDiffFooterUrl()
     {
-        $result = BudgetUrlService::getPercentDiffFooterUrl(BudgetUrlService::getFooterUrl(), 'agency_details');
+        $result = BudgetUrlService::getPercentDiffFooterUrl(BudgetUrlService::getFooterUrl(), 'agencies');
         $this->assertEquals("/panel_html/budget_agency_perecent_difference_transactions/budget/agency_details", substr($result, 0, 80));
 
         $result = BudgetUrlService::getPercentDiffFooterUrl(BudgetUrlService::getFooterUrl());
