@@ -88,7 +88,7 @@ class NychaContractsUrlServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function test_agencyUrl()
     {
-        $result = NychaContractsUrlService::agencyUrl();
+        $result = NychaContractsUrlService::agencyUrl('162');
         $this->assertEquals("/agency/162",substr($result, -11));
     }
 
