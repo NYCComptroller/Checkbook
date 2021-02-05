@@ -17,7 +17,7 @@ class BudgetUrlServiceTest extends TestCase
      */
     public function test_getFooterUrl()
     {   
-        $result = BudgetUrlService::getFooterUrl(588);
+        $result = BudgetUrlService::getFooterUrl(558);
         $this->assertEquals("/panel_html/budget_transactions/budget/transactions/dtsmnid/558", substr($result, 0, 63));
 
         $result = BudgetUrlService::getFooterUrl();
