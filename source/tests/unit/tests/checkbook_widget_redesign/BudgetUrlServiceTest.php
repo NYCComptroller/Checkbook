@@ -32,7 +32,7 @@ class BudgetUrlServiceTest extends TestCase
         $result = BudgetUrlService::getPercentDiffFooterUrl(BudgetUrlService::getFooterUrl(), 'agencies');
         $this->assertEquals("/panel_html/budget_agency_perecent_difference_transactions/budget/agency_details", substr($result, 0, 80));
 
-        $result = BudgetUrlService::getPercentDiffFooterUrl(BudgetUrlService::getFooterUrl());
+        $result = BudgetUrlService::getPercentDiffFooterUrl(BudgetUrlService::getFooterUrl(), NULL);
         $this->assertEquals("/panel_html/budget_transactions/budget/transactions", substr($result, 0, 51));
     }
 
