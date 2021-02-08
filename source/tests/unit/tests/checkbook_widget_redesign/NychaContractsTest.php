@@ -83,15 +83,6 @@ class NychaContractsUrlServiceTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("/tCode/BA",$result);
     }
 
-    /**
-     * Tests agencyUrl() function
-     */
-    public function test_agencyUrl()
-    {
-        $result = NychaContractsUrlService::agencyUrl('162');
-        $this->assertEquals("/agency/162",substr($result, -11));
-    }
-
 }
 
 /**
@@ -99,18 +90,6 @@ class NychaContractsUrlServiceTest extends \PHPUnit\Framework\TestCase
  */
 class NYCHAContractsUtilTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * Tests getContractsTransactionsStaticSummary() function
-     */
-    public function test_getContractsTransactionsStaticSummary()
-    {
-       //$result = NYCHAContractUtil::getContractsTransactionsStaticSummary('inv_contract','nycha_spending/transactions/year/121/agency/162/datasource/checkbook_nycha/syear/121/widget/inv_contract/awdmethod/7/tcode/AWD/newwindow');
-       //$result = 'test';
-       //print_r($result);
-       // var_dump($result);
-        //$this->assertTrue(false,$result['total']);
-      //$this->assertEquals('777555333111', $result['total']);
-    }
 
     /**
      * Tests getTransactionsTitle() function
@@ -122,12 +101,5 @@ class NYCHAContractsUtilTest extends \PHPUnit\Framework\TestCase
 
     }
 
-    /**
-     * Tests getTransactionsTitle() function
-     */
-    public function test_adjustYearParams()
-    {
-
-    }
 
 }
