@@ -5,11 +5,10 @@ class BudgetUrlService {
 
     /**
      * Function to build the footer url for the budget widgets
-     * @param $parameters
      * @param null $legacy_node_id
      * @return string
      */
-    static function getFooterUrl($parameters,$legacy_node_id = null) {
+    static function getFooterUrl($legacy_node_id = null) {
         $legacy_node_id = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
         $url = '/panel_html/budget_transactions/budget/transactions'
             . $legacy_node_id
