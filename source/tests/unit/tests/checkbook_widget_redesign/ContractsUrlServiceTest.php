@@ -42,8 +42,17 @@ class ContractsUrlServiceTest extends TestCase
         $this->assertEquals("/version/0", substr($result, 0, 10));
     }   
 
+    /**
+     * Tests pendingContractIdLink() function
+     */
+    public function test_pendingContractIdLink(){
+        $result = ContractsUrlService::pendingContractIdLink("5868332", "CT1", NULL, NULL, NULL, NULL);
+        $this->assertEquals("/panel_html/contract_transactions/agid/5868332/doctype/CT1", $result);
+        
+        $result = ContractsUrlService::pendingContractIdLink(NULL, NULL, NULL, "RCT184620218200842", "7", NULL);
+        $this->assertEquals("/minipanels/pending_contract_transactions/contract/RCT184620218200842/version/7", $result);
+    }
 
-
-
+    
 
 }
