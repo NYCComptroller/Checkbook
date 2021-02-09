@@ -38,7 +38,7 @@ class ContractsUrlServiceTest extends TestCase
         $this->assertEquals("/doctype/MA1", substr($result, -12));
         
         $result = ContractsUrlService::pendingMasterContractIdUrl(NULL, NULL, "RCT184620218200842", NULL, "0", NULL);
-        $this->assertEquals("/minipanels/pending_contract_transactions/contract/RCT184620218200842");
+        $this->assertEquals("/minipanels/pending_contract_transactions/contract/RCT184620218200842", substr($result, 0, 69));
         $this->assertEquals("/version/0", substr($result, 0, 10));
     }   
 
