@@ -15,7 +15,7 @@ class RevenueUrlServiceTest extends \PHPUnit\Framework\TestCase
      */
     public function test_getFooterUrl()
     {
-        $result = RevenueUrlService::getFooterUrl();
+        $result = RevenueUrlService::getFooterUrl(null,'580');
         $this->assertEquals("/panel_html/revenue_transactions/budget/transactions", substr($result, 0, 52));
     }
 
