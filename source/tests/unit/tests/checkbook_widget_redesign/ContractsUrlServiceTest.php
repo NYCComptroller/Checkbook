@@ -59,7 +59,7 @@ class ContractsUrlServiceTest extends TestCase
      */
     public function test_spentToDateUrl(){
         $result = ContractsUrlService::spentToDateUrl("awdmethod", NULL);
-        $this->assertEquals("/contract/spending/transactions/awdmethod", substr($result, 0, 41));
+        $this->assertEquals("/contract/spending/transactionsawdmethod", substr($result, 0, 40));
     }
 
     /**
@@ -67,7 +67,7 @@ class ContractsUrlServiceTest extends TestCase
      */
     public function test_masterAgreementSpentToDateUrl(){
         $result = ContractsUrlService::masterAgreementSpentToDateUrl("awdmethod", NULL);
-        $this->assertEquals("/contract/spending/transactions/awdmethod", substr($result, 0, 41));
+        $this->assertEquals("/contract/spending/transactionsawdmethod", substr($result, 0, 40));
     }
 
     /**
