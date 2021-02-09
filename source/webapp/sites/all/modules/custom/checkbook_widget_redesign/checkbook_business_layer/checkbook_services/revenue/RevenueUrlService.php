@@ -12,6 +12,8 @@ class RevenueUrlService {
      * @return string
      */
     static function getFooterUrl($parameters=null,$legacy_node_id = null) {
+        $parameters = isset($parameters) ? $parameters : null;
+        $legacy_node_id = isset($legacy_node_id) ? $legacy_node_id : null;
         $url = '/panel_html/revenue_transactions/budget/transactions'.'/dtsmnid/' . $legacy_node_id;
         $url .= RequestUtilities::buildUrlFromParam('agency');
         $url .= RequestUtilities::buildUrlFromParam('revcat');
@@ -26,6 +28,8 @@ class RevenueUrlService {
      * @return string
      */
     static function getCrossYearFooterUrl($footerUrl=null,$crossYearFooterUrl=null) {
+        $footerUrl = isset($footerUrl) ? $footerUrl : null;
+        $crossYearFooterUrl = isset($crossYearFooterUrl) ? $crossYearFooterUrl : null ;
         $url = str_replace('/revenue_transactions/budget/transactions/',$crossYearFooterUrl,$footerUrl);
         return $url;
     }
@@ -36,6 +40,7 @@ class RevenueUrlService {
      * @return string
      */
     static function getAgencyUrl($agencyId,$legacy_node_id = null) {
+        $legacy_node_id = isset($legacy_node_id) ? $legacy_node_id : null;
         $url = '/revenue'.RequestUtilities::buildUrlFromParam('year')
                 .RequestUtilities::buildUrlFromParam('yeartype')
                 .'/agency/'.$agencyId;
@@ -50,6 +55,7 @@ class RevenueUrlService {
      * @return string
      */
     static function getRecognizedAmountUrl($param, $value,$legacy_node_id = null, $crorss_year = null) {
+        $legacy_node_id = isset($legacy_node_id)?$legacy_node_id : null;
         $url = '/panel_html/revenue_transactions/budget/transactions'.'/smnid/' . $legacy_node_id;
         $url .= RequestUtilities::buildUrlFromParam('agency');
         $url .= RequestUtilities::buildUrlFromParam('revcat');
