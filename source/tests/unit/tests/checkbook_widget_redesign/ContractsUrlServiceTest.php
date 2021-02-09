@@ -113,6 +113,4 @@ class ContractsUrlServiceTest extends TestCase
         $result = ContractsUrlService::getAmtModificationUrlString(false, NULL);
         $this->assertEquals("/modamt/0/pmodamt/0/smodamt/0", $result);
     }
-
-    
 }
