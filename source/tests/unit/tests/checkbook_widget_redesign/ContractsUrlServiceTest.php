@@ -53,6 +53,45 @@ class ContractsUrlServiceTest extends TestCase
         $this->assertEquals("/minipanels/pending_contract_transactions/contract/RCT184620218200842/version/7", $result);
     }
 
-    
+    /**
+     * Tests spentToDateUrl() function
+     */
+    public function test_spentToDateUrl(){
+        $result = ContractsUrlService::spentToDateUrl("awdmethod", NULL);
+        $this->assertEquals("/contract/spending/transactions/awdmethod", substr($result, 0, 41));
+    }
 
+    /**
+     * Tests masterAgreementSpentToDateUrl() function
+     */
+    public function test_masterAgreementSpentToDateUrl(){
+        $result = ContractsUrlService::masterAgreementSpentToDateUrl("awdmethod", NULL);
+        $this->assertEquals("/contract/spending/transactions/awdmethod", substr($result, 0, 41));
+    }
+
+    /**
+     * Tests primeMinorityTypeUrl() function
+     */
+    public function test_primeMinorityTypeUrl(){
+        $result = ContractsUrlService::primeMinorityTypeUrl(2);
+        $this->assertEquals("/contracts_landing/year/121/yeartype/B/year/121/status/A/dashboard/mp/mwbe/2", $result);
+    }
+
+    /**
+     * Tests subMinorityTypeUrl() function
+     */
+    public function test_subMinorityTypeUrl(){
+        $result = ContractsUrlService::subMinorityTypeUrl(2);
+        $this->assertEquals("/contracts_landing/year/121/yeartype/B/year/121/status/A/dashboard/mp/mwbe/2", $result);
+    }
+
+    /**
+     * Tests minorityTypeUrl() function
+     */
+    public function test_minorityTypeUrl(){
+        $result = ContractsUrlService::minorityTypeUrl(2,'mp');
+        $this->assertEquals("/contracts_landing/year/121/yeartype/B/year/121/status/A/dashboard/mp/mwbe/2", $result);
+    }
+
+    
 }
