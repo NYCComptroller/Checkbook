@@ -93,5 +93,26 @@ class ContractsUrlServiceTest extends TestCase
         $this->assertEquals("/contracts_landing/year/121/yeartype/B/year/121/status/A/dashboard/mp/mwbe/2", $result);
     }
 
+    /**
+     * Tests getFooterUrl() function
+     */
+    public function test_getFooterUrl(){
+        $parameter["status"] = "A";
+        $parameter["yeartype"] = "B";
+        $parameter["year"] = "121";
+        $parameter["dashboard"] = "mp";
+        $parameter["mwbe"] = "2";
+        $result = ContractsUrlService::getFooterUrl($parameter,454);
+        $this->assertEquals("/panel_html/contract_details/contract/transactions/contcat/expense/contstatus/A/mwbe/2/dashboard/mp/pmwbe/2/yeartype/B/year/121/doctype/MA1~CTA1~CT1/smnid/454", $result);
+    }
+
+    /**
+     * Tests getAmtModificationUrlString() function
+     */
+    public function test_getAmtModificationUrlString(){
+        $result = ContractsUrlService::getAmtModificationUrlString(false, NULL);
+        $this->assertEquals("/modamt/0/pmodamt/0/smodamt/0", $result);
+    }
+
     
 }
