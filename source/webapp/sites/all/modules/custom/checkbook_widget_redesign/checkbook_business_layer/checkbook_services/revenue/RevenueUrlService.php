@@ -11,7 +11,7 @@ class RevenueUrlService {
      * @param null $legacy_node_id
      * @return string
      */
-    static function getFooterUrl($parameters,$legacy_node_id = null) {
+    static function getFooterUrl($parameters=null,$legacy_node_id = null) {
         $url = '/panel_html/revenue_transactions/budget/transactions'.'/dtsmnid/' . $legacy_node_id;
         $url .= RequestUtilities::buildUrlFromParam('agency');
         $url .= RequestUtilities::buildUrlFromParam('revcat');
@@ -19,17 +19,17 @@ class RevenueUrlService {
         $url .= _checkbook_project_get_year_url_param_string();
         return $url;
     }
-    
+
     /**
      * @param $footerUrl
      * @param $crossYearFooterUrl
      * @return string
      */
-    static function getCrossYearFooterUrl($footerUrl,$crossYearFooterUrl) {
+    static function getCrossYearFooterUrl($footerUrl=null,$crossYearFooterUrl=null) {
         $url = str_replace('/revenue_transactions/budget/transactions/',$crossYearFooterUrl,$footerUrl);
         return $url;
     }
-    
+
     /**
      * @param $agencyId
      * @param null $legacy_node_id
@@ -41,7 +41,7 @@ class RevenueUrlService {
                 .'/agency/'.$agencyId;
         return $url;
     }
-    
+
     /**
      * @param $param Parameter Name
      * @param $value pParameter Value
