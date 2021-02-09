@@ -16,7 +16,7 @@ class RevenueUrlServiceTest extends \PHPUnit\Framework\TestCase
     public function test_getFooterUrl()
     {
         $result = RevenueUrlService::getFooterUrl(null,'580');
-        $this->assertEquals("/panel_html/revenue_transactions/budget/transactions", substr($result, 0, 52));
+        $this->assertEquals("/panel_html/revenue_transactions/budget/transactions/dtsmnid/580", substr($result, 0, 64));
     }
 
     /**
@@ -49,5 +49,4 @@ class RevenueUrlServiceTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("revcat", $urlParams[count($urlParams)-2]);
         $this->assertEquals("15", $urlParams[count($urlParams)-1]);
     }
-
 }
