@@ -81,14 +81,6 @@ class ContractsUrlServiceTest extends TestCase
     }
 
     /**
-     * Tests subMinorityTypeUrl() function
-     */
-    public function test_subMinorityTypeUrl(){
-        $result = ContractsUrlService::subMinorityTypeUrl(2);
-        $this->assertEquals("dashboard/mp/mwbe/2", substr($result, -19));
-    }
-
-    /**
      * Tests minorityTypeUrl() function
      */
     public function test_minorityTypeUrl(){
