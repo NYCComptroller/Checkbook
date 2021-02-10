@@ -77,7 +77,7 @@ class ContractsUrlServiceTest extends TestCase
      */
     public function test_primeMinorityTypeUrl(){
         $result = ContractsUrlService::primeMinorityTypeUrl(2);
-        $this->assertEquals("/contracts_landing/year/121/yeartype/B/year/121/status/A/dashboard/mp/mwbe/2", $result);
+        $this->assertEquals("dashboard/mp/mwbe/2", substr($result, -19));
     }
 
     /**
@@ -85,7 +85,7 @@ class ContractsUrlServiceTest extends TestCase
      */
     public function test_subMinorityTypeUrl(){
         $result = ContractsUrlService::subMinorityTypeUrl(2);
-        $this->assertEquals("/contracts_landing/year/121/yeartype/B/year/121/status/A/dashboard/mp/mwbe/2", $result);
+        $this->assertEquals("dashboard/mp/mwbe/2", substr($result, -19));
     }
 
     /**
@@ -93,7 +93,7 @@ class ContractsUrlServiceTest extends TestCase
      */
     public function test_minorityTypeUrl(){
         $result = ContractsUrlService::minorityTypeUrl(2,'mp');
-        $this->assertEquals("/contracts_landing/year/121/yeartype/B/year/121/status/A/dashboard/mp/mwbe/2", $result);
+        $this->assertEquals("dashboard/mp/mwbe/2", substr($result, -19));
     }
 
     /**
