@@ -92,6 +92,7 @@ class ContractsUrlServiceTest extends TestCase
      * Tests getFooterUrl() function
      */
     public function test_getFooterUrl(){
+        $parameter["doctype"] = "MA1,CTA1,CT1";
         $parameter["status"] = "A";
         $parameter["yeartype"] = "B";
         $parameter["year"] = "121";
