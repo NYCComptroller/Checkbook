@@ -11,12 +11,30 @@ use PHPUnit\Framework\TestCase;
 class RevenueUrlServiceTest extends \PHPUnit\Framework\TestCase
 {
     /**
+     * Tests getFooterUrl() function
+     */
+    public function test_getFooterUrl()
+    {
+        $result = RevenueUrlService::getFooterUrl(null,'580');
+        $this->assertEquals("/panel_html/revenue_transactions/budget/transactions/dtsmnid/580", substr($result, 0, 64));
+    }
+
+    /**
      * Tests getAgencyUrl function
      */
     public function test_getAgencyUrl()
     {
         $result = RevenueUrlService::getAgencyUrl(138, NULL);
         $this->assertEquals("/revenue/agency/138",$result);
+    }
+
+    /**
+     * Tests getCrossYearFooterUrl function
+     */
+    public function test_getCrossYearFooterUrl()
+    {
+        $result = RevenueUrlService::getCrossYearFooterUrl('panel_html/revenue_transactions/budget/transactions/dtsmnid/578/yeartype/B/year/122','/agency_revenue_by_cross_year_collections_details/revenue/agency_details/');
+        $this->assertEquals("panel_html/agency_revenue_by_cross_year_collections_details/revenue/agency_details/dtsmnid/578/yeartype/B/year/122",$result);
     }
 
     /**
