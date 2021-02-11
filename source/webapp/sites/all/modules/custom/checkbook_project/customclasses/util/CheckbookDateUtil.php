@@ -112,6 +112,7 @@ class CheckbookDateUtil{
       return $year;
     }
     $year = variable_get($key, FALSE);
+    isset($year) ? $year : null;
     if (FALSE === $year) {
       LogHelper::log_warn('Drush variable ' . $key . ' not found!');
       $year = self::$currentFiscalYear;
@@ -181,7 +182,8 @@ class CheckbookDateUtil{
   public static function getCurrentFiscalYear($data_source = Datasource::CITYWIDE){
     self::setCurrentYears();
     $data_source = ($data_source == Datasource::NYCHA || Datasource::isNYCHA()) ? Datasource::NYCHA : $data_source;
-    return self::getCurrentDatasourceFiscalYear($data_source);
+    $year_value = self::getCurrentDatasourceFiscalYear($data_source);
+    return isset($year_value) ? $year_value : null;
   }
 
   /**
@@ -189,7 +191,8 @@ class CheckbookDateUtil{
    * @return string
    */
   public static function getCurrentFiscalYearId($data_source = Datasource::CITYWIDE){
-    return self::year2yearId(self::getCurrentFiscalYear($data_source));
+    $year_value = self::year2yearId(self::getCurrentFiscalYear($data_source));
+    return isset($year_value) ? $year_value : null ;
   }
 
 
