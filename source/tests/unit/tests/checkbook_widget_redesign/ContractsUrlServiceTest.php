@@ -99,9 +99,9 @@ class ContractsUrlServiceTest extends TestCase
         $parameter["dashboard"] = "mp";
         $parameter["mwbe"] = "2";
         $result = ContractsUrlService::getFooterUrl($parameter,454);
-        $this->assertEquals("/panel_html/contract_details/contract/transactions/contcat/expense/contstatus/A/mwbe/2/dashboard/mp/pmwbe/2/yeartype/B/year/121/doctype/MA1~CTA1~CT1/smnid/454", $result);
+        $this->assertEquals("/panel_html/contract_details/contract/transactions/contcat/expense/contstatus/P/yeartype/C/year/119/doctype/MA1~CTA1~CT1/smnid/454", $result);
     }
-
+    
     /**
      * Tests getAmtModificationUrlString() function
      */
