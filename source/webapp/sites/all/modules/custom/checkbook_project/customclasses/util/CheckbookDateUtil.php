@@ -118,7 +118,7 @@ class CheckbookDateUtil{
       $year = self::$currentFiscalYear;
     }
     _checkbook_dmemcache_set($key, $year);
-    return $year;
+    return isset($year) ? $year : null;
   }
 
   /**
