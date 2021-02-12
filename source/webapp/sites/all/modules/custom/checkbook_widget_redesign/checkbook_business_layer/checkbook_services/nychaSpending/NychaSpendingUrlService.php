@@ -96,7 +96,7 @@ class NychaSpendingUrlService{
     * @param null $legacy_node_id
     * @return string
     */
-      static function invContractSpendingUrl($dynamic_parameter, $widget,$agreement_type,$tcode) {
+      static function invContractSpendingUrl($dynamic_parameter = null , $widget,$agreement_type = null,$tcode = null ) {
         $url = drupal_get_path_alias($_GET['q']);
         $year = RequestUtil::getRequestKeyValueFromURL('year', $url);
         $vendor = RequestUtilities::buildUrlFromParam('vendor');
@@ -129,7 +129,7 @@ class NychaSpendingUrlService{
 * @param null $legacy_node_id
 * @return string
 */
-  static function invIDContractSpendingUrl($dynamic_parameter, $widget,$agreement_type,$tcode) {
+  static function invIDContractSpendingUrl($dynamic_parameter = null , $widget,$agreement_type = null ,$tcode =null) {
     $vendor = RequestUtilities::buildUrlFromParam('vendor');
     $industry = RequestUtilities::buildUrlFromParam('industry');
     $vendor = str_replace("vendor", "vendor_inv", $vendor);
