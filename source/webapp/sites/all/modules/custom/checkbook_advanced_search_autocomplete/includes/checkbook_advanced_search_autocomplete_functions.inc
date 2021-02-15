@@ -439,17 +439,17 @@ function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year,
     if($budget_code != '0' ) {
         $params["budget_code"] = $budget_code;
     }
-    $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name", "budget_code_code.budget_code_code"), $params,"budget_code_name.budget_code_name");
+    $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name"), $params,"budget_code_name.budget_code_name");
     if(count($results) == 0 && $agency != '0'){
         unset($params["budget_code"]);
-        $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name", "budget_code_code.budget_code_code"), $params,"budget_code_name.budget_code_name");
+        $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name"), $params,"budget_code_name.budget_code_name");
     }
     if (count($results) > 0) {
         $matches = array();
         foreach ($results as $key=>$value) {
             $budget_name_value = $value['budget_code_name.budget_code_name'];
             $budget_name_text = _ckbk_excerpt($budget_name_value);
-            $matches[] = array('label'=> $budget_name_text,'value' => $budget_name_value, 'code' => $value["budget_code_code.budget_code_code"]);
+            $matches[] = array('label'=> $budget_name_text,'value' => $budget_name_value);
         }
         drupal_json_output($matches);
     }
