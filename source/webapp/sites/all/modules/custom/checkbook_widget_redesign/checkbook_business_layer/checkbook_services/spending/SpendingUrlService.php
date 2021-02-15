@@ -223,7 +223,7 @@ class SpendingUrlService {
         $dashboard = "sp";
         $url = static::mwbeUrl($minority_type_id,$dashboard);
 
-        return $url;
+        return isset($url) ? $url : null;
     }
 
     /**
@@ -277,8 +277,9 @@ class SpendingUrlService {
      * @param null $legacy_node_id
      * @return string
      */
-    static function getFooterUrl($parameters,$legacy_node_id = null) {
+    static function getFooterUrl($parameters = null ,$legacy_node_id = null) {
         $legacy_node_id = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
+
         $url = '/panel_html/spending_transactions/spending/transactions'
             . RequestUtilities::buildUrlFromParam('vendor')
             . static::getVendorFacetParameter()
@@ -288,7 +289,7 @@ class SpendingUrlService {
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . _checkbook_project_get_year_url_param_string()
             . $legacy_node_id;
-        
+
         return $url;
     }
 
@@ -296,7 +297,7 @@ class SpendingUrlService {
      * Returns the vendor or sub vendor id for the vendor facets
      * @return string
      */
-    static function getVendorFacetParameter() {
+   public static function getVendorFacetParameter() {
 
         $facet_vendor_id = Dashboard::isSubDashboard()
             ? RequestUtilities::get("subvendor")
@@ -304,7 +305,7 @@ class SpendingUrlService {
 
         $facet_vendor_id = isset($facet_vendor_id) ? "/fvendor/" . $facet_vendor_id : '';
 
-        return $facet_vendor_id;
+        return isset($facet_vendor_id) ? $facet_vendor_id : null;
     }
 
-} 
+}
