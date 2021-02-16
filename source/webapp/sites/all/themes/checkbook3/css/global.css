@@ -487,6 +487,7 @@ ul.ui-autocomplete {
     box-shadow: 3px 4px 5px #BBBBBB;
     padding: 0 10px;
     z-index: 1003 !important;
+    max-width: 578px;
 }
 
 li.ui-autocomplete-category {
