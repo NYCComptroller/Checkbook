@@ -107,11 +107,11 @@ class CheckbookEtlStatistics
       return $data;
     }else{
       if ($environment == 'PROD') {
-        self::$prodStatus = "There are no Statistics found for today.";
+        self::$prodStatus = "There are no Statistics found.";
       }
 
       if ($environment == 'UAT') {
-        self::$uatStatus = "There are no Statistics found for today.";
+        self::$uatStatus = "There are no Statistics found.";
       }
       return NULL;
     }
