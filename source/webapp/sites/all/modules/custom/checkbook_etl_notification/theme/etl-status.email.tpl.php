@@ -23,6 +23,11 @@
       color:#3c5e7c;
     }
 
+    .no-stats{
+      font-size: 12px;
+      color:darkred;
+    }
+
     table.status tr:nth-child(even){background-color: #f2f2f2;}
 
     table.status tr:hover {background-color: #ddd;}
