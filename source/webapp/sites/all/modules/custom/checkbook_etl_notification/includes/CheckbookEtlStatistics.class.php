@@ -165,6 +165,12 @@ class CheckbookEtlStatistics
 
     $message = array_merge($message, $msg);
 
+    //Send Status to all recipients when ETL Statistics are not empty
+    global $conf;
+    if(self::$recipients == 'All' && isset($conf['checkbook_ETL_emails'])){
+      $message['to'] = $conf['checkbook_ETL_emails'];
+    }
+
     return $message;
   }
 
@@ -217,20 +223,10 @@ class CheckbookEtlStatistics
 
       $from = $conf['email_from'];
 
-      if (isset($conf['checkbook_dev_group_email']) && self::$recipients == "Dev"){
-        $to_dev = $conf['checkbook_dev_group_email'];
-
+      if (isset($conf['checkbook_dev_group_email'])) {
+        $to = $conf['checkbook_dev_group_email'];
         try{
-          drupal_mail('checkbook_etl_notification', 'send-dev-status', $to_dev, null, ['dev_mode'=> true], $from);
-        } catch(Exception $ex1){
-          error_log($ex1->getMessage());
-        }
-      }
-
-      if (isset($conf['checkbook_ETL_emails']) && self::$recipients == "All") {
-        $to_client = $conf['checkbook_ETL_emails'];
-        try{
-          drupal_mail('checkbook_etl_notification', 'send-client-status', $to_client, null, ['dev_mode'=> false], $from);
+          drupal_mail('checkbook_etl_notification', 'send-status', $to, null, ['dev_mode'=> false], $from);
         } catch(Exception $ex2){
           error_log($ex2->getMessage());
         }
