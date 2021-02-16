@@ -137,11 +137,11 @@ class CheckbookEtlStatistics
         }
       }else{
         if(!isset($prodStats) && !isset($uatStats)){
-          self::$successSubject = "ETL Stats not Found";
+          self::$successSubject = "Stats not Found";
         }else if(!isset($prodStats) && isset($uatStats)){
-          self::$successSubject = "PROD ETL Stats not Found";
+          self::$successSubject = "PROD Stats not Found";
         }else if(isset($prodStats) && !isset($uatStats)){
-          self::$successSubject = "UAT ETL Stats not Found";
+          self::$successSubject = "UAT Stats not Found";
         }
         self::$recipients = "Dev";
       }
