@@ -1,8 +1,8 @@
 <?php
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_business_layer/checkbook_services/nychaContracts/NychaContractsWidgetService.php';
-include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_business_layer/checkbook_services/nychaContracts/NychaContractsUrlService.php';
-include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_business_layer/checkbook_services/widget/WidgetDataService.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_business_layer/checkbook_services/widget/WidgetService.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_business_layer/checkbook_services/widget/WidgetDataService.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_business_layer/checkbook_services/nychaContracts/NychaContractsUrlService.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/constants/Constants.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/RequestUtil.php';
 
@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
  * Class NychaContractsWidgetServiceTest
  */
 class NychaContractsWidgetServiceTest extends TestCase{
+    
     /**
      * Tests initializeDataService() function
      */
