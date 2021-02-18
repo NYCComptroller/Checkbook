@@ -5,7 +5,7 @@
   // On back button reload page with the url parameters
   var perfEntries = performance.getEntriesByType("navigation");
   if (perfEntries[0].type === "back_forward") {
-    window.location.reload();
+    window.location.reload(true);
   }
   $(document).ready(function () {
     $("#edit-search-box").autocomplete({
