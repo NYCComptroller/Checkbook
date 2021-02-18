@@ -1,17 +1,21 @@
 <?php
 $prod_process_errors = FALSE;
-foreach ($prod_stats as $prod_stat) {
-  if ($prod_stat['Last Run Success?'] == 'Fail') {
-    if ($prod_stat['All Files Processed?'] == 'N' && $prod_stat['Shards Refreshed?'] == 'Y' && $prod_stat['Solr Refreshed?'] == 'Y') {
-      $prod_process_errors = TRUE;
+if(isset($prod_stats)) {
+  foreach ($prod_stats as $prod_stat) {
+    if ($prod_stat['Last Run Success?'] == 'Fail') {
+      if ($prod_stat['All Files Processed?'] == 'N' && $prod_stat['Shards Refreshed?'] == 'Y' && $prod_stat['Solr Refreshed?'] == 'Y') {
+        $prod_process_errors = TRUE;
+      }
     }
   }
 }
 $uat_process_errors = FALSE;
-foreach ($uat_stats as $uat_stat) {
-  if ($uat_stat['Last Run Success?'] == 'Fail') {
-    if ($uat_stat['All Files Processed?'] == 'N' && $uat_stat['Shards Refreshed?'] == 'Y' && $uat_stat['Solr Refreshed?'] == 'Y') {
-      $uat_process_errors = TRUE;
+if(isset($uat_stats)) {
+  foreach ($uat_stats as $uat_stat) {
+    if ($uat_stat['Last Run Success?'] == 'Fail') {
+      if ($uat_stat['All Files Processed?'] == 'N' && $uat_stat['Shards Refreshed?'] == 'Y' && $uat_stat['Solr Refreshed?'] == 'Y') {
+        $uat_process_errors = TRUE;
+      }
     }
   }
 }
@@ -19,9 +23,13 @@ foreach ($uat_stats as $uat_stat) {
 <table cellspacing="7" class="title">
   <tbody>
     <tr><th>Production ETL Summary</th></tr>
+    <?php if(!isset($prod_stats)): ?>
+    <tr><td class="no-stats"><?php echo $prod_status; ?></td></tr>
+    <?php endif; ?>
   </tbody>
 </table>
 <br>
+<?php if(isset($prod_stats)): ?>
 <table class="status">
   <tbody>
     <tr>
@@ -70,14 +78,19 @@ foreach ($uat_stats as $uat_stat) {
   <?php endforeach; ?>
   </tbody>
 </table>
+<?php endif; ?>
 <br>
 <br>
 <table cellspacing="7" class="title">
   <tbody>
     <tr><th>UAT ETL Summary</th></tr>
+    <?php if(!isset($uat_stats)): ?>
+      <tr><td class="no-stats"><?php echo $uat_status; ?></td></tr>
+    <?php endif; ?>
   </tbody>
 </table>
 <br>
+<?php if(isset($prod_stats)): ?>
 <table class="status">
   <tbody>
   <tr>
@@ -126,4 +139,4 @@ foreach ($uat_stats as $uat_stat) {
   <?php endforeach; ?>
   </tbody>
 </table>
-
+<?php endif; ?>
