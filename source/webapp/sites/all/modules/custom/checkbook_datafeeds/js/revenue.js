@@ -223,13 +223,15 @@ function onBudgetFiscalYearChange() {
       let budgetYear = ($('#edit-budget-fiscal-year').val() === 'All Years') ? 0 : $('#edit-budget-fiscal-year').val();
       let revCat = emptyToZero($('#edit-revenue-category').val());
       let fundingSrc = emptyToZero($('#edit-funding-class').val());
+      let catastrophic_event_id = emptyToZero($('#edit-catastrophic-event').val());
       let filters = {
         fiscal_year: fiscalYear,
         fund_class_code: fundClass,
         agency_code: agency,
         revenue_budget_fiscal_year: budgetYear,
         revenue_category_code: revCat,
-        funding_class_code: fundingSrc
+        funding_class_code: fundingSrc,
+        event_id: catastrophic_event_id
       };
       $('#edit-revenue-class').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_class_name_code',filters)});
       $('#edit-revenue-source').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_source_name_code',filters)});
