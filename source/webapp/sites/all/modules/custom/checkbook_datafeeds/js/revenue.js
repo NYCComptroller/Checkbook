@@ -223,7 +223,7 @@ function onBudgetFiscalYearChange() {
       let budgetYear = ($('#edit-budget-fiscal-year').val() === 'All Years') ? 0 : $('#edit-budget-fiscal-year').val();
       let revCat = emptyToZero($('#edit-revenue-category').val());
       let fundingSrc = emptyToZero($('#edit-funding-class').val());
-      let catastrophic_event_id = emptyToZero($('#edit-catastrophic-event').val());
+      let catastrophic_event_id = $('#edit-catastrophic-event').val() ? $('#edit-catastrophic-event').val() : 0;
       let filters = {
         fiscal_year: fiscalYear,
         fund_class_code: fundClass,
