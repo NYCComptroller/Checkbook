@@ -174,6 +174,11 @@ abstract class RevenueFeed{
       ],
       'responseColumns' => $this->filtered_columns
     ];
+
+    if($this->values['catastrophic_event']){
+      $this->criteria['value']['catastrophic_event'] = $this->values['catastrophic_event'];
+    }
+    
     $this->_process_datasource_values();
     return;
   }
