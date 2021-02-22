@@ -47,6 +47,11 @@ class BudgetFeedCitywide extends BudgetFeed{
       $this->user_criteria['Budget Code'] = $this->values['budget_code'];
       $this->formatted_search_criteria['Budget Code'] = $this->values['budget_code'];
     }
+    if ($this->values['catastrophic_event'] && $this->values['catastrophic_event'] != 'Select Events') {
+      $this->form['filter']['catastrophic_event'] = array('#markup' => '<div><strong>Catastrophic Event:</strong> ' . $this->values['catastrophic_event'] . '</div>');
+      $this->user_criteria['Catastrophic Event'] = $this->values['catastrophic_event'];
+      $this->formatted_search_criteria['Expense Category'] = $this->values['catastrophic_event'];
+    }
     if ($this->values['fiscal_year']) {
       $this->form['filter']['fiscal_year'] = array('#markup' => '<div><strong>Year:</strong> ' . $this->values['fiscal_year'] . '</div>');
       $this->user_criteria['Year'] = $this->values['fiscal_year'];
@@ -181,6 +186,12 @@ class BudgetFeedCitywide extends BudgetFeed{
         $this->criteria['value']['budget_code_name'] = str_replace($bcmatches[1], "", $this->values['budget_code']);
       } else {
         $this->criteria['value']['budget_code_name'] = $this->values['budget_code'];
+      }
+    }
+    if ($this->values['catastrophic_event']) {
+      preg_match($this->bracket_value_pattern, $this->values['catastrophic_event'], $evcmatches);
+      if ($evcmatches) {
+        $this->criteria['value']['catastrophic_event'] = trim($evcmatches[1], '[ ]');
       }
     }
     if ($this->values['adoptedfrom'] !== '' || $this->values['adoptedto'] !== '') {

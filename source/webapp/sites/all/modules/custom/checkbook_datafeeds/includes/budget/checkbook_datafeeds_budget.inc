@@ -196,6 +196,15 @@ function checkbook_datafeeds_budget_filter_data($form, $form_state, $data_source
     '#prefix' => '<div class="datafield budgetcode">',
     '#suffix' => '</div>',
   );
+  $form['filter']['catastrophic_event'] = array(
+    '#type' => 'select',
+    '#title' => t('Catastrophic Events:'),
+    '#options' => _get_event_name_and_id('attributes'),
+    '#prefix' => '<div id="catastrophic-event" class="datafield catastrophic-event">',
+    '#suffix' => '</div>',
+    '#validated' => TRUE,
+    '#default_value' => !empty($form_state['values']['catastrophic_event']) ? $form_state['values']['catastrophic_event'] : '',
+  );
   $form['filter']['fiscal_year'] = array(
     '#type' => 'select',
     '#title' => t('Year:'),
