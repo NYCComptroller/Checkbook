@@ -214,6 +214,11 @@ function checkbook_datafeeds_budget_filter_data($form, $form_state, $data_source
     '#prefix' => '<div class="datafield fiscalyear">',
     '#suffix' => '</div>',
   );
+
+  $form['filter']['leftend'] = array(
+    '#markup' => '</div><div class="column column-right">',
+  );
+
   $form['filter']['currentfrom'] = array(
     '#type' => 'textfield',
     '#size' => 15,
@@ -229,9 +234,7 @@ function checkbook_datafeeds_budget_filter_data($form, $form_state, $data_source
     '#suffix' => '</div></div>',
     '#default_value' => !empty($form_state['values']['currentto']) ? $form_state['values']['currentto'] : '',
   );
-  $form['filter']['leftend'] = array(
-    '#markup' => '</div><div class="column column-right">',
-  );
+
   $form['filter']['adoptedfrom'] = array(
     '#type' => 'textfield',
     '#size' => 15,
