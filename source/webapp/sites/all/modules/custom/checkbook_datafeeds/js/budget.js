@@ -172,6 +172,22 @@
                 $.fn.reloadExpenseCategory();
             });
 
+            $('#edit-catastrophic-event', context).change(function () {
+              let cevent = $('#edit-catastrophic-event', context).val();
+              updateYearValue(cevent);
+            });
+
+            $('#edit-fiscal-year', context).change(function () {
+              let yearval = $('select[name="fiscal_year"]', context).val();
+              if(yearval < 2020){
+                $("#edit-catastrophic-event").attr('disabled', 'disabled');
+              }
+              else{
+                $("#edit-catastrophic-event").removeAttr('disabled');
+              }
+
+           });
+
             $('#edit-nycha-budget-name', context).change(function () {
               $('input:hidden[name="nycha_budget_type_hidden"]', context).val($('#edit-nycha-budget-type', context).val());
               $('input:hidden[name="nycha_budget_name_hidden"]', context).val($(this, context).val());
@@ -191,22 +207,37 @@
             });
 
             //Sets up jQuery UI autocompletes and autocomplete filtering functionality
-            let year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
+            let year = $('#edit-fiscal-year',context).val() ? $('#edit-fiscal-year',context).val() : 0;
             let agency = emptyToZero($('#edit-agency',context).val());
-            let dept = ($('#edit-dept',context).val()) ? $('#edit-dept',context).val() : 0;
-            let expcategory = ($('#edit-expense-category',context).val()) ? $('#edit-expense-category',context).val() : 0;
-            let budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
+            let dept = emptyToZero($('#edit-dept',context).val()) ;
+            let expcategory =  emptyToZero($('#edit-expense-category',context).val());
+            let event = emptyToZero($('#edit-catastrophic-event',context).val());
 
-            $('#edit-budget-code',context).autocomplete({source:'/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + year});
+            let filters = {
+                object_class_code: expcategory,
+                department_code:dept,
+                agency_code: agency,
+                fiscal_year: year,
+                event_id:event
+            };
+            $('#edit-budget-code').autocomplete({source: $.fn.autoCompleteSourceUrl('citywide','budget_code_name_code',filters)});
             $('.watch:input',context).each(function () {
                 $(this,context).focus(function () {
                     //set letiables for each field's value
-                    year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
-                    let agency = emptyToZero($('#edit-agency',context).val());
-                    let dept = ($('#edit-dept',context).val()) ? $('#edit-dept',context).val() : 0;
-                    let expcategory = ($('#edit-expense-category',context).val()) ? $('#edit-expense-category',context).val() : 0;
-                    budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
-                    $('#edit-budget-code',context).autocomplete({source:'/autocomplete/budget/budgetcode/' + agency + '/' + dept + '/' +expcategory+ '/' + budgetcode + '/' + year});
+                  let year = $('#edit-fiscal-year',context).val() ? $('#edit-fiscal-year',context).val() : 0;
+                  let agency = emptyToZero($('#edit-agency',context).val());
+                  let dept = emptyToZero($('#edit-dept',context).val()) ;
+                  let expcategory =  emptyToZero($('#edit-expense-category',context).val());
+                  let event = emptyToZero($('#edit-catastrophic-event',context).val());
+
+                    let filters = {
+                      object_class_code: expcategory,
+                      department_code:dept,
+                      agency_code: agency,
+                      fiscal_year: year,
+                      event_id:event
+                    };
+                    $('#edit-budget-code').autocomplete({source: $.fn.autoCompleteSourceUrl('citywide','budget_code_name_code',filters)});
                 });
             });
 
@@ -243,6 +274,19 @@
       }
       return 0;
     }
+
+    // update year drop down when event is chosen
+    function updateYearValue(cevent) {
+      $("#edit-fiscal-year option").each(function() {
+        var yval =  $(this).val();
+        if ( yval < 2020 && cevent != 0){
+        $(" option[value='" + $(this).val() + "']").hide();
+        }
+        else{
+        $(" option[value='" + $(this).val() + "']").show();
+        }
+      });
+  }
 
     //Function to clear text fields and drop-downs
      let clearInputFields = function (dataSource) {
