@@ -464,7 +464,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
   );
   $form['filter']['catastrophic_event'] = array(
     '#type' => 'select',
-    '#title' => t('Catastrophic</br>Events:'),
+    '#title' => t('Catastrophic</br>Event:'),
     '#options' => _get_event_name_and_id('attributes'),
     '#prefix' => '<div class="datafield catastrophic_event">',
     '#suffix' => '</div>',

@@ -327,7 +327,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
 
   $form['filter']['catastrophic_event'] = array(
     '#type' => 'select',
-    '#title' => t('Catastrophic Events:'),
+    '#title' => t('Catastrophic Event:'),
     '#options' => _get_event_name_and_id(),
     '#prefix' => '<div class="datafield catastrophicevent citywide">',
     '#suffix' => '</div>',
