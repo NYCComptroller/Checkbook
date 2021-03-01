@@ -153,6 +153,15 @@
             //Display or hide fields based on data source selection
             showHideBudgetFields(dataSource);
 
+            // Reset covid field based on the form input year value
+            let yearval = $('select[name="fiscal_year"]', context).val()
+            if ( yearval < 2020){
+              $("#edit-catastrophic-event").attr('disabled', 'disabled');
+              $('#edit-catastrophic-event', context).val('0');
+            }
+            let cevent =$('#edit-catastrophic-event', context).val();
+            updateYearValue(cevent);
+
             //Data Source change event
             $('input:radio[name=datafeeds-budget-domain-filter]', context).change(function () {
               $('input:hidden[name="hidden_multiple_value"]', context).val("");
@@ -160,6 +169,7 @@
             });
 
             $('#edit-agency', context).change(function () {
+              $('#edit-budget-code').val("");
                 $('input:hidden[name="dept_hidden"]', context).val("");
                 $('input:hidden[name="expense_category_hidden"]', context).val("");
                 $.fn.reloadDepartment();
@@ -167,20 +177,28 @@
             });
 
             $('#edit-dept', context).change(function () {
+              $('#edit-budget-code').val("");
                 $('input:hidden[name="dept_hidden"]', context).val($('#edit-dept', context).val());
                 $('input:hidden[name="expense_category_hidden"]', context).val("");
                 $.fn.reloadExpenseCategory();
             });
 
+            $('#edit-dept', context).change(function () {
+              $('#edit-budget-code').val("");
+            });
+
             $('#edit-catastrophic-event', context).change(function () {
+              $('#edit-budget-code').val("");
               let cevent = $('#edit-catastrophic-event', context).val();
               updateYearValue(cevent);
             });
 
             $('#edit-fiscal-year', context).change(function () {
+              $('#edit-budget-code').val("");
               let yearval = $('select[name="fiscal_year"]', context).val();
               if(yearval < 2020){
                 $("#edit-catastrophic-event").attr('disabled', 'disabled');
+                $('select[name="catastrophic_event"]', context).val('0');
               }
               else{
                 $("#edit-catastrophic-event").removeAttr('disabled');
@@ -207,7 +225,7 @@
             });
 
             //Sets up jQuery UI autocompletes and autocomplete filtering functionality
-            let year = $('#edit-fiscal-year',context).val() ? $('#edit-fiscal-year',context).val() : 0;
+            let year = $('#edit-fiscal-year',context).val() ;
             let agency = emptyToZero($('#edit-agency',context).val());
             let dept = emptyToZero($('#edit-dept',context).val()) ;
             let expcategory =  emptyToZero($('#edit-expense-category',context).val());
@@ -224,7 +242,7 @@
             $('.watch:input',context).each(function () {
                 $(this,context).focus(function () {
                     //set letiables for each field's value
-                  let year = $('#edit-fiscal-year',context).val() ? $('#edit-fiscal-year',context).val() : 0;
+                  let year = $('#edit-fiscal-year',context).val() ;
                   let agency = emptyToZero($('#edit-agency',context).val());
                   let dept = emptyToZero($('#edit-dept',context).val()) ;
                   let expcategory =  emptyToZero($('#edit-expense-category',context).val());
@@ -267,8 +285,10 @@
 
     //Function to retrieve values enclosed in brackets or return zero if none
     function emptyToZero(input) {
-      const p = /\[(.*?)]$/;
-      const code = p.exec(input.trim());
+      if(input) {
+          var p = /\[(.*?)]$/;
+          var code = p.exec(input.trim());
+      }
       if (code) {
         return code[1];
       }

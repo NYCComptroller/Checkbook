@@ -198,8 +198,9 @@ function checkbook_datafeeds_budget_filter_data($form, $form_state, $data_source
   );
   $form['filter']['catastrophic_event'] = array(
     '#type' => 'select',
-    '#title' => t('Catastrophic Events:'),
+    '#title' => t('Catastrophic Event:'),
     '#options' => _get_event_name_and_id('attributes'),
+    '#attributes' => array('class' => array('watch')),
     '#prefix' => '<div id="catastrophic-event" class="datafield catastrophic-event">',
     '#suffix' => '</div>',
     '#validated' => TRUE,
