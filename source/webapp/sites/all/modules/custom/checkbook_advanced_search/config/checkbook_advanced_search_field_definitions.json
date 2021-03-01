@@ -116,7 +116,7 @@
     "catastrophic_events":{
     "field_type":"select",
     "field_name":"catastrophic_events",
-      "attributes":{"title":"Catastrophic<br>Events", "options":"$event_type_attributes"}
+      "attributes":{"title":"Catastrophic<br>Event", "options":"$event_type_attributes"}
   },
     "purpose":{
         "field_type":"textfield",

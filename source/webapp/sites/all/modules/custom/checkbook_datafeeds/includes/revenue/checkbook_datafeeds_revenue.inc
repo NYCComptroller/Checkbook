@@ -193,7 +193,7 @@ function checkbook_datafeeds_revenue_filter_data($form, $form_state, $data_sourc
 
   $form['filter']['catastrophic_event'] = array(
     '#type' => 'select',
-    '#title' => t('Catastrophic Events:'),
+    '#title' => t('Catastrophic Event:'),
     '#options' => _get_event_name_and_id(),
     '#prefix' => '<div class="datafield catastrophicevent citywide">',
     '#suffix' => '</div>',
@@ -207,7 +207,7 @@ function checkbook_datafeeds_revenue_filter_data($form, $form_state, $data_sourc
   $form['filter']['leftend'] = array(
     '#markup' => '</div><div class="column column-right">',
   );
-  
+
   $form['filter']['adoptedfrom'] = array(
     '#type' => 'textfield',
     '#size' => 15,
