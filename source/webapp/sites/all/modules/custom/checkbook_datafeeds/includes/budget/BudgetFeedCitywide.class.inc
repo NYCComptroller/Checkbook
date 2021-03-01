@@ -47,7 +47,7 @@ class BudgetFeedCitywide extends BudgetFeed{
       $this->user_criteria['Budget Code'] = $this->values['budget_code'];
       $this->formatted_search_criteria['Budget Code'] = $this->values['budget_code'];
     }
-    if ($this->values['catastrophic_event'] && $this->values['catastrophic_event'] != 'Select Events') {
+    if ($this->values['catastrophic_event'] && ($this->values['catastrophic_event'] != 'Select Event' || $this->values['catastrophic_event'] != '0')) {
       $this->form['filter']['catastrophic_event'] = array('#markup' => '<div><strong>Catastrophic Event:</strong> ' . $this->values['catastrophic_event'] . '</div>');
       $this->user_criteria['Catastrophic Event'] = $this->values['catastrophic_event'];
       $this->formatted_search_criteria['Expense Category'] = $this->values['catastrophic_event'];
@@ -188,7 +188,7 @@ class BudgetFeedCitywide extends BudgetFeed{
         $this->criteria['value']['budget_code_name'] = $this->values['budget_code'];
       }
     }
-    if ($this->values['catastrophic_event']) {
+    if ($this->values['catastrophic_event'] && ($this->values['catastrophic_event'] != 'Select Event' || $this->values['catastrophic_event'] != '0')) {
       preg_match($this->bracket_value_pattern, $this->values['catastrophic_event'], $evcmatches);
       if ($evcmatches) {
         $this->criteria['value']['catastrophic_event'] = trim($evcmatches[1], '[ ]');
