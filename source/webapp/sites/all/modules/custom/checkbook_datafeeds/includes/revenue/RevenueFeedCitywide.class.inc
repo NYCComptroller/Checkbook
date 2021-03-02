@@ -61,6 +61,15 @@ class RevenueFeedCitywide extends RevenueFeed{
       $this->formatted_search_criteria['Revenue Source'] = $this->values['revenue_source'];
     }
 
+    //Catastrophic event filter
+    if ($this->values['catastrophic_event']) {
+      $catastrophic_events = _get_event_name_and_id();
+      $catastrophic_event = $catastrophic_events[$this->values['catastrophic_event']]. "[" .$this->values['catastrophic_event']. "]";
+      $this->form['filter']['catastrophic_event'] = array('#markup' => '<div><strong>Catastrophic Event:</strong> ' . $catastrophic_event . '</div>');
+      $this->user_criteria['Catastrophic Event'] = $this->values['catastrophic_event'];
+      $this->formatted_search_criteria['Catastrophic Event'] = $this->values['catastrophic_event'];
+    }
+
     //Adopted
     if (($this->values['adoptedfrom'] || $this->values['adoptedfrom'] === "0") && ($this->values['adoptedto'] || $this->values['adoptedto'] === "0")) {
       $this->form['filter']['adopted'] = array(
