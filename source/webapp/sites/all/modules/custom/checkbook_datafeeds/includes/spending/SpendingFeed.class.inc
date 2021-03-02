@@ -158,6 +158,15 @@ abstract class SpendingFeed
 
     $this->_process_user_criteria_by_datasource();
 
+    //Catastrophic event filter
+    if ($this->values['catastrophic_event']) {
+      $catastrophic_events = _get_event_name_and_id();
+      $catastrophic_event = $catastrophic_events[$this->values['catastrophic_event']]. "[" .$this->values['catastrophic_event']. "]";
+      $this->form['filter']['catastrophic_event'] = array('#markup' => '<div><strong>Catastrophic Event:</strong> ' . $catastrophic_event . '</div>');
+      $this->user_criteria['Catastrophic Event'] = $this->values['catastrophic_event'];
+      $this->formatted_search_criteria['Catastrophic Event'] = $this->values['catastrophic_event'];
+    }
+
     //Issued Date
     if ($this->values['date_filter'] == 1) {
       if ($this->values['issuedfrom'] && $this->values['issuedto']) {
