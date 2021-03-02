@@ -146,7 +146,7 @@ END;
         $disabled = " DISABLED=true";
       }
 
-      echo '<input type="checkbox" id="'.$id.'" '.$checked . $disabled.' facet="'.$facet_name.'" value="'.
+      echo '<input type="checkbox" onclick="return applySearchFilters();" id="'.$id.'" '.$checked . $disabled.' facet="'.$facet_name.'" value="'.
         htmlentities(urlencode($facet_value)).'" />';
       echo <<<END
 
@@ -207,7 +207,7 @@ END;
               echo '<input type="radio" name="' . htmlentities($sub_facet->title) . '" ' . 'id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
               htmlentities(urlencode($sub_facet_value)) . '" />';
             }else{
-              echo '<input type="checkbox" id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
+              echo '<input type="checkbox" onclick="return applySearchFilters();" id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
                 htmlentities(urlencode($sub_facet_value)) . '" />';
             }
             echo "<label for=\"{$id}\" />";
