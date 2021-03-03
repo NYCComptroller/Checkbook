@@ -169,7 +169,6 @@
             });
 
             $('#edit-agency', context).change(function () {
-              $('#edit-budget-code').val("");
                 $('input:hidden[name="dept_hidden"]', context).val("");
                 $('input:hidden[name="expense_category_hidden"]', context).val("");
                 $.fn.reloadDepartment();
@@ -177,24 +176,17 @@
             });
 
             $('#edit-dept', context).change(function () {
-              $('#edit-budget-code').val("");
                 $('input:hidden[name="dept_hidden"]', context).val($('#edit-dept', context).val());
                 $('input:hidden[name="expense_category_hidden"]', context).val("");
                 $.fn.reloadExpenseCategory();
             });
 
-            $('#edit-dept', context).change(function () {
-              $('#edit-budget-code').val("");
-            });
-
             $('#edit-catastrophic-event', context).change(function () {
-              $('#edit-budget-code').val("");
               let cevent = $('#edit-catastrophic-event', context).val();
               updateYearValue(cevent);
             });
 
             $('#edit-fiscal-year', context).change(function () {
-              $('#edit-budget-code').val("");
               let yearval = $('select[name="fiscal_year"]', context).val();
               if(yearval < 2020){
                 $("#edit-catastrophic-event").attr('disabled', 'disabled');
