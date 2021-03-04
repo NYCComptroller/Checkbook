@@ -587,6 +587,10 @@ function checkbook_api_adjustSpendingSql(&$sql_query) {
     if (strpos($sql_query,'l1.') !== false) {
         $alias = 'l1.';
     }
+    else if (strpos($sql_query,'l3.') !== false) {
+      $alias = 'l3.';
+    }
+    
     $sql_parts = explode("WHERE", $sql_query);
     $select_part = $sql_parts[0];
     $where_part = $sql_parts[1];
