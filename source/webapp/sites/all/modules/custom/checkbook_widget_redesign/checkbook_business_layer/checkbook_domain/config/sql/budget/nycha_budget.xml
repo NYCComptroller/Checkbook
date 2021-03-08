@@ -377,6 +377,7 @@
           <exp op="=" dbField="gl_project_id" paramName="project" />
         </exp>
       </where>
+      AND program_phase_description NOT iLIKE  '%no program assigned%'
       GROUP BY program_phase_description, program_phase_id
     </sql>
   </statement>
@@ -404,6 +405,7 @@
           <exp op="=" dbField="gl_project_id" paramName="project" />
         </exp>
       </where>
+      AND program_phase_description NOT iLIKE  '%no program assigned%'
       GROUP BY program_phase_description, program_phase_id
     </sql>
   </statement>
@@ -462,6 +464,7 @@
           <exp op="=" dbField="a.gl_project_id" paramName="project" />
         </exp>
       </where>
+      AND program_phase_description NOT iLIKE  '%no program assigned%'
       GROUP BY a.budget_fiscal_year, a.program_phase_code, b.program_phase_description, b.program_phase_id, ma.modified_budget_amount,
       ma.modified_budget_amount_py_1,
       ma.modified_budget_amount_py_2,
@@ -493,6 +496,7 @@
           <exp op="=" dbField="program_phase_id" paramName="program" />
         </exp>
       </where>
+      AND COALESCE(gl_project_description, '') NOT iLIKE  '%no project assigned%'
       GROUP BY gl_project_description, gl_project_id
     </sql>
   </statement>
@@ -520,6 +524,7 @@
           <exp op="=" dbField="program_phase_id" paramName="program" />
         </exp>
       </where>
+      AND COALESCE(gl_project_description, '') NOT iLIKE  '%no project assigned%'
       GROUP BY gl_project_description, gl_project_id
     </sql>
   </statement>
@@ -578,6 +583,7 @@
           <exp op="=" dbField="a.program_phase_id" paramName="program" />
         </exp>
       </where>
+      AND COALESCE(gl_project_description, '') NOT iLIKE  '%no project assigned%'
       GROUP BY a.budget_fiscal_year, a.gl_project_code, b.gl_project_description, b.gl_project_id, ma.modified_budget_amount,
       ma.modified_budget_amount_py_1,
       ma.modified_budget_amount_py_2,
