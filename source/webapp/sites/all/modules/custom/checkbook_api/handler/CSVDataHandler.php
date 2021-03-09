@@ -142,13 +142,7 @@ class CSVDataHandler extends AbstractDataHandler {
 
             //Get only column
             if (strpos($sql_part,".") !== false) {
-              //When we have a 'CASE' statement, then we need to remove it
-              //so that the alias and column name can be extracted correctly
-              if(strpos($sql_part,"CASE WHEN") !== false){
-                $sql_part = strtok($sql_part, "=");
-                $sql_part = trim($sql_part, "CASE WHEN");
-              }
-              $select_column_parts = explode('.', trim($sql_part));
+              $select_column_parts = explode('.', trim($sql_part), 2);
               $alias = $select_column_parts[0] . '.';
               $column = $select_column_parts[1];
             }else{
