@@ -62,7 +62,7 @@ class RevenueFeedCitywide extends RevenueFeed{
     }
 
     //Catastrophic event filter
-    if ($this->values['catastrophic_event']) {
+    if ($this->values['catastrophic_event'] !== 0 && $this->values['budget_fiscal_year'] >= 2020 ) {
       $catastrophic_events = _get_event_name_and_id();
       $catastrophic_event = $catastrophic_events[$this->values['catastrophic_event']]. "[" .$this->values['catastrophic_event']. "]";
       $this->form['filter']['catastrophic_event'] = array('#markup' => '<div><strong>Catastrophic Event:</strong> ' . $catastrophic_event . '</div>');
@@ -210,10 +210,16 @@ class RevenueFeedCitywide extends RevenueFeed{
     if ($this->values['revenue_source']) {
        $this->criteria['value']['revenue_source'] = $this->values['revenue_source'];
     }
+
+    if ($this->values['catastrophic_event'] !== 0 && $this->values['budget_fiscal_year'] >= 2020 ) {
+      $this->criteria['value']['catastrophic_event'] = $this->values['catastrophic_event'];
+    }
+
     if ($this->values['funding_class'] != 'All Funding Classes') {
       preg_match($this->bracket_value_pattern, $this->values['funding_class'], $fsmatches);
       $this->criteria['value']['funding_class'] = trim($fsmatches[1], '[ ]');
     }
+
     if ($this->values['modifiedfrom'] !== '' || $this->values['modifiedto'] !== '') {
       $this->criteria['range']['modified'] = array(
         checknull($this->values['modifiedfrom']),
