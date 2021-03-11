@@ -1716,12 +1716,6 @@
                 fiscal_year.options[i].style.display = '';
               }
             }
-
-            //Clear autocomplete fields
-            div.ele('payee_name').val("");
-            div.ele('contract_id').val("");
-            div.ele('document_id').val("");
-            div.ele('capital_project').val("");
         }
 
         //On change of "Fiscal Year"
