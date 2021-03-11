@@ -1339,10 +1339,6 @@
               budget_fiscal_year.options[i].style.display = '';
             }
           }
-
-          //Clear autocomplete fields
-          div.ele('revenue_source').val("");
-          div.ele('revenue_class').val("");
       }
 
         //On change of "Catastrophic event"
