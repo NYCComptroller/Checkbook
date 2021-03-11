@@ -106,10 +106,6 @@
          budget_fiscal_year.options[i].style.display = '';
        }
      }
-
-     //Clear autocomplete fields
-     $('#edit-revenue-source').val("");
-     $('#edit-revenue-class').val("");
 }
 
 function onBudgetFiscalYearChange() {
