@@ -327,7 +327,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
 
   $form['filter']['catastrophic_event'] = array(
     '#type' => 'select',
-    '#title' => t('Catastrophic Events:'),
+    '#title' => t('Catastrophic Event:'),
     '#options' => _get_event_name_and_id(),
     '#prefix' => '<div class="datafield catastrophicevent citywide">',
     '#suffix' => '</div>',
@@ -335,7 +335,12 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#multiple' => FALSE,
     '#id' => 'edit-catastrophic-event',
     '#name' => 'catastrophic_event',
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'catastrophic_event', $first_time_load, ''),
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'catastrophic_event', $first_time_load, 0),
+    '#states' => array(
+    'disabled' => array(
+      'select[name="expense_type"]' => array('value' => 'Payroll [p]')
+    )
+    ),
   );
 
   $form['filter']['payee_name'] = array(

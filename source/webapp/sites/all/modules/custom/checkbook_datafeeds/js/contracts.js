@@ -439,7 +439,7 @@
       const $category = $('#edit-category', context);
       let csval = $('select[name="df_contract_status"]', context).val();
       let catval = $('#edit-category', context).val();
-      let cevent = $('#edit-catastrophic_event', context).val();
+      let year_value = getYearValue($('#edit-year', context).val());
 
 
       $.fn.reloadAgencies(datasource);
@@ -450,7 +450,14 @@
       //Show Sub or Prime vendor icon
       $.fn.showHidePrimeAndSubIcon();
 
+      // disable if covid is not selected
+      if ( year_value < 2020 || catval == 'revenue' ){
+        $("#edit-catastrophic_event").attr('disabled', 'disabled');
+        $("#edit-catastrophic_event").val('0');
+      }
+
       //Reload year based on the event value
+      let cevent = $('#edit-catastrophic_event', context).val();
       updateYearValue(cevent);
 
       // Display multi-select
@@ -773,6 +780,7 @@
           $('#edit-column-select-all option[value="Year"]', context).attr('disabled', 'disabled');
           if (catval == 'revenue') {
             $("#edit-catastrophic_event").attr('disabled', 'disabled');
+            $('select[name="catastrophic_event"]', context).val('0');
           }
           else{
             $("#edit-catastrophic_event").removeAttr('disabled');
@@ -787,6 +795,7 @@
           // disable event field when category is all and year value is less than 2020
           if (catval == 'revenue' || year_value < 2020){
             $("#edit-catastrophic_event").attr('disabled', 'disabled');
+            $('select[name="catastrophic_event"]', context).val('0');
           }
           else{
             $("#edit-catastrophic_event").removeAttr('disabled');
