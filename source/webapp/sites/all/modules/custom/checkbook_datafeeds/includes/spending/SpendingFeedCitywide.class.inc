@@ -39,7 +39,7 @@ class SpendingFeedCitywide extends SpendingFeed
     }
 
     //Department
-    if ($this->values['dept'] && $this->values['dept'] != 'Select Department' && $this->values['dept'] != '0') {
+    if ($this->values['dept'] && $this->values['dept'] != 'Select Department' && $this->values['dept'] != '0' && $this->values['agency'] != 'Citywide (All Agencies)') {
       // converts special characters to HTML entities
       if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['dept'])) {
         $this->values['dept'] = htmlspecialchars($this->values['dept']);
@@ -50,7 +50,7 @@ class SpendingFeedCitywide extends SpendingFeed
     }
 
     //Expense Category
-    if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category' && $this->values['expense_category'] != '0') {
+    if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category' && $this->values['expense_category'] != '0' && $this->values['agency'] != 'Citywide (All Agencies)') {
       // converts special characters to HTML entities
       if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['expense_category'])) {
         $this->values['expense_category'] = htmlspecialchars($this->values['expense_category']);
