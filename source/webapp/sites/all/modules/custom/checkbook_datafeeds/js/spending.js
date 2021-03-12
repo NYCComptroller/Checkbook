@@ -419,15 +419,17 @@
 
       //Year drop-down change event
       $('select[name="year"]', context).change(function () {
-        $('input:hidden[name="dept_hidden"]', context).val("");
-        $('input:hidden[name="expense_category_hidden"]', context).val("");
+        $('input:hidden[name="dept_hidden"]', context).val($('select[name="dept"]', context).val());
+        $('input:hidden[name="expense_category_hidden"]', context).val($('select[name="expense_category"]', context).val());
+        //$('input:hidden[name="dept_hidden"]', context).val("");
+        //$('input:hidden[name="expense_category_hidden"]', context).val("");
         reloadSpendingDepartments();
         reloadSpendingExpenceCategories();
       });
 
       //NYCHA Year drop-down change event
       $('select[name="nycha_year"]', context).change(function () {
-        $('input:hidden[name="expense_category_hidden"]', context).val("");
+        $('input:hidden[name="expense_category_hidden"]', context).val($('select[name="expense_category"]', context).val());
         reloadSpendingExpenceCategories();
       });
 
