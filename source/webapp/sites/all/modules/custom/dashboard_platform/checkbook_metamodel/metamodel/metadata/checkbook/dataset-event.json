@@ -1,12 +1,12 @@
 {
   "datasets": {
-    "ref_event": {
+    "event": {
       "datasourceName": "main",
       "source": "ref_event",
       "columns": [
         {
-          "name":"event_id",
-          "key":true
+          "name": "event_id",
+          "key": true
         }
       ]
     }

@@ -45,7 +45,7 @@ function checkbook_datafeeds_budget($form, &$form_state){
   );
 
   $data_source = $form_state['values']['datafeeds-budget-domain-filter'] ?? Datasource::CITYWIDE;
-  $form['datafeeds-budget-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, Domain::$BUDGET);
+  //$form['datafeeds-budget-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, Domain::$BUDGET);
 
   //</editor-fold>
 

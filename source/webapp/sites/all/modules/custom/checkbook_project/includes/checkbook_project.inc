@@ -2256,7 +2256,7 @@ function _get_event_name_and_id($attributes = NULL)
 {
   try {
     $dataController = data_controller_get_instance();
-    $data = $dataController->queryDataset('checkbook:ref_event', array(
+    $data = $dataController->queryDataset('checkbook:event', array(
       'event_id',
       'event_name'
     ), NULL, 'event_name');

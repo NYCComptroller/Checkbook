@@ -41,7 +41,7 @@
     $('#edit-column-select').multiSelect('deselect_all');
     $('#edit-nycha-column-select').multiSelect('deselect_all');
 
-    //showHideRevenueFields(dataSource);
+    showHideRevenueFields(dataSource);
   }
 
   let reloadBudgetType = function(){
@@ -139,14 +139,15 @@ function onBudgetFiscalYearChange() {
   Drupal.behaviors.revenueDataFeeds = {
     attach: function (context, settings) {
       //DataSource Filter Formatter
-      //$.fn.formatDatafeedsDatasourceRadio();
-      let dataSource = $('input[name="datafeeds-revenue-domain-filter"]:checked', context).val();
+      $.fn.formatDatafeedsDatasourceRadio();
+      let dataSource;
+      dataSource = $('input[name="datafeeds-revenue-domain-filter"]:checked', context).val() ? $('input[name="datafeeds-revenue-domain-filter"]:checked', context).val() : 'checkbook';
 
       reloadBudgetType();
       reloadBudgetName();
 
       //Display or hide fields based on data source selection
-      //showHideRevenueFields(dataSource);
+      showHideRevenueFields(dataSource);
 
       //Data Source change event
       $('input:radio[name=datafeeds-revenue-domain-filter]', context).change(function () {
