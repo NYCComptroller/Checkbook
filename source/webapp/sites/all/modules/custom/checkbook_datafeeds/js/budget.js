@@ -217,7 +217,7 @@
             });
 
             //Sets up jQuery UI autocompletes and autocomplete filtering functionality
-            let year = ($('#edit-fiscal-year',context).val() == 'All Years') ? 0 : $('#edit-fiscal-year',context).val();
+            let year = $('#edit-fiscal-year',context).val() ;
             let agency = emptyToZero($('#edit-agency',context).val());
             let dept = ($('#edit-dept',context).val()) ? $('#edit-dept',context).val() : 0;
             let expcategory = ($('#edit-expense-category',context).val()) ? $('#edit-expense-category',context).val() : 0;
@@ -236,7 +236,7 @@
                 $(this,context).focus(function () {
                     //set letiables for each field's value
                   let year = $('#edit-fiscal-year',context).val() ;
-                    let agency = emptyToZero($('#edit-agency',context).val());
+                  let agency = emptyToZero($('#edit-agency',context).val());
                   let dept = emptyToZero($('#edit-dept',context).val()) ;
                   let expcategory =  emptyToZero($('#edit-expense-category',context).val());
                   let event = emptyToZero($('#edit-catastrophic-event',context).val());
@@ -278,8 +278,10 @@
 
     //Function to retrieve values enclosed in brackets or return zero if none
     function emptyToZero(input) {
-      const p = /\[(.*?)]$/;
-      const code = p.exec(input.trim());
+      if(input) {
+          var p = /\[(.*?)]$/;
+          var code = p.exec(input.trim());
+      }
       if (code) {
         return code[1];
       }

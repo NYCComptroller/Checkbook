@@ -220,6 +220,7 @@ class RevenueFeedCitywide extends RevenueFeed{
       preg_match($this->bracket_value_pattern, $this->values['funding_class'], $fsmatches);
       $this->criteria['value']['funding_class'] = trim($fsmatches[1], '[ ]');
     }
+
     if ($this->values['modifiedfrom'] !== '' || $this->values['modifiedto'] !== '') {
       $this->criteria['range']['modified'] = array(
         checknull($this->values['modifiedfrom']),

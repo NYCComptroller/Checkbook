@@ -1362,6 +1362,35 @@
           onRevenueBudgetFiscalYearChange(div_checkbook_revenue);
         });
 
+        function onRevenueCatastrophicEventChange(div){
+          //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
+          let budget_fiscal_year = div.ele('budget_fy').attr("name");
+          budget_fiscal_year = document.getElementsByName(budget_fiscal_year)[0];
+
+          if(div.ele('catastrophic_events').val() === "1"){
+            for (let i = 0; i < budget_fiscal_year.length; i++) {
+              let year = budget_fiscal_year.options[i].text.toLowerCase();
+              let include = (year === "all fiscal years" || year === "2021" || year === "2020");
+              budget_fiscal_year.options[i].style.display = include ? '':'none';
+            }
+          }
+          else{
+            for (let i = 0; i < budget_fiscal_year.length; i++) {
+              budget_fiscal_year.options[i].style.display = '';
+            }
+          }
+      }
+
+        //On change of "Catastrophic event"
+        div_checkbook_revenue.ele('catastrophic_events').change(function(){
+          onRevenueCatastrophicEventChange(div_checkbook_revenue);
+        });
+
+        //On change of "Budget Fiscal Year"
+        div_checkbook_revenue.ele('budget_fy').change(function(){
+          onRevenueBudgetFiscalYearChange(div_checkbook_revenue);
+        });
+
         //Prevent the auto-complete from wrapping un-necessarily
         function fixAutoCompleteWrapping(divWrapper) {
           $(divWrapper.children()).find('input.ui-autocomplete-input:text').each(function () {
@@ -1694,7 +1723,7 @@
               onCatastrophicEventChange(div);
             }
             else if (exptype === '4') {
-              disable_input(div.ele('contract_id'));
+              disable_input([div.ele('contract_id'),div.ele('catastrophic_events')]);
               div.ele('contract_id').val("");
               enable_input(div.ele('payee_name'));
               onCatastrophicEventChange(div);
@@ -1730,6 +1759,32 @@
                 fiscal_year.options[i].style.display = '';
             }
           }
+        }
+
+        //On change of "Catastrophic event"
+        div_checkbook_spending.ele('catastrophic_events').change(function(){
+          onCatastrophicEventChange(div_checkbook_spending);
+        });
+
+        function onCatastrophicEventChange(div){
+            //Selecting 'COVID-19' option causes the following changes:
+            //Data within following fields update: Payee Name, Contract ID, Document ID, Capital Project
+            //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
+            let fiscal_year = div.ele('fiscal_year').attr("name");
+            fiscal_year = document.getElementsByName(fiscal_year)[0];
+
+            if(div.ele('catastrophic_events').val() === "1"){
+              for (let i = 0; i < fiscal_year.length; i++) {
+                let year = fiscal_year.options[i].text.toLowerCase();
+                let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
+                fiscal_year.options[i].style.display = include ? '':'none';
+              }
+            }
+            else{
+              for (let i = 0; i < fiscal_year.length; i++) {
+                fiscal_year.options[i].style.display = '';
+              }
+            }
         }
 
         //On change of "Fiscal Year"
@@ -1972,7 +2027,6 @@
           div.ele('entity_contract_number').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'spending_entity_contract_number', filters)});
           div.ele('vendor_name').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'vendor_name', filters)});
           div.ele('document_id').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'document_id', filters)});
-
 
           $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {
             $(this).parent().next().val(ui.item.label);

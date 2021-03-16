@@ -529,6 +529,7 @@
         $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', 'disabled');
         $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', 'disabled');
         $('#edit-column-select-all option[value="Year"]', context).attr('disabled', 'disabled');
+
       } else {
         $('#edit-column-select-expense option[value="Year"]', context).attr('disabled', '');
         $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', '');

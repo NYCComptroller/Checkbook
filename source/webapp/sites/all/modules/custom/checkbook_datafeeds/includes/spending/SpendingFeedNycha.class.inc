@@ -46,7 +46,7 @@ class SpendingFeedNycha extends SpendingFeed
       $this->user_criteria['Expense Category'] = $this->values['expense_category'];
       $this->formatted_search_criteria['Expense Category'] = $this->values['expense_category'];
     }
-
+    
     //Spending Category
     if ($this->values['nycha_expense_type']) {
       $this->form['filter']['nycha_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $this->values['nycha_expense_type'] . '</div>');

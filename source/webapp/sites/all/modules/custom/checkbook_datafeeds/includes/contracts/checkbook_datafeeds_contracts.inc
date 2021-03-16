@@ -479,6 +479,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
       )
     )
   );
+
   $form['filter']['purpose'] = array(
     '#type' => 'textfield',
     '#title' => t('Purpose:'),
@@ -1816,6 +1817,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
       if ($values['sub_vendor_status_in_pip_id'] != 'Select Status' && $values['sub_vendor_status_in_pip_id'] != 0) {
         $criteria['value']['sub_vendor_status_in_pip'] = $values['sub_vendor_status_in_pip_id'];
       }
+
       break;
   }
 

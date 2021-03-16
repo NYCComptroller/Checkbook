@@ -153,7 +153,9 @@
         catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
         if(catastrophic_event.options[i].style.display === 'none') enabled_count--;
       }
-      if(enabled_count <=1) disable_input($('select[name="catastrophic_event"]'));
+      if(enabled_count <=1) {
+        disable_input($('select[name="catastrophic_event"]'));
+      }
     }
     else{
       for (let i = 0; i < catastrophic_event.length; i++) {
@@ -371,7 +373,6 @@
   let onDateFilterChange = function(){
     let dateFilter = $('input:hidden[name="date_filter_hidden"]').val();
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
-
     switch(data_source) {
       case 'checkbook_nycha':
         //enable Issue date
@@ -588,7 +589,7 @@
       $('#edit-entity-contract-number', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_entity_contract_number', filters)});
       $('#edit-commodity-line', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_commodity_line', filters)});
       $('#edit-budget-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_budget_name', filters)});
-
+      
       $('.watch:input', context).each(function () {
         $(this).focusin(function () {
           //set variables for each field's value
@@ -616,7 +617,7 @@
             industry = emptyToZero($('#edit-industry', context).val());}
           spend_cat = getSpendingExpenseType(data_source);
           catastrophic_event_id = $('#edit-catastrophic-event', context).val() ? $('#edit-catastrophic-event', context).val() : 0;
-
+          
           if(year.toLowerCase().indexOf("fy") >= 0){
             year = year.toLowerCase().split('fy')[1];
           }
@@ -637,7 +638,6 @@
             "funding_source_number":fund_src,
             "event_id":catastrophic_event_id
           };
-
           $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
           $('#edit-contractno', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'contract_number', filters)});
           $('#edit-document-id', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'document_id', filters)});
@@ -704,7 +704,6 @@
         }
         $(this).val('');
       }
-
       if (this.type == 'select-one') {
         var default_option = $(this).attr('default_selected_value');
         if (!default_option)
