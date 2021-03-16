@@ -1,0 +1,14 @@
+{
+  "datasets": {
+    "ref_event": {
+      "datasourceName": "main",
+      "source": "ref_event",
+      "columns": [
+        {
+          "name":"event_id",
+          "key":true
+        }
+      ]
+    }
+  }
+}

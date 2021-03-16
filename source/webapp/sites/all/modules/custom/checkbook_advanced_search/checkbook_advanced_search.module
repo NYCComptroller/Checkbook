@@ -362,6 +362,7 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
     $includes_sub_vendors = _get_contract_includes_subvendors_data();
     $includes_sub_vendors_attributes = _get_contract_includes_subvendors_data('attributes');
     $contract_type_attribute = _checkbook_advanced_search_get_contract_type_and_id($data_source);
+    $event_type_attributes = _get_event_name_and_id();
     $year_attribute = _checkbook_advanced_search_get_year($domain, null, $data_source);
     $revenue_categories = _checkbook_advanced_search_get_revenue_category_and_id();
     $revenue_funding_classes = _checkbook_advanced_search_get_funding_source_and_id();
@@ -401,6 +402,9 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
           case'$contract_type_attribute':
             $field_definition_configs[$i]['attributes']['options'] = $contract_type_attribute['options'];
             $field_definition_configs[$i]['attributes']['option_attributes'] = $contract_type_attribute['option_attributes'];
+            break;
+          case'$event_type_attributes':
+            $field_definition_configs[$i]['attributes']['options'] = $event_type_attributes;
             break;
           case '$mwbe_category_attributes':
             $field_definition_configs[$i]['attributes']['options'] = $mwbe_category_attributes;

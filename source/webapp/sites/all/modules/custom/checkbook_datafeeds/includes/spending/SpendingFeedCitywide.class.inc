@@ -70,6 +70,17 @@ class SpendingFeedCitywide extends SpendingFeed
       $this->formatted_search_criteria['Spending Category'] = 'Total Spending';
     }
 
+    //Catastrophic event filter
+    if ($this->values['expense_type'] != 'Payroll [p]') {
+      if ($this->values['catastrophic_event'] !== 0 && ($this->values['year'] == '0' || substr($this->values['year'], -4) >= 2020)) {
+        $catastrophic_events = _get_event_name_and_id();
+        $catastrophic_event = $catastrophic_events[$this->values['catastrophic_event']] . "[" . $this->values['catastrophic_event'] . "]";
+        $this->form['filter']['catastrophic_event'] = array('#markup' => '<div><strong>Catastrophic Event:</strong> ' . $catastrophic_event . '</div>');
+        $this->user_criteria['Catastrophic Event'] = $this->values['catastrophic_event'];
+        $this->formatted_search_criteria['Catastrophic Event'] = $this->values['catastrophic_event'];
+      }
+    }
+
     //Industry
     if ($this->values['industry']) {
       preg_match("/.*?(\\[.*?])/is", $this->values['industry'], $matches);
@@ -167,6 +178,13 @@ class SpendingFeedCitywide extends SpendingFeed
     if ($this->values['expense_type'] && $this->values['expense type'] != 'ts') {
       preg_match($this->bracket_value_pattern, $this->values['expense_type'], $etmatches);
       $this->criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
+    }
+
+    if ($this->values['expense_type'] != 'Payroll [p]') {
+      if ($this->values['catastrophic_event'] !== 0 && ($this->values['year'] == '0' || substr($this->values['year'], -4) >= 2020))
+      {
+        $this->criteria['value']['catastrophic_event'] = $this->values['catastrophic_event'];
+      }
     }
     if ($this->values['agency'] != 'Citywide (All Agencies)') {
       preg_match($this->bracket_value_pattern, $this->values['agency'], $agency_matches);

@@ -41,6 +41,7 @@
       "expcategorycode",
       "month",
       "industry",
+      "cevent",
       "mwbe",
       "vendor",
       "svendor",
@@ -89,6 +90,7 @@
       "expcategorycode": "expenditure_object_code",
       "month": "check_eft_issued_cal_month_id",
       "mwbe": "minority_type_id",
+      "cevent" : "event_id",
       "industry": "industry_type_id",
       "vendor": "prime_vendor_id",
       "svendor": "prime_vendor_id",
@@ -468,6 +470,7 @@
         }
         var oVendorIds = getNamedFilterCriteria('fvendorId');
         var oVendorNms = getNamedFilterCriteria('fvendorNm');
+        var oContractNumber = getNamedFilterCriteria('fContractNumber');
         var oCategoryIds = getNamedFilterCriteria('fCat' + 'egoryId');
         var oSpendCategoryIds = getNamedFilterCriteria('fSpendCategoryId');
         var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
@@ -485,6 +488,7 @@
 
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
         cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
+        cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
         cUrl = adjustUrlParameter(cUrl,'expcategory',oCategoryIds);
         cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
         cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);

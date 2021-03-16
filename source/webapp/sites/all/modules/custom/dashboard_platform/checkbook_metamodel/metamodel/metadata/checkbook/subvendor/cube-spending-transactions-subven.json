@@ -213,6 +213,15 @@
                     ]
                 },
                 {
+                    "name": "contnum",
+                    "levels": [
+                        {
+                            "name": "contnum",
+                            "sourceColumnName": "reference_document_number"
+                        }
+                    ]
+                },
+                {
                     "name": "vendor",
                     "levels": [
                         {
@@ -352,6 +361,15 @@
                             "name": "ctx",
                             "datasetName": "contracts_mwbe_spending_transactions",
                             "sourceColumnName": "disbursement_line_item_id"
+                        }
+                    ]
+                },
+                {
+                    "name":"event_id",
+                    "levels": [
+                        {
+                            "name":"event_id",
+                            "sourceColumnName":"event_id"
                         }
                     ]
                 }

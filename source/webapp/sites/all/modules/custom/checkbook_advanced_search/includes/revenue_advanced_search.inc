@@ -39,6 +39,7 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state, $dataSou
   $agency = _checkbook_get_selected_value($form, $filterDimension, 'agency');
   $revenue_category = _checkbook_get_selected_value($form, $filterDimension, 'revenue_category');
   $revenue_source = _checkbook_get_selected_value($form, $filterDimension, 'revenue_source');
+  $catastrophic_event = _checkbook_get_selected_value($form, $filterDimension, 'catastrophic_events');
   $revenue_source_exact = _checkbook_get_selected_value($form, $filterDimension, 'revenue_source_exact');
   $adopted_from = _checkbook_get_selected_value($form, $filterDimension, 'adopted_budget_from');
   $adopted_to = _checkbook_get_selected_value($form, $filterDimension, 'adopted_budget_to');
@@ -82,6 +83,9 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state, $dataSou
     } else {
       $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_source, 'revsrcnm');
     }
+  }
+  if(!empty($catastrophic_event)){
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($catastrophic_event, 'cevent');
   }
   if (!empty($funding_class)) {
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($funding_class, 'fundsrccode');
