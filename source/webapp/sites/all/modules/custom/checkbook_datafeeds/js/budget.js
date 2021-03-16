@@ -94,7 +94,7 @@
       $('#edit-column-select-expense').multiSelect('deselect_all');
       $('#edit-nycha-column-select').multiSelect('deselect_all');
 
-      showHideBudgetFields(dataSource);
+      //showHideBudgetFields(dataSource);
     }
 
     let reloadBudgetType = function(){
@@ -143,7 +143,7 @@
 
     Drupal.behaviors.budgetDataFeeds = {
         attach:function(context,settings){
-            $.fn.formatDatafeedsDatasourceRadio();
+            //$.fn.formatDatafeedsDatasourceRadio();
             $.fn.reloadDepartment();
             $.fn.reloadExpenseCategory();
             reloadBudgetType();
@@ -151,7 +151,7 @@
 
             let dataSource = $('input[name="datafeeds-budget-domain-filter"]:checked', context).val();
             //Display or hide fields based on data source selection
-            showHideBudgetFields(dataSource);
+            //showHideBudgetFields(dataSource);
 
             // Reset covid field based on the form input year value
             let yearval = $('select[name="fiscal_year"]', context).val()

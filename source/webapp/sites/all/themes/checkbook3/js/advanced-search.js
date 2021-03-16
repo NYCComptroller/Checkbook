@@ -115,14 +115,14 @@
           active: active_accordion_window
         });
 
-        /* For EDC, Budget, Revenue & Payroll are not applicable and are disabled */
-        disableAccordionSections(data_source);
-
         clearInputFieldByDataSource("#payroll-advanced-search", 'payroll', data_source);
         clearInputFieldByDataSource("#contracts-advanced-search", 'contracts', data_source);
         clearInputFieldByDataSource("#spending-advanced-search", 'spending', data_source);
         clearInputFieldByDataSource("#budget-advanced-search", 'budget', data_source);
         clearInputFieldByDataSource("#revenue-advanced-search", 'revenue', data_source);
+
+        /* For EDC, Budget, Revenue & Payroll are not applicable and are disabled */
+        disableAccordionSections(data_source);
 
         bootstrap_complete();
 
@@ -2147,11 +2147,11 @@
         let active_accordion_window = 2;
         switch (page_clicked_from) {
           case "budget":
-          case "nycha_budget":
+          //case "nycha_budget":
             active_accordion_window = 0;
             break;
           case "revenue":
-          case "nycha_revenue":
+          //case "nycha_revenue":
             active_accordion_window = 1;
             break;
           case "contracts_revenue_landing":
@@ -2242,14 +2242,18 @@
 
       /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
       function disableAccordionSections(data_source) {
-        //Disable Payroll, Budget and Revenue for EDC
+
+        //Disable Payroll for EDC
         if (data_source === "checkbook_oge") {
-          let ogeDisabledDomains = ["budget", "Revenue", "Payroll"];
+          let ogeDisabledDomains = ["budget", "revenue", "Payroll"];
           if (Array.isArray(ogeDisabledDomains)) {
             ogeDisabledDomains.forEach(function (ogeDisabledDomain) {
               disableAccordionSection(ogeDisabledDomain);
             });
           }
+        }else if(data_source === "checkbook_nycha"){
+          disableAccordionSection('budget');
+          disableAccordionSection('revenue');
         }
       }
 

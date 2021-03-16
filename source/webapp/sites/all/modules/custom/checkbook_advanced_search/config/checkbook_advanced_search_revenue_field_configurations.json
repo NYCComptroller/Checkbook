@@ -1,6 +1,6 @@
 {
   "checkbook": [
-    {"field_name":"domain_filter","column":"none"},
+    //{"field_name":"domain_filter","column":"none"},
     {"field_name":"budget_fiscal_year","column":"column-left"},
     {"field_name":"agency","column":"column-left"},
     {"field_name":"revenue_category","column":"column-left"},
@@ -14,7 +14,7 @@
     {"field_name":"fund_class","column":"column-right"},
     {"field_name":"modified","column":"column-right"},
     {"field_name":"revenue","column":"none"}
-  ],
+  ]/*,
   "checkbook_nycha": [
     {"field_name":"budget_fiscal_year","column":"column-left"},
     {"field_name":"expense_category","column":"column-left"},
@@ -31,5 +31,5 @@
     {"field_name":"recognized","column":"column-right"},
     {"field_name":"remaining","column":"column-right"},
     {"field_name":"revenue","column":"none"}
-  ]
+  ]*/
 }

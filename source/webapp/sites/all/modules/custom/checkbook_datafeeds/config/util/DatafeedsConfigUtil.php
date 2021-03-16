@@ -32,6 +32,9 @@ class DatafeedsConfigUtil{
     if (Domain::$PAYROLL == $domain || Domain::$BUDGET == $domain || Domain::$REVENUE == $domain) {
       unset($options['checkbook_oge']);
     }
+    if (Domain::$BUDGET == $domain || Domain::$REVENUE == $domain) {
+      unset($options['checkbook_nycha']);
+    }
     return [
       '#type' => 'radios',
       '#title' => 'Data source',
