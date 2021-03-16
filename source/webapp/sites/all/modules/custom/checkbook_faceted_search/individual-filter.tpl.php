@@ -41,7 +41,10 @@ if (($pagetype != 'advanced_search_page') && (!(isset($node->widgetConfig->allow
 //$disableFacet = isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false;
 // Disable only url parameters
 if($disableFacet) { //only URL parameters count and can be disabled
-    $url_ref = $_SERVER['HTTP_REFERER'];
+    // check if the link is opened in a new window
+    $url_ref = $_GET['q'];
+    $is_new_window = preg_match('/newwindow/i', $url_ref);
+    $url_ref = ($is_new_window != 0) ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
     $disableFacet = preg_match('"/' . $urlParameter. '/"', $url_ref);
 }
 
@@ -141,6 +144,24 @@ if($node->widgetConfig->filterName == 'Document ID') {
     }
 }
 
+//Budget Name and Budget Type filter display N/A values as N/A for Nycha budget and Nycha revenue fields
+if( $node->nid == '1043' || $node->nid == '1044' || $node->nid == '1059' || $node->nid == '1060')
+{
+  if ($unchecked && $unchecked)
+    foreach($unchecked as $key => $value) {
+      if($value[1] == null ) {
+        $unchecked[$key][0] = "N/A";
+        $unchecked[$key][1] = "N/A";
+      }
+    }
+  if (isset($checked) && $checked)
+    foreach($checked as $key => $value) {
+      if($value[1] == null) {
+        $checked[$key][0] = "N/A";
+        $checked[$key][1] = "N/A";
+      }
+    }
+}
 // NYCHA Contracts special condition in advanced search disable purchase order when selected.
 if($node->widgetConfig->filterName == 'Purchase Order Type') {
   $disableFacet = !(isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false);
@@ -216,7 +237,7 @@ if(isset($logicalOrFacet) && $logicalOrFacet) {
 }
 
 //Remove N/A from Prime/Sub Industry facets
-if($node->widgetConfig->filterName == 'Prime Industry' || $node->widgetConfig->filterName == 'Sub Industry' || $node->widgetConfig->filterName == 'Budget Type' || $node->widgetConfig->filterName == 'Budget Name') {
+if($node->widgetConfig->filterName == 'Prime Industry' || $node->widgetConfig->filterName == 'Sub Industry'){
     foreach($unchecked as $key => $value){
         if($value[1] == null) {
             unset($unchecked[$key]);

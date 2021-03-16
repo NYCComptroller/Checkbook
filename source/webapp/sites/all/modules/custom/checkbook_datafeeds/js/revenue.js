@@ -299,7 +299,6 @@ function onBudgetFiscalYearChange() {
         }
         $(this).val('');
       }
-      
       if (this.type == 'select-one') {
         var default_option = $(this).attr('default_selected_value');
         if (!default_option)

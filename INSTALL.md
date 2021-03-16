@@ -261,7 +261,7 @@ Steps to install:
             /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/8.2.2
     - Verify that it is unpacked into the right place, by checking that the path to `highstock.src.js`:
 
-            $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/8.1.0/js/highstock.src.js
+            $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/8.2.2/js/highstock.src.js
 
     Note that these Highcharts and Highstock downloads are available at
     no charge, but they are not licensed under open source licenses.

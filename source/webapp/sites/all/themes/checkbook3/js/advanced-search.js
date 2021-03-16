@@ -41,14 +41,9 @@
 
       function show_advanced_search_form(callback) {
         show_loading_spinner();
-
-        if ($('#checkbook-advanced-search-form').length) {
-          callback();
-        } else {
           $('.block-checkbook-advanced-search .content').load('/advanced-search-ajax', function () {
-            common_run_after_ajax_once(callback);
+              common_run_after_ajax_once(callback);
           });
-        }
       }
 
       function common_run_after_ajax_once(callback) {
@@ -290,18 +285,20 @@
           let val;
           let fiscal_year = (val = div.ele('year').val()) ? val : 0;
           let agency = (val = div.ele('agency').val()) ? val : 0;
+          let dept = (val = div.ele('department').val()) ? val : 0;
           $.ajax({
             url: '/advanced-search/autocomplete/budget/department/' + fiscal_year + '/' + agency,
             success: function (data) {
               var html = '<option select="selected" value="0" >Select Department</option>';
               if (data[0]) {
                 if (data[0].label !== 'No Matches Found') {
-                  for (var i = 0; i < data.length; i++) {
+                  for (let i = 0; i < data.length; i++) {
                     html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
                   }
                 }
               }
               div.ele('department').html(html).removeAttr("disabled");
+              div.ele('department').val(dept);
             }
           });
         }
@@ -311,19 +308,21 @@
           let fiscal_year = (val = div.ele('year').val()) ? val : 0;
           let agency = (val = div.ele('agency').val()) ? val : 0;
           let dept = (val = div.ele('department').val()) ? val : 0;
-
+          let expCat = (val = div.ele('expense_category').val()) ? val : 0;
           $.ajax({
             url: '/advanced-search/autocomplete/budget/expcategory/' + fiscal_year + '/' + agency + '/' + dept.toString().replace(/\//g, "__"),
             success: function (data) {
               let html = '<option select="selected" value="0" >Select Expense Category</option>';
               if (data[0]) {
                 if (data[0].label !== 'No Matches Found') {
-                  for (var i = 0; i < data.length; i++) {
+                  for (let i = 0; i < data.length; i++) {
                     html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
                   }
                 }
               }
               div.ele('expense_category').html(html).removeAttr("disabled");
+              div.ele('expense_category').val(expCat);
+
             }
           });
         }
@@ -976,10 +975,10 @@
           if (contract_status === 'P' || contract_category === 'revenue') {
             div.ele('includes_sub_vendors').attr("disabled", "disabled");
             div.ele('sub_vendor_status').attr("disabled", "disabled");
-          }
-          else {
+          } else {
             div.ele('includes_sub_vendors').removeAttr("disabled");
             div.ele('sub_vendor_status').removeAttr("disabled");
+
           }
         }
 
@@ -1283,6 +1282,7 @@
               initializeRevenueView(div_checkbook_revenue_nycha, dataSource);
               div_checkbook_revenue.contents().hide();
               div_checkbook_revenue_nycha.contents().show();
+              $('label[for=edit-checkbook-nycha-revenue-expense-category]').html('Revenue<br/>Expense Category');
 
               //Reset Revenue Name and Revenue Code Chosen drop-downs
               div_checkbook_revenue_nycha.ele('budget_type').val("0").trigger("chosen:updated");
@@ -1332,6 +1332,35 @@
             }
           }
         }
+
+        function onRevenueCatastrophicEventChange(div){
+          //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
+          let budget_fiscal_year = div.ele('budget_fy').attr("name");
+          budget_fiscal_year = document.getElementsByName(budget_fiscal_year)[0];
+
+          if(div.ele('catastrophic_events').val() === "1"){
+            for (let i = 0; i < budget_fiscal_year.length; i++) {
+              let year = budget_fiscal_year.options[i].text.toLowerCase();
+              let include = (year === "all fiscal years" || year === "2021" || year === "2020");
+              budget_fiscal_year.options[i].style.display = include ? '':'none';
+            }
+          }
+          else{
+            for (let i = 0; i < budget_fiscal_year.length; i++) {
+              budget_fiscal_year.options[i].style.display = '';
+            }
+        }
+      }
+
+        //On change of "Catastrophic event"
+        div_checkbook_revenue.ele('catastrophic_events').change(function(){
+          onRevenueCatastrophicEventChange(div_checkbook_revenue);
+        });
+
+        //On change of "Budget Fiscal Year"
+        div_checkbook_revenue.ele('budget_fy').change(function(){
+          onRevenueBudgetFiscalYearChange(div_checkbook_revenue);
+        });
 
         function onRevenueCatastrophicEventChange(div){
           //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
@@ -1524,24 +1553,28 @@
 
         //Populate Spending Domain Expense Categories drop-down
         function loadSpendingExpenseCategories(div, data_source) {
-          var year = 0;
+          let year = 0;
           if (div.ele('date_filter_checked').val() === '0') {
             year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
           }
-          var agency = 0;
+          let agency = 0;
           if(data_source == 'checkbook') {
             agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
             if(agency == 0)
               return;
           }
-          var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
-          var dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
-          dept = dept.toString().replace(/\//g, "__");
+          let dept = 0;
+          if(data_source != 'checkbook_nycha'){
+            dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
+            dept = dept.toString().replace(/\//g, "__");
+          }
+          let exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
+          let expCat = (div.ele('exp_category').val()) ? (div.ele('exp_category').val()) : '';
 
           $.ajax({
             url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
             , success: function (data) {
-              var html = '<option select="selected" value="0" >Select Expense Category</option>';
+              var html = '<option select="selected" value="" >Select Expense Category</option>';
               if (data[0]) {
                 if (data[0] !== 'No Matches Found') {
                   $.each(data, function (key, exp_cat) {
@@ -1556,6 +1589,7 @@
                 }
               }
               div.ele('exp_category').html(html);
+              div.ele('exp_category').val(expCat);
             }
           });
           enable_input(div.ele('exp_category'));
@@ -1563,17 +1597,18 @@
 
         //Populate Spending Domain departments drop-down
         function loadSpendingDepartments(div, data_source){
-          var year = 0;
+          let year = 0;
           if (div.ele('date_filter_checked').val() === '0') {
             year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
           }
-          var agency = 0;
+          let agency = 0;
           if(data_source == 'checkbook') {
             agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
             if(agency == 0)
               return;
           }
-          var exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
+          let exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
+          let dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
 
           $.ajax({
             url: '/advanced-search/autocomplete/spending/department/' + year + '/' + agency + '/' + exptype + '/' + data_source
@@ -1581,7 +1616,7 @@
               var html = '<option select="selected" value="0" >Select Department</option>';
               if (data[0]) {
                 if (data[0] !== 'No Matches Found') {
-                  for (var i = 0; i < data.length; i++) {
+                  for (let i = 0; i < data.length; i++) {
                     html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
                   }
                 }
@@ -1590,6 +1625,7 @@
                 }
               }
               div.ele('dept').html(html);
+              div.ele('dept').val(dept);
             }
           });
           enable_input(div.ele('dept'));
@@ -1695,6 +1731,32 @@
             else {
               enable_input([div.ele('contract_id'), div.ele('payee_name'),div.ele('catastrophic_events')]);
               onFiscalYearChange(div);
+            }
+          }
+        }
+
+        //On change of "Catastrophic event"
+        div_checkbook_spending.ele('catastrophic_events').change(function(){
+          onCatastrophicEventChange(div_checkbook_spending);
+        });
+
+        function onCatastrophicEventChange(div){
+            //Selecting 'COVID-19' option causes the following changes:
+            //Data within following fields update: Payee Name, Contract ID, Document ID, Capital Project
+            //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
+            let fiscal_year = div.ele('fiscal_year').attr("name");
+            fiscal_year = document.getElementsByName(fiscal_year)[0];
+
+            if(div.ele('catastrophic_events').val() === "1"){
+              for (let i = 0; i < fiscal_year.length; i++) {
+                let year = fiscal_year.options[i].text.toLowerCase();
+                let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
+                fiscal_year.options[i].style.display = include ? '':'none';
+              }
+            }
+            else{
+              for (let i = 0; i < fiscal_year.length; i++) {
+                fiscal_year.options[i].style.display = '';
             }
           }
         }
@@ -1842,9 +1904,9 @@
         function onChangeDataSource(dataSource) {
 
           /* Reset all the fields for the data source */
-          resetFields(div_checkbook_spending.contents());
-          resetFields(div_checkbook_spending_oge.contents());
-          resetFields(div_checkbook_spending_nycha.contents());
+          //resetFields(div_checkbook_spending.contents());
+          //resetFields(div_checkbook_spending_oge.contents());
+          //resetFields(div_checkbook_spending_nycha.contents());
 
           /* Initialize view by data source */
           switch (dataSource) {
@@ -1870,8 +1932,7 @@
               div_checkbook_spending.contents().hide();
               div_checkbook_spending_oge.contents().hide();
               div_checkbook_spending_nycha.contents().show();
-              //Load department and spending categories by default for NYCHA
-              loadSpendingDepartments(div_checkbook_spending_nycha, dataSource);
+              //Load Expense categories by default for NYCHA
               loadSpendingExpenseCategories(div_checkbook_spending_nycha, dataSource);
 
               enable_input(div_checkbook_spending_nycha.ele('date_filter_issue_date'));
@@ -3093,7 +3154,7 @@
         $(this).val('');
       }
       if (this.type == 'select-one') {
-        var default_option = $(this).attr('default_selected_value');
+        let default_option = $(this).attr('default_selected_value');
         if (!default_option)
           $(this).find('option:first').attr("selected", "selected");
         else

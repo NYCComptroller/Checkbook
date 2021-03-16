@@ -192,7 +192,7 @@
                   {
                     "name":"event_id",
                     "sourceColumnName":"event_id"
-                  }
+                }
                 ]
               }
             ],

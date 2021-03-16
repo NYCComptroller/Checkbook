@@ -56,6 +56,7 @@ class ValidatorConfig
     'expense_category',
     'vendor_customer_code',
     'payee_code',
-    'budget_type'
+    'budget_type',
+    'capital_project_code'
   ];
 }

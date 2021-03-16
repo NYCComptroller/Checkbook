@@ -34,7 +34,7 @@ function checkbook_etl_notification_mail_alter(&$message)
   if ('checkbook_etl_notification' !== $message['module']) {
     return;
   }
-  if (stripos($message['subject'], 'Fail')) {
+  if (stripos($message['subject'], 'Fail') || stripos($message['subject'], 'not Found')) {
     $message['headers']['X-Priority'] = '1 (Highest)';
     $message['headers']['X-MSMail-Priority'] = 'High';
     $message['headers']['Importance'] = 'High';

@@ -181,29 +181,7 @@ abstract class SpendingFeed
         $this->formatted_search_criteria['Issue Date'] = 'To: ' . $this->values['issuedfrom'];
       }
     }
-
-    //Year Filter
-    if ($this->values['date_filter'] == 0 && $this->values['year'] && $this->values['year'] !== '0') {
-      if (startsWith($this->values['year'], 'F')) {
-        $this->form['filter']['year'] = array(
-          '#markup' => '<div><strong>Year:</strong> ' . substr($this->values['year'], 0, -4) .' '. substr($this->values['year'], -4) . '</div>',
-        );
-        $this->user_criteria['Fiscal Year'] = $this->values['year'];
-        $this->formatted_search_criteria['Year'] = $this->values['year'];
-      } elseif (startsWith($this->values['year'], 'C')) {
-        $this->form['filter']['year'] = array(
-          '#markup' => '<div><strong>Year:</strong> ' . $this->values['year'] . '</div>',
-        );
-        $this->user_criteria['Calendar Year'] = $this->values['year'];
-        $this->formatted_search_criteria['Year'] = $this->values['year'];
-      }
-    }else if($this->values['date_filter'] == 0 && !$this->values['year'] && $this->data_source != 'checkbook_nycha'){
-      $this->form['filter']['year'] = array(
-        '#markup' => '<div><strong>Year:</strong> All Years</div>',
-      );
-      $this->formatted_search_criteria['Year'] = ' All Years';
-    }
-
+    
     return;
   }
 
@@ -225,12 +203,12 @@ abstract class SpendingFeed
       'responseColumns' => $this->filtered_columns
     ];
 
-    if ($this->values['dept'] && $this->values['dept'] != 'Select Department' && $this->values['dept'] != '0') {
+    if ($this->values['dept'] && $this->values['dept'] != 'Select Department' && $this->values['dept'] != '0' && $this->values['agency'] != 'Citywide (All Agencies)') {
       preg_match($this->bracket_value_pattern, $this->values['dept'], $department_matches);
       $this->criteria['value']['department_code'] = trim($department_matches[1], '[ ]');
     }
 
-    if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category' && $this->values['expense_category'] != '0') {
+    if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category' && $this->values['expense_category'] != '0' && $this->values['agency'] != 'Citywide (All Agencies)') {
       preg_match($this->bracket_value_pattern, $this->values['expense_category'], $expense_category_matches);
       $this->criteria['value']['expense_category'] = trim($expense_category_matches[1], '[ ]');
     }
@@ -263,22 +241,12 @@ abstract class SpendingFeed
       $this->criteria['value']['entity_contract_number'] = $this->values['entity_contract_number'];
     }
 
-    if ($this->values['date_filter'] == '0') {
-      if (($this->values['year'] && $this->values['year'] != '0') || ($this->values['nycha_year'] && $this->values['nycha_year'] != '0')) {
-        if ((startsWith($this->values['year'], 'F')) || (startsWith($this->values['nycha_year'], 'F'))) {
-          $this->criteria['value']['fiscal_year'] = $this->values['year'] != '0' ? ltrim($this->values['year'], 'FY') : ltrim($this->values['nycha_year'], 'FY') ;
-        } elseif (startsWith($this->values['year'], 'C')) {
-          $this->criteria['value']['calendar_year'] = $this->values['year'] != '0'  ? ltrim($this->values['year'], 'CY') : ltrim($this->values['nycha_year'], 'CY');
-        }
-      }
-    } else {
-      if ($this->values['date_filter'] == '1') {
-        if ($this->values['issuedfrom'] !== '' || $this->values['issuedto'] !== '') {
-          $this->criteria['range']['issue_date'] = array(
-            checknull($this->values['issuedfrom']),
-            checknull($this->values['issuedto'])
-          );
-        }
+    if ($this->values['date_filter'] == '1') {
+      if ($this->values['issuedfrom'] !== '' || $this->values['issuedto'] !== '') {
+        $this->criteria['range']['issue_date'] = array(
+          checknull($this->values['issuedfrom']),
+          checknull($this->values['issuedto'])
+        );
       }
     }
 

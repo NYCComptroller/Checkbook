@@ -106,6 +106,12 @@ foreach ($facets_render??[] as $facet_name => $facet) {
     echo '<div class="options">';
     echo '<ul class="rows">';
     $index = 0;
+    $lowercase_selected = [];
+    if($facet->selected){
+      foreach($facet->selected as $facet_val){
+        $lowercase_selected[strtolower($facet_val)] = strtolower($facet_val);
+      }
+    }
 
     foreach($facet->results as $facet_value => $count) {
 
@@ -124,13 +130,15 @@ foreach ($facets_render??[] as $facet_name => $facet) {
 
 END;
 
-      $lowercase_selected = $facet->selected ? array_map('strtolower', $facet->selected) : [];
-
-      if ($facet->selected) {
-        $checked = $facet->selected && in_array(strtolower($facet_value), $lowercase_selected);
-        $checked = $checked ? ' checked="checked" ' : '';
-        $active = $checked ? ' class="active" ' : '';
-        $disabled ='';
+      if ($lowercase_selected && isset($lowercase_selected[strtolower($facet_value)])) {
+        $checked = ' checked="checked" ';
+        $active = ' class="active" ';
+        $disabled = '';
+      }
+      else{
+        $checked = '';
+        $active = '';
+        $disabled = '';
       }
 
       //Disable unchecked options if 5 or more options from the same category are already selected
@@ -138,7 +146,7 @@ END;
         $disabled = " DISABLED=true";
       }
 
-      echo '<input type="checkbox" id="'.$id.'" '.$checked . $disabled.' facet="'.$facet_name.'" value="'.
+      echo '<input type="checkbox" onclick="return applySearchFilters();" id="'.$id.'" '.$checked . $disabled.' facet="'.$facet_name.'" value="'.
         htmlentities(urlencode($facet_value)).'" />';
       echo <<<END
 
@@ -199,7 +207,7 @@ END;
               echo '<input type="radio" name="' . htmlentities($sub_facet->title) . '" ' . 'id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
               htmlentities(urlencode($sub_facet_value)) . '" />';
             }else{
-              echo '<input type="checkbox" id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
+              echo '<input type="checkbox" onclick="return applySearchFilters();" id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
                 htmlentities(urlencode($sub_facet_value)) . '" />';
             }
             echo "<label for=\"{$id}\" />";

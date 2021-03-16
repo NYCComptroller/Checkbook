@@ -294,7 +294,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#prefix' => '<div class="datafield fundingsource nycha">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
-    '#default_value' => !empty($form_state['values']['funding_source']) ? $form_state['values']['funding_source'] : 'All Funding Sources',
+    '#default_value' => !empty($form_state['values']['funding_source']) ? $form_state['values']['funding_source'] : 'Select Funding Source',
   );
 
   $resp_center_options = _checkbook_advanced_search_get_responsibility_centers(Datasource::NYCHA, true);

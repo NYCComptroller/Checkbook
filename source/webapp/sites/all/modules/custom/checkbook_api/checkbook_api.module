@@ -587,6 +587,10 @@ function checkbook_api_adjustSpendingSql(&$sql_query) {
     if (strpos($sql_query,'l1.') !== false) {
         $alias = 'l1.';
     }
+    else if (strpos($sql_query,'l3.') !== false) {
+      $alias = 'l3.';
+    }
+    
     $sql_parts = explode("WHERE", $sql_query);
     $select_part = $sql_parts[0];
     $where_part = $sql_parts[1];
@@ -627,12 +631,18 @@ SQLEND;
  */
 function checkbook_api_adjustNYCHASpendingSql(&$sql_query,$criteria){
   $year = NULL;
-  $sql_parts = explode("WHERE", $sql_query);
-  $select_part = $sql_parts[0];
-  $where_part = $sql_parts[1];
+  if(strpos($sql_query, 'WHERE')) {
+    $sql_parts = explode("WHERE", $sql_query);
+    $select_part = $sql_parts[0];
+    $where_part = $sql_parts[1];
+  }else{//When there is no where condition, avoid replacing ORDER BY columns with data formatting conditions
+    $sql_parts = explode("ORDER BY", $sql_query);
+    $select_part = $sql_parts[0];
+    $where_part = $sql_parts[1];
+  }
   // Add hyphens only for csv
   if (strtolower($criteria['global']['response_format']) == 'csv') {
-    $select_part = str_replace("document_id", "CASE WHEN document_id IS NULL THEN CAST('N/A' AS TEXT) ELSE CAST (document_id AS TEXT) END AS document_id", $select_part);
+    $select_part = str_replace("document_id", "CASE WHEN document_id IS NULL THEN 'N/A' ELSE document_id END AS document_id", $select_part);
     $spending_sect8_other_hyphens = array('agreement_type_name', 'contract_id', 'release_number', 'contract_purpose', 'display_industry_type_name');
     $spending_payroll_hyphens = array('agreement_type_name', 'contract_id', 'release_number', 'invoice_number', 'contract_purpose', 'distribution_line_number',
       'display_industry_type_name', 'display_funding_source_descr', 'expenditure_type_description', 'responsibility_center_description', 'program_phase_description', 'gl_project_description');
@@ -655,7 +665,11 @@ function checkbook_api_adjustNYCHASpendingSql(&$sql_query,$criteria){
                                                    END AS " . $value, $select_part);
     }
   }
-  $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
+  if(strpos($sql_query, 'WHERE')) {
+    $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
+  }else{
+    $sql_query = (count($sql_parts) > 1) ? implode(' ORDER BY  ', array($select_part, $where_part)) : $select_part;
+  }
 }
 
 /***
@@ -808,6 +822,18 @@ function checkbook_api_adjustNYCHABudgetSql(&$sql_query){
   $select_part = $sql_parts[0];
   $where_part = $sql_parts[1];
   $select_part =  str_replace("modified_budget", "adopted_budget AS modified_budget", $select_part);
+  $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
+}
+
+/***
+ * @param $sql_query
+ * @return string
+ */
+function checkbook_api_adjustNYCHARevenueSql(&$sql_query){
+  $sql_parts = explode("WHERE", $sql_query);
+  $select_part = $sql_parts[0];
+  $where_part = $sql_parts[1];
+  $select_part =  str_replace("modified_amount", "adopted_amount AS modified_amount", $select_part);
   $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
 }
 

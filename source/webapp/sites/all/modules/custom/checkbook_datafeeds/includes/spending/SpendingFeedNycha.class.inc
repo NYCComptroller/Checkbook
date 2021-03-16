@@ -46,14 +46,7 @@ class SpendingFeedNycha extends SpendingFeed
       $this->user_criteria['Expense Category'] = $this->values['expense_category'];
       $this->formatted_search_criteria['Expense Category'] = $this->values['expense_category'];
     }
-
-    //Nycha year
-    if ($this->values['nycha_year']) {
-      $this->form['filter']['nycha_year'] = array('#markup' => '<div><strong>Year:</strong> ' . substr($this->values['nycha_year'], 0, -4) .' '. substr($this->values['nycha_year'], -4) . '</div>');
-      $this->user_criteria['fiscal_year'] = $this->values['nycha_year'];
-      $this->formatted_search_criteria['Year'] = $this->values['nycha_year'];
-    }
-
+    
     //Spending Category
     if ($this->values['nycha_expense_type']) {
       $this->form['filter']['nycha_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $this->values['nycha_expense_type'] . '</div>');
@@ -142,7 +135,7 @@ class SpendingFeedNycha extends SpendingFeed
     }
 
     //Purchase Order Type
-    if ($this->values['purchase_order_type']) {
+    if ($this->values['purchase_order_type'] && $this->values['nycha_expense_type'] != 'Payroll [PAYROLL]' && $this->values['nycha_expense_type'] != 'Section 8 [SECTION8]') {
       $po_type = trim($this->values['purchase_order_type']);
       $this->form['filter']['purchase_order_type'] = array('#markup' => '<div><strong>Purchase Order Type:</strong> ' . $po_type . '</div>');
       $this->user_criteria['Purchase Order Type'] = $po_type;
@@ -165,6 +158,17 @@ class SpendingFeedNycha extends SpendingFeed
       );
       $this->user_criteria['Document ID'] = $this->values['document_id'];
       $this->formatted_search_criteria['Document ID'] = $this->values['document_id'];
+    }
+
+    //Year
+    if ($this->values['nycha_year'] && $this->values['nycha_year'] != '0') {
+      $this->form['filter']['nycha_year'] = array('#markup' => '<div><strong>Year:</strong> ' . substr($this->values['nycha_year'], 0, -4) .' '. substr($this->values['nycha_year'],-4) . '</div>');
+      $this->formatted_search_criteria['Year'] = $this->values['nycha_year'];
+      $this->user_criteria['Year'] = $this->values['nycha_year'];
+    }else{
+      $this->form['filter']['nycha_year'] = array('#markup' => '<div><strong>Year:</strong> All Years</div>');
+      $this->formatted_search_criteria['Year'] = 'All Years';
+      $this->user_criteria['Year'] = 'All Years';
     }
   }
 
@@ -210,6 +214,10 @@ class SpendingFeedNycha extends SpendingFeed
         checknull($this->values['spent_amt_from']),
         checknull($this->values['spent_amt_to']),
       );
+    }
+
+    if ($this->values['nycha_year'] && $this->values['nycha_year'] != '0') {
+        $this->criteria['value']['fiscal_year'] = ltrim($this->values['nycha_year'], 'FY') ;
     }
   }
 

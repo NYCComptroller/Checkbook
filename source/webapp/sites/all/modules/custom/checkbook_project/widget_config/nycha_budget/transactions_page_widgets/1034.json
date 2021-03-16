@@ -17,6 +17,7 @@
     "adpamt": "range",
     "encamt": "range",
     "actual": "range",
+    "bdgtyp": "eqignorecase",
     "bdgnm": "eqignorecase",
     "bdgnm_exact": "eqignorecase"
   },
@@ -50,7 +51,8 @@
     "display_funding_source_descr",
     "responsibility_center_description",
     "program_phase_description",
-    "gl_project_description"
+    "gl_project_description",
+    "budget_id"
   ],
   "caption": "",
   "derivedColumns": {
@@ -85,10 +87,10 @@
       "expression": "_get_tooltip_markup($row['expenditure_type_description'],36)"
     },
     "budget_name_formatted":{
-      "expression": "($row['budget_name'] == null) ? 'N/A' : _get_tooltip_markup($row['budget_name'],36)"
+      "expression": "_get_tooltip_markup(NychaBudgetUtil::getBudgetName($row['budget_id']),36)"
     },
     "budget_type_formatted":{
-      "expression": "($row['budget_type'] == null) ? 'N/A' : _get_tooltip_markup($row['budget_type'],36)"
+      "expression": "_get_tooltip_markup(NychaBudgetUtil::getBudgetType($row['budget_id']),36)"
     },
     "resp_center_formatted":{
       "expression": "_get_tooltip_markup($row['responsibility_center_description'],36)"

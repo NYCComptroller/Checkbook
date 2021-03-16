@@ -208,7 +208,8 @@ class RevenueFeedCitywide extends RevenueFeed{
       }
     }
     if ($this->values['revenue_source']) {
-       $this->criteria['value']['revenue_source'] = $this->values['revenue_source'];
+      preg_match($this->bracket_value_pattern, $this->values['revenue_source'], $rsmatches);
+       $this->criteria['value']['revenue_source'] = trim($rsmatches[1], '[ ]');;
     }
 
     if ($this->values['catastrophic_event'] !== 0 && $this->values['budget_fiscal_year'] >= 2020 ) {

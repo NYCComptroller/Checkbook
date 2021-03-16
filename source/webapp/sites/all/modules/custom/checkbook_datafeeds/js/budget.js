@@ -219,8 +219,9 @@
             //Sets up jQuery UI autocompletes and autocomplete filtering functionality
             let year = $('#edit-fiscal-year',context).val() ;
             let agency = emptyToZero($('#edit-agency',context).val());
-            let dept = emptyToZero($('#edit-dept',context).val()) ;
-            let expcategory =  emptyToZero($('#edit-expense-category',context).val());
+            let dept = ($('#edit-dept',context).val()) ? $('#edit-dept',context).val() : 0;
+            let expcategory = ($('#edit-expense-category',context).val()) ? $('#edit-expense-category',context).val() : 0;
+            let budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
             let event = emptyToZero($('#edit-catastrophic-event',context).val());
 
             let filters = {

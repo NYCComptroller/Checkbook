@@ -118,7 +118,7 @@
     let fiscal_year = document.getElementById("edit-year");
     let catastrophic_event = document.getElementById("edit-catastrophic-event");
 
-    if(catastrophic_event.value === "1"){    
+    if(catastrophic_event.value === "1"){
       for (let i = 0; i < fiscal_year.length; i++) {
         let year = fiscal_year.options[i].text.toLowerCase();
         let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
@@ -153,8 +153,10 @@
         catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
         if(catastrophic_event.options[i].style.display === 'none') enabled_count--;
       }
-      if(enabled_count <=1) disable_input($('select[name="catastrophic_event"]'));
-    }  
+      if(enabled_count <=1) {
+        disable_input($('select[name="catastrophic_event"]'));
+      }
+    }
     else{
       for (let i = 0; i < catastrophic_event.length; i++) {
         let event = catastrophic_event.options[i].text.toLowerCase();
@@ -163,8 +165,8 @@
           break;
         }
       }
-      enable_input($('select[name="catastrophic_event"]')); 
-    } 
+      enable_input($('select[name="catastrophic_event"]'));
+    }
   }
 
   //On Data Source Change
@@ -556,7 +558,7 @@
       let fund_src = $('#edit-funding-source', context).val() ? emptyToZero($('#edit-funding-source', context).val()) :0 ;
       let spend_cat = getSpendingExpenseType(data_source);
       let catastrophic_event_id = $('#edit-catastrophic-event', context).val() ? $('#edit-catastrophic-event', context).val() : 0;
-      
+
       if(year.toLowerCase().indexOf("fy") >= 0){
         year = year.toLowerCase().split('fy')[1];
       }
@@ -578,7 +580,7 @@
         "responsibility_center_code":resp_center,
         "funding_source_number":fund_src,
         "event_id":catastrophic_event_id
-      };  
+      };
 
       $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
       $('#edit-contractno', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'contract_number', filters)});
@@ -636,7 +638,6 @@
             "funding_source_number":fund_src,
             "event_id":catastrophic_event_id
           };
-          
           $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
           $('#edit-contractno', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'contract_number', filters)});
           $('#edit-document-id', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'document_id', filters)});
@@ -703,7 +704,6 @@
         }
         $(this).val('');
       }
-      
       if (this.type == 'select-one') {
         var default_option = $(this).attr('default_selected_value');
         if (!default_option)
