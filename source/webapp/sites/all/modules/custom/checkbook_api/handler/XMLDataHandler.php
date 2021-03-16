@@ -194,7 +194,7 @@ class XMLDataHandler extends AbstractDataHandler
 
           //Get only column
           if (strpos($sql_part,".") !== false) {
-            $select_column_parts = explode('.', trim($sql_part));
+            $select_column_parts = explode('.', trim($sql_part), 2);
             $alias = $select_column_parts[0] . '.';
             $column = $select_column_parts[1];
           }else{
