@@ -149,7 +149,8 @@
             reloadBudgetType();
             reloadBudgetName();
 
-            let dataSource = $('input[name="datafeeds-budget-domain-filter"]:checked', context).val();
+          let dataSource;
+          dataSource = $('input[name="datafeeds-budget-domain-filter"]:checked', context).val() ? $('input[name="datafeeds-budget-domain-filter"]:checked', context).val() : 'checkbook';
             //Display or hide fields based on data source selection
             showHideBudgetFields(dataSource);
 

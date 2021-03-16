@@ -1,6 +1,6 @@
 {
   "checkbook": [
-    {"field_name":"domain_filter","column":"none"},
+    //{"field_name":"domain_filter","column":"none"},
     {"field_name":"agency","column":"column-left"},
     {"field_name":"department","column":"column-left"},
     {"field_name":"expense_category","column":"column-left"},
@@ -16,7 +16,7 @@
     {"field_name":"cash_payments","column":"column-right"},
     {"field_name":"post_adjustments","column":"column-right"},
     {"field_name":"budget","column":"none"}
-  ],
+  ]/*,
   "checkbook_nycha": [
     {"field_name":"year","column":"column-left"},
     {"field_name":"expense_category","column":"column-left"},
@@ -32,5 +32,5 @@
     {"field_name":"encumbered","column":"column-right"},
     {"field_name":"actual","column":"column-right"},
     {"field_name":"budget","column":"none"}
-  ]
+  ]*/
 }

@@ -140,7 +140,8 @@ function onBudgetFiscalYearChange() {
     attach: function (context, settings) {
       //DataSource Filter Formatter
       $.fn.formatDatafeedsDatasourceRadio();
-      let dataSource = $('input[name="datafeeds-revenue-domain-filter"]:checked', context).val();
+      let dataSource;
+      dataSource = $('input[name="datafeeds-revenue-domain-filter"]:checked', context).val() ? $('input[name="datafeeds-revenue-domain-filter"]:checked', context).val() : 'checkbook';
 
       reloadBudgetType();
       reloadBudgetName();
