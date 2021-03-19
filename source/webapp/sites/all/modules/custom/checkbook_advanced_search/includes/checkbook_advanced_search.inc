@@ -30,38 +30,38 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
 
     switch ($form_state['clicked_button']['#name']) {
         case "budget_submit":
-            $data_source = $form_state['values']['budget_advanced_search_domain_filter'];
+            $data_source = isset($form_state['values']['budget_advanced_search_domain_filter']) ? $form_state['values']['budget_advanced_search_domain_filter'] : Datasource::CITYWIDE;
             $form_state['redirect'] = _checkbook_advanced_search_budget_submit($form, $form_state, $data_source);
             break;
         case "revenue_submit":
-            $data_source = $form_state['values']['revenue_advanced_search_domain_filter'];
+            $data_source = isset($form_state['values']['revenue_advanced_search_domain_filter']) ? $form_state['values']['revenue_advanced_search_domain_filter'] : Datasource::CITYWIDE;
             $form_state['redirect'] = _checkbook_advanced_search_revenue_submit($form, $form_state, $data_source);
             break;
         case "spending_submit":
-            $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
+            $data_source = isset($form_state['values']['spending_advanced_search_domain_filter']) ? $form_state['values']['spending_advanced_search_domain_filter'] : Datasource::CITYWIDE;
             $form_state['redirect'] = _checkbook_advanced_search_spending_submit($form, $form_state, $data_source);
             break;
         case "contracts_submit":
-            $data_source = $form_state['values']['contracts_advanced_search_domain_filter'];
+            $data_source = isset($form_state['values']['contracts_advanced_search_domain_filter']) ? $form_state['values']['contracts_advanced_search_domain_filter'] : Datasource::CITYWIDE;
             $form_state['redirect'] = _checkbook_advanced_search_contracts_submit($form, $form_state, $data_source);
             break;
         case "payroll_submit":
             $form_state['redirect'] = _checkbook_advanced_search_payroll_submit($form, $form_state);
             break;
         case "budget_next":
-            $data_source = $form_state['values']['budget_advanced_search_domain_filter'];
+            $data_source = isset($form_state['values']['budget_advanced_search_domain_filter']) ? $form_state['values']['budget_advanced_search_domain_filter'] : Datasource::CITYWIDE;
             return _checkbook_advanced_search_budget_submit($form, $form_state, $data_source);
             break;
         case "revenue_next":
-            $data_source = $form_state['values']['revenue_advanced_search_domain_filter'];
+            $data_source = isset($form_state['values']['revenue_advanced_search_domain_filter']) ? $form_state['values']['revenue_advanced_search_domain_filter'] : Datasource::CITYWIDE;
             return _checkbook_advanced_search_revenue_submit($form, $form_state, $data_source);
             break;
         case "spending_next":
-            $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
+            $data_source = isset($form_state['values']['spending_advanced_search_domain_filter']) ? $form_state['values']['spending_advanced_search_domain_filter'] : Datasource::CITYWIDE;
             return _checkbook_advanced_search_spending_submit($form, $form_state, $data_source);
             break;
         case "contracts_next":
-            $data_source = $form_state['values']['contracts_advanced_search_domain_filter'];
+            $data_source = isset($form_state['values']['contracts_advanced_search_domain_filter']) ? $form_state['values']['contracts_advanced_search_domain_filter'] : Datasource::CITYWIDE;
             return _checkbook_advanced_search_contracts_submit($form, $form_state, $data_source);
             break;
         case "payroll_next":
