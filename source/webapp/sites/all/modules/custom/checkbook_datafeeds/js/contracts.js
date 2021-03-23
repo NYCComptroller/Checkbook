@@ -667,7 +667,7 @@
       $('#edit-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'pin',filters)});
       $('#edit-entity-contract-number').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_entity_contract_number',filters)});
       $('#edit-commodity-line').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_commodity_line',filters)});
-      $('#edit-budget-name').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_budget_name_autocomplete',filters)});
+      $('#edit-budget-name').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_budget_name',filters)});
 
       const purchase_order = $.fn.emptyToZero($('select[name="purchase_order_type"]', context).val());
       const responsibility_center = $.fn.emptyToZero($('select[name="resp_center"]', context).val());
@@ -729,7 +729,7 @@
           $('#edit-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'pin',filters)});
           $('#edit-entity-contract-number').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_entity_contract_number',filters)});
           $('#edit-commodity-line').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_commodity_line',filters)});
-          $('#edit-budget-name').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_budget_name_autocomplete',filters)});
+          $('#edit-budget-name').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_budget_name',filters)});
 
           const purchase_order = $.fn.emptyToZero($('select[name="purchase_order_type"]', context).val());
           const responsibility_center = $.fn.emptyToZero($('select[name="resp_center"]', context).val());
