@@ -665,9 +665,9 @@
       $('#edit-contractno').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_number',filters)});
       $('#edit-apt-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'apt_pin',filters)});
       $('#edit-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'pin',filters)});
-      $('#edit-entity-contract-number').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'entitycontractnum',filters)});
-      $('#edit-commodity-line').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'commodityline',filters)});
-      $('#edit-budget-name').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'budgetname',filters)});
+      $('#edit-entity-contract-number').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_entity_contract_number',filters)});
+      $('#edit-commodity-line').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_commodity_line',filters)});
+      $('#edit-budget-name').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_budget_name_autocomplete',filters)});
 
       const purchase_order = $.fn.emptyToZero($('select[name="purchase_order_type"]', context).val());
       const responsibility_center = $.fn.emptyToZero($('select[name="resp_center"]', context).val());
@@ -727,9 +727,9 @@
           $('#edit-contractno').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_number',filters)});
           $('#edit-apt-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'apt_pin',filters)});
           $('#edit-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'pin',filters)});
-          $('#edit-entity-contract-number').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'entitycontractnum',filters)});
-          $('#edit-commodity-line').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'commodityline',filters)});
-          $('#edit-budget-name').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'budgetname',filters)});
+          $('#edit-entity-contract-number').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_entity_contract_number',filters)});
+          $('#edit-commodity-line').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_commodity_line',filters)});
+          $('#edit-budget-name').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_budget_name_autocomplete',filters)});
 
           const purchase_order = $.fn.emptyToZero($('select[name="purchase_order_type"]', context).val());
           const responsibility_center = $.fn.emptyToZero($('select[name="resp_center"]', context).val());
