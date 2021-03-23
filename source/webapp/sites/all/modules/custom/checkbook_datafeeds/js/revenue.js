@@ -111,7 +111,8 @@
 function onBudgetFiscalYearChange() {
   //Setting data source value
   let data_source = $('input[name="datafeeds-revenue-domain-filter"]:checked').val();
-  if(data_source == 'checkbook') {
+  data_source = data_source ? data_source : 'checkbook'; 
+  if(data_source === 'checkbook') {
     let budget_fiscal_year = ($('#edit-budget-fiscal-year').val()) ? $('#edit-budget-fiscal-year').val() : 0;
     let catastrophic_event = document.getElementById("edit-catastrophic-event");
     let enabled_count = catastrophic_event.length;

@@ -1307,7 +1307,8 @@
         function onRevenueBudgetFiscalYearChange(div) {
           //Setting data source value
           let data_source = $('input[type=radio][name=revenue_advanced_search_domain_filter]:checked').val();
-          if(data_source == 'checkbook') {
+          data_source = data_source ? data_source : 'checkbook';
+          if(data_source === 'checkbook') {
             let budget_fiscal_year = (div.ele('budget_fy').val()) ? div.ele('budget_fy').val() : 0;
             let catastrophic_event = document.getElementById("edit-checkbook-revenue-catastrophic-events");
             let enabled_count = catastrophic_event.length;
