@@ -496,8 +496,8 @@
               reloadBudgetCode(div_checkbook_budget);
               reloadBudgetName(div_checkbook_budget);
               // Update year drop down
-              updateEventYearValue("#edit-checkbook-budget-year option",'0');
               div_checkbook_budget.ele('catastrophic_events').removeAttr("disabled");
+              updateEventYearValue("#edit-checkbook-budget-year option",'0');
 
           }
         }
@@ -558,6 +558,19 @@
           reloadBudgetName(div_checkbook_budget);
           updateEventYearValue("#edit-checkbook-budget-year option",cevent);
         });
+
+        $('#edit-budget-clear').click(function () {
+          div_checkbook_budget.ele('catastrophic_events').removeAttr("disabled");
+          updateEventYearValue("#edit-checkbook-budget-year option",'0');
+          $('#edit-budget-expense-category').attr("disabled", "disabled");
+          $('#edit-budget-department').attr("disabled", "disabled");
+          //Reset Budget Name and Budget Code Chosen drop-downs
+          div_checkbook_budget.ele('budget_code').val("0").trigger("chosen:updated");
+          div_checkbook_budget.ele('budget_name').val("0").trigger("chosen:updated");
+          reloadBudgetCode(div_checkbook_budget);
+          reloadBudgetName(div_checkbook_budget);
+        });
+
 
         //NYCHA Budget- Trigger Chosen input tool for 'Budget Type' and 'Budget Name'
         div_checkbook_budget_nycha.ele('budget_type').chosen({
@@ -1385,6 +1398,15 @@
         //On change of "Catastrophic event"
         div_checkbook_revenue.ele('catastrophic_events').change(function(){
           onRevenueCatastrophicEventChange(div_checkbook_revenue);
+        });
+
+        //On Clear all button click
+        $('#edit-revenue-clear').click(function () {
+          div_checkbook_revenue.ele('catastrophic_events').val("0").trigger("chosen:updated");
+          onRevenueCatastrophicEventChange(div_checkbook_revenue);
+          onRevenueBudgetFiscalYearChange(div_checkbook_revenue);
+          div_checkbook_revenue.ele('catastrophic_events').removeAttr('style');
+          div_checkbook_revenue.ele('catastrophic_events').removeAttr('disabled');
         });
 
         //On change of "Budget Fiscal Year"
