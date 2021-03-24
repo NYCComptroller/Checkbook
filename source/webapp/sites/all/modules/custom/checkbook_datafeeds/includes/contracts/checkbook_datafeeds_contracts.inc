@@ -1400,7 +1400,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $formatted_search_criteria['Category'] = $values['category'];
       }
       if ($values['category'] != 'revenue') {
-        if ($values['catastrophic_event'] !== '0' && ($values['year'] == '0' ||  (substr($values['year'],-4) >= 2020 ))) {
+        if ($values['catastrophic_event'] && ($values['year'] == '0' ||  (substr($values['year'],-4) >= 2020 ))) {
           $form['filter']['catastrophic_event'] = array('#markup' => '<div><strong>Catastrophic Event:</strong> ' . $values['catastrophic_event'] . '</div>');
           $user_criteria['Catastrophic Event'] = $values['catastrophic_event'];
           $formatted_search_criteria['Catastrophic Event'] = $values['catastrophic_event'];
@@ -1806,7 +1806,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
       }
 
       if ($values['category'] != 'revenue') {
-        if ($values['catastrophic_event'] !== '0' && ((substr($values['year'], -4) >= 2020) || $values['year'] == '0')) {
+        if ($values['catastrophic_event'] && ((substr($values['year'], -4) >= 2020) || $values['year'] == '0')) {
           preg_match($pattern, $values['catastrophic_event'], $ematches);
           $criteria['value']['catastrophic_event'] = trim($ematches[1], '[ ]');;
         }

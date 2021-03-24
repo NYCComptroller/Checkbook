@@ -62,7 +62,7 @@ class RevenueFeedCitywide extends RevenueFeed{
     }
 
     //Catastrophic event filter
-    if ($this->values['catastrophic_event'] !== '0' && $this->values['budget_fiscal_year'] >= 2020 ) {
+    if ($this->values['catastrophic_event'] && $this->values['budget_fiscal_year'] >= 2020 ) {
       $catastrophic_events = _get_event_name_and_id();
       $catastrophic_event = $catastrophic_events[$this->values['catastrophic_event']]. "[" .$this->values['catastrophic_event']. "]";
       $this->form['filter']['catastrophic_event'] = array('#markup' => '<div><strong>Catastrophic Event:</strong> ' . $catastrophic_event . '</div>');
@@ -212,7 +212,7 @@ class RevenueFeedCitywide extends RevenueFeed{
        $this->criteria['value']['revenue_source'] = trim($rsmatches[1], '[ ]');;
     }
 
-    if ($this->values['catastrophic_event'] !== '0' && $this->values['budget_fiscal_year'] >= 2020 ) {
+    if ($this->values['catastrophic_event'] && $this->values['budget_fiscal_year'] >= 2020 ) {
       $this->criteria['value']['catastrophic_event'] = $this->values['catastrophic_event'];
     }
 
