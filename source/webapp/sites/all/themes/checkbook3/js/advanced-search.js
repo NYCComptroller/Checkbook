@@ -1317,6 +1317,8 @@
           }
         }
 
+        onRevenueDataSourceChange("checkbook");
+
         function onRevenueBudgetFiscalYearChange(div) {
           //Setting data source value
           let data_source = $('input[type=radio][name=revenue_advanced_search_domain_filter]:checked').val();
