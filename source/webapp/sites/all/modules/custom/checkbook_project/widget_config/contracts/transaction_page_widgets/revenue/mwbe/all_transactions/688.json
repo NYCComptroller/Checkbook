@@ -169,7 +169,7 @@ return $parameters;
 {"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]}
 ],
 
-"aaSorting":[[4,"desc"]],
+"aaSorting":[[0,"desc"]],
 "sScrollX": "100%",
 "bScrollCollapse": true
 }
