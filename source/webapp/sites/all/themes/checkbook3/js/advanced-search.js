@@ -1317,6 +1317,9 @@
           }
         }
 
+        let dataSource = $('input:radio[name=revenue_advanced_search_domain_filter]:checked', context).val() ? $('input:radio[name=revenue_advanced_search_domain_filter]:checked', context).val() : "checkbook";
+        onRevenueDataSourceChange(dataSource);
+
         function onRevenueBudgetFiscalYearChange(div) {
           //Setting data source value
           let data_source = $('input[type=radio][name=revenue_advanced_search_domain_filter]:checked').val();
