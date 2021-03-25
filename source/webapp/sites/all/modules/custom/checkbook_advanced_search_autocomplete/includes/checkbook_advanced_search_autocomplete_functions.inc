@@ -445,10 +445,10 @@ function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year,
     if($catastrophic_events != '0' ) {
        $params["event_id"] = $catastrophic_events;
     }
-    $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name", "budget_code_code.budget_code_code"), $params,"budget_code_name.budget_code_name");
+    $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name"), $params,"budget_code_name.budget_code_name");
     if(count($results) == 0 && $agency != '0'){
         unset($params["budget_code"]);
-        $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name", "budget_code_code.budget_code_code"), $params,"budget_code_name.budget_code_name");
+        $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name"), $params,"budget_code_name.budget_code_name");
     }
     if (count($results) > 0) {
         $matches = array();
