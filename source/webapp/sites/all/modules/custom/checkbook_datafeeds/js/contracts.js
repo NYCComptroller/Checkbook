@@ -57,6 +57,7 @@
         $("#edit-category").children("option[value='revenue']").show();
         $("#edit-apt-pin").removeAttr('disabled');
 
+
         //Moving fields to match with Advanced search form order
         $('.default-fields .datafield.pin').insertBefore('.default-fields .datafield.currentamt.datarange');
         $('.default-fields .datafield.enddate.datarange').insertAfter('.default-fields .datafield.currentamt.datarange');
@@ -147,6 +148,14 @@
 
     //Agency drop-down options
     $.fn.reloadAgencies(dataSource);
+
+    // Reset year drop downs
+    $('#edit-year').removeAttr('disabled');
+    $('#edit-nycha-year').removeAttr('disabled');
+
+    // Reset covid filter
+    $("#edit-catastrophic_event").removeAttr('disabled');
+    updateYearValue('0');
 
     if (dataSource !== 'checkbook_nycha') {
       //Change the Agency drop-down label
@@ -485,8 +494,9 @@
         $.fn.resetSelectedColumns();
         $.fn.hideShow(csval, catval, datasource);
         $.fn.showHidePrimeAndSubIcon();
-        if (csval == 'pending') {
+        if (csval === 'pending') {
           $('#edit-year option:selected').removeAttr('selected');
+          $('#edit-year').attr('disabled','disabled');
         }
       });
 
@@ -665,9 +675,9 @@
       $('#edit-contractno').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_number',filters)});
       $('#edit-apt-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'apt_pin',filters)});
       $('#edit-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'pin',filters)});
-      $('#edit-entity-contract-number').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'entitycontractnum',filters)});
-      $('#edit-commodity-line').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'commodityline',filters)});
-      $('#edit-budget-name').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'budgetname',filters)});
+      $('#edit-entity-contract-number').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_entity_contract_number',filters)});
+      $('#edit-commodity-line').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_commodity_line',filters)});
+      $('#edit-budget-name').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_budget_name',filters)});
 
       const purchase_order = $.fn.emptyToZero($('select[name="purchase_order_type"]', context).val());
       const responsibility_center = $.fn.emptyToZero($('select[name="resp_center"]', context).val());
@@ -727,9 +737,9 @@
           $('#edit-contractno').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_number',filters)});
           $('#edit-apt-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'apt_pin',filters)});
           $('#edit-pin').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'pin',filters)});
-          $('#edit-entity-contract-number').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'entitycontractnum',filters)});
-          $('#edit-commodity-line').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'commodityline',filters)});
-          $('#edit-budget-name').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'budgetname',filters)});
+          $('#edit-entity-contract-number').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_entity_contract_number',filters)});
+          $('#edit-commodity-line').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_commodity_line',filters)});
+          $('#edit-budget-name').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_budget_name',filters)});
 
           const purchase_order = $.fn.emptyToZero($('select[name="purchase_order_type"]', context).val());
           const responsibility_center = $.fn.emptyToZero($('select[name="resp_center"]', context).val());
@@ -773,6 +783,7 @@
       });
       //Year Drop-down
       $('#edit-year', context).change(function () {
+        let catval = $('#edit-category', context).val();
         if ($(this).val() === '0') {
           $('#edit-column-select-expense option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', 'disabled');
