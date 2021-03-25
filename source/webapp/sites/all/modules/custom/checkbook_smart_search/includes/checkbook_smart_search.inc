@@ -396,7 +396,7 @@ function adjustExportResults($result,$domain){
           }
           break;
         case "nycha_payroll":
-          $hyphen_fields = array("annual_salary", "hourly_rate", "daily_wage");
+          $amount_hyphen_fields = array("annual_salary", "hourly_rate", "daily_wage");
           break;
         case "nycha_revenue":
           if ($headers[$key] == 'adopted_amount') {
