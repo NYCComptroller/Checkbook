@@ -94,17 +94,6 @@ class RequestUtilTest extends TestCase
     /**
      *
      */
-    public function testisNYCHAContractPath()
-    {
-        $this->assertTrue(RequestUtil::isNYCHAContractPath('nycha_contracts'));
-        $this->assertFalse(RequestUtil::isNYCHAContractPath('something/contracts_revenue_landing'));
-    }
-
-
-
-    /**
-     *
-     */
     public function testGetDomain()
     {
         global $mock_current_path;
@@ -156,43 +145,4 @@ class RequestUtilTest extends TestCase
         unset($_REQUEST['expandBottomContURL']);
         $this->assertEquals('Expense Budget Transactions', CustomBreadcrumbs::getBudgetBreadcrumbTitle());
     }
-
-    /**
-     *
-     */
-    public function testgetDashboardTitle()
-    {
-        $this->assertEquals('M/WBE',RequestUtil::getDashboardTitle('mp'));
-        $this->assertEquals('Sub Vendors (M/WBE)',RequestUtil::getDashboardTitle('sp'));
-        $this->assertEquals('M/WBE (Sub Vendors)',RequestUtil::getDashboardTitle('ms'));
-        $this->assertEquals('Sub Vendors',RequestUtil::getDashboardTitle('ss'));
-    }
-
-    /**
-     *
-     */
-    public function testisAdvancedSearchPage()
-    {
-        global $mock_current_path;
-        $_REQUEST['expandBottomContURL'] = '';
-        $mock_current_path = 'spending/search/transactions/something';
-        $this->assertTrue(RequestUtil::isAdvancedSearchPage($mock_current_path));
-
-        $mock_current_path = 'contract/all/transactions/something';
-        $this->assertTrue(RequestUtil::isAdvancedSearchPage($mock_current_path));
-
-        $mock_current_path = 'contract/search/transactions/something';
-        $this->assertTrue(RequestUtil::isAdvancedSearchPage($mock_current_path));
-
-        $mock_current_path = '/nycha_revenue/transactions/something';
-        $this->assertTrue(RequestUtil::isAdvancedSearchPage($mock_current_path));
-
-        $mock_current_path = '/nycha_budget/transactions/something';
-        $this->assertTrue(RequestUtil::isAdvancedSearchPage($mock_current_path));
-
-        $mock_current_path = '/nycha_payroll/search/transactions/something';
-        $this->assertTrue(RequestUtil::isAdvancedSearchPage($mock_current_path));
-
-    }
-
 }
