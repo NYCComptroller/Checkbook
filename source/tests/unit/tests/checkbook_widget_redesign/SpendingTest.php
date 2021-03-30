@@ -1,8 +1,6 @@
 <?php
 
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_business_layer/checkbook_services/spending/SpendingUrlService.php';
-include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/spending/SpendingUtil.php';
-include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/util/CustomURLHelper.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/constants/CommonConstants.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_business_layer/checkbook_services/common/MinorityTypeService.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/constants/SpendingConstants.php';
@@ -10,7 +8,6 @@ include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/constants/Co
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/RequestUtil.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/util/CheckbookDateUtil.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
-include_once CUSTOM_MODULES_DIR . '/custom_number_formatter/custom_number_formatter.module';
 
 use PHPUnit\Framework\TestCase;
 
@@ -58,7 +55,7 @@ class SpendingUrlServiceTest extends TestCase
     }
 
     /**
-     * Tests getFooter() function
+     * Tests payrollAgencyUrl() function
      */
     public function test_getFooterUrl()
     {
@@ -83,68 +80,5 @@ class SpendingUrlServiceTest extends TestCase
         $result = SpendingUrlService::mwbeUrl('2~3~4~5~9','mp');
         $this->assertEquals("/spending_landing/yeartype/B/year/-1/dashboard/mp/mwbe/2~3~4~5~9?expandBottomCont=true", $result);
     }
-
-}
-
-class SpendingUtilTest extends TestCase
-{
-    /**
-     * Tests getSpendingCategoryName function
-     */
-    public function test_getSpendingCategoryName()
-    {
-        $result = SpendingUtil::getSpendingCategoryName();
-        $this->assertEquals('Total Spending', $result);
-    }
-
-    /**
-     * Tests getSpendingTransactionsTitle function
-     */
-    public function test_getSpendingTransactionsTitle()
-    {
-        $result = SpendingUtil::getSpendingTransactionsTitle();
-        $this->assertEquals('Total Spending Transactions', $result);
-    }
-
-    /**
-     * Tests getSpendingUrl function
-     */
-    public function test_getSpendingUrl()
-    {
-        $override_params = array(
-            "smnid"=>23,
-            "agency"=>98,
-            "year"=>121
-        );
-
-        $result = SpendingUtil::getSpendingUrl(null,$override_params);
-        $this->assertEquals('/yeartype/B/year/-1/smnid/23/agency/98/year/121', $result);
-    }
-
-    /**
-     * Tests getSpendingTransactionPageUrl function
-     */
-    public function test_getSpendingTransactionPageUrl()
-    {
-        $override_params = array(
-            "smnid"=>23,
-            "agency"=>98,
-            "year"=>121
-        );
-
-        $result = SpendingUtil::getSpendingTransactionPageUrl($override_params);
-        $this->assertEquals('panel_html/spending_transactions/spending/transactions/yeartype/B/year/-1/smnid/23/agency/98/year/121', $result);
-    }
-
-    /**
-     * Tests calculatePercent function
-     */
-    public function test_calculatePercent()
-    {
-        global $mock_current_path;
-        $result = SpendingUtil::calculatePercent(6,12);
-        $this->assertEquals('50.00%',$result);
-    }
-
 
 }
