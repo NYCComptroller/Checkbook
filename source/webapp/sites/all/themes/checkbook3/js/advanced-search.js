@@ -1067,9 +1067,6 @@
                     html = html + '<option value="' + year.value + '" title="' + year.label +'">' + year.label + '</option>';
                   });
                 }
-                else {
-                  html = html + '<option value="">' + data[0] + '</option>';
-                }
               }
               $("#edit-payroll-year").html(html);
             }
