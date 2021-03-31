@@ -15,7 +15,7 @@ class MinorityTypeServiceTest extends TestCase
      * Tests isMWBECertified() function
      */
     public function test_isMWBECertified(){
-        $result = MinorityTypeService::isMWBECertified("Asian American");
+        $result = MinorityTypeService::isMWBECertified(5);
         $this->assertEquals(true, $result);
     }
 
