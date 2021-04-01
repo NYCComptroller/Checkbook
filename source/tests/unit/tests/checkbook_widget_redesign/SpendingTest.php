@@ -168,4 +168,44 @@ class SpendingUtilTest extends TestCase
         $this->assertEquals('50.00%',$result);
     }
 
+    /**
+     * Tests getContractTitle function
+     */
+    public function test_getContractTitle()
+    {
+        $_GET['q'] ='/contracts_landing/status/R/yeartype/B/year/122';
+        $this->assertEquals('by Registered',SpendingUtil::getContractTitle());
+
+        $_GET['q'] ='/contracts_landing/status/A/yeartype/B/year/122';
+        $this->assertEquals('by Active',SpendingUtil::getContractTitle());
+
+        $_GET['q'] ='/contracts_landing/status/P/yeartype/B/year/122';
+        $this->assertEquals('by Pending',SpendingUtil::getContractTitle());
+
+        $_GET['q'] = '/contract/spending/transactions/magid/17752/contstatus/A/yeartype/B/year/122/syear/122/contcat/expense/smnid/371/newwindow';
+        $this->assertEquals('by Active Expense',SpendingUtil::getContractTitle());
+
+        $_GET['q'] = '/contract/spending/transactions/magid/17752/contstatus/A/yeartype/B/year/122/syear/122/contcat/revenue/smnid/371/newwindow';
+        $this->assertEquals('by Active Revenue',SpendingUtil::getContractTitle());
+    }
+
+    /**
+     * Tests prepareSpendingBottomNavFilter function
+     */
+    public function test_prepareSpendingBottomNavFilter()
+    {
+        $_GET['q'] = 'spending_landing/yeartype/B/year/122';
+        $result = SpendingUtil::prepareSpendingBottomNavFilter('spending_landing',2);
+        $this->assertEquals('spending_landing/category/2/yeartype/B/year/122',$result);
+    }
+
+    /**
+     * Tests getDataSourceParams function
+     */
+    public function test_getDataSourceParams()
+    {
+        $_GET['q'] = 'spending_landing/yeartype/B/year/122/datasource/checkbook_oge/agency/9000';
+        $result = SpendingUtil::getDataSourceParams();
+        $this->assertEquals('/datasource/checkbook_oge', $result);
+    }
 }
