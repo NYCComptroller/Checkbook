@@ -1,7 +1,7 @@
 {
     "widgetType": "phpparser",
     "no_results_content": "No Results Found",
-    "cleanURLParameters":["year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","magid"],
+    "cleanURLParameters":["year","agency","yeartype","awdmethod","vendor","csize","cindustry","magid"],
     "model": {
         "join": {
             "method": "Union"
@@ -10,14 +10,14 @@
             {
               "dataset": "checkbook:edc_contracts_coa_aggregates_no_vendor",
               "columns": ["current_amount_sum","total_contracts"],
-              "seriesURLParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
+              "seriesURLParamMap":{"year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
               "allowedParams":["fiscal_year_id","agency_id","type_of_year","award_method_id","award_size.award_size","industry_type_id","vendor_id"],
               "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~MA1","contract_status.contract_status":"A"}
             },
            {
               "dataset": "checkbook:edc_contracts_coa_aggregates_no_vendor",
               "columns": ["current_amount_sum","total_contracts"],
-              "seriesURLParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
+              "seriesURLParamMap":{"year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
               "allowedParams":["fiscal_year_id","agency_id","type_of_year","award_method_id","award_size.award_size","industry_type_id","vendor_id"],
               "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~MA1","contract_status.contract_status":"R"}
           }
