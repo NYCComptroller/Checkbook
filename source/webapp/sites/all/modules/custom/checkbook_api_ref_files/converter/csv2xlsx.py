@@ -15,7 +15,7 @@ sys.setdefaultencoding('utf8')
 for path in sys.argv[1:]:
   if os.path.exists(path):
     for csvfile in glob.glob(os.path.join(path, '*.csv')):
-      print "Converting "+csvfile
+      print("Converting "+csvfile)
       try:
         xlsfile = csvfile[:-4] + '.xlsx'
         xlsfiletmp = xlsfile + '.tmp'
@@ -30,4 +30,4 @@ for path in sys.argv[1:]:
         workbook.close()
         os.rename(xlsfiletmp, xlsfile)
       except:
-        print "Unexpected error: ", sys.exc_info()[0]
+        print("Unexpected error: ", sys.exc_info()[0])
