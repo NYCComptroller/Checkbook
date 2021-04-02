@@ -366,7 +366,7 @@ class CustomBreadcrumbs
   /** Returns NYCHA Budget page title and Breadcrumb */
   public static function getNYCHABudgetBreadcrumbTitle(){
     $title = "";
-    $bottomURL = $_REQUEST['expandBottomContURL'];
+    $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
     if (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
       $title = 'NYCHA Expense Budget Transactions';
     } else if (isset($bottomURL)){
@@ -402,7 +402,7 @@ class CustomBreadcrumbs
   /** Returns NYCHA Revenue page title and Breadcrumb */
   public static function getNYCHARevenueBreadcrumbTitle(){
     $title = "";
-    $bottomURL = $_REQUEST['expandBottomContURL'];
+    $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
     if (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
       $title = 'NYCHA RevenueTransactions';
     } else if (isset($bottomURL)){
