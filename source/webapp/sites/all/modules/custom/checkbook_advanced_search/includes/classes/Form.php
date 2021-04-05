@@ -42,8 +42,7 @@ class Form{
     private function generate_content($form){
         foreach ($this->contents as $content) {
             foreach ($content->fields as $field) {
-                switch($field->column_type)
-                {
+                switch($field->column_type) {
                     case Column::Left:
                         if($field->column_index == 1) {
                           $field->field_coordinates = 1;
@@ -74,8 +73,7 @@ class Form{
         $column_left_class = "column column-left ".str_replace('_','-',$data_source);
         $column_right_class = "column column-right ".str_replace('_','-',$data_source);
 
-        switch($field->field_coordinates)
-        {
+        switch($field->field_coordinates) {
             case 1:
                 $field->prefix = '<div class="' . $column_left_class . '">';
                 break;
