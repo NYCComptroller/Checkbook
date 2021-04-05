@@ -9,34 +9,26 @@
 namespace checkbook_advanced_search;
 
 
-class Form
-{
+class Form{
     public $domain_name;
     public $data_source;
     public $contents = array();
 
-    public function __construct($domain_name)
-    {
+    public function __construct($domain_name){
         $this->domain_name=$domain_name;
-        //$this->data_source=$data_source;
     }
 
-    public function add_content(Content $content)
-    {
+    public function add_content(Content $content){
         $content->domain_name=$this->domain_name;
         $this->contents[$content->data_source] = $content;
     }
 
-    public function generate_form($form)
-    {
-//        $form['domain_name'] = $this->domain_name;
+    public function generate_form($form){
         $form = $this->generate_header($form);
-        //$form = $this->generate_filter($form);
         return $this->generate_content($form);
     }
 
-    private function generate_header($form)
-    {
+    private function generate_header($form){
         $domain = $this->domain_name;
         $domain_field = "{$this->domain_name}_filter";
 
@@ -47,24 +39,25 @@ class Form
         return $form;
     }
 
-    private function generate_content($form)
-    {
+    private function generate_content($form){
         foreach ($this->contents as $content) {
             foreach ($content->fields as $field) {
                 switch($field->column_type)
                 {
                     case Column::Left:
-                        if($field->column_index == 1)
-                            $field->field_coordinates = 1;
-                        else if ($field->column_index == $content->num_left_column_fields)
-                            $field->field_coordinates = 2;
+                        if($field->column_index == 1) {
+                          $field->field_coordinates = 1;
+                        }else if ($field->column_index == $content->num_left_column_fields) {
+                          $field->field_coordinates = 2;
+                        }
                         break;
 
                     case Column::Right:
-                        if($field->column_index == 1)
-                            $field->field_coordinates = 3;
-                        else if ($field->column_index == $content->num_right_column_fields)
-                            $field->field_coordinates = 4;
+                        if($field->column_index == 1) {
+                          $field->field_coordinates = 3;
+                        } else if ($field->column_index == $content->num_right_column_fields) {
+                          $field->field_coordinates = 4;
+                        }
                         break;
                 }
 
@@ -74,8 +67,7 @@ class Form
         return $form;
     }
 
-    private function generate_field(Field $field,$form,$data_source)
-    {
+    private function generate_field(Field $field,$form,$data_source){
         $domain = $data_source . '_' . $this->domain_name;
 
         $year_range = "'-" . (date("Y") - 1900) . ":+" . (2500 - date("Y")) . "'";
@@ -98,13 +90,11 @@ class Form
                 break;
         }
 
-        switch($field->field_type)
-        {
+        switch($field->field_type) {
             case FieldType::DateFilter:
 
                 //date_filter
                 $domain_field = "{$data_source}_{$this->domain_name}_date_filter";
-                //$domain_field = 'date_filter';
 
                 $form[$domain][$domain_field]['#type'] = FieldType::RadioButtons;
                 $form[$domain][$domain_field]['#title'] = t('Date Filter');
@@ -115,13 +105,11 @@ class Form
                 $form[$domain][$domain_field]['#default_value'] = '';
 
                 //year_filter_start
-                //$domain_field = 'year_filter_start';
                 $domain_field = "{$data_source}_{$this->domain_name}_year_filter_start";
 
                 $form[$domain][$domain_field]['#markup'] = '<div class="datafield year-filters last-item">';
 
                 //issue_date_from
-                //$domain_field = "{$this->domain_name}_issue_date_from";
                 $domain_field = "{$data_source}_{$this->domain_name}_issue_date_from";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
@@ -130,13 +118,7 @@ class Form
                 $form[$domain][$domain_field]['#prefix'] = '<div class="datafield datarange issueddate"><div class="ranges">';
                 $form[$domain][$domain_field]['#default_value'] = '';
 
-//                //Hidden Field
-//                $domain_field = "{$data_source}_{$this->domain_name}_issue_date_from_exact";
-//                $form[$domain][$domain_field]['#type'] = FieldType::HiddenField;
-//                $form[$domain][$domain_field]['#name'] = $domain_field;
-
                 //issue_date_to
-                //$domain_field = "{$this->domain_name}_issue_date_to";
                 $domain_field = "{$data_source}_{$this->domain_name}_issue_date_to";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
@@ -146,14 +128,7 @@ class Form
                 $form[$domain][$domain_field]['#suffix'] = '</div></div>';
                 $form[$domain][$domain_field]['#default_value'] = '';
 
-                //Hidden Field
-//                $domain_field = "{$data_source}_{$this->domain_name}_issue_date_to_exact";
-//
-//                $form[$domain][$domain_field]['#type'] = FieldType::HiddenField;
-//                $form[$domain][$domain_field]['#name'] = $domain_field;
-
                 //fiscal_year
-                //$domain_field = "{$this->domain_name}_fiscal_year";
                 $domain_field = "{$data_source}_{$this->domain_name}_fiscal_year";
 
                 $form[$domain][$domain_field]['#type'] = FieldType::DropDown;
@@ -164,47 +139,55 @@ class Form
                 $form[$domain][$domain_field]['#suffix'] = '</div>';
 
                 //year_filter_end
-               // $domain_field = 'year_filter_end';
                 $domain_field = "{$data_source}_{$this->domain_name}_year_filter_end";
 
-                if(!(is_null($field->suffix)))
-                    $form[$domain][$domain_field]['#markup'] = '</div>' . $field->suffix;
-                else
-                    $form[$domain][$domain_field]['#markup'] = '</div>';
-
+                if(!(is_null($field->suffix))) {
+                  $form[$domain][$domain_field]['#markup'] = '</div>' . $field->suffix;
+                }else {
+                  $form[$domain][$domain_field]['#markup'] = '</div>';
+                }
                 break;
 
             case FieldType::DropDown:
 
                 $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}";
 
-                if(!(is_null($field->prefix)))
-                    $form[$domain][$domain_field]['#prefix'] = $field->prefix;
-                if(!(is_null($field->suffix)))
-                    $form[$domain][$domain_field]['#suffix'] = $field->suffix;
+                if(!(is_null($field->prefix))) {
+                  $form[$domain][$domain_field]['#prefix'] = $field->prefix;
+                }
+                if(!(is_null($field->suffix))) {
+                  $form[$domain][$domain_field]['#suffix'] = $field->suffix;
+                }
+
                 $form[$domain][$domain_field]['#type'] = $field->field_type;
                 $form[$domain][$domain_field]['#title'] = $field->getFieldTitle();
                 $form[$domain][$domain_field]['#default_value'] = $field->getDropDownDefault();
                 $form[$domain][$domain_field]['#options'] = $field->getDropDownOptions();
                 $form[$domain][$domain_field]['#validated'] = true;
-                if(!(is_null($field->disabled)))
-                    $form[$domain][$domain_field]['#disabled'] = $field->disabled;
-                if(!(is_null($field->option_attributes)))
-                    $form[$domain][$domain_field]['#option_attributes'] = $field->option_attributes;
-
+                if(!(is_null($field->disabled))) {
+                  $form[$domain][$domain_field]['#disabled'] = $field->disabled;
+                }
+                if(!(is_null($field->option_attributes))) {
+                  $form[$domain][$domain_field]['#option_attributes'] = $field->option_attributes;
+                }
                 break;
 
             case FieldType::RadioButtons:
 
                 $domain_field = "{$this->domain_name}_{$field->field_name}";
 
-                if(!(is_null($field->prefix)))
-                    $form[$domain][$domain_field]['#prefix'] = $field->prefix;
+                if(!(is_null($field->prefix))) {
+                  $form[$domain][$domain_field]['#prefix'] = $field->prefix;
+                }
                 $form[$domain][$domain_field]['#type'] = FieldType::RadioButtons;
-                if(!(is_null($field->default_value)))
-                    $form[$domain][$domain_field]['#default_value'] = $field->default_value;
-                if(!(is_null($field->options)))
-                    $form[$domain][$domain_field]['#options'] = $field->options;
+
+                if(!(is_null($field->default_value))) {
+                  $form[$domain][$domain_field]['#default_value'] = $field->default_value;
+                }
+
+                if(!(is_null($field->options))) {
+                  $form[$domain][$domain_field]['#options'] = $field->options;
+                }
 
                 break;
 
@@ -215,35 +198,46 @@ class Form
                 $css_name = str_replace('_','-',$field->field_name);
 
                 $form[$domain][$domain_field]['#type'] = FieldType::TextField;
-                if(!(is_null($field->size)))
-                    $form[$domain][$domain_field]['#size'] = $field->size;
-                else
-                    $form[$domain][$domain_field]['#size'] = 30; //Default
-                if(!(is_null($field->maxlength)))
-                    $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
-                else
-                    $form[$domain][$domain_field]['#maxlength'] = 32; //Default
-                if(!(is_null($field->prefix)))
-                    $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
-                else
-                    $form[$domain][$domain_field]['#prefix'] = '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
+                if(!(is_null($field->size))) {
+                  $form[$domain][$domain_field]['#size'] = $field->size;
+                }else {
+                  $form[$domain][$domain_field]['#size'] = 30; //Default
+                }
+
+                if(!(is_null($field->maxlength))) {
+                  $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
+                }else {
+                  $form[$domain][$domain_field]['#maxlength'] = 32; //Default
+                }
+
+                if(!(is_null($field->prefix))) {
+                  $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="form-item form-item-' . $css_name . '"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
+                }else {
+                  $form[$domain][$domain_field]['#prefix'] = '<div class="form-item form-item-' . $css_name . '"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
+                }
 
                 //To
                 $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_to";
                 $form[$domain][$domain_field]['#type'] = FieldType::TextField;
                 $form[$domain][$domain_field]['#title'] = t('TO');
-                if(!(is_null($field->size)))
-                    $form[$domain][$domain_field]['#size'] = $field->size;
-                else
-                    $form[$domain][$domain_field]['#size'] = 30; //Default
-                if(!(is_null($field->maxlength)))
-                    $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
-                else
-                    $form[$domain][$domain_field]['#maxlength'] = 32; //Default
-                if(!(is_null($field->suffix)))
-                    $form[$domain][$domain_field]['#suffix'] = '</div></div>' . $field->suffix;
-                else
-                    $form[$domain][$domain_field]['#suffix'] = '</div></div>';
+
+                if(!(is_null($field->size))) {
+                  $form[$domain][$domain_field]['#size'] = $field->size;
+                }else {
+                  $form[$domain][$domain_field]['#size'] = 30; //Default
+                }
+
+                if(!(is_null($field->maxlength))) {
+                  $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
+                }else {
+                  $form[$domain][$domain_field]['#maxlength'] = 32; //Default
+                }
+
+                if(!(is_null($field->suffix))) {
+                  $form[$domain][$domain_field]['#suffix'] = '</div></div>' . $field->suffix;
+                }else {
+                  $form[$domain][$domain_field]['#suffix'] = '</div></div>';
+                }
 
                 break;
 
@@ -256,10 +250,11 @@ class Form
                 $form[$domain][$domain_field]['#type'] = FieldType::DatePopup;
                 $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
                 $form[$domain][$domain_field]['#date_year_range'] = $year_range;
-                if(!(is_null($field->prefix)))
-                    $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
-                else
-                    $form[$domain][$domain_field]['#prefix'] = '<div class="form-item form-item-'.$css_name.'"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
+                if(!(is_null($field->prefix))) {
+                  $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="form-item form-item-' . $css_name . '"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
+                }else {
+                  $form[$domain][$domain_field]['#prefix'] = '<div class="form-item form-item-' . $css_name . '"><label>' . $field->getFieldTitle() . '</label><div class="ranges">';
+                }
 
                 //To
                 $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_to";
@@ -267,10 +262,11 @@ class Form
                 $form[$domain][$domain_field]['#date_format'] = 'Y-m-d';
                 $form[$domain][$domain_field]['#title'] = t('TO');
                 $form[$domain][$domain_field]['#date_year_range'] = $year_range;
-                if(!(is_null($field->suffix)))
-                    $form[$domain][$domain_field]['#suffix'] = '</div></div>' . $field->suffix;
-                else
-                    $form[$domain][$domain_field]['#suffix'] = '</div></div>';
+                if(!(is_null($field->suffix))) {
+                  $form[$domain][$domain_field]['#suffix'] = '</div></div>' . $field->suffix;
+                }else {
+                  $form[$domain][$domain_field]['#suffix'] = '</div></div>';
+                }
 
                 break;
 
@@ -305,10 +301,11 @@ class Form
 
                 end($this->contents);
                 $endKey = key($this->contents);
-                if($data_source == $endKey)
-                    $form[$domain][$domain_field]['#suffix'] = '</div></div>';
-                else
-                    $form[$domain][$domain_field]['#suffix'] = '</div>';
+                if($data_source == $endKey) {
+                  $form[$domain][$domain_field]['#suffix'] = '</div></div>';
+                }else {
+                  $form[$domain][$domain_field]['#suffix'] = '</div>';
+                }
 
                 break;
 
@@ -318,24 +315,29 @@ class Form
 
                 $form[$domain][$domain_field]['#type'] = FieldType::TextField;
                 $form[$domain][$domain_field]['#title'] = $field->getFieldTitle();
-                if(!(is_null($field->size)))
-                    $form[$domain][$domain_field]['#size'] = $field->size;
-                else
-                    $form[$domain][$domain_field]['#size'] = 30; //Default
-                if(!(is_null($field->maxlength)))
-                    $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
-                else
-                    $form[$domain][$domain_field]['#maxlength'] = 32; //Default
-                if(!(is_null($field->prefix)))
-                    $form[$domain][$domain_field]['#prefix'] = $field->prefix;
+                if(!(is_null($field->size))) {
+                  $form[$domain][$domain_field]['#size'] = $field->size;
+                }else {
+                  $form[$domain][$domain_field]['#size'] = 30; //Default
+                }
+
+                if(!(is_null($field->maxlength))) {
+                  $form[$domain][$domain_field]['#maxlength'] = $field->maxlength;
+                }else {
+                  $form[$domain][$domain_field]['#maxlength'] = 32; //Default
+                }
+
+                if(!(is_null($field->prefix))) {
+                  $form[$domain][$domain_field]['#prefix'] = $field->prefix;
+                }
 
                 //Hidden
                 $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_exact";
                 $form[$domain][$domain_field]['#type'] = FieldType::HiddenField;
                 $form[$domain][$domain_field]['#name'] = $domain_field;
-                if(!(is_null($field->suffix)))
-                    $form[$domain][$domain_field]['#suffix'] = $field->suffix;
-
+                if(!(is_null($field->suffix))) {
+                  $form[$domain][$domain_field]['#suffix'] = $field->suffix;
+                }
                 break;
         }
 
