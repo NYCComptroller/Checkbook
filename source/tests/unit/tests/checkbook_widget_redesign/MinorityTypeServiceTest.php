@@ -32,11 +32,11 @@ class MinorityTypeServiceTest extends TestCase
         $this->assertEquals('Black American', $result);
     }
 
-    /**
-     * Tests getAllVendorMinorityTypes() function
-     */
-    public function test_getAllVendorMinorityTypes(){
-        $result = MinorityTypeService::getAllVendorMinorityTypes('B', 121, Domain::$SPENDING);
-        $this->assertTrue(isset($result[5260][2]['P'][5]));
-    }    
+    // /**
+    //  * Tests getAllVendorMinorityTypes() function
+    //  */
+    // public function test_getAllVendorMinorityTypes(){
+    //     //$result = MinorityTypeService::getAllVendorMinorityTypes('B', 121, Domain::$SPENDING);
+    //     //$this->assertTrue(isset($result[5260][2]['P'][5]));
+    // }    
 }
