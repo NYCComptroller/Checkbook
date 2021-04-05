@@ -205,5 +205,4 @@ class RequestUtilTest extends TestCase
         $this->assertEquals('/nycha_revenue/datasource/checkbook_nycha/year/119',RequestUtil::getTopNavURL('nycha_revenue'));
     }
 
-
 }
