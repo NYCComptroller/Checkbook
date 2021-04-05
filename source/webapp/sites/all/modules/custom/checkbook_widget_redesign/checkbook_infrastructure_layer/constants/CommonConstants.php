@@ -316,7 +316,7 @@ abstract class PageType {
             }
             break;
             case CheckbookDomain::NYCHA_CONTRACTS:
-            if(preg_match('/nycha_contracts\/search\/transactions/',$urlPath)) {
+            if(preg_match('/nycha_contracts\/search\/transactions/',$urlPath) || preg_match('/nycha_contracts\/all\/transactions/',$urlPath)) {
               $pageType = self::ADVANCED_SEARCH_PAGE;
             }
             break;
