@@ -18,27 +18,19 @@ use PHPUnit\Framework\TestCase;
 class PrimeVendorServiceTest extends TestCase
 {   
     /**
-     * Tests getLatestMinorityType() function
+     * Tests getLatestMinorityTypeByYear() function
      */
-    public function test_getLatestMinorityType(){
-        $result = PrimeVendorService::getLatestMinorityType(129113,null,'P','spending');
-        $this->assertTrue(test_validate_getLatestMinorityType($result));
+    public function test_getLatestMinorityTypeByYear(){
+        $result = PrimeVendorService::getLatestMinorityTypeByYear(129113,121,'B','P','spending');
+        $this->assertTrue(test_validate_getLatestMinorityTypeByYear($result));
     }
 
     /**
      * Helper function to validate result of getLatestMinorityType() function
      */
-    private function test_validate_getLatestMinorityType($result){
+    private function test_validate_getLatestMinorityTypeByYear($result){
         return $result == NULL || $result == 2;
     }
-
-    // /**
-    //  * Tests getLatestMinorityTypeByYear() function
-    //  */
-    // public function test_getLatestMinorityTypeByYear(){
-    //     $result = PrimeVendorService::getLatestMinorityTypeByYear(5260, 161);
-    //     $this->assertEquals('Black American', $result);
-    // }
 
     // /**
     //  * Tests getVendorCode() function
