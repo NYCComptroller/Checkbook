@@ -1,5 +1,7 @@
 <?php
 
+include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_business_layer/checkbook_services/common/VendorService.php';
+
 class PrimeVendorService extends VendorService {
 
     /**
