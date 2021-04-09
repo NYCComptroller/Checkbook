@@ -251,7 +251,7 @@ function _checkbook_project_execute_sql_test($query)
         'is_prime_or_sub' => 'S',
         'minority_type_id' => 9
     ); 
-    return [$return];
+    return $return;
 }
 
 /**
