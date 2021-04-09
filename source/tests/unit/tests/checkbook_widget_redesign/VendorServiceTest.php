@@ -24,13 +24,13 @@ class VendorServiceTest extends TestCase
         $result = VendorService::getSubVendorAmount(null ,121, 'A');
         $this->assertEquals(5347033344.20,$result);
     }
-    
+
     /**
      * Tests getVendorCode() function
      */
     public function test_getVendorIdByName(){
         $result = VendorService::getVendorIdByName("WHERE TO GET IT SERVICES LLC");
-        $this->assertEquals(129113, $result);
+        $this->assertEquals(129113, $result[0]);
     } 
 
     /**
