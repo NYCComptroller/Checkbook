@@ -601,6 +601,10 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
  */
 function _checkbook_project_querydataset($dataset, $columns, $parameters = null){
   try {
+    if (function_exists('_checkbook_project_execute_sql_test')) {
+      // the following function is only avalable when phpunit runs
+      return _checkbook_project_execute_sql_test($sql);
+    }
     $dataController = data_controller_get_instance();
     $dataset = _update_dataset_datasource($dataset);
     $data = $dataController->queryDataset($dataset, $columns, $parameters, NULL, 0, NULL, NULL);

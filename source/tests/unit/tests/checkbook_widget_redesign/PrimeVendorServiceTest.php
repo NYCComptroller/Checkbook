@@ -33,19 +33,19 @@ class PrimeVendorServiceTest extends TestCase
         $this->assertEquals(2,$result);
     }
 
-    // /**
-    //  * Tests getVendorCode() function
-    //  */
-    // public function test_getVendorCode(){
-    //     $result = PrimeVendorService::getVendorCode('B', 121, Domain::$SPENDING);
-    //     $this->assertTrue(isset($result[5260][2]['P'][5]));
-    // }
+    /**
+     * Tests getVendorCode() function
+     */
+    public function test_getVendorCode(){
+        $result = PrimeVendorService::getVendorCode(129113);
+        $this->assertEquals("VC00153345", $result);
+    }
     
-    // /**
-    //  * Tests getVendorCode() function
-    //  */
-    // public function test_getVendorIdByName(){
-    //     $result = PrimeVendorService::getVendorIdByName('B', 121, Domain::$SPENDING);
-    //     $this->assertTrue(isset($result[5260][2]['P'][5]));
-    // }  
+    /**
+     * Tests getVendorCode() function
+     */
+    public function test_getVendorIdByName(){
+        $result = PrimeVendorService::getVendorIdByName("WHERE TO GET IT SERVICES LLC");
+        $this->assertEquals(129113, $result);
+    }  
 }
