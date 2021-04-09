@@ -57,7 +57,7 @@ class SubVendorService extends VendorService
     {
         $parameters = array();
         $data_controller_instance = data_controller_get_operator_factory_instance();
-        $parameters["legal_name"] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, "(^" . _checkbook_regex_replace_pattern($vendor_name) . "$)");
+        $parameters["legal_name"] = $data_controller_instance ? $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, "(^" . _checkbook_regex_replace_pattern($vendor_name) . "$)"): "";
         $vendor = _checkbook_project_querydataset("checkbook:subvendor", "vendor_id", $parameters);
         return $vendor[0] ? $vendor[0]['vendor_id'] : null;
     }
