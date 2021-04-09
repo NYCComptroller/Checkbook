@@ -245,6 +245,7 @@ function _checkbook_project_execute_sql_test($query)
     $return['is_prime_or_sub'] = 'P';
     $return['minority_type_id'] = 2;
     $return['vendor_customer_code'] = "VC00153345";
+    $return['current_amount_sum'] = 5347033344.20;
     return [$return];
 }
 

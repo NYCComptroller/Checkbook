@@ -16,22 +16,15 @@ use PHPUnit\Framework\TestCase;
  */
 class VendorServiceTest extends TestCase
 {   
-    /**
-     * Tests getLatestMinorityType() function
-    */
-    public function test_getLatestMinorityType(){
-        $result = VendorService::getLatestMinorityType(129113,null,'P','spending');
-        $this->assertEquals(2,$result);
-    }
 
     /**
-     * Tests getLatestMinorityTypeByYear() function
+     * Tests getSubVendorAmount() function
      */
-    public function test_getLatestMinorityTypeByYear(){
-        $result = VendorService::getLatestMinorityTypeByYear(129113,121,'B','P','spending');
-        $this->assertEquals(2,$result);
+    public function test_getSubVendorAmount(){
+        $result = VendorService::getSubVendorAmount(null ,121, 'A');
+        $this->assertEquals(5347033344.20,$result);
     }
-
+    
     /**
      * Tests getVendorCode() function
      */
@@ -40,5 +33,19 @@ class VendorServiceTest extends TestCase
         $this->assertEquals(129113, $result);
     } 
 
-    
+    /**
+     * Tests getAllVendorMinorityTypesByYear() function
+     */
+    public function test_getAllVendorMinorityTypesByYear(){
+        $result = VendorService::getAllVendorMinorityTypesByYear('spending',129113,121, '');
+        $this->assertEquals(2,$result[0]);
+    }
+
+    /**
+     * Tests getMwbeAmount() function
+     */
+    public function test_getMwbeAmount(){
+        $result = VendorService::getMwbeAmount(null ,121, 'A');
+        $this->assertEquals(5347033344.20,$result);
+    }
 }
