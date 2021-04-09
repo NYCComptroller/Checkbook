@@ -34,7 +34,7 @@ class PrimeVendorService extends VendorService {
      */
     public static function getVendorCode($vendor_id){
         $vendor = _checkbook_project_querydataset("checkbook:vendor","vendor_customer_code",array("vendor_id"=>$vendor_id));
-        return isset($vendor[0]) ? $vendor[0]['vendor_customer_code'] : null;
+        return $vendor[0] ? $vendor[0]['vendor_customer_code'] : null;
     }
 
     /**
