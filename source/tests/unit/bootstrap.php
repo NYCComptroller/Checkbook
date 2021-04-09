@@ -241,7 +241,9 @@ function _checkbook_project_execute_sql_test($query)
     $return['total_gross_pay'] = 123456789000;
     $return['total_base_pay'] = 987654321000;
     $return['total_overtime_pay'] = 192837465000;
-
+    $return['vendor_id'] = 129113;
+    $return['is_prime_or_sub'] = 'P';
+    $return['minority_type_id'] = 2;
     return [$return];
 }
 
