@@ -244,9 +244,11 @@ function _checkbook_project_execute_sql_test($query)
     $return['vendor_id'] = 129113;
     $return['is_prime_or_sub'] = 'P';
     $return['minority_type_id'] = 2;
-    $return[0]['minority_type_id'] = 2;
-    $return[0]['vendor_customer_code'] = "VC00153345";
-    $return[0]['vendor_id'] = 129113;
+    $return[0] =  array (
+        'minority_type_id' => 2,
+        'vendor_customer_code' => "VC00153345",
+        'vendor_id' => 129113
+      );
     return [$return];
 }
 
