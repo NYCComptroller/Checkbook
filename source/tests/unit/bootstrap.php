@@ -244,6 +244,7 @@ function _checkbook_project_execute_sql_test($query)
     $return['vendor_id'] = 129113;
     $return['is_prime_or_sub'] = 'P';
     $return['minority_type_id'] = 2;
+    $results[0]['minority_type_id'] = 2;
     return [$return];
 }
 

@@ -25,13 +25,13 @@ class PrimeVendorServiceTest extends TestCase
         $this->assertEquals(2,$result);
     }
 
-    // /**
-    //  * Tests getLatestMinorityTypeByYear() function
-    //  */
-    // public function test_getLatestMinorityTypeByYear(){
-    //     $result = PrimeVendorService::getLatestMinorityTypeByYear(129113,121,'B','P','spending');
-    //     $this->assertEquals(2,$result);
-    // }
+    /**
+     * Tests getLatestMinorityTypeByYear() function
+     */
+    public function test_getLatestMinorityTypeByYear(){
+        $result = PrimeVendorService::getLatestMinorityTypeByYear(129113,121,'B','P','spending');
+        $this->assertEquals(2,$result);
+    }
 
     // /**
     //  * Tests getVendorCode() function
