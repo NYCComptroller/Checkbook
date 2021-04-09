@@ -251,7 +251,7 @@ function _checkbook_project_execute_sql_test($query)
  * @param $query
  * @return array
  */
-function _checkbook_project_execute_dataset_test($query)
+function _checkbook_project_execute_dataset_test()
 {
     $return[0] =  array (
     'minority_type_id' => 2,
