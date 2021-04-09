@@ -6,7 +6,7 @@
         "mcagency","agencyh","year","yeartype","calyear","mcvendor","expcategory","category","checkamtr","dept",
         "contnum","checkamt","chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
         "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month",
-        "industry","mwbe","vendor","svendor","subvendor","vendortype","fvendor"
+        "industry","mwbe","vendor","svendor","subvendor","vendortype","fvendor", "bdgcode"
     ],
     "urlParamMap":{
         "contnum_exact":"reference_document_number",
@@ -33,7 +33,9 @@
         "cindustry":"industry_type_id@checkbook:contracts_spending_transactions",
         "expcategorycode":"expenditure_object_code", "month":"check_eft_issued_cal_month_id",
         "mwbe":"minority_type_id","industry":"industry_type_id",
-        "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"vendor_type","fvendor":"vendor_id"
+        "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id",
+        "vendortype":"vendor_type","fvendor":"vendor_id",
+        "bdgcode" : "budget_code"
     },
     "defaultParameters":{"is_prime_or_sub":"S"},
     "paramTypeConfig":{
@@ -83,7 +85,8 @@
         "industry_type_name",
         "minority_type_id",
         "is_prime_or_sub",
-        "original_agreement_id@checkbook:sub_vendor_agid"
+        "original_agreement_id@checkbook:sub_vendor_agid",
+        "budget_code"
     ],
     "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');",
     "summaryView":{
@@ -161,6 +164,7 @@
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"purpose","exportColumn":"contract_purpose_export"},
         {"labelAlias":"spending_category","column":"spending_category_name"},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
+        {"labelAlias":"budget_code","column":"budget_code","sortSourceColumn":"budget_code"},
         {"label": "","column": ""}
     ],
     "exportColumnSqlOverride":[
@@ -227,6 +231,7 @@
             {"sClass":"text pad-left","sWidth":"175px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"145px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
+            {"sClass":"number-center","sWidth":"100px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
         "aaSorting":[[6,"desc"]],
@@ -252,6 +257,7 @@
         var oVendorIds = getNamedFilterCriteria('fvendorId');
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
+        var oBudgetCode = getNamedFilterCriteria('fBudgetCode');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
 
@@ -267,6 +273,7 @@
         cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
+        cUrl = adjustUrlParameter(cUrl,'bdgcode',oBudgetCode);
 
         return cUrl;
     }"
