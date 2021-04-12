@@ -67,7 +67,8 @@ class MappingUtil {
         7 => 'Non-M/WBE',
         9 => 'Women',
         11 => 'Individuals and Others',
-//        array('?') =>'Emerging'
+        99 => 'Emerging',
+        6 => 'Native'
     );
 
     private static $minority_type_category_map_by_name = array(
@@ -78,7 +79,8 @@ class MappingUtil {
         'Non-Minority' => 'Non-M/WBE',
         'Caucasian Woman' => 'Women',
         'Individuals & Others' => 'Individuals and Others',
-//        array('?') =>'Emerging'
+        'Native American' => 'Native',
+        'Emerging' => 'Emerging'
     );
     private static $minority_type_category_map_multi = array(
         'Total M/WBE' => array(2,3,4,5,9),
@@ -86,7 +88,8 @@ class MappingUtil {
         'Black American' => array(2),
         'Women' => array(9),
         'Hispanic American' => array(3),
-//        array('?') =>'Emerging'
+        'Native' => array(6),
+        'Emerging' => array(99),
         'Non-M/WBE' => array(7),
         'Individuals and Others' => array(11),
     );
@@ -103,7 +106,8 @@ class MappingUtil {
         'Women' => array(9),
         'Individuals and Others' => array(11),
         'M/WBE' => array(2,3,4,5,9),
-        //        array('?') =>'Emerging'
+        'Native' => array(6),
+        'Emerging' => array(99),
     );
 
 
