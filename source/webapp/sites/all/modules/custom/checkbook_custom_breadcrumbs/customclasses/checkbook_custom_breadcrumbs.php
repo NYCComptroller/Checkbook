@@ -107,7 +107,7 @@ class CustomBreadcrumbs
   public static function getContractBreadcrumbTitle()
   {
     $title = '';
-    $bottomURL = $_REQUEST['expandBottomContURL'];
+    $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
     //For NYCEDC advanced search results
     $edcSubTitle = (!isset($bottomURL) && preg_match('/transactions/', $bottomURL) && Datasource::isOGE()) ? Datasource::EDC_TITLE ." " : '';
 
