@@ -6,7 +6,7 @@
         "mcagency","agencyh","year","yeartype","calyear","mcvendor","expcategory","category","checkamtr","dept",
         "contnum","checkamt","chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
         "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month",
-        "industry","mwbe","vendor","subvendor","fvendor","vendortype","svendor","sagency","sindustry"
+        "industry","mwbe","vendor","subvendor","fvendor","vendortype","svendor","sagency","sindustry", "bdgcode"
     ],
     "urlParamMap":{
         "contnum_exact":"reference_document_number",
@@ -37,7 +37,7 @@
         "expcategorycode":"expenditure_object_code", "month":"check_eft_issued_cal_month_id",
         "mwbe":"minority_type_id","industry":"industry_type_id",
         "vendor":"prime_vendor_id","subvendor":"vendor_id","fvendor":"vendor_id","vendortype":"vendor_type",
-        "svendor":"vendor_id"
+        "svendor":"vendor_id", "bdgcode" : "budget_code"
     },
     "paramTypeConfig":{
         "vendornm_exact":"eqignorecase","expdoc_exact":"eqignorecase","captprj_exact":"eqignorecase",
@@ -91,7 +91,8 @@
         "industry_type_name",
         "minority_type_id",
         "is_prime_or_sub",
-        "original_agreement_id@checkbook:sub_vendor_agid"
+        "original_agreement_id@checkbook:sub_vendor_agid",
+        "budget_code"
     ],
     "derivedColumns": {
         "associated_prime_vendor_name":{
@@ -187,6 +188,7 @@
         {"labelAlias":"capital_project","column":"reporting_code"},
         {"labelAlias":"spending_category","column":"spending_category_name"},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
+        {"labelAlias":"budget_code","column":"budget_code"},
         {"label":"","column":"","export":false}
     ],
     "exportColumnSqlOverride":[
@@ -267,20 +269,21 @@
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
+            {"sClass":"number-center","sWidth":"100px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
         "aaSorting":[[8,"desc"]],
         "sScrollX": "100%",
-		"bScrollCollapse": false,
+		    "bScrollCollapse": false,
         "fnInitComplete": "##function () { new FixedColumns( oTable, {
-		\"iLeftColumns\": 1,
-		\"iLeftWidth\": 196
+        \"iLeftColumns\": 1,
+        \"iLeftWidth\": 196
 	    } );}##"
     },
     "customExternalJS":"function prepareTableListFilterUrl(){
         var agencyIds = getNamedFilterCriteria('fagencyId');
         if(agencyIds.length==0 && eval(document.getElementById('fHideAgencyId'))){
-        agencyIds = document.getElementById('fHideAgencyId').value;
+          agencyIds = document.getElementById('fHideAgencyId').value;
         }
         var oVendorIds = getNamedFilterCriteria('fvendorId');
         var oVendorNms = getNamedFilterCriteria('fvendorNm');
@@ -293,6 +296,7 @@
         var oVendorType = getNamedFilterCriteria('fvendorType');
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
+        var oBudgetCode = getNamedFilterCriteria('fBudgetCode');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
 
@@ -311,6 +315,8 @@
         cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
+        cUrl = adjustUrlParameter(cUrl,'bdgcode',oBudgetCode);
+
         return cUrl;
     }"
 }
