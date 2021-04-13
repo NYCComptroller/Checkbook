@@ -64,11 +64,11 @@ class MappingUtil {
         3 => 'Hispanic American',
         4 => 'Asian American',
         5 => 'Asian American',
+        6 => 'Native',
         7 => 'Non-M/WBE',
         9 => 'Women',
         11 => 'Individuals and Others',
-        99 => 'Emerging',
-        6 => 'Native'
+        99 => 'Emerging'
     );
 
     private static $minority_type_category_map_by_name = array(
