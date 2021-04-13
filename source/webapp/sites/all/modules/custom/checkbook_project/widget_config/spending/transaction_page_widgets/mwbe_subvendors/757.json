@@ -144,6 +144,9 @@
         },
         "industry_name_formatted": {
             "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
+        },
+        "budget_code_formatted": {
+          "expression": "(strlen($row['budget_name']) > 0) ? $row['budget_code'].'( '.$row['budget_name']. ' )' : $row['budget_code']"
         }
     },
     "table_columns": [
@@ -163,7 +166,7 @@
         {"labelAlias":"capital_project","column":"reporting_code"},
         {"labelAlias":"spending_category","column":"spending_category_name"},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
-        {"labelAlias":"budget_code","column":"budget_code"},
+        {"labelAlias":"budget_code","column":"budget_code_formatted", "sortSourceColumn":"budget_code","exportColumn":"budget_code_formatted"},
         {"label":"","column":""}
     ],
     "exportColumnSqlOverride":[
@@ -233,6 +236,7 @@
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
             {"sClass":"number_center","sWidth":"100px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"175px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
         "aaSorting":[[8,"desc"]],
