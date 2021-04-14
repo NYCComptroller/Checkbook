@@ -600,7 +600,7 @@ function checkbook_api_adjustSpendingSql(&$sql_query) {
     $select_part =  str_replace("{$alias}department_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}department_name ELSE 'N/A' END AS department_name",$select_part);
     $select_part =  str_replace("{$alias}disbursement_number", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}disbursement_number ELSE 'N/A' END AS disbursement_number",$select_part);
     $select_part =  str_replace("{$alias}expenditure_object_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}expenditure_object_name ELSE 'N/A' END AS expenditure_object_name",$select_part);
-    $select_part =  str_replace("{$alias}budget_code", "CASE WHEN {$alias}budget_name IS NOT NULL AND '' THEN {$alias}budget_code || '(' || {$alias}budget_name || ')' ELSE {$alias}budget_code END AS budget_code",$select_part);
+    $select_part =  str_replace("{$alias}budget_code", "CASE WHEN {$alias}budget_name IS NOT NULL AND {$alias}budget_name != '' THEN {$alias}budget_code || '(' || {$alias}budget_name || ')' ELSE {$alias}budget_code END AS budget_code",$select_part);
 
     $column = 'minority_type_name';
     $minority_check = <<<SQLEND
