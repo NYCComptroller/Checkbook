@@ -168,7 +168,7 @@
             "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
         },
         "budget_code_formatted": {
-          "expression": "(strlen($roow['budget_name']) > 0) ? $row['budget_code'].'( '.$roow['budget_name']. ' )' : $row['budget_code']"
+          "expression": "(strlen($roow['budget_name']) > 0) ? $row['budget_code'].'('.$roow['budget_name']. ')' : $row['budget_code']"
         }
     },
     "table_columns": [
