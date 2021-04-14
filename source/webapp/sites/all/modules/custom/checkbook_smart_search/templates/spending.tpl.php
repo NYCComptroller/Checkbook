@@ -32,7 +32,7 @@ if ($spending_results['fiscal_year_id'][0] != '' && $spending_results['fiscal_ye
 else {
   $fiscal_year_id = $actual_fiscal_year_id;
 }
-
+$spending_results['budget_code'] = (strlen($spending_results['spending_budget_name']) > 0) ? $spending_results['budget_code'] . '('. $spending_results['spending_budget_name'] . ')' : $spending_results['budget_code'];
 if ($isOge) {
   $linkable_fields = array(
     "oge_agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . '/datasource/checkbook_oge' . "/year/" . _getFiscalYearID() . "/yeartype/B/agency/" . $spending_results["agency_id"],
