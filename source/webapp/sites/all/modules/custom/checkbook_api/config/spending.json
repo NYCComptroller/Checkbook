@@ -98,7 +98,7 @@
                         "Sub Vendor":"vendor_type",
                         "Associated Prime Vendor":"prime_vendor_name",
                         "M/WBE Category":"mwbe_category_ui",
-                        "Budget CCode":"budget_code"
+                        "Budget Code":"budget_code"
                     },
                     "required_non_display_columns":["vendor_type"]
                 }
