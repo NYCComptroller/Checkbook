@@ -70,7 +70,6 @@
       "title": "Contract ID",
       "autocomplete": true
     }
-
   },
   "search_results_fields": {
     "spending": {
@@ -167,7 +166,8 @@
       "minority_type_name": "M/WBE Category",
       "is_prime_or_sub": "Sub Vendor",
       "prime_vendor_name": "Associated Prime Vendor",
-      "budget_code": "Budget Code"
+      "budget_code": "Budget Code",
+      "spending_budget_name": ""
     },
     "contracts": {
       "contract_status": "Status",

@@ -35,7 +35,7 @@
         "mwbe":"minority_type_id","industry":"industry_type_id",
         "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id",
         "vendortype":"vendor_type","fvendor":"vendor_id",
-        "bdgcode" : "budget_code"
+        "bdgcode":"budget_code"
     },
     "defaultParameters":{"is_prime_or_sub":"S"},
     "paramTypeConfig":{
@@ -239,7 +239,6 @@
             {"sClass":"text pad-left","sWidth":"175px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"145px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
-            {"sClass":"number-center","sWidth":"100px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"175px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
