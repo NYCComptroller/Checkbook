@@ -146,7 +146,7 @@
             "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
         },
         "budget_code_formatted": {
-          "expression": "(strlen($row['budget_name']) > 0) ? $row['budget_code'].'('.$row['budget_name']. ')' : $row['budget_code']"
+          "expression": "(strlen($row['budget_name']) > 0) ? $row['budget_code'].' ('.$row['budget_name']. ')' : $row['budget_code']"
         }
     },
     "table_columns": [
@@ -192,7 +192,7 @@
       {
         "column":"budget_code_formatted",
         "sourceColumn":"budget_code",
-        "sql":"CASE WHEN budget_name IS NOT NULL AND budget_name != '' THEN budget_code || '(' || budget_name || ')' ELSE budget_code END"
+        "sql":"CASE WHEN budget_name IS NOT NULL AND budget_name != '' THEN budget_code || ' (' || budget_name || ')' ELSE budget_code END"
       }
     ],
     "adjustParameters":"
