@@ -218,6 +218,11 @@
             "column":"associated_prime_vendor_name",
             "sourceColumn":"prime_vendor_name",
             "sql":"case when is_prime_or_sub = 'P' then 'N/A' else prime_vendor_name end"
+        },
+        {
+          "column":"budget_code_formatted",
+          "sourceColumn":"budget_code",
+          "sql":"CASE WHEN budget_name IS NOT NULL AND budget_name != '' THEN budget_code || '(' || budget_name || ')' ELSE budget_code END"
         }
     ],
     "adjustParameters":"

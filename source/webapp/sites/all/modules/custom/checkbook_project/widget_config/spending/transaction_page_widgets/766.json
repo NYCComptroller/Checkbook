@@ -394,6 +394,11 @@
           "column":"contract_purpose_text",
           "sourceColumn":"purpose",
           "sql":"case when spending_category_name IN ('Payroll','Others') then 'N/A' else purpose end"
+        },
+        {
+          "column":"budget_code_formatted",
+          "sourceColumn":"budget_code",
+          "sql":"CASE WHEN budget_name IS NOT NULL AND budget_name != '' THEN budget_code || '(' || budget_name || ')' ELSE budget_code END"
         }
     ],
     "adjustParameters":"

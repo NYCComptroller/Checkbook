@@ -189,7 +189,13 @@
           "column":"is_sub_vendor",
           "sourceColumn":"vendor_type",
           "sql":"case when vendor_type = 'P' then 'No' else 'Yes' end as is_sub_vendor"
-        }
+        },
+      ,
+      {
+        "column":"budget_code_formatted",
+        "sourceColumn":"budget_code",
+        "sql":"CASE WHEN budget_name IS NOT NULL AND budget_name != '' THEN budget_code || '(' || budget_name || ')' ELSE budget_code END"
+      }
     ],
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
