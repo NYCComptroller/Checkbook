@@ -481,9 +481,11 @@ function _checkbook_smart_search_export_data(string $solr_datasource){
   $fields = (array)CheckbookSolr::getExportFields($solr_datasource, $_REQUEST['domain']);
   $fl = implode(",", array_keys($fields));
   // Remove daily wage display for citywide payroll
-  if($domain == "citywide_payroll")
-  {
+  if($domain == "citywide_payroll") {
     unset($fields['daily_wage']);
+  }
+  if($domain == "citywide_spending"){
+    unset($fields['spending_budget_name']);
   }
   echo implode(",", array_values($fields)) . "\n";
 
