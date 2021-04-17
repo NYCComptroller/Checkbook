@@ -98,6 +98,22 @@ class SpendingFeedCitywide extends SpendingFeed
       $this->formatted_search_criteria['M/WBE Category'] = \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category']));
     }
 
+    //Woman Owned Business
+    if ($this->values['mwbe_category'] && $this->values['mwbe_category'] === '9') {
+      $this->form['filter']['is_women_owned_business'] = array('#markup' => '<div><strong>Woman Owned Business:</strong> Y</div>');
+    }
+    else{
+      $this->form['filter']['is_women_owned_business'] = array('#markup' => '<div><strong>Woman Owned Business:</strong> N</div>');
+    }
+
+    //Emerging Business
+    if ($this->values['mwbe_category'] && $this->values['mwbe_category'] === '99') {
+      $this->form['filter']['is_emerging_business'] = array('#markup' => '<div><strong>Emerging Business:</strong> Y</div>');
+    }
+    else{
+      $this->form['filter']['is_emerging_business'] = array('#markup' => '<div><strong>Emerging Business:</strong> N</div>');
+    }
+
     //Vendor
     if ($this->values['payee_name']) {
       $this->form['filter']['payee_name'] = array(
