@@ -1,0 +1,35 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":706,
+  "no_results_content":"No Results Found",
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "columns":["budget_code.budget_code", "txcount"],
+  "orderBy":"-txcount",
+  "facetPager":true,
+  "filterName":"Budget Code",
+  "urlParameterName":"bdgcode",
+  "autocompleteParamName":"bdgcode_auto",
+  "autocompleteID":"fBudgetCode",
+  "autocompleteField":"budget_code.budget_code",
+  "adjustParameters":"
+  if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
+  $parameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
+}
+if(function_exists('_checkbook_project_adjust_date_spending_parameter_filters')){
+  $parameters = _checkbook_project_adjust_date_spending_parameter_filters($node, $parameters);
+}
+checkbook_faceted_search_adjust_param($node);
+if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
+$parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
+}
+if(function_exists('_checkbook_project_applyParameterFilters')){
+$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+$adjustedParameters['budget_code.budget_code'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+return $adjustedParameters;
+}
+return $parameters;
+",
+"template":"individual_filter"
+}
