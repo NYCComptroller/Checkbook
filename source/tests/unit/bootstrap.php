@@ -24,7 +24,7 @@ include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/util/Mapping
 function variable_get($name = 'fake')
 {
     global $mocked_variable;
-    return $mocked_variable[$name];
+    return isset($mocked_variable[$name]) ? $mocked_variable[$name] : null;
 }
 
 /**

@@ -11,7 +11,7 @@
     "html_class":"chart-grid-view-table",
     "table_columns": [
       {
-        "labelAlias": "expense_category",
+        "labelAlias": "revenue_expense_category",
         "column": "expenditure_type_description_expenditure_type_description",
         "sortColumn": "expenditure_type_description_expenditure_type_description"
       },
@@ -68,7 +68,7 @@ $recognized_data[] = array('name' => html_entity_decode($row['expenditure_type_d
 $remaining_data[] = array('name' => html_entity_decode($row['expenditure_type_description_expenditure_type_description'],ENT_QUOTES), 'y' => $row['revenue_funds_available'], 'url' => $url);
 }
 if($allZero){$node->totalDataCount = 0;}
-$node->widgetConfig->chartTitle = 'Top Ten Expense Categories by Revenue';
+$node->widgetConfig->chartTitle = 'Top Ten Revenue Expense Categories by Revenue';
 $node->widgetConfig->chartConfig->xAxis->categories = $categories;
 
 $node->widgetConfig->chartConfig->series = array(array('name' => 'Recognized', 'data' => $recognized_data),array('name' => 'Remaining', 'data' => $remaining_data));
@@ -118,7 +118,7 @@ return $node->data;
 }
 <function>
 yAxisFormatter^^"formatter" : function(){return yAxisLabelFormatter(this);}##
-budgetTooltip^^"formatter" : function() {return 'Expense Category: '+this.point.name + '<br>Amount: ' + abbrNum(this.y, 2, '$')}##
+budgetTooltip^^"formatter" : function() {return 'Revenue Expense Category: '+this.point.name + '<br>Amount: ' + abbrNum(this.y, 2, '$')}##
 clickEvent^^"click": function(){
 if (this.options.url){
 location.href = this.options.url

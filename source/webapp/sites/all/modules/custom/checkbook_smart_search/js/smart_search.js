@@ -2,6 +2,11 @@
  *  Outputs the auto suggestions for the entered text in the search textbox.
  */
 (function ($) {
+  // On back button reload page with the url parameters
+  var perfEntries = performance.getEntriesByType("navigation");
+  if (perfEntries[0].type === "back_forward") {
+    window.location.reload(true);
+  }
   $(document).ready(function () {
     $("#edit-search-box").autocomplete({
       position: {my: "right top", at: "right bottom"},

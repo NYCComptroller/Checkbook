@@ -81,7 +81,7 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield otherpay datarange"><label>Other Payments:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['otherfrom']) ? $form_state['values']['otherfrom'] : '',
+    '#default_value' => (!empty($form_state['values']['otherfrom']) || $form_state['values']['otherfrom'] === "0") ? $form_state['values']['otherfrom'] : '',
   );
   $form['filter']['otherto'] = array(
     '#type' => 'textfield',
@@ -89,14 +89,14 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['otherto']) ? $form_state['values']['otherto'] : '',
+    '#default_value' => (!empty($form_state['values']['otherto']) || $form_state['values']['otherto'] === "0") ? $form_state['values']['otherto'] : '',
   );
   $form['filter']['grossfrom'] = array(
     '#type' => 'textfield',
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield grosspay datarange"><label>Gross Pay:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['grossfrom']) ? $form_state['values']['grossfrom'] : '',
+    '#default_value' => (!empty($form_state['values']['grossfrom']) || $form_state['values']['grossfrom'] === "0") ? $form_state['values']['grossfrom'] : '',
   );
   $form['filter']['grossto'] = array(
     '#type' => 'textfield',
@@ -104,14 +104,14 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['grossto']) ? $form_state['values']['grossto'] : '',
+    '#default_value' => (!empty($form_state['values']['grossto']) || $form_state['values']['grossto'] === "0") ? $form_state['values']['grossto'] : '',
   );
   $form['filter']['totalgrossfrom'] = array(
     '#type' => 'textfield',
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield totalgross datarange"><label>Gross Pay YTD:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['totalgrossfrom']) ? $form_state['values']['totalgrossfrom'] : '',
+    '#default_value' => (!empty($form_state['values']['totalgrossfrom']) || $form_state['values']['totalgrossfrom'] === "0") ? $form_state['values']['totalgrossfrom'] : '',
   );
   $form['filter']['totalgrossto'] = array(
     '#type' => 'textfield',
@@ -119,14 +119,14 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['totalgrossto']) ? $form_state['values']['totalgrossto'] : '',
+    '#default_value' => (!empty($form_state['values']['totalgrossto']) || $form_state['values']['totalgrossto'] === "0") ? $form_state['values']['totalgrossto'] : '',
   );
   $form['filter']['salaryfrom'] = array(
     '#type' => 'textfield',
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield salary datarange"><label>Amount:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['salaryfrom']) ? $form_state['values']['salaryfrom'] : '',
+    '#default_value' => (!empty($form_state['values']['salaryfrom']) || $form_state['values']['salaryfrom'] === "0")  ? $form_state['values']['salaryfrom'] : '',
   );
   $form['filter']['salaryto'] = array(
     '#type' => 'textfield',
@@ -134,7 +134,7 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['salaryto']) ? $form_state['values']['salaryto'] : '',
+    '#default_value' => (!empty($form_state['values']['salaryto']) || $form_state['values']['salaryto'] === "0") ? $form_state['values']['salaryto'] : '',
   );
   $form['filter']['salary_type'] = array(
     '#type' => 'radios',
@@ -152,7 +152,7 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="column column-right"><div class="datafield basepay datarange"><label>Base Pay:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['basepayfrom']) ? $form_state['values']['basepayfrom'] : '',
+    '#default_value' => (!empty($form_state['values']['basepayfrom']) || $form_state['values']['basepayfrom'] === "0") ? $form_state['values']['basepayfrom'] : '',
   );
   $form['filter']['basepayto'] = array(
     '#type' => 'textfield',
@@ -160,14 +160,14 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['basepayto']) ? $form_state['values']['basepayto'] : '',
+    '#default_value' => (!empty($form_state['values']['basepayto']) || $form_state['values']['basepayfrom'] === "0") ? $form_state['values']['basepayto'] : '',
   );
   $form['filter']['overtimefrom'] = array(
     '#type' => 'textfield',
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield overtime datarange"><label>Overtime Payments:</label><div class="ranges">',
-    '#default_value' => !empty($form_state['values']['overtimefrom']) ? $form_state['values']['overtimefrom'] : '',
+    '#default_value' => (!empty($form_state['values']['overtimefrom']) || $form_state['values']['overtimefrom'] === "0") ? $form_state['values']['overtimefrom'] : '',
   );
   $form['filter']['overtimeto'] = array(
     '#type' => 'textfield',
@@ -175,7 +175,7 @@ function checkbook_datafeeds_payroll($form, &$form_state){
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    '#default_value' => !empty($form_state['values']['overtimeto']) ? $form_state['values']['overtimeto'] : '',
+    '#default_value' => (!empty($form_state['values']['overtimeto']) || $form_state['values']['overtimeto'] === "0") ? $form_state['values']['overtimeto'] : '',
   );
   $form['filter']['payfrequency'] = array(
     '#type' => 'select',
@@ -491,44 +491,44 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state){
       $formatted_search_criteria['Agency'] = $values['agency'];
     }
   }
-  if ($values['otherfrom'] && $values['otherto']) {
-    $form['filter']['other_pay'] = array('#markup' => '<div><strong>Other Payments:</strong> Greater Than Equal to: $' . $values['otherfrom'] . ' Less Than Equal to: $' . $values['otherto'] . '</div>');
+  if (($values['otherfrom'] || $values['otherfrom'] === "0") && ($values['otherto'] || $values['otherto'] === "0")) {
+    $form['filter']['other_pay'] = array('#markup' => '<div><strong>Other Payments:</strong> Greater Than Equal to: $' . $values['otherfrom'] . ' and Less Than Equal to: $' . $values['otherto'] . '</div>');
     $user_criteria['Other Pay Greater Than'] = $values['otherfrom'];
     $user_criteria['Other Pay Less Than'] = $values['otherto'];
-    $formatted_search_criteria['Other Payments'] = 'Greater Than Equal to: $' . $values['otherfrom'] . ' Less Than Equal to: $' . $values['otherto'];
-  } elseif (!$values['otherfrom'] && $values['otherto']) {
+    $formatted_search_criteria['Other Payments'] = 'Greater Than Equal to: $' . $values['otherfrom'] . ' and Less Than Equal to: $' . $values['otherto'];
+  } elseif (!$values['otherfrom'] && ($values['otherto'] || $values['otherto'] === "0")) {
     $form['filter']['other_pay'] = array('#markup' => '<div><strong>Other Payments:</strong> Less Than Equal to: $' . $values['otherto'] . '</div>');
     $user_criteria['Other Pay Less Than'] = $values['otherto'];
     $formatted_search_criteria['Other Payments'] = 'Less Than Equal to: $' . $values['otherto'];
-  } elseif ($values['otherfrom'] && !$values['otherto']) {
+  } elseif (($values['otherfrom'] || $values['otherfrom'] === "0")  && !$values['otherto']) {
     $form['filter']['other_pay'] = array('#markup' => '<div><strong>Other Payments:</strong> Greater Than Equal to: $' . $values['otherfrom'] . '</div>');
     $user_criteria['Other Pay Greater Than'] = $values['otherfrom'];
     $formatted_search_criteria['Other Payments'] = 'Greater Than Equal to: $' . $values['otherfrom'];
   }
-  if ($values['grossfrom'] && $values['grossto']) {
-    $form['filter']['gross_pay'] = array('#markup' => '<div><strong>Gross Pay:</strong> Greater Than Equal to: $' . $values['grossfrom'] . ' Less Than Equal to: $' . $values['grossto'] . '</div>');
+  if (($values['grossfrom'] || $values['grossfrom'] === "0") && ($values['grossto'] || $values['grossto'] === "0")) {
+    $form['filter']['gross_pay'] = array('#markup' => '<div><strong>Gross Pay:</strong> Greater Than Equal to: $' . $values['grossfrom'] . ' and Less Than Equal to: $' . $values['grossto'] . '</div>');
     $user_criteria['Gross Pay Greater Than'] = $values['grossfrom'];
     $user_criteria['Gross Pay Less Than'] = $values['grossto'];
-    $formatted_search_criteria['Gross Pay'] = 'Greater Than Equal to: $' . $values['grossfrom'] . ' Less Than Equal to: $' . $values['grossto'];
-  } elseif (!$values['grossfrom'] && $values['grossto']) {
+    $formatted_search_criteria['Gross Pay'] = 'Greater Than Equal to: $' . $values['grossfrom'] . ' and Less Than Equal to: $' . $values['grossto'];
+  } elseif (!$values['grossfrom'] && ($values['grossto'] || $values['grossto'] === "0")) {
     $form['filter']['gross_pay'] = array('#markup' => '<div><strong>Gross Pay:</strong> Less Than Equal to: $' . $values['grossto'] . '</div>');
     $user_criteria['Gross Pay Less Than'] = $values['grossto'];
     $formatted_search_criteria['Gross Pay'] = 'Less Than Equal to: $' . $values['grossto'];
-  } elseif ($values['grossfrom'] && !$values['grossto']) {
+  } elseif (($values['grossfrom'] || $values['grossfrom'] === "0")  && !$values['grossto']) {
     $form['filter']['gross_pay'] = array('#markup' => '<div><strong>Gross Pay:</strong> Greater Than Equal to: $' . $values['grossfrom'] . '</div>');
     $user_criteria['Gross Pay Greater Than'] = $values['grossfrom'];
     $formatted_search_criteria['Gross Pay'] = 'Greater Than Equal to: $' . $values['grossfrom'];
   }
-  if ($values['totalgrossfrom'] && $values['totalgrossto']) {
-    $form['filter']['total_gross'] = array('#markup' => '<div><strong>Gross Pay YTD:</strong> Greater Than Equal to: $' . $values['totalgrossfrom'] . ' Less Than Equal to: $' . $values['totalgrossto'] . '</div>');
+  if (($values['totalgrossfrom'] || $values['totalgrossfrom'] === "0") && ($values['totalgrossto'] || $values['totalgrossto'] === "0")) {
+    $form['filter']['total_gross'] = array('#markup' => '<div><strong>Gross Pay YTD:</strong> Greater Than Equal to: $' . $values['totalgrossfrom'] . ' and Less Than Equal to: $' . $values['totalgrossto'] . '</div>');
     $user_criteria['Gross Pay YTD Greater Than'] = $values['totalgrossfrom'];
     $user_criteria['Gross Pay YTD Less Than'] = $values['totalgrossto'];
-    $formatted_search_criteria['Gross Pay YTD'] = 'Greater Than Equal to: $' . $values['totalgrossfrom'] . ' Less Than Equal to: $' . $values['totalgrossto'];
-  } elseif (!$values['totalgrossfrom'] && $values['totalgrossto']) {
+    $formatted_search_criteria['Gross Pay YTD'] = 'Greater Than Equal to: $' . $values['totalgrossfrom'] . ' and Less Than Equal to: $' . $values['totalgrossto'];
+  } elseif (!$values['totalgrossfrom'] && ($values['totalgrossto'] || $values['totalgrossto'] === "0")) {
     $form['filter']['total_gross'] = array('#markup' => '<div><strong>Gross Pay YTD:</strong> Less Than Equal to: $' . $values['totalgrossto'] . '</div>');
     $user_criteria['Gross Pay YTD Less Than'] = $values['totalgrossto'];
     $formatted_search_criteria['Gross Pay YTD'] = 'Less Than Equal to: $' . $values['totalgrossto'];
-  } elseif ($values['totalgrossfrom'] && !$values['totalgrossto']) {
+  } elseif (($values['totalgrossfrom'] || $values['totalgrossfrom'] === "0") && !$values['totalgrossto']) {
     $form['filter']['total_gross'] = array('#markup' => '<div><strong>Gross Pay YTD:</strong> Greater Than Equal to: $' . $values['totalgrossfrom'] . '</div>');
     $user_criteria['Gross Pay YTD Greater Than'] = $values['totalgrossfrom'];
     $formatted_search_criteria['Gross Pay YTD'] = 'Greater Than Equal to: $' . $values['totalgrossfrom'];
@@ -541,44 +541,44 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state){
     $formatted_search_criteria['Salary Type'] = $values['salary_type'];
   }
 
-  if ($values['salaryfrom'] && $values['salaryto']) {
-    $form['filter']['annual_salary'] = array('#markup' => '<div><strong>Amount:</strong> Greater Than Equal to: $' . $values['salaryfrom'] . ' Less Than Equal to: $' . $values['salaryto'] . '</div>');
+  if (($values['salaryfrom'] || $values['salaryfrom'] === "0") && ($values['salaryto'] || $values['salaryto'] === "0")) {
+    $form['filter']['annual_salary'] = array('#markup' => '<div><strong>Amount:</strong> Greater Than Equal to: $' . $values['salaryfrom'] . ' and Less Than Equal to: $' . $values['salaryto'] . '</div>');
     $user_criteria['Amount Greater Than'] = $values['salaryfrom'];
     $user_criteria['Amount Less Than'] = $values['salaryto'];
-    $formatted_search_criteria['Amount'] = 'Greater Than Equal to: $' . $values['salaryfrom'] . ' Less Than Equal to: $' . $values['salaryto'];
-  } elseif (!$values['salaryfrom'] && $values['salaryto']) {
+    $formatted_search_criteria['Amount'] = 'Greater Than Equal to: $' . $values['salaryfrom'] . ' and Less Than Equal to: $' . $values['salaryto'];
+  } elseif (!$values['salaryfrom'] && ($values['salaryto'] || $values['salaryto'] === "0")) {
     $form['filter']['annual_salary'] = array('#markup' => '<div><strong>Amount:</strong> Less Than Equal to: $' . $values['salaryto'] . '</div>');
     $user_criteria['Amount Less Than'] = $values['salaryto'];
     $formatted_search_criteria['Amount'] = 'Less Than Equal to: $' . $values['salaryto'];
-  } elseif ($values['salaryfrom'] && !$values['salaryto']) {
+  } elseif (($values['salaryfrom'] || $values['salaryfrom'] === "0")  && !$values['salaryto']) {
     $form['filter']['annual_salary'] = array('#markup' => '<div><strong>Amount:</strong> Greater Than Equal to: $' . $values['salaryfrom'] . '</div>');
     $user_criteria['Amount Greater Than'] = $values['salaryfrom'];
     $formatted_search_criteria['Amount'] = 'Greater Than Equal to: $' . $values['salaryfrom'];
   }
-  if ($values['basepayfrom'] && $values['basepayto']) {
-    $form['filter']['base_pay'] = array('#markup' => '<div><strong>Base Pay:</strong> Greater Than Equal to: $' . $values['basepayfrom'] . ' Less Than Equal to: $' . $values['basepayto'] . '</div>');
+  if (($values['basepayfrom'] || $values['basepayfrom'] === "0") && ($values['basepayto'] || $values['basepayto'] === "0")) {
+    $form['filter']['base_pay'] = array('#markup' => '<div><strong>Base Pay:</strong> Greater Than Equal to: $' . $values['basepayfrom'] . ' and Less Than Equal to: $' . $values['basepayto'] . '</div>');
     $user_criteria['Base Pay Greater Than'] = $values['basepayfrom'];
     $user_criteria['Base Pay Less Than'] = $values['basepayto'];
-    $formatted_search_criteria['Base Pay'] = 'Greater Than Equal to: $' . $values['basepayfrom'] . ' Less Than Equal to: $' . $values['basepayto'];
-  } elseif (!$values['basepayfrom'] && $values['basepayto']) {
+    $formatted_search_criteria['Base Pay'] = 'Greater Than Equal to: $' . $values['basepayfrom'] . ' and Less Than Equal to: $' . $values['basepayto'];
+  } elseif (!$values['basepayfrom'] && ($values['basepayto'] || $values['basepayto'] === "0")) {
     $form['filter']['base_pay'] = array('#markup' => '<div><strong>Base Pay:</strong> Less Than Equal to: $' . $values['basepayto'] . '</div>');
     $user_criteria['Base Pay Less Than'] = $values['basepayto'];
     $formatted_search_criteria['Base Pay'] = 'Less Than Equal to: $' . $values['basepayto'];
-  } elseif ($values['basepayfrom'] && !$values['basepayto']) {
+  } elseif (($values['basepayfrom'] || $values['basepayfrom'] === "0") && !$values['basepayto']) {
     $form['filter']['base_pay'] = array('#markup' => '<div><strong>Base Pay:</strong> Greater Than Equal to: $' . $values['basepayfrom'] . '</div>');
     $user_criteria['Base Pay Greater Than'] = $values['basepayfrom'];
     $formatted_search_criteria['Base Pay'] = 'Greater Than Equal to: $' . $values['basepayfrom'];
   }
-  if ($values['overtimefrom'] && $values['overtimeto']) {
-    $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Payments:</strong> Greater Than Equal to: $' . $values['overtimefrom'] . ' Less Than Equal to: $' . $values['overtimeto'] . '</div>');
+  if (($values['overtimefrom'] || $values['overtimefrom'] === "0") && ($values['overtimeto'] || $values['overtimeto'] === "0")) {
+    $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Payments:</strong> Greater Than Equal to: $' . $values['overtimefrom'] . ' and Less Than Equal to: $' . $values['overtimeto'] . '</div>');
     $user_criteria['Overtime Pay Greater Than'] = $values['overtimefrom'];
     $user_criteria['Overtime Pay Less Than'] = $values['overtimeto'];
-    $formatted_search_criteria['Overtime Payments'] = 'Greater Than Equal to: $' . $values['overtimefrom'] . ' Less Than Equal to: $' . $values['overtimeto'];
-  } elseif (!$values['overtimefrom'] && $values['overtimeto']) {
+    $formatted_search_criteria['Overtime Payments'] = 'Greater Than Equal to: $' . $values['overtimefrom'] . ' and Less Than Equal to: $' . $values['overtimeto'];
+  } elseif (!$values['overtimefrom'] && ($values['overtimeto'] || $values['overtimeto'] === "0")) {
     $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Payments:</strong> Less Than Equal to: $' . $values['overtimeto'] . '</div>');
     $user_criteria['Overtime Pay Less Than'] = $values['overtimeto'];
     $formatted_search_criteria['Overtime Payments'] = 'Less Than Equal to: $' . $values['overtimeto'];
-  } elseif ($values['overtimefrom'] && !$values['overtimeto']) {
+  } elseif (($values['overtimefrom'] || $values['overtimefrom'] === "0") && !$values['overtimeto']) {
     $form['filter']['overtime_pay'] = array('#markup' => '<div><strong>Overtime Payments:</strong> Greater Than Equal to: $' . $values['overtimefrom'] . '</div>');
     $user_criteria['Overtime Pay Greater Than'] = $values['overtimefrom'];
     $formatted_search_criteria['Overtime Payments'] = 'Greater Than Equal to: $' . $values['overtimefrom'];
@@ -622,10 +622,10 @@ function checkbook_datafeeds_payroll_confirmation($form, &$form_state){
     $formatted_search_criteria['Pay Date'] = 'Pay Date:</strong> From: ' . $values['paydatefrom'];
   }
   if ($values['payratefrom'] && $values['payrateto']) {
-    $form['filter']['pay_rate'] = array('#markup' => '<div><strong>Pay Rate:</strong> Greater Than Equal to: $' . $values['payratefrom'] . ' Less Than Equal to: $' . $values['payrateto'] . '</div>');
+    $form['filter']['pay_rate'] = array('#markup' => '<div><strong>Pay Rate:</strong> Greater Than Equal to: $' . $values['payratefrom'] . ' and Less Than Equal to: $' . $values['payrateto'] . '</div>');
     $user_criteria['Pay Rate Greater Than'] = $values['payratefrom'];
     $user_criteria['Pay Rate Less Than'] = $values['payrateto'];
-    $formatted_search_criteria['Pay Rate'] = 'Greater Than Equal to: $' . $values['payratefrom'] . ' Less Than Equal to: $' . $values['payrateto'];
+    $formatted_search_criteria['Pay Rate'] = 'Greater Than Equal to: $' . $values['payratefrom'] . ' and Less Than Equal to: $' . $values['payrateto'];
   } elseif (!$values['payratefrom'] && $values['payrateto']) {
     $form['filter']['pay_rate'] = array('#markup' => '<div><strong>Pay Rate:</strong> Less Than Equal to: $' . $values['payrateto'] . '</div>');
     $user_criteria['Pay Rate Less Than'] = $values['payrateto'];

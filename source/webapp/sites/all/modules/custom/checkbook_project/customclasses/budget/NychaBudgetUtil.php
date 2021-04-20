@@ -38,10 +38,10 @@ class NychaBudgetUtil{
     $budgetType = RequestUtil::getRequestKeyValueFromURL('budgettype', $url);
     //Transactions Page main title
     $title = (isset($widget) && ($widget != 'wt_year')) ? $widget_titles[$widget]: "";
-    if ($budgetType == 'committed' && $widget != 'wt_year'){
+    if ($title && $budgetType == 'committed' && $widget != 'wt_year'){
       $title .= ' '."by Committed ".' '. "Expense Budget Transactions";
     }
-    elseif ($budgetType == 'percdiff'){
+    elseif ($title && $budgetType == 'percdiff'){
       $title .= ' '."by Percent Difference ".' '. "Expense Budget Transactions";
     }
     else {
@@ -82,7 +82,7 @@ class NychaBudgetUtil{
         break;
       case 'wt_year' :
         $reqParam = RequestUtil::getRequestKeyValueFromURL('year', $bottomURL);
-        $title .= _getYearValueFromID($reqParam);
+        $title .= 'FY ' . _getYearValueFromID($reqParam);
     }
 
     return $title;
@@ -123,4 +123,29 @@ class NychaBudgetUtil{
     return $query;
   }
 
+  // NYCCHKBK - 10215
+  // Requirement for Transactions Page results - budget_type and budget_name to display null as null and 'n/a' as 'n/a'
+  static public function getBudgetName($budgetId)
+  {
+    if (isset($budgetId))
+    {
+      $where = "WHERE budget_id = '" . $budgetId . "' AND budget_name IS NOT NULL";
+      $query = "SELECT budget_name FROM budget {$where} ";
+      $data = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_nycha');
+      $result = isset($data[0]['budget_name']) ? $data[0]['budget_name'] : null;
+      return $result;
+    }
+  }
+
+  static public function getBudgetType($budgetId)
+  {
+    if (isset($budgetId))
+    {
+      $where = "WHERE budget_id = '" . $budgetId . "' AND budget_type IS NOT NULL";
+      $query = "SELECT budget_type FROM budget {$where} ";
+      $data = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_nycha');
+      $result = isset($data[0]['budget_type']) ? $data[0]['budget_type'] : null;
+      return $result;
+    }
+  }
 }

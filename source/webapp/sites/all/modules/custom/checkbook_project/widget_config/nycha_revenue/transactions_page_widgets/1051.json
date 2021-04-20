@@ -16,6 +16,7 @@
     "amtr":"rangeid",
     "bdgnm": "eqignorecase",
     "bdgnm_exact": "eqignorecase",
+    "bdgtyp": "eqignorecase",
     "revcat_nm": "eqignorecase",
     "revcat_nm_exact": "eqignorecase",
     "revclass_nm": "eqignorecase",
@@ -56,7 +57,8 @@
     "gl_project_description",
     "closing_classification_name",
     "revenue_category",
-    "revenue_class"
+    "revenue_class",
+    "revenue_id"
   ],
   "caption": "",
   "derivedColumns": {
@@ -64,7 +66,7 @@
       "expression": "_get_tooltip_markup($row['expenditure_type_description'], 28)"
     },
     "budget_type_formatted": {
-      "expression": "_get_tooltip_markup($row['budget_type'], 36)"
+      "expression": "_get_tooltip_markup(NychaRevenueUtil::getRevenueBudgetType($row['revenue_id']),36)"
     },
     "formatted_adopted_amount": {
       "expression": "custom_number_formatter_basic_format($row['adopted_amount'])"
@@ -82,7 +84,7 @@
       "expression": "_get_tooltip_markup($row['expenditure_type_description'],36)"
     },
     "budget_name_formatted":{
-      "expression": "_get_tooltip_markup($row['budget_name'],36)"
+      "expression": "_get_tooltip_markup(NychaRevenueUtil::getRevenueBudgetName($row['revenue_id']),36)"
     },
     "resp_center_formatted":{
       "expression": "_get_tooltip_markup($row['responsibility_center_description'],36)"
@@ -137,7 +139,7 @@
       "export": false
     },
     {
-      "labelAlias": "expense_category",
+      "labelAlias": "revenue_expense_category",
       "column": "exp_name_formatted",
       "sortSourceColumn": "expenditure_type_description"
     },
@@ -163,12 +165,12 @@
     },
     {
       "labelAlias": "budget_type",
-      "column": "budget_type",
+      "column": "budget_type_formatted",
       "sortSourceColumn": "budget_type"
     },
     {
       "labelAlias": "budget_name",
-      "column": "budget_name",
+      "column": "budget_name_formatted",
       "sortSourceColumn": "budget_name"
     },
     {

@@ -39,7 +39,7 @@ class SpendingFeedCitywide extends SpendingFeed
     }
 
     //Department
-    if ($this->values['dept'] && $this->values['dept'] != 'Select Department' && $this->values['dept'] != '0') {
+    if ($this->values['dept'] && $this->values['dept'] != 'Select Department' && $this->values['dept'] != '0' && $this->values['agency'] != 'Citywide (All Agencies)') {
       // converts special characters to HTML entities
       if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['dept'])) {
         $this->values['dept'] = htmlspecialchars($this->values['dept']);
@@ -50,7 +50,7 @@ class SpendingFeedCitywide extends SpendingFeed
     }
 
     //Expense Category
-    if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category' && $this->values['expense_category'] != '0') {
+    if ($this->values['expense_category'] && $this->values['expense_category'] != 'Select Expense Category' && $this->values['expense_category'] != '0' && $this->values['agency'] != 'Citywide (All Agencies)') {
       // converts special characters to HTML entities
       if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->values['expense_category'])) {
         $this->values['expense_category'] = htmlspecialchars($this->values['expense_category']);
@@ -97,20 +97,20 @@ class SpendingFeedCitywide extends SpendingFeed
     }
 
     //Check Amount
-    if ($this->values['check_amt_from'] && $this->values['check_amt_to']) {
+    if (($this->values['check_amt_from'] || $this->values['check_amt_from'] === "0") && ($this->values['check_amt_to'] || $this->values['check_amt_to'] === "0")) {
       $this->form['filter']['chkamount'] = array(
-        '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->values['check_amt_from'] . ' Less Than Equal to: $' . $this->values['check_amt_to'] . '</div>',
+        '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->values['check_amt_from'] . ' and Less Than Equal to: $' . $this->values['check_amt_to'] . '</div>',
       );
       $this->user_criteria['Check Amount Greater Than'] = $this->values['check_amt_from'];
       $this->user_criteria['Check Amount Less Than'] = $this->values['check_amt_to'];
-      $this->formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $this->values['check_amt_from'] . ' Less Than Equal to: $' . $this->values['check_amt_to'];
-    } elseif (!$this->values['check_amt_from'] && $this->values['check_amt_to']) {
+      $this->formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $this->values['check_amt_from'] . ' and Less Than Equal to: $' . $this->values['check_amt_to'];
+    } elseif (!$this->values['check_amt_from'] && ($this->values['check_amt_to'] || $this->values['check_amt_to'] === "0")) {
       $this->form['filter']['chkamount'] = array(
         '#markup' => '<div><strong>Check Amount:</strong> Less Than Equal to: $' . $this->values['check_amt_to'] . '</div>',
       );
       $this->user_criteria['Check Amount Less Than'] = $this->values['check_amt_to'];
       $this->formatted_search_criteria['Check Amount'] = 'Less Than Equal to: $' . $this->values['check_amt_to'];
-    } elseif ($this->values['check_amt_from'] && !$this->values['check_amt_to']) {
+    } elseif (($this->values['check_amt_from'] || $this->values['check_amt_from'] === "0") && !$this->values['check_amt_to']) {
       $this->form['filter']['chkamount'] = array(
         '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->values['check_amt_from'] . '</div>',
       );
@@ -144,6 +144,22 @@ class SpendingFeedCitywide extends SpendingFeed
       $this->user_criteria['Capital Project'] = $this->values['capital_project'];
       $this->formatted_search_criteria['Capital Project'] = $this->values['capital_project'];
     }
+
+    //Year Filter
+    if($this->values['date_filter'] == 0) {
+      if ($this->values['year'] && $this->values['year'] !== '0') {
+        $this->form['filter']['year'] = array(
+          '#markup' => '<div><strong>Year:</strong> ' . substr($this->values['year'], 0, -4) . ' ' . substr($this->values['year'], -4) . '</div>',
+        );
+        $this->user_criteria['Fiscal Year'] = $this->values['year'];
+        $this->formatted_search_criteria['Year'] = $this->values['year'];
+      } else{
+        $this->form['filter']['year'] = array(
+          '#markup' => '<div><strong>Year:</strong> All Years</div>',
+        );
+        $this->formatted_search_criteria['Year'] = ' All Years';
+      }
+    }
   }
 
   protected function _process_datasource_values()
@@ -167,6 +183,10 @@ class SpendingFeedCitywide extends SpendingFeed
 
     if ($this->values['capital_project']) {
       $this->criteria['value']['capital_project_code'] = $this->values['capital_project'];
+    }
+
+    if ($this->values['year'] && $this->values['year'] != '0') {
+      $this->criteria['value']['fiscal_year'] = ltrim($this->values['year'], 'FY');
     }
   }
 

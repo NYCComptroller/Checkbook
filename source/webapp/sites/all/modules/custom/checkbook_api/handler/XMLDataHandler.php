@@ -165,8 +165,9 @@ class XMLDataHandler extends AbstractDataHandler
         //Handle referenced columns
         foreach($columnMappings as $key=>$value) {
             if (strpos($value,"@") !== false) {
-                $column_parts = explode("@", $value);
-                $columnMappings[$key] = $column_parts[0];
+              $data_set_column = str_replace('@', '_', $value);
+              $data_set_column = str_replace(':', '_', $data_set_column);
+              $columnMappings[$key] = $data_set_column;
             }
         }
         $columnMappings = array_flip($columnMappings);
@@ -193,7 +194,7 @@ class XMLDataHandler extends AbstractDataHandler
 
           //Get only column
           if (strpos($sql_part,".") !== false) {
-            $select_column_parts = explode('.', trim($sql_part));
+            $select_column_parts = explode('.', trim($sql_part), 2);
             $alias = $select_column_parts[0] . '.';
             $column = $select_column_parts[1];
           }else{
@@ -282,7 +283,7 @@ class XMLDataHandler extends AbstractDataHandler
             $commands[] = $command;
 
             //xmllint command to format the xml
-            $maxmem = 1024 * 1024 * 500;  // 500 MB
+            $maxmem = 1024 * 1024 * 750;  // 750 MB
             $command = "xmllint --format $tempOutputFile --output $formattedOutputFile --maxmem $maxmem";
             $commands[] = $command;
 

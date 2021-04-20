@@ -132,8 +132,8 @@ class DataSetHandler {
    * @param $config_type
    */
   private function prepareParameterConfiguration(&$parameters, $column, $value, $config_type) {
-    // Do not escape special characters for range values and values which donot have config_type set
-    if(isset($config_type) && ($config_type != "range")) {
+    // Do not need to escape special characters for range values
+    if(isset($value) && $config_type != "range" && !is_array($value)){
       $value = pg_escape_string(htmlspecialchars_decode($value));
     }
     switch ($config_type) {

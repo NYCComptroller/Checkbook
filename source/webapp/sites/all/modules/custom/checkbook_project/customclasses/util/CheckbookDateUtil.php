@@ -112,12 +112,13 @@ class CheckbookDateUtil{
       return $year;
     }
     $year = variable_get($key, FALSE);
+    isset($year) ? $year : null;
     if (FALSE === $year) {
       LogHelper::log_warn('Drush variable ' . $key . ' not found!');
       $year = self::$currentFiscalYear;
     }
     _checkbook_dmemcache_set($key, $year);
-    return $year;
+    return isset($year) ? $year : null;
   }
 
   /**
@@ -181,7 +182,8 @@ class CheckbookDateUtil{
   public static function getCurrentFiscalYear($data_source = Datasource::CITYWIDE){
     self::setCurrentYears();
     $data_source = ($data_source == Datasource::NYCHA || Datasource::isNYCHA()) ? Datasource::NYCHA : $data_source;
-    return self::getCurrentDatasourceFiscalYear($data_source);
+    $year_value = self::getCurrentDatasourceFiscalYear($data_source);
+    return isset($year_value) ? $year_value : null;
   }
 
   /**
@@ -189,7 +191,8 @@ class CheckbookDateUtil{
    * @return string
    */
   public static function getCurrentFiscalYearId($data_source = Datasource::CITYWIDE){
-    return self::year2yearId(self::getCurrentFiscalYear($data_source));
+    $year_value = self::year2yearId(self::getCurrentFiscalYear($data_source));
+    return isset($year_value) ? $year_value : null ;
   }
 
 
@@ -214,10 +217,21 @@ class CheckbookDateUtil{
 
   /**
    * @return mixed
+   * drush vset current_calendar_year_cy 2020
    */
   public static function getCurrentCalendarYear(){
     self::setCurrentYears();
-    return self::$currentCalendarYear;
+    $key = 'current_calendar_year_cy';
+    if ($year = _checkbook_dmemcache_get($key)) {
+      return $year;
+    }
+    $year = variable_get($key, FALSE);
+    if (FALSE === $year) {
+      LogHelper::log_warn('Drush variable ' . $key . ' not found!');
+      $year = self::$currentCalendarYear;
+    }
+    _checkbook_dmemcache_set($key, $year);
+    return $year;
   }
 
   /**

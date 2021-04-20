@@ -90,15 +90,28 @@ foreach ($facets_render??[] as $facet_name => $facet) {
       $autocomplete_id = "autocomplete_" . $facet_name;
       $disabled = '';
 
+      // Autocomplete's result(s) displays and allows to select options that are already selected
+      // thereby counting an option twice. Hence, removing duplicates
+      $facet->selected  = array_unique($facet->selected? $facet->selected:[]);
+
+      //NYCCHKBK-9957 : Disable autocomplete search box if 5 or more options are selected
+      $no_of_selected_options = count($facet->selected ? $facet->selected: []);
+      if($no_of_selected_options >= 5) $disabled = " DISABLED=true";
+
       echo '<div class="autocomplete">
               <input id="' . $autocomplete_id . '" ' . $disabled . ' type="text" class="solr_autocomplete" facet="'.$facet_name.'" />
             </div>';
-//      placeholder="Autocomplete '.htmlentities($facet->title).'..."
     }
 
     echo '<div class="options">';
     echo '<ul class="rows">';
     $index = 0;
+    $lowercase_selected = [];
+    if($facet->selected){
+      foreach($facet->selected as $facet_val){
+        $lowercase_selected[strtolower($facet_val)] = strtolower($facet_val);
+      }
+    }
 
     foreach($facet->results as $facet_value => $count) {
 
@@ -117,19 +130,23 @@ foreach ($facets_render??[] as $facet_name => $facet) {
 
 END;
 
-      $lowercase_selected = $facet->selected ? array_map('strtolower', $facet->selected) : [];
-
-      if ($facet->selected) {
-        $checked = $facet->selected && in_array(strtolower($facet_value), $lowercase_selected);
-        $checked = $checked ? ' checked="checked" ' : '';
-        $active = $checked ? ' class="active" ' : '';
-        $disabled ='';
+      if ($lowercase_selected && isset($lowercase_selected[strtolower($facet_value)])) {
+        $checked = ' checked="checked" ';
+        $active = ' class="active" ';
+        $disabled = '';
       }
-      if($checked == '' && (count($lowercase_selected) >= 5)){
+      else{
+        $checked = '';
+        $active = '';
+        $disabled = '';
+      }
+
+      //Disable unchecked options if 5 or more options from the same category are already selected
+      if((!$checked || $checked == '')  && (count($lowercase_selected) >= 5)){
         $disabled = " DISABLED=true";
       }
 
-      echo '<input type="checkbox" id="'.$id.'" '.$checked . $disabled.' facet="'.$facet_name.'" value="'.
+      echo '<input type="checkbox" onclick="return applySearchFilters();" id="'.$id.'" '.$checked . $disabled.' facet="'.$facet_name.'" value="'.
         htmlentities(urlencode($facet_value)).'" />';
       echo <<<END
 
@@ -190,7 +207,7 @@ END;
               echo '<input type="radio" name="' . htmlentities($sub_facet->title) . '" ' . 'id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
               htmlentities(urlencode($sub_facet_value)) . '" />';
             }else{
-              echo '<input type="checkbox" id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
+              echo '<input type="checkbox" onclick="return applySearchFilters();" id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
                 htmlentities(urlencode($sub_facet_value)) . '" />';
             }
             echo "<label for=\"{$id}\" />";

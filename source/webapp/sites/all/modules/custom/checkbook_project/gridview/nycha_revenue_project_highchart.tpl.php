@@ -42,7 +42,7 @@ include_once('export_link.php');
             foreach ($node->data as $datarow) {
                 echo "<tr>";
                    echo '<td>' . $datarow['gl_project_description_gl_project_description'] . '</td>';
-                   echo '<td>' . $datarow['revenue_funds_available'] . '</td>';
+                   echo '<td>' . $datarow['revenue_recognized_amount'] . '</td>';
                    echo '<td>' . $datarow['revenue_funds_available'] . '</td>';
                    echo "<td>&nbsp;</td>";
                 echo "</tr>";

@@ -35,9 +35,6 @@
               html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
             }
           }
-          else {
-            html = html + '<option value="">' + data[0] + '</option>';
-          }
         }
         $('#edit-dept').html(html);
           if(dept_hidden) {
@@ -70,7 +67,12 @@
 
       let year = 0;
       if ($('input:radio[name=date_filter]:checked').val() == 0) {
+        if(data_source =='checkbook'){
         year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
+        }
+        else{
+          year = ($('#edit-nycha-year').val()) ? $('#edit-nycha-year').val() : 0;
+        }
       }
       //We need agency filter only for citywide
       if(data_source === 'checkbook'){agency = emptyToZero(agency);}else{agency = 0;}
@@ -89,8 +91,6 @@
                   html = html + '<option value="' + exp_cat.code + '" title="' + exp_cat.title + '">' + exp_cat.name + '</option>';
                 }
               });
-            } else {
-              html = html + '<option value="">' + data[0] + '</option>';
             }
           }
           $('#edit-expense-category').html(html);
@@ -181,29 +181,8 @@
     //Disable/Enable Date Filter fields
      onDateFilterChange();
 
-     //Add/Remove extra year value
-    resetYearValue(data_source);
   };
 
-  //TO DO: Separate year filters for CITYWIDE/OGE and NYCHA on the form and show/hide based on data-source selected
-  // Hide/Show extra year value based obn datsource
-  let resetYearValue = function (dataSource){
-    //Current FY
-    let currentFY =  $("#edit-year option:eq(1)").val();
-    // Get the last year value by index
-    let lastYear =  $("#edit-year option:eq(12)").val();;
-    switch (dataSource) {
-      case 'checkbook_nycha':
-        // Show another year value for NYCHA
-        $("#edit-year option[value='"+lastYear+"']").show();
-        $("#edit-year option[value='"+currentFY+"']").hide();
-        break;
-      default:
-        // Hide the extra year for citywide and OGE
-        $("#edit-year option[value='"+lastYear+"']").hide();
-        $("#edit-year option[value='"+currentFY+"']").show();
-    }
-  };
   // Reset Multi select option based on datasource
   let resetMultiselect = function (dataSource){
     switch (dataSource) {
@@ -338,10 +317,12 @@
 
     if (dateFilter === '1') {
       disable_input($('select[name="year"]'));
+      disable_input($('select[name="nycha_year"]'));
       enable_input($('input[name="issuedfrom"]'));
       enable_input($('input[name="issuedto"]'));
     } else{
       enable_input($('select[name="year"]'));
+      enable_input($('select[name="nycha_year"]'));
       disable_input($('input[name="issuedfrom"]'));
       disable_input($('input[name="issuedto"]'));
     }
@@ -355,6 +336,7 @@
     $('input[name="issuedfrom"]').val("");
     $('input[name="issuedto"]').val("");
     $('select[name="year"]').val("0");
+    $('select[name="nycha_year"]').val("0");
   };
 
   Drupal.behaviors.spendingDataFeeds = {
@@ -432,7 +414,17 @@
 
       //Year drop-down change event
       $('select[name="year"]', context).change(function () {
+        $('input:hidden[name="dept_hidden"]', context).val($('select[name="dept"]', context).val());
+        $('input:hidden[name="expense_category_hidden"]', context).val($('select[name="expense_category"]', context).val());
+        //$('input:hidden[name="dept_hidden"]', context).val("");
+        //$('input:hidden[name="expense_category_hidden"]', context).val("");
         reloadSpendingDepartments();
+        reloadSpendingExpenceCategories();
+      });
+
+      //NYCHA Year drop-down change event
+      $('select[name="nycha_year"]', context).change(function () {
+        $('input:hidden[name="expense_category_hidden"]', context).val($('select[name="expense_category"]', context).val());
         reloadSpendingExpenceCategories();
       });
 
@@ -473,12 +465,17 @@
       });
 
       //Sets up jQuery UI autocompletes and autocomplete filtering functionality
+      let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
       let year = 0;
       if ($('input:radio[name=date_filter]:checked').val() === '0') {
-        year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
+        if (data_source === 'checkbook_nycha') {
+          year = ($('#edit-nycha-year').val()) ? $('#edit-nycha-year').val() : 0;
+        }
+        else{
+          year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
+        }
       }
       let industry=0;
-      let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
       if (data_source === 'checkbook_nycha'){
         industry = emptyToZero($('#edit-nycha-industry', context).val());}
       else{
@@ -503,9 +500,15 @@
       $('.watch:input', context).each(function () {
         $(this).focusin(function () {
           //set variables for each field's value
+          data_source = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
           year = 0;
           if ($('input:radio[name=date_filter]:checked').val() === '0') {
-            year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
+            if (data_source === 'checkbook_nycha') {
+              year = ($('#edit-nycha-year').val()) ? $('#edit-nycha-year').val() : 0;
+            }
+            else{
+              year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
+            }
           }
           dept =  emptyToZero($('#edit-dept', context).val());
           agency = emptyToZero($('#edit-agency', context).val());
@@ -514,7 +517,7 @@
           agg_type = $('#edit-purchase-order-type', context).val() ? emptyToZero($('#edit-purchase-order-type', context).val()) : 0;
           resp_center = $('#edit-resp-center', context).val() ? emptyToZero($('#edit-resp-center', context).val()) : 0;
           fund_src = $('#edit-funding-source', context).val() ? emptyToZero($('#edit-funding-source', context).val()) : 0;
-          data_source = $('input[name="datafeeds-spending-domain-filter"]:checked', context).val();
+
           if (data_source === 'checkbook_nycha'){
             industry = emptyToZero($('#edit-nycha-industry', context).val());}
           else{

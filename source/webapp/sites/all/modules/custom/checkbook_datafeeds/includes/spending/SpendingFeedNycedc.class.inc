@@ -79,20 +79,20 @@ class SpendingFeedNycedc extends SpendingFeed
     }
 
     //Check Amount
-    if ($this->values['check_amt_from'] && $this->values['check_amt_to']) {
+    if (($this->values['check_amt_from'] || $this->values['check_amt_from'] === "0") && ($this->values['check_amt_to'] || $this->values['check_amt_to'] === "0")) {
       $this->form['filter']['chkamount'] = array(
-        '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->values['check_amt_from'] . ' Less Than Equal to: $' . $this->values['check_amt_to'] . '</div>',
+        '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->values['check_amt_from'] . ' and Less Than Equal to: $' . $this->values['check_amt_to'] . '</div>',
       );
       $this->user_criteria['Check Amount Greater Than'] = $this->values['check_amt_from'];
       $this->user_criteria['Check Amount Less Than'] = $this->values['check_amt_to'];
-      $this->formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $this->values['check_amt_from'] . ' Less Than Equal to: $' . $this->values['check_amt_to'];
-    } elseif (!$this->values['check_amt_from'] && $this->values['check_amt_to']) {
+      $this->formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $this->values['check_amt_from'] . ' and Less Than Equal to: $' . $this->values['check_amt_to'];
+    } elseif (!$this->values['check_amt_from'] && ($this->values['check_amt_to'] || $this->values['check_amt_to'] === "0")) {
       $this->form['filter']['chkamount'] = array(
         '#markup' => '<div><strong>Check Amount:</strong> Less Than Equal to: $' . $this->values['check_amt_to'] . '</div>',
       );
       $this->user_criteria['Check Amount Less Than'] = $this->values['check_amt_to'];
       $this->formatted_search_criteria['Check Amount'] = 'Less Than Equal to: $' . $this->values['check_amt_to'];
-    } elseif ($this->values['check_amt_from'] && !$this->values['check_amt_to']) {
+    } elseif (($this->values['check_amt_from'] || $this->values['check_amt_from'] === "0")  && !$this->values['check_amt_to']) {
       $this->form['filter']['chkamount'] = array(
         '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->values['check_amt_from'] . '</div>',
       );
@@ -145,6 +145,20 @@ class SpendingFeedNycedc extends SpendingFeed
       $this->formatted_search_criteria['Budget Name'] = $this->values['budget_name'];
     }
 
+    //Year Filter
+    if ($this->values['year'] && $this->values['year'] !== '0') {
+      $this->form['filter']['year'] = array(
+        '#markup' => '<div><strong>Year:</strong> ' . substr($this->values['year'], 0, -4) . ' ' . substr($this->values['year'], -4) . '</div>',
+      );
+      $this->user_criteria['Fiscal Year'] = $this->values['year'];
+      $this->formatted_search_criteria['Year'] = $this->values['year'];
+    } else{
+      $this->form['filter']['year'] = array(
+        '#markup' => '<div><strong>Year:</strong> All Years</div>',
+      );
+      $this->formatted_search_criteria['Year'] = ' All Years';
+    }
+
   }
 
   protected function _process_datasource_values()
@@ -164,6 +178,10 @@ class SpendingFeedNycedc extends SpendingFeed
 
     if ($this->values['budget_name']) {
       $this->criteria['value']['budget_name'] = $this->values['budget_name'];
+    }
+
+    if ($this->values['year'] && $this->values['year'] != '0') {
+      $this->criteria['value']['fiscal_year'] = ltrim($this->values['year'], 'FY');
     }
   }
 

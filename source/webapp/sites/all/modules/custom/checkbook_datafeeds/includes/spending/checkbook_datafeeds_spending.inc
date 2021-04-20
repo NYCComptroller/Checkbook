@@ -294,7 +294,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#prefix' => '<div class="datafield fundingsource nycha">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
-    '#default_value' => !empty($form_state['values']['funding_source']) ? $form_state['values']['funding_source'] : 'All Funding Sources',
+    '#default_value' => !empty($form_state['values']['funding_source']) ? $form_state['values']['funding_source'] : 'Select Funding Source',
   );
 
   $resp_center_options = _checkbook_advanced_search_get_responsibility_centers(Datasource::NYCHA, true);
@@ -477,16 +477,28 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#markup' => '<div class="datafield year-filters last-item">',
   );
 
- // BY default obtain all the year values setting the datasource as nycha (show /hide handled in javascript)
   $form['filter']['year'] = array(
     '#type' => 'select',
-    '#options' => _year_options('all-years',Datasource::NYCHA, Domain::$SPENDING), // Remove domain argument after year-filter separation
+    '#options' => _year_options('all-years'),
     '#attributes' => array('class' => array('watch')),
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'year', $first_time_load, 0),
-    '#prefix' => '<div id="year"><div class="datafield year">',
+    '#prefix' => '<div id="year"><div class="datafield year citywide nycedc">',
     '#suffix' => '</div></div>',
     '#id' => 'edit-year',
     '#name' => 'year',
+    '#validated' => true,
+
+  );
+
+  $form['filter']['nycha_year'] = array(
+    '#type' => 'select',
+    '#options' => _year_options('all-years',Datasource::NYCHA), // Remove domain argument after year-filter separation
+    '#attributes' => array('class' => array('watch')),
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_year', $first_time_load, 0),
+    '#prefix' => '<div id="year"><div class="datafield nycha_year nycha">',
+    '#suffix' => '</div></div>',
+    '#id' => 'edit-nycha-year',
+    '#name' => 'nycha_year',
     '#validated' => true,
 
   );
