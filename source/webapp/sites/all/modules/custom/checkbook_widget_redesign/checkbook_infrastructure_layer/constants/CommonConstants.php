@@ -249,8 +249,8 @@ abstract class PageType {
     const SMART_SEARCH_PAGE = "smart_search_page";
     const TRENDS_PAGE = "trends_page";
     public static function getCurrent() {
-        $urlPath = $_GET['q'];
-        $ajaxPath = $_SERVER['HTTP_REFERER'];
+        $urlPath =  isset($_GET['q']) ? $_GET['q'] : FALSE;
+        $ajaxPath = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : FALSE;
         $pageType = null;
         if(preg_match("/trends/", $urlPath) || preg_match("/featured_trends/", $urlPath)){
           return self::TRENDS_PAGE;
@@ -316,7 +316,7 @@ abstract class PageType {
             }
             break;
             case CheckbookDomain::NYCHA_CONTRACTS:
-            if(preg_match('/nycha_contracts\/search\/transactions/',$urlPath)) {
+            if(preg_match('/nycha_contracts\/search\/transactions/',$urlPath) || preg_match('/nycha_contracts\/all\/transactions/',$urlPath)) {
               $pageType = self::ADVANCED_SEARCH_PAGE;
             }
             break;
