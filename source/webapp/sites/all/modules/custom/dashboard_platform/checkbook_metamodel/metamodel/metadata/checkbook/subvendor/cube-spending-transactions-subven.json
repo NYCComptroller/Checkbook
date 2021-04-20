@@ -374,6 +374,24 @@
                     ]
                 },
                 {
+                    "name": "is_women_owned",
+                    "levels": [
+                      {
+                        "name": "is_women_owned",
+                        "sourceColumnName": "is_women_owned"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "is_emerging",
+                    "levels": [
+                      {
+                        "name": "is_emerging",
+                        "sourceColumnName": "is_emerging"
+                      }
+                    ]
+                  },   
+                {
                     "name":"budget_code",
                     "levels": [
                       {
