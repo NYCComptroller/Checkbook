@@ -194,8 +194,8 @@
         {"labelAlias":"spending_category","column":"spending_category_name"},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
         {"labelAlias":"budget_code","column":"budget_code_formatted", "sortSourceColumn":"budget_code","exportColumn":"budget_code_formatted"},
-        {"labelAlias": "women_owned","column":"is_women_owned"},
-        {"labelAlias": "emerging","column":"is_emerging"},
+        {"labelAlias": "woman_owned_business","column":"is_women_owned"},
+        {"labelAlias": "emerging_business","column":"is_emerging"},
         {"label":"","column":"","export":false}
     ],
     "exportColumnSqlOverride":[
