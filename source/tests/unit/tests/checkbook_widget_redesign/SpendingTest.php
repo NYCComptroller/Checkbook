@@ -17,7 +17,7 @@ include_once CUSTOM_MODULES_DIR . '/custom_number_formatter/custom_number_format
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class ContractsUrlServiceTest
+ * Class SpendingUrlServiceTest
  */
 class SpendingUrlServiceTest extends TestCase
 {

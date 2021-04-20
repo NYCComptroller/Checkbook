@@ -10,14 +10,16 @@
   "facetPager":true,
   "filterName":"Budget Code",
   "urlParameterName":"bdgcode",
+  "autocompleteParamName":"bdgcode_auto",
   "autocompleteID":"fBudgetCode",
+  "autocompleteField":"budget_code.budget_code",
   "adjustParameters":"
   if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
-  $parameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
-}
-if(function_exists('_checkbook_project_adjust_date_spending_parameter_filters')){
-  $parameters = _checkbook_project_adjust_date_spending_parameter_filters($node, $parameters);
-}
+    $parameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
+    }
+    if(function_exists('_checkbook_project_adjust_date_spending_parameter_filters')){
+      $parameters = _checkbook_project_adjust_date_spending_parameter_filters($node, $parameters);
+    }
 checkbook_faceted_search_adjust_param($node);
 if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
 $parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
