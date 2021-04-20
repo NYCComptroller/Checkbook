@@ -96,7 +96,7 @@ class MappingUtil {
 
     static $mwbe_prefix = "M/WBE" ;
 
-    static $total_mwbe_cats = "2~3~4~5~9";
+    static $total_mwbe_cats = "2~3~4~5~6~9~99";
 
     public static $minority_type_category_map_multi_chart = array(
         'Black American' => array(2),
