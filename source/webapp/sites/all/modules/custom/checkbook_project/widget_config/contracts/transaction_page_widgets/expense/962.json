@@ -14,8 +14,8 @@
         {"label":"Prime Contract Start Date","column":"prime_effective_begin_date"},
         {"label":"Prime Contract End Date","column":"prime_effective_end_date"},
         {"label":"Prime Contract Registration Date","column":"registered_date"},
-        {"label":"Prime Women Owned","column":"is_prime_women_owned"},
-        {"label":"Prime Emerging","column":"is_prime_emerging"},
+        {"label":"Prime Woman Owned Business","column":"is_prime_women_owned"},
+        {"label":"Prime Emerging Business","column":"is_prime_emerging"},
         {"label":"Prime Contracting Agency","column":"agency_name"},
         {"label":"Prime Contract Version","column":"prime_document_version"},
         {"label":"FMS Document/Parent Contract ID","column":"master_contract_number_export"},
@@ -38,8 +38,8 @@
         {"label":"Sub Contract Start Date","column":"sub_effective_begin_date_export"},
         {"label":"Sub Contract End Date","column":"sub_effective_end_date_export"},
         {"label":"Sub Contract Reference ID","column":"sub_contract_id_export"},
-        {"label":"Sub Women Owned","column":"is_sub_women_owned"},
-        {"label":"Sub Emerging","column":"is_sub_emerging"}
+        {"label":"Sub Woman Owned Business","column":"is_sub_women_owned"},
+        {"label":"Sub Emerging Business","column":"is_sub_emerging"}
    ],
     "preProcessConfiguration":"
         $smnid = $doctype = RequestUtilities::getRequestParamValue('smnid');

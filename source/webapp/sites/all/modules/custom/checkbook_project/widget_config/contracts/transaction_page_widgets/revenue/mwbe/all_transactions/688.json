@@ -119,8 +119,8 @@ return $header;
 {"labelAlias": "reg_date","column": "registered_date"},
 {"labelAlias": "pin","column": "tracking_number"},
 {"labelAlias": "apt_pin","column": "brd_awd_no"},
-{"labelAlias": "women_owned","column": "is_women_owned"},
-{"labelAlias": "emerging","column": "is_emerging"}
+{"labelAlias": "woman_owned_business","column": "is_women_owned"},
+{"labelAlias": "emerging_business","column": "is_emerging"}
 ],
 "adjustParameters":"
 if(isset($parameters['vendor_type'])){

@@ -121,8 +121,8 @@
         {"labelAlias": "contract_industry","column":"industry_name_formatted","sortSourceColumn":"industry_type_name@checkbook:industry_type"},
         {"labelAlias": "pin","column":"tracking_number"},
         {"labelAlias": "apt_pin","column":"board_award_number"},
-        {"labelAlias": "women_owned","column":"is_women_owned"},
-        {"labelAlias": "emerging","column":"is_emerging"}
+        {"labelAlias": "woman_owned_business","column":"is_women_owned"},
+        {"labelAlias": "emerging_business","column":"is_emerging"}
 
     ],
   "exportColumnSqlOverride":[

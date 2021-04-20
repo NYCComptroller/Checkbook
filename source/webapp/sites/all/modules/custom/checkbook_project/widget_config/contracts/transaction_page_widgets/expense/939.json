@@ -310,8 +310,8 @@
         {"labelAlias":"start_date","column":"prime_effective_begin_date"},
         {"labelAlias":"end_date","column":"prime_effective_end_date"},
         {"labelAlias":"reg_date","column":"registered_date"},
-        {"labelAlias":"prime_women_owned","column":"is_prime_women_owned"},
-        {"labelAlias":"prime_emerging","column":"is_prime_emerging"},
+        {"labelAlias":"prime_woman_owned_business","column":"is_prime_women_owned"},
+        {"labelAlias":"prime_emerging_business","column":"is_prime_emerging"},
         {"label":"","column":""},
         //END PRIME
         {"labelAlias":"contract_agency","column":"agency_name_link","sortSourceColumn":"agency_name"},
@@ -339,8 +339,8 @@
         {"labelAlias":"start_date","column":"formatted_sub_effective_begin_date","sortSourceColumn":"sub_effective_begin_date"},
         {"labelAlias":"end_date","column":"formatted_sub_effective_end_date","sortSourceColumn":"sub_effective_end_date"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id"},
-        {"labelAlias":"sub_women_owned","column":"is_sub_women_owned"},
-        {"labelAlias":"sub_emerging","column":"is_sub_emerging"},
+        {"labelAlias":"sub_woman_owned_business","column":"is_sub_women_owned"},
+        {"labelAlias":"sub_emerging_business","column":"is_sub_emerging"},
         {"label":"","column":""}
         //END SUB
     ],
