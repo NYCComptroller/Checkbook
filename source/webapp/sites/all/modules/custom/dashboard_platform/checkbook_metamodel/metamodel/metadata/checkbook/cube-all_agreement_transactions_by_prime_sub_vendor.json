@@ -253,7 +253,39 @@
                             "name":"sub_amount_id",
                             "sourceColumnName":"sub_amount_id"
                         }]
-                }
+                },
+              {
+                "name":"is_prime_women_owned",
+                "levels": [
+                  {
+                    "name":"is_prime_women_owned",
+                    "sourceColumnName":"is_prime_women_owned"
+                  }]
+              },
+              {
+                "name":"is_sub_women_owned",
+                "levels": [
+                  {
+                    "name":"is_sub_women_owned",
+                    "sourceColumnName":"is_sub_women_owned"
+                  }]
+              },
+              {
+                "name":"is_prime_emerging",
+                "levels": [
+                  {
+                    "name":"is_prime_emerging",
+                    "sourceColumnName":"is_prime_emerging"
+                  }]
+              },
+              {
+                "name":"is_sub_emerging",
+                "levels": [
+                  {
+                    "name":"is_sub_emerging",
+                    "sourceColumnName":"is_sub_emerging"
+                  }]
+              }
             ],
             "measures": {
                 "txcount": {
