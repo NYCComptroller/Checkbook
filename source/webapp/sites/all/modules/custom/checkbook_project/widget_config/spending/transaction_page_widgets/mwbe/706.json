@@ -37,7 +37,7 @@
         "expcategorycode":"expenditure_object_code", "month":"check_eft_issued_cal_month_id",
         "mwbe":"minority_type_id","industry":"industry_type_id",
         "vendor":"prime_vendor_id","subvendor":"vendor_id","fvendor":"vendor_id","vendortype":"vendor_type",
-        "svendor":"vendor_id", "bdgcode" : "budget_code"
+        "svendor":"vendor_id", "bdgcode":"budget_code"
     },
     "paramTypeConfig":{
         "vendornm_exact":"eqignorecase","expdoc_exact":"eqignorecase","captprj_exact":"eqignorecase",
@@ -166,6 +166,9 @@
         },
         "industry_name_formatted": {
             "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
+        },
+        "budget_code_formatted": {
+          "expression": "(strlen($row['budget_name']) > 0) ? $row['budget_code'].' ('.$row['budget_name']. ')' : $row['budget_code']"
         }
     },
     "table_columns": [
@@ -188,7 +191,7 @@
         {"labelAlias":"capital_project","column":"reporting_code"},
         {"labelAlias":"spending_category","column":"spending_category_name"},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
-        {"labelAlias":"budget_code","column":"budget_code"},
+        {"labelAlias":"budget_code","column":"budget_code_formatted", "sortSourceColumn":"budget_code","exportColumn":"budget_code_formatted"},
         {"label":"","column":"","export":false}
     ],
     "exportColumnSqlOverride":[
@@ -215,6 +218,11 @@
             "column":"associated_prime_vendor_name",
             "sourceColumn":"prime_vendor_name",
             "sql":"case when is_prime_or_sub = 'P' then 'N/A' else prime_vendor_name end"
+        },
+        {
+          "column":"budget_code_formatted",
+          "sourceColumn":"budget_code",
+          "sql":"CASE WHEN budget_name IS NOT NULL AND budget_name != '' THEN budget_code || ' (' || budget_name || ')' ELSE budget_code END"
         }
     ],
     "adjustParameters":"
@@ -269,7 +277,7 @@
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
-            {"sClass":"number-center","sWidth":"100px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"175px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
         "aaSorting":[[8,"desc"]],

@@ -35,7 +35,7 @@
         "mwbe":"minority_type_id","industry":"industry_type_id",
         "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id",
         "vendortype":"vendor_type","fvendor":"vendor_id",
-        "bdgcode" : "budget_code"
+        "bdgcode":"budget_code"
     },
     "defaultParameters":{"is_prime_or_sub":"S"},
     "paramTypeConfig":{
@@ -147,6 +147,9 @@
         },
         "industry_name_formatted": {
             "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
+        },
+        "budget_code_formatted": {
+          "expression": "(strlen($row['budget_name']) > 0) ? $row['budget_code'].' ('.$row['budget_name']. ')' : $row['budget_code']"
         }
     },
     "table_columns": [
@@ -164,7 +167,7 @@
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"purpose","exportColumn":"contract_purpose_export"},
         {"labelAlias":"spending_category","column":"spending_category_name"},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
-        {"labelAlias":"budget_code","column":"budget_code","sortSourceColumn":"budget_code"},
+        {"labelAlias":"budget_code","column":"budget_code_formatted", "sortSourceColumn":"budget_code","exportColumn":"budget_code_formatted"},
         {"label": "","column": ""}
     ],
     "exportColumnSqlOverride":[
@@ -186,7 +189,12 @@
           "column":"is_sub_vendor",
           "sourceColumn":"vendor_type",
           "sql":"case when vendor_type = 'P' then 'No' else 'Yes' end as is_sub_vendor"
-        }
+        },
+      {
+        "column":"budget_code_formatted",
+        "sourceColumn":"budget_code",
+        "sql":"CASE WHEN budget_name IS NOT NULL AND budget_name != '' THEN budget_code || ' (' || budget_name || ')' ELSE budget_code END"
+      }
     ],
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
@@ -231,7 +239,7 @@
             {"sClass":"text pad-left","sWidth":"175px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"145px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
-            {"sClass":"number-center","sWidth":"100px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"175px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
         "aaSorting":[[6,"desc"]],
