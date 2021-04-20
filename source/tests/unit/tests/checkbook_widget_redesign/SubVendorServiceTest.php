@@ -21,11 +21,11 @@ class SubVendorServiceTest extends TestCase
      * Tests getLatestMinorityType() function
      */
     public function test_getLatestMinorityType(){
+        unset($_GET);
         $result = SubVendorService::getLatestMinorityType(129113, null, 'P', 'spending');
         $this->assertEquals(2, $result);
     }
 
-    
     /**
      * Tests getLatestMinorityTypeByYear() function
      */
