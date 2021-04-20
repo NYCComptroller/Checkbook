@@ -25,6 +25,7 @@ class SubVendorServiceTest extends TestCase
         $this->assertEquals(2, $result);
     }
 
+    
     /**
      * Tests getLatestMinorityTypeByYear() function
      */
