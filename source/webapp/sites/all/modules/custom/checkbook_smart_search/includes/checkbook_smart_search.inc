@@ -459,6 +459,10 @@ function adjustExportResults($result,$domain){
     if($domain == "citywide_payroll") {
       unset($row['daily_wage']);
     }
+    if($domain == "citywide_spending"){
+      $row['budget_code'] = $row['budget_code'] . " (" . $row["spending_budget_name"] . ")";
+      unset($row['spending_budget_name']);
+    }
     $rows = implode(",", $row);
     $modified_result .= $rows . "\n";
   }
@@ -477,9 +481,11 @@ function _checkbook_smart_search_export_data(string $solr_datasource){
   $fields = (array)CheckbookSolr::getExportFields($solr_datasource, $_REQUEST['domain']);
   $fl = implode(",", array_keys($fields));
   // Remove daily wage display for citywide payroll
-  if($domain == "citywide_payroll")
-  {
+  if($domain == "citywide_payroll") {
     unset($fields['daily_wage']);
+  }
+  if($domain == "citywide_spending"){
+    unset($fields['spending_budget_name']);
   }
   echo implode(",", array_values($fields)) . "\n";
 
@@ -498,7 +504,7 @@ function _checkbook_smart_search_export_data(string $solr_datasource){
     }
 
     // Process records before display
-    if (in_array($domain, array('nycha_contracts', 'nycha_payroll', 'nycha_spending', 'nycha_revenue', 'nycha_budget', 'citywide_payroll'))){
+    if (in_array($domain, array('nycha_contracts', 'nycha_payroll', 'nycha_spending', 'nycha_revenue', 'nycha_budget', 'citywide_payroll', "citywide_spending"))){
       $csv_result = adjustExportResults($result,$domain);
     } else{
       $results = explode("\n", $result);
