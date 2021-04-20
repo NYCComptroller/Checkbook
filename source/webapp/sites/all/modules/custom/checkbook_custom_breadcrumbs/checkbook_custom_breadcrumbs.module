@@ -228,7 +228,7 @@ function _get_spending_breadcrumb_title_drilldown($ethinicty = true)
  **/
 function _get_budget_breadcrumb_title_drilldown()
 {
-  $bottomURL = $_REQUEST['expandBottomContURL'];
+  $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
   if (!$bottomURL && preg_match('/^budget\/transactions/', current_path())) {
     $title = null;
   } else {
