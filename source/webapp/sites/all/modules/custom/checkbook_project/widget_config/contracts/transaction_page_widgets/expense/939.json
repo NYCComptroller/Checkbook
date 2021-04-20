@@ -130,6 +130,8 @@
         "prime_effective_begin_date",
         "prime_effective_end_date",
         "prime_rfed_amount",
+        "is_prime_women_owned",
+        "is_prime_emerging",
         "sub_vendor_id",
         "sub_vendor_name",
         "sub_vendor_type",
@@ -143,7 +145,9 @@
         "sub_purpose",
         "sub_effective_begin_date",
         "sub_effective_end_date",
-        "sub_rfed_amount"
+        "sub_rfed_amount",
+        "is_sub_women_owned",
+        "is_sub_emerging"
     ],
     "logicalOrColumns":[
         ["prime_vendor_code","sub_vendor_code"],
@@ -286,7 +290,7 @@
     "skipCustomPadding":true,
     "headerConfig":"
         $i = ($node->show_difference) ? 2 : 0;
-        $headerConfig = array('&nbsp;'=>2,'Prime Vendor Contract Information' => 23+$i, 'Sub Vendor Contract Information' => 13+$i);
+        $headerConfig = array('&nbsp;'=>2,'Prime Vendor Contract Information' => 25+$i, 'Sub Vendor Contract Information' => 15+$i);
         return $headerConfig;
     ",
     "table_columns": [
@@ -306,6 +310,8 @@
         {"labelAlias":"start_date","column":"prime_effective_begin_date"},
         {"labelAlias":"end_date","column":"prime_effective_end_date"},
         {"labelAlias":"reg_date","column":"registered_date"},
+        {"labelAlias":"prime_woman_owned_business","column":"is_prime_women_owned"},
+        {"labelAlias":"prime_emerging_business","column":"is_prime_emerging"},
         {"label":"","column":""},
         //END PRIME
         {"labelAlias":"contract_agency","column":"agency_name_link","sortSourceColumn":"agency_name"},
@@ -333,6 +339,8 @@
         {"labelAlias":"start_date","column":"formatted_sub_effective_begin_date","sortSourceColumn":"sub_effective_begin_date"},
         {"labelAlias":"end_date","column":"formatted_sub_effective_end_date","sortSourceColumn":"sub_effective_end_date"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id"},
+        {"labelAlias":"sub_woman_owned_business","column":"is_sub_women_owned"},
+        {"labelAlias":"sub_emerging_business","column":"is_sub_emerging"},
         {"label":"","column":""}
         //END SUB
     ],
@@ -381,6 +389,8 @@
             {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"]},
+            {"sClass":"text","sWidth":"70px","asSorting":["desc","asc"]},
+            {"sClass":"text","sWidth":"70px","asSorting":["desc","asc"]},
             {"bSortable":false,"sWidth":"10px"},
             //END PRIME
             {"sClass":"text","sWidth":"200px","asSorting":["asc","desc"]},
@@ -408,6 +418,8 @@
             {"sClass":"number","sWidth":"110px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"110px","asSorting":["asc","desc"]},
             {"sClass":"number-center","sWidth":"120px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"70px","asSorting":["desc","asc"]},
+            {"sClass":"text","sWidth":"70px","asSorting":["desc","asc"]},
             {"bSortable":false,"sWidth":"5px"}
             //END SUB
         ],
@@ -537,37 +549,41 @@
                             sOut += '<td class=\"number\" style=\"width:100px\">'+ (row[11] == null ? '': row[11])+'</td>';
                             sOut += '<td class=\"number\" style=\"width:100px\">'+ (row[12] == null ? '': row[12])+'</td>';
                             sOut += '<td class=\"number\" style=\"width:100px\">'+ (row[13] == null ? '': row[13])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:70px\">'+ (row[14] == null ? '': row[14])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:70px\">'+ (row[15] == null ? '': row[15])+'</td>';
                             sOut += '<td style=\"width:10px\"></td>';
                             //END PRIME
 
-                            sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[14] == null ? '': row[14])+'</td>';
-                            sOut += '<td class=\"number-center\" style=\"width:110px\">'+ (row[15] == null ? '': row[15])+'</td>';
-                            sOut += '<td class=\"number-center\" style=\"width:160px\">'+ (row[16] == null ? '': row[16])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[16] == null ? '': row[16])+'</td>';
+                            sOut += '<td class=\"number-center\" style=\"width:110px\">'+ (row[17] == null ? '': row[17])+'</td>';
+                            sOut += '<td class=\"number-center\" style=\"width:160px\">'+ (row[18] == null ? '': row[18])+'</td>';
                             sOut += '<td style=\"width:30px\"></td>';
-                            sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[17] == null ? '': row[17])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:230px\">'+ (row[18] == null ? '': row[18])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:230px\">'+ (row[19] == null ? '': row[19])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:220px\">'+ (row[20] == null ? '': row[20])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[21] == null ? '': row[21])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[22] == null ? '': row[22])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[19] == null ? '': row[19])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:230px\">'+ (row[20] == null ? '': row[20])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:230px\">'+ (row[21] == null ? '': row[21])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:220px\">'+ (row[22] == null ? '': row[22])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[23] == null ? '': row[23])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[24] == null ? '': row[24])+'</td>';
 
                             //START SUB
-                            sOut += '<td class=\"text\" style=\"width:230px\">'+ (row[23] == null ? '': row[23])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[24] == null ? '': row[24])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:250px\">'+ (row[25] == null ? '': row[25])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[26] == null ? '': row[26])+'</td>';
-                            sOut += '<td class=\"text\" style=\"width:220px\">'+ (row[27] == null ? '': row[27])+'</td>';
-                            sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[28] == null ? '': row[28])+'</td>';
-                            sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[29] == null ? '': row[29])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:230px\">'+ (row[25] == null ? '': row[25])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[26] == null ? '': row[26])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:250px\">'+ (row[27] == null ? '': row[27])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[28] == null ? '': row[28])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:220px\">'+ (row[29] == null ? '': row[29])+'</td>';
                             sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[30] == null ? '': row[30])+'</td>';
+                            sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[31] == null ? '': row[31])+'</td>';
+                            sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[32] == null ? '': row[32])+'</td>';
                             if(is_contract_modification) {
-                                sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[31] == null ? '': row[31])+'</td>';
-                                sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[32] == null ? '': row[32])+'</td>';
+                                sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[33] == null ? '': row[33])+'</td>';
+                                sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[34] == null ? '': row[34])+'</td>';
                             }
                             sOut += '<td style=\"width:30px\"></td>';
-                            sOut += '<td class=\"number\" style=\"width:110px\">'+ (row[33] == null ? '': row[33])+'</td>';
-                            sOut += '<td class=\"number\" style=\"width:110px\">'+ (row[34] == null ? '': row[34])+'</td>';
-                            sOut += '<td class=\"number-center\" style=\"width:120px\">'+ (row[35] == null ? '': row[35])+'</td>';
+                            sOut += '<td class=\"number\" style=\"width:110px\">'+ (row[35] == null ? '': row[35])+'</td>';
+                            sOut += '<td class=\"number\" style=\"width:110px\">'+ (row[36] == null ? '': row[36])+'</td>';
+                            sOut += '<td class=\"number-center\" style=\"width:120px\">'+ (row[37] == null ? '': row[37])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:70px\">'+ (row[38] == null ? '': row[38])+'</td>';
+                            sOut += '<td class=\"text\" style=\"width:70px\">'+ (row[39] == null ? '': row[39])+'</td>';
                             sOut += '<td style=\"width:5px\"></td>';
                             //END SUB
                             sOut += '</tr>';

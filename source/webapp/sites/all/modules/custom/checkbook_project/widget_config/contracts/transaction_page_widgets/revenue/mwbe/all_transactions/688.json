@@ -118,7 +118,9 @@ return $header;
 {"labelAlias": "end_date","column": "effective_end_date"},
 {"labelAlias": "reg_date","column": "registered_date"},
 {"labelAlias": "pin","column": "tracking_number"},
-{"labelAlias": "apt_pin","column": "brd_awd_no"}
+{"labelAlias": "apt_pin","column": "brd_awd_no"},
+{"labelAlias": "woman_owned_business","column": "is_women_owned"},
+{"labelAlias": "emerging_business","column": "is_emerging"}
 ],
 "adjustParameters":"
 if(isset($parameters['vendor_type'])){
@@ -166,7 +168,9 @@ return $parameters;
 {"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]},
-{"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]}
+{"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]},
+{"sClass":"text","sWidth":"70px","asSorting": [ "asc","desc" ]},
+{"sClass":"text","sWidth":"70px","asSorting": [ "asc","desc" ]}
 ],
 
 "aaSorting":[[0,"desc"]],
