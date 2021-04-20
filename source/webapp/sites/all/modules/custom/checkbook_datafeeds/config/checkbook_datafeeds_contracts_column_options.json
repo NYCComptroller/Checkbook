@@ -25,7 +25,9 @@
                                     "Purpose":"Purpose",
                                     "Received Date":"Received Date",
                                     "Start Date":"Start Date",
-                                    "Version":"Version"
+                                    "Version":"Version",
+                                    "Woman Owned Business": "Woman Owned Business",
+                                    "Emerging Business": "Emerging Business"
                                 },
                                 "xml":{
                                     "agency":"agency",
@@ -46,7 +48,9 @@
                                     "purpose":"purpose",
                                     "received_date":"received_date",
                                     "start_date":"start_date",
-                                    "version":"version"
+                                    "version":"version",
+                                    "woman_owned_business": "woman_owned_business",
+                                    "emerging_business": "emerging_business"
                                 }
                             }
                         }
@@ -78,6 +82,8 @@
                                     "Prime Vendor":"Prime Vendor",
                                     "Prime Vendor M/WBE Category":"Prime Vendor M/WBE Category",
                                     "Prime Vendor Spend to Date":"Prime Vendor Spend to Date",
+                                    "Prime Woman Owned Business": "Prime Woman Owned Business",
+                                    "Prime Emerging Business": "Prime Emerging Business",
                                     "Sub Contract Current Amount":"Sub Contract Current Amount",
                                     "Sub Contract End Date":"Sub Contract End Date",
                                     "Sub Contract Industry":"Sub Contract Industry",
@@ -89,6 +95,8 @@
                                     "Sub Vendor M/WBE Category":"Sub Vendor M/WBE Category",
                                     "Sub Vendor Paid To Date":"Sub Vendor Paid To Date",
                                     "Sub Vendor Status in PIP":"Sub Vendor Status in PIP",
+                                    "Sub Woman Owned Business": "Sub Woman Owned Business",
+                                    "Sub Emerging Business": "Sub Emerging Business",
                                     "Vendor Record Type":"Vendor Record Type",
                                     "Year":"Year"
                                 },
@@ -114,6 +122,8 @@
                                     "prime_vendor":"prime_vendor",
                                     "prime_vendor_mwbe_category":"prime_vendor_mwbe_category",
                                     "prime_vendor_spent_to_date":"prime_vendor_spent_to_date",
+                                    "prime_woman_owned_business": "prime_woman_owned_business",
+                                    "prime_emerging_business": "prime_emerging_business",
                                     "sub_contract_current_amount":"sub_contract_current_amount",
                                     "sub_contract_end_date":"sub_contract_end_date",
                                     "sub_contract_industry":"sub_contract_industry",
@@ -125,6 +135,8 @@
                                     "sub_vendor_mwbe_category":"sub_vendor_mwbe_category",
                                     "sub_vendor_paid_to_date":"sub_vendor_paid_to_date",
                                     "sub_vendor_status_in_pip":"sub_vendor_status_in_pip",
+                                    "sub_woman_owned_business": "sub_woman_owned_business",
+                                    "sub_emerging_business": "sub_emerging_business",
                                     "vendor_record_type":"vendor_record_type",
                                     "year":"year"
                                 }
@@ -146,6 +158,8 @@
                                     "PIN":"PIN",
                                     "Prime Vendor":"Prime Vendor",
                                     "Prime M/WBE Category":"Prime M/WBE Category",
+                                    "Woman Owned Business": "Woman Owned Business",
+                                    "Emerging Business": "Emerging Business",
                                     "Purpose":"Purpose",
                                     "Registration Date":"Registration Date",
                                     "Start Date":"Start Date",
@@ -166,6 +180,8 @@
                                     "pin":"pin",
                                     "prime_vendor":"prime_vendor_name",
                                     "prime_mwbe_category":"prime_mwbe_category",
+                                    "woman_owned_business": "woman_owned_business",
+                                    "emerging_business": "emerging_business",
                                     "purpose":"purpose",
                                     "registration_date":"registration_date",
                                     "start_date":"start_date",
@@ -198,6 +214,8 @@
                                     "Prime Vendor":"Prime Vendor",
                                     "Prime Vendor M/WBE Category":"Prime Vendor M/WBE Category",
                                     "Prime Vendor Spend to Date":"Prime Vendor Spend to Date",
+                                    "Prime Woman Owned Business": "Prime Woman Owned Business",
+                                    "Prime Emerging Business": "Prime Emerging Business",
                                     "Sub Contract Current Amount":"Sub Contract Current Amount",
                                     "Sub Contract End Date":"Sub Contract End Date",
                                     "Sub Contract Industry":"Sub Contract Industry",
@@ -209,6 +227,8 @@
                                     "Sub Vendor M/WBE Category":"Sub Vendor M/WBE Category",
                                     "Sub Vendor Paid To Date":"Sub Vendor Paid To Date",
                                     "Sub Vendor Status in PIP":"Sub Vendor Status in PIP",
+                                    "Sub Woman Owned Business": "Sub Woman Owned Business",
+                                    "Sub Emerging Business": "Sub Emerging Business",
                                     "Vendor Record Type":"Vendor Record Type",
                                     "Year":"Year"
                                 },
@@ -234,6 +254,8 @@
                                     "prime_vendor":"prime_vendor",
                                     "prime_vendor_mwbe_category":"prime_vendor_mwbe_category",
                                     "prime_vendor_spent_to_date":"prime_vendor_spent_to_date",
+                                    "prime_woman_owned_business": "prime_woman_owned_business",
+                                    "prime_emerging_business": "prime_emerging_business",
                                     "sub_contract_current_amount":"sub_contract_current_amount",
                                     "sub_contract_end_date":"sub_contract_end_date",
                                     "sub_contract_industry":"sub_contract_industry",
@@ -245,6 +267,8 @@
                                     "sub_vendor_mwbe_category":"sub_vendor_mwbe_category",
                                     "sub_vendor_paid_to_date":"sub_vendor_paid_to_date",
                                     "sub_vendor_status_in_pip":"sub_vendor_status_in_pip",
+                                    "sub_woman_owned_business": "sub_woman_owned_business",
+                                    "sub_emerging_business": "sub_emerging_business",
                                     "vendor_record_type":"vendor_record_type",
                                     "year":"year"
                                 }
