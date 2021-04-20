@@ -181,7 +181,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"18"
             },
             "is_women_owned_business":{
                 "valueType":"value",
