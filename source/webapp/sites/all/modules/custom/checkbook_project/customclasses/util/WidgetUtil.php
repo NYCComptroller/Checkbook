@@ -319,6 +319,12 @@ class WidgetUtil
         "agreement_type" => "Agreement<br/>Type",
         "budget_type" => "Budget<br/>Type",
         "revenue_expense_category" => "Revenue<br/>Expense Category",
+        "prime_women_owned" => "Prime<br/> Women Owned<br/> Business",
+        "sub_women_owned" => "Sub<br/> Women Owned<br/> Business",
+        "prime_emerging" => "Prime<br/> Emerging<br/> Business",
+        "sub_emerging" => "Sub<br/> Emerging<br/> Business",
+        "women_owned" => "Women Owned<br/> Business",
+        "emerging" => "Emerging<br/> Business",
     );
 
     //For number cols, need to find out if they are uniform number of digits for formatting
