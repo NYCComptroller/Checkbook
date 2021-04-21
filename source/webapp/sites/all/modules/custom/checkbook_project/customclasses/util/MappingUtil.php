@@ -105,7 +105,6 @@ class MappingUtil {
         'Non-M/WBE' => array(7),
         'Women' => array(9),
         'Individuals and Others' => array(11),
-        'M/WBE' => array(2,3,4,5,9),
         'Native' => array(6),
         'Emerging' => array(99),
         'M/WBE' => array(2,3,4,5,6,9,99),
