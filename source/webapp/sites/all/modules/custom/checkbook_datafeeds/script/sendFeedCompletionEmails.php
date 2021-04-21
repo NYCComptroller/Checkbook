@@ -25,40 +25,41 @@
 
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
-//_drush_bootstrap_drupal_full();
 
-	try{
-        $completedJobRequests = QueueUtil::getPendingEmailsInfo();
-        LogHelper::log_debug( $completedJobRequests ); 
-    }catch(Exception $claimException){
-        LogHelper::log_debug("$logId: Error while fetching job from queue: ". $claimException);
-        return;
+try{
+  $completedJobRequests = QueueUtil::getPendingEmailsInfo();
+  LogHelper::log_debug( $completedJobRequests );
+}catch(Exception $claimException){
+  LogHelper::log_debug("$logId: Error while fetching job from queue: ". $claimException);
+  return;
+}
+
+foreach($completedJobRequests as $request){
+  LogHelper::log_info( $request );
+  try{
+    global $conf;
+    $dir = variable_get('file_public_path','sites/default/files') .'/'.$conf['check_book']['data_feeds']['output_file_dir'];
+    $file = $dir . '/' . $request['filename'];
+    $token = $request['token'];
+    $job_details = QueueUtil::getRequestDetailsByToken($token);
+
+    $params= array("download_url"=>$file
+      ,"download_url_compressed"=>$file.'.zip'
+      ,"expiration_date"=>date('d-M-Y',$request['end_time'] + 3600 * 24 * 7 )
+      ,"contact_email"=>$request['contact_email']
+      ,"tracking_num"=>$token
+      ,"user_criteria" => $job_details['user_criteria']
+    );
+    LogHelper::log_debug($params);
+
+    $response = drupal_mail('checkbook_datafeeds', "download_notification", $request['contact_email'], null, $params);
+    LogHelper::log_debug( $response );
+
+    if($response['result']) {
+        QueueUtil::updateJobRequestEmailStatus($request['rid']);
     }
-
-    foreach($completedJobRequests as $request){
-		LogHelper::log_info( $request ); 
-		try{ 
-			global $conf;
-        	$dir = variable_get('file_public_path','sites/default/files')
-                .'/'.$conf['check_book']['data_feeds']['output_file_dir'];
-
-        	$file = $dir . '/' . $request['filename'];
-            $token = $request['token'];
-            $job_details = QueueUtil::getRequestDetailsByToken($token);
- 			$params= array("download_url"=>$file
-	 		  ,"download_url_compressed"=>$file.'.zip'
-			  ,"expiration_date"=>date('d-M-Y',$request['end_time'] + 3600 * 24 * 7 ) 
-			  ,"contact_email"=>$request['contact_email']
-              ,"tracking_num"=>$token
-              ,"user_criteria" => $job_details['user_criteria']
-			  );		  
-			LogHelper::log_debug( $params ); 
-  			$response = drupal_mail('checkbook_datafeeds', "download_notification", $request['contact_email'], null, $params);
-  			LogHelper::log_debug( $response );
-  			if($response['result'] )
-  				QueueUtil::updateJobRequestEmailStatus($request['rid']);
-		}catch(Exception $claimException){
-        	LogHelper::log_debug("Error while Sending Email Notification: ". $claimException . $params );
-        return;
-    	}  	
-    }
+  }catch(Exception $claimException){
+    LogHelper::log_debug("Error while Sending Email Notification: ". $claimException . $params );
+    return;
+  }
+}
