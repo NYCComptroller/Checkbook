@@ -21,7 +21,8 @@ return $header;
 "no_results_content":"No Results Found",
 "dataset": "checkbook:all_agreement_transactions",
 "uniqueSortColumn":"agreement_id",
-"columns": ["agreement_id","prime_vendor_name","sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates","type_of_year@checkbook:mwbe_contracts_coa_aggregates", "contract_number","contract_original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","document_code@checkbook:ref_document_code","industry_type_name","dollar_difference","percent_difference"],
+"columns": ["agreement_id","prime_vendor_name","sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates","type_of_year@checkbook:mwbe_contracts_coa_aggregates", "contract_number","contract_original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","document_code@checkbook:ref_document_code","industry_type_name","dollar_difference","percent_difference","is_women_owned",
+  "is_emerging"],
 "caption":"",
 "derivedColumns": {
 "contract_link": {
@@ -102,6 +103,8 @@ return $header;
     {"labelAlias": "reg_date","column": "registered_date"},
     {"labelAlias": "pin","column": "tracking_number"},
     {"labelAlias": "apt_pin","column": "brd_awd_no"},
+    {"labelAlias": "woman_owned_business","column":"is_women_owned"},
+    {"labelAlias": "emerging_business","column":"is_emerging"},
     {"labelAlias": "","column": "","export":false}
 ],
 "exportColumnSqlOverride":[
@@ -115,6 +118,8 @@ return $header;
       WHEN minority_type_id = 7 THEN 'Non-M/WBE'
       WHEN minority_type_id = 9 THEN 'Women'
       WHEN minority_type_id = 11 THEN 'Individuals and Others'
+      WHEN minority_type_id = 6 THEN 'Native'
+      WHEN minority_type_id = 99 THEN 'Emerging'
       ELSE 'Asian American'
       END AS minority_type_name
     "
@@ -191,6 +196,8 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 {"sClass":"number","sWidth":"100px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"120px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"120px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left","sWidth": "100px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left","sWidth": "100px","asSorting": [ "asc","desc" ]},
 {"bSortable":false,"sWidth":"10px"}
 ],
 
