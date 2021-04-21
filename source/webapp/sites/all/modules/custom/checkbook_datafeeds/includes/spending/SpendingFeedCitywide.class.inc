@@ -100,10 +100,10 @@ class SpendingFeedCitywide extends SpendingFeed
 
     //Woman Owned Business
     if ($this->values['mwbe_category'] && $this->values['mwbe_category'] === '9') {
-      $this->form['filter']['is_women_owned_business'] = array('#markup' => '<div><strong>Woman Owned Business:</strong> Y</div>');
+      $this->form['filter']['woman_owned_business'] = array('#markup' => '<div><strong>Woman Owned Business:</strong> Y</div>');
     }
     else{
-      $this->form['filter']['is_women_owned_business'] = array('#markup' => '<div><strong>Woman Owned Business:</strong> N</div>');
+      $this->form['filter']['woman_owned_business'] = array('#markup' => '<div><strong>Woman Owned Business:</strong> N</div>');
     }
 
     //Emerging Business

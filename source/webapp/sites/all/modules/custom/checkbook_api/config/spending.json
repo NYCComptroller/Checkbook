@@ -16,7 +16,7 @@
             "capital_project_code":"reporting_code",
             "spending_category":"spending_category_code@checkbook:spending_category_subven",
             "mwbe_category":"minority_type_id",
-            "is_women_owned_business": "is_women_owned",
+            "woman_owned_business": "is_women_owned",
             "is_emerging_business": "is_emerging",
             "associated_prime_vendor":"associated_prime_vendor",
             "sub_contract_reference_id":"sub_contract_id",
@@ -53,7 +53,7 @@
                         "industry":"industry_type_name",
                         "issue_date":"check_eft_issued_date",
                         "mwbe_category":"mwbe_category_ui",
-                        "is_women_owned_business": "is_women_owned",
+                        "woman_owned_business": "is_women_owned",
                         "is_emerging_business": "is_emerging",
                         "payee_name":"vendor_name",
                         "spending_category":"spending_category_name",
@@ -75,7 +75,7 @@
                         "industry",
                         "issue_date",
                         "mwbe_category",
-                        "is_women_owned_business",
+                        "woman_owned_business",
                         "is_emerging_business",
                         "payee_name",
                         "spending_category",
@@ -186,7 +186,7 @@
                 "dataType":"text",
                 "maxLength":"18"
             },
-            "is_women_owned_business":{
+            "woman_owned_business":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"1"
