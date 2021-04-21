@@ -35,14 +35,14 @@ abstract class AbstractAPISearchCriteria {
    * @return mixed
    *   criteria
    */
-  function getCriteria() {
+  public function getCriteria() {
     return $this->criteria;
   }
 
   /**
    * Validate search criteria.
    */
-  function validateCriteria() {
+  public function validateCriteria() {
     $type_of_data = $this->criteria['global']['type_of_data'];
 
     if (!isset($this->criteria['global']['records_from'])) {
@@ -221,24 +221,6 @@ abstract class AbstractAPISearchCriteria {
               break;
           }
           break;
-
-        // Required filter validation
-        /*case "requiredFilter":
-        $validatorConfig = $validator->config;
-        switch($validatorConfig->validatorType){
-        case "paramValueList":
-        $validatorTypeConfig = $validatorConfig->validatorTypeConfig;
-        $paramValue = $this->criteria[$validatorConfig->criteriaLevel][$validatorConfig->filterName];
-        $allowedValues = $validatorTypeConfig->allowedValues;
-        if(!isset($paramValue)){
-        $this->addError(1000, array('@paramName' => $validatorConfig->filterName));
-        }else if(!in_array($paramValue,$allowedValues)){
-        $this->addError(1001, array('@value' => $paramValue, '@paramName' => $validatorConfig->filterName,'@validValues' => implode(',',$allowedValues)));
-        }
-        break;
-        }
-        break;
-        */
       }
     }
   }
@@ -530,7 +512,7 @@ abstract class AbstractAPISearchCriteria {
    * @param $error_code
    * @param $values
    */
-  function addError($error_code, $values) {
+  public function addError($error_code, $values) {
     if (isset(Messages::$message[$error_code])) {
       $this->errors[$error_code][] = t(Messages::$message[$error_code], $values);
     }
@@ -539,14 +521,14 @@ abstract class AbstractAPISearchCriteria {
   /**
    * @param $errors
    */
-  function addErrors($errors) {
+  public function addErrors($errors) {
     $this->errors += $errors;
   }
 
   /**
    * @return bool
    */
-  function hasErrors() {
+  public function hasErrors() {
     return count($this->errors) > 0;
   }
 
@@ -561,7 +543,7 @@ abstract class AbstractAPISearchCriteria {
    * @param $message_code
    * @param $values
    */
-  function addMessage($message_code, $values) {
+  public function addMessage($message_code, $values) {
     if (isset(Messages::$message[$message_code])) {
       $this->messages[$message_code][] = t(Messages::$message[$message_code], $values);
     }
@@ -570,14 +552,14 @@ abstract class AbstractAPISearchCriteria {
   /**
    * @return bool
    */
-  function hasMessages() {
+  public function hasMessages() {
     return count($this->messages) > 0;
   }
 
   /**
    * @return array
    */
-  function getMessages() {
+  public function getMessages() {
     return $this->messages;
   }
 
@@ -585,7 +567,7 @@ abstract class AbstractAPISearchCriteria {
    * @param $date
    * @return bool
    */
-  function validDateFormat($date) {
+  public function validDateFormat($date) {
     // $converted=str_replace('/','-',$date);
     if (preg_match("/^((((19|20)(([02468][048])|([13579][26]))-02-29))|((20[0-9][0-9])|(19[0-9][0-9]))-((((0[1-9])|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))$/", $date) === 1) {
       return TRUE;
@@ -597,7 +579,7 @@ abstract class AbstractAPISearchCriteria {
   /**
    * @return string
    */
-  function getConfigKey() {
+  public function getConfigKey() {
     $domain = strtolower($this->criteria['global']['type_of_data']);
 
     $config_key = $domain;
@@ -678,7 +660,7 @@ abstract class AbstractAPISearchCriteria {
   /**
    * @return string
    */
-  function getDomainTitle() {
+  public function getDomainTitle() {
     $domain = strtolower($this->criteria['global']['type_of_data']);
 
     switch ($domain) {
@@ -710,11 +692,11 @@ abstract class AbstractAPISearchCriteria {
    * @abstract
    * @return mixed
    */
-  abstract function getRequest();
+  abstract public function getRequest();
 
   /**
    * @abstract
    * @return mixed
    */
-  abstract function getMaxAllowedTransactionResults();
+  abstract public function getMaxAllowedTransactionResults();
 }

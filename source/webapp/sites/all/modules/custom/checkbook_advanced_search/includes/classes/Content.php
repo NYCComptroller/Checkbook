@@ -18,15 +18,12 @@ class Content
     public $num_left_column_fields = 0;
     public $num_right_column_fields = 0;
 
-    public function __construct($data_source)
-    {
+    public function __construct($data_source){
         $this->data_source = $data_source;
     }
 
-    public function add_field(Field $field, $column_type)
-    {
-        switch($column_type)
-        {
+    public function add_field(Field $field, $column_type){
+        switch($column_type) {
             case Column::Left:
                 $this->num_left_column_fields+=1;
                 $field->column_index = $this->num_left_column_fields;
