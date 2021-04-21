@@ -17,7 +17,7 @@
             "spending_category":"spending_category_code@checkbook:spending_category_subven",
             "mwbe_category":"minority_type_id",
             "woman_owned_business": "is_women_owned",
-            "is_emerging_business": "is_emerging",
+            "emerging_business": "is_emerging",
             "associated_prime_vendor":"associated_prime_vendor",
             "sub_contract_reference_id":"sub_contract_id",
             "sub_vendor":"sub_vendor",
@@ -54,7 +54,7 @@
                         "issue_date":"check_eft_issued_date",
                         "mwbe_category":"mwbe_category_ui",
                         "woman_owned_business": "is_women_owned",
-                        "is_emerging_business": "is_emerging",
+                        "emerging_business": "is_emerging",
                         "payee_name":"vendor_name",
                         "spending_category":"spending_category_name",
                         "sub_contract_reference_id":"sub_contract_id",
@@ -76,7 +76,7 @@
                         "issue_date",
                         "mwbe_category",
                         "woman_owned_business",
-                        "is_emerging_business",
+                        "emerging_business",
                         "payee_name",
                         "spending_category",
                         "sub_contract_reference_id",
@@ -191,7 +191,7 @@
                 "dataType":"text",
                 "maxLength":"1"
             },
-            "is_emerging_business":{
+            "emerging_business":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"1"
