@@ -28,14 +28,13 @@ class CheckbookAPIEntity {
     public $continent_code;
     public $created_date;
 
-    function __construct(Array $properties=array())
-    {
+    public function __construct(Array $properties=array()){
         foreach($properties as $key => $value){
             $this->{$key} = $value;
         }
     }
 
-    function getPropertyNames() {
+    public function getPropertyNames() {
         $properties = array();
         foreach ($this as $name => $value) {
             $properties[] = $name;

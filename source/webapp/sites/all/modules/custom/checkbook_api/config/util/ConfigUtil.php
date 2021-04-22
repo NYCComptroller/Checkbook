@@ -34,7 +34,7 @@ class ConfigUtil {
    * @return mixed
    *   configuration
    */
-  static function getDomainConfiguration($domain) {
+  static public function getDomainConfiguration($domain) {
     $config_path = realpath(drupal_get_path('module', 'checkbook_api')) . "/config/" . strtolower($domain) . ".json";
     LogHelper::log_info("Loading config from {$config_path}");
     $config_str = file_get_contents($config_path);
@@ -57,7 +57,7 @@ class ConfigUtil {
    * @return mixed
    *   config key
    */
-  static function getConfiguration($domain, $config_key) {
+  static public function getConfiguration($domain, $config_key) {
     $config_str = file_get_contents(realpath(drupal_get_path('module', 'checkbook_api')) . "/config/" . strtolower($domain) . ".json");
 
     $converter = new Json2PHPObject();
