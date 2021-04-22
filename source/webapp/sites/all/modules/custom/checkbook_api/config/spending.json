@@ -16,8 +16,6 @@
             "capital_project_code":"reporting_code",
             "spending_category":"spending_category_code@checkbook:spending_category_subven",
             "mwbe_category":"minority_type_id",
-            "woman_owned_business": "is_women_owned",
-            "emerging_business": "is_emerging",
             "associated_prime_vendor":"associated_prime_vendor",
             "sub_contract_reference_id":"sub_contract_id",
             "sub_vendor":"sub_vendor",
