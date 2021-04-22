@@ -186,16 +186,6 @@
                 "dataType":"text",
                 "maxLength":"18"
             },
-            "woman_owned_business":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"1"
-            },
-            "emerging_business":{
-                "valueType":"value",
-                "dataType":"text",
-                "maxLength":"1"
-            },
             "industry":{
                 "valueType":"value",
                 "dataType":"text",
