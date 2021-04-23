@@ -1,0 +1,74 @@
+{
+  "data_source": {
+    "checkbook": {
+      "data_type": {
+        "csv": {
+          "Accrued Expense": "Accrued Expense",
+          "Adopted": "Adopted",
+          "Agency": "Agency",
+          "Budget Code": "Budget Code",
+          "Budget Name": "Budget Name",
+          "Cash Expense": "Cash Expense",
+          "Department": "Department",
+          "Encumbered": "Encumbered",
+          "Expense Category": "Expense Category",
+          "Modified": "Modified",
+          "Post Adjustments": "Post Adjustments",
+          "Pre-Encumbered": "Pre-Encumbered",
+          "Year": "Year"
+        },
+        "xml": {
+          "accrued_expense": "accrued_expense",
+          "adopted": "adopted",
+          "agency": "agency",
+          "budget_code": "budget_code",
+          "budget_name": "budget_name",
+          "cash_expense": "cash_expense",
+          "department": "department",
+          "encumbered": "encumbered",
+          "expense_category": "expense_category",
+          "modified": "modified",
+          "post_adjustment": "post_adjustment",
+          "pre_encumbered": "pre_encumbered",
+          "year": "year"
+        }
+      }
+    },
+    "checkbook_nycha": {
+      "data_type": {
+        "csv": {
+          "Actual Amount": "Actual Amount",
+          "Adopted": "Adopted",
+          "Budget Name":"Budget Name",
+          "Budget Type" : "Budget Type",
+          "Committed": "Committed",
+          "Encumbered": "Encumbered",
+          "Expense Category": "Expense Category",
+          "Funding Source": "Funding Source",
+          "Modified": "Modified",
+          "Program": "Program",
+          "Project": "Project",
+          "Remaining": "Remaining",
+          "Responsibility Center": "Responsibility Center",
+          "Year": "Year"
+      },
+        "xml": {
+          "actual_amount": "actual_amount",
+          "adopted": "adopted",
+          "budget_name": "budget_name",
+          "budget_type": "budget_type",
+          "committed": "committed",
+          "encumbered": "encumbered",
+          "expense_category": "expense_category",
+          "funding_source": "funding_source",
+          "modified": "modified",
+          "program": "program",
+          "project": "project",
+          "remaining": "remaining",
+          "responsibility_center": "responsibility_center",
+          "year": "year"
+        }
+      }
+    }
+  }
+}

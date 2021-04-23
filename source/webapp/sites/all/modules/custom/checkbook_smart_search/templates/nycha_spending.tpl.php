@@ -63,7 +63,7 @@ foreach ($spendingParameterMapping as $key => $title) {
     }
     //Amount Fields
     if (in_array($key, $amountFields)) {
-      $value = custom_number_formatter_format($value, 2 , '$');
+        $value = preg_match('/^\d/',$value)? custom_number_formatter_format($value, 2 , '$'): '-';
     }
     //Hyperlink Fields
     if (array_key_exists($key, $linkableFields)) {

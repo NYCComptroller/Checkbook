@@ -25,14 +25,25 @@ dependencies[] = checkbook_autocomplete
 dependencies[] = checkbook_api
 
 files[] = config/util/DatafeedsConfigUtil.php
-files[] = includes/checkbook_datafeeds_contracts.inc
-files[] = includes/checkbook_datafeeds_spending.inc
-files[] = includes/checkbook_datafeeds_budget.inc
-files[] = includes/checkbook_datafeeds_payroll.inc
-files[] = includes/checkbook_datafeeds_revenue.inc
+
+files[] = includes/contracts/checkbook_datafeeds_contracts.inc
+files[] = includes/spending/checkbook_datafeeds_spending.inc
+files[] = includes/budget/checkbook_datafeeds_budget.inc
+files[] = includes/payroll/checkbook_datafeeds_payroll.inc
+files[] = includes/revenue/checkbook_datafeeds_revenue.inc
 files[] = includes/checkbook_datafeeds_tracking.inc
+
 files[] = includes/FeedFactory.class.inc
-files[] = includes/SpendingFeed.class.inc
-files[] = includes/SpendingFeedCitywide.class.inc
-files[] = includes/SpendingFeedNycedc.class.inc
-files[] = includes/SpendingFeedNycha.class.inc
+
+files[] = includes/spending/SpendingFeed.class.inc
+files[] = includes/spending/SpendingFeedCitywide.class.inc
+files[] = includes/spending/SpendingFeedNycedc.class.inc
+files[] = includes/spending/SpendingFeedNycha.class.inc
+
+files[] = includes/budget/BudgetFeed.class.inc
+files[] = includes/budget/BudgetFeedCitywide.class.inc
+files[] = includes/budget/BudgetFeedNycha.class.inc
+
+files[] = includes/revenue/RevenueFeed.class.inc
+files[] = includes/revenue/RevenueFeedCitywide.class.inc
+files[] = includes/revenue/RevenueFeedNycha.class.inc

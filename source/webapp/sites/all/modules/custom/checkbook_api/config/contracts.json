@@ -27,7 +27,7 @@
 
         },
         "dataset":{
-            "sortColumn":["-registered_date", "-agreement_id"],
+            "sortColumn":["-contract_number", "vendor_record_type", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions_by_prime_sub_vendor_datafeeds",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
@@ -225,7 +225,8 @@
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
-            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustContractDataSetResults')){checkbook_api_adjustContractDataSetResults($data_records);}"
+            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustContractDataSetResults')){checkbook_api_adjustContractDataSetResults($data_records);}",
+            "adjustSql":"if(function_exists('checkbook_api_adjustContractActiveSql')){checkbook_api_adjustContractActiveSql($sql_query);}"
         },
         "requestParameters":{
             "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
@@ -307,7 +308,7 @@
             "current_amount":"amount_id"
         },
         "dataset":{
-            "sortColumn":["-registered_date", "-agreement_id"],
+            "sortColumn":["-contract_number", "vendor_record_type", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions_by_prime_sub_vendor",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
@@ -627,7 +628,7 @@
             "associated_prime_vendor":"associated_prime_vendor"
         },
         "dataset":{
-            "sortColumn":["-registered_date", "-agreement_id"],
+            "sortColumn":["-contract_number", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
                 "contract_number":"like",
@@ -823,7 +824,7 @@
             "associated_prime_vendor":"associated_prime_vendor"
         },
         "dataset":{
-            "sortColumn":["-registered_date", "-agreement_id"],
+            "sortColumn":["-contract_number", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions",
             "columnTypes":{
                 "contract_number":"like",
@@ -1009,7 +1010,7 @@
             "current_amount":"amount_id"
         },
         "dataset":{
-            "sortColumn":["-registered_date", "-agreement_id"],
+            "sortColumn":["-contract_number", "vendor_record_type", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions_by_prime_sub_vendor_datafeeds",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
@@ -1208,7 +1209,8 @@
                 }
             },
             "adjustParameters":"if(function_exists('checkbook_api_adjustContractParameterFilters')){checkbook_api_adjustContractParameterFilters($data_set,$parameters,$criteria);}",
-            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustContractDataSetResults')){checkbook_api_adjustContractDataSetResults($data_records);}"
+            "adjustDataSetResults":"if(function_exists('checkbook_api_adjustContractDataSetResults')){checkbook_api_adjustContractDataSetResults($data_records);}",
+          "adjustSql":"if(function_exists('checkbook_api_adjustContractActiveSql')){checkbook_api_adjustContractActiveSql($sql_query);}"
         },
         "requestParameters":{
             "fiscal_year":{"valueType":"value","dataType":"year","maxLength":"4"},
@@ -1292,7 +1294,7 @@
             "current_amount":"amount_id"
         },
         "dataset":{
-            "sortColumn":["-registered_date", "-agreement_id"],
+            "sortColumn":["-contract_number", "vendor_record_type", "-agreement_id"],
             "name":"checkbook:all_agreement_transactions_by_prime_sub_vendor",
             "columnTypes":{
                 "expenditure_object_codes":"trueLike",
@@ -1609,7 +1611,7 @@
             "industry":"industry_type_id"
         },
         "dataset":{
-            "sortColumn":["-cif_received_date","-contract_number","-version_number"],
+            "sortColumn":["-revised_maximum_amount","-contract_number","-version_number"],
             "name":"checkbook:pending_contracts",
             "columnTypes":{
                 "contract_number":"like",

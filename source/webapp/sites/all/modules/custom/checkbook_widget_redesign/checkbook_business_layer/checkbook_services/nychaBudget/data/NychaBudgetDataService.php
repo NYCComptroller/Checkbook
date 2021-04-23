@@ -1,6 +1,67 @@
 <?php
 
-class NychaBudgetDataService extends DataService implements INyhcaBudgetDataService {
+class NychaBudgetDataService extends DataService implements INychaBudgetDataService {
+  /* NYCHA Budget */
+  function GetNychaExpenseCategoriesByBudget($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetNychaExpenseCategoriesByCommittedExpenseBudget($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetNychaExpenseCategoriesByPercentDifference($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetNychaResponsibilityCentersByPercentDifference($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+
+  function GetResponsibilityCenters($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetResponsibilityCentersByCommittedExpense($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetFundingSources($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetFundingSourcesByCommittedExpense($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetNychaFundingSourcesByPercentDifference($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetPrograms($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetProgramsByCommittedExpense($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetNychaProgramsByPercentDifference($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetProjects($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetProjectsByCommittedExpense($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
+
+  function GetProjectsByPercentDifference($parameters, $limit = null, $orderBy = null) {
+    return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
+  }
 
     /**
      * Common function that automatically configures the Nycha Budget sql

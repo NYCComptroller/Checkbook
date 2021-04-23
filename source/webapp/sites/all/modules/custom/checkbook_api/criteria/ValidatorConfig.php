@@ -34,7 +34,9 @@ class ValidatorConfig
     'Contracts_OGE',
     'Payroll_NYCHA',
     'Contracts_NYCHA',
-    'Spending_NYCHA'
+    'Spending_NYCHA',
+    'Budget_NYCHA',
+    'Revenue_NYCHA',
   ];
   static $response_formats = ['xml', 'csv'];
   static $specialChars = "!\"#$%&'()*+,–./:;<=>@?[\\]^{}|~`";
@@ -53,6 +55,8 @@ class ValidatorConfig
     'apt_pin',
     'expense_category',
     'vendor_customer_code',
-    'payee_code'
+    'payee_code',
+    'budget_type',
+    'capital_project_code'
   ];
 }

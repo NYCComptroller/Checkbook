@@ -85,7 +85,9 @@ function checkbook_project_token_info(){
  */
 function checkbook_project_tokens($type, $tokens, array $data = array(), array $options = array()) {
   $replacements = array();
-  $replacements[$tokens['year_string']] = substr(_checkbook_project_get_year_url_param_string(),1);
+  if(isset($tokens['year_string'])) {
+    $replacements[$tokens['year_string']] = substr(_checkbook_project_get_year_url_param_string(), 1);
+  }
   return $replacements;
 }
 
@@ -261,6 +263,16 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'php_widgets/budget/expense_transactions_summary',
             'arguments' => array('node' => NULL)
         ),
+        //NYCHA Budget Transactions
+        'nycha_budget_transactions_summary' => array(
+          'template' => 'php_widgets/nycha_budget/transactions_summary',
+          'arguments' => array('node' => NULL)
+        ),
+        //NYCHA Budget Transactions
+        'nycha_revenue_transactions_summary' => array(
+          'template' => 'php_widgets/nycha_revenue/transactions_summary',
+          'arguments' => array('node' => NULL)
+        ),
         //payroll Transactions List
         'payroll_nyc_payroll_summary' => array(
             'template' => 'php_widgets/payroll/nyc_payroll_summary',
@@ -378,10 +390,58 @@ function checkbook_project_theme($existing, $type, $theme, $path){
             'template' => 'gridview/budget_highchart',
             'arguments' => array('node' => NULL)
         ),
+      'highchart_nycha_revenue_grid_view' => array(
+        'template' => 'gridview/revenue_nycha_highchart',
+        'arguments' => array('node' => NULL)
+      ),
         'highchart_budget_expenditure_grid_view' => array(
             'template' => 'gridview/budget_expenditure_highchart',
             'arguments' => array('node' => NULL)
         ),
+        'highchart_nycha_budget_respcenter_grid_view'=> array(
+          'template' => 'gridview/nycha_budget_respcenter_highchart',
+          'arguments' => array('node' => NULL)
+        ),
+        'highchart_nycha_budget_expcategory_grid_view'=> array(
+          'template' => 'gridview/nycha_budget_expcategory_highchart',
+          'arguments' => array('node' => NULL)
+        ),
+        'highchart_nycha_budget_programs_grid_view'=> array(
+          'template' => 'gridview/nycha_budget_program_highchart',
+          'arguments' => array('node' => NULL)
+        ),
+        'highchart_nycha_budget_fundsrc_grid_view'=> array(
+          'template' => 'gridview/nycha_budget_fundsrc_highchart',
+          'arguments' => array('node' => NULL)
+        ),
+        'highchart_nycha_budget_projects_grid_view'=> array(
+          'template' => 'gridview/nycha_budget_project_highchart',
+          'arguments' => array('node' => NULL)
+        ),
+      'highchart_nycha_revenue_respcenter_grid_view'=> array(
+        'template' => 'gridview/nycha_revenue_respcenter_highchart',
+        'arguments' => array('node' => NULL)
+      ),
+      'highchart_nycha_revenue_categories_grid_view'=> array(
+        'template' => 'gridview/nycha_revenue_categories_highchart',
+        'arguments' => array('node' => NULL)
+      ),
+      'highchart_nycha_revenue_expcategory_grid_view'=> array(
+        'template' => 'gridview/nycha_revenue_expcategory_highchart',
+        'arguments' => array('node' => NULL)
+      ),
+      'highchart_nycha_revenue_programs_grid_view'=> array(
+        'template' => 'gridview/nycha_revenue_program_highchart',
+        'arguments' => array('node' => NULL)
+      ),
+      'highchart_nycha_revenue_fundsrc_grid_view'=> array(
+        'template' => 'gridview/nycha_revenue_fundsrc_highchart',
+        'arguments' => array('node' => NULL)
+      ),
+      'highchart_nycha_revenue_projects_grid_view'=> array(
+        'template' => 'gridview/nycha_revenue_project_highchart',
+        'arguments' => array('node' => NULL)
+      ),
         'highchart_budget_department_grid_view' => array(
             'template' => 'gridview/budget_department_highchart',
             'arguments' => array('node' => NULL)

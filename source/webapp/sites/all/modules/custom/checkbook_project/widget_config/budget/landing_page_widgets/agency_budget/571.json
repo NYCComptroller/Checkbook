@@ -6,7 +6,7 @@
 "getTotalDataCount":true,
 "no_results_content":"No Results Found",
 "cleanURLParameters":["year","expcategory","agency","dept","bdgcode"],
-"urlParamMap":{"year":"year_id.year_id","expcategory":"object_class_id","agency":"agency_id","dept":"department_id","bdgcode":"budget_code_id"},
+"urlParamMap":{"year":"year_id.year_id","expcategory":"object_class_id","agency":"agency_id","dept":"department_code","bdgcode":"budget_code_id"},
 "defaultParameters":{"year_id.year_id":113},
 "noDataInitialLoad":true,
 "dataset": "checkbook:budget",

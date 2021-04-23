@@ -428,133 +428,165 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
   switch ($keyword) {
     case "agency_id":
       $agencies = _checkbook_project_querydataset($data_source . ':agency', array('agency_id', 'agency_name'), array($keyword => $id));
-      return htmlentities(ucwords(strtolower($agencies[0]['agency_name'])));
+      return isset($agencies[0]['agency_name']) ? htmlentities(ucwords(strtolower($agencies[0]['agency_name']))) : NULL;
       break;
     case "object_class_id":
       $objects = _checkbook_project_querydataset($data_source . ':object_class', array('object_class_id', 'object_class_name'), array($keyword => $id));
-      return ucwords(strtolower($objects[0]['object_class_name']));
+      return isset($objects[0]['object_class_name']) ? ucwords(strtolower($objects[0]['object_class_name'])) : NULL ;
       break;
     case "budget_code_id":
       $budget_codes = _checkbook_project_querydataset($data_source . ':budget_code', array('budget_code_id', 'attribute_name'), array($keyword => $id));
-      return ucwords(strtolower($budget_codes[0]['attribute_name']));
+      return isset($budget_codes[0]['attribute_name']) ? ucwords(strtolower($budget_codes[0]['attribute_name'])) : NULL;
       break;
     case "revenue_category_id":
-      $revcat_ids = _checkbook_project_querydataset($data_source . ':revenue_category', array('revenue_category_id', 'revenue_category_name'), array($keyword => $id));
-      return ucwords(strtolower($revcat_ids[0]['revenue_category_name']));
+      if ($data_source == Datasource::NYCHA) {
+        $revcat_ids = _checkbook_project_querydataset($data_source . ':revenue', array('revenue_category_id', 'revenue_category'), array($keyword => $id));
+        return isset($revcat_ids[0]['revenue_category'])? ucwords(strtolower($revcat_ids[0]['revenue_category'])) : NULL;
+      }else {
+        $revcat_ids = _checkbook_project_querydataset($data_source . ':revenue_category', array('revenue_category_id', 'revenue_category_name'), array($keyword => $id));
+        return isset($revcat_ids[0]['revenue_category_name']) ? ucwords(strtolower($revcat_ids[0]['revenue_category_name'])) : NULL;
+      }
       break;
     case "funding_class_id":
       $fundsrc_ids = _checkbook_project_querydataset($data_source . ':ref_funding_class', array('funding_class_id', 'funding_class_name'), array($keyword => $id));
-      return ucwords(strtolower($fundsrc_ids[0]['funding_class_name']));
+      return isset($fundsrc_ids[0]['funding_class_name']) ? ucwords(strtolower($fundsrc_ids[0]['funding_class_name'])) : NULL;
       break;
     case "funding_class_code":
       $revcat_codes = _checkbook_project_querydataset($data_source . ':funding_class', array('funding_class_code', 'funding_class_name'), array($keyword => $id));
-      return ucwords(strtolower($revcat_codes[0]['funding_class_name']));
+      return isset($revcat_codes[0]['funding_class_name']) ? ucwords(strtolower($revcat_codes[0]['funding_class_name'])) : NULL;
       break;
     case "funding_source_id":
-      $fundsrc_ids = _checkbook_project_querydataset($data_source . ':funding_source', array('funding_source_id', 'display_funding_source_descr'), array($keyword => $id));
-      return ucwords(strtolower($fundsrc_ids[0]['display_funding_source_descr']));
+        $fundsrc_ids = _checkbook_project_querydataset($data_source . ':funding_source', array('funding_source_id', 'display_funding_source_descr'), array($keyword => $id));
+        return isset($fundsrc_ids[0]['display_funding_source_descr']) ? ucwords(strtolower($fundsrc_ids[0]['display_funding_source_descr'])) : NULL;
       break;
     case "responsibility_center_id":
       $respcenter_ids = _checkbook_project_querydataset($data_source . ':resp_centers', array('responsibility_center_id', 'responsibility_center_description'), array($keyword => $id));
-      return ucwords(strtolower($respcenter_ids[0]['responsibility_center_description']));
+      return isset($respcenter_ids[0]['responsibility_center_description']) ? ucwords(strtolower($respcenter_ids[0]['responsibility_center_description'])) : NULL;
       break;
     case "vendor_id":
       if ($data_source == Datasource::NYCHA) {
         $vendors = _checkbook_project_querydataset($data_source . ':vendor', array('vendor_id', 'vendor_name'), array($keyword => $id));
-        return ucwords(strtolower($vendors[0]['vendor_name']));
+        return isset($vendors[0]['vendor_name']) ? ucwords(strtolower($vendors[0]['vendor_name'])) :NULL;
       } else {
         $vendors = _checkbook_project_querydataset($data_source . ':vendor', array('vendor_id', 'legal_name'), array($keyword => $id));
-        return ucwords(strtolower($vendors[0]['legal_name']));
+        return isset($vendors[0]['legal_name']) ? ucwords(strtolower($vendors[0]['legal_name'])) : NULL;
       }
       break;
     case "year_id":
       $years = _checkbook_project_querydataset($data_source . ':year', array('year_id', 'year_value'), array($keyword => $id));
-      return ucwords(strtolower($years[0]['year_value']));
+      return isset($years[0]['year_value']) ? ucwords(strtolower($years[0]['year_value'])) : NULL;
       break;
     case "department_id":
       $depts = _checkbook_project_querydataset($data_source . ':department', array('department_id', 'department_name'), array($keyword => $id));
-      return ucwords(strtolower($depts[0]['department_name']));
+      return isset($depts[0]['department_name']) ? ucwords(strtolower($depts[0]['department_name'])) : NULL;
       break;
     case "department_code":
       if ($data_source == Datasource::NYCHA) {
         $deptcodes = _checkbook_project_querydataset($data_source . ':department', array('department_code', 'department_name'), array($keyword => $id));
-        return ucwords(strtolower($deptcodes[0]['department_name']));
+        return isset($deptcodes[0]['department_name']) ? ucwords(strtolower($deptcodes[0]['department_name'])) : NULL;
       }else{
       $deptcodes = _checkbook_project_querydataset($data_source . ':budget', array('department_code', 'department_name'), array($keyword => $id));
-      return ucwords(strtolower($deptcodes[0]['department_name']));}
+      return isset($deptcodes[0]['department_name']) ? ucwords(strtolower($deptcodes[0]['department_name'])) : NULL;}
       break;
     case "award_method_id":
       $award_methods = _checkbook_project_querydataset($data_source . ':award_method', array('award_method_id', 'award_method_name'), array($keyword => $id));
-      return ucwords(strtolower($award_methods[0]['award_method_name']));
+      return isset($award_methods[0]['award_method_name']) ? ucwords(strtolower($award_methods[0]['award_method_name'])) : NULL;
       break;
     case "award_size_id":
       $award_sizes = _checkbook_project_querydataset($data_source . ':award_size', array('award_size_id', 'award_size_name'), array($keyword => $id));
-      return ucwords(strtolower('Contracts ' . $award_sizes[0]['award_size_name']));
+      return isset($award_sizes[0]['award_size_name']) ? ucwords(strtolower('Contracts ' . $award_sizes[0]['award_size_name'])) : NULL;
       break;
     case "industry_type_id":
       if ($data_source == Datasource::NYCHA) {
         $industry_types = _checkbook_project_querydataset($data_source . ':industry_type', array('industry_type_id', 'display_industry_type_name'), array($keyword => $id));
-        return ucwords(strtolower($industry_types[0]['display_industry_type_name']));
+        return isset($industry_types[0]['display_industry_type_name']) ? ucwords(strtolower($industry_types[0]['display_industry_type_name'])) : NULL;
       } else {
         $industry_types = _checkbook_project_querydataset($data_source . ':industry_type', array('industry_type_id', 'industry_type_name'), array($keyword => $id));
-        return ucwords(strtolower($industry_types[0]['industry_type_name']));
+        return isset($industry_types[0]['industry_type_name']) ? ucwords(strtolower($industry_types[0]['industry_type_name'])) : NULL;
       }
       break;
     case "pending_contracts_vendor_id":
       $keyword = 'vendor_id';
       $pending_contracts_vendors = _checkbook_project_querydataset($data_source . ':pending_contracts', array('vendor_id', 'vendor_legal_name'), array($keyword => $id));
-      return ucwords(strtolower($pending_contracts_vendors[0]['vendor_legal_name']));
+      return isset($pending_contracts_vendors[0]['vendor_legal_name']) ? ucwords(strtolower($pending_contracts_vendors[0]['vendor_legal_name'])) : NULL;
       break;
     case "pending_contracts_award_method":
       $keyword = 'award_method_code';
       $pending_contracts_award_method = _checkbook_project_querydataset($data_source . ':pending_contracts', array('award_method_code', 'award_method_name'), array($keyword => $id));
-      return ucwords(strtolower($pending_contracts_award_method[0]['award_method_name']));
+      return isset($pending_contracts_award_method[0]['award_method_name']) ? ucwords(strtolower($pending_contracts_award_method[0]['award_method_name'])) : NULL;
       break;
     case "employee_id":
       $employees = _checkbook_project_querydataset($data_source . ':employee', array('civil_service_title', 'employee_id'), array($keyword => $id));
-      return ucwords(strtolower($employees[0]['civil_service_title']));
+      return isset($employees[0]['civil_service_title']) ? ucwords(strtolower($employees[0]['civil_service_title'])) : NULL;
       break;
     case "expenditure_object_id":
       $exp_categorys = _checkbook_project_querydataset($data_source . ':expenditure_object', array('expenditure_object_name', 'expenditure_object_id'), array($keyword => $id));
-      return ucwords(strtolower($exp_categorys[0]['expenditure_object_name']));
+      return isset($exp_categorys[0]['expenditure_object_name']) ? ucwords(strtolower($exp_categorys[0]['expenditure_object_name'])) : NULL;
       break;
     case "expenditure_type_code":
       $exp_categorys = _checkbook_project_querydataset($data_source . ':expenditure_type', array('expenditure_type_description', 'expenditure_type_code'), array($keyword => $id));
-      return ucwords(strtolower($exp_categorys[0]['expenditure_type_description']));
+      return isset($exp_categorys[0]['expenditure_type_description']) ? ucwords(strtolower($exp_categorys[0]['expenditure_type_description'])) : NULL;
+      break;
+    case "expenditure_type_id":
+      $exp_categorys = _checkbook_project_querydataset($data_source . ':budget', array('expenditure_type_description', 'expenditure_type_id'), array($keyword => $id));
+      return isset($exp_categorys[0]['expenditure_type_description']) ? ucwords(strtolower($exp_categorys[0]['expenditure_type_description'])) : NULL;
+      break;
+    case "rev_expenditure_type_id":
+      $keyword = "expenditure_type_id";
+      $exp_categorys = _checkbook_project_querydataset($data_source . ':revenue', array('expenditure_type_description', 'expenditure_type_id'), array($keyword => $id));
+      return isset($exp_categorys[0]['expenditure_type_description']) ? ucwords(strtolower($exp_categorys[0]['expenditure_type_description'])) : NULL;
+      break;
+    case "program_phase_id":
+      $program = _checkbook_project_querydataset($data_source . ':budget', array('program_phase_description', 'program_phase_id'), array($keyword => $id));
+      return isset($program[0]['program_phase_description']) ? ucwords(strtolower($program[0]['program_phase_description'])) : NULL;
+      break;
+    case "rev_program_phase_id":
+      $keyword = "program_phase_id";
+      $prog_categorys = _checkbook_project_querydataset($data_source . ':revenue', array('program_phase_description', 'program_phase_id'), array($keyword => $id));
+      return isset($prog_categorys[0]['program_phase_description']) ? ucwords(strtolower($prog_categorys[0]['program_phase_description'])) : NULL;
+      break;
+    case "gl_project_id":
+      $project = _checkbook_project_querydataset($data_source . ':budget', array('gl_project_description', 'gl_project_id'), array($keyword => $id));
+      return isset($project[0]['gl_project_description']) ? ucwords(strtolower($project[0]['gl_project_description'])) : NULL;
+      break;
+    case "rev_gl_project_id":
+      $keyword ="gl_project_id";
+      $proj_categorys = _checkbook_project_querydataset($data_source . ':revenue', array('gl_project_description', 'gl_project_id'), array($keyword => $id));
+      return isset($proj_categorys[0]['gl_project_description']) ? ucwords(strtolower($proj_categorys[0]['gl_project_description'])) : NULL;
       break;
     case "agreement_id":
       $contracts = _checkbook_project_querydataset($data_source . ':history_agreement', array('contract_number', 'agreement_id'), array($keyword => $id));
-      return ucwords(strtolower($contracts[0]['contract_number']));
+      return isset($contracts[0]['contract_number']) ? ucwords(strtolower($contracts[0]['contract_number'])) : NULL;
       break;
     case "master_agreement_id":
       $contracts = _checkbook_project_querydataset($data_source . ':history_master_agreement', array('contract_number', 'master_agreement_id'), array($keyword => $id));
-      return ucwords(strtolower($contracts[0]['contract_number']));
+      return isset($contracts[0]['contract_number']) ? ucwords(strtolower($contracts[0]['contract_number'])) : NULL;
       break;
     case "document_code":
       $agencies = _checkbook_project_querydataset($data_source . ':ref_document_code', array('document_code', 'document_code_id'), array($keyword => $id));
-      return htmlentities(ucwords(strtolower($agencies[0]['document_code_id'])));
+      return isset($agencies[0]['document_code_id']) ? htmlentities(ucwords(strtolower($agencies[0]['document_code_id']))) : NULL;
       break;
     case "sub_vendor_id":
       $keyword = "vendor_id";
       $sub_vendors = _checkbook_project_querydataset($data_source . ':sub_vendor', array('vendor_id', 'legal_name'), array($keyword => $id));
-      return htmlentities(ucwords(strtolower($sub_vendors[0]['legal_name'])));
+      return isset($sub_vendors[0]['legal_name']) ? htmlentities(ucwords(strtolower($sub_vendors[0]['legal_name']))) : NULL;
       break;
     case "minority_type_id":
       $keyword = "minority_type_id";
       $mwbe = _checkbook_project_querydataset($data_source . ':minority_type', array('minority_type_id', 'minority_type_name'), array($keyword => $id));
-      return htmlentities(ucwords(strtolower($mwbe[0]['minority_type_name'])));
+      return isset($mwbe[0]['minority_type_name']) ? htmlentities(ucwords(strtolower($mwbe[0]['minority_type_name']))) : NULL;
       break;
     case "title":
       $title_code = RequestUtil::getRequestKeyValueFromURL("title", current_path());
-      return htmlentities(ucwords(PayrollUtil::getTitleByCode($title_code)));
+      $result = PayrollUtil::getTitleByCode($title_code);
+      return isset($result) ? htmlentities(ucwords($result)) : NULL;
       break;
     case "spending_category_code":
       $spending_category_code = _checkbook_project_querydataset($data_source . ':spending_category', array('spending_category_id', "spending_category_code"), array($keyword => $id));
-      return htmlentities(ucwords(strtolower($spending_category_code[0]['spending_category_id'])));
+      return isset($spending_category_code[0]['spending_category_id']) ? htmlentities(ucwords(strtolower($spending_category_code[0]['spending_category_id']))) : NULL;
       break;
-
     default:
-      return $id;
+      return isset($id) ? $id : NULL;
       break;
   }
 
@@ -1296,7 +1328,7 @@ function _checkbook_project_get_year_url_param_string($applySpendingYear = false
     }
 
     $curYear = CheckbookDateUtil::getCurrentFiscalYearId();
-    $curYear = ($applyPreviousYear ? ($curYear - 1) : $curYear);
+    $curYear = isset($applyPreviousYear) ? ($curYear - 1) : $curYear;
     return "/yeartype/B/year/" . $curYear . ($applySpendingYear ? ('/syear/' . $curYear) : '');
   }
 }
@@ -1624,8 +1656,8 @@ function _checkbook_project_execute_sql($sql, $db_name = "main", $data_source = 
 //      phpunit
     return _checkbook_project_execute_sql_test($sql);
   }
-
-  $cacheKey = '_checkbook_query_' . md5($sql . $db_name . $data_source);
+  $dataSource = Datasource::getCurrent();
+  $cacheKey = '_checkbook_query_' . $dataSource . '_' . md5($sql . $db_name . $data_source);
   if ($result = _checkbook_dmemcache_get($cacheKey)) {
     LogHelper::log_info($sql);
     LogHelper::log_info(' PROCESSED CACHED (' . sizeof($result) . ' records)');
@@ -1913,38 +1945,6 @@ function _checkbook_get_year_id($year){
   return CheckbookDateUtil::year2yearId($year);
 }
 
-/**
- * @return array
- */
-function _checkbook_year_list($datasource){
-  $year = CheckbookDateUtil::getCurrentFiscalYear();
-  $return = [];
-  $yearCount = 12;
-  //if ($datasource == 'checkbook_nycha'){ $yearCount = 11;}
-  $min = $year - $yearCount;
-  while ($year > $min) {
-    $return[] = [
-      'year_value' => $year,
-      'year_id' => CheckbookDateUtil::year2yearId($year)
-    ];
-    $year--;
-  }
-  return $return;
-}
-
-
-/**
- * @return array
- */
-function _checkbook_max_data_year($data_source = Datasource::CITYWIDE){
-  return [
-    'year_value' => CheckbookDateUtil::getCurrentFiscalYear($data_source),
-    'year_id' => CheckbookDateUtil::getCurrentFiscalYearId($data_source),
-    'cal_year_value' => CheckbookDateUtil::getCurrentCalendarYear(),
-    'cal_year_id' => CheckbookDateUtil::getCurrentCalendarYearId()
-  ];
-}
-
 /*
  * Will add mwbe, subvendor and datasource parameters to url.  Precedence ,$source > $overidden_params > requestparam
  */
@@ -1969,7 +1969,7 @@ function _checkbook_append_url_params($source = null, $overidden_params = array(
     if (($current_url[3] == 'contract' && ($current_url[4] == 'search' || $current_url[4] == 'all') && $current_url[5] == 'transactions')) {
       $advanced_search = true;
     }
-    if (!$advanced_search) {
+    if (isset($advanced_search) && !$advanced_search) {
       if ($source) {
         $source = explode("/", $source);
         if (!in_array("mwbe", $source)) {
@@ -2102,7 +2102,7 @@ function _checkbook_get_datasource(){
     return 'nycha';
   }
 
-  if (strpos($url, 'agency/9000') || strpos($url, '/edc')) {
+  if (strpos($url, 'agency/9000') || strpos($url, '/edc') || strpos($url, '/checkbook_oge')) {
     return 'edc';
   }
 
@@ -2236,7 +2236,7 @@ function _get_contract_includes_subvendors_data($attributes = NULL){
       if ($attributes) {
         $statuses[$value['scntrc_status']] = array('title' => $value['scntrc_status_name']);
       } else {
-        $statuses[$value['scntrc_status']] = _ckbk_excerpt($value['scntrc_status_name']);
+        $statuses[$value['scntrc_status']] = _ckbk_excerpt($value['scntrc_status_name'].'['.$value['scntrc_status'].']');
       }
     }
     return $statuses;
@@ -2364,7 +2364,7 @@ function _checkbook_dmemcache_get($key, $bin = 'cache', $mc = NULL){
 /**
  * @param $key
  * @param $value
- * @param int $exp
+ * @param int $exp - set to 15 hrs
  * @param string $bin
  * @param null $mc
  * @return bool
@@ -2448,4 +2448,24 @@ function _emptyToZero($input){
 function _ckbk_excerpt($text='', int $len=20):string{
   if(!$text){return '';}
   return (strlen($text) > $len) ? substr($text, 0, $len) . '...' : $text;
+}
+
+/**
+ * @param $datasetName
+ * @param bool $keepOriginalDatasource
+ * @return mixed
+ */
+function _update_dataset_datasource($datasetName,$keepOriginalDatasource = false){
+  if($keepOriginalDatasource == true){
+    return $datasetName;
+  }
+  $datasource = RequestUtilities::getRequestParamValue('datasource');
+  if('checkbook_oge' === $datasource){
+    $database = str_replace("checkbook:", "checkbook_oge:",$datasetName);
+  }else if('checkbook_nycha' === $datasource){
+    $database = str_replace("checkbook:", "checkbook_nycha:",$datasetName);
+  }else{
+    $database = $datasetName;
+  }
+  return $database;
 }

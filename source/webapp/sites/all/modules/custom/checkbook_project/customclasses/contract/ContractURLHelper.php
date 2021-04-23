@@ -341,7 +341,7 @@ class ContractURLHelper
 
         $master_agreement_yn = isset($row['master_agreement_yn']) ? $row['master_agreement_yn'] : null;
         $url = "<a href='/spending/transactions"
-            . ($master_agreement_yn == 'Y' ? '/magid/' : '/agid/') . (isset($row['original_agreement_id']) ? $row['original_agreement_id'] : nul)
+            . ($master_agreement_yn == 'Y' ? '/magid/' : '/agid/') . (isset($row['original_agreement_id']) ? $row['original_agreement_id'] : null)
             . ($master_agreement_yn == 'Y' ? $vendor_url : '/svendor/' . (isset($row['vendor_id']) ? $row['vendor_id'] : null))
             . ($master_agreement_yn == 'Y' ? '' : ('/scomline/' . (isset($row['fms_commodity_line']) ? $row['fms_commodity_line'] : null)))
             . $year_url

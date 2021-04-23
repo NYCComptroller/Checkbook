@@ -27,6 +27,7 @@
   "columns":[
     "year_id.year_id",
     "dept.dept",
+    "dept_code.dept_code",
     "department_name.department_name",
     "budget_committed",
     "budget_remaining"
@@ -36,19 +37,20 @@
   "defaultParameters":{
     "year_id.year_id":114
   },
-  "cleanURLParameters":["year", "agency"],
+  "cleanURLParameters":["year", "agency", "expcategory"],
   "urlParamMap":{
     "year":"year_id.year_id",
-    "agency":"agency_id.agency_id"
+    "agency":"agency_id.agency_id",
+    "expcategory":"object_class_id.object_class_id"
   },
   "transformationPHP":"
   $allZero = TRUE;
   $landing_page =  '/' .  current_path()  ;
-  
+
   foreach ($node->data as $row) {
     if (abs($row['budget_committed']) > 0){$allZero = FALSE;}
     if (abs($row['budget_remaining']) > 0){$allZero = FALSE;}
-    $url = $landing_page .  '/dept/' . $row['dept_dept'];
+    $url = $landing_page .  '/dept/' . $row['dept_code_dept_code'];
     $categories[] = html_entity_decode($row['department_name_department_name'],ENT_QUOTES);
     $committed_data[] = array('name' => html_entity_decode($row['department_name_department_name'],ENT_QUOTES), 'y' => $row['budget_committed'], 'dept_id' => $row['dept_dept'], 'year' => $row['year_id_year_id'],'url' => $url);
     $remaining_data[] = array('name' => html_entity_decode($row['department_name_department_name'],ENT_QUOTES), 'y' => $row['budget_remaining'], 'dept_id' => $row['dept_dept'], 'year' => $row['year_id_year_id'],'url' => $url);

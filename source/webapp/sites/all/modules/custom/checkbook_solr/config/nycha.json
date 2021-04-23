@@ -116,10 +116,32 @@
         "<1M": "[*,999999.99]"
       }
     },
+    "adopted_budget": {
+      "title": "Modified Expense Budget",
+      "intervals": {
+        ">100M": "[100000000,*]",
+        "50M-100M": "[50000000,99999999.99]",
+        "25M-50M": "[25000000,49999999.99]",
+        "10M-25M": "[10000000,24999999.99]",
+        "1M-10M": "[1000000,9999999.99]",
+        "<1M": "[*,999999.99]"
+      }
+    },
     "facet_year_array": {
       "title": "Fiscal Year",
       "autocomplete": true,
       "sort_by_key": -1
+    },
+    "revenue_amount": {
+      "title": "Recognized",
+      "intervals": {
+        ">100M": "[100000000,*]",
+        "50M-100M": "[50000000,99999999.99]",
+        "25M-50M": "[25000000,49999999.99]",
+        "10M-25M": "[10000000,24999999.99]",
+        "1M-10M": "[1000000,9999999.99]",
+        "<1M": "[*,999999.99]"
+      }
     }
   },
   "search_results_fields": {
@@ -196,6 +218,40 @@
       "daily_wage": "Daily Wage",
       "overtime_pay": "Overtime Payments",
       "payroll_type": "Payroll Type"
+    },
+    "budget":{
+      "fiscal_year": "Fiscal Year",
+      "modified_budget": "Modified",
+      "expenditure_type_description": "Expense Category",
+      "responsibility_center_name" : "Responsibility Center",
+      "funding_source_name": "Funding Source",
+      "gl_project_name": "Project",
+      "program_phase_name": "Program",
+      "committed": "Committed",
+      "budget_type": "Budget Type",
+      "actual_amount": "Actual Amount",
+      "budget_name": "Budget Name",
+      "funds_available": "Remaining",
+      "adopted_budget": "Adopted",
+      "encumbrance_amount": "Encumbered"
+    },
+    "revenue":{
+      "fiscal_year": "Budget Fiscal Year",
+      "adopted_amount": "Adopted",
+      "expenditure_type_description": "Expense Category",
+      "modified_amount": "Modified",
+      "funding_source_name": "Funding Source",
+      "revenue_amount": "Recognized",
+      "responsibility_center_name": "Responsibility Center",
+      "funds_available": "Remaining ",
+      "program_phase_name": "Program",
+      "revenue_category": "Revenue Category",
+      "gl_project_name": "Project",
+      "revenue_class": "Revenue Class",
+      "budget_name": "Budget Name",
+      "closing_classification_name": "Closing Classification Name",
+      "budget_type": "Budget Type",
+      "":""
     }
   },
   "export_fields": {
@@ -272,6 +328,39 @@
       "funding_source_name": "Funding source",
       "program_phase_code": "Program",
       "gl_project_name": "Project"
+    },
+    "budget":{
+      "fiscal_year": "Fiscal Year",
+      "adopted_budget": "Adopted",
+      "modified_budget": "Modified",
+      "budget_type": "Budget Type",
+      "budget_name": "Budget Name",
+      "encumbrance_amount": "Encumbered",
+      "actual_amount": "Actual Amount",
+      "committed": "Committed",
+      "funds_available": "Remaining",
+      "expenditure_type_description": "Expense Category",
+      "funding_source_name": "Funding Source",
+      "responsibility_center_name" : "Responsibility Center",
+      "program_phase_name": "Program",
+      "gl_project_name": "Project"
+    },
+    "revenue":{
+      "fiscal_year": "Budget Fiscal Year",
+      "adopted_amount": "Adopted",
+      "modified_amount": "Modified",
+      "revenue_amount": "Recognized",
+      "funds_available": "Remaining ",
+      "expenditure_type_description": "Expense Category",
+      "funding_source_name": "Funding Source",
+      "responsibility_center_name": "Responsibility Center",
+      "program_phase_name": "Program",
+      "gl_project_name": "Project",
+      "budget_type": "Budget Type",
+      "budget_name": "Budget Name",
+      "revenue_category": "Revenue Category",
+      "revenue_class": "Revenue Class",
+      "closing_classification_name": "Closing Classification Name"
     }
   },
   "autocomplete_terms": {
@@ -283,6 +372,6 @@
     "expenditure_type_description": "Expense Categories"
   },
   "sort": {
-    "sort_by": "domain_ordering asc, sort_sequence asc, check_issue_date desc, document_id desc, date_ordering desc, invoice_number asc, invoice_line_number asc, distribution_line_number asc"
+    "sort_by": "domain_ordering asc, sort_sequence asc, check_issue_date desc, document_id desc, date_ordering desc, invoice_number asc, invoice_line_number asc, distribution_line_number asc, revenue_budget_fiscal_year desc, budget_fiscal_year desc, revenue_amount desc, adopted_budget desc, revenue_id desc,budget_id desc, id desc"
   }
 }

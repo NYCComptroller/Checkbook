@@ -217,8 +217,16 @@ function checkbook_smart_search_theme(){
             'arguments' => array('contracts_results' => NULL)
         ),
         'nycha_contracts' => array(
-        'template' => 'templates/nycha_contracts',
-        'arguments' => array('contracts_results' => NULL)
+          'template' => 'templates/nycha_contracts',
+          'arguments' => array('contracts_results' => NULL)
+        ),
+        'nycha_budget' => array(
+          'template' => 'templates/nycha_budget',
+          'arguments' => array('budget_results' => NULL)
+        ),
+        'nycha_revenue' => array(
+          'template' => 'templates/nycha_revenue',
+          'arguments' => array('revenue_results' => NULL)
         ),
         'nycha_budget' => array(
           'template' => 'templates/nycha_budget',

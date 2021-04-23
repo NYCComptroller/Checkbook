@@ -38,15 +38,24 @@ if($node->data[0]['total_gross_pay'] > 0  ){
 }
 
 //Contracts Link
-if($node->data[1]['total_maximum_contract_amount'] > 0  ) {
+if($node->data[1]['total_maximum_contract_amount'] > 0) {
     $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format($node->data[1]['total_maximum_contract_amount'], 1, '$'), RequestUtil::getTopNavURL("nycha_contracts"), $options);
 }
 
+//Budget Link
+if($node->data[2]['budget_adopted_amount'] > 0) {
+  $budget_link = l('<span class="nav-title">Budget</span><br>' . custom_number_formatter_format($node->data[2]['budget_adopted_amount'], 1, '$'), RequestUtil::getTopNavURL("nycha_budget"), $options);
+}
+
+//Revenue Link
+if($node->data[3]['revenue_recognized_amount'] > 0) {
+  $revenue_link = l('<span class="nav-title">Revenue</span><br>' . custom_number_formatter_format($node->data[3]['revenue_recognized_amount'], 1, '$'), RequestUtil::getTopNavURL("nycha_revenue"), $options);
+}
+
 //Spending Link
-$category_names = NychaSpendingUtil::$categories;
+$total_spending = 0;
 foreach($node->data as $key=>$row){
-  if($row['category_name_category_name'] == 'Payroll'){$row['invoice_amount_sum'] = $row['check_amount_sum'];}
-  $categories[$row['category_category']] = array('name' => $row['category_name_category_name'], 'amount' => $row['invoice_amount_sum']);
+  $row['invoice_amount_sum'] = ($row['category_name_category_name'] == 'Payroll') ? $row['check_amount_sum'] : $row['invoice_amount_sum'];
   $total_spending +=  $row['invoice_amount_sum'];
 }
 if($total_spending > 0  ) {
@@ -60,10 +69,10 @@ $contracts_active = '';
 $spending_active = '';
 $payroll_active = '';
 switch ($arg){
-    case 'budget':
+    case 'nycha_budget':
         $budget_active = ' active';
         break;
-    case 'revenue':
+    case 'nycha_revenue':
         $revenue_active = ' active';
         break;
     case 'nycha_contracts':

@@ -1,0 +1,25 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":1051,
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect": true,
+  "columns":["program_phase_id.program_phase_id","program_phase_description.program_phase_description","txcount"],
+  "orderBy":"-txcount",
+  "facetPager":true,
+  "filterName":"Program ",
+  "urlParameterName":"program",
+  "autocompleteParamName":"program_auto",
+  "autocompleteID":"fProgramId",
+  "autocompleteField":"program_phase_description",
+  "adjustParameters":"
+  if(function_exists('_checkbook_project_applyParameterFilters')){
+  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+$adjustedParameters['program_phase_id.program_phase_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+return $adjustedParameters;
+",
+"template":"individual_filter"
+}

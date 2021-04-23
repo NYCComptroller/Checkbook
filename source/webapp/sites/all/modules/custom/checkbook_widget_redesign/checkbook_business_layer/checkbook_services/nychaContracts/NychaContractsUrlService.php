@@ -12,7 +12,7 @@ class NychaContractsUrlService
      * @param $parameters
      * @return string
      */
-    static function getFooterUrl($parameters)
+    static function getFooterUrl($parameters = null)
     {
         $url = "/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions"
             . RequestUtilities::buildUrlFromParam('year')
@@ -133,8 +133,6 @@ class NychaContractsUrlService
      */
     static function vendorUrl($vendor_id)
     {
-
-
         $url = '/nycha_contracts'
              . _checkbook_project_get_year_url_param_string()
             . RequestUtilities::buildUrlFromParam('agency')

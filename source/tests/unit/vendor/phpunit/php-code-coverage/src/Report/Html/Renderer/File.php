@@ -304,6 +304,9 @@ final class File extends Renderer
                                 break;
 
                             case 1:
+                                $testCSS = ' class="warning"';
+
+                                break;
                             case 2:
                                 $testCSS = ' class="warning"';
 
@@ -394,7 +397,7 @@ final class File extends Renderer
                 continue;
             }
 
-            [$token, $value] = $token;
+            list($token, $value) = $token;
 
             $value = \str_replace(
                 ["\t", ' '],

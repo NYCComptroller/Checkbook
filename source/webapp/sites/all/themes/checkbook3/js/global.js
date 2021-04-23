@@ -72,7 +72,7 @@ jQuery(document).ready(function ($) {
                 $(this).find('.toolTip').css('display', 'none');
             }
         );
-    }
+    };
 
 
     //check if ajax is being fired on the page or not
@@ -210,8 +210,10 @@ jQuery(document).ready(function ($) {
             $('#nyc-revenue .grid-12 .inside').filter(':first').after(pager);
             $('#nycha-contracts-landing .grid-12 .inside').filter(':first').after(pager);
             $('#nycha-spending-landing .grid-12 .inside').filter(':first').after(pager);
+            $('#nycha-budget-landing .grid-12 .inside').filter(':first').after(pager);
+            $('#nycha-revenue-landing .grid-12 .inside').filter(':first').after(pager);
 
-            var highSlides = '#nycha-spending-landing .grid-12 .inside, #nycha-contracts-landing .grid-12 .inside, #nyc-spending .grid-12 .inside, #nyc-payroll .grid-12 .inside, #nyc-contracts .grid-12 .inside,#nyc-budget .grid-12 .inside, #agency-budget .grid-12 .inside, #agency-expenditure-categories .grid-12 .inside, #nyc-expenditure-categories .grid-12 .inside,#nyc-contracts-revenue-landing .grid-12 .inside,#nyc-revenue-pending-contracts .grid-12 .inside,#nyc-expense-pending-contracts .grid-12 .inside,#dept-budget .grid-12 .inside,#nyc-revenue .grid-12 .inside';
+            var highSlides = '#nycha-revenue-landing .grid-12 .inside,#nycha-budget-landing .grid-12 .inside,#nycha-spending-landing .grid-12 .inside, #nycha-contracts-landing .grid-12 .inside, #nyc-spending .grid-12 .inside, #nyc-payroll .grid-12 .inside, #nyc-contracts .grid-12 .inside,#nyc-budget .grid-12 .inside, #agency-budget .grid-12 .inside, #agency-expenditure-categories .grid-12 .inside, #nyc-expenditure-categories .grid-12 .inside,#nyc-contracts-revenue-landing .grid-12 .inside,#nyc-revenue-pending-contracts .grid-12 .inside,#nyc-expense-pending-contracts .grid-12 .inside,#dept-budget .grid-12 .inside,#nyc-revenue .grid-12 .inside';
 
             if ($(highSlides).filter(":first").length > 0) {
             $(highSlides).filter(":first")
@@ -574,7 +576,7 @@ jQuery(document).ready(function ($) {
                 });
             }
         }
-    }
+    };
 
     Drupal.behaviors.helpPopup = {
         attach: function (context, settings) {
@@ -593,7 +595,7 @@ jQuery(document).ready(function ($) {
                 return false;
             })
         }
-    }
+    };
 
     Drupal.behaviors.exportTransactions = {
         attach: function (context, settings) {
@@ -1300,7 +1302,7 @@ function splitLine(st, n) {
 
 
 function fasterSplit(str, len) {
-    var ret = [], strlen = str.length, off = 0, rem = len
+    var ret = [], strlen = str.length, off = 0, rem = len;
     do {
         //if()
         ret.push(str.substr(off, len));

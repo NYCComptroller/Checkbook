@@ -115,6 +115,7 @@ abstract class Datasource {
     const SOLR_CITYWIDE = 'citywide';
     const SOLR_EDC = 'edc';
     const SOLR_NYCHA = 'nycha';
+    const EDC_TITLE = "NYCEDC";
 
      public static function getCurrent() {
         $datasource = RequestUtilities::get(UrlParameter::DATASOURCE);
@@ -141,6 +142,18 @@ abstract class Datasource {
         $nychaId = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id'), array('agency_short_name' => 'HOUSING AUTH'));
         $agency_id= $nychaId[0]['agency_id'];
         return $agency_id;
+    }
+
+    public static function getEDCId() {
+      $edcId = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id'), array('agency_short_name' => 'NYC EDC'));
+      $agency_id = $edcId[0]['agency_id'];
+      return $agency_id;
+    }
+
+    public static function getEDCCode() {
+      $edcCode = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_code'), array('agency_short_name' => 'NYC EDC'));
+      $agency_code = $edcCode[0]['agency_code'];
+      return $agency_code;
     }
 
     public static function smartSearchDataSource(){
@@ -233,25 +246,28 @@ abstract class PageType {
     const LANDING_PAGE = "landing_page";
     const TRANSACTION_PAGE = "transaction_page";
     const ADVANCED_SEARCH_PAGE = "advanced_search_page";
-    const SMART_SEARCH_PAGE = "smart_search";
-
+    const SMART_SEARCH_PAGE = "smart_search_page";
+    const TRENDS_PAGE = "trends_page";
     public static function getCurrent() {
         $urlPath = $_GET['q'];
         $ajaxPath = $_SERVER['HTTP_REFERER'];
-
         $pageType = null;
+        if(preg_match("/trends/", $urlPath) || preg_match("/featured_trends/", $urlPath)){
+          return self::TRENDS_PAGE;
+        }
+        if(preg_match("/smart_search/", $urlPath)){
+          return self::SMART_SEARCH_PAGE;
+        }
         switch(CheckbookDomain::getCurrent()) {
-
             case CheckbookDomain::SPENDING:
                 /**
                  * ADVANCED_SEARCH_PAGE - spending/search/transactions
                  * TRANSACTION_PAGE - spending/transactions, contract/spending/transactions
                  * LANDING_PAGE - spending_landing
                  */
-                if(preg_match('/spending\/search\/transactions/',$urlPath) || preg_match('/spending\/search\/transactions/',$ajaxPath)) {
+                if(preg_match('/spending\/search\/transactions/',$urlPath)) {
                     $pageType = self::ADVANCED_SEARCH_PAGE;
-                }
-                else if(preg_match('/spending\/transactions/',$urlPath) || preg_match('/spending\/transactions/',$ajaxPath) ||
+                } else if(preg_match('/spending\/transactions/',$urlPath) || preg_match('/spending\/transactions/',$ajaxPath) ||
                     preg_match('/contract\/spending\/transactions/',$urlPath) || preg_match('/contract\/spending\/transactions/',$ajaxPath)) {
                     $pageType = self::TRANSACTION_PAGE;
                 }
@@ -266,8 +282,7 @@ abstract class PageType {
                  * TRANSACTION_PAGE - contract/transactions
                  * LANDING_PAGE - contracts_landing, contracts_revenue_landing, contracts_pending_landing, contracts_pending_exp_landing, contracts_pending_rev_landing
                  */
-                if(preg_match('/contract\/all\/transactions/',$urlPath) || preg_match('/contract\/all\/transactions/',$ajaxPath) ||
-                    preg_match('/contract\/search\/transactions/',$urlPath) || preg_match('/contract\/search\/transactions/',$ajaxPath)) {
+                if(preg_match('/contract\/all\/transactions/',$urlPath) || preg_match('/contract\/search\/transactions/',$urlPath) ) {
                     $pageType = self::ADVANCED_SEARCH_PAGE;
                 }
                 else if(preg_match('/contract\/transactions/',$urlPath) || preg_match('/contract\/transactions/',$ajaxPath)) {
@@ -281,9 +296,40 @@ abstract class PageType {
                 break;
 
             case CheckbookDomain::REVENUE:
+              if(preg_match('/revenue\/search\/transactions/',$urlPath)) {
+                $pageType = self::ADVANCED_SEARCH_PAGE;
+              }
+              break;
             case CheckbookDomain::BUDGET:
+              if(preg_match('/budget\/search\/transactions/',$urlPath)) {
+              $pageType = self::ADVANCED_SEARCH_PAGE;
+              }
+              break;
             case CheckbookDomain::PAYROLL:
-                break;
+            if(preg_match('/payroll\/search\/transactions/',$urlPath)) {
+              $pageType = self::ADVANCED_SEARCH_PAGE;
+            }
+            break;
+            case CheckbookDomain::NYCHA_SPENDING:
+            if(preg_match('/nycha_spending\/search\/transactions/',$urlPath)) {
+              $pageType = self::ADVANCED_SEARCH_PAGE;
+            }
+            break;
+            case CheckbookDomain::NYCHA_CONTRACTS:
+            if(preg_match('/nycha_contracts\/search\/transactions/',$urlPath)) {
+              $pageType = self::ADVANCED_SEARCH_PAGE;
+            }
+            break;
+            case CheckbookDomain::NYCHA_BUDGET:
+              if(preg_match('/nycha_budget\/search\/transactions/',$urlPath)) {
+                $pageType = self::ADVANCED_SEARCH_PAGE;
+              }
+              break;
+            case CheckbookDomain::NYCHA_REVENUE:
+              if(preg_match('/nycha_revenue\/search\/transactions/',$urlPath)) {
+                $pageType = self::ADVANCED_SEARCH_PAGE;
+              }
+              break;
         }
         return $pageType;
     }

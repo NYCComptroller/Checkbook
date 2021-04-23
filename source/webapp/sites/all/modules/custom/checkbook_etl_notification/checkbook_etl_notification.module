@@ -1,46 +1,72 @@
 <?php
+
 /**
- * Implements hook_menu().
+ * Implements hook_cron().
  */
-function checkbook_etl_notification_menu(){
-  $items['etl_stats'] = array(
-    'title' => 'Checkbook ETL Statistics',
-    'page callback' => 'checkbook_etl_notification_notify',
-    'access callback' => TRUE,
-    'type' => MENU_CALLBACK,
-  );
-  return $items;
+function checkbook_etl_notification_cron() {
+  $CES = new CheckbookEtlStatistics();
+  return $CES->run_cron();
 }
 
-function checkbook_etl_notification_notify() {
-  var_dump(getETLStatistics());
-  global $conf;
-  //$to = $conf['checkbook_dev_group_email'];
-  //$from = $conf['email_from'];
-  $to = 'saru855@gmail.com;sgade@reisystems.com';
-  $from = 'sgade@reisystems.com';
-  drupal_mail('checkbook_etl_notification', 'send-status', $to, null, [], $from, TRUE);
-  return true;
-}
-
+/**
+ * Implements hook_mail().
+ * @param $key
+ * @param $message
+ * @param $params
+ */
 function checkbook_etl_notification_mail($key, &$message, $params){
-  // The key allows for a module to define multiple mails. This
-  // key needs to be the same as the first parameter in drupal_mail() above
-  //if($key ==  'some_mail_key'){
-    //$message['subject'] = t('Email from @site_name', array('@site_name' => variable_get('site_name', 'The site')));
-    // Each element of the body array becomes a new line in the email.
-    //$message['body'][] = t('Hello @user', array('@user' => format_username($params['to'])));
-    // Adding an empty string to the body array adds an extra line in the email
-    $message['subject'] = 'ETL Status';
-    $message['body'][] = '';
-    $message['body'][] = getETLStatistics();
-    $message['body'][] = '';
-  //}
+  $CES = new CheckbookEtlStatistics();
+  $CES->gatherData($message);
+
+  $message['body'] = array_merge($message['body'], $params);
 }
 
-function getETLStatistics(){
-  $url = 'http://192.168.3.237:8083';
-  $etlStats = file_get_contents($url);
-  return $etlStats;
+/**
+ * Implements hook_mail_alter().
+ *
+ * Adds priority headers to messages passing condition.
+ * @param $message
+ * @throws Exception
+ */
+function checkbook_etl_notification_mail_alter(&$message)
+{
+  // Apply this hook only for `checkbook_etl_status` module
+  if ('checkbook_etl_notification' !== $message['module']) {
+    return;
+  }
+  if (stripos($message['subject'], 'Fail') || stripos($message['subject'], 'not Found')) {
+    $message['headers']['X-Priority'] = '1 (Highest)';
+    $message['headers']['X-MSMail-Priority'] = 'High';
+    $message['headers']['Importance'] = 'High';
+  }
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+  $message['body'] = theme('etl_status_notification_mail', $message['body']);
+  if (defined('CHECKBOOK_DEV')) {
+    echo($message['body']);
+    $message['send'] = false;
+  }
 }
 
+/**
+ * Implements hook_theme()
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
+ */
+function checkbook_etl_notification_theme($existing, $type, $theme, $path)
+{
+  if ($type == 'module') {
+    return array(
+      'etl_status_notification_mail' => array(
+        'variables' => array(
+          'uat_status' => NULL,
+          'prod_status' => NULL,
+        ),
+        'template' => 'etl-status.email',
+        'path' => drupal_get_path('module', 'checkbook_etl_notification') . '/theme',
+      ),
+    );
+  }
+}

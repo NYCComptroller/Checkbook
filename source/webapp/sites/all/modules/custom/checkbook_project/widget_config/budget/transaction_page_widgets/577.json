@@ -10,12 +10,12 @@
 "getTotalDataCount":true,
 "no_results_content":"No Results Found",
 "cleanURLParameters":["year","expcategory","agency","dept"],
-"urlParamMap":{"year":"year_id.year_id","expcategory":"object_class_id","agency":"agency_id","dept":"department_id"},
+"urlParamMap":{"year":"year_id.year_id","expcategory":"object_class_id","agency":"agency_id","dept":"department_code"},
 "defaultParameters":{"year_id.year_id":113},
 "noDataInitialLoad":true,
 "dataset": "checkbook:budget_percent_difference",
 "uniqueSortColumn":"dept_dept",
-"columns": ["year_id.year_id","dept.dept.department_name","dept.dept","agency.agency","agency.agency.agency_name",
+"columns": ["year_id.year_id","dept.dept.department_name","dept.dept.department_code","dept.dept","agency.agency","agency.agency.agency_name",
             "percent_difference1","percent_difference2","percent_difference3",
             "current_amount","previous_amount","previous_1_amount","previous_2_amount"],
 "limit":35,
@@ -82,7 +82,7 @@
             "expression":"'<a href=\"/budget'. _checkbook_project_get_year_url_param_string()
                                     ._checkbook_project_get_url_param_string(\"agency\")
                                     ._checkbook_project_get_url_param_string(\"expcategory\")
-                                    .'/dept/'.$row['dept_dept']
+                                    .'/dept/'.$row['dept_dept_department_code']
                                     .'\">'.$row['dept_dept_department_name'].'</a>'"
     },
     "current_amount_formatted":{

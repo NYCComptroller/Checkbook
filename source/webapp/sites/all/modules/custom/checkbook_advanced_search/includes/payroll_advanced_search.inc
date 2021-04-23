@@ -96,6 +96,8 @@ function _checkbook_advanced_search_payroll_submit($form, &$form_state)
 
   if($data_source == DataSource::NYCHA){
     $redirect_url .= '/datasource/checkbook_nycha'.Datasource::getNYCHAUrl();
+    $agencyId = Datasource::getNYCHAId();
+    $redirect_url .= (!empty($agencyId))? _checkbook_advanced_search_generate_redirect_url($agencyId, 'agency') : "";
   }
 
   if ($payroll_amount_type == 0) {

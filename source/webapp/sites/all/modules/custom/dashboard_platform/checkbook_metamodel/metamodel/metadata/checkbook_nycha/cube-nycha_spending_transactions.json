@@ -144,11 +144,11 @@
           ]
         },
         {
-          "name": "funding_source_description",
+          "name": "display_funding_source_descr",
           "levels": [
             {
-              "name": "funding_source_description",
-              "sourceColumnName": "funding_source_description"
+              "name": "display_funding_source_descr",
+              "sourceColumnName": "display_funding_source_descr"
             }
           ]
         },
@@ -216,10 +216,10 @@
           ]
         },
         {
-          "name": "responsibility_center_name",
+          "name": "responsibility_center_description",
           "levels": [
             {
-              "name": "responsibility_center_name",
+              "name": "responsibility_center_description",
               "sourceColumnName": "responsibility_center_description"
             }
           ]

@@ -17,8 +17,12 @@
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;  Copyright 2009-2011 United States Government.
 ;
-name = "Checkbook ETL Notification"
-description = "Module to email ETL statistics every morning"
+name = "Checkbook ETL Status Mailing"
+description = "Module to email Prod/UAT ETL Status every morning"
 php = 7.2
 package = NYC Checkbook
 core = 7.x
+dependencies[] = checkbook_mail_system
+
+files[] = includes/CheckbookEtlStatistics.class.php
+

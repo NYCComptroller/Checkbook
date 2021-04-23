@@ -1,0 +1,90 @@
+{
+   "budget_nycha":{
+      "searchCriteriaMap":{
+          "year":"budget_fiscal_year",
+          "expense_category":"expenditure_type_code",
+          "responsibility_center":"responsibility_center_code",
+          "funding_source":"funding_source_code",
+          "program": "program_phase_code",
+          "project": "gl_project_code",
+          "budget_type": "budget_type",
+          "budget_name": "budget_name",
+          "adopted": "adopted_budget",
+          "modified":"adopted_budget",
+          "committed":"committed",
+          "encumbered":"encumbrance_amount",
+          "actual_amount": "actual_amount"
+      },
+      "dataset":{
+          "sortColumn":["-adopted_budget","-budget_id"],
+          "name":"checkbook_nycha:budget",
+          "data_source":"checkbook_nycha",
+          "columnTypes":{
+          "budget_type": "contains",
+          "budget_name":"contains"
+        },
+          "displayConfiguration":{
+              "xml":{
+                  "rootElement":"budget_transactions",
+                  "rowParentElement":"transaction",
+                  "elementsColumn":{
+                    "year": "budget_fiscal_year",
+                    "adopted": "adopted_budget",
+                    "modified": "modified_budget",
+                    "budget_type": "budget_type",
+                    "budget_name": "budget_name",
+                    "encumbered": "encumbrance_amount",
+                    "actual_amount": "actual_amount",
+                    "committed": "committed",
+                    "remaining": "funds_available",
+                    "expense_category": "expenditure_type_description",
+                    "funding_source": "display_funding_source_descr",
+                    "responsibility_center": "responsibility_center_description",
+                    "program": "program_phase_description",
+                    "project": "gl_project_description"
+                  },
+                  "rowElements":["fiscal_year", "budget_type", "budget_name", "expense_category", "funding_source", "responsibility_center", "program", "project"],
+                  "rowDataGroupElements":{
+                      "budget_amounts":["modified", "adopted", "remaining"],
+                      "expenditure_amounts":["committed","encumbered", "actual_amount"]
+                  }
+              },
+              "csv":{
+                  "elementsColumn":{
+                    "Year": "budget_fiscal_year",
+                    "Adopted": "adopted_budget",
+                    "Modified": "modified_budget",
+                    "Budget Type": "budget_type",
+                    "Budget Name": "budget_name",
+                    "Encumbered": "encumbrance_amount",
+                    "Actual Amount": "actual_amount",
+                    "Committed": "committed",
+                    "Remaining": "funds_available",
+                    "Expense Category": "expenditure_type_description",
+                    "Funding Source": "display_funding_source_descr",
+                    "Responsibility Center": "responsibility_center_description",
+                    "Program": "program_phase_description",
+                    "Project": "gl_project_description"
+
+                  }
+              }
+          },
+          "adjustSql":"if(function_exists('checkbook_api_adjustNYCHABudgetSql')){checkbook_api_adjustNYCHABudgetSql($sql_query);}"
+      },
+      "requestParameters":{
+          "year":{"valueType":"value", "dataType":"year", "maxLength":4},
+          "expense_category":{"valueType":"value", "dataType":"text", "maxLength":20},
+          "responsibility_center":{"valueType":"value", "dataType":"text", "maxLength":10},
+          "funding_source":{"valueType":"value", "dataType":"text", "maxLength":4},
+          "program":{"valueType":"value", "dataType":"text", "maxLength":6},
+          "project":{"valueType":"value", "dataType":"text", "maxLength":6},
+          "budget_type":{"valueType":"value", "dataType":"text", "maxLength":20},
+          "budget_name":{"valueType":"value", "dataType":"text", "maxLength":100},
+          "adopted":{"valueType":"range", "dataType":"amount", "maxLength":18},
+          "modified":{"valueType":"range", "dataType":"amount", "maxLength":18},
+          "committed":{"valueType":"range", "dataType":"amount", "maxLength":18},
+          "encumbered":{"valueType":"range", "dataType":"amount", "maxLength":18},
+          "actual_amount":{"valueType":"range", "dataType":"amount", "maxLength":18}
+      }
+  }
+}

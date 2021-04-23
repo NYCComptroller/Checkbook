@@ -1,6 +1,29 @@
 {
   "nycha": {
     "landing_page_widgets": {
+      "expense_categories_revenue":{
+        "widget_config":"expense_categories_revenue_view",
+        "visibility_parameters":["-expcategory"]
+      },
+      "resp_centers_revenue": {
+        "widget_config":"resp_centers_revenue_view",
+        "visibility_parameters":["-respcenter"]
+      },
+      "funding_source_revenue": {
+        "widget_config":"funding_source_revenue_view",
+        "visibility_parameters":["-fundsrc"]
+      },
+      "programs_revenue": {
+        "widget_config":"programs_revenue_view",
+        "visibility_parameters":["-program"]
+      },
+      "projects_revenue": {
+        "widget_config":"projects_revenue_view",
+        "visibility_parameters":["-project"]
+      },
+      "nycha_revenue_categories": {
+        "widget_config":"nycha_revenue_categories_view"
+      }
     }
   }
 }

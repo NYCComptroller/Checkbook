@@ -1,2 +1,596 @@
 <statements>
+
+  <!--Expense Categories Methods-->
+  <statement name="GetNychaExpenseCategoriesByBudget" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
+    <sql>
+      SELECT
+      expenditure_type_description AS expense_category,
+      expenditure_type_id,
+      SUM(adopted_budget) AS adopted_budget,
+      SUM(adopted_budget) AS modified_budget,
+      SUM(funds_available)AS funds_available,
+      SUM(committed)AS committed
+      FROM budget
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY expenditure_type_description,expenditure_type_id
+    </sql>
+  </statement>
+
+  <statement name="GetNychaExpenseCategoriesByCommittedExpenseBudget" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
+    <sql>
+      SELECT
+      expenditure_type_description AS expense_category,
+      expenditure_type_id,
+      SUM(committed) AS committed,
+      SUM(encumbrance_amount) AS encumbrance_amount,
+      SUM(actual_amount) AS actual_amount
+      FROM budget
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY expenditure_type_description, expenditure_type_id
+    </sql>
+  </statement>
+
+  <statement name="GetNychaExpenseCategoriesByPercentDifference" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
+    <sql>
+      SELECT
+      a.budget_fiscal_year,
+      ma.modified_budget_amount AS current_amount,
+      ma.modified_budget_amount_py_1 AS previous_amount,
+      ma.modified_budget_amount_py_2 AS previous_1_amount,
+      ma.modified_budget_amount_py_3 AS previous_2_amount,
+      a.expenditure_type_name,
+      b.expenditure_type_description AS expense_category,
+      b.expenditure_type_id,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_1,0)))/SUM(COALESCE(ma.modified_budget_amount_py_1,0)))*100 END AS percent_difference1,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_2,0)))/SUM(COALESCE(ma.modified_budget_amount_py_2,0)))*100 END AS percent_difference2,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_3,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_3,0)))/SUM(COALESCE(ma.modified_budget_amount_py_3,0)))*100 END AS percent_difference3
+      FROM aggregateon_budget_by_year a
+      JOIN (
+      SELECT
+      expenditure_type_id,
+      SUM(COALESCE(a.modified_budget_amount,0)) AS modified_budget_amount,
+      SUM(COALESCE(a.modified_budget_amount_py_1,0)) AS modified_budget_amount_py_1,
+      SUM(COALESCE(a.modified_budget_amount_py_2,0)) AS modified_budget_amount_py_2,
+      SUM(COALESCE(a.modified_budget_amount_py_3,0)) AS modified_budget_amount_py_3
+      from aggregateon_budget_by_year a
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="a.filter_type">'H'</exp>
+          <exp op="=" dbField="a.budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="a.responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="a.funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="a.program_phase_id" paramName="program" />
+          <exp op="=" dbField="a.gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY expenditure_type_id
+      ) ma
+      ON ma.expenditure_type_id = a.expenditure_type_id
+      JOIN ref_expenditure_type b
+      ON a.expenditure_type_id = b.expenditure_type_id
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="a.filter_type">'H'</exp>
+          <exp op="=" dbField="a.is_active">1</exp>
+          <exp op="=" dbField="a.budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="a.responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="a.funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="a.program_phase_id" paramName="program" />
+          <exp op="=" dbField="a.gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY a.budget_fiscal_year, a.expenditure_type_name, b.expenditure_type_description, b.expenditure_type_id, ma.modified_budget_amount,
+      ma.modified_budget_amount_py_1,
+      ma.modified_budget_amount_py_2,
+      ma.modified_budget_amount_py_3
+    </sql>
+  </statement>
+
+  <statement name="GetResponsibilityCenters" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="expcategory" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
+    <sql>
+      SELECT
+      responsibility_center_description AS responsibility_center,
+      responsibility_center_id,
+      SUM(adopted_budget) AS adopted_budget,
+      SUM(adopted_budget) AS modified_budget,
+      SUM(committed) AS committed,
+      SUM(funds_available) AS funds_available
+      FROM budget
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY responsibility_center_description, responsibility_center_id
+    </sql>
+  </statement>
+
+  <statement name="GetResponsibilityCentersByCommittedExpense" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="expcategory" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
+    <sql>
+      SELECT
+      responsibility_center_description AS responsibility_center,
+      responsibility_center_id,
+      SUM(committed) AS committed,
+      SUM(encumbrance_amount) AS encumbrance_amount,
+      SUM(actual_amount) AS actual_amount
+      FROM budget
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY responsibility_center_description, responsibility_center_id
+    </sql>
+  </statement>
+
+  <statement name="GetNychaResponsibilityCentersByPercentDifference" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="expcategory" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
+    <sql>
+      SELECT
+      a.budget_fiscal_year,
+      ma.modified_budget_amount AS current_amount,
+      ma.modified_budget_amount_py_1 AS previous_amount,
+      ma.modified_budget_amount_py_2 AS previous_1_amount,
+      ma.modified_budget_amount_py_3 AS previous_2_amount,
+      a.responsibility_center_code,
+      b.responsibility_center_description AS responsibility_center,
+      b.responsibility_center_id,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_1,0)))/SUM(COALESCE(ma.modified_budget_amount_py_1,0)))*100 END AS percent_difference1,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_2,0)))/SUM(COALESCE(ma.modified_budget_amount_py_2,0)))*100 END AS percent_difference2,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_3,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_3,0)))/SUM(COALESCE(ma.modified_budget_amount_py_3,0)))*100 END AS percent_difference3
+      FROM aggregateon_budget_by_year a
+      JOIN (
+      SELECT
+      responsibility_center_id,
+      SUM(COALESCE(a.modified_budget_amount,0)) AS modified_budget_amount,
+      SUM(COALESCE(a.modified_budget_amount_py_1,0)) AS modified_budget_amount_py_1,
+      SUM(COALESCE(a.modified_budget_amount_py_2,0)) AS modified_budget_amount_py_2,
+      SUM(COALESCE(a.modified_budget_amount_py_3,0)) AS modified_budget_amount_py_3
+      from aggregateon_budget_by_year a
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="a.filter_type">'H'</exp>
+          <exp op="=" dbField="a.budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="a.expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="a.funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="a.program_phase_id" paramName="program" />
+          <exp op="=" dbField="a.gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY responsibility_center_id
+      ) ma
+      ON ma.responsibility_center_id = a.responsibility_center_id
+      JOIN ref_responsibility_center b
+      ON a.responsibility_center_id = b.responsibility_center_id
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="a.filter_type">'H'</exp>
+          <exp op="=" dbField="a.is_active">1</exp>
+          <exp op="=" dbField="a.budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="a.expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="a.funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="a.program_phase_id" paramName="program" />
+          <exp op="=" dbField="a.gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY a.budget_fiscal_year, a.responsibility_center_code, b.responsibility_center_description, b.responsibility_center_id, ma.modified_budget_amount,
+      ma.modified_budget_amount_py_1,
+      ma.modified_budget_amount_py_2,
+      ma.modified_budget_amount_py_3
+    </sql>
+  </statement>
+
+  <statement name="GetFundingSources" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
+    <sql>
+      SELECT
+      a.funding_source_id,
+      b.display_funding_source_descr AS funding_source_description,
+      SUM(adopted_budget) AS adopted_budget,
+      SUM(adopted_budget) AS modified_budget,
+      SUM(committed) AS committed,
+      SUM(funds_available) AS funds_available
+      FROM budget a
+      JOIN ref_funding_source b
+      ON a.funding_source_id = b.funding_source_id
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY b.display_funding_source_descr, a.funding_source_id
+    </sql>
+  </statement>
+
+  <statement name="GetFundingSourcesByCommittedExpense" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
+    <sql>
+      SELECT
+      a.funding_source_id,
+      b.display_funding_source_descr AS funding_source_description,
+      SUM(committed) AS committed,
+      SUM(encumbrance_amount) AS encumbrance_amount,
+      SUM(actual_amount) AS actual_amount
+      FROM budget a
+      JOIN ref_funding_source b
+      ON a.funding_source_id = b.funding_source_id
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY b.display_funding_source_descr, a.funding_source_id
+    </sql>
+  </statement>
+
+  <statement name="GetNychaFundingSourcesByPercentDifference" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="program" type="string" />
+    <param name="project" type="string" />
+    <sql>
+      SELECT
+      a.budget_fiscal_year,
+      ma.modified_budget_amount AS current_amount,
+      ma.modified_budget_amount_py_1 AS previous_amount,
+      ma.modified_budget_amount_py_2 AS previous_1_amount,
+      ma.modified_budget_amount_py_3 AS previous_2_amount,
+      a.funding_source_code,
+      b.display_funding_source_descr AS funding_source_description,
+      b.funding_source_id,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_1,0)))/SUM(COALESCE(ma.modified_budget_amount_py_1,0)))*100 END AS percent_difference1,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_2,0)))/SUM(COALESCE(ma.modified_budget_amount_py_2,0)))*100 END AS percent_difference2,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_3,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_3,0)))/SUM(COALESCE(ma.modified_budget_amount_py_3,0)))*100 END AS percent_difference3
+      FROM aggregateon_budget_by_year a
+      JOIN (
+      SELECT
+      funding_source_id,
+      SUM(COALESCE(a.modified_budget_amount,0)) AS modified_budget_amount,
+      SUM(COALESCE(a.modified_budget_amount_py_1,0)) AS modified_budget_amount_py_1,
+      SUM(COALESCE(a.modified_budget_amount_py_2,0)) AS modified_budget_amount_py_2,
+      SUM(COALESCE(a.modified_budget_amount_py_3,0)) AS modified_budget_amount_py_3
+      from aggregateon_budget_by_year a
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="a.filter_type">'H'</exp>
+          <exp op="=" dbField="a.budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="a.expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="a.responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="a.program_phase_id" paramName="program" />
+          <exp op="=" dbField="a.gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY funding_source_id
+      ) ma
+      ON ma.funding_source_id = a.funding_source_id
+      JOIN ref_funding_source b
+      ON a.funding_source_id = b.funding_source_id
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="a.filter_type">'H'</exp>
+          <exp op="=" dbField="a.is_active">1</exp>
+          <exp op="=" dbField="a.budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="a.expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="a.responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="a.program_phase_id" paramName="program" />
+          <exp op="=" dbField="a.gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY a.budget_fiscal_year, a.funding_source_code, b.display_funding_source_descr, b.funding_source_id, ma.modified_budget_amount,
+      ma.modified_budget_amount_py_1,
+      ma.modified_budget_amount_py_2,
+      ma.modified_budget_amount_py_3
+    </sql>
+  </statement>
+
+  <statement name="GetPrograms" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="project" type="string" />
+    <sql>
+      SELECT
+      program_phase_description AS program_phase_description,
+      program_phase_id,
+      SUM(adopted_budget) AS adopted_budget,
+      SUM(adopted_budget) AS modified_budget,
+      SUM(committed) AS committed,
+      SUM(funds_available) AS funds_available
+      FROM budget
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      AND program_phase_description NOT iLIKE  '%no program assigned%'
+      GROUP BY program_phase_description, program_phase_id
+    </sql>
+  </statement>
+
+  <statement name="GetProgramsByCommittedExpense" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="project" type="string" />
+    <sql>
+      SELECT
+      program_phase_description AS program_phase_description,
+      program_phase_id,
+      SUM(committed) AS committed,
+      SUM(encumbrance_amount) AS encumbrance_amount,
+      SUM(actual_amount) AS actual_amount
+      FROM budget
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      AND program_phase_description NOT iLIKE  '%no program assigned%'
+      GROUP BY program_phase_description, program_phase_id
+    </sql>
+  </statement>
+
+  <statement name="GetNychaProgramsByPercentDifference" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="project" type="string" />
+    <sql>
+      SELECT
+      a.budget_fiscal_year,
+      ma.modified_budget_amount AS current_amount,
+      ma.modified_budget_amount_py_1 AS previous_amount,
+      ma.modified_budget_amount_py_2 AS previous_1_amount,
+      ma.modified_budget_amount_py_3 AS previous_2_amount,
+      a.program_phase_code,
+      b.program_phase_description AS program_phase_description,
+      b.program_phase_id,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_1,0)))/SUM(COALESCE(ma.modified_budget_amount_py_1,0)))*100 END AS percent_difference1,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_2,0)))/SUM(COALESCE(ma.modified_budget_amount_py_2,0)))*100 END AS percent_difference2,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_3,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_3,0)))/SUM(COALESCE(ma.modified_budget_amount_py_3,0)))*100 END AS percent_difference3
+      FROM aggregateon_budget_by_year a
+      JOIN (
+      SELECT
+      program_phase_id,
+      SUM(COALESCE(a.modified_budget_amount,0)) AS modified_budget_amount,
+      SUM(COALESCE(a.modified_budget_amount_py_1,0)) AS modified_budget_amount_py_1,
+      SUM(COALESCE(a.modified_budget_amount_py_2,0)) AS modified_budget_amount_py_2,
+      SUM(COALESCE(a.modified_budget_amount_py_3,0)) AS modified_budget_amount_py_3
+      from aggregateon_budget_by_year a
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="a.filter_type">'H'</exp>
+          <exp op="=" dbField="a.budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="a.expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="a.responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="a.funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="a.gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      GROUP BY program_phase_id
+      ) ma
+      ON ma.program_phase_id = a.program_phase_id
+      JOIN ref_program_phase b
+      ON a.program_phase_id = b.program_phase_id
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="a.filter_type">'H'</exp>
+          <exp op="=" dbField="a.is_active">1</exp>
+          <exp op="=" dbField="a.budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="a.expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="a.responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="a.funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="a.gl_project_id" paramName="project" />
+        </exp>
+      </where>
+      AND program_phase_description NOT iLIKE  '%no program assigned%'
+      GROUP BY a.budget_fiscal_year, a.program_phase_code, b.program_phase_description, b.program_phase_id, ma.modified_budget_amount,
+      ma.modified_budget_amount_py_1,
+      ma.modified_budget_amount_py_2,
+      ma.modified_budget_amount_py_3
+    </sql>
+  </statement>
+
+  <statement name="GetProjects" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
+    <sql>
+      SELECT
+      gl_project_description AS gl_project_description,
+      gl_project_id,
+      SUM(adopted_budget) AS adopted_budget,
+      SUM(adopted_budget) AS modified_budget,
+      SUM(committed) AS committed,
+      SUM(funds_available) AS funds_available
+      FROM budget
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+        </exp>
+      </where>
+      AND COALESCE(gl_project_description, '') NOT iLIKE  '%no project assigned%'
+      GROUP BY gl_project_description, gl_project_id
+    </sql>
+  </statement>
+
+  <statement name="GetProjectsByCommittedExpense" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
+    <sql>
+      SELECT
+      gl_project_description AS gl_project_description,
+      gl_project_id,
+      SUM(committed) AS committed,
+      SUM(encumbrance_amount) AS encumbrance_amount,
+      SUM(actual_amount) AS actual_amount
+      FROM budget
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="program_phase_id" paramName="program" />
+        </exp>
+      </where>
+      AND COALESCE(gl_project_description, '') NOT iLIKE  '%no project assigned%'
+      GROUP BY gl_project_description, gl_project_id
+    </sql>
+  </statement>
+
+  <statement name="GetProjectsByPercentDifference" datasource="checkbook_nycha">
+    <param name="year" required ="true" type="int" />
+    <param name="expcategory" type="string" />
+    <param name="respcenter" type="string" />
+    <param name="fundsrc" type="string" />
+    <param name="program" type="string" />
+    <sql>
+      SELECT
+      a.budget_fiscal_year,
+      ma.modified_budget_amount AS current_amount,
+      ma.modified_budget_amount_py_1 AS previous_amount,
+      ma.modified_budget_amount_py_2 AS previous_1_amount,
+      ma.modified_budget_amount_py_3 AS previous_2_amount,
+      a.gl_project_code,
+      b.gl_project_description AS gl_project_description,
+      b.gl_project_id,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_1,0)))/SUM(COALESCE(ma.modified_budget_amount_py_1,0)))*100 END AS percent_difference1,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_2,0)))/SUM(COALESCE(ma.modified_budget_amount_py_2,0)))*100 END AS percent_difference2,
+      CASE SUM(COALESCE(ma.modified_budget_amount_py_3,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_3,0)))/SUM(COALESCE(ma.modified_budget_amount_py_3,0)))*100 END AS percent_difference3
+      FROM aggregateon_budget_by_year a
+      JOIN (
+              SELECT
+              gl_project_id,
+              SUM(COALESCE(a.modified_budget_amount,0)) AS modified_budget_amount,
+              SUM(COALESCE(a.modified_budget_amount_py_1,0)) AS modified_budget_amount_py_1,
+              SUM(COALESCE(a.modified_budget_amount_py_2,0)) AS modified_budget_amount_py_2,
+              SUM(COALESCE(a.modified_budget_amount_py_3,0)) AS modified_budget_amount_py_3
+              from aggregateon_budget_by_year a
+                <where>
+                  <exp op="AND">
+                    <exp op="=" dbField="a.filter_type">'H'</exp>
+                    <exp op="=" dbField="a.budget_fiscal_year_id" paramName="year" />
+                    <exp op="=" dbField="a.expenditure_type_id" paramName="expcategory" />
+                    <exp op="=" dbField="a.responsibility_center_id" paramName="respcenter" />
+                    <exp op="=" dbField="a.funding_source_id" paramName="fundsrc" />
+                    <exp op="=" dbField="a.program_phase_id" paramName="program" />
+                  </exp>
+                </where>
+              GROUP BY gl_project_id
+            ) ma
+      ON ma.gl_project_id = a.gl_project_id
+      JOIN ref_gl_project b
+      ON a.gl_project_id = b.gl_project_id
+      <where>
+        <exp op="AND">
+          <exp op="=" dbField="a.filter_type">'H'</exp>
+          <exp op="=" dbField="a.is_active">1</exp>
+          <exp op="=" dbField="a.budget_fiscal_year_id" paramName="year" />
+          <exp op="=" dbField="a.expenditure_type_id" paramName="expcategory" />
+          <exp op="=" dbField="a.responsibility_center_id" paramName="respcenter" />
+          <exp op="=" dbField="a.funding_source_id" paramName="fundsrc" />
+          <exp op="=" dbField="a.program_phase_id" paramName="program" />
+        </exp>
+      </where>
+      AND COALESCE(gl_project_description, '') NOT iLIKE  '%no project assigned%'
+      GROUP BY a.budget_fiscal_year, a.gl_project_code, b.gl_project_description, b.gl_project_id, ma.modified_budget_amount,
+      ma.modified_budget_amount_py_1,
+      ma.modified_budget_amount_py_2,
+      ma.modified_budget_amount_py_3
+    </sql>
+  </statement>
+
 </statements>
+
+

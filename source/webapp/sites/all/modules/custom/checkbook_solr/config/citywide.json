@@ -239,6 +239,6 @@
       "contract_number": "Contract ID"
   },
   "sort": {
-    "sort_by": "domain_ordering asc, date_ordering desc, check_eft_issued_date desc, revenue_budget_fiscal_year desc, current_budget_amount desc, id desc"
+    "sort_by": "domain_ordering asc, date_ordering desc, check_eft_issued_date desc, vendor_record_type asc, revenue_budget_fiscal_year desc, budget_fiscal_year desc ,posting_amount desc, current_budget_amount desc, id desc"
   }
 }
