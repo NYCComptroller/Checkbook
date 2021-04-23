@@ -165,7 +165,9 @@
         "minority_type_id",
         "is_prime_or_sub",
         "original_agreement_id@checkbook:sub_vendor_agid",
-        "budget_code"
+        "budget_code",
+        "is_women_owned",
+        "is_emerging"
     ],
     "derivedColumns": {
         "associated_prime_vendor_name":{
@@ -348,6 +350,14 @@
         "sortSourceColumn": "minority_type_id",
         "exportColumn": "mwbe_category_name_formatted"
       },
+      {
+        "labelAlias": "woman_owned_business",
+        "column": "is_women_owned"
+      },
+      {
+        "labelAlias": "emerging_business",
+        "column": "is_emerging"
+      },
       {"labelAlias":"budget_code","column":"budget_code_formatted", "sortSourceColumn":"budget_code","exportColumn":"budget_code_formatted"},
       {
         "label": "",
@@ -363,9 +373,11 @@
                 case
                 when minority_type_id = 2 then 'Black American'
                 when minority_type_id = 3 then 'Hispanic American'
+                when minority_type_id = 6 THEN 'Native'
                 when minority_type_id = 7 then 'Non-M/WBE'
                 when minority_type_id = 9 then 'Women'
                 when minority_type_id = 11 then 'Individuals and Others'
+                when minority_type_id = 99 THEN 'Emerging'
                 else 'Asian American'
                 end as minority_type_name
                 "
@@ -465,6 +477,8 @@
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"115px","asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"129px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"175px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
