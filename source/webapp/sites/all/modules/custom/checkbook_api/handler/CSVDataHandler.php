@@ -100,16 +100,23 @@ class CSVDataHandler extends AbstractDataHandler {
 
         LogHelper::log_notice("DataFeeds :: csv::getJobCommand()");
 
-        $criteria = $this->requestSearchCriteria->getCriteria();
+        //Adjust query if applicable (adjustSQL functions have $sql_query as parameter)
+        if (isset($this->requestDataSet->adjustSql)) {
+          $sql_query = $query;
+          eval($this->requestDataSet->adjustSql);
+          $query = $sql_query;
+        }
+
         //map csv headers
         $columnMappings = $this->requestDataSet->displayConfiguration->csv->elementsColumn;
         $columnMappings =  (array)$columnMappings;
         //Handle referenced columns
         foreach($columnMappings as $key=>$value) {
-            if (strpos($value,"@") !== false) {
-                $column_parts = explode("@", $value);
-                $columnMappings[$key] = $column_parts[0];
-            }
+          if (strpos($value,"@") !== false) {
+            $data_set_column = str_replace('@', '_', $value);
+            $data_set_column = str_replace(':', '_', $data_set_column);
+            $columnMappings[$key] = $data_set_column;
+          }
         }
         $columnMappings = array_flip($columnMappings);
 
@@ -117,91 +124,33 @@ class CSVDataHandler extends AbstractDataHandler {
         $select_part = substr($query,0,$end);
         $select_part = str_replace("SELECT", "", $select_part);
 
-        $sql_parts = explode(",", $select_part);
+        $sql_parts = explode(",\n", $select_part);
         $new_select_part = "SELECT ";
         foreach($sql_parts as $sql_part) {
-
             $sql_part = trim($sql_part);
             $column = $sql_part;
             $alias = "";
 
             //Remove "AS"
+            $selectColumn = NULL;
             if (strpos($sql_part,"AS") !== false) {
-                $pos = strpos($column, " AS");
+                $pos = strrpos($column, " AS");
+                //Get Column name from derived columns
+                $selectColumn = trim(substr($sql_part, $pos + strlen(" AS")));
                 $sql_part = substr($sql_part,0,$pos);
             }
-            //get only column
+
+            //Get only column
             if (strpos($sql_part,".") !== false) {
-                $select_column_parts = explode('.', trim($sql_part));
-                $alias = $select_column_parts[0] . '.';
-                $column = $select_column_parts[1];
+              $select_column_parts = explode('.', trim($sql_part), 2);
+              $alias = $select_column_parts[0] . '.';
+              $column = $select_column_parts[1];
+            }else{
+              $column = $sql_part;
             }
 
-            //Handle derived columns
-            switch($column) {
-                case "prime_vendor_name":
-                    $new_column = "CASE WHEN " . $alias . $column . " IS NULL THEN 'N/A' ELSE " . $alias . $column . " END";
-                    $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
-                    break;
-                case "minority_type_name":
-                    $new_column = "CASE \n";
-                    $new_column .= "WHEN " . $alias . $column . " = 2 THEN 'Black American' \n";
-                    $new_column .= "WHEN " . $alias . $column . " = 3 THEN 'Hispanic American' \n";
-                    $new_column .= "WHEN " . $alias . $column . " = 4 THEN 'Asian American' \n";
-                    $new_column .= "WHEN " . $alias . $column . " = 5 THEN 'Asian American' \n";
-                    $new_column .= "WHEN " . $alias . $column . " = 7 THEN 'Non-M/WBE' \n";
-                    $new_column .= "WHEN " . $alias . $column . " = 9 THEN 'Women' \n";
-                    $new_column .= "WHEN " . $alias . $column . " = 11 THEN 'Individuals and Others' \n";
-                    $new_column .= "WHEN " . $alias . $column . " = 'African American' THEN 'Black American' \n";
-                    $new_column .= "WHEN " . $alias . $column . " = 'Hispanic American' THEN 'Hispanic American' \n";
-                    $new_column .= "WHEN " . $alias . $column . " = 'Asian-Pacific' THEN 'Asian American' \n";
-                    $new_column .= "WHEN " . $alias . $column . " = 'Asian-Indian' THEN 'Asian American' \n";
-                    $new_column .= "WHEN " . $alias . $column . " = 'Non-Minority' THEN 'Non-M/WBE' \n";
-                    $new_column .= "WHEN " . $alias . $column . " = 'Caucasian Woman' THEN 'Women' \n";
-                    $new_column .= "WHEN " . $alias . $column . " = 'Individuals & Others' THEN 'Individuals and Others' END \n";
-                    $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
-                    break;
-                case "vendor_type":
-                    $new_column = "CASE WHEN " . $alias . $column . " ~* 's' THEN 'Yes' ELSE 'No' END";
-                    $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
-                    break;
-                case "amount_basis_id":
-                    $new_column = "CASE WHEN " . $alias . $column . " = 1 THEN 'Salaried' ELSE 'Non-Salaried' END";
-                    $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
-                    break;
-                case "salaried_amount":
-                  $new_column = "CASE WHEN  amount_basis_id = 1 THEN CAST(salaried_amount AS Text) ELSE CAST('-' AS Text) END";
-                  $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
-                break;
-                case "hourly_rate":
-                    if($this->requestDataSet->data_source == Datasource::NYCHA) {
-                        $new_column = "CASE WHEN " . $alias . $column . " > 0 AND amount_basis_id = 3 THEN CAST(hourly_rate AS Text) ELSE CAST('-' AS Text) END";
-                        //$new_column = "''";
-                        $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
-                    }
-                    break;
-              case "non_salaried_amount":
-                if($this->requestDataSet->data_source == Datasource::NYCHA) {
-                  $new_column = "CASE WHEN " . $alias . $column . " > 0  AND amount_basis_id = 2 THEN CAST (non_salaried_amount AS Text) ELSE  CAST('-' AS Text) END";
-                  //$new_column = "''";
-                  $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
-                }
-                else{
-                  $new_column = "CASE WHEN " . $alias . $column . " > 0  AND amount_basis_id != 1 THEN CAST (non_salaried_amount AS Text) ELSE  CAST('-' AS Text) END";
-                  //$new_column = "''";
-                  $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' . "\n";
-                }
-                break;
-                case "release_approved_year":
-                    if($criteria['global']['type_of_data'] == 'Contracts_NYCHA'){
-                      $new_column = $criteria['value']['fiscal_year'];
-                      $new_select_part .= $new_column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
-                    }
-                    break;
-                default:
-                    $new_select_part .= $alias . $column . ' AS \\"' . $columnMappings[$column] . '\\",' .  "\n";
-                    break;
-            }
+          $data_set_column = isset($selectColumn) ? $selectColumn : $column;
+          $new_select_part .= $alias . $column . ' AS \\"' . $columnMappings[$data_set_column] . '\\",' .  "\n";
         }
         $new_select_part = rtrim($new_select_part,",\n");
         $query = substr_replace($query, $new_select_part.' ', 0, $end);
@@ -230,8 +179,6 @@ class CSVDataHandler extends AbstractDataHandler {
             LogHelper::log_notice("DataFeeds :: csv::getJobCommand() cmd: ".$cmd);
             $out = shell_exec($cmd);
             LogHelper::log_notice("DataFeeds :: csv::getJobCommand() cmd out: ".var_export($out, true));
-
-//            sleep(30);
 
             $move_cmd = "mv $tempOutputFile $outputFile 2>&1";
             LogHelper::log_notice("DataFeeds :: csv::getJobCommand() mv_cmd: ".$move_cmd);

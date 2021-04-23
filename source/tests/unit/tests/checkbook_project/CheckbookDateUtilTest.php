@@ -28,55 +28,15 @@ use PHPUnit\Framework\TestCase;
 class CheckbookDateUtilTest extends TestCase
 {
     /**
-     *
-     */
-    public function testCurrentCalendarYear()
-    {
-        $this->assertEquals(date('Y'), CheckbookDateUtil::getCurrentCalendarYear());
-    }
-
-    /**
-     *
-     */
-    public function testCurrentCalendarYearId()
-    {
-        $this->assertEquals(date('Y') - 1899, CheckbookDateUtil::getCurrentCalendarYearId());
-    }
-
-    /**
-     *
-     */
-    /*public function testCurrentFiscalYear()
-    {
-        $year = date('Y');
-        if (date('m') > 6) {
-            $year++;
-        }
-        //$this->assertEquals($year, CheckbookDateUtil::getCurrentFiscalYear());
-    }*/
-
-    /**
-     *
-     */
-   /* public function testCurrentFiscalYearId()
-    {
-        $year = date('Y');
-        if (date('m') > 6) {
-            $year++;
-        }
-       // $this->assertEquals($year - 1899, CheckbookDateUtil::getCurrentFiscalYearId());
-    }*/
-
-    /**
-     *
+     * Tests year2yearId function
      */
     public function testYear2Id()
     {
-        //$this->assertEquals(120, CheckbookDateUtil::year2yearId(2019));
+        $this->assertEquals(120, CheckbookDateUtil::year2yearId(2019));
     }
 
     /**
-     *
+     * Tests yearId2Year function
      */
     public function testYearId2year()
     {

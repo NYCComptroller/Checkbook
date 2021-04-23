@@ -1,74 +1,90 @@
 {
   "widgetType": "phpparser",
   "no_results_content": "No Results Found",
-  "cleanURLParameters":["year","calyear","yeartype","awdmethod","vendor","csize","cindustry","magid","mwbe","subvendor","title", "industry","fundsrc"],
+  "cleanURLParameters":["year","calyear","yeartype","vendor","title"],
   "widgetPreprocessJSON":"
     // Payroll amount should be calculated for 'Calendar Year' always for all the other domains
     if(!preg_match('/payroll/',request_uri())){
-    unset($node->widgetConfig->model->series[0]->seriesURLParamMap->yeartype);
+      unset($node->widgetConfig->model->series[0]->seriesURLParamMap->yeartype);
     }
-    ",
-"model": {
-"join": {
-"method": "Union"
-},
-"series": [
-{
-"dataset":"checkbook:payroll_employee_agency",
-"columns":["total_base_pay","total_overtime_pay","total_gross_pay"],
-"seriesURLParamMap":{"vendor":"vendor_id","calyear":"year.year","year":"year.year","agency":"agency_id","yeartype":"type_of_year","title":"civil_service_title_code.civil_service_title_code"},
-"allowedParams":["year.year","agency_id","type_of_year","civil_service_title_code.civil_service_title_code"],
-"seriesDefaultParameters":{"type_of_year":"C"},
-"adjustSerieParameters":"
+  ",
+  "model": {
+    "join": {
+      "method": "Union"
+    },
+    "series": [
+      {
+        "dataset":"checkbook:payroll_employee_agency",
+        "columns":["total_base_pay","total_overtime_pay","total_gross_pay"],
+        "seriesURLParamMap":{"vendor":"vendor_id","calyear":"year.year","year":"year.year","agency":"agency_id","yeartype":"type_of_year","title":"civil_service_title_code.civil_service_title_code"},
+        "allowedParams":["year.year","agency_id","type_of_year","civil_service_title_code.civil_service_title_code"],
+        "seriesDefaultParameters":{"type_of_year":"C"},
+        "adjustSerieParameters":"
           if(RequestUtilities::getRequestParamValue('yeartype') == 'B' && !preg_match('/payroll/',request_uri())){
-$serieParameters['fiscal_year_id'] = RequestUtil::getCalYearIdForTopNavigation();
+            $serieParameters['fiscal_year_id'] = CheckbookDateUtil::getCalYearIdForTopNavigation();
           }
-return $serieParameters;
-"
-},
-{
-"dataset":"checkbook_nycha:contracts_fy_vendor_summary",
-"columns":["total_maximum_contract_amount"],
-"seriesURLParamMap":{"vendor":"vendor_id","calyear":"fiscal_year_id","year":"fiscal_year_id"},
-"allowedParams":["vendor_id","fiscal_year_id","calyear"],
-"adjustSerieParameters":"
-//Calculate amount for all years on 'All Years' advanced search results page
+          return $serieParameters;
+        "
+      },
+      {
+        "dataset":"checkbook_nycha:contracts_fy_vendor_summary",
+        "columns":["total_maximum_contract_amount"],
+        "seriesURLParamMap":{"vendor":"vendor_id","calyear":"fiscal_year_id","year":"fiscal_year_id"},
+        "allowedParams":["vendor_id","fiscal_year_id","calyear"],
+        "adjustSerieParameters":"
+          //Calculate amount for all years on 'All Years' advanced search results page
           if(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear')){
-$serieParameters['fiscal_year_id'] = RequestUtil::getFiscalYearIdForTopNavigation();
+            $serieParameters['fiscal_year_id'] = CheckbookDateUtil::getFiscalYearIdForTopNavigation();
           }
-return $serieParameters;
-",
-  "widgetDataLoader":"
-  $parameters = $node->nodeAdjustedParamaterConfig;
-  $parameter_mapping = array('vendor'=>'vendor_id','year'=>'fiscal_year_id','calyear'=>'fiscal_year_id');
-  foreach($node->widgetConfig->requestParams as $param=>$value){
-    if($param == 'year' ||  $param =='calyear'){
-      $where_filters[] = '('. $value . ' BETWEEN start_year_id AND end_year_id)';
-    }else if(array_key_exists($param,  $parameter_mapping)){
-      $where_filters[] = _widget_build_sql_condition( $parameter_mapping[$param], $value);
-    }
-  }
-  if(count($where_filters) > 0){
-    $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
-  }
-  $datasource = RequestUtilities::getRequestParamValue('datasource');
+          return $serieParameters;
+        ",
+        "widgetDataLoader":"
+          $parameters = $node->nodeAdjustedParamaterConfig;
+          $parameter_mapping = array('vendor'=>'vendor_id','year'=>'fiscal_year_id','calyear'=>'fiscal_year_id');
+          foreach($node->widgetConfig->requestParams as $param=>$value){
+            if($param == 'year' ||  $param =='calyear'){
+              $where_filters[] = '('. $value . ' BETWEEN start_year_id AND end_year_id)';
+            }else if(array_key_exists($param,  $parameter_mapping)){
+              $where_filters[] = _widget_build_sql_condition( $parameter_mapping[$param], $value);
+            }
+          }
+          if(count($where_filters) > 0){
+            $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
+          }
+          $datasource = RequestUtilities::getRequestParamValue('datasource');
           $sql = 'SELECT SUM(total_maximum_contract_amount) AS total_maximum_contract_amount
                     FROM (SELECT C.contract_id, MAX(C.total_amount) AS total_maximum_contract_amount
                             FROM   contracts_widget_summary C'. $where_filter.' GROUP BY C.contract_id) a';
-  $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
-"
-},
-{
-"dataset": "checkbook_nycha:all_disbursement_transactions",
-"columns":["check_amount_sum", "invoice_amount_sum","category.category", "category_name.category_name"],
-"seriesURLParamMap":{"vendor":"vendor_id","year":"issue_date_year_id","agency":"agency_id","industry":"industry_type_id","fundsrc":"funding_source_id"},
-"allowedParams":["vendor_id","issue_date_year_id","agency_id","industry_type_id","funding_source_id"],
-"adjustSerieParameters":"
-  return $serieParameters;
-"
-}
-
-]
-},
-"template": "nycha_top_navigation"
+          $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
+        "
+      },
+      {
+        "dataset": "checkbook_nycha:budget",
+        "columns":["budget_adopted_amount"],
+        "seriesURLParamMap":{"year":"budget_fiscal_year_id"},
+        "allowedParams":["budget_fiscal_year_id"],
+        "adjustSerieParameters":"
+          return $serieParameters;
+        "
+      },
+      {
+        "dataset": "checkbook_nycha:revenue",
+        "columns":["revenue_recognized_amount"],
+        "seriesURLParamMap":{"year":"budget_fiscal_year_id"},
+        "allowedParams":["budget_fiscal_year_id"],
+        "adjustSerieParameters":"
+          return $serieParameters;
+        "
+      },
+      {
+        "dataset": "checkbook_nycha:all_disbursement_transactions",
+        "columns":["check_amount_sum", "invoice_amount_sum","category.category", "category_name.category_name"],
+        "seriesURLParamMap":{"vendor":"vendor_id","year":"issue_date_year_id","agency":"agency_id"},
+        "allowedParams":["vendor_id","issue_date_year_id","agency_id"],
+        "adjustSerieParameters":"
+            return $serieParameters; "
+      }
+    ]
+  },
+  "template": "nycha_top_navigation"
 }

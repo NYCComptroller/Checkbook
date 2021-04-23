@@ -68,9 +68,7 @@
 
 
 "Notes:"
-
-
-"(1) The Legal Debt Margin and the Net Debt Applicable to the Debt Limit as a Percentage of the Debt Limit are recalculated "
+"(1)   The Legal Debt Margin and the Net Debt Applicable to the Debt Limit as a Percentage of the Debt Limit are recalculated"
 "      on July 1, the first day of each City fiscal year, based on the new assessed value in  accordance with"
 "      the new year's enacted tax fixing resolution.  For fiscal year 2019, beginning July 1, 2018,"
 "      the Legal Debt Margin and the Net Debt Applicable to the Debt Limit as a Percentage of the Debt Limit are $37,235,767 and 64.95%, respectively."

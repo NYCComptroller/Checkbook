@@ -42,7 +42,7 @@
   "limit":"35",
   "sortSourceByNull":["document_id","agreement_type_name", "contract_id", "release_number", "invoice_number","invoice_line_number",
                       "distribution_line_number", "check_payment_status", "check_amount", "adj_distribution_line_amount", "contract_purpose",
-                      "display_industry_type_name", "funding_source_description", "responsibility_center_description",
+                      "display_industry_type_name", "display_funding_source_descr", "responsibility_center_description",
                       "expenditure_type_description", "program_phase_description", "gl_project_description"],
   "noDataInitialLoad":true,
   "html_class":"initiative-table",
@@ -52,7 +52,7 @@
   "columns": ["issue_date", "document_id", "section8_flag", "agreement_type_name", "contract_id", "release_number",
               "invoice_number","invoice_line_number","distribution_line_number","check_payment_status", "check_amount", "vendor_name", "vendor_id",
               "contract_purpose", "display_spending_category_name", "display_industry_type_name",
-              "funding_source_description", "responsibility_center_description",
+              "display_funding_source_descr", "responsibility_center_description",
               "expenditure_type_description", "program_phase_description", "gl_project_description", "adj_distribution_line_amount"
   ],
   "caption":"",
@@ -106,7 +106,7 @@
       "expression": "($row['department_name'] == null) ? '-' :_get_tooltip_markup($row['department_name'],36)"
     },*/
     "funding_source_formatted":{
-      "expression": "($row['funding_source_description'] == null) ? '-' : _get_tooltip_markup($row['funding_source_description'],36)"
+      "expression": "($row['display_funding_source_descr'] == null) ? '-' : _get_tooltip_markup($row['display_funding_source_descr'],36)"
     },
     "responsibility_center_formatted":{
       "expression": "($row['responsibility_center_description'] == null) ? '-' :_get_tooltip_markup($row['responsibility_center_description'],36)"
@@ -222,10 +222,13 @@
     {
       "labelAlias": "funding_source",
       "column": "funding_source_formatted",
-      "sortSourceColumn": "funding_source_description"
+      "sortSourceColumn": "display_funding_source_descr"
     },
+    {"label": "", "column": "", "export": false},
     {"labelAlias":"responsibility_center","column":"responsibility_center_formatted", "sortSourceColumn":"responsibility_center_description"},
+    {"label": "", "column": "", "export": false},
     {"labelAlias":"expense_category","column":"expenditure_type_name_formatted","sortSourceColumn":"expenditure_type_description"},
+    {"label": "", "column": "", "export": false},
     {"labelAlias":"program","column":"program_formatted", "sortSourceColumn":"program_phase_description"},
     {"labelAlias":"project","column":"project_formatted", "sortSourceColumn":"gl_project_description"},
     {"label":"","column":"", "export":false}
@@ -259,27 +262,30 @@
       {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"112px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
-      {"bSortable":false,"sWidth":"20px"},
+      {"bSortable":false,"sWidth":"10px"},
       {"sClass":"text", "sWidth":"120px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"75px","asSorting":["asc","desc"]},
-      {"bSortable":false,"sWidth":"8px"},
+      {"bSortable":false,"sWidth":"10px"},
       {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"100px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"100px","asSorting":["asc","desc"]},
       {"sClass":"number-center", "sWidth":"112px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
       {"sClass":"number", "sWidth":"112px","asSorting":["asc","desc"]},
-      {"bSortable":false,"sWidth":"20px"},
+      {"bSortable":false,"sWidth":"10px"},
       {"sClass":"text", "sWidth":"200px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"170px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"170px","asSorting":["asc","desc"]},
       //{"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
       {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"bSortable":false,"sWidth":"10px"},
       {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"bSortable":false,"sWidth":"10px"},
       {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
-      {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"bSortable":false,"sWidth":"10px"},
+      {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
       {"bSortable":false,"sWidth":"2px"}
     ],
     "aaSorting":[[0,"desc"]],

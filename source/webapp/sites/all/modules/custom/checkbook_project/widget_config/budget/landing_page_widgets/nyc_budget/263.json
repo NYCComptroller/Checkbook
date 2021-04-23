@@ -6,7 +6,7 @@
 "getTotalDataCount":true,
 "no_results_content":"No Results Found",
 "cleanURLParameters":["year","expcategory","agency","dept"],
-"urlParamMap":{"year":"year_id.year_id","expcategory":"object_class_id","agency":"agency_id","dept":"department_id"},
+"urlParamMap":{"year":"year_id.year_id","expcategory":"object_class_id","agency":"agency_id","dept":"department_code"},
 "defaultParameters":{"year_id.year_id":113},
 "noDataInitialLoad":true,
 "dataset": "checkbook:budget",

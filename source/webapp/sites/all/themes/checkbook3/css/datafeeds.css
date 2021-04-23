@@ -274,7 +274,9 @@ body.page-data-feeds #zone-content form.spending.data-feeds-wizard .column .form
     width: auto;
 }
 
-body.page-data-feeds #zone-content form.spending.data-feeds-wizard .column .form-item-year select {
+body.page-data-feeds #zone-content form.spending.data-feeds-wizard .column .form-item-year select,
+body.page-data-feeds #zone-content form.spending.data-feeds-wizard .column .form-item-nycha-year select
+{
     width: 90px;
 }
 

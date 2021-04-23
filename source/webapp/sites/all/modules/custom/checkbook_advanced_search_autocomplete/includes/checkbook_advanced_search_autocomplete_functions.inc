@@ -72,6 +72,8 @@ function _get_spending_advanced_search_autocomplete_results($facet, $query, $yea
  ***/
 function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, $dataSource, $feeds) {
   if($feeds){
+    //For EDC, set agency code
+    $agency = ($dataSource == Datasource::OGE) ? Datasource::getEDCCode() : $agency;
     if(isset($year)){//Data-feeds year format: FY2020
       $year = substr($year, 2, strlen($year));
       $year = !in_array($year, array('all', '', '0', 0)) ? $year: null;
@@ -81,6 +83,8 @@ function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, 
       _checkbook_project_get_name_for_argument('spending_category_code', $spendingCat, $dataSource) : "";
     $deptParam = $dept ? " AND department_code='".trim($dept)."' ":"";
   } else {
+    //For EDC, set agency Id
+    $agency = ($dataSource == Datasource::OGE) ? Datasource::getEDCId() : $agency;
     if(isset($year)) {//Advanced Search year format: fy~all, fy~122
       $yearId = substr($year, 3, strlen($year));
       $yearId = !in_array($yearId, array('all', '', '0', 0)) ? $yearId : null;
@@ -143,14 +147,17 @@ function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, 
  */
 function _checkbook_advanced_search_autocomplete_spending_department($year, $agency, $spendingCat, $dataSource = Datasource::CITYWIDE, $feeds = null) {
   if($feeds){
+    //For EDC, set agency code
+    $agency = ($dataSource == Datasource::OGE) ? Datasource::getEDCCode() : $agency;
     if(isset($year)){//Data-feeds year format: FY2020
       $year = substr($year, 2, strlen($year));
       $year = !in_array($year, array('all', '', '0', 0)) ? $year: null;
     }
-    $spendingCatParam = $spendingCat ? " AND spending_category_id = " .
-                        _checkbook_project_get_name_for_argument('spending_category_code', $spendingCat, $dataSource) : "";
+    $spendingCatParam = $spendingCat ? " AND spending_category_id = " . _checkbook_project_get_name_for_argument('spending_category_code', $spendingCat, $dataSource) : "";
     $agencyParam = $agency ? " AND agency_code = '" . $agency . "' " : "";
   } else {
+    //For EDC, set agency Id
+    $agency = ($dataSource == Datasource::OGE) ? Datasource::getEDCId() : $agency;
     if(isset($year)) {//Advanced Search year format: fy~all, fy~122
       $yearId = substr($year, 3, strlen($year));
       $yearId = !in_array($yearId, array('all', '', '0', 0)) ? $yearId : null;
@@ -171,7 +178,7 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
     $yearParam = ($feeds) ? (isset($year) ? " AND fiscal_year = '" . $year . "' " : "")
                  : (isset($yearId) ? " AND check_eft_issued_nyc_year_id = '" . $yearId . "' " : "");
 
-      $query = "SELECT DISTINCT department_name, department_code
+    $query = "SELECT DISTINCT department_name, department_code
                 FROM disbursement_line_item_details
                 WHERE 1 =1 {$agencyParam} {$yearParam} {$spendingCatParam}
                 ORDER BY department_name ASC";
@@ -230,38 +237,6 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
     drupal_json_output($matches);
 }
 
-// Year drop down to include 2010 for NYCHA
-/*function _checkbook_advanced_search_autocomplete_spending_year($data_source = Datasource::CITYWIDE, $feeds = null) {
-  $options = _get_spending_year_options($data_source);
-  $matches = array();
-  if(isset($options['label'])) {
-    $matches[] = $options['label'];
-  }
-  else {
-    foreach($options as $key => $value){
-      $value = htmlentities($value);
-      $name = ($feeds) ? $value :_ckbk_excerpt($value);
-      $matches[] = array("code" => $key, "name" => $name);
-    }
-  }
-  drupal_json_output($matches);
-}
-//Future update common function for all the year data across all datafeeds domaina
-
-function _get_spending_year_options($dataSource) {
-  try {
-  $fydata = CheckbookDateUtil::getLast10FiscalYearOptions($dataSource);
-  $fyarray = array();
-  foreach ($fydata as $row) {
-    $fyarray['FY' . $row['year_value']] = 'FY ' . $row['year_value'];
-  }
-  $results = array_merge(array('0' => 'All Years'), $fyarray);
-  return $results;
-  } catch (Exception $e) {
-    log_error("Error getting data from controller: \n" . $e->getMessage());
-    return;
-  }
-}*/
 
 //Contracts autocomplete menu callback functions
 /**
@@ -464,17 +439,17 @@ function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year,
     if($budget_code != '0' ) {
         $params["budget_code"] = $budget_code;
     }
-    $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name", "budget_code_code.budget_code_code"), $params,"budget_code_name.budget_code_name");
+    $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name"), $params,"budget_code_name.budget_code_name");
     if(count($results) == 0 && $agency != '0'){
         unset($params["budget_code"]);
-        $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name", "budget_code_code.budget_code_code"), $params,"budget_code_name.budget_code_name");
+        $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name"), $params,"budget_code_name.budget_code_name");
     }
     if (count($results) > 0) {
         $matches = array();
         foreach ($results as $key=>$value) {
             $budget_name_value = $value['budget_code_name.budget_code_name'];
             $budget_name_text = _ckbk_excerpt($budget_name_value);
-            $matches[] = array('label'=> $budget_name_text,'value' => $budget_name_value, 'code' => $value["budget_code_code.budget_code_code"]);
+            $matches[] = array('label'=> $budget_name_text,'value' => $budget_name_value);
         }
         drupal_json_output($matches);
     }

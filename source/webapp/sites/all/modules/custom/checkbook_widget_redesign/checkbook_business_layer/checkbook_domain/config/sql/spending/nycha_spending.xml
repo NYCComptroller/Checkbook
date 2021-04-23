@@ -138,6 +138,7 @@
             <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
           </exp>
         </where>
+        AND  expenditure_type_id IS NOT NUll
         GROUP BY expenditure_type_id,expenditure_type_code,expenditure_type_description
         UNION
         SELECT
@@ -186,8 +187,8 @@
       GROUP BY contract_id, contract_purpose, vendor_name, vendor_id
     </sql>
   </statement>
-  <!--GetCountContracts-->
-  <statement name="GetCountContracts" datasource="checkbook_nycha">
+  <!--GetCountNychaContracts-->
+  <statement name="GetCountNychaContracts" datasource="checkbook_nycha">
     <param name="year" required ="true" type="int" />
     <param name="vendor" type="int" />
     <param name="category" type="int" />
@@ -260,6 +261,7 @@
           <exp op="=" dbField="funding_source_id" paramName="fundsrc" />
         </exp>
       </where>
+      AND funding_source_id IS NOT NULL
       GROUP BY funding_source_id, display_funding_source_descr
     </sql>
   </statement>

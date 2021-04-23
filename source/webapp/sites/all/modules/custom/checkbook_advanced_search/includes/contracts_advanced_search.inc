@@ -19,14 +19,6 @@
  */
 
 /**
- * Constructs the URL for Spending transactions based on the input by the users
- *
- * @param $form
- * @param $form_state
- * @param string $data_source
- * @return string
- */
-/**
  * Constructs the URL for Contracts based on the input by the users
  *
  * @param $form
@@ -34,8 +26,7 @@
  * @param string $data_source
  * @return string
  */
-function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_source = DataSource::CITYWIDE)
-{
+function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_source = DataSource::CITYWIDE){
   $filter_dimension = $data_source . '_contracts';
   if( $data_source == Datasource::NYCHA){
     $redirect_url =   _checkbook_advanced_search_nycha_contracts_submit($form, $form_state);
@@ -68,8 +59,8 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
   $entity_contract_number_exact = trim($form[$filter_dimension][$filter_dimension .'_entity_contract_number_exact']['#value']);
   $commodity_line = trim($form[$filter_dimension][$filter_dimension .'_commodity_line']['#value']);
   $commodity_line_exact = trim($form[$filter_dimension][$filter_dimension .'_commodity_line_exact']['#value']);
-  $budget_name = trim($form[$filter_dimension][$filter_dimension .'_budget_name']['#value']);
-  $budget_name_exact = trim($form[$filter_dimension][$filter_dimension .'_budget_name_exact']['#value']);
+  $budget_name = trim($form[$filter_dimension][$filter_dimension .'_budget_name_text']['#value']);
+  $budget_name_exact = trim($form[$filter_dimension][$filter_dimension .'_budget_name_text_exact']['#value']);
   $year = trim($form[$filter_dimension][$filter_dimension .'_year']['#value']);
   $mwbe_category = trim($form[$filter_dimension][$filter_dimension .'_mwbe_category']['#value']);
   $mwbe_category = $mwbe_category == "Select Category" ? 0 : $mwbe_category;
@@ -220,7 +211,8 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
   $registration_date_range_array = array('from' => $registration_date_from, 'to' => $registration_date_to, 'type' => 'date');
 
   //append data source if not default (checkbook)
-  if($data_source != DataSource::CITYWIDE) $redirect_url .= '/datasource/' . $data_source;
+  $redirect_url .= ($data_source != DataSource::CITYWIDE) ? '/datasource/' . $data_source : "";
+  $redirect_url .= ($data_source == Datasource::OGE) ? '/agency/'. Datasource::getEDCId() : "";
 
   $redirect_url .= _checkbook_advanced_search_generate_redirect_url($registration_date_range_array, 'regdate', TRUE);
 
@@ -232,11 +224,9 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
  *
  * @param $form
  * @param $form_state
- * @param string $data_source
  * @return string
  */
-function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state)
-{
+function _checkbook_advanced_search_nycha_contracts_submit($form, &$form_state){
   $filter_dimension =  'checkbook_nycha_contracts';
   $nycha_agency_id = Datasource::getNYCHAId();
   $type=trim($form[$filter_dimension][$filter_dimension .'_type']['#value']);

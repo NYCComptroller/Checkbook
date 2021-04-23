@@ -192,7 +192,7 @@ class MappingUtil {
         }
 
         //Set year value to 2011 for CY2010
-        $year = RequestUtil::getFiscalYearIdForTopNavigation();
+        $year = CheckbookDateUtil::getFiscalYearIdForTopNavigation();
         $yearType = 'B';
         $filters_html .=  "
   			 " . $mwbe_total_link_html . "
@@ -241,7 +241,7 @@ class MappingUtil {
         }
 
         //Sub vendors home link
-        $year = RequestUtil::getFiscalYearIdForTopNavigation();
+        $year = CheckbookDateUtil::getFiscalYearIdForTopNavigation();
         $yearType = 'B';
         $sub_vendors_home_link = RequestUtil::getLandingPageUrl($domain,$year,$yearType);
         $home_link_html = "<li class='no-click'><a href='/" . $sub_vendors_home_link . "/dashboard/ss'>Sub Vendors Home</a></li>";

@@ -29,23 +29,25 @@
 
 //Facets that have Url parameters that match the current Url will be disabled from de-selecting by default.
 //To enable the user to de-select the default criteria (for advanced search), set "allowFacetDeselect":true in the config
-$disableFacet = !(isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false);
+$pagetype = PageType::getCurrent();
+$domain = CheckbookDomain::getCurrent();
+$setAutoDeselect= RequestUtil::isNychaAmountLinks();
 $urlParameter = $node->widgetConfig->urlParameterName;
-if($disableFacet) { //only URL parameters count and can be disabled
-    $query_string = $_GET['q'];
-    $is_new_window = preg_match('/newwindow/i',$query_string);
-    $currentPath = current_path();
-    //To disable the user to de-select the default criteria (for advanced search)-NYCHA Contracts
-    if (preg_match('/nycha_contracts\/all\/transactions/', $currentPath) ||
-        preg_match('/nycha_contracts\/search\/transactions/', $currentPath)) {
-        $url_ref = $_GET['q'];
-        $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
-    }
-    else {
-        $url_ref = $is_new_window ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
-        $disableFacet = preg_match('"/' . $urlParameter . '/"', $url_ref);
-    }
+// Set disbaleFacet variable to true when the page is not advanced search and allowFacetDeselect is not set
+if (($pagetype != 'advanced_search_page') && (!(isset($node->widgetConfig->allowFacetDeselect)) || ($setAutoDeselect == 1))){
+  $disableFacet = true;
 }
+
+//$disableFacet = isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false;
+// Disable only url parameters
+if($disableFacet) { //only URL parameters count and can be disabled
+    // check if the link is opened in a new window
+    $url_ref = $_GET['q'];
+    $is_new_window = preg_match('/newwindow/i', $url_ref);
+    $url_ref = ($is_new_window != 0) ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
+    $disableFacet = preg_match('"/' . $urlParameter. '/"', $url_ref);
+}
+
 if(isset($node->widgetConfig->maxSelect) && !$disableFacet){
   $tooltip = 'title="Select upto ' . $node->widgetConfig->maxSelect . '"';
 }
@@ -140,6 +142,29 @@ if($node->widgetConfig->filterName == 'Document ID') {
         $checked[$key][1] = "N/A";
       }
     }
+}
+
+//Budget Name and Budget Type filter display N/A values as N/A for Nycha budget and Nycha revenue fields
+if( $node->nid == '1043' || $node->nid == '1044' || $node->nid == '1059' || $node->nid == '1060')
+{
+  if ($unchecked && $unchecked)
+    foreach($unchecked as $key => $value) {
+      if($value[1] == null ) {
+        $unchecked[$key][0] = "N/A";
+        $unchecked[$key][1] = "N/A";
+      }
+    }
+  if (isset($checked) && $checked)
+    foreach($checked as $key => $value) {
+      if($value[1] == null) {
+        $checked[$key][0] = "N/A";
+        $checked[$key][1] = "N/A";
+      }
+    }
+}
+// NYCHA Contracts special condition in advanced search disable purchase order when selected.
+if($node->widgetConfig->filterName == 'Purchase Order Type') {
+  $disableFacet = !(isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false);
 }
 
 $checkedCount = (isset($checked) && $checked) ? sizeof($checked) : 0;
@@ -412,19 +437,28 @@ if(!$checked){
     $display_facet ="block";
     $span = "open";
 }
-
+$datasource = RequestUtilities::get('datasource');
 if(strtolower($filter_name) == 'agency' || strtolower($filter_name) == 'citywide agency'){
-    if(_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage()){
+    if(_checkbook_check_isEDCPage() || _checkbook_check_isNYCHAPage() || ($datasource == DATASOURCE::OGE)){
         $filter_name = 'Other Government Entity';
     }else{
         $filter_name = 'Citywide Agency';
     }
 }
-if(strtolower($filter_name) == 'vendor'){
-    if(_checkbook_check_isEDCPage()){
+if(strtolower($filter_name) == 'vendor' || strtolower($filter_name) == 'payee' ){
+
+    if(_checkbook_check_isEDCPage() || $datasource == DATASOURCE::OGE){
         $filter_name = 'Prime Vendor';
     }
 }
+
+if($node->widgetConfig->filterName == 'Expense Type'){
+
+  if(_checkbook_check_isEDCPage() || $datasource == 'checkbook_oge'){
+    $filter_name = 'Spending Category';
+  }
+}
+
 $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
 ?>
 <div name="<?php print $urlParameter; ?>" id="<?php print $autocomplete_id; ?>" class="filter-content <?php if( $hide_filter != "") print "disabled"; ?>">

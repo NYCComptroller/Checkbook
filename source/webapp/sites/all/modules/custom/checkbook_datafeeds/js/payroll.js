@@ -43,18 +43,14 @@
         yearRange: '-' + (currentYear - 1900) + ':+' + (2500 - currentYear)
       });
       //Sets up autocompletes
-      var year = $('#edit-year', context).val();
+      var year = getYearValue($('#edit-year', context).val());
       var agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : emptyToZero($('#edit-agency', context).val());
       var payfrequency = ($('#edit-payfrequency', context).val() === 'All Pay Frequencies') ? 0 : $('#edit-payfrequency', context).val();
 
       $('.watch:input').each(function ()
       {
         $(this).focusin(function () {
-          year = $('#edit-year', context).val();
-          year = year.replace('ALL','').replace('FY','').trim();
-          if(year){
-            year = year.match(/\d+/)[0];
-          }
+          year = getYearValue($('#edit-year', context).val());
           agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : emptyToZero($('#edit-agency', context).val());
           payfrequency = ($('#edit-payfrequency', context).val() === 'All Pay Frequencies') ? 0 : $('#edit-payfrequency', context).val();
           dataSource = $('input[name="datafeeds-payroll-domain-filter"]:checked', context).val();
@@ -62,8 +58,12 @@
           let filter = new URLSearchParams();
           if(agency){filter.set('agency_code',agency)}
           if(payfrequency){filter.set('pay_frequency', payfrequency)}
-          if(year){filter.set('calendar_fiscal_year',year)}
-
+          // Set the correct autocomplete year fields
+          if(year[0] == 'CY') {
+            filter.set('calendar_fiscal_year', year[2]);
+          }else{
+            filter.set('fiscal_year', year[2]);
+          }
           $("#edit-title").autocomplete({
             source: '/solr_options/'+dataSource+'/payroll/civil_service_title?'+filter,
             select: function (event, ui) {
@@ -101,8 +101,7 @@
     datafeedsPayrollShowHideFields(dataSource);
   };
 
-  let datafeedsPayrollShowHideFields = function (dataSource)
-  {
+  let datafeedsPayrollShowHideFields = function (dataSource) {
     //Add/Remove extra year value based on datasource
     resetYearvalue(dataSource);
     if (dataSource == 'checkbook_nycha') {
@@ -116,23 +115,19 @@
     }
   };
 
-  let resetYearvalue = function (dataSource)
-  {
-    let lastYear =  $("#edit-year option:eq(12)").val();
-    let yearValue = lastYear.split(/\s+/);
+  let resetYearvalue = function (dataSource) {
+    //let yearValue = lastYear.split(/\s+/);
     $("#edit-year > option").each(function() {
       if(dataSource === 'checkbook_nycha') {
         if (/^FY/.test(this.value)) {
           // Hide FY for Nycha
           $("#edit-year option[value='" + this.value + "']").hide();
         }
-        //$("#edit-year option[value='CY "+yearValue[1]+"']").hide();
-      }
-      else{
-        // Hide the extra year for citywide (FY AND CY)
-          $("#edit-year option[value='"+this.value+"']").show();
-          //$("#edit-year option[value='FY "+yearValue[1]+"']").hide();
-          //$("#edit-year option[value='CY "+yearValue[1]+"']").hide();
+      }else{
+        if (/^FY/.test(this.value)) {
+          // Show FY
+          $("#edit-year option[value='" + this.value + "']").show();
+        }
       }
     });
   };
@@ -159,7 +154,7 @@
           break;
         case 'checkbox':
         case 'radio':
-          $('#edit-salary-type-all').attr('checked', 'checked');
+          $('#edit-salary-type-').attr('checked', 'checked');
           break;
       }
     });
@@ -174,6 +169,12 @@
       return code[1];
     }
     return 0;
+  }
+  //Function to retrieve year values ignoring FY and CY
+  function getYearValue(input)
+  {
+    var yeardata = input.split(/(\s)/);
+    return yeardata;
   }
 
 }(jQuery));

@@ -58,15 +58,12 @@ echo eval($node->widgetConfig->header);
         <th class="number"><div class="trendCen" >Total</div></th>
     </tr>    
     </thead>
-
     <tbody>
-
     <?php
         $count = 1;
         foreach($node->data as $row){
             $dollar_sign = ($count == 1 ? '<div class="dollarItem" >$</div>':'');
             echo "<tr>";
-            
             echo "<td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['dib_revenue_1']>0)?number_format($row['dib_revenue_1']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['tep_revenue_2']>0)?number_format($row['tep_revenue_2']):'-') . "</td>";
@@ -87,7 +84,6 @@ echo eval($node->widgetConfig->header);
             $count++;
         }
     ?>
-
     </tbody>
 </table>
 </div>

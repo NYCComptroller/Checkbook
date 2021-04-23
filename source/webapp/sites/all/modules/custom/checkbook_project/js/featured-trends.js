@@ -9,7 +9,7 @@
             var minYear = Highcharts.dateFormat('%Y',Highcharts.chartarray[chartNumber].xAxis[0].getExtremes().dataMin);
             var maxYear = Highcharts.dateFormat('%Y',Highcharts.chartarray[chartNumber].xAxis[0].getExtremes().dataMax);
             if (minraw.length > 0 || maxraw.length > 0) {
-                validateInput(minraw, maxraw, chartNumber, minYear,maxYear);
+                validateInput(minraw, maxraw, chartNumber, minYear,maxYear, parentID);
             } else if (minraw.length === 0 && maxraw.length === 0) {
                 var today = new Date().getFullYear();
                 var lastYear = today - 1;
@@ -90,33 +90,43 @@
                 $('#breadcrumb span.last').text("Ratios of Outstanding Debt by Type");
         }
         return true;
-    })
+    });
 
-}(jQuery));
+  function isValidYear(n, floor) {
+    var ceiling = new Date().getFullYear() - 1;
+    return !isNaN(parseFloat(n)) && isFinite(n) && n >= floor && n <= ceiling;
+  }
 
-function isValidYear(n, floor) {
-  var ceiling = new Date().getFullYear() - 1;
-  return !isNaN(parseFloat(n)) && isFinite(n) && n >= floor && n <= ceiling;
-}
-
-function validateInput(min, max, chartno, floor, ceiling) {
-  min = Number(min);
-  max = Number(max);
-  var mindate = Date.UTC(min, 1, 31);
-  var maxdate = Date.UTC(max, 1, 31);
-  var floorDate = Date.UTC(floor, 1, 31);
-  var ceilingDate = Date.UTC(ceiling, 1, 31);
-  if (min <= max) {
-    if (isValidYear(min, floor) && isValidYear(max, floor)) {
-      Highcharts.chartarray[chartno].xAxis[0].setExtremes(mindate, maxdate, true);
-    } else if (isValidYear(min, floor) && !isValidYear(max, floor)) {
-      Highcharts.chartarray[chartno].xAxis[0].setExtremes(mindate, ceilingDate, true);
-    } else if (!isValidYear(min, floor) && isValidYear(max, floor)) {
-      Highcharts.chartarray[chartno].xAxis[0].setExtremes(floorDate, maxdate, true);
-    }else{
+  function validateInput(min, max, chartno, floor, ceiling, parentID) {
+    min = Number(min);
+    max = Number(max);
+    var mindate = Date.UTC(min, 0);
+    var maxdate = Date.UTC(max, 1);
+    var floorDate = Date.UTC(floor, 0);
+    var ceilingDate = Date.UTC(ceiling, 1);
+    if (min <= max) {
+      if (isValidYear(min, floor) && isValidYear(max, floor)) {
+        Highcharts.chartarray[chartno].xAxis[0].setExtremes(mindate, maxdate, true);
+        $(parentID + ' .chartdatefrom').val(min);
+        $(parentID + ' .chartdateto').val(max);
+      } else if (isValidYear(min, floor) && !isValidYear(max, floor)) {
+        Highcharts.chartarray[chartno].xAxis[0].setExtremes(mindate, ceilingDate, true);
+        $(parentID + ' .chartdatefrom').val(min);
+        $(parentID + ' .chartdateto').val(ceiling);
+      } else if (!isValidYear(min, floor) && isValidYear(max, floor)) {
+        Highcharts.chartarray[chartno].xAxis[0].setExtremes(floorDate, maxdate, true);
+        $(parentID + ' .chartdatefrom').val(floor);
+        $(parentID + ' .chartdateto').val(max);
+      }else{
+        Highcharts.chartarray[chartno].xAxis[0].setExtremes(floorDate, ceilingDate, true);
+        $(parentID + ' .chartdatefrom').val(floor);
+        $(parentID + ' .chartdateto').val(ceiling);
+      }
+    } else {
+      $(parentID + ' .chartdatefrom').val(floor);
+      $(parentID + ' .chartdateto').val(ceiling);
       Highcharts.chartarray[chartno].xAxis[0].setExtremes(floorDate, ceilingDate, true);
     }
-  } else {
-    Highcharts.chartarray[chartno].xAxis[0].setExtremes(floorDate, ceilingDate, true);
   }
-}
+
+}(jQuery));

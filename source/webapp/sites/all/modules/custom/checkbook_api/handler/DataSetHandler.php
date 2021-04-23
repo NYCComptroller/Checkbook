@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -132,6 +132,10 @@ class DataSetHandler {
    * @param $config_type
    */
   private function prepareParameterConfiguration(&$parameters, $column, $value, $config_type) {
+    // Do not need to escape special characters for range values
+    if(isset($value) && $config_type != "range" && !is_array($value)){
+      $value = pg_escape_string(htmlspecialchars_decode($value));
+    }
     switch ($config_type) {
       case "range":
         $conditions[] = data_controller_get_operator_factory_instance()->initiateHandler(RangeOperatorHandler::$OPERATOR__NAME, array(
@@ -140,7 +144,6 @@ class DataSetHandler {
         ));
         $parameters[$column] = $conditions;
         break;
-
       case "like":
         $parameters[$column] = data_controller_get_operator_factory_instance()->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array(
           $value,
@@ -148,7 +151,6 @@ class DataSetHandler {
           TRUE,
         ));
         break;
-
       case "trueLike":
         $parameters[$column] = data_controller_get_operator_factory_instance()->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array(
           $value,
@@ -161,7 +163,6 @@ class DataSetHandler {
           $pattern = "(.* $value .*)|(.* $value$)|(^$value.*)|(.* $value.*)";
           $parameters[$column] = data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
         break;
-
       default:
         $parameters[$column] = $value;
         break;

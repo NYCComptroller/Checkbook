@@ -48,6 +48,15 @@
                                 }
                     ]
                 },
+              {
+                "name": "daily_wage",
+                "levels": [
+                  {
+                    "name": "daily_wage",
+                    "sourceColumnName": "daily_wage"
+                  }
+                ]
+              },
                 {
                     "name": "employment_type",
                     "levels": [
@@ -265,6 +274,9 @@
                 },
                 "max_daily_wage":{
                     "function": "MAX(daily_wage)"
+              },
+              "max_hourly_daily":{
+                "function" :"MAX(CASE WHEN hourly_rate > 0 THEN hourly_rate ELSE daily_wage END)"
               }
             }
         }

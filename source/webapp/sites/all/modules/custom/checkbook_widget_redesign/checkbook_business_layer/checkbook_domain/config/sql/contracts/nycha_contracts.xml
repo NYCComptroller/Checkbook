@@ -271,8 +271,8 @@
     </sql>
   </statement>
 
-  <!-- GetCountContracts -->
-  <statement name="GetCountContracts" datasource="checkbook_nycha">
+  <!-- GetCountNychaContracts -->
+  <statement name="GetCountNychaContracts" datasource="checkbook_nycha">
     <param name="year" required="true" type="int"/>
     <param name="vendor" type="int"/>
     <param name="industry" />

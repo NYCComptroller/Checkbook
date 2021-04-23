@@ -30,10 +30,12 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
 
     switch ($form_state['clicked_button']['#name']) {
         case "budget_submit":
-            $form_state['redirect'] = _checkbook_advanced_search_budget_submit($form, $form_state);
+            $data_source = $form_state['values']['budget_advanced_search_domain_filter'];
+            $form_state['redirect'] = _checkbook_advanced_search_budget_submit($form, $form_state, $data_source);
             break;
         case "revenue_submit":
-            $form_state['redirect'] = _checkbook_advanced_search_revenue_submit($form, $form_state);
+            $data_source = $form_state['values']['revenue_advanced_search_domain_filter'];
+            $form_state['redirect'] = _checkbook_advanced_search_revenue_submit($form, $form_state, $data_source);
             break;
         case "spending_submit":
             $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
@@ -47,10 +49,12 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
             $form_state['redirect'] = _checkbook_advanced_search_payroll_submit($form, $form_state);
             break;
         case "budget_next":
-            return _checkbook_advanced_search_budget_submit($form, $form_state);
+            $data_source = $form_state['values']['budget_advanced_search_domain_filter'];
+            return _checkbook_advanced_search_budget_submit($form, $form_state, $data_source);
             break;
         case "revenue_next":
-            return _checkbook_advanced_search_revenue_submit($form, $form_state, 'next');
+            $data_source = $form_state['values']['revenue_advanced_search_domain_filter'];
+            return _checkbook_advanced_search_revenue_submit($form, $form_state, $data_source);
             break;
         case "spending_next":
             $data_source = $form_state['values']['spending_advanced_search_domain_filter'];
@@ -75,28 +79,28 @@ function checkbook_advanced_search_form_submit($form, &$form_state) {
  * @param string $data_source
  * @return array
  */
-function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = Datasource::CITYWIDE)
-{
+function _checkbook_advanced_search_get_year($domain = null, $form = null, $data_source = Datasource::CITYWIDE){
     try {
-        $data = CheckbookDateUtil::getLast10FiscalYearOptions($data_source);
-        $max_year = _checkbook_max_data_year($data_source);
+        $fiscalYears = CheckbookDateUtil::getFiscalYearOptionsRange($data_source, $domain);
+        $calendarYears = CheckbookDateUtil::getCalendarYearOptionsRange($data_source);
         $fiscal_year_array = [];
-        foreach ($data as $row) {
-            if ($domain != 'revenue' && $domain != 'budget') {
-                if ($row['year_value'] <= $max_year['year_value']) {
-                    $fiscal_year_array['fy~' . $row['year_id']] = 'FY ' . $row['year_value'];
-                }
-                if ($row['year_value'] <= $max_year['cal_year_value']) {
-                    $calendar_year_array['cy~' . $row['year_id']] = 'CY ' . $row['year_value'];
-                }
-            } else {
-                if ($row['year_value'] <= $max_year['year_value']) {
-                    if ($form == 'datafeeds')
-                        $fiscal_year_array[$row['year_value']] = $row['year_value'];
-                    else
-                        $fiscal_year_array[$row['year_id']] = $row['year_value'];
-                }
-            }
+        $calendar_year_array = [];
+
+        //Fiscal Years
+        foreach($fiscalYears as $row) {
+          if ($domain != Domain::$REVENUE && $domain != Domain::$BUDGET) {
+            $fiscal_year_array['fy~' . $row['year_id']] = 'FY ' . $row['year_value'];
+          } else {
+            if ($form == 'datafeeds')
+              $fiscal_year_array[$row['year_value']] = $row['year_value'];
+            else
+              $fiscal_year_array[$row['year_id']] = $row['year_value'];
+          }
+        }
+
+        //Calendar Years
+        foreach($calendarYears as $row){
+          $calendar_year_array['cy~' . $row['year_id']] = 'CY ' . $row['year_value'];
         }
 
          if (isset($fiscal_year_array)) {
@@ -106,8 +110,8 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
         if(isset($calendar_year_array)) {
           arsort($calendar_year_array);
         }
-        $calendar_year_array['cy~' . _getYearIDFromValue('2010')] = 'CY 2010';
-        if ($domain == 'payroll') {
+
+        if ($domain == Domain::$PAYROLL) {
             if($data_source == Datasource::NYCHA) {
               $fiscal_year_array = $calendar_year_array;
             }else{
@@ -115,10 +119,7 @@ function _checkbook_advanced_search_get_year($domain = null, $form = null, $data
             }
         }
 
-        if ($domain == 'contracts' || $domain == 'spending') {
-          if($data_source == Datasource::NYCHA) {
-            $fiscal_year_array['fy~' .  _getYearIDFromValue('2010')] = 'FY 2010';
-          }
+        if ($domain == Domain::$CONTRACTS || $domain == Domain::$SPENDING) {
             $fiscal_year_array = array_reverse($fiscal_year_array, true);
             $fiscal_year_array['fy~all'] = 'All Years';
             $fiscal_year_array = array_reverse($fiscal_year_array, true);
@@ -635,15 +636,14 @@ function _checkbook_advanced_search_get_responsibility_centers($data_source = Da
           $text = $value['responsibility_center_description'] . ' [' . $value['responsibility_center_code'] . ']';
           $res_center_key_val_option_attributes[$text] = array('title' => $text);
           $res_center_key_val_options[$text] = _ckbk_excerpt($text);
-            } else {
-                $keys = $value['responsibility_center_id'];
-                $res_center_key_val_option_attributes[$keys] = array('title' => $value['responsibility_center_description']);
-                $res_center_key_val_options[$keys] = _ckbk_excerpt($value['responsibility_center_description']);
-            }
+        } else {
+          $keys = $value['responsibility_center_id'];
+          $res_center_key_val_option_attributes[$keys] = array('title' => $value['responsibility_center_description']);
+          $res_center_key_val_options[$keys] = _ckbk_excerpt($value['responsibility_center_description']);
         }
+      }
 
-        return array('options' => $res_center_key_val_options, 'option_attributes' => $res_center_key_val_option_attributes);
-
+      return array('options' => $res_center_key_val_options, 'option_attributes' => $res_center_key_val_option_attributes);
     } catch (Exception $e) {
         log_error("Error getting data from controller: \n" . $e->getMessage());
         return;
@@ -831,7 +831,7 @@ function _checkbook_advanced_search_year_arg(string $year_arg)
     if ($year_type == 'fy') {
         $year_url = '/yeartype/B/year/' . $year_id;
     } elseif ($year_type == 'cy') {
-        $year_url = '/yeartype/C/calyear/' . $year_id;
+        $year_url = '/yeartype/C/calyear/' . $year_id.'/year/'.$year_id;
     }
 
     return $year_url;
@@ -977,4 +977,16 @@ function _checkbook_advanced_search_create_alert_header($create_alert_config, $c
 
     $header_html = "<span class='create-alert-header'>".$header_html."</span>";
     return $header_html;
+}
+
+/**
+ * Returns input value from drupal form
+ *
+ * @param $form
+ * @param $filter_dimension
+ * @param $field_name
+ * @return string
+ */
+function _checkbook_get_selected_value($form, $filter_dimension, $field_name){
+  return trim($form[$filter_dimension][$filter_dimension . '_' .$field_name]['#value']);
 }

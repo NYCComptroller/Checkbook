@@ -100,7 +100,9 @@ class WidgetController {
             case Domain::$SPENDING:
             case Domain::$REVENUE:
             case Domain::$BUDGET:
+            case Domain::$NYCHA_BUDGET:
             case Domain::$NYCHA_CONTRACTS:
+            case Domain::$NYCHA_REVENUE:
             case Domain::$NYCHA_SPENDING:
                 $config = $configuration->$dashboard->landing_page_widgets->$widget;
                 break;

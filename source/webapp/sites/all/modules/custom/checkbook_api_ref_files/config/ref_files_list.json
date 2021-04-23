@@ -18,8 +18,8 @@
       "agency_code"
     ]
   },
-  "mwbe_code_list": {
-    "sql": "SELECT DISTINCT minority_type_id, minority_type_name FROM ref_minority_type ORDER BY minority_type_id"
+  "spending_mwbe_code_list": {
+      "sql": "select minority_type_id,minority_type_name from (select minority_type_id::text,CASE WHEN minority_type_id = 2 THEN 'Black American' WHEN minority_type_id = 3 THEN 'Hispanic American' WHEN minority_type_id = 4 THEN 'Asian American' WHEN minority_type_id = 5 THEN 'Asian American' WHEN minority_type_id = 7 THEN 'Non-M/WBE' WHEN minority_type_id = 9 THEN 'Women' WHEN minority_type_id = 11 THEN 'Individuals & Others' END AS minority_type_name FROM ref_minority_type where minority_type_id in (2,3,4,5,7,9,11) union SELECT  '2~3~4~5~9' as minority_type_id , 'Total M/WBE' as minority_type_name )A order by idx(array['2','3','4','5','7','9','11','2~3~4~5~9'],minority_type_id)"
   },
   "industry_code_list": {
     "sql": "SELECT DISTINCT t1.industry_type_id, t1.industry_type_name FROM ref_industry_type t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.industry_type_id = t1.industry_type_id ) ORDER BY t1.industry_type_id"
@@ -184,5 +184,114 @@
     "force_quote": [
       "expenditure_type_code"
     ]
+  },
+  "nycha_budget_expenditure_type_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT expenditure_type_code, expenditure_type_description FROM ref_expenditure_type where account_type ='Expense' AND expenditure_type_code IS NOT NULL AND expenditure_type_description IS NOT NULL AND expenditure_type_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT expenditure_type_description ~ '^'''",
+    "force_quote": [
+      "expenditure_type_code"
+    ]
+  },
+  "nycha_budget_funding_source_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT funding_source_code, display_funding_source_descr FROM public.ref_funding_source where funding_source_code IS NOT NULL and display_funding_source_descr IS NOT NULL AND display_funding_source_descr NOT IN (' ','<Unknown>','xxxxxxx') AND NOT display_funding_source_descr ~ '^'''",
+    "force_quote": [
+      "funding_source_code"
+    ]
+  },
+  "nycha_budget_project_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT gl_project_code, gl_project_description FROM public.ref_gl_project where gl_project_code IS NOT NULL and gl_project_description IS NOT NULL AND gl_project_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT gl_project_description ~ '^'''",
+    "force_quote": [
+      "gl_project_code"
+    ]
+  },
+  "nycha_budget_program_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT program_phase_code, program_phase_description FROM public.ref_program_phase where program_phase_code IS NOT NULL AND program_phase_description IS NOT NULL AND program_phase_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT program_phase_description ~ '^'''",
+    "force_quote": [
+      "program_phase_code"
+    ]
+  },
+  "nycha_budget_responsibility_center_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT responsibility_center_code, responsibility_center_description FROM public.ref_responsibility_center where responsibility_center_code IS NOT NULL AND responsibility_center_description IS NOT NULL AND responsibility_center_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT responsibility_center_description ~ '^'''",
+    "force_quote": [
+      "responsibility_center_code"
+    ]
+  },
+  "nycha_budget_type_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT budget_type from public.budget",
+    "force_quote": [
+      "budget_type"
+    ]
+  },
+  "nycha_budget_name_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT budget_name from public.budget",
+    "force_quote": [
+      "budget_name"
+    ]
+  },
+  "nycha_revenue_expenditure_type_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT expenditure_type_code, expenditure_type_description FROM ref_expenditure_type where account_type ='Revenue' AND expenditure_type_code IS NOT NULL AND expenditure_type_description IS NOT NULL AND expenditure_type_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT expenditure_type_description ~ '^'''",
+    "force_quote": [
+      "expenditure_type_code"
+    ]
+  },
+  "nycha_revenue_funding_source_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT funding_source_code, display_funding_source_descr FROM public.ref_funding_source where funding_source_code IS NOT NULL and display_funding_source_descr IS NOT NULL AND display_funding_source_descr NOT IN (' ','<Unknown>','xxxxxxx') AND NOT display_funding_source_descr ~ '^'''",
+    "force_quote": [
+      "funding_source_code"
+    ]
+  },
+  "nycha_revenue_project_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT gl_project_code, gl_project_description FROM public.ref_gl_project where gl_project_code IS NOT NULL and gl_project_description IS NOT NULL AND gl_project_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT gl_project_description ~ '^'''",
+    "force_quote": [
+      "gl_project_code"
+    ]
+  },
+  "nycha_revenue_program_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT program_phase_code, program_phase_description FROM public.ref_program_phase where program_phase_code IS NOT NULL AND program_phase_description IS NOT NULL AND program_phase_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT program_phase_description ~ '^'''",
+    "force_quote": [
+      "program_phase_code"
+    ]
+  },
+  "nycha_revenue_responsibility_center_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT responsibility_center_code, responsibility_center_description FROM public.ref_responsibility_center where responsibility_center_code IS NOT NULL AND responsibility_center_description IS NOT NULL AND responsibility_center_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT responsibility_center_description ~ '^'''",
+    "force_quote": [
+      "responsibility_center_code"
+    ]
+  },
+  "nycha_revenue_budget_type_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT budget_type from public.revenue",
+    "force_quote": [
+      "budget_type"
+    ]
+  },
+  "nycha_revenue_budget_name_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT budget_name from public.revenue",
+    "force_quote": [
+      "budget_name"
+    ]
+  },
+  "nycha_revenue_category_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "select distinct revenue_category from public.revenue",
+    "force_quote": [
+      "revenue_category"
+    ]
+  },
+  "nycha_revenue_class_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "select distinct revenue_class from public.revenue"
   }
 }

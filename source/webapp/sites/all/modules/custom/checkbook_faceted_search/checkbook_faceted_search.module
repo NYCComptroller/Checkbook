@@ -120,6 +120,13 @@ function _checkbook_faceted_search_node_autocomplete()
   $output = array();
 
   foreach ($node->data['unchecked'] as $row) {
+    // Show 'n/a' in autocompletes for budget type and name (NYHCA)
+    if($nid == '1044' || $nid == '1043' || $nid == '1059' || $nid == '1060'){
+      if(isset($row[2]) && $row[1] == null)
+      {
+        $row[1] = $row[0] = 'N/A';
+      }
+    }
     if (isset($row[1]))
       $output[] = array("value" => urlencode(html_entity_decode($row[0], ENT_QUOTES)), 'label' => html_entity_decode($row[1], ENT_QUOTES) . " (" . $row[2] . ")");
   }
@@ -169,14 +176,15 @@ function _checkbook_faceted_search_update_data($node)
                 $patterns = array();
                 foreach ($paramValues as $value) {
                   $value = checkbook_faceted_search_replaceSlash($value);
+                  $value = pg_escape_string(htmlspecialchars_decode($value));
                   $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
                 }
                 $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns, "|")));
                 break;
             }
-
           } else {
             $param = checkbook_faceted_search_replaceSlash($param);
+            $param = pg_escape_string(htmlspecialchars_decode($param));
             $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $param));
           }
           $resultFormatter = new SpecialCharacterResultFormatter(NULL, new ArrayResultFormatter());
@@ -257,32 +265,20 @@ function _checkbook_faceted_search_update_data($node)
     }
   }
 
-  // Facet preselection for
-  $query_string = $_GET['q'];
-  $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
+  // Facet preselection for NYCHA amount links
+  $setAutoDeselect= RequestUtil::isNychaAmountLinks();
+  $pagetype = PageType::getCurrent();
 
-  if((strpos($widget, 'wt_') !== false) || (strpos($widget, 'ytd_') !== false)){
-    $node->widgetConfig->allowFacetDeselect = false;
-  }
   //Facets that have Url parameters that match the current Url will be disabled and show only the default checked items
-  $disableFacet = !(isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false);
-  if ($disableFacet) { //only URL parameters count and can be disabled
-    $query_string = $_GET['q'];
-    //print $query_string;
-    $is_new_window = preg_match('/newwindow/i', $query_string);
-    $currentPath = current_path();
-    //To show only default checked items for nycha contracts advanced search
-    if (preg_match('/nycha_contracts\/all\/transactions/', $currentPath) ||
-      preg_match('/nycha_contracts\/search\/transactions/', $currentPath)) {
-      $url_ref = $_GET['q'];
-      $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
-
-    } else {
-      $url_ref = $is_new_window ? $_GET['q'] : $_SERVER['HTTP_REFERER'];
-      $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
-    }
+  //$disableFacet = isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false;
+  if (($pagetype != 'advanced_search_page') && (!(isset($node->widgetConfig->allowFacetDeselect)) || ($setAutoDeselect == 1))){
+    $disableFacet = true;
   }
 
+  if ($disableFacet) { //only URL parameters count and can be disabled
+      $url_ref = $_SERVER['HTTP_REFERER'];
+      $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
+  }
 
   if ($disableFacet) {
     $output['unchecked'] = null;
@@ -319,13 +315,26 @@ function _checkbook_faceted_search_update_data_range_filter($node)
   if (!is_array($data[0])) {
     $data = array(0 => array());
   }
-  $initial[0] = array(6, 'Greater than $100M', $data[0]['g100m_' . $rangeColumnNameVariant . 'count']);
-  $initial[1] = array(5, '$51M - $100M', $data[0]['g50m_le100m_' . $rangeColumnNameVariant . 'count']);
-  $initial[2] = array(4, '$26M - $50M', $data[0]['g25m_le50m_' . $rangeColumnNameVariant . 'count']);
-  $initial[3] = array(3, '$11M - $25M', $data[0]['g10m_le25m_' . $rangeColumnNameVariant . 'count']);
-  $initial[4] = array(2, '$1M - $10M', $data[0]['ge1m_le10m_' . $rangeColumnNameVariant . 'count']);
-  $initial[5] = array(1, 'Less than $1M', $data[0]['less1m_' . $rangeColumnNameVariant . 'count']);
-
+  switch ($node->widgetConfig->filterName) {
+    case "Committed Expense Budget":
+      if($node->nid == '1042') {
+        $initial[0] = array(6, 'Greater than $100M', $data[0]['committed_g100m_' . $rangeColumnNameVariant . 'count']);
+        $initial[1] = array(5, '$51M - $100M', $data[0]['committed_g50m_le100m_' . $rangeColumnNameVariant . 'count']);
+        $initial[2] = array(4, '$26M - $50M', $data[0]['committed_g25m_le50m_' . $rangeColumnNameVariant . 'count']);
+        $initial[3] = array(3, '$11M - $25M', $data[0]['committed_g10m_le25m_' . $rangeColumnNameVariant . 'count']);
+        $initial[4] = array(2, '$1M - $10M', $data[0]['committed_ge1m_le10m_' . $rangeColumnNameVariant . 'count']);
+        $initial[5] = array(1, 'Less than $1M', $data[0]['committed_less1m_' . $rangeColumnNameVariant . 'count']);
+      }
+      break;
+    default :
+      $initial[0] = array(6, 'Greater than $100M', $data[0]['g100m_' . $rangeColumnNameVariant . 'count']);
+      $initial[1] = array(5, '$51M - $100M', $data[0]['g50m_le100m_' . $rangeColumnNameVariant . 'count']);
+      $initial[2] = array(4, '$26M - $50M', $data[0]['g25m_le50m_' . $rangeColumnNameVariant . 'count']);
+      $initial[3] = array(3, '$11M - $25M', $data[0]['g10m_le25m_' . $rangeColumnNameVariant . 'count']);
+      $initial[4] = array(2, '$1M - $10M', $data[0]['ge1m_le10m_' . $rangeColumnNameVariant . 'count']);
+      $initial[5] = array(1, 'Less than $1M', $data[0]['less1m_' . $rangeColumnNameVariant . 'count']);
+      break;
+  }
   //sort
   /*usort($initial,
       function($a, $b)

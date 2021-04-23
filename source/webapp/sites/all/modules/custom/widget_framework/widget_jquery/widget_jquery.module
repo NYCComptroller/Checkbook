@@ -94,7 +94,8 @@ function widget_jquery_full($node) {
 }
 
 function widget_jquery_include() {
-	return '';
+	$output .= "";
+	return $output;
 }
 
 function widget_jquery_html($node) {

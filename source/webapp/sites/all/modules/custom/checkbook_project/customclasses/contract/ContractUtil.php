@@ -832,7 +832,7 @@ namespace { //global
             }
             else {
                 $parameters['latest_flag'] = 'Y';
-                }
+            }
 
             //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
             if(isset($parameters['vendor_code']) || (isset($parameters['vendor_code.vendor_code']) && $node->widgetConfig->functionality != 'search')) {

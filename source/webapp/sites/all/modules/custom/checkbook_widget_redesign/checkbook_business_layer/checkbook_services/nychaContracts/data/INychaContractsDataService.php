@@ -16,5 +16,5 @@ interface INychaContractsDataService {
     function GetContractsByIndustries($parameters, $limit = null, $orderBy = null);
     function GetContractsByRespCenters($parameters, $limit = null, $orderBy = null);
     function GetContractsBySize($parameters, $limit = null, $orderBy = null);
-    function GetCountContracts($parameters);
+    function GetCountNychaContracts($parameters);
 }

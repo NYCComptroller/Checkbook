@@ -1,0 +1,37 @@
+{
+  "datasets":{
+    "budget_percent_difference_fundsrc":{
+      "datasourceName":"main",
+      "source":"
+          SELECT
+            a.budget_fiscal_year_id,
+            ma.modified_budget_amount AS current_amount,
+            ma.modified_budget_amount_py_1 AS previous_amount,
+            ma.modified_budget_amount_py_2 AS previous_1_amount,
+            ma.modified_budget_amount_py_3 AS previous_2_amount,
+            a.funding_source_code,
+            b.display_funding_source_descr AS funding_source_description,
+            b.funding_source_id,
+            CASE SUM(COALESCE(ma.modified_budget_amount_py_1,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_1,0)))/SUM(COALESCE(ma.modified_budget_amount_py_1,0)))*100 END AS percent_difference1,
+            CASE SUM(COALESCE(ma.modified_budget_amount_py_2,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_2,0)))/SUM(COALESCE(ma.modified_budget_amount_py_2,0)))*100 END AS percent_difference2,
+            CASE SUM(COALESCE(ma.modified_budget_amount_py_3,0)) WHEN 0 THEN 0 ELSE ((SUM(COALESCE(ma.modified_budget_amount,0)) - SUM(COALESCE(ma.modified_budget_amount_py_3,0)))/SUM(COALESCE(ma.modified_budget_amount_py_3,0)))*100 END AS percent_difference3
+          FROM aggregateon_budget_by_year a
+          JOIN (
+            SELECT
+            funding_source_id,
+              SUM(COALESCE(a.modified_budget_amount,0)) AS modified_budget_amount,
+              SUM(COALESCE(a.modified_budget_amount_py_1,0)) AS modified_budget_amount_py_1,
+              SUM(COALESCE(a.modified_budget_amount_py_2,0)) AS modified_budget_amount_py_2,
+              SUM(COALESCE(a.modified_budget_amount_py_3,0)) AS modified_budget_amount_py_3
+            FROM aggregateon_budget_by_year a
+            WHERE (a.filter_type = 'H')
+            GROUP BY funding_source_id
+          ) ma  ON ma.funding_source_id = a.funding_source_id
+          JOIN ref_funding_source b ON a.funding_source_id = b.funding_source_id
+          WHERE (a.filter_type = 'H' AND a.is_active = 1)
+          GROUP BY a.budget_fiscal_year_id, a.funding_source_code, b.display_funding_source_descr, b.funding_source_id, ma.modified_budget_amount,
+            ma.modified_budget_amount_py_1, ma.modified_budget_amount_py_2, ma.modified_budget_amount_py_3
+      "
+    }
+  }
+}
