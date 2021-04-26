@@ -228,6 +228,14 @@ function checkbook_smart_search_theme(){
           'template' => 'templates/nycha_revenue',
           'arguments' => array('revenue_results' => NULL)
         ),
+        'nycha_budget' => array(
+          'template' => 'templates/nycha_budget',
+          'arguments' => array('budget_results' => NULL)
+        ),
+        'nycha_revenue' => array(
+          'template' => 'templates/nycha_revenue',
+          'arguments' => array('revenue_results' => NULL)
+        ),
         'ajax_results' => array(
             'template' => 'templates/ajax_results',
             'arguments' => array('results' => NULL,'name' => NULL)

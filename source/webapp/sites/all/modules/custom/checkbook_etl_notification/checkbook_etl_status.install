@@ -1,0 +1,19 @@
+<?php
+
+function checkbook_etl_status_enable() {
+  if (class_exists('CheckbookMailSystem')){
+    $current = variable_get('mail_system', array('default-system' => 'DefaultMailSystem'));
+    if (!isset($current['checkbook_etl_status'])){
+      $addition = array('checkbook_etl_status' => 'CheckbookMailSystem');
+      variable_set('mail_system', array_merge($current, $addition));
+    }
+  }
+}
+
+function checkbook_etl_status_disable() {
+  $mail_system = variable_get('mail_system', array('default-system' => 'DefaultMailSystem'));
+  if (isset($mail_system['checkbook_etl_status'])){
+    unset($mail_system['checkbook_etl_status']);
+    variable_set('mail_system', $mail_system);
+  }
+}

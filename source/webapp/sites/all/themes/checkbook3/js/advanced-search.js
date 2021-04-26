@@ -1150,9 +1150,6 @@
                     html = html + '<option value="' + year.value + '" title="' + year.label +'">' + year.label + '</option>';
                   });
                 }
-                else {
-                  html = html + '<option value="">' + data[0] + '</option>';
-                }
               }
               $("#edit-payroll-year").html(html);
             }
@@ -1610,9 +1607,6 @@
                     }
                   });
                 }
-                else {
-                  html = html + '<option value="">' + data[0] + '</option>';
-                }
               }
               div.ele('exp_category').html(html);
               div.ele('exp_category').val(expCat);
@@ -1645,9 +1639,6 @@
                   for (let i = 0; i < data.length; i++) {
                     html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
                   }
-                }
-                else {
-                  html = html + '<option value="">' + data[0] + '</option>';
                 }
               }
               div.ele('dept').html(html);

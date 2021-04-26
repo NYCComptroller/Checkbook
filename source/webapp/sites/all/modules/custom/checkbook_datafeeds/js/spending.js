@@ -35,9 +35,6 @@
               html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
             }
           }
-          else {
-            html = html + '<option value="">' + data[0] + '</option>';
-          }
         }
         $('#edit-dept').html(html);
           if(dept_hidden) {
@@ -94,8 +91,6 @@
                   html = html + '<option value="' + exp_cat.code + '" title="' + exp_cat.title + '">' + exp_cat.name + '</option>';
                 }
               });
-            } else {
-              html = html + '<option value="">' + data[0] + '</option>';
             }
           }
           $('#edit-expense-category').html(html);
@@ -486,8 +481,10 @@
 
       //Year drop-down change event
       $('select[name="year"]', context).change(function () {
-        $('input:hidden[name="dept_hidden"]', context).val("");
-        $('input:hidden[name="expense_category_hidden"]', context).val("");
+        $('input:hidden[name="dept_hidden"]', context).val($('select[name="dept"]', context).val());
+        $('input:hidden[name="expense_category_hidden"]', context).val($('select[name="expense_category"]', context).val());
+        //$('input:hidden[name="dept_hidden"]', context).val("");
+        //$('input:hidden[name="expense_category_hidden"]', context).val("");
         reloadSpendingDepartments();
         reloadSpendingExpenceCategories();
         onYearFilterChange();
