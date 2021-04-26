@@ -105,6 +105,65 @@
     }
   };
 
+  //On Catastrophic Event filter change
+  function onCatastrophicEventChange(){
+    //Selecting 'COVID-19' option causes the following changes:
+    //Data within following fields update: Payee Name, Contract ID, Document ID, Capital Project
+    //Limit year filter options to 'FY 2020', 'FY 2021' and 'All years'
+    let fiscal_year = document.getElementById("edit-year");
+    let catastrophic_event = document.getElementById("edit-catastrophic-event");
+
+    if(catastrophic_event.value === "1"){
+      for (let i = 0; i < fiscal_year.length; i++) {
+        let year = fiscal_year.options[i].text.toLowerCase();
+        let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
+        fiscal_year.options[i].style.display = include ? '':'none';
+      }
+    }
+    else{
+      for (let i = 0; i < fiscal_year.length; i++) {
+        fiscal_year.options[i].style.display = '';
+      }
+    }
+}
+
+  //On Year filter dropdown change
+  let onYearFilterChange = function(){
+    let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
+    if(data_source != 'checkbook') return;
+    //if fiscal year is other than all years, 2020, 2021, then disable COVID-19 dropdown field
+    //If no dropdown available, then disable catastrophic events dropdown
+    let fiscal_year = document.getElementById("edit-year").value.toLowerCase();
+    let catastrophic_event = document.getElementById("edit-catastrophic-event");
+    let enabled_count = catastrophic_event.length;
+    let spending_cat = ($('select[name="expense_type"]').val()) ? $('select[name="expense_type"]').val() : 0;
+
+    if (spending_cat === "Payroll [p]" || spending_cat === "Others [o]"){
+      disable_input($('select[name="catastrophic_event"]'));
+      return;
+    }
+    else if(!(fiscal_year === "0" || fiscal_year === "fy2021" || fiscal_year === "fy2020")){
+      for (let i = 0; i < catastrophic_event.length; i++) {
+        let event = catastrophic_event.options[i].text.toLowerCase();
+        catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
+        if(catastrophic_event.options[i].style.display === 'none') enabled_count--;
+      }
+      if(enabled_count <=1) {
+        disable_input($('select[name="catastrophic_event"]'));
+      }
+    }
+    else{
+      for (let i = 0; i < catastrophic_event.length; i++) {
+        let event = catastrophic_event.options[i].text.toLowerCase();
+        if(event === 'covid-19'){
+          catastrophic_event.options[i].style.display = "";
+          break;
+        }
+      }
+      enable_input($('select[name="catastrophic_event"]'));
+    }
+  }
+
   //On Data Source Change
   let onSpendingDataSourceChange = function (dataSource) {
     //Remove all the validation errors when data source is changed
@@ -121,6 +180,9 @@
     $('select[name="expense_type"]').val('Total Spending [ts]');
     enable_input($('input[name="payee_name"]'));
     enable_input($('input[name="contractno"]'));
+
+    onCatastrophicEventChange();
+    onYearFilterChange();
   };
 
   //ShowHide fields based on selected data source
@@ -167,7 +229,7 @@
 
         //Move Issue Date fields to left column for Citywide
         $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
-        $('#df-payeename').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
+        $('#df-payeename').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
         $('label[for=edit-payee-name]').text('Payee Name:');
         $('label[for=edit-agency]').text('Agency:');
     }
@@ -285,13 +347,19 @@
       let exptype = $('select[name="expense_type"]').val();
       enable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('#edit-document-id')]);
       if (exptype === 'Payroll [p]') {
-        //Disable Payee Name and ContractID fields for Payroll Spending Category
-        disable_input([$('input[name="contractno"]'), $('input[name="payee_name"]')]);
-
+        //Disable Payee Name, ContractID, and Catastrophic event field for Payroll Spending Category
+        disable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('select[name="catastrophic_event"]')]);
+        onCatastrophicEventChange();
       }
-      if (exptype === 'Others [o]') {
-        //Disable ContractID field for Others Spending Category
-        disable_input([$('input[name="contractno"]')]);
+      else if (exptype === 'Others [o]') {
+        //Disable ContractID and Catastrophic event field for Others Spending Category
+        disable_input([$('input[name="contractno"]'), $('select[name="catastrophic_event"]')]);
+        onCatastrophicEventChange();
+      }
+      else{
+        //For every other option, enable Payee Name, ContractID, and Catastrophic event field
+        enable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('select[name="catastrophic_event"]')]);
+        onYearFilterChange();
       }
     }
   };
@@ -300,7 +368,6 @@
   let onDateFilterChange = function(){
     let dateFilter = $('input:hidden[name="date_filter_hidden"]').val();
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
-
     switch(data_source) {
       case 'checkbook_nycha':
         //enable Issue date
@@ -395,11 +462,11 @@
       onSpendingCategoryChange();
 
       //Data Source change event
-      $('input:radio[name=datafeeds-spending-domain-filter]', context).change(function () {
-        $('input:hidden[name="hidden_multiple_value"]', context).val("");
-        $('input:hidden[name="dept_hidden"]', context).val("");
-        $('input:hidden[name="expense_category_hidden"]', context).val("");
-        $('input:hidden[name="date_filter_hidden"]', context).val("0");
+      $('input[type="radio"][name="datafeeds-spending-domain-filter"]', context).change(function () {
+        $('input[type="hidden"][name="hidden_multiple_value"]', context).val("");
+        $('input[type="hidden"][name="dept_hidden"]', context).val("");
+        $('input[type="hidden"][name="expense_category_hidden"]', context).val("");
+        $('input[type="hidden"][name="date_filter_hidden"]', context).val("0");
         clearDateFilterInputs();
         onSpendingDataSourceChange($(this, context).val());
       });
@@ -420,12 +487,7 @@
         //$('input:hidden[name="expense_category_hidden"]', context).val("");
         reloadSpendingDepartments();
         reloadSpendingExpenceCategories();
-      });
-
-      //NYCHA Year drop-down change event
-      $('select[name="nycha_year"]', context).change(function () {
-        $('input:hidden[name="expense_category_hidden"]', context).val($('select[name="expense_category"]', context).val());
-        reloadSpendingExpenceCategories();
+        onYearFilterChange();
       });
 
       //Department drop-down change event
@@ -447,6 +509,10 @@
         onSpendingCategoryChange();
       });
 
+      //On change of "Catastrophic event"
+      $('select[name="catastrophic_event"]', context).change(function(){
+        onCatastrophicEventChange();
+      });
 
       //On Date Filter change
       $("#edit-date-filter", context).change(function () {
@@ -488,15 +554,39 @@
       let resp_center = $('#edit-resp-center', context).val() ? emptyToZero($('#edit-resp-center', context).val()) :0 ;
       let fund_src = $('#edit-funding-source', context).val() ? emptyToZero($('#edit-funding-source', context).val()) :0 ;
       let spend_cat = getSpendingExpenseType(data_source);
+      let catastrophic_event_id = $('#edit-catastrophic-event', context).val() ? $('#edit-catastrophic-event', context).val() : 0;
+
+      if(year.toLowerCase().indexOf("fy") >= 0){
+        year = year.toLowerCase().split('fy')[1];
+      }
+      else if(year.toLowerCase().indexOf("cy") >= 0){
+        year = year.toLowerCase().split('cy')[1];
+      }
 
       //Sets up jQuery UI autocompletes and autocomplete filtering functionality
-      $('#edit-payee-name', context).autocomplete({source: '/autocomplete/spending/payee/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type + '/'+ resp_center + '/' +fund_src + '/' + data_source});
-      $('#edit-contractno', context).autocomplete({source: '/autocomplete/spending/contractno/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type +'/'+ resp_center + '/' +fund_src + '/'+ data_source});
-      $('#edit-document-id', context).autocomplete({source: '/autocomplete/spending/documentid/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/' + agg_type +'/'+ resp_center + '/' +fund_src + '/'+ data_source});
-      $('#edit-capital-project', context).autocomplete({source: '/autocomplete/spending/capitalproject/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type +'/'+ resp_center + '/' +fund_src + '/'+ data_source});
-      $('#edit-entity-contract-number', context).autocomplete({source: '/autocomplete/spending/entitycontractnum/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/' + agg_type + '/' + resp_center + '/' +fund_src + '/'+ data_source});
-      $('#edit-commodity-line', context).autocomplete({source: '/autocomplete/spending/commodityline/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + '/' + industry +'/'+ agg_type +'/'+ resp_center + '/' +fund_src + '/'+ data_source});
-      $('#edit-budget-name', context).autocomplete({source: '/autocomplete/spending/budgetname/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + '/' + industry + '/'+ agg_type +'/'+ resp_center + '/' +fund_src + '/'+ data_source});
+      // Refactoring autocomplete for citywide similar to Nycha to use common autocomplete function
+      let filters = {
+        "fiscal_year":year,
+        "agency_code":agency,
+        "expenditure_object_code":exp_cat,
+        "department_code":dept,
+        "spending_category_id":spend_cat,
+        "minority_type_id":mwbe_cat,
+        "industry_type_id":industry,
+        "agreement_type_code":agg_type,
+        "responsibility_center_code":resp_center,
+        "funding_source_number":fund_src,
+        "event_id":catastrophic_event_id
+      };
+
+      $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
+      $('#edit-contractno', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'contract_number', filters)});
+      $('#edit-document-id', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'document_id', filters)});
+      $('#edit-capital-project', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'reporting_code', filters)});
+      $('#edit-entity-contract-number', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_entity_contract_number', filters)});
+      $('#edit-commodity-line', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_commodity_line', filters)});
+      $('#edit-budget-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_budget_name', filters)});
+      
       $('.watch:input', context).each(function () {
         $(this).focusin(function () {
           //set variables for each field's value
@@ -523,14 +613,35 @@
           else{
             industry = emptyToZero($('#edit-industry', context).val());}
           spend_cat = getSpendingExpenseType(data_source);
+          catastrophic_event_id = $('#edit-catastrophic-event', context).val() ? $('#edit-catastrophic-event', context).val() : 0;
+          
+          if(year.toLowerCase().indexOf("fy") >= 0){
+            year = year.toLowerCase().split('fy')[1];
+          }
+          else if(year.toLowerCase().indexOf("cy") >= 0){
+            year = year.toLowerCase().split('cy')[1];
+          }
 
-          $("#edit-payee-name", context).autocomplete("option", "source", '/autocomplete/spending/payee/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/' + agg_type +'/' + resp_center + '/' +fund_src + '/'+ data_source);
-          $('#edit-contractno', context).autocomplete("option", "source", '/autocomplete/spending/contractno/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/' + agg_type +'/'+ resp_center + '/' +fund_src + '/'+ data_source);
-          $('#edit-document-id', context).autocomplete("option", "source", '/autocomplete/spending/documentid/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type +'/' + resp_center + '/' +fund_src + '/'+ data_source);
-          $('#edit-capital-project', context).autocomplete("option", "source", '/autocomplete/spending/capitalproject/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+agg_type +'/' + resp_center + '/' +fund_src + '/'+ data_source);
-          $('#edit-entity-contract-number', context).autocomplete("option", "source", '/autocomplete/spending/entitycontractnum/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type + '/'+ resp_center + '/' +fund_src + '/' + data_source);
-          $('#edit-commodity-line', context).autocomplete("option", "source", '/autocomplete/spending/commodityline/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/' + agg_type +'/'+ resp_center + '/' +fund_src + '/' + data_source);
-          $('#edit-budget-name', context).autocomplete("option", "source", '/autocomplete/spending/budgetname/' + year + '/' + agency + '/' + exp_cat + '/' + dept + '/' + spend_cat + '/' + mwbe_cat + '/' + industry + '/'+ agg_type +'/'+ resp_center + '/' +fund_src + '/' + data_source);
+          let filters = {
+            "fiscal_year":year,
+            "agency_code":agency,
+            "expenditure_object_code":exp_cat,
+            "department_code":dept,
+            "spending_category_id":spend_cat,
+            "minority_type_id":mwbe_cat,
+            "industry_type_id":industry,
+            "agreement_type_code":agg_type,
+            "responsibility_center_code":resp_center,
+            "funding_source_number":fund_src,
+            "event_id":catastrophic_event_id
+          };
+          $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
+          $('#edit-contractno', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'contract_number', filters)});
+          $('#edit-document-id', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'document_id', filters)});
+          $('#edit-capital-project', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'reporting_code', filters)});
+          $('#edit-entity-contract-number', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_entity_contract_number', filters)});
+          $('#edit-commodity-line', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_commodity_line', filters)});
+          $('#edit-budget-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_budget_name', filters)});
         });
       });
       fixAutoCompleteWrapping($("#dynamic-filter-data-wrapper").children());
@@ -590,6 +701,13 @@
         }
         $(this).val('');
       }
+      if (this.type == 'select-one') {
+        var default_option = $(this).attr('default_selected_value');
+        if (!default_option)
+          $(this).find('option:first').attr("selected", "selected");
+        else
+          $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
+      }
     })
   }
 
@@ -611,5 +729,11 @@
       }
     })
   }
+
+  $(document).ready(function () {
+    onSpendingCategoryChange();
+    onCatastrophicEventChange();
+    onYearFilterChange();
+  });
 
 }(jQuery));

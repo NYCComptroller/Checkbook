@@ -206,7 +206,10 @@ class CheckbookSolr
       return $result;
     }
 
-    $url = $this->solr_url . $query;log_error($url);
+    if($this->datasource == "nycha" || $this->datasource == "checkbook_nycha"){
+      $query .= "&fq=-domain:revenue&fq=-domain:budget";
+    }
+    $url = $this->solr_url . $query;
 
     if ($cached = $this->cached($query)) {
       LogHelper::log_notice("Cache hit: " . $url);

@@ -185,8 +185,16 @@
                             "sourceColumnName":"object_class_id"
                         }
                     ]
+                },
+              {
+                "name":"event_id",
+                "levels":[
+                  {
+                    "name":"event_id",
+                    "sourceColumnName":"event_id"
                 }
-
+                ]
+              }
             ],
             "measures":{
                 "txcount": {

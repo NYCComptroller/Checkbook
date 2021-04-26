@@ -174,6 +174,7 @@ abstract class RevenueFeed{
       ],
       'responseColumns' => $this->filtered_columns
     ];
+
     $this->_process_datasource_values();
     return;
   }

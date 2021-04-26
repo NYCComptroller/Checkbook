@@ -44,7 +44,7 @@ function checkbook_datafeeds_revenue($form, &$form_state){
   );
 
   $data_source = $form_state['values']['datafeeds-revenue-domain-filter'] ?? Datasource::CITYWIDE;
-  $form['datafeeds-revenue-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, Domain::$REVENUE);
+  //$form['datafeeds-revenue-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, Domain::$REVENUE);
   //</editor-fold>
 
   $form['filter'] = array(
@@ -190,6 +190,24 @@ function checkbook_datafeeds_revenue_filter_data($form, $form_state, $data_sourc
     '#attributes' => array('class' => array('watch')),
     '#default_value' => !empty($form_state['values']['revenue_source']) ? $form_state['values']['revenue_source'] : '',
   );
+
+  $form['filter']['catastrophic_event'] = array(
+    '#type' => 'select',
+    '#title' => t('Catastrophic Event:'),
+    '#options' => _get_event_name_and_id(),
+    '#prefix' => '<div class="datafield catastrophicevent citywide">',
+    '#suffix' => '</div>',
+    '#attributes' => array('class' => array('watch')),
+    '#validated' => TRUE,
+    '#id' => 'edit-catastrophic-event',
+    '#name' => 'catastrophic_event',
+    '#default_value' => !empty($form_state['values']['catastrophic_event']) ? $form_state['values']['catastrophic_event'] : '',
+  );
+
+  $form['filter']['leftend'] = array(
+    '#markup' => '</div><div class="column column-right">',
+  );
+
   $form['filter']['adoptedfrom'] = array(
     '#type' => 'textfield',
     '#size' => 15,
@@ -220,9 +238,7 @@ function checkbook_datafeeds_revenue_filter_data($form, $form_state, $data_sourc
     '#suffix' => '</div></div>',
     '#default_value' => (!empty($form_state['values']['recognizedto']) || $form_state['values']['recognizedto'] === "0") ? $form_state['values']['recognizedto'] : '',
   );
-  $form['filter']['leftend'] = array(
-    '#markup' => '</div><div class="column column-right">',
-  );
+
   $form['filter']['fiscal_year'] = array(
     '#type' => 'select',
     '#title' => t('Fiscal Year:'),

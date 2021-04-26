@@ -88,7 +88,7 @@ if(is_array($node->data) && count($node->data) > 0){
 
                 </tr>
                 <tr>
-                    <td><strong>". $lbl_base_pay ."</strong>:{$total_base_pay}</td>
+                    <td><strong>". $lbl_base_pay ."</strong>: {$total_base_pay}</td>
                     <td><strong>". WidgetUtil::getLabel('total_no_of_sal_employees') ."</strong>: {$number_employees}</td>";
             $table .= "</tr>
                 <tr>

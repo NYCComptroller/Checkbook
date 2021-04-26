@@ -41,12 +41,14 @@
       "expcategorycode",
       "month",
       "industry",
+      "cevent",
       "mwbe",
       "vendor",
       "svendor",
       "subvendor",
       "vendortype",
-      "fvendor"
+      "fvendor",
+      "bdgcode"
     ],
     "urlParamMap":{
       "contnum_exact": "reference_document_number",
@@ -89,12 +91,14 @@
       "expcategorycode": "expenditure_object_code",
       "month": "check_eft_issued_cal_month_id",
       "mwbe": "minority_type_id",
+      "cevent" : "event_id",
       "industry": "industry_type_id",
       "vendor": "prime_vendor_id",
       "svendor": "prime_vendor_id",
       "subvendor": "vendor_id",
       "vendortype": "vendor_type",
-      "fvendor": "vendor_name"
+      "fvendor": "vendor_name",
+      "bdgcode" : "budget_code"
     },
     "paramTypeConfig":{
       "vendornm_exact": "eqignorecase",
@@ -160,7 +164,8 @@
         "industry_type_name",
         "minority_type_id",
         "is_prime_or_sub",
-        "original_agreement_id@checkbook:sub_vendor_agid"
+        "original_agreement_id@checkbook:sub_vendor_agid",
+        "budget_code"
     ],
     "derivedColumns": {
         "associated_prime_vendor_name":{
@@ -234,6 +239,9 @@
         },
         "industry_name_formatted": {
             "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
+        },
+        "budget_code_formatted": {
+          "expression": "(strlen($row['budget_name']) > 0) ? $row['budget_code'].' ('.$row['budget_name']. ')' : $row['budget_code']"
         }
     },
     "table_columns": [
@@ -340,6 +348,7 @@
         "sortSourceColumn": "minority_type_id",
         "exportColumn": "mwbe_category_name_formatted"
       },
+      {"labelAlias":"budget_code","column":"budget_code_formatted", "sortSourceColumn":"budget_code","exportColumn":"budget_code_formatted"},
       {
         "label": "",
         "column": "",
@@ -385,6 +394,11 @@
           "column":"contract_purpose_text",
           "sourceColumn":"purpose",
           "sql":"case when spending_category_name IN ('Payroll','Others') then 'N/A' else purpose end"
+        },
+        {
+          "column":"budget_code_formatted",
+          "sourceColumn":"budget_code",
+          "sql":"CASE WHEN budget_name IS NOT NULL AND budget_name != '' THEN budget_code || ' (' || budget_name || ')' ELSE budget_code END"
         }
     ],
     "adjustParameters":"
@@ -451,6 +465,7 @@
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"175px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
         "aaSorting":[[8,"desc"]],
@@ -468,6 +483,7 @@
         }
         var oVendorIds = getNamedFilterCriteria('fvendorId');
         var oVendorNms = getNamedFilterCriteria('fvendorNm');
+        var oContractNumber = getNamedFilterCriteria('fContractNumber');
         var oCategoryIds = getNamedFilterCriteria('fCat' + 'egoryId');
         var oSpendCategoryIds = getNamedFilterCriteria('fSpendCategoryId');
         var oCheckAmount = getNamedFilterCriteria('fCheckAmount');
@@ -477,6 +493,7 @@
         var oVendorType = getNamedFilterCriteria('fvendorType');
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
+        var oBudgetCode = getNamedFilterCriteria('fBudgetCode');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
 
@@ -485,6 +502,7 @@
 
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
         cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
+        cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
         cUrl = adjustUrlParameter(cUrl,'expcategory',oCategoryIds);
         cUrl = adjustUrlParameter(cUrl,'category',oSpendCategoryIds );
         cUrl = adjustUrlParameter(cUrl,'checkamtr',oCheckAmount);
@@ -501,6 +519,8 @@
         cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
+        cUrl = adjustUrlParameter(cUrl,'bdgcode',oBudgetCode);
+
         return cUrl;
     }"
 }

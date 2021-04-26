@@ -335,6 +335,33 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
       ),
     )
   );
+  $form['filter']['sub_vendor_status_in_pip_id'] = array(
+    '#type' => 'select',
+    '#title' => t('Sub Vendor<br />Status in PIP&nbsp;:'),
+    '#options' => $sub_vendor_status_in_pip_options['options'],
+    '#option_attributes' => $sub_vendor_status_in_pip_options['options_attributes'],
+    '#attributes' => array('class' => array('watch')),
+    '#prefix' => '<div class="datafield sub_vendor_status_in_pip_id">',
+    '#suffix' => '</div>',
+    '#id' => 'edit-sub_vendor_status_in_pip_id',
+    '#name' => 'sub_vendor_status_in_pip_id',
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'sub_vendor_status_in_pip_id', $first_time_load, 0),
+    '#states' => array(
+      'disabled' => array(
+        array(
+          array('select[name="df_contract_status"]' => array('value' => 'pending')),
+          'or',
+          array('select[name="category"]' => array('value' => 'revenue')),
+          'or',
+          array('select[name="contract_includes_sub_vendors_id"]' => array('value' => '1')),
+          'or',
+          array('select[name="contract_includes_sub_vendors_id"]' => array('value' => '3')),
+          'or',
+          array('select[name="contract_includes_sub_vendors_id"]' => array('value' => '4'))
+        ),
+      ),
+    )
+  );
   $form['filter']['pin'] = array(
     '#type' => 'textfield',
     '#title' => t('PIN:'),
@@ -435,33 +462,24 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     '#name' => 'category',
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'category', $first_time_load, 'all'),
   );
-  $form['filter']['sub_vendor_status_in_pip_id'] = array(
+  $form['filter']['catastrophic_event'] = array(
     '#type' => 'select',
-    '#title' => t('Sub Vendor<br />Status in PIP&nbsp;:'),
-    '#options' => $sub_vendor_status_in_pip_options['options'],
-    '#option_attributes' => $sub_vendor_status_in_pip_options['options_attributes'],
-    '#attributes' => array('class' => array('watch')),
-    '#prefix' => '<div class="datafield sub_vendor_status_in_pip_id">',
+    '#title' => t('Catastrophic</br>Event:'),
+    '#options' => _get_event_name_and_id('attributes'),
+    '#prefix' => '<div class="datafield catastrophic_event">',
     '#suffix' => '</div>',
-    '#id' => 'edit-sub_vendor_status_in_pip_id',
-    '#name' => 'sub_vendor_status_in_pip_id',
-    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'sub_vendor_status_in_pip_id', $first_time_load, 0),
+    '#attributes' => array('class' => array('watch')),
+    '#validated' => true,
+    '#id' => 'edit-catastrophic_event',
+    '#name' => 'catastrophic_event',
+    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'catastrophic_event', $first_time_load, 0),
     '#states' => array(
       'disabled' => array(
-        array(
-          array('select[name="df_contract_status"]' => array('value' => 'pending')),
-          'or',
-          array('select[name="category"]' => array('value' => 'revenue')),
-          'or',
-          array('select[name="contract_includes_sub_vendors_id"]' => array('value' => '1')),
-          'or',
-          array('select[name="contract_includes_sub_vendors_id"]' => array('value' => '3')),
-          'or',
-          array('select[name="contract_includes_sub_vendors_id"]' => array('value' => '4'))
-        ),
-      ),
+        'select[name="category"]' => array('value' => 'revenue')
+      )
     )
   );
+
   $form['filter']['purpose'] = array(
     '#type' => 'textfield',
     '#title' => t('Purpose:'),
@@ -1381,6 +1399,13 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $user_criteria['Category'] = $values['category'];
         $formatted_search_criteria['Category'] = $values['category'];
       }
+      if ($values['category'] != 'revenue') {
+        if ($values['catastrophic_event'] && ($values['year'] == '0' ||  (substr($values['year'],-4) >= 2020 ))) {
+          $form['filter']['catastrophic_event'] = array('#markup' => '<div><strong>Catastrophic Event:</strong> ' . $values['catastrophic_event'] . '</div>');
+          $user_criteria['Catastrophic Event'] = $values['catastrophic_event'];
+          $formatted_search_criteria['Catastrophic Event'] = $values['catastrophic_event'];
+        }
+      }
       if ($values['sub_vendor_status_in_pip_id']) {
         if ($values['sub_vendor_status_in_pip_id'] != 'Select Status') {
           $aprv_sta_name = MappingUtil::getaprv_sta_name($values['sub_vendor_status_in_pip_id']);
@@ -1779,12 +1804,20 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
         preg_match($pattern, $values['industry'], $imatches);
         $criteria['value']['industry'] = trim($imatches[1], '[ ]');
       }
+
+      if ($values['category'] != 'revenue') {
+        if ($values['catastrophic_event'] && ((substr($values['year'], -4) >= 2020) || $values['year'] == '0')) {
+          preg_match($pattern, $values['catastrophic_event'], $ematches);
+          $criteria['value']['catastrophic_event'] = trim($ematches[1], '[ ]');;
+        }
+      }
       if ($values['contract_includes_sub_vendors_id'] != '' && $values['contract_includes_sub_vendors_id'] != 0) {
-        $criteria['value']['contract_includes_sub_vendors_id'] = $values['contract_includes_sub_vendors_id'];
+        $criteria['value']['contract_includes_sub_vendors'] = $values['contract_includes_sub_vendors_id'];
       }
       if ($values['sub_vendor_status_in_pip_id'] != 'Select Status' && $values['sub_vendor_status_in_pip_id'] != 0) {
         $criteria['value']['sub_vendor_status_in_pip'] = $values['sub_vendor_status_in_pip_id'];
       }
+
       break;
   }
 
