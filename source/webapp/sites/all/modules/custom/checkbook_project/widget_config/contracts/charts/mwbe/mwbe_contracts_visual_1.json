@@ -110,11 +110,21 @@
 	 			$series[$row['year_value']]->y += $row['current_amount_sum'];
 	 		$series[$row['year_value']]->mwbe_total += $row['current_amount_sum'];
 	 		break;
+      case '6':
+      if(in_array(6,$mwbe_page_cats))
+        $series[$row['year_value']]->y += $row['current_amount_sum'];
+        $series[$row['year_value']]->mwbe_total += $row['current_amount_sum'];
+      break;
 	 		case '9':
 	 		if(in_array(9,$mwbe_page_cats))
 	 			$series[$row['year_value']]->y += $row['current_amount_sum'];
 	 		$series[$row['year_value']]->mwbe_total += $row['current_amount_sum'];
 	 		break;
+      case '99':
+      if(in_array(99,$mwbe_page_cats))
+        $series[$row['year_value']]->y += $row['current_amount_sum'];
+      $series[$row['year_value']]->mwbe_total += $row['current_amount_sum'];
+      break;
 	 		case '7':
 	 		$non_mwbe_data[$row['year_value']] = $row['current_amount_sum'];
 	 		break;
