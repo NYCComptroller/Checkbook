@@ -11,20 +11,24 @@ class MinorityTypeService {
         2 => 'Black American',
         3 => 'Hispanic American',
         4 => 'Asian American',
+        6 => 'Native',
         5 => 'Asian American',
         7 => 'Non-M/WBE',
         9 => 'Women',
         11 => 'Individuals and Others',
+        99 => 'Emerging'
     );
 
     public static $minority_type_category_map_multi_chart = array(
         'Black American' => array(2),
         'Hispanic American' => array(3),
         'Asian American' => array(4,5),
+        'Native' => array(6),
         'Non-M/WBE' => array(7),
         'Women' => array(9),
         'Individuals and Others' => array(11),
-        'M/WBE' => array(2,3,4,5,9),
+        'Emerging' => array(99),
+        'M/WBE' => array(2,3,4,5,6,9,99),
     );
 
     static $mwbe_prefix = "M/WBE" ;
