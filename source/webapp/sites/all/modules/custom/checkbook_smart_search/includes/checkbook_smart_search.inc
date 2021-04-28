@@ -353,7 +353,8 @@ function adjustExportResults($result,$domain){
   $modified_result = "";
   foreach ($lines as $line) {
     $row = array();
-    foreach (str_getcsv($line) as $key => $field) {
+    $data = str_getcsv($line);
+    foreach ($data as $key => $field) {
       switch($domain) {
         case "nycha_contracts":
           if ($headers[$key] == 'agreement_type_name') {
@@ -434,6 +435,13 @@ function adjustExportResults($result,$domain){
             }
           }
           break;
+         case "citywide_spending":
+           if ($headers[$key] == 'budget_code') {
+             $a = array_search ('spending_budget_name', $headers);
+             $field = $field . " (" . $data[$a] . ")";
+           }
+           break;
+
       }
 
       if(isset($hyphen_fields) && in_array($headers[$key], $hyphen_fields)) {
@@ -460,7 +468,6 @@ function adjustExportResults($result,$domain){
       unset($row['daily_wage']);
     }
     if($domain == "citywide_spending"){
-      $row['budget_code'] = $row['budget_code'] . " (" . $row["spending_budget_name"] . ")";
       unset($row['spending_budget_name']);
     }
     $rows = implode(",", $row);
@@ -584,54 +591,6 @@ function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'cit
       'value' => 'No matches found'
     ];
   }
-
-//
-//  $count = 0;
-//  foreach ($contents['terms'] as $key => $value) {
-//    switch ($key) {
-//      case 'agency_name':
-//        foreach ($value as $a => $b) {
-//          if (!in_array($a, $contents['terms']['oge_agency_name'])) {
-//            $count++;
-//            $url = $smart_search_url . "?search_term=*!*agency_names=";
-//            $matches[] = ["url" => $url, "category" => "Agencies", "label" => $a, "value" => urlencode($a)];
-//          }
-//        }
-//        break;
-//      case 'oge_agency_name':
-//        foreach ($value as $a => $b) {
-//          $count++;
-//          $url = $smart_search_url . "?search_term=*!*oge_agency_names=";
-//          $matches[] = array("url" => $url, "category" => "Other Government Entities", "label" => $a, "value" => urlencode($a));
-//        }
-//        break;
-//      case 'vendor_name':
-//        foreach ($value as $a => $b) {
-//          $count++;
-//          $url = $smart_search_url . "?search_term=*!*vendor_names=";
-//          array_push($matches, array("url" => $url, "category" => "Vendors (Prime Vendor, Sub Vendor, M/WBE Vendor)", "label" => $a, "value" => urlencode($a)));
-//        }
-//        break;
-//      case 'minority_type_name':
-//        foreach ($value as $a => $b) {
-//          $count++;
-//          $url = $smart_search_url . "?search_term=*!*minority_type_name=";
-//          array_push($matches, array("url" => $url, "category" => "M/WBE Category", "label" => $a, "value" => urlencode($a)));
-//        }
-//        break;
-//      case 'expenditure_object_name':
-//        foreach ($value as $a => $b) {
-//          $count++;
-//          $url = $smart_search_url . "?search_term=*!*expense_categories=";
-//          array_push($matches, array("url" => $url, "category" => "Expense Categories", "label" => $a, "value" => urlencode($a)));
-//        }
-//        break;
-//    }
-//
-//  }
-//  if ($count == 0) {
-//    array_push($matches, ["url" => "", "label" => '<span>' . "No matches found" . '</span>', 'value' => 'No matches found']);
-//  }
 
   return drupal_json_output($matches_render);
 }
