@@ -85,7 +85,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
   if (!empty($spending_mwbe_category)) {
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_mwbe_category, 'mwbe');
   }
-  if(!empty($spending_catastrophic_event)){
+  if(!empty($spending_catastrophic_event) && strtolower($spending_catastrophic_event) != 'select event'){
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_catastrophic_event, 'cevent');
   }
   if (!empty($spending_industry_type_id)) {
