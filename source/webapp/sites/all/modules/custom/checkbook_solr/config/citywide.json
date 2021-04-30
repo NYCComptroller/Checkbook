@@ -86,7 +86,7 @@
       "minority_type_name": "M/WBE Category",
       "prime_vendor_name": "Associated Prime Vendor",
       "budget_code": "Budget Code",
-      "is_women_owned": "Women Owned Business",
+      "is_women_owned": "Woman Owned Business",
       "is_emerging": "Emerging Business",
       "":""
     },
@@ -170,7 +170,7 @@
       "prime_vendor_name": "Associated Prime Vendor",
       "budget_code": "Budget Code",
       "spending_budget_name": "",
-      "is_women_owned": "Women Owned Business",
+      "is_women_owned": "Woman Owned Business",
       "is_emerging": "Emerging Business"
     },
     "contracts": {
