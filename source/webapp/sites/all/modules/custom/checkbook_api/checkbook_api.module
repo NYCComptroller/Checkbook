@@ -707,7 +707,10 @@ function checkbook_api_adjustContractActiveSql(&$sql_query) {
   $sql_parts = explode("ORDER BY", $sql_query);
   $select_part = $sql_parts[0];
   $order_by_part = $sql_parts[1];
-  if (strpos($order_by_part,'contract_number') !== false) {
+  if (strpos($select_part,'l1.') !== false) {
+    $order_by_part =  str_replace("contract_number", "l1.contract_number",$order_by_part);
+  }
+  else{
     $order_by_part =  str_replace("contract_number", "l4.contract_number",$order_by_part);
   }
   $sql_query = (count($sql_parts) > 1) ? implode(' ORDER BY ', array($select_part, $order_by_part)) : $select_part;
