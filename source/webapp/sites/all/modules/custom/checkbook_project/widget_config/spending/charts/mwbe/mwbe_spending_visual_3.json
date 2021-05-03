@@ -40,7 +40,17 @@
                   "labelAlias": "Hispanic American",
                   "columnType": "number",
                   "formatType": "amount"
-             }
+             },
+             {
+                "labelAlias": "Native American",
+                "columnType": "number",
+                "formatType": "amount"
+            },
+            {
+                "labelAlias": "Emerging",
+                "columnType": "number",
+                "formatType": "amount"
+           }
         ]
 },
 "no_results_content":"No Results Found",
