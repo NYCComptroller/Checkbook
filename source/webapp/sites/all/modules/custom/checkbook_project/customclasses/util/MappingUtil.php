@@ -189,7 +189,7 @@ class MappingUtil {
         }
 
         if(array_intersect($applicable_minority_types,array(6))){
-            $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native American</a></li>";
+            $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
         }
 
         if(array_intersect($applicable_minority_types,array(99))){
@@ -247,7 +247,7 @@ class MappingUtil {
             }
 
             if(array_intersect($applicable_minority_types,array(6))){
-                $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native American</a></li>";
+                $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
             }
     
             if(array_intersect($applicable_minority_types,array(99))){
