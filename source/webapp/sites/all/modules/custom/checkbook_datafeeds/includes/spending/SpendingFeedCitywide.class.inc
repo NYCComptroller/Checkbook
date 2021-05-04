@@ -180,7 +180,7 @@ class SpendingFeedCitywide extends SpendingFeed
       $this->criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
     }
 
-    if ($this->values['expense_type'] != 'Payroll [p]') {
+    if ($this->values['expense_type'] != 'Payroll [p]' && $this->values['expense_type'] != 'Others [o]') {
       if ($this->values['catastrophic_event'] && ($this->values['year'] == '0' || substr($this->values['year'], -4) >= 2020))
       {
         $this->criteria['value']['catastrophic_event'] = $this->values['catastrophic_event'];
