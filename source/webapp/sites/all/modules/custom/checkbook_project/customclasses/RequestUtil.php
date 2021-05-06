@@ -812,14 +812,14 @@ class RequestUtil
                 $table_subven = "aggregateon_subven_spending_coa_entities";
                 $urlParamMap = array("year" => "year_id", "agency" => "agency_id", "vendor" => "vendor_id");
                 $urlParamMapSubven = array("year" => "year_id", "agency" => "agency_id", "vendor" => "prime_vendor_id");
-                $default_params = array("minority_type_id" => "2~3~4~5~9", 'type_of_year' => 'B');
+                $default_params = array("minority_type_id" => "2~3~4~5~6~9~99", 'type_of_year' => 'B');
                 break;
             case "contracts":
                 $table = "aggregateon_mwbe_contracts_cumulative_spending";
                 $table_subven = "aggregateon_subven_contracts_cumulative_spending";
                 $urlParamMap = array("year" => "fiscal_year_id", "agency" => "agency_id", "vendor" => "vendor_id");
                 $urlParamMapSubven = array("year" => "fiscal_year_id", "agency" => "agency_id", "vendor" => "prime_vendor_id");
-                $default_params = array("status_flag" => "A", "minority_type_id" => "2~3~4~5~9", 'type_of_year' => 'B');
+                $default_params = array("status_flag" => "A", "minority_type_id" => "2~3~4~5~6~9~99", 'type_of_year' => 'B');
                 break;
         }
         if (self::get_top_nav_records_count($urlParamMap, $default_params, $table) > 0) {

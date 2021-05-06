@@ -40,7 +40,7 @@
     }
 
 	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
-    $sort_column = 8;
+    $sort_column = 10;
 	switch($mwbe_filter){
 		case '4~5' :
 			$sort_column = 3;
@@ -58,6 +58,12 @@
 			$sort_column = 7;
 			break;
 		case '7' :
+			$sort_column = 11;
+			break;
+        case '6' :
+			$sort_column = 8;
+			break;
+		case '99' :
 			$sort_column = 9;
 			break;
 
@@ -91,12 +97,24 @@
             WHEN minority_type_id = 11 THEN total_spending_amount
             ELSE 0
 	END) io_nonmwbe,
+    SUM(
+       CASE
+            WHEN minority_type_id = 6 THEN total_spending_amount
+            ELSE 0
+	END) na_mwbe,
+	SUM(
+       CASE
+            WHEN minority_type_id = 99 THEN total_spending_amount
+            ELSE 0
+	END) em_mwbe,
 	SUM(
        CASE WHEN minority_type_id = 2 THEN total_spending_amount
             WHEN minority_type_id = 3 THEN total_spending_amount
             WHEN minority_type_id = 4 THEN total_spending_amount
             WHEN minority_type_id = 5 THEN total_spending_amount
+            WHEN minority_type_id = 6 THEN total_spending_amount
             WHEN minority_type_id = 9 THEN total_spending_amount
+            WHEN minority_type_id = 99 THEN total_spending_amount
             ELSE 0
 	END) total_mwbe,
 		SUM(
@@ -138,10 +156,16 @@
 		case '7' :
 			$amount_column = 'total_non_mwbe';
 			break;
+        case '6' :
+			$amount_column = 'na_mwbe';
+			break;
+		case '99' :
+			$amount_column = 'em_mwbe';
+			break;
 	}
 
 	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
-	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
+	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' || $mwbe_filter =='6' || $mwbe_filter =='99'){
 		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Top Ten Sub Vendors Spending';
 	}else{
 		$node->widgetConfig->chartTitle = 'Top Ten Sub Vendors by ' . MappingUtil::getCurrenEthnicityName() .' Sub Spending';

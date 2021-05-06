@@ -7,43 +7,49 @@
  */
 
 class MappingUtil {
-
+  /**
+   * @var array
+   */
     private static $vendor_type_value_map = array(
         'pv' => 'P~PM',
         'sv' => 'S~SM',
         'mv' => 'SM~PM',
     );
 
+  /**
+   * @var array
+   */
     private static $vendor_type_name_map = array(
         'sv' => 'Sub Vendor',
         'pv' => 'Prime Vendor',
         'mv' => 'M/WBE Vendor',
     );
 
-
+  /**
+   * @var array
+   */
     public static $spendingMWBEParamMap = [
         "year" => "year_id",
         "yeartype" => "type_of_year",
         "agency" => "agency_id",
         "vendor" => "vendor_id",
-//        "category" => "spending_category_id"  // NYCCHKBK-8560
     ];
+
+  /**
+   * @var array
+   */
     public static $contractsMWBEParamMap = [
         "year" => "fiscal_year_id",
         "agency" => "agency_id",
         "yeartype" => "type_of_year",
-//        "awdmethod" => "award_method_id", // NYCCHKBK-8560
         "vendor" => "vendor_id",
-//        "status" => "status_flag",    // NYCCHKBK-8560
-//        "csize" => "award_size_id",   // NYCCHKBK-8560
-//        "cindustry" => "industry_type_id" // NYCCHKBK-8560
     ];
 
     /** Returns the vendor type value based on the vendor_type mapping
      * @param $vendor_types
      * @return array
      */
-    static function getVendorTypeValue($vendor_types) {
+    public static function getVendorTypeValue($vendor_types) {
         $param = "";
         foreach($vendor_types as $key=>$value){
             $param .= self::$vendor_type_value_map[$value].'~';
@@ -55,10 +61,13 @@ class MappingUtil {
      * @param $vendor_type
      * @return mixed
      */
-    static function getVendorTypeName($vendor_type) {
+    public static function getVendorTypeName($vendor_type) {
         return self::$vendor_type_name_map[$vendor_type];
     }
 
+  /**
+   * @var array
+   */
     private static $minority_type_category_map = array(
         2 => 'Black American',
         3 => 'Hispanic American',
@@ -71,6 +80,24 @@ class MappingUtil {
         99 => 'Emerging'
     );
 
+  /**
+   * @var array
+   */
+    private static $facet_minority_type_category_map = array(
+      2 => 'Black American',
+      3 => 'Hispanic American',
+      4 => 'Asian American',
+      5 => 'Asian American',
+      6 => 'Native',
+      7 => 'Non-M/WBE',
+      9 => 'Women(Non-M/WBE)',
+      11 => 'Individuals and Others',
+      99 => 'Emerging(Non-M/WBE)'
+    );
+
+  /**
+   * @var array
+   */
     private static $minority_type_category_map_by_name = array(
         'African American' => 'Black American',
         'Hispanic American' => 'Hispanic American',
@@ -82,6 +109,10 @@ class MappingUtil {
         'Native' => 'Native',
         'Emerging' => 'Emerging',
     );
+
+  /**
+   * @var array
+   */
     private static $minority_type_category_map_multi = array(
         'Total M/WBE' => array(2,3,4,5,6,9,99),
         'Asian American' => array(4,5),
@@ -94,10 +125,19 @@ class MappingUtil {
         'Individuals and Others' => array(11),
     );
 
+  /**
+   * @var string
+   */
     static $mwbe_prefix = "M/WBE" ;
 
+  /**
+   * @var string
+   */
     static $total_mwbe_cats = "2~3~4~5~6~9~99";
 
+  /**
+   * @var array
+   */
     public static $minority_type_category_map_multi_chart = array(
         'Black American' => array(2),
         'Hispanic American' => array(3),
@@ -110,8 +150,11 @@ class MappingUtil {
         'M/WBE' => array(2,3,4,5,6,9,99),
     );
 
-
-    static function isMWBECertified($mwbe_cats){
+  /**
+   * @param $mwbe_cats
+   * @return bool
+   */
+    public static function isMWBECertified($mwbe_cats){
         if(count(array_intersect($mwbe_cats, self::$minority_type_category_map_multi_chart[self::$mwbe_prefix])) > 0){
             return true;
         }else{
@@ -121,22 +164,27 @@ class MappingUtil {
 
     /** Returns the M/WBE category name based on the minority_type_id mapping
      * @param $minority_type_id
+     * @param $facet
      * @return mixed
      */
-    static function getMinorityCategoryById($minority_type_id) {
-        return self::$minority_type_category_map[$minority_type_id];
+    public static function getMinorityCategoryById($minority_type_id, $facet = false) {
+        if($facet){
+          return self::$facet_minority_type_category_map[$minority_type_id];
+        }else {
+          return self::$minority_type_category_map[$minority_type_id];
+        }
     }
 
     /** Returns the M/WBE category name based on the minority_type_id mapping
      * @param $minority_type_name
      * @return mixed
      */
-    static function getMinorityCategoryByName($minority_type_name) {
+    public static function getMinorityCategoryByName($minority_type_name) {
         return self::$minority_type_category_map_by_name[$minority_type_name];
     }
 
     /** Returns the M/WBE category name and it's minority_type_id mapping as an array */
-    static function getMinorityCategoryMappings() {
+    public static function getMinorityCategoryMappings() {
         return self::$minority_type_category_map_multi;
     }
 
@@ -144,7 +192,7 @@ class MappingUtil {
      * @param null $minority_type_ids
      * @return int|string
      */
-    static function getCurrenEthnicityName($minority_type_ids = null) {
+    public static function getCurrenEthnicityName($minority_type_ids = null) {
         $mwbe_url_params = isset($minority_type_ids) ? $minority_type_ids : explode('~',RequestUtilities::get('mwbe'));
 
         foreach(self::$minority_type_category_map_multi_chart as $key=>$values){
@@ -161,7 +209,7 @@ class MappingUtil {
      * @param $domain
      * @return string
      */
-    static function getCurrentMWBETopNavFilters($active_domain_link, $domain){
+    public static function getCurrentMWBETopNavFilters($active_domain_link, $domain){
         if(RequestUtil::isDashboardFlowSubvendor()){
             $applicable_minority_types = self::getCurrentSubMWBEApplicableFilters($domain);
         }else{
@@ -186,6 +234,14 @@ class MappingUtil {
         }
         if(array_intersect($applicable_minority_types,array(3))){
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
+        }
+
+        if(array_intersect($applicable_minority_types,array(6))){
+            $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
+        }
+
+        if(array_intersect($applicable_minority_types,array(99))){
+            $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging</a></li>";
         }
 
         $total_mwbe_link = RequestUtil::getTotalMWBELink();
@@ -215,8 +271,7 @@ class MappingUtil {
      * @param $domain
      * @return string
      */
-    static function getCurrentSubVendorsTopNavFilters($active_domain_link, $domain){
-
+    public static function getCurrentSubVendorsTopNavFilters($active_domain_link, $domain){
         $mwbe_filters_html = "";
         $tm_wbe = RequestUtilities::get('tm_wbe');
 
@@ -238,8 +293,16 @@ class MappingUtil {
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
             }
 
+            if(array_intersect($applicable_minority_types,array(6))){
+              $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
+            }
+    
+            if(array_intersect($applicable_minority_types,array(99))){
+              $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging</a></li>";
+            }
+
             if($mwbe_filters_html != "") {
-                $mwbe_filters_html =  "<li class='no-click title'>M/WBE Category</li>" . $mwbe_filters_html;
+              $mwbe_filters_html =  "<li class='no-click title'>M/WBE Category</li>" . $mwbe_filters_html;
             }
         }
 
@@ -265,14 +328,14 @@ class MappingUtil {
         return $filters_html;
     }
 
-
-    static function getCurrentPrimeMWBEApplicableFilters($domain){
-
+  /**
+   * @param $domain
+   * @return array
+   */
+    public static function getCurrentPrimeMWBEApplicableFilters($domain){
         switch($domain){
             case "spending":
-
                 $table = "aggregateon_mwbe_spending_coa_entities";
-                //$urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id","vendor"=>"vendor_id","category"=>"spending_category_id");
                 $where_filters = array();
 
                 foreach(self::$spendingMWBEParamMap as $param=>$value){
@@ -286,22 +349,13 @@ class MappingUtil {
                 }
 
                 if(count($where_filters) > 0){
-                    $where_filter = ' where ' . implode(' and ' , $where_filters);
+                    $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
                 }
 
-
-                $sql = 'select a1.minority_type_id
-                        from ' . $table . ' a1
-                       ' . $where_filter . '
-                        group by a1.minority_type_id  ';
-
+                $sql = 'SELECT a1.minority_type_id FROM ' . $table . ' a1' . $where_filter . 'GROUP BY a1.minority_type_id  ';
                 $data = _checkbook_project_execute_sql($sql);
-
                 break;
             case "contracts":
-                $table = "aggregateon_mwbe_contracts_cumulative_spending";
-                $urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"vendor_id",
-                    "status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
                 $where_filters = array();
                 foreach(self::$contractsMWBEParamMap as $param=>$value){
                     if(RequestUtilities::get($param) != null){
@@ -317,17 +371,13 @@ class MappingUtil {
                     $where_filter = ' where ' . implode(' and ' , $where_filters);
                 }
 
-                //$where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
-
-
-                $sql = 'select a1.minority_type_id
-                        from {aggregateon_mwbe_contracts_cumulative_spending} a1
-                          join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+                $sql = 'SELECT a1.minority_type_id
+                        FROM {aggregateon_mwbe_contracts_cumulative_spending} a1
+                          JOIN {ref_document_code} rd ON a1.document_code_id = rd.document_code_id
                        ' . $where_filter . '
-                        group by a1.minority_type_id';
+                        GROUP BY a1.minority_type_id';
 
                 $data = _checkbook_project_execute_sql($sql);
-
                 break;
         }
         $applicable_minority_types = array();
@@ -337,12 +387,13 @@ class MappingUtil {
         return $applicable_minority_types;
     }
 
-
-    static function getCurrentSubMWBEApplicableFilters($domain){
-
+  /**
+   * @param $domain
+   * @return array
+   */
+    public static function getCurrentSubMWBEApplicableFilters($domain){
         switch($domain){
             case "spending":
-
                 $table = "aggregateon_subven_spending_coa_entities";
                 $urlParamMap = array("year"=>"year_id","yeartype"=>"type_of_year","agency"=>"agency_id",
                     "subvendor"=>"vendor_id","vendor"=>"prime_vendor_id","category"=>"spending_category_id");
@@ -360,27 +411,18 @@ class MappingUtil {
                 }
 
                 if(count($where_filters) > 0){
-                    $where_filter = ' where ' . implode(' and ' , $where_filters);
+                    $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
                 }
 
-
-
-                $sql = 'select a1.minority_type_id
-				    from ' . $table. ' a1
-				   ' . $where_filter . '
-				    group by a1.minority_type_id  ';
-
-
+                $sql = 'SELECT a1.minority_type_id  FROM ' . $table. ' a1' . $where_filter . ' GROUP BY a1.minority_type_id  ';
                 $data = _checkbook_project_execute_sql($sql);
-
                 break;
             case "contracts":
-
                 $table = "aggregateon_subven_contracts_cumulative_spending";
                 $urlParamMap = array("year"=>"fiscal_year_id","agency"=>"agency_id","yeartype"=>"type_of_year","awdmethod"=>"award_method_id","vendor"=>"prime_vendor_id",
                     "subvendor"=>"vendor_id","status"=>"status_flag","csize"=>"award_size_id","cindustry"=>"industry_type_id");
-
                 $where_filters = array();
+
                 foreach($urlParamMap as $param=>$value){
                     if(RequestUtilities::get($param) != null){
                         $paramValue = RequestUtilities::get($param);
@@ -392,28 +434,27 @@ class MappingUtil {
                 }
 
                 if(count($where_filters) > 0){
-                    $where_filter = ' where ' . implode(' and ' , $where_filters);
+                    $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
                 }
 
-                //$where_filter .= ' and rd.document_code in (' . ContractUtil::getCurrentPageDocumentIds() . ') ';
-
-
-                $sql = 'select a1.minority_type_id
-				    from {' . $table . '} a1
-	    				join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
-				   ' . $where_filter . '
-				    group by a1.minority_type_id';
+                $sql = 'SELECT a1.minority_type_id FROM {' . $table . '} a1 JOIN {ref_document_code} rd ON a1.document_code_id = rd.document_code_id ' . $where_filter . '
+                        GROUP BY a1.minority_type_id';
                 $data  = _checkbook_project_execute_sql($sql);
                 break;
         }
         $applicable_minority_types = array();
         foreach($data as $row){
-            $applicable_minority_types[] = $row['minority_type_id'];
+          $applicable_minority_types[] = $row['minority_type_id'];
         }
         return $applicable_minority_types;
     }
 
-    static function getVendorTypes($nodeData, $param){
+  /**
+   * @param $nodeData
+   * @param $param
+   * @return array
+   */
+    public static function getVendorTypes($nodeData, $param){
         $unchecked = array();
         $checked = array();
         $params = explode('~', $param);
@@ -432,15 +473,20 @@ class MappingUtil {
             }
         }
         foreach($vendor_counts as $key=>$value){
-            if(in_array($key, $params))
-                array_push($checked, array($key, self::getVendorTypeName($key),$value));
-            else
-                array_push($unchecked, array($key, self::getVendorTypeName($key),$value));
+            if(in_array($key, $params)) {
+              array_push($checked, array($key, self::getVendorTypeName($key), $value));
+            }else {
+              array_push($unchecked, array($key, self::getVendorTypeName($key), $value));
+            }
         }
         return array('unchecked'=>$unchecked, "checked"=>$checked);
     }
 
-    static function getMixedVendorTypeNames($vendor_type_name_id){
+  /**
+   * @param $vendor_type_name_id
+   * @return string
+   */
+    public static function getMixedVendorTypeNames($vendor_type_name_id){
         switch($vendor_type_name_id) {
             case 'P~PM':
                 return "PRIME VENDOR";
@@ -451,14 +497,20 @@ class MappingUtil {
         }
     }
 
-    static function getSubVendorEthinictyTitle($vendor_id, $domain,$is_prime_or_sub = "S"){
+  /**
+   * @param $vendor_id
+   * @param $domain
+   * @param string $is_prime_or_sub
+   * @return string
+   */
+    public static function getSubVendorEthinictyTitle($vendor_id, $domain,$is_prime_or_sub = "S"){
+        $title = NULL;
         switch($domain){
             case "spending":
                 $current_ethnicity_from_filter = MappingUtil::getCurrenEthnicityName();
                 if( $current_ethnicity_from_filter != null && $current_ethnicity_from_filter != "M/WBE" ){
                     $title = " <br/><span class=\"second-line\">M/WBE Category: " . $current_ethnicity_from_filter . "</span>";
                 }else{
-
                     $ethnicity_id = SpendingUtil::getLatestMwbeCategoryByVendor($vendor_id, null, null, null, $is_prime_or_sub);
                     if($ethnicity_id > 0){
                         $title = " <br/><span class=\"second-line\">M/WBE Category: " . MappingUtil::getMinorityCategoryById($ethnicity_id). "</span>";
@@ -487,12 +539,20 @@ class MappingUtil {
                     }
                 }
                 break;
-
         }
         return $title;
     }
 
-    static function getPrimeVendorEthinictyTitle($vendor_id, $domain,$is_prime_or_sub = "P"){
+  /**
+   * @param $vendor_id
+   * @param $domain
+   * @param string $is_prime_or_sub
+   * @return string
+   */
+    public static function getPrimeVendorEthinictyTitle($vendor_id, $domain,$is_prime_or_sub = "P"){
+        $title = NULL;
+        $ethnicity_id = NULL;
+
         if(RequestUtilities::get('mwbe') != NULL){
             switch($domain){
                 case "spending":
@@ -512,8 +572,9 @@ class MappingUtil {
                         ." LIMIT 1 ";
 
                     $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
-                    if($results)
-                        $ethnicity_id = $results[0]['minority_type_id'];
+                    if($results) {
+                      $ethnicity_id = $results[0]['minority_type_id'];
+                    }
 
                     if($ethnicity_id != 7 && $ethnicity_id != 11 && $ethnicity_id!==null){
                         $title = " <br/><span class=\"second-line\">M/WBE Category: " .MappingUtil::getMinorityCategoryById($ethnicity_id) . "</span>";
@@ -524,8 +585,11 @@ class MappingUtil {
         return $title;
     }
 
-
-    static function getscntrc_status_name($scntrc_status) {
+  /**
+   * @param $scntrc_status
+   * @return string
+   */
+    public static function getscntrc_status_name($scntrc_status) {
         switch($scntrc_status){
             case 1: return('No Data Entered');
                 break;
@@ -536,10 +600,13 @@ class MappingUtil {
             case 4: return('Not Required');
                 break;
         }
-
     }
 
-    static function getaprv_sta_name($aprv_sta) {
+  /**
+   * @param $aprv_sta
+   * @return string
+   */
+    public static function getaprv_sta_name($aprv_sta) {
         switch($aprv_sta){
             case 1: return('No Subcontract Payments Submitted');
                 break;
@@ -556,6 +623,4 @@ class MappingUtil {
 
         }
     }
-
-
 }

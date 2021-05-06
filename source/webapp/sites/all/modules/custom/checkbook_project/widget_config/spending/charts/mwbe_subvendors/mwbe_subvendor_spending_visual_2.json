@@ -40,27 +40,18 @@
     }
 
 	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
-    $sort_column = 8;
+    $sort_column = 4;
 	switch($mwbe_filter){
-		case '4~5' :
-			$sort_column = 3;
-			break;
 		case '2' :
+        case '3' :
+        case '4~5' :
+        case '6' :
+        case '7' :
+        case '9' :
+        case '11' :
+        case '99' :
 			$sort_column = 4;
 			break;
-		case '9' :
-			$sort_column = 5;
-			break;
-		case '3' :
-			$sort_column = 6;
-			break;
-		case '11' :
-			$sort_column = 7;
-			break;
-		case '7' :
-			$sort_column = 9;
-			break;
-
 	}
 
 $sql = '
@@ -107,10 +98,26 @@ from (\n
     UNION \n \n
 
     select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
-    SUM( CASE WHEN prime_minority_type_id = 2 THEN total_spending_amount WHEN prime_minority_type_id = 3 THEN total_spending_amount WHEN prime_minority_type_id = 4 THEN total_spending_amount WHEN prime_minority_type_id = 5 THEN total_spending_amount WHEN prime_minority_type_id = 9 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    SUM( CASE WHEN prime_minority_type_id = 2 THEN total_spending_amount WHEN prime_minority_type_id = 3 THEN total_spending_amount WHEN prime_minority_type_id = 4 THEN total_spending_amount WHEN prime_minority_type_id = 5 THEN total_spending_amount WHEN prime_minority_type_id = 6 THEN total_spending_amount WHEN prime_minority_type_id = 9 THEN total_spending_amount WHEN prime_minority_type_id = 99 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
     from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
     ' . $where_filter . ' \n
     group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 6 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 99 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n \n
 
     UNION \n \n
 
@@ -158,12 +165,18 @@ order by all_spending.total_spending_amount desc limit 10 \n
 		case '7' :
 			$amount_column = 'total_non_mwbe';
 			break;
+        case '6' :
+			$amount_column = 'na_mwbe';
+			break;
+        case '99' :
+			$amount_column = 'em_mwbe';
+			break;
 	}
 
     $amount_column = 'total_spending_amount';
 
 	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
-	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
+	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' || $mwbe_filter =='6' || $mwbe_filter =='99'){
 		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Top Ten Prime Vendors Sub Spending';
 	}else{
 		$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' . MappingUtil::getCurrenEthnicityName() .' Sub Spending';

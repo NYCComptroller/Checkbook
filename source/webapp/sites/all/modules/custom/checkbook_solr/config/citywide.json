@@ -86,6 +86,8 @@
       "minority_type_name": "M/WBE Category",
       "prime_vendor_name": "Associated Prime Vendor",
       "budget_code": "Budget Code",
+      "is_women_owned": "Woman Owned Business",
+      "is_emerging": "Emerging Business",
       "":""
     },
     "contracts": {
@@ -110,7 +112,9 @@
       "industry_type_name": "Industry",
       "received_date": "Received date",
       "minority_type_name": "M/WBE Category",
-      "prime_vendor_name": "Associated Prime Vendor"
+      "prime_vendor_name": "Associated Prime Vendor",
+      "is_women_owned": "Woman Owned Business",
+      "is_emerging": "Emerging Business"
     },
     "payroll": {
       "civil_service_title": "Title",
@@ -167,7 +171,9 @@
       "is_prime_or_sub": "Sub Vendor",
       "prime_vendor_name": "Associated Prime Vendor",
       "budget_code": "Budget Code",
-      "spending_budget_name": ""
+      "spending_budget_name": "",
+      "is_women_owned": "Woman Owned Business",
+      "is_emerging": "Emerging Business"
     },
     "contracts": {
       "contract_status": "Status",
@@ -192,7 +198,9 @@
       "industry_type_name": "Industry",
       "received_date": "Received date",
       "minority_type_name": "M/WBE Category",
-      "prime_vendor_name": "Associated Prime Vendor"
+      "prime_vendor_name": "Associated Prime Vendor",
+      "is_women_owned": "Woman Owned Business",
+      "is_emerging": "Emerging Business"
     },
     "payroll": {
       "civil_service_title": "Title",
