@@ -54,7 +54,7 @@
         $where_filters_mwbe = ' where ' . implode(' and ' , $where_filters_mwbe);
     }
 
-    $sort_column = 8;
+    $sort_column = 4;
     switch($mwbe_filter){
         case '4~5' :
         case '4' :
@@ -64,32 +64,32 @@
             WHEN minority_type_id = 5 THEN total_spending_amount ';
         break;
         case '2' :
-            $sort_column = 4;
+            $sort_column = 3;
             $ethinicty_case = ' WHEN minority_type_id = 2 THEN total_spending_amount
             ';
         break;
         case '9' :
-            $sort_column = 5;
+            $sort_column = 3;
             $ethinicty_case = ' WHEN minority_type_id = 9 THEN total_spending_amount
             ';
         break;
-            case '3' :
-            $sort_column = 6;
+        case '3' :
+            $sort_column = 3;
             $ethinicty_case = ' WHEN minority_type_id = 3 THEN total_spending_amount
             ';
         break;
-            case '11' :
-            $sort_column = 7;
+        case '11' :
+            $sort_column = 3;
             $ethinicty_case = ' WHEN minority_type_id = 11 THEN total_spending_amount
             ';
         break;
-            case '7' :
-            $sort_column = 9;
+        case '7' :
+            $sort_column = 5;
             $ethinicty_case = ' WHEN minority_type_id = 7 THEN total_spending_amount
             ';
         break;
-            case '2~3~4~5~9' :
-            $sort_column = 9;
+        case '2~3~4~5~9' :
+            $sort_column = 4;
             $ethinicty_case = ' WHEN minority_type_id = 2 THEN total_spending_amount
             WHEN minority_type_id = 3 THEN total_spending_amount
             WHEN minority_type_id = 4 THEN total_spending_amount
@@ -97,7 +97,27 @@
             WHEN minority_type_id = 9 THEN total_spending_amount
             ';
         break;
-
+        case '6' :
+            $sort_column = 3;
+            $ethinicty_case = ' WHEN minority_type_id = 6 THEN total_spending_amount
+            ';
+        break;
+        case '99' :
+            $sort_column = 3;
+            $ethinicty_case = ' WHEN minority_type_id = 99 THEN total_spending_amount
+            ';
+        break;
+        case '2~3~4~5~6~9~99' :
+            $sort_column = 4;
+            $ethinicty_case = ' WHEN minority_type_id = 2 THEN total_spending_amount
+            WHEN minority_type_id = 3 THEN total_spending_amount
+            WHEN minority_type_id = 4 THEN total_spending_amount
+            WHEN minority_type_id = 5 THEN total_spending_amount
+            WHEN minority_type_id = 6 THEN total_spending_amount
+            WHEN minority_type_id = 9 THEN total_spending_amount
+            WHEN minority_type_id = 99 THEN total_spending_amount
+            ';
+        break;
     }
 
     $sql = 'SELECT X.agency_name, X.agency_id, X.ethinicty_mwbe, Y.total_mwbe, Y.total_non_mwbe FROM';
@@ -121,7 +141,9 @@
     WHEN minority_type_id = 3 THEN total_spending_amount
     WHEN minority_type_id = 4 THEN total_spending_amount
     WHEN minority_type_id = 5 THEN total_spending_amount
+    WHEN minority_type_id = 6 THEN total_spending_amount
     WHEN minority_type_id = 9 THEN total_spending_amount
+    WHEN minority_type_id = 99 THEN total_spending_amount
     ELSE 0
     END) total_mwbe,
     SUM(
@@ -148,7 +170,7 @@
 	$amount_column = $mwbe_filter != null ? 'ethinicty_mwbe' : 'total_mwbe';
 
 	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
-	if($mwbe_filter =='4~5' || $mwbe_filter =='4' || $mwbe_filter =='5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
+	if($mwbe_filter =='4~5' || $mwbe_filter =='4' || $mwbe_filter =='5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' || $mwbe_filter =='6' || $mwbe_filter =='99'){
 		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Sub Spending';
 
 		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Top Ten Agencies Sub Spending';

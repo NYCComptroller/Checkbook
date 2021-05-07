@@ -77,8 +77,41 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 
 </div>
 <script>
+  function getNamedFilterCriteria(filterName){
+    var filterId = '';
+    var filterUrlValue = '';
+    var oFilterIds = document.getElementsByName(filterName);
 
-	(function ($) {
+    if(!eval(oFilterIds)){
+      return filterId;
+    }
+
+    //Get the new facet selected values
+    for(var i = 0; i < oFilterIds.length; i++)
+    {
+      if(oFilterIds[i].checked)
+      {
+        if(filterId.length>0){
+          filterId = filterId  +'~'+ oFilterIds[i].value;
+        }else{
+          filterId = oFilterIds[i].value;
+        }
+      }
+    }
+
+    //Append the selected filter values to URL value
+    if(filterUrlValue != ''){
+      if(filterId != ''){
+        filterId = filterUrlValue +'~'+ filterId;
+      }
+      else{
+        return filterUrlValue;
+      }
+    }
+    return filterId;
+  }
+
+    (function ($) {
 
 	//hover show/hide list for mwbe menu item
 	    Drupal.behaviors.agency_grading = {
