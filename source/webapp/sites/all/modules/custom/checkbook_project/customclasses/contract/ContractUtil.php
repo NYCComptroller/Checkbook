@@ -205,8 +205,8 @@ namespace { //global
        public static function get_contract_vendor_minority_category($vendor_id, $year_id = null, $year_type = null, $agency_id = null, $is_prime_or_sub = 'P'){
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
             if($is_prime_or_sub == 'P'){
-                if(in_array($latest_minority_id, array(2,3,4,5,9))){
-                    return _checkbook_project_get_year_url_param_string().RequestUtilities::buildUrlFromParam('contstatus|status')."/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+                if(in_array($latest_minority_id, array(2,3,4,5,6,9,99))){
+                    return _checkbook_project_get_year_url_param_string().RequestUtilities::buildUrlFromParam('contstatus|status')."/dashboard/mp/mwbe/2~3~4~5~6~9~99/vendor/".$vendor_id;
                 }else{
                     return  _checkbook_project_get_year_url_param_string().RequestUtilities::buildUrlFromParam('contstatus|status')."/vendor/".$vendor_id;
                 }
@@ -261,9 +261,9 @@ namespace { //global
                 $url .= RequestUtilities::buildUrlFromParam('cindustry')
                     . RequestUtilities::buildUrlFromParam('csize')
                     . RequestUtilities::buildUrlFromParam('awdmethod')
-                    . "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+                    . "/dashboard/mp/mwbe/2~3~4~5~6~9~99/vendor/".$vendor_id;
             } else if($is_mwbe_certified && RequestUtilities::get('dashboard') != 'mp') {
-                $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+                $url .= "/dashboard/mp/mwbe/2~3~4~5~6~9~99/vendor/".$vendor_id;
             } else {
                 $url .= RequestUtilities::buildUrlFromParam('datasource')."/vendor/".$vendor_id;
             }
@@ -288,12 +288,12 @@ namespace { //global
             $latest_minority_id = isset($mwbe_cat) ? $mwbe_cat : self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
             $url = RequestUtilities::buildUrlFromParam('agency') . $contract_status . _checkbook_project_get_year_url_param_string();
 
-            if(in_array($latest_minority_id, array(2,3,4,5,9)) && RequestUtilities::get('dashboard') == 'mp'){
+            if(in_array($latest_minority_id, array(2,3,4,5,6,9,99)) && RequestUtilities::get('dashboard') == 'mp'){
                 $url .= RequestUtilities::buildUrlFromParam('cindustry'). RequestUtilities::buildUrlFromParam('csize')
-                      . RequestUtilities::buildUrlFromParam('awdmethod') ."/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+                      . RequestUtilities::buildUrlFromParam('awdmethod') ."/dashboard/mp/mwbe/2~3~4~5~6~9~99/vendor/".$vendor_id;
                 return $url;
-            }else if(in_array($latest_minority_id, array(2,3,4,5,9)) && RequestUtilities::get('dashboard') != 'mp'){
-                return $url ."/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+            }else if(in_array($latest_minority_id, array(2,3,4,5,6,9,99)) && RequestUtilities::get('dashboard') != 'mp'){
+                return $url ."/dashboard/mp/mwbe/2~3~4~5~6~9~99/vendor/".$vendor_id;
             }
 
             return $url. "/vendor/".$vendor_id;
@@ -313,7 +313,7 @@ namespace { //global
             $url = RequestUtilities::buildUrlFromParam('agency') .  RequestUtilities::buildUrlFromParam('contstatus|status') . _checkbook_project_get_year_url_param_string();
 
             $current_dashboard = RequestUtilities::get("dashboard");
-            $is_mwbe_certified = in_array($latest_minority_id, array(2, 3, 4, 5, 9));
+            $is_mwbe_certified = in_array($latest_minority_id, array(2, 3, 4, 5, 6, 9, 99));
 
             //if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
             $new_dashboard = $is_mwbe_certified ? "ms" : "ss";
@@ -323,12 +323,12 @@ namespace { //global
             $url .= RequestUtilities::buildUrlFromParam('bottom_slider');
 
             if($current_dashboard != $new_dashboard ){
-              return $url . $status . "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
+              return $url . $status . "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~6~9~99" : "" ) . "/subvendor/".$vendor_id;
             }
 
             $url .= $status.RequestUtilities::buildUrlFromParam('cindustry'). RequestUtilities::buildUrlFromParam('csize')
                 . RequestUtilities::buildUrlFromParam('awdmethod') ."/dashboard/" . $new_dashboard .
-                ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "" ) . "/subvendor/".$vendor_id;
+                ($is_mwbe_certified ? "/mwbe/2~3~4~5~6~9~99" : "" ) . "/subvendor/".$vendor_id;
 
             return $url;
         }
@@ -373,7 +373,7 @@ namespace { //global
         	if(!isset($contract_vendor_latest_mwbe_category)){
         		$query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                       FROM contract_vendor_latest_mwbe_category
-                      WHERE minority_type_id IN (2,3,4,5,9) AND year_id = ".$year_id
+                      WHERE minority_type_id IN (2,3,4,5,6,9,99) AND year_id = ".$year_id
                             ." AND type_of_year = '".$year_type . "'"
                             ."  AND " . $agency_query
                             ." AND is_prime_or_sub = '" . $is_prime_or_sub . "'"
@@ -413,7 +413,7 @@ namespace { //global
 
           $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                 FROM contract_vendor_latest_mwbe_category
-                WHERE minority_type_id IN (2,3,4,5,9)
+                WHERE minority_type_id IN (2,3,4,5,6,9,99)
                 AND vendor_id =".$vendor_id."
                 AND year_id =".$year_id."
                 AND type_of_year ='".$year_type."'
@@ -444,8 +444,8 @@ namespace { //global
        * @return string
        */
         public static function get_contract_vendor_link($vendor_id, $is_prime_or_sub, $minority_type_id){
-           if($is_prime_or_sub == "P" && in_array($minority_type_id, array(2,3,4,5,9))){
-               return "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+           if($is_prime_or_sub == "P" && in_array($minority_type_id, array(2,3,4,5,6,9,99))){
+               return "/dashboard/mp/mwbe/2~3~4~5~6~9~99/vendor/".$vendor_id;
            }
            return "/vendor/".$vendor_id;
         }
@@ -461,7 +461,7 @@ namespace { //global
             $agency_query = isset($agency_id) ? " AND awarding_agency_id = " . $agency_id : " ";
 
             if(!isset($mwbe_vendors)){
-              $query = "SELECT vendor_id FROM pending_contracts WHERE is_prime_or_sub='P' AND minority_type_id IN (2,3,4,5,9)"
+              $query = "SELECT vendor_id FROM pending_contracts WHERE is_prime_or_sub='P' AND minority_type_id IN (2,3,4,5,6,9,99)"
                        . $agency_query
                        ." GROUP BY vendor_id";
               $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
@@ -470,7 +470,7 @@ namespace { //global
               }
             }
             if($mwbe_vendors[$vendor_id] == $vendor_id){
-              return '/dashboard/mp/mwbe/2~3~4~5~9';
+              return '/dashboard/mp/mwbe/2~3~4~5~6~9~99';
             }
             return '';
         }
@@ -700,9 +700,9 @@ namespace { //global
               $url .= RequestUtilities::buildUrlFromParam('cindustry')
                   . RequestUtilities::buildUrlFromParam('csize')
                   . RequestUtilities::buildUrlFromParam('awdmethod')
-                  . "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+                  . "/dashboard/mp/mwbe/2~3~4~5~6~9~99/vendor/".$vendor_id;
             } else if($is_mwbe_certified && RequestUtilities::get('dashboard') != 'mp') {
-              $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/".$vendor_id;
+              $url .= "/dashboard/mp/mwbe/2~3~4~5~6~9~99/vendor/".$vendor_id;
             } else {
               $url .= RequestUtilities::buildUrlFromParam('datasource')."/vendor/".$vendor_id;
             }
@@ -1087,9 +1087,9 @@ namespace { //global
         public static function checkStatusOfSubVendorByPrimeCounts(){
             $count = null;
             $query = "SELECT count(*) AS count
-                    FROM aggregateon_mwbe_contracts_cumulative_spending l1 
-                    WHERE l1.type_of_year = 'B' 
-                    AND l1.status_flag = 'A' 
+                    FROM aggregateon_mwbe_contracts_cumulative_spending l1
+                    WHERE l1.type_of_year = 'B'
+                    AND l1.status_flag = 'A'
                     AND l1.document_code_id IN (1,2,3) "
                     .((RequestUtilities::get('year')) ? " AND l1.fiscal_year_id = " . RequestUtilities::get('year') : "")
                     .((RequestUtilities::get('vendor')) ? " AND l1.vendor_id = " . RequestUtilities::get('vendor') : "")
