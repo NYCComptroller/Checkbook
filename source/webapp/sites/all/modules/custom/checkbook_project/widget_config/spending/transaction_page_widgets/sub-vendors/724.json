@@ -56,7 +56,9 @@
     "disb_vendor_type",
     "disb_sub_contract_id",
     "industry_type_id",
-    "industry_type_name@checkbook:industry_type"
+    "industry_type_name@checkbook:industry_type",
+    "is_women_owned",
+    "is_emerging"
 ],
 "caption":"",
 "derivedColumns": {
@@ -125,7 +127,9 @@
     {"labelAlias":"sub_contract_reference_id","column":"disb_sub_contract_id","exportColumn":"disb_sub_contract_id"},
     {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"disb_purpose"},
     {"labelAlias":"spending_category","column":"disb_spending_category_name"},
-    {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"disb_minority_type_id","exportColumn":"mwbe_category_name"}
+    {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"disb_minority_type_id","exportColumn":"mwbe_category_name"},
+    {"labelAlias": "woman_owned_business","column":"is_women_owned"},
+    {"labelAlias": "emerging_business","column":"is_emerging"}
 ],
 "exportColumnSqlOverride":[
     {
@@ -134,10 +138,12 @@
         "sql":"
             case
             when disb_minority_type_id = 2 then 'Black American'
-            when disb_minority_type_id = 3 then 'Hispanic American'
+            when disb_minority_type_id = 3 then 'Hispanic American',
+            when disb_minority_type_id = 6 then 'Native'
             when disb_minority_type_id = 7 then 'Non-M/WBE'
             when disb_minority_type_id = 9 then 'Women'
-            when disb_minority_type_id = 11 then 'Individuals and Others'
+            when disb_minority_type_id = 11 then 'Individuals and Others',
+            when disb_minority_type_id = 99 then 'Emerging'
             else 'Asian American'
             end as minority_type_name
         "
@@ -200,6 +206,8 @@
             {"sClass":"text pad-left","sWidth":"150px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"110px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"200px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]}
         ],
