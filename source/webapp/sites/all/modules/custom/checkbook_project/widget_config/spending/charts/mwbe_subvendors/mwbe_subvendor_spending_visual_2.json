@@ -176,7 +176,8 @@ order by all_spending.total_spending_amount desc limit 10 \n
     $amount_column = 'total_spending_amount';
 
 	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
-	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' || $mwbe_filter =='6' || $mwbe_filter =='99'){
+  $is_mwbe_certified = MappingUtil::isMWBECertified(array($mwbe_filter));
+  if($is_mwbe_certified){
 		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Top Ten Prime Vendors Sub Spending';
 	}else{
 		$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' . MappingUtil::getCurrenEthnicityName() .' Sub Spending';
