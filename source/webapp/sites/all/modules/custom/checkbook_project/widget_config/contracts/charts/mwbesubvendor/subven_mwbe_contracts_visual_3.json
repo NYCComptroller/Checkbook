@@ -124,7 +124,8 @@
 	}
 
 	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
-	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' || $mwbe_filter =='6' || $mwbe_filter =='99' ){
+  $is_mwbe_certified = MappingUtil::isMWBECertified(array($mwbe_filter));
+  if($is_mwbe_certified){
         if(RequestUtilities::getRequestParamValue('status') == 'A'){
             $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Top Ten Agencies by Sub Vendors Total Active Sub Vendor Contracts';
         }else{
