@@ -162,6 +162,20 @@ class MappingUtil {
         }
     }
 
+    /** Returns the M/WBE certified formatted ids
+     *  * @param $param
+    * @return ids
+   */
+    public static function getTotalMinorityIds($param = null) {
+      if(isset($param) && $param = 'url') {
+        return MappingUtil::$total_mwbe_cats;
+      }
+      else{
+        $mwbe_ids = str_replace("~",",",MappingUtil::$total_mwbe_cats);
+        return $mwbe_ids;
+      }
+    }
+
     /** Returns the M/WBE category name based on the minority_type_id mapping
      * @param $minority_type_id
      * @param $facet
@@ -296,7 +310,7 @@ class MappingUtil {
             if(array_intersect($applicable_minority_types,array(6))){
               $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
             }
-    
+
             if(array_intersect($applicable_minority_types,array(99))){
               $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging</a></li>";
             }

@@ -33,6 +33,7 @@ abstract class VendorService {
      * @param $type_of_year
      * @param string $vendor_type
      * @param string $domain
+     *
      * @return bool
      */
     static protected function getLatestMinorityTypeByYear($vendor_id, $year_id, $type_of_year, $vendor_type, $domain = null) {
@@ -41,7 +42,7 @@ abstract class VendorService {
             case Domain::$SPENDING :
                 $query = "SELECT minority_type_id
                             FROM spending_vendor_latest_mwbe_category
-                            WHERE minority_type_id IN (2,3,4,5,6,9,99)"
+                            WHERE minority_type_id IN (".MappingUtil::getTotalMinorityIds().")"
                             . $vendor_id_param .
                             "AND year_id = ".$year_id."
                             AND type_of_year = '".$type_of_year."'
@@ -52,7 +53,7 @@ abstract class VendorService {
             default :
                 $query = "SELECT DISTINCT minority_type_id, latest_minority_flag, latest_mwbe_flag
                             FROM contract_vendor_latest_mwbe_category
-                            WHERE minority_type_id IN (2,3,4,5,6,9,99)"
+                            WHERE minority_type_id IN (".MappingUtil::getTotalMinorityIds().")"
                             . $vendor_id_param .
                             "AND year_id = ".$year_id."
                             AND type_of_year = 'B'
@@ -124,7 +125,7 @@ abstract class VendorService {
       $query = "SELECT SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum
                   FROM aggregateon_mwbe_contracts_cumulative_spending s0
                   LEFT OUTER JOIN ref_document_code s15 ON s15.document_code_id = s0.document_code_id
-                  WHERE s0.minority_type_id IN (2,3,4,5,6,9,99)"
+                  WHERE s0.minority_type_id IN (".MappingUtil::getTotalMinorityIds().")"
                   .$vendor_id_param.
                   "AND s0.fiscal_year_id= ".$year_id."
                    AND s0.type_of_year = 'B'
@@ -142,7 +143,7 @@ abstract class VendorService {
         $query = "SELECT SUM(COALESCE(maximum_contract_amount,0)) AS current_amount_sum
                   FROM aggregateon_subven_contracts_cumulative_spending s0
                   LEFT OUTER JOIN ref_document_code s15 ON s15.document_code_id = s0.document_code_id
-                  WHERE s0.minority_type_id IN (2,3,4,5,6,9,99)"
+                  WHERE s0.minority_type_id IN (".MappingUtil::getTotalMinorityIds().")"
                         .$prime_vendor_id_param.
                         "AND s0.fiscal_year_id= ".$year_id."
                          AND s0.type_of_year = 'B'
