@@ -204,8 +204,9 @@ namespace { //global
        */
        public static function get_contract_vendor_minority_category($vendor_id, $year_id = null, $year_type = null, $agency_id = null, $is_prime_or_sub = 'P'){
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
+            $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
             if($is_prime_or_sub == 'P'){
-                if(in_array($latest_minority_id, array(2,3,4,5,6,9,99))){
+                if($is_mwbe_certified){
                     return _checkbook_project_get_year_url_param_string().RequestUtilities::buildUrlFromParam('contstatus|status')."/dashboard/mp/mwbe/2~3~4~5~6~9~99/vendor/".$vendor_id;
                 }else{
                     return  _checkbook_project_get_year_url_param_string().RequestUtilities::buildUrlFromParam('contstatus|status')."/vendor/".$vendor_id;
@@ -287,12 +288,12 @@ namespace { //global
 
             $latest_minority_id = isset($mwbe_cat) ? $mwbe_cat : self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
             $url = RequestUtilities::buildUrlFromParam('agency') . $contract_status . _checkbook_project_get_year_url_param_string();
-
-            if(in_array($latest_minority_id, array(2,3,4,5,6,9,99)) && RequestUtilities::get('dashboard') == 'mp'){
+            $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
+            if($is_mwbe_certified && RequestUtilities::get('dashboard') == 'mp'){
                 $url .= RequestUtilities::buildUrlFromParam('cindustry'). RequestUtilities::buildUrlFromParam('csize')
                       . RequestUtilities::buildUrlFromParam('awdmethod') ."/dashboard/mp/mwbe/2~3~4~5~6~9~99/vendor/".$vendor_id;
                 return $url;
-            }else if(in_array($latest_minority_id, array(2,3,4,5,6,9,99)) && RequestUtilities::get('dashboard') != 'mp'){
+            }else if($is_mwbe_certified && RequestUtilities::get('dashboard') != 'mp'){
                 return $url ."/dashboard/mp/mwbe/2~3~4~5~6~9~99/vendor/".$vendor_id;
             }
 
@@ -313,7 +314,7 @@ namespace { //global
             $url = RequestUtilities::buildUrlFromParam('agency') .  RequestUtilities::buildUrlFromParam('contstatus|status') . _checkbook_project_get_year_url_param_string();
 
             $current_dashboard = RequestUtilities::get("dashboard");
-            $is_mwbe_certified = in_array($latest_minority_id, array(2, 3, 4, 5, 6, 9, 99));
+            $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
 
             //if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
             $new_dashboard = $is_mwbe_certified ? "ms" : "ss";
@@ -444,7 +445,8 @@ namespace { //global
        * @return string
        */
         public static function get_contract_vendor_link($vendor_id, $is_prime_or_sub, $minority_type_id){
-           if($is_prime_or_sub == "P" && in_array($minority_type_id, array(2,3,4,5,6,9,99))){
+           $is_mwbe_certified = MappingUtil::isMWBECertified(array($minority_type_id));
+           if($is_prime_or_sub == "P" && $is_mwbe_certified){
                return "/dashboard/mp/mwbe/2~3~4~5~6~9~99/vendor/".$vendor_id;
            }
            return "/vendor/".$vendor_id;
