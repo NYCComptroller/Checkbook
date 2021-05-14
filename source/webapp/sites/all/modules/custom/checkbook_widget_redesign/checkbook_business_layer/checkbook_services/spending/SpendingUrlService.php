@@ -114,7 +114,7 @@ class SpendingUrlService {
 
         $url = RequestUtilities::_getCurrentPage() . _checkbook_project_get_year_url_param_string();
 
-        $mwbe = $is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "";
+        $mwbe = $is_mwbe_certified ? "/mwbe/".MappingUtil::getTotalMinorityIds('url') : "";
         $industry = isset($industry) ? "/industry/{$industry}" : "";
         $agency = isset($agency_id) ? "/agency/{$agency_id}" : "";
         $category = isset($category) ? "/category/{$category}" : "";
@@ -165,7 +165,7 @@ class SpendingUrlService {
 
         $url = RequestUtilities::_getCurrentPage() . _checkbook_project_get_year_url_param_string();
 
-        $mwbe = $is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "";
+        $mwbe = $is_mwbe_certified ? "/mwbe/".MappingUtil::getTotalMinorityIds('url') : "";
         $agency = isset($agency_id) ? "/agency/{$agency_id}" : "";
         $industry = isset($industry) ? "/industry/{$industry}" : "";
         $vendor = isset($vendor_id) ? "/subvendor/{$vendor_id}" : "";
