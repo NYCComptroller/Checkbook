@@ -548,7 +548,7 @@ class RequestUtil
                     if (RequestUtilities::get("mwbe") != null) {
                         $url .= "/mwbe/" . RequestUtilities::get("mwbe");
                     } else {
-                        $url .= "/mwbe/2~3~4~5~6~9~99";
+                        $url .= "/mwbe/".MappingUtil::getTotalMinorityIds('url');
                     }
                 }
                 break;
@@ -557,7 +557,7 @@ class RequestUtil
                     $url = preg_replace('/\/dashboard\/[^\/]*/', '', $url);
                 }
                 // tm_wbe is an exception case for total MWBE link. When prime data is not present but sub data is present for the agency vendor combination.
-                if (RequestUtilities::get("dashboard") == 'ms' && RequestUtilities::get("mwbe") == '2~3~4~5~6~9~99' && RequestUtilities::get("tm_wbe") != 'Y') {
+                if (RequestUtilities::get("dashboard") == 'ms' && RequestUtilities::get("mwbe") == MappingUtil::getTotalMinorityIds('url') && RequestUtilities::get("tm_wbe") != 'Y') {
                     $url = preg_replace('/\/mwbe\/[^\/]*/', '', $url);
                 }
 
@@ -812,14 +812,14 @@ class RequestUtil
                 $table_subven = "aggregateon_subven_spending_coa_entities";
                 $urlParamMap = array("year" => "year_id", "agency" => "agency_id", "vendor" => "vendor_id");
                 $urlParamMapSubven = array("year" => "year_id", "agency" => "agency_id", "vendor" => "prime_vendor_id");
-                $default_params = array("minority_type_id" => "2~3~4~5~6~9~99", 'type_of_year' => 'B');
+                $default_params = array("minority_type_id" => MappingUtil::getTotalMinorityIds('url'), 'type_of_year' => 'B');
                 break;
             case "contracts":
                 $table = "aggregateon_mwbe_contracts_cumulative_spending";
                 $table_subven = "aggregateon_subven_contracts_cumulative_spending";
                 $urlParamMap = array("year" => "fiscal_year_id", "agency" => "agency_id", "vendor" => "vendor_id");
                 $urlParamMapSubven = array("year" => "fiscal_year_id", "agency" => "agency_id", "vendor" => "prime_vendor_id");
-                $default_params = array("status_flag" => "A", "minority_type_id" => "2~3~4~5~6~9~99", 'type_of_year' => 'B');
+                $default_params = array("status_flag" => "A", "minority_type_id" => MappingUtil::getTotalMinorityIds('url'), 'type_of_year' => 'B');
                 break;
         }
         if (self::get_top_nav_records_count($urlParamMap, $default_params, $table) > 0) {
