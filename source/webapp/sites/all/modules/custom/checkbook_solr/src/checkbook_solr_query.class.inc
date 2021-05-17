@@ -114,6 +114,11 @@ class CheckbookSolrQuery
    */
   private $autoSuggestionsLimit = 10;
 
+  /**
+   * @var string
+   */
+  private $datasourcename = '';
+
 
   /**
    * @var string
@@ -142,6 +147,7 @@ class CheckbookSolrQuery
     $this->facetsConfig = (array)CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
     $this->sortConfig = CheckbookSolr::getSortConfig($solr_datasource);
     $this->autocompleteMapping = (array)CheckbookSolr::getAutocompleteMapping();
+    $this->datasourcename = CheckbookSolr::getDatasoruceName($solr_datasource);
 
     if ($searchTerms) {
       $this
@@ -484,7 +490,6 @@ class CheckbookSolrQuery
   public function setFqTerm(string $term, bool $exclude = false): CheckbookSolrQuery
   {
     list($param, $value) = explode('=', urldecode($term));
-
     if ('all' == $value) {
       return $this;
     }
@@ -494,7 +499,12 @@ class CheckbookSolrQuery
 
     if ('vendor_type' == $param) {
       $value = $this->get_vendor_type_mapping($value);
-    } elseif ('contract_status' == $param) {
+    }
+    elseif('spending_category' == $param){
+      $value = $this->get_spending_category_mapping($value,$this->datasourcename);
+      $param = 'spending_category_id';
+    }
+    elseif ('contract_status' == $param) {
       $value = $this->get_contract_status_mapping($value);
     } elseif ('year' == $param) {
       $sub3 = substr($value, 0, 3);
@@ -695,5 +705,22 @@ class CheckbookSolrQuery
      $fPrefix = $value;
     }
      return $fPrefix;
+  }
+
+  /**
+   * @param $param,
+   * @param $datasrouce,
+   * @return id
+   */
+  private function get_spending_category_mapping($exptype, $data_source = Datasource::CITYWIDE)
+  {
+    try {
+      $dataController = data_controller_get_instance();
+      $results = $dataController->queryDataset($data_source.':spending_category', array('spending_category_id'), array('spending_category_code' => $exptype));
+      if ($results && $results[0]['spending_category_id']) return $results[0]['spending_category_id'];
+    } catch (Exception $e) {
+      log_error("Error getting data from controller: \n" . $e->getMessage());
+    }
+    return null;
   }
 }
