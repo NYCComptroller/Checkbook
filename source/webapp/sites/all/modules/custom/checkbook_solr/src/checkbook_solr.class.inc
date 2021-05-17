@@ -75,7 +75,7 @@ class CheckbookSolr
    * @param string $dataSource
    * @return string
    */
-  public static function getDatasoruceName(string $solr_datasource): string
+  public static function getDatasourceName(string $solr_datasource): string
   {
     return $solr_datasource;
   }
