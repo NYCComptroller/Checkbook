@@ -121,9 +121,6 @@
         clearInputFieldByDataSource("#budget-advanced-search", 'budget', data_source);
         clearInputFieldByDataSource("#revenue-advanced-search", 'revenue', data_source);
 
-        /* For EDC, Budget, Revenue & Payroll are not applicable and are disabled */
-        disableAccordionSections(data_source);
-
         bootstrap_complete();
 
         return false;
@@ -2164,11 +2161,11 @@
         let active_accordion_window = 2;
         switch (page_clicked_from) {
           case "budget":
-          //case "nycha_budget":
+          case "nycha_budget":
             active_accordion_window = 0;
             break;
           case "revenue":
-          //case "nycha_revenue":
+          case "nycha_revenue":
             active_accordion_window = 1;
             break;
           case "contracts_revenue_landing":
@@ -2259,18 +2256,14 @@
 
       /* For oge, Budget, Revenue & Payroll are not applicable and are disabled */
       function disableAccordionSections(data_source) {
-
-        //Disable Payroll for EDC
+        //Disable Payroll, Budget and Revenue for EDC
         if (data_source === "checkbook_oge") {
-          let ogeDisabledDomains = ["budget", "revenue", "Payroll"];
+          let ogeDisabledDomains = ["budget", "Revenue", "Payroll"];
           if (Array.isArray(ogeDisabledDomains)) {
             ogeDisabledDomains.forEach(function (ogeDisabledDomain) {
               disableAccordionSection(ogeDisabledDomain);
             });
           }
-        }else if(data_source === "checkbook_nycha"){
-          disableAccordionSection('budget');
-          disableAccordionSection('revenue');
         }
       }
 

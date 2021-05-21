@@ -206,9 +206,6 @@ class CheckbookSolr
       return $result;
     }
 
-    if($this->datasource == "nycha" || $this->datasource == "checkbook_nycha"){
-      $query .= "&fq=-domain:revenue&fq=-domain:budget";
-    }
     $url = $this->solr_url . $query;
 
     if ($cached = $this->cached($query)) {
@@ -270,7 +267,7 @@ class CheckbookSolr
   }
 
   /**
-   * @param CheckbookSolrQuery $query
+   * @param CheckbookSolrQuery $queryx
    * @return array
    */
   public function requestTerms(CheckbookSolrQuery $query): array
