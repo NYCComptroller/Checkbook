@@ -45,12 +45,12 @@
   }
 
   let reloadBudgetType = function(){
-    let budget_name = $('#edit-nycha-budget-name').val();
+    let budget_name = encodeURIComponent($('#edit-nycha-budget-name').val());
     let budget_type_hidden = $('input:hidden[name="nycha_budget_type_hidden"]').val();
     let data_source = 'checkbook_nycha';
 
     $.ajax({
-      url: 'data-feeds/revenue/budget_type/' + data_source + '/' + budget_name.toString().replace(/\//g, "__") + '/' + true,
+      url: 'data-feeds/revenue/budget_type/' + data_source + '/' + budget_name + '/'  + true,
       success: function(data) {
         let html = '<option value="" >Select Budget Type</option>';
         if(data[0]){
@@ -67,12 +67,12 @@
   }
 
   let reloadBudgetName = function(){
-    let budget_type = $('#edit-nycha-budget-type').val();
+    let budget_type = encodeURIComponent($('#edit-nycha-budget-type').val());
     let budget_name_hidden = $('input:hidden[name="nycha_budget_name_hidden"]').val();
     let data_source = 'checkbook_nycha';
 
     $.ajax({
-      url: 'data-feeds/revenue/budget_name/' + data_source + '/' +  budget_type.toString().replace(/\//g, "__") + '/' + true,
+      url: 'data-feeds/revenue/budget_name/' + data_source + '/' + budget_type + '/'  + true,
       success: function(data) {
         let html = '<option value="" >Select Budget Name</option>';
         if(data[0]){
@@ -88,6 +88,54 @@
     });
   }
 
+   //On Catastrophic Event filter change
+   function onCatastrophicEventChange(){
+     //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
+     let budget_fiscal_year = $('#edit-budget-fiscal-year').attr("name");
+     budget_fiscal_year = document.getElementsByName(budget_fiscal_year)[0];
+
+     if($('#edit-catastrophic-event').val() === "1"){
+       for (let i = 0; i < budget_fiscal_year.length; i++) {
+         let year = budget_fiscal_year.options[i].text.toLowerCase();
+         let include = (year === "2021" || year === "2020");
+         budget_fiscal_year.options[i].style.display = include ? '':'none';
+       }
+     }
+     else{
+       for (let i = 0; i < budget_fiscal_year.length; i++) {
+         budget_fiscal_year.options[i].style.display = '';
+       }
+     }
+}
+
+function onBudgetFiscalYearChange() {
+  //Setting data source value
+  let data_source = $('input[name="datafeeds-revenue-domain-filter"]:checked').val();
+  if(data_source == 'checkbook') {
+    let budget_fiscal_year = ($('#edit-budget-fiscal-year').val()) ? $('#edit-budget-fiscal-year').val() : 0;
+    let catastrophic_event = document.getElementById("edit-catastrophic-event");
+    let enabled_count = catastrophic_event.length;
+
+    if(!(budget_fiscal_year === "2021" || budget_fiscal_year === "2020")){
+      for (let i = 0; i < catastrophic_event.length; i++) {
+        let event = catastrophic_event.options[i].text.toLowerCase();
+        catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
+        if(catastrophic_event.options[i].style.display === 'none') enabled_count--;
+      }
+      if(enabled_count <=1) disable_input($('#edit-catastrophic-event'));
+    }
+    else{
+      for (let i = 0; i < catastrophic_event.length; i++) {
+        let event = catastrophic_event.options[i].text.toLowerCase();
+        if(event === 'covid-19'){
+          catastrophic_event.options[i].style.display = "";
+          break;
+        }
+      }
+      enable_input($('#edit-catastrophic-event'));
+    }
+  }
+}
   Drupal.behaviors.revenueDataFeeds = {
     attach: function (context, settings) {
       //DataSource Filter Formatter
@@ -123,6 +171,17 @@
           reloadBudgetType();
         }
       });
+
+      //On change of "Catastrophic event"
+      $('select[name="catastrophic_event"]', context).change(function(){
+        onCatastrophicEventChange();
+      });
+
+      //On change of "Budget Fiscal Year"
+      $('select[name="budget_fiscal_year"]', context).change(function(){
+        onBudgetFiscalYearChange();
+      });
+
 
       // Sets up multi-select/option transfer for CityWide
       $('#edit-column-select',context).multiSelect();
@@ -160,13 +219,15 @@
       let budgetYear = ($('#edit-budget-fiscal-year').val() === 'All Years') ? 0 : $('#edit-budget-fiscal-year').val();
       let revCat = emptyToZero($('#edit-revenue-category').val());
       let fundingSrc = emptyToZero($('#edit-funding-class').val());
+      let catastrophic_event_id = $('#edit-catastrophic-event').val() ? $('#edit-catastrophic-event').val() : 0;
       let filters = {
         fiscal_year: fiscalYear,
         fund_class_code: fundClass,
         agency_code: agency,
         revenue_budget_fiscal_year: budgetYear,
         revenue_category_code: revCat,
-        funding_class_code: fundingSrc
+        funding_class_code: fundingSrc,
+        event_id: catastrophic_event_id
       };
       $('#edit-revenue-class').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_class_name_code',filters)});
       $('#edit-revenue-source').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_source_name_code',filters)});
@@ -223,4 +284,52 @@
       }
     });
   }
+
+  function disable_input(selector){
+    if(Array.isArray(selector)) {
+      selector.forEach(disable_input);
+      return;
+    }
+    $(selector).each(function () {
+      $(this).attr('disabled','disabled');
+      // store value
+      if ('text' == $(this).attr('type')) {
+        if ($(this).val()){
+          $(this).attr('storedvalue', $(this).val());
+        }
+        $(this).val('');
+      }
+      if (this.type == 'select-one') {
+        var default_option = $(this).attr('default_selected_value');
+        if (!default_option)
+          $(this).find('option:first').attr("selected", "selected");
+        else
+          $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
+      }
+    })
+  }
+
+  function enable_input(selector){
+    if(Array.isArray(selector)) {
+      selector.forEach(enable_input);
+      return;
+    }
+
+    $(selector).each(function () {
+      $(this).removeAttr('disabled');
+
+      // restore value
+      if ('text' == $(this).attr('type')) {
+        if ($(this).attr('storedvalue')){
+          $(this).val($(this).attr('storedvalue'));
+        }
+        $(this).removeAttr('storedvalue');
+      }
+    })
+  }
+
+  $(document).ready(function () {
+    onCatastrophicEventChange();
+    onBudgetFiscalYearChange();
+  });
 }(jQuery));

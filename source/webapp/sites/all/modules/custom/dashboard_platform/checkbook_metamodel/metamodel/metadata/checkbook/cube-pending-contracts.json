@@ -301,6 +301,14 @@
                             "sourceColumnName": "industry_type_id"
                         }
                     ]
+                },
+              {
+                "name":"event_id",
+                "levels": [
+                  {
+                    "name":"event_id",
+                    "sourceColumnName":"event_id"
+                  }]
                 }
             ],
             "measures": {

@@ -94,12 +94,30 @@
                     ]
                 },
                 {
+                    "name":"event_id",
+                    "levels":[
+                      {
+                        "name":"event_id",
+                        "sourceColumnName":"event_id"
+                      }
+                    ]
+                },
+                {
                     "name": "class_name",
                     "levels": [
                                 {
                                 "name": "class_name",
                                 "sourceColumnName": "closing_classification_name"
                                 }
+                    ]
+                },
+                {
+                    "name":"event_id",
+                    "levels": [
+                        {
+                            "name":"event_id",
+                            "sourceColumnName":"event_id"
+                        }
                     ]
                 }
             ],

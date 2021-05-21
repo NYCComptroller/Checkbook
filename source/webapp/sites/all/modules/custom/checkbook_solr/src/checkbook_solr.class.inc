@@ -267,7 +267,7 @@ class CheckbookSolr
   }
 
   /**
-   * @param CheckbookSolrQuery $query
+   * @param CheckbookSolrQuery $queryx
    * @return array
    */
   public function requestTerms(CheckbookSolrQuery $query): array

@@ -4,6 +4,9 @@
 <head profile="<?php print $grddl_profile; ?>">
   <?php print $head; ?>
   <title>Checkbook NYC</title>
+  <meta name="title" content="Checkbook NYC" />
+  <meta name="description" content="Checkbook NYC, an online transparency tool that for the first time placed the City’s day-to-day spending in the public domain" />
+  <meta name="keywords" content="Checkbook NYC, NYC Checkbook, New York City, NYC Spending, NYC Contracts, NYC Budget, NYC Payroll, NYC Revenue, NYCHA, EDC, Citywide" />
   <?php print $styles; ?>
   <?php print $scripts; ?>
 </head>

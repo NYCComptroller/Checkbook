@@ -150,6 +150,16 @@
                     ]
                 },
                 {
+                  "name": "budget_code",
+                  "levels": [
+                    {
+                      "name": "budget_code",
+                      "datasetName": "budget_code",
+                      "sourceColumnName": "budget_code"
+                    }
+                  ]
+                },
+                {
                     "name": "ctx",
                     "levels": [
                         {

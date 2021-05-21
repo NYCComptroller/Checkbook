@@ -21,9 +21,7 @@
 /**
  * Implements hook_menu()
  */
-
-function checkbook_faceted_search_menu()
-{
+function checkbook_faceted_search_menu(){
   return array(
     'faceted-search/ajax/node' => array(
       'type' => MENU_CALLBACK,
@@ -53,9 +51,7 @@ function checkbook_faceted_search_menu()
  * @param $path
  * @return array
  */
-
-function checkbook_faceted_search_theme($existing, $type, $theme, $path)
-{
+function checkbook_faceted_search_theme($existing, $type, $theme, $path){
   return array(
     'smart_search_filter' => array(
       'template' => 'smart_search_filter',
@@ -76,8 +72,7 @@ function checkbook_faceted_search_theme($existing, $type, $theme, $path)
  * @param $nid
  * @throws Exception
  */
-function _checkbook_faceted_search_node_ajax($nid)
-{
+function _checkbook_faceted_search_node_ajax($nid){
   $node = node_load($nid);
   widget_config($node);
   widget_prepare($node);
@@ -90,8 +85,7 @@ function _checkbook_faceted_search_node_ajax($nid)
  * @param $nid
  * @throws Exception
  */
-function _checkbook_faceted_search_node_pagination($nid)
-{
+function _checkbook_faceted_search_node_pagination($nid){
   $node = node_load($nid);
   widget_config($node);
   widget_prepare($node);
@@ -102,10 +96,9 @@ function _checkbook_faceted_search_node_pagination($nid)
 }
 
 /**
- *
+ * Facet auto-complete
  */
-function _checkbook_faceted_search_node_autocomplete()
-{
+function _checkbook_faceted_search_node_autocomplete(){
   $nid = RequestUtilities::get('node');
   $node = node_load($nid);
   widget_config($node);
@@ -137,8 +130,7 @@ function _checkbook_faceted_search_node_autocomplete()
  * @param $node
  * @return array
  */
-function _checkbook_faceted_search_update_data($node)
-{
+function _checkbook_faceted_search_update_data($node){
   $data = $node->data;
   $output = array();
   $output['filter_name'] = $node->widgetConfig->filterName;
@@ -270,12 +262,12 @@ function _checkbook_faceted_search_update_data($node)
   $pagetype = PageType::getCurrent();
 
   //Facets that have Url parameters that match the current Url will be disabled and show only the default checked items
-  //$disableFacet = isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false;
   if (($pagetype != 'advanced_search_page') && (!(isset($node->widgetConfig->allowFacetDeselect)) || ($setAutoDeselect == 1))){
     $disableFacet = true;
   }
 
-  if ($disableFacet) { //only URL parameters count and can be disabled
+  if ($disableFacet) {
+      //only URL parameters count and can be disabled
       $url_ref = $_SERVER['HTTP_REFERER'];
       $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
   }
@@ -305,8 +297,7 @@ function _checkbook_faceted_search_update_data($node)
  * @param $node
  * @return array
  */
-function _checkbook_faceted_search_update_data_range_filter($node)
-{
+function _checkbook_faceted_search_update_data_range_filter($node){
   $data = $node->data;
   $rangeColumnNameVariant = $node->widgetConfig->rangeColumnNameVariant;
   $output = array();
@@ -335,16 +326,6 @@ function _checkbook_faceted_search_update_data_range_filter($node)
       $initial[5] = array(1, 'Less than $1M', $data[0]['less1m_' . $rangeColumnNameVariant . 'count']);
       break;
   }
-  //sort
-  /*usort($initial,
-      function($a, $b)
-      {
-          if ($a[2] == $b[2]) {
-              return 0;
-          }
-          return ($a[2] > $b[2]) ? -1 : 1;
-      }
-  );*/
 
   for ($i = 0; $i < 6; $i++) {
     $checked = false;
@@ -369,8 +350,7 @@ function _checkbook_faceted_search_update_data_range_filter($node)
  * @param $node
  * @return array
  */
-function _checkbook_faceted_search_update_data_logical_or_filter($node)
-{
+function _checkbook_faceted_search_update_data_logical_or_filter($node){
   $data = $node->data;
   $output = array();
   $output['filter_name'] = $node->widgetConfig->filterName;
@@ -417,8 +397,7 @@ function _checkbook_faceted_search_update_data_logical_or_filter($node)
  * @param $node
  * @return array
  */
-function _checkbook_faceted_search_update_data_union_or_filter($node)
-{
+function _checkbook_faceted_search_update_data_union_or_filter($node){
   $data = $node->data;
   $output = array();
   $output['filter_name'] = $node->widgetConfig->filterName;
@@ -484,8 +463,7 @@ function _checkbook_faceted_search_update_data_union_or_filter($node)
  * @param $node
  * @return array
  */
-function _checkbook_faceted_search_update_data_range2_filter($node)
-{
+function _checkbook_faceted_search_update_data_range2_filter($node){
   $data = $node->data;
   $output = array();
   $output['filter_name'] = $node->widgetConfig->filterName;
@@ -523,8 +501,7 @@ function _checkbook_faceted_search_update_data_range2_filter($node)
  * @param $node
  * @return array
  */
-function _checkbook_faceted_search_update_data_range3_filter($node)
-{
+function _checkbook_faceted_search_update_data_range3_filter($node){
   $data = $node->data;
   $output = array();
   $output['filter_name'] = $node->widgetConfig->filterName;
@@ -594,22 +571,6 @@ function _checkbook_faceted_search_update_data_range3_filter($node)
           $initial[3] = array(2, '20K-50K', $data[0]['gross_pay_ge20k_le50k_count_title']);
           $initial[4] = array(1, 'Less than 20K', $data[0]['gross_pay_less20k_count_title']);
           break;
-        /* case 902:
-             $initial[0] = array(5, 'Greater than 250K', $data[0]['gross_pay_ytd_g250k_count']);
-             $initial[1] = array(4, '101K-250K', $data[0]['gross_pay_ytd_g101k_le250k_count']);
-             $initial[2] = array(3, '51K-100K', $data[0]['gross_pay_ytd_g51k_le100k_count']);
-             $initial[3] = array(2, '20K-50K', $data[0]['gross_pay_ytd_ge20k_le50k_count']);
-             $initial[4] = array(1, 'Less than 20K', $data[0]['gross_pay_ytd_less20k_count']);
-             break;
-        */
-        /* case 909:
-             $initial[0] = array(5, 'Greater than 250K', $data[0]['gross_pay_cytd_g250k_count']);
-             $initial[1] = array(4, '101K-250K', $data[0]['gross_pay_cytd_g101k_le250k_count']);
-             $initial[2] = array(3, '51K-100K', $data[0]['gross_pay_cytd_g51k_le100k_count']);
-             $initial[3] = array(2, '20K-50K', $data[0]['gross_pay_cytd_ge20k_le50k_count']);
-             $initial[4] = array(1, 'Less than 20K', $data[0]['gross_pay_cytd_less20k_count']);
-             break;
-        */
         default:
           $initial[0] = array(5, 'Greater than 250K', $data[0]['gross_pay_g250k_count']);
           $initial[1] = array(4, '101K-250K', $data[0]['gross_pay_g101k_le250k_count']);
@@ -642,8 +603,7 @@ function _checkbook_faceted_search_update_data_range3_filter($node)
 /**
  * @param $node
  */
-function checkbook_faceted_search_adjust_param($node)
-{
+function checkbook_faceted_search_adjust_param($node){
   if ($_REQUEST['page']) {
     $page = $_REQUEST['page'];
     $limit = $node->widgetConfig->limit;
@@ -656,11 +616,9 @@ function checkbook_faceted_search_adjust_param($node)
 
 /**
  * Preprocess function for individual_filter.tpl.php
- *
  * @param $variables
  */
-function checkbook_faceted_search_preprocess_individual_filter(&$variables)
-{
+function checkbook_faceted_search_preprocess_individual_filter(&$variables){
   $node = $variables['node'];
   $logicalOrFacet = $node->widgetConfig->logicalOrFacet;
   $unionOrFacet = $node->widgetConfig->unionOrFacet;
@@ -695,8 +653,7 @@ function checkbook_faceted_search_preprocess_individual_filter(&$variables)
 /**
  * @param $variables
  */
-function checkbook_faceted_search_preprocess_pagination(&$variables)
-{
+function checkbook_faceted_search_preprocess_pagination(&$variables){
   $node = $variables['node'];
   $logicalOrFacet = $node->widgetConfig->logicalOrFacet;
   $unionOrFacet = $node->widgetConfig->unionOrFacet;
@@ -723,16 +680,12 @@ function checkbook_faceted_search_preprocess_pagination(&$variables)
 
 /**
  * Preprocess function for smart_search_filter.tpl.php
- *
  * @param $variables
  */
 
-function checkbook_faceted_search_preprocess_smart_search_filter(&$variables)
-{
+function checkbook_faceted_search_preprocess_smart_search_filter(&$variables){
   $solr_datasource = $variables['solr_datasource'];
-
   $facet_config = CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
-
   $facets_render = [];
 
   foreach (array_merge($variables['facets']['facet_fields'] ?? [], $variables['facets']['facet_intervals'] ?? [])
@@ -765,7 +718,6 @@ function checkbook_faceted_search_preprocess_smart_search_filter(&$variables)
  * @param $string
  * @return mixed
  */
-function checkbook_faceted_search_replaceSlash($string)
-{
+function checkbook_faceted_search_replaceSlash($string){
   return str_replace('__', '/', $string);
 }

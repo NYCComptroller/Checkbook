@@ -10,6 +10,7 @@
             "department_code":"department_code",
             "check_amount":"check_amount",
             "expense_category":"expenditure_object_code",
+            "catastrophic_event":"event_id",
             "contract_id":"reference_document_number",
             "contract_purpose":"purpose",
             "capital_project_code":"reporting_code",
@@ -38,6 +39,7 @@
                     "elementsColumn":{
                         "agency":"agency_name",
                         "associated_prime_vendor":"prime_vendor_name",
+                        "budget_code":"budget_code",
                         "capital_project":"reporting_code",
                         "check_amount":"check_amount",
                         "contract_id":"reference_document_number",
@@ -57,6 +59,7 @@
                     "rowElements":[
                         "agency",
                         "associated_prime_vendor",
+                        "budget_code",
                         "capital_project",
                         "contract_id",
                         "contract_purpose",
@@ -94,7 +97,8 @@
                         "Sub Contract Reference ID":"sub_contract_id",
                         "Sub Vendor":"vendor_type",
                         "Associated Prime Vendor":"prime_vendor_name",
-                        "M/WBE Category":"mwbe_category_ui"
+                        "M/WBE Category":"mwbe_category_ui",
+                        "Budget Code":"budget_code"
                     },
                     "required_non_display_columns":["vendor_type"]
                 }
@@ -133,6 +137,11 @@
                 "valueType":"range",
                 "dataType":"date",
                 "format":"YYYY-MM-DD"
+            },
+            "catastrophic_event":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"20"
             },
             "department_code":{
                 "valueType":"value",

@@ -1,0 +1,12 @@
+name = XML sitemap user
+description = Adds user profile links to the sitemap.
+package = XML sitemap
+dependencies[] = xmlsitemap
+core = 7.x
+files[] = xmlsitemap_user.test
+
+; Information added by Drupal.org packaging script on 2018-10-09
+version = "7.x-2.6"
+core = "7.x"
+project = "xmlsitemap"
+datestamp = "1539120486"

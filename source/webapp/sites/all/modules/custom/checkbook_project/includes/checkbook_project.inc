@@ -2246,7 +2246,35 @@ function _get_contract_includes_subvendors_data($attributes = NULL){
   }
 }
 
-
+/**
+ * Get event name and id using the data controller
+ *
+ * @param string $data_source
+ * @return array|void
+ */
+function _get_event_name_and_id($attributes = NULL)
+{
+  try {
+    $dataController = data_controller_get_instance();
+    $data = $dataController->queryDataset('checkbook:event', array(
+      'event_id',
+      'event_name'
+    ), NULL, 'event_name');
+    $results = array('0' => 'Select Event');
+    foreach ($data as $row) {
+      if ($attributes) {
+        $results[$row['event_name'].'['.$row['event_id'].']'] = _ckbk_excerpt($row['event_name']);
+      }
+      else{
+        $results[$row['event_id']] = $row['event_name'];
+      }
+    }
+    return array_unique($results);
+  } catch (Exception $e) {
+    log_error("Error getting data from controller: \n" . $e->getMessage());
+    return;
+  }
+}
 /**
  * @param $vendor_id
  * @param bool $prime

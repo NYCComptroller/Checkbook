@@ -216,9 +216,9 @@ function checkbook_api_adjustBudgetParameterFilters(&$data_set, &$parameters, $c
     if(!isset($parameters['budget_code']) && isset($parameters['budget_code_name'])) {
         $logicalOrColumns[] = array("budget_code","budget_code_name");
         $parameters['budget_code'] = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $parameters['budget_code_name']);
-        $parameters['budget_code_name'] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($parameters['budget_code_name'], false, true));
+        $parameters['budget_code_name'] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, "(^" . _checkbook_regex_replace_pattern($parameters['budget_code_name']) . "$)");
     }else if(isset($parameters['budget_code_name'])){
-        $parameters['budget_code_name'] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($parameters['budget_code_name'], false, true));
+      $parameters['budget_code_name'] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, "(^" . _checkbook_regex_replace_pattern($parameters['budget_code_name']) . "$)");
     }
 
     if(isset($logicalOrColumns) && count($logicalOrColumns) > 0) {
@@ -600,6 +600,7 @@ function checkbook_api_adjustSpendingSql(&$sql_query) {
     $select_part =  str_replace("{$alias}department_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}department_name ELSE 'N/A' END AS department_name",$select_part);
     $select_part =  str_replace("{$alias}disbursement_number", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}disbursement_number ELSE 'N/A' END AS disbursement_number",$select_part);
     $select_part =  str_replace("{$alias}expenditure_object_name", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}expenditure_object_name ELSE 'N/A' END AS expenditure_object_name",$select_part);
+    $select_part =  str_replace("{$alias}budget_code", "CASE WHEN {$alias}budget_name IS NOT NULL AND {$alias}budget_name != '' THEN {$alias}budget_code || ' (' || {$alias}budget_name || ')' ELSE {$alias}budget_code END AS budget_code",$select_part);
 
     $column = 'minority_type_name';
     $minority_check = <<<SQLEND

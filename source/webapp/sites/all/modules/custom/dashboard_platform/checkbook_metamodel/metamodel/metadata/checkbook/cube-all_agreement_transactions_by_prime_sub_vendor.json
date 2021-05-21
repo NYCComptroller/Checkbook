@@ -175,6 +175,14 @@
                         }]
                 },
                 {
+                    "name":"event_id",
+                    "levels": [
+                        {
+                            "name":"event_id",
+                            "sourceColumnName":"event_id"
+                         }]
+                },
+                {
                     "name":"award_method_name",
                     "levels": [
                         {

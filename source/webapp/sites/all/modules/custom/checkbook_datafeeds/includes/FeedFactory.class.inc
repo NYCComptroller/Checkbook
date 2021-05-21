@@ -40,6 +40,7 @@ class FeedFactory
    */
   public static function getFeed($data_source, $domain)
   {
+    $data_source = isset($data_source) ? $data_source : \Datasource::CITYWIDE;
     $ds = self::$datasource_map[$data_source];
     $class = 'checkbook_datafeeds\\' . ucfirst($domain) . 'Feed' . $ds;
     spl_autoload_call($class);

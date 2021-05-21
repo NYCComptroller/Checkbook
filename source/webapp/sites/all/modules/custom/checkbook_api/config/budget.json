@@ -12,6 +12,7 @@
             "accrued_expense":"accrued_expense_amount",
             "cash_expense":"cash_expense_amount",
             "post_adjustment":"post_closing_adjustment_amount",
+            "catastrophic_event":"event_id",
             "budget_code_id":"budget_code_id",
             "budget_code":"budget_code",
             "budget_code_name":"budget_code_name"
@@ -146,6 +147,11 @@
                 "dataType":"amount",
                 "maxLength":18
             },
+          "catastrophic_event":{
+            "valueType":"value",
+            "dataType":"text",
+            "maxLength":"20"
+          },
             "post_adjustment":{
                 "valueType":"range",
                 "dataType":"amount",

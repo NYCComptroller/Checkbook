@@ -12,6 +12,7 @@
             "end_date":"prime_effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code",
+            "catastrophic_event":"event_id",
             "pin":"prime_pin",
             "apt_pin":"prime_apt_pin",
             "industry":"industry_type_id",
@@ -19,7 +20,7 @@
             "sub_contract_reference_id":"sub_contract_id",
             "sub_vendor":"sub_vendor_name",
             "sub_vendor_status_in_pip" :"aprv_sta",
-            "contract_includes_sub_vendors_id":"scntrc_status",
+            "contract_includes_sub_vendors":"scntrc_status",
             "vendor_code":"vendor_code",
             "purpose":"purpose",
             "mwbe_category":"minority_type_id",
@@ -237,6 +238,7 @@
             "award_method":{"valueType":"value","dataType":"text","maxLength":"3"},
             "expense_category":{"valueType":"value","dataType":"text","maxLength":"4"},
             "contract_id":{"valueType":"value","dataType":"text","maxLength":"32"},
+            "catastrophic_event":{"valueType":"value","dataType":"text","maxLength":"20"},
             "contract_type":{"valueType":"value","dataType":"text","maxLength":"2"},
             "start_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
             "end_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
@@ -297,6 +299,7 @@
             "end_date":"prime_effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code",
+            "catastrophic_event":"event_id",
             "pin":"prime_pin",
             "apt_pin":"prime_apt_pin",
             "industry":"industry_type_id",
@@ -572,6 +575,11 @@
                 "dataType":"list",
                 "allowedValues":["expense", "revenue", "all"]
             },
+           "catastrophic_event":{
+             "valueType":"value",
+             "dataType":"text",
+             "maxLength":"20"
+           },
             "purpose":{
                 "valueType":"value",
                 "dataType":"text",
@@ -600,7 +608,7 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "contract_includes_sub_vendors_id":{
+            "contract_includes_sub_vendors":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -620,6 +628,7 @@
             "end_date":"effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code@checkbook:ref_document_code",
+            "catastrophic_event":"event_id",
             "purpose":"description",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
@@ -769,6 +778,11 @@
                 "dataType":"list",
                 "allowedValues":["expense", "revenue"]
             },
+           "catastrophic_event":{
+             "valueType":"value",
+             "dataType":"text",
+             "maxLength":"20"
+           },
             "purpose":{
                 "valueType":"value",
                 "dataType":"text",
@@ -792,7 +806,7 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "contract_includes_sub_vendors_id":{
+            "contract_includes_sub_vendors":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -816,6 +830,7 @@
             "end_date":"effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code@checkbook:ref_document_code",
+            "catastrophic_event": "event_id",
             "purpose":"description",
             "pin":"tracking_number",
             "apt_pin":"brd_awd_no",
@@ -957,6 +972,11 @@
                 "dataType":"list",
                 "allowedValues":["expense", "revenue", "all"]
             },
+           "catastrophic_event":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"20"
+           },
             "purpose":{
                 "valueType":"value",
                 "dataType":"text",
@@ -995,6 +1015,7 @@
             "end_date":"prime_effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code",
+            "catastrophic_event":"event_id",
             "pin":"prime_pin",
             "apt_pin":"prime_apt_pin",
             "industry":"industry_type_id",
@@ -1234,6 +1255,11 @@
                 "dataType":"list",
                 "allowedValues":["expense", "revenue", "all"]
             },
+            "catastrophic_event":{
+               "valueType":"value",
+               "dataType":"text",
+               "maxLength":"20"
+            },
             "purpose":{
                 "valueType":"value",
                 "dataType":"text",
@@ -1262,7 +1288,7 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "contract_includes_sub_vendors_id":{
+            "contract_includes_sub_vendors":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -1281,12 +1307,13 @@
             "end_date":"prime_effective_end_date",
             "registration_date":"registered_date",
             "category":"document_code",
+            "catastrophic_event":"event_id",
             "pin":"prime_pin",
             "apt_pin":"prime_apt_pin",
             "industry":"industry_type_id",
             "associated_prime_vendor":"prime_vendor_name",
             "sub_vendor_status_in_pip" :"aprv_sta",
-            "contract_includes_sub_vendors_id":"scntrc_status",
+            "contract_includes_sub_vendors":"scntrc_status",
             //logical OR columns
             "vendor_code":"vendor_code",
             "purpose":"purpose",
@@ -1557,6 +1584,11 @@
                 "dataType":"list",
                 "allowedValues":["expense", "revenue", "all"]
             },
+           "catastrophic_event": {
+             "valueType":"value",
+             "dataType":"text",
+             "maxLength":"20"
+           },
             "pin":{
                 "valueType":"value",
                 "dataType":"text"
@@ -1585,7 +1617,7 @@
                 "dataType":"text",
                 "maxLength":"2"
             },
-            "contract_includes_sub_vendors_id":{
+            "contract_includes_sub_vendors":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -1604,6 +1636,7 @@
             "end_date":"end_date",
             "received_date":"cif_received_date",
             "category":"document_code@checkbook:ref_document_code",
+            "catastrophic_event": "event_id",
             "pin":"tracking_number",
             "apt_pin":"board_award_number",
             "purpose":"description",
@@ -1751,6 +1784,11 @@
                 "dataType":"list",
                 "allowedValues":["expense", "revenue", "all"]
             },
+           "catastrophic_event":{
+             "valueType":"value",
+             "dataType":"text",
+             "maxLength":"20"
+           },
             "purpose":{
                 "valueType":"value",
                 "dataType":"text",

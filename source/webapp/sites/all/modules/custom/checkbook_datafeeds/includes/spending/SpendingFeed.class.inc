@@ -181,7 +181,7 @@ abstract class SpendingFeed
         $this->formatted_search_criteria['Issue Date'] = 'To: ' . $this->values['issuedfrom'];
       }
     }
-
+    
     return;
   }
 

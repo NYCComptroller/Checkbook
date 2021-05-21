@@ -213,6 +213,15 @@
                     ]
                 },
                 {
+                    "name": "contnum",
+                    "levels": [
+                        {
+                            "name": "contnum",
+                            "sourceColumnName": "reference_document_number"
+                        }
+                    ]
+                },
+                {
                     "name": "vendor",
                     "levels": [
                         {
@@ -354,6 +363,24 @@
                             "sourceColumnName": "disbursement_line_item_id"
                         }
                     ]
+                },
+                {
+                    "name":"event_id",
+                    "levels": [
+                        {
+                            "name":"event_id",
+                            "sourceColumnName":"event_id"
+                        }
+                    ]
+                },
+                {
+                    "name":"budget_code",
+                    "levels": [
+                      {
+                        "name":"budget_code",
+                        "sourceColumnName":"budget_code"
+                      }
+                  ]
                 }
             ],
             "measures": {
