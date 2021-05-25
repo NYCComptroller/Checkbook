@@ -590,7 +590,7 @@ function checkbook_api_adjustSpendingSql(&$sql_query) {
     else if (strpos($sql_query,'l3.') !== false) {
       $alias = 'l3.';
     }
-    
+
     $sql_parts = explode("WHERE", $sql_query);
     $select_part = $sql_parts[0];
     $where_part = $sql_parts[1];
@@ -680,7 +680,8 @@ function checkbook_api_adjustNYCHASpendingSql(&$sql_query,$criteria){
 function checkbook_api_adjustContractSql(&$sql_query) {
     $sql_parts = explode("WHERE", $sql_query);
     $select_part = $sql_parts[0];
-    $where_part = $sql_parts[1];
+    $order_by = explode("ORDER BY", $sql_parts[1]);
+    $order_by_part =$order_by[1];
     if (strpos($select_part,'l1.') !== false) {
       $select_part =  str_replace("l1.prime_vendor_name", "CASE WHEN l1.is_prime_or_sub = 'S' THEN l1.prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",$select_part);
       $select_part =  str_replace("l1.vendor_type", "CASE WHEN l1.is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",$select_part);
@@ -697,7 +698,20 @@ function checkbook_api_adjustContractSql(&$sql_query) {
       $select_part =  str_replace("expenditure_object_names", "CASE WHEN is_prime_or_sub = 'P' THEN expenditure_object_names ELSE 'N/A' END AS expenditure_object_name",$select_part);
     }
 
-  $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
+    // When fiscal year is set make sure order by contract_number is l4.contract_number
+    if (strpos($sql_parts[1],'fiscal_year') !== false)
+    {
+      if (strpos($order_by_part, 'contract_number') !== false)
+      {
+        $order_by_part = str_replace("contract_number", "l4.contract_number", $order_by_part);
+      }
+      $where_part = $order_by[0] . ' ORDER BY ' . $order_by_part;
+    }
+    else
+      {
+      $where_part = $sql_parts[1];
+      }
+    $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', array($select_part, $where_part)) : $select_part;
 }
 /***
  * @param $sql_query
@@ -707,7 +721,10 @@ function checkbook_api_adjustContractActiveSql(&$sql_query) {
   $sql_parts = explode("ORDER BY", $sql_query);
   $select_part = $sql_parts[0];
   $order_by_part = $sql_parts[1];
-  if (strpos($order_by_part,'contract_number') !== false) {
+  if (strpos($select_part,'l1.') !== false) {
+    $order_by_part =  str_replace("contract_number", "l1.contract_number",$order_by_part);
+  }
+  else{
     $order_by_part =  str_replace("contract_number", "l4.contract_number",$order_by_part);
   }
   $sql_query = (count($sql_parts) > 1) ? implode(' ORDER BY ', array($select_part, $order_by_part)) : $select_part;

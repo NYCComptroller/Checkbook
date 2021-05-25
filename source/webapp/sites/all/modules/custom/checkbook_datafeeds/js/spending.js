@@ -35,6 +35,9 @@
               html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
             }
           }
+          else {
+            html = html + '<option value="">' + data[0] + '</option>';
+          }
         }
         $('#edit-dept').html(html);
           if(dept_hidden) {
@@ -91,6 +94,8 @@
                   html = html + '<option value="' + exp_cat.code + '" title="' + exp_cat.title + '">' + exp_cat.name + '</option>';
                 }
               });
+            } else {
+              html = html + '<option value="">' + data[0] + '</option>';
             }
           }
           $('#edit-expense-category').html(html);
@@ -481,10 +486,8 @@
 
       //Year drop-down change event
       $('select[name="year"]', context).change(function () {
-        $('input:hidden[name="dept_hidden"]', context).val($('select[name="dept"]', context).val());
-        $('input:hidden[name="expense_category_hidden"]', context).val($('select[name="expense_category"]', context).val());
-        //$('input:hidden[name="dept_hidden"]', context).val("");
-        //$('input:hidden[name="expense_category_hidden"]', context).val("");
+        $('input:hidden[name="dept_hidden"]', context).val("");
+        $('input:hidden[name="expense_category_hidden"]', context).val("");
         reloadSpendingDepartments();
         reloadSpendingExpenceCategories();
         onYearFilterChange();
@@ -570,7 +573,7 @@
         "agency_code":agency,
         "expenditure_object_code":exp_cat,
         "department_code":dept,
-        "spending_category_id":spend_cat,
+        "spending_category":spend_cat,
         "minority_type_id":mwbe_cat,
         "industry_type_id":industry,
         "agreement_type_code":agg_type,
@@ -579,6 +582,11 @@
         "event_id":catastrophic_event_id
       };
 
+      if (data_source === 'checkbook'){
+        $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
+      } else {
+        $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name', filters)});
+      }
       $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
       $('#edit-contractno', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'contract_number', filters)});
       $('#edit-document-id', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'document_id', filters)});
@@ -627,7 +635,7 @@
             "agency_code":agency,
             "expenditure_object_code":exp_cat,
             "department_code":dept,
-            "spending_category_id":spend_cat,
+            "spending_category":spend_cat,
             "minority_type_id":mwbe_cat,
             "industry_type_id":industry,
             "agreement_type_code":agg_type,
@@ -635,7 +643,14 @@
             "funding_source_number":fund_src,
             "event_id":catastrophic_event_id
           };
-          $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
+
+          // No code display for edc payee name in datafeed (refer to 10131 for document with information on code display for necessary fields)
+          if (data_source === 'checkbook'){
+            $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
+          } else {
+            $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name', filters)});
+          }
+
           $('#edit-contractno', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'contract_number', filters)});
           $('#edit-document-id', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'document_id', filters)});
           $('#edit-capital-project', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'reporting_code', filters)});
