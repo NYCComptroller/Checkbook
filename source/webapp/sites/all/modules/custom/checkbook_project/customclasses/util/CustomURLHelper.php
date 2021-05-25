@@ -19,20 +19,19 @@
 */
 
 
-class CustomURLHelper
-{
+class CustomURLHelper {
 
-    static function get_url_param($pathParams,$key,$key_alias =  null){
-
+    static function get_url_param($pathParams, $key, $key_alias = null) {
         if (!is_array($pathParams)) {
           return NULL;
         }
-        $keyIndex = array_search($key,$pathParams);
-        if($keyIndex){
-            if($key_alias == null){
+        $keyIndex = array_search($key, $pathParams);
+
+        if($keyIndex) {
+            if($key_alias == null) {
                 return "/$key/" . $pathParams[($keyIndex+1)];
             }
-            else{
+            else {
                 return "/$key_alias/" . $pathParams[($keyIndex+1)];
             }
         }
@@ -40,18 +39,18 @@ class CustomURLHelper
 
     }
 
-    static function prepareUrl($path, $params=array(), $requestParams=array(), $customPathParams=array(), $applyPreviousYear=false, $applySpendingYear=false){
+    static function prepareUrl($path, $params=array(), $requestParams=array(), $customPathParams=array(), $applyPreviousYear=false, $applySpendingYear=false) {
         $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
 
         $url =  $path . _checkbook_append_url_params() . _checkbook_project_get_year_url_param_string($applySpendingYear, $applyPreviousYear);
 
-        if(is_array($params)){
-            foreach($params as $key => $value){
+        if (is_array($params)) {
+            foreach($params as $key => $value) {
                 $url .=  self::get_url_param($pathParams,$key,$value);
             }
         }
 
-        if(is_array($customPathParams)){
+        if (is_array($customPathParams)) {
             foreach($customPathParams as $key => $value){
                 $url .= "/$key";
                 if(isset($value)){
@@ -60,12 +59,12 @@ class CustomURLHelper
             }
         }
 
-        if(is_array($requestParams) && !empty($requestParams)){
+        if (is_array($requestParams) && !empty($requestParams)) {
             $cnt = 0;
-            foreach($requestParams as $key => $value){
-                if($cnt == 0){
+            foreach ($requestParams as $key => $value) {
+                if ($cnt == 0) {
                     $url .= "?$key=$value";
-                }else{
+                }else {
                     $url .= "&$key=$value";
                 }
 
