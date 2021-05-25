@@ -37,9 +37,7 @@ class CustomURLHelperTest extends TestCase
     */
     public function test_prepareUrl(){
         $temp = $_GET['q'];
-        $temp2 = $_SERVER['HTTP_REFERER'];
         $_GET['q'] = "contracts_landing/status/A/yeartype/B/year/122";
-        $_SERVER['HTTP_REFERER'] = "http://checkbooknyc.com/contracts_landing/status/A/yeartype/B/year/122";
         $path = "contracts_landing";
         $params = array(
             "status" => "status",
@@ -64,7 +62,6 @@ class CustomURLHelperTest extends TestCase
         $this->assertEquals("contract/spending/transactions/contstatus/A/contcat/expense/yeartype/B/year/121/status/A/doctype/CTA1~CT1~MA1/month/2650/amt/1595633629.98/smnid/365/newwindow", $result);
 
         $_GET['q'] = $temp;
-        $_SERVER['HTTP_REFERER'] = $temp2;
     }
 
 }
