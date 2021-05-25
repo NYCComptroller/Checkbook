@@ -60,8 +60,7 @@ class CustomURLHelperTest extends TestCase
         $applySpendingYear = false;
 
         $result = CustomURLHelper::prepareUrl($path, $params, $requestParams, $customPathParams, $applyPreviousYear, $applySpendingYear);
-        $this->assertEquals("contract/spending/transactions/contstatus/A/contcat/expense/yeartype/B/year/121/status/A/doctype/CTA1~CT1~MA1/month/2650/amt/1595633629.98/smnid/365/newwindow", $result);
-
+        $this->assertEquals("contracts_landing/yeartype/B/year/121/status/A/doctype/CTA1~CT1~MA1/month/2650/amt/1595633629.98/smnid/365/newwindow/", $result);
         $_GET['q'] = $temp;
     }
 
