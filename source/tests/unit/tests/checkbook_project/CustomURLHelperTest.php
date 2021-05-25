@@ -38,6 +38,7 @@ class CustomURLHelperTest extends TestCase
     public function test_prepareUrl(){
         $temp = $_GET['q'];
         $_GET['q'] = "contracts_landing/status/A/yeartype/B/year/122";
+        $_SERVER['HTTP_REFERER'] = "http://checkbooknyc.com/contracts_landing/status/A/yeartype/B/year/122";
         $path = "contracts_landing";
         $params = array(
             "status" => "status",
