@@ -12,7 +12,7 @@
         }
 
         if((RequestUtilities::getRequestParamValue('dashboard') == 'ss' || RequestUtilities::getRequestParamValue('dashboard') == 'ms')
-                && RequestUtilities::getRequestParamValue('mwbe') == '2~3~4~5~6~9~99' ){
+                && RequestUtilities::getRequestParamValue('mwbe') == MappingUtil::$total_mwbe_cats){
                 unset($node->widgetConfig->model->series[7]->seriesURLParamMap->mwbe);
                 unset($node->widgetConfig->model->series[8]->seriesURLParamMap->mwbe);
         }
