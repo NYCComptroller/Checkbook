@@ -293,7 +293,7 @@ class SpendingUtil{
         if($current_dashboard != $new_dashboard) {
             $override_params = array(
                 "dashboard"=>$new_dashboard,
-                "mwbe"=>$is_mwbe_certified ? "2~3~4~5~9" : null,
+                "mwbe"=>$is_mwbe_certified ? MappingUtil::getTotalMinorityIds('url') : null,
                 "agency"=>$agency_id,
                 "vendor"=>$vendor_id,
                 "subvendor"=>null,
@@ -312,7 +312,7 @@ class SpendingUtil{
             );
             //payee name will never have a drill down, this is to avoid ajax issues on drill down
             if($payee_name) {
-                $override_params["mwbe"] = $is_mwbe_certified ? "2~3~4~5~9" : null;
+                $override_params["mwbe"] = $is_mwbe_certified ? MappingUtil::getTotalMinorityIds('url') : null;
             }
         }
         return '/' . self::getLandingPageWidgetUrl($override_params);
@@ -350,7 +350,7 @@ class SpendingUtil{
         if($current_dashboard != $new_dashboard) {
             $override_params = array(
                 "dashboard"=>$new_dashboard,
-                "mwbe"=>$is_mwbe_certified ? "2~3~4~5~9" : null,
+                "mwbe"=>$is_mwbe_certified ? MappingUtil::getTotalMinorityIds('url'): null,
                 "agency"=>$agency_id,
                 "subvendor"=>$vendor_id,
                 "vendor"=>null,
@@ -367,7 +367,7 @@ class SpendingUtil{
             );
             //payee name will never have a drill down, this is to avoid ajax issues on drill down
             if($payee_name) {
-                $override_params["mwbe"] = $is_mwbe_certified ? "2~3~4~5~9" : null;
+                $override_params["mwbe"] = $is_mwbe_certified ? MappingUtil::getTotalMinorityIds('url') : null;
             }
         }
         return '/' . self::getLandingPageWidgetUrl($override_params);
@@ -406,7 +406,7 @@ class SpendingUtil{
         if(!isset($spending_vendor_latest_mwbe_category)){
             $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                       FROM spending_vendor_latest_mwbe_category
-                      WHERE minority_type_id IN (2,3,4,5,9) AND year_id = '" . $year_id . "' AND type_of_year = '" . $year_type . "'
+                      WHERE minority_type_id IN (".MappingUtil::getTotalMinorityIds().") AND year_id = '" . $year_id . "' AND type_of_year = '" . $year_type . "'
                       GROUP BY vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub";
 
             $results = _checkbook_project_execute_sql_by_data_source($query, 'checkbook');
@@ -455,7 +455,7 @@ class SpendingUtil{
                         AND a.minority_type_id = d.minority_type_id AND a.year_id = d.check_eft_issued_nyc_year_id
                 WHERE a.vendor_id = ".$vendor_id." AND a.year_id = ".$year_id." AND a.type_of_year = '".$year_type."'
                 GROUP BY CASE WHEN a.minority_type_id IS NULL OR a.minority_type_id = 11 THEN 7 ELSE a.minority_type_id END,
-                a.vendor_id, a.year_id, a.type_of_year ) a ) a WHERE flag = 2 AND a.minority_type_id IN (2,3,4,5,9)
+                a.vendor_id, a.year_id, a.type_of_year ) a ) a WHERE flag = 2 AND a.minority_type_id IN (".MappingUtil::getTotalMinorityIds().")
             UNION
             SELECT DISTINCT minority_type_id
             FROM spending_vendor_latest_mwbe_category
@@ -488,7 +488,7 @@ class SpendingUtil{
 
         $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                       FROM contract_vendor_latest_mwbe_category
-                      WHERE minority_type_id IN (2,3,4,5,9)";
+                      WHERE minority_type_id IN (".MappingUtil::getTotalMinorityIds().")";
         $query .= isset($vendor_id) ? " AND vendor_id = ".$vendor_id : "";
         $query .= " AND year_id =".$year_id."
                     AND type_of_year ='".$year_type."'
@@ -523,7 +523,7 @@ class SpendingUtil{
 
         $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                       FROM spending_vendor_latest_mwbe_category
-                      WHERE minority_type_id IN (2,3,4,5,9)";
+                      WHERE minority_type_id IN (".MappingUtil::getTotalMinorityIds().")";
         $query .= isset($vendor_id) ? " AND vendor_id = ".$vendor_id : "";
         $query .= " AND year_id =".$year_id."
                     AND type_of_year ='".$year_type."'

@@ -438,9 +438,6 @@ class ContractsUrlService
         $mwbe_amount = VendorService::getMwbeAmount($vendor_id,$year_id);
         $subven_amount = VendorService::getSubVendorAmount($vendor_id,$year_id);
 
-
-
-
         $urlPath = drupal_get_path_alias($_GET['q']);
         if (!preg_match('/pending/', $urlPath)) {
             if (!RequestUtilities::get('status')) {
@@ -449,14 +446,14 @@ class ContractsUrlService
         }
 
         if ($is_mwbe_certified && isset($mwbe_amount)) {
-                $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
+                $url .= "/dashboard/mp/mwbe/".MappingUtil::getTotalMinorityIds('url')."/vendor/" . $vendor_id;
         }
         else if ( $mwbe_amount == 0 && $subven_amount>0 || !isset($mwbe_amount)&&$subven_amount>0){
          // if prime is zero and sub amount is not zero. change dashboard to ms
-          $url .= "/dashboard/ms/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
+          $url .= "/dashboard/ms/mwbe/".MappingUtil::getTotalMinorityIds('url')."/vendor/" . $vendor_id;
         }
         else if($is_mwbe_certified){
-            $url .= "/dashboard/mp/mwbe/2~3~4~5~9/vendor/" . $vendor_id;
+            $url .= "/dashboard/mp/mwbe/".MappingUtil::getTotalMinorityIds('url')."/vendor/" . $vendor_id;
         }
         else {
             $url .= RequestUtilities::buildUrlFromParam('datasource') . "/vendor/" . $vendor_id;
@@ -487,14 +484,14 @@ class ContractsUrlService
             . _checkbook_project_get_year_url_param_string();
 
         $current_dashboard = RequestUtilities::get("dashboard");
-        $is_mwbe_certified = in_array($latest_minority_id, array(2, 3, 4, 5, 9));
+        $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
 
         //if M/WBE certified, go to M/WBE (Sub Vendor) else if NOT M/WBE certified, go to Sub Vendor dashboard
         $new_dashboard = $is_mwbe_certified ? "ms" : "ss";
         $status = strlen(RequestUtilities::buildUrlFromParam('contstatus|status')) == 0 ? "/status/A" : "";
 
         if ($current_dashboard != $new_dashboard) {
-            return $currentUrl . $url . $status . "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "") . "/subvendor/" . $vendor_id;
+            return $currentUrl . $url . $status . "/dashboard/" . $new_dashboard . ($is_mwbe_certified ? "/mwbe/".MappingUtil::getTotalMinorityIds('url') : "") . "/subvendor/" . $vendor_id;
         } else {
             $url .= $status
                 . RequestUtilities::buildUrlFromParam([
@@ -503,7 +500,7 @@ class ContractsUrlService
                     'awdmethod',
                 ])
                 . "/dashboard/" . $new_dashboard
-                . ($is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "")
+                . ($is_mwbe_certified ? "/mwbe/".MappingUtil::getTotalMinorityIds('url') : "")
                 . "/subvendor/" . $vendor_id;
             return $currentUrl . $url;
         }

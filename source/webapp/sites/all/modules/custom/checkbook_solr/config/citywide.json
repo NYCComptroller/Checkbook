@@ -112,7 +112,9 @@
       "industry_type_name": "Industry",
       "received_date": "Received date",
       "minority_type_name": "M/WBE Category",
-      "prime_vendor_name": "Associated Prime Vendor"
+      "prime_vendor_name": "Associated Prime Vendor",
+      "is_women_owned": "Woman Owned Business",
+      "is_emerging": "Emerging Business"
     },
     "payroll": {
       "civil_service_title": "Title",
@@ -196,7 +198,9 @@
       "industry_type_name": "Industry",
       "received_date": "Received date",
       "minority_type_name": "M/WBE Category",
-      "prime_vendor_name": "Associated Prime Vendor"
+      "prime_vendor_name": "Associated Prime Vendor",
+      "is_women_owned": "Woman Owned Business",
+      "is_emerging": "Emerging Business"
     },
     "payroll": {
       "civil_service_title": "Title",

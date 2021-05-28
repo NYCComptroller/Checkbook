@@ -69,7 +69,7 @@ class MinorityTypeService {
 
                     $query = "SELECT minority_type_id,vendor_id,agency_id,is_prime_or_sub
                               FROM spending_vendor_latest_mwbe_category
-                              WHERE minority_type_id IN (2,3,4,5,9)
+                              WHERE minority_type_id IN (".MappingUtil::getTotalMinorityIds().")
                               AND year_id = ".$year_id."
                               AND type_of_year = '".$type_of_year."'";
 
@@ -92,12 +92,12 @@ class MinorityTypeService {
                     if (stripos($ajaxReferer, 'contracts_pending_exp_landing')
                         || stripos($ajaxReferer, 'contracts_pending_rev_landing')) {
                         $query = "SELECT
-                                minority_type_id, 
-                                vendor_id, 
-                                document_agency_id as agency_id, 
+                                minority_type_id,
+                                vendor_id,
+                                document_agency_id as agency_id,
                                 is_prime_or_sub
                               FROM pending_contracts
-                              WHERE minority_type_id IN (2,3,4,5,9)
+                              WHERE minority_type_id IN (".MappingUtil::getTotalMinorityIds().")
                               AND is_prime_or_sub = 'P'";
 
                         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
@@ -115,7 +115,7 @@ class MinorityTypeService {
 
                     $query = "SELECT minority_type_id,vendor_id,agency_id,is_prime_or_sub
                               FROM contract_vendor_latest_mwbe_category
-                              WHERE minority_type_id IN (2,3,4,5,9)
+                              WHERE minority_type_id IN (".MappingUtil::getTotalMinorityIds().")
                               AND year_id = ".$year_id."
                               AND type_of_year = '".$type_of_year."'";
 
