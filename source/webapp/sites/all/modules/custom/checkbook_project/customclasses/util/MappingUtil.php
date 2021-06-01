@@ -307,7 +307,7 @@ class MappingUtil {
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
             }
 
-            if(array_intersect($applicable_minority_types,array(6)) &&  ){
+            if(array_intersect($applicable_minority_types,array(6))){
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
             }
     
