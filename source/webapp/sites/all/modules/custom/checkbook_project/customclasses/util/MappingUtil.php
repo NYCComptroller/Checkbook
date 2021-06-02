@@ -216,6 +216,22 @@ class MappingUtil {
         }
     }
 
+    private static function isDefaultMWBEDashboard($currentURL){
+        $isMWBEDashboardURL = false;
+        $isDefaultMWBEDashboardURL = false; 
+        
+        if(strpos($currentURL, "dashboard/sp") || strpos($currentURL, "dashboard/ss") ||
+           strpos($currentURL, "dashboard/mp") ||  strpos($currentURL, "dashboard/ms")){
+            $isMWBEDashboardURL = true;
+        }
+
+        if($isMWBEDashboardURL && !strpos($currentURL, "agency/") && !strpos($currentURL, "vendor/")){
+            $isDefaultMWBEDashboardURL = true;
+        }
+
+        return $isDefaultMWBEDashboardURL;
+    }
+
     /**
      * Function to populate the M/WBE dashboard drop down filters
      *
@@ -250,7 +266,7 @@ class MappingUtil {
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
         }
 
-        if(array_intersect($applicable_minority_types,array(6))){
+        if(array_intersect($applicable_minority_types,array(6)) || self::isDefaultMWBEDashboard($_SERVER['REQUEST_URI'])){
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
         }
 
@@ -307,7 +323,7 @@ class MappingUtil {
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
             }
 
-            if(array_intersect($applicable_minority_types,array(6))){
+            if(array_intersect($applicable_minority_types,array(6)) || self::isDefaultMWBEDashboard($_SERVER['REQUEST_URI'])){
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
             }
     
