@@ -225,7 +225,8 @@ class MappingUtil {
             $isMWBEDashboardURL = true;
         }
 
-        if($isMWBEDashboardURL && !strpos($currentURL, "agency/") && !strpos($currentURL, "vendor/") && !strpos($currentURL, "expandBottomContURL=")){
+        if($isMWBEDashboardURL && !strpos($currentURL, "agency/") && !strpos($currentURL, "vendor/") &&
+           !strpos($currentURL, "expandBottomContURL=") && !strpos($currentURL, "expandBottomCont=")){
             $isDefaultMWBEDashboardURL = true;
         }
 
