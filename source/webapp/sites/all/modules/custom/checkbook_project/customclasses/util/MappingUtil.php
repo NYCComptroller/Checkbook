@@ -216,6 +216,30 @@ class MappingUtil {
         }
     }
 
+    private static function isDefaultMWBEDashboard($currentURL){
+        $isMWBEDashboardURL = false;
+        $isDefaultMWBEDashboardURL = false; 
+        
+        $dashboard = RequestUtilities::get('dashboard');
+
+        if($dashboard === 'sp' || $dashboard === 'mp' || $dashboard === 'ss' || $dashboard === 'ms'){
+            $isMWBEDashboardURL = true; 
+        }
+
+        if($isMWBEDashboardURL && !strpos($currentURL, "agency/") && !strpos($currentURL, "vendor/") &&
+           !strpos($currentURL, "expandBottomContURL=") && !strpos($currentURL, "expandBottomCont=") &&
+           !strpos($currentURL, "industry/")){
+
+            $mwbeFilter = RequestUtilities::get('mwbe');
+
+            if($mwbeFilter == '' || $mwbeFilter === self::$total_mwbe_cats){
+                $isDefaultMWBEDashboardURL = true;
+            }
+        }
+
+        return $isDefaultMWBEDashboardURL;
+    }
+
     /**
      * Function to populate the M/WBE dashboard drop down filters
      *
@@ -250,7 +274,7 @@ class MappingUtil {
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
         }
 
-        if(array_intersect($applicable_minority_types,array(6))){
+        if(array_intersect($applicable_minority_types,array(6)) || self::isDefaultMWBEDashboard($_SERVER['REQUEST_URI'])){
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
         }
 
@@ -307,12 +331,12 @@ class MappingUtil {
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
             }
 
-            if(array_intersect($applicable_minority_types,array(6))){
-              $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
+            if(array_intersect($applicable_minority_types,array(6)) || self::isDefaultMWBEDashboard($_SERVER['REQUEST_URI'])){
+                $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
             }
-
+    
             if(array_intersect($applicable_minority_types,array(99))){
-              $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging</a></li>";
+                $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging</a></li>";
             }
 
             if($mwbe_filters_html != "") {
