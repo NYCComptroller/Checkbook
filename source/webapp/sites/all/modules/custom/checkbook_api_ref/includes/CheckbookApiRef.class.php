@@ -34,6 +34,38 @@ class CheckbookApiRef
     return time();
   }
 
+  /**
+   * @param $csvfile
+   * @param $result
+   * @param $flag
+   * @param $total_records
+   * @param $force_quote
+   * @return int
+   */
+
+ // Process mysql results array and write to csv file
+  public function generateCsvFiles($csvfile,$result,$flag,$total_records,$force_quote)
+  {
+    //Get the column names.
+    $columnNames = array();
+    if (!empty($result) && $flag == 0) {
+      $firstRow = $result[0];
+      foreach ($firstRow as $colName => $val) {
+        $columnNames[] = $colName;
+        $total_records--;
+        $flag =1;
+      }
+    }
+    //write column names to the file.
+    fputcsv($csvfile, $columnNames);
+    foreach ($result as $row) {
+      // Wrap code values with quotes so that leading zeros are displayed in csv
+      $row[$force_quote] = "=\"" . $row[$force_quote] . "\"";
+      fputcsv($csvfile, $row);
+      $total_records--;
+    }
+    return($total_records);
+  }
 
 
   /**
@@ -66,37 +98,42 @@ class CheckbookApiRef
         continue;
       }
 
-      $file_info = [];
       $file = $dir . '/' . $filename . '.csv';
-      $file_info['error'] = false;
-
-      $data_source = $ref_file->database??'checkbook';
-      $result =_checkbook_project_execute_sql_by_data_source ($ref_file->sql,$data_source);
-
-      //Get the column names.
-      $columnNames = array();
-      if(!empty($result)){
-        $firstRow = $result[0];
-        foreach($firstRow as $colName => $val){
-          $columnNames[] = $colName;
+      $data_source = $ref_file->database ?? 'checkbook';
+      $record_count_sql = "SELECT COUNT(*) as record_count FROM ( " . $ref_file->sql . ")  sub_query";
+      $record_count = _checkbook_project_execute_sql_by_data_source($record_count_sql, $data_source);
+      $total_records = $record_count[0]['record_count'];
+      $flag = 0;
+      // If record count is less than 100000 process as is
+      if ($total_records <= 100000) {
+        $result = _checkbook_project_execute_sql_by_data_source($ref_file->sql, $data_source);
+        $file = fopen($file, 'w');
+        self::generateCsvFiles($file,$result,$flag,$total_records,$ref_file->force_quote[0]);
+        fclose($file);
+        unset($result);
+      }
+      // if record count is greater than 100000 limit the mysql results
+      // and process the csv in batch to prevent memory issue
+      else{
+        $startLimit = 100000;
+        $offset = 0;
+        $flag = 0;
+        if (file_exists($file)){
+          unlink($file);
         }
+        $file = fopen($file, 'a+');
+        while($total_records > 0 ) {
+          $php_sql = str_replace('\\','',$ref_file->sql);
+          $limit = ' LIMIT '.$startLimit .' OFFSET ' . $offset;
+          $result = _checkbook_project_execute_sql_by_data_source($php_sql.$limit, $data_source);
+          $offset = $startLimit+1;
+          $total_records_update = self::generateCsvFiles($file,$result,$flag,$total_records,$ref_file->force_quote[0]);
+          $total_records = $total_records_update;
+          $flag =1;
+        }
+        fclose($file);
       }
-      $file = fopen($file, 'w');
-      //write column names to the file.
-      fputcsv($file, $columnNames);
-
-      foreach ($result as $row) {
-        // Wrap code values with quotes so that leading zeros are displayed in csv
-        $row[$ref_file->force_quote[0]]= "=\"" .$row[$ref_file->force_quote[0]]. "\"";
-        fputcsv($file, $row);
-      }
-      fclose( $file);
-      unset($result);
     }
-
-    $return['success'] = "Ref Files Generated";
-    return $return;
-
   }
 
 
@@ -107,8 +144,7 @@ class CheckbookApiRef
   public function gatherData(&$message)
   {
     global $conf;
-
-    $result = self::generateRefFiles();
+    self::generateRefFiles();
     //var_dump ($result);
 
     $msg = [];
@@ -116,15 +152,15 @@ class CheckbookApiRef
 
     self::$message_body =
       [
-        'file_generation_status' => "Generated ref files"
+        'file_generation_status' => "Generated ref files",
+        'subject' =>"API Success"
       ];
 
     $date = self::get_date('m-d-Y');
-    $msg['subject'] = $conf['CHECKBOOK_ENV']."API REF FILES GENERATED: " . self::$successSubject . " ($date)";
+    $msg['subject'] = $conf['CHECKBOOK_ENV']."API REF FILES GENERATED: " . " ($date)";
     $msg['body'] = self::$message_body;
     $message = array_merge($message, $msg);
 
-    //Send Status to all recipients when ETL Statistics are not empty
     $message['to'] = $conf['checkbook_dev_group_email'];
     return $message;
   }
@@ -136,13 +172,12 @@ class CheckbookApiRef
     global $conf;
 
     date_default_timezone_set('America/New_York');
-
     //always run cron for developer
     if (defined('CHECKBOOK_DEV')) {
       return self::sendmail();
     }
     if (!isset($conf['checkbook_dev_group_email'])) {
-      //error_log("API REF CRON skips. Reason: \$conf['checkbook_dev_group_email'] not defined");
+      //error_log("ETL STATUS MAIL CRON skips. Reason: \$conf['checkbook_dev_group_email'] not defined");
       return false;
     }
 
@@ -151,24 +186,20 @@ class CheckbookApiRef
       return false;
     }
 
-    $this_month = self::get_date('M');
-    $current_hour = self::get_date('w');
-    LogHelper::log_info($this_month);
-    LogHelper::log_info($current_hour);
-
-    $this_month = self::get_date('Y-m');
+    $today = self::get_date('Y-m-d');
     $current_hour = (int)self::get_date('H');
 
-    if (variable_get(self::CRON_LAST_RUN_DRUPAL_VAR) == $this_month) {
-      //error_log("API CRON skips. Reason: already ran this month :: $this_month :: ".variable_get($variable_name));
+    if (variable_get(self::CRON_LAST_RUN_DRUPAL_VAR) == $today) {
+      //error_log("ETL STATUS MAIL CRON skips. Reason: already ran today :: $today :: ".variable_get($variable_name));
       return false;
     }
 
-    //if ($current_hour < 9 || $current_hour > 10) {
-      //error_log("API CRON skips. Reason: will run between 9 AM and 11 AM EST :: current hour: $current_hour");
-      //return false;
-    //}
-    variable_set(self::CRON_LAST_RUN_DRUPAL_VAR, $this_month);
+    if ($current_hour < 8 || $current_hour > 9) {
+      //error_log("ETL STATUS MAIL CRON skips. Reason: will run between 9 AM and 11 AM EST :: current hour: $current_hour");
+      return false;
+    }
+
+    variable_set(self::CRON_LAST_RUN_DRUPAL_VAR, $today);
     return self::sendmail();
   }
 
