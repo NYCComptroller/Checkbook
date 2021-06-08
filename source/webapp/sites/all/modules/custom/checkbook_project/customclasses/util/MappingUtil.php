@@ -220,9 +220,10 @@ class MappingUtil {
         $isMWBEDashboardURL = false;
         $isDefaultMWBEDashboardURL = false; 
         
-        if(strpos($currentURL, "dashboard/sp") || strpos($currentURL, "dashboard/ss") ||
-           strpos($currentURL, "dashboard/mp") ||  strpos($currentURL, "dashboard/ms")){
-            $isMWBEDashboardURL = true;
+        $dashboard = RequestUtilities::get('dashboard');
+
+        if($dashboard === 'sp' || $dashboard === 'mp' || $dashboard === 'ss' || $dashboard === 'ms'){
+            $isMWBEDashboardURL = true; 
         }
 
         if($isMWBEDashboardURL && !strpos($currentURL, "agency/") && !strpos($currentURL, "vendor/") &&
@@ -231,7 +232,7 @@ class MappingUtil {
 
             $mwbeFilter = RequestUtilities::get('mwbe');
 
-            if($mwbeFilter == '' || $mwbe === '2~3~4~5~6~9~99'){
+            if($mwbeFilter == '' || $mwbeFilter === "2~3~4~5~6~9~99"){
                 $isDefaultMWBEDashboardURL = true;
             }
         }
