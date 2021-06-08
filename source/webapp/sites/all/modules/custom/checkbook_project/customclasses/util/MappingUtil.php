@@ -232,7 +232,7 @@ class MappingUtil {
 
             $mwbeFilter = RequestUtilities::get('mwbe');
 
-            if($mwbeFilter == '' || $mwbeFilter === "2~3~4~5~6~9~99"){
+            if($mwbeFilter == '' || $mwbeFilter === self::$total_mwbe_cats){
                 $isDefaultMWBEDashboardURL = true;
             }
         }
