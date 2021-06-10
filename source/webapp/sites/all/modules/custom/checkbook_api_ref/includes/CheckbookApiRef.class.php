@@ -15,7 +15,7 @@ class CheckbookApiRef
    */
   const SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO = 60 * 60 * 12;
 
-  const CRON_LAST_RUN_DRUPAL_VAR = 'checkbook_api_ref_status_last_run';
+  const CRON_LAST_RUN_DRUPAL_VAR = 'checkbook_api_ref_last_run';
 
   /**
    * @param $format
@@ -176,15 +176,16 @@ class CheckbookApiRef
     if (defined('CHECKBOOK_DEV')) {
       return self::sendmail();
     }
+
     if (!isset($conf['checkbook_dev_group_email'])) {
       //error_log("ETL STATUS MAIL CRON skips. Reason: \$conf['checkbook_dev_group_email'] not defined");
       return false;
     }
 
-    if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['DEV2'])) {
+    //if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['DEV2'])) {
       // we run this cron only on DEV2 and PHPUNIT
-      return false;
-    }
+    //  return false;
+    //}
 
     $today = self::get_date('Y-m-d');
     $current_hour = (int)self::get_date('H');
@@ -194,7 +195,7 @@ class CheckbookApiRef
       return false;
     }
 
-    if ($current_hour < 8 || $current_hour > 9) {
+    if ($current_hour < 9 || $current_hour > 10) {
       //error_log("ETL STATUS MAIL CRON skips. Reason: will run between 9 AM and 11 AM EST :: current hour: $current_hour");
       return false;
     }
