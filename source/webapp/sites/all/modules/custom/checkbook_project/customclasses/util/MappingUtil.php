@@ -278,7 +278,7 @@ class MappingUtil {
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
         }
 
-        if(array_intersect($applicable_minority_types,array(99))){
+        if(array_intersect($applicable_minority_types,array(99)) || self::isDefaultMWBEDashboard($_SERVER['REQUEST_URI'])){
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging</a></li>";
         }
 
@@ -335,7 +335,7 @@ class MappingUtil {
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
             }
     
-            if(array_intersect($applicable_minority_types,array(99))){
+            if(array_intersect($applicable_minority_types,array(99)) || self::isDefaultMWBEDashboard($_SERVER['REQUEST_URI'])){
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging</a></li>";
             }
 
