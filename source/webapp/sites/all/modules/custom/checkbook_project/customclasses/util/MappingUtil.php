@@ -336,7 +336,7 @@ class MappingUtil {
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
             }
     
-            if(array_intersect($applicable_minority_types,array(99)) || self::isDefaultMWBEDashboard(){
+            if(array_intersect($applicable_minority_types,array(99)) || self::isDefaultMWBEDashboard()){
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging</a></li>";
             }
 
