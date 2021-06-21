@@ -12,6 +12,7 @@
     "facetPager":true,
     "filterName":"Contract ID",
     "urlParameterName":"contnum_exact",
+    "urlParameterNameType":"eqignorecase",
     "autocompleteParamName":"contnum_exact_auto",
     "autocompleteID":"fContractNumber",
     "autocompleteField":"contract_number",
