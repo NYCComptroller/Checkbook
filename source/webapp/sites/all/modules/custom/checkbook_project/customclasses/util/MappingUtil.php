@@ -216,7 +216,8 @@ class MappingUtil {
         }
     }
 
-    private static function isDefaultMWBEDashboard($currentURL){
+    private static function isDefaultMWBEDashboard(){
+        $currentURL = request_uri();
         $isMWBEDashboardURL = false;
         $isDefaultMWBEDashboardURL = false; 
         
@@ -274,11 +275,11 @@ class MappingUtil {
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
         }
 
-        if(array_intersect($applicable_minority_types,array(6)) || self::isDefaultMWBEDashboard($_SERVER['REQUEST_URI'])){
+        if(array_intersect($applicable_minority_types,array(6)) || self::isDefaultMWBEDashboard()){
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
         }
 
-        if(array_intersect($applicable_minority_types,array(99)) || self::isDefaultMWBEDashboard($_SERVER['REQUEST_URI'])){
+        if(array_intersect($applicable_minority_types,array(99)) || self::isDefaultMWBEDashboard()){
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging</a></li>";
         }
 
@@ -331,11 +332,11 @@ class MappingUtil {
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
             }
 
-            if(array_intersect($applicable_minority_types,array(6)) || self::isDefaultMWBEDashboard($_SERVER['REQUEST_URI'])){
+            if(array_intersect($applicable_minority_types,array(6)) || self::isDefaultMWBEDashboard()){
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native</a></li>";
             }
     
-            if(array_intersect($applicable_minority_types,array(99)) || self::isDefaultMWBEDashboard($_SERVER['REQUEST_URI'])){
+            if(array_intersect($applicable_minority_types,array(99)) || self::isDefaultMWBEDashboard(){
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging</a></li>";
             }
 
