@@ -136,10 +136,10 @@ $param = $parameters['is_women_owned'];
 unset($parameters['is_women_owned']);
 foreach ($param['is_women_owned'] as $key => $value) {
 if ($value == 'psemerg') {
-$param['is_emerging'] = 'Yes';
+$parameters['is_emerging'] = 'Yes';
 }
 if ($value == 'pswomen') {
-$param['is_women_owned'] = 'Yes';
+$parameters['is_women_owned'] = 'Yes';
 }
 }
 
