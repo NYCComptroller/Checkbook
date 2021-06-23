@@ -385,22 +385,6 @@ if($is_prime_filter || $is_sub_filter || $is_prime_sub_filter){
   }
 }
 
-//Certification Facet Changes
-if($node->widgetConfig->filterName == 'Certification'){
-  if(isset($unchecked) && $unchecked) {
-    foreach ($unchecked as $key => $value) {
-      if($value[0] == 99){
-
-      }
-    }
-  }
-
-  if(isset($checked) && $checked) {
-    foreach ($checked as $key => $value) {
-
-    }
-  }
-}
 //Data alteration for Vendor Type Facet
 //Vendor Type facet for parentNid == 932/939 is a different implementation and should be ignored
 if($node->widgetConfig->filterName == 'Vendor Type'){

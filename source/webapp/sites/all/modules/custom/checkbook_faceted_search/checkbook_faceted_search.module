@@ -319,7 +319,6 @@ function _checkbook_faceted_search_update_cert_filter($node){
   $pEmergeCount = isset($data[0]['prime_cert_emerging_count']) ? $data[0]['prime_cert_emerging_count'] : $data[0]['cert_emerging_count'];
   $sEmergeCount = isset($data[0]['sub_cert_emerging_count']) ? $data[0]['sub_cert_emerging_count'] : 0;
 
-
   $initial = array();
   switch($node->widgetConfig->filterName){
     case "Prime Certification":

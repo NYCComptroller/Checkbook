@@ -27,9 +27,9 @@
         "regdate":"registered_date",
         "cindustry":"industry_type_id",
         "csize":"award_size_id",
-        "pscert":"prime_sub_cert"
+        "pscert":"is_women_owned"
     },
-    "allowRequestParams":["contstatus","pswomen","psemerge"],
+    "allowRequestParams":["contstatus","pscert"],
     "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"contains","contnum":"like",
       "contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range"},
     "defaultParameters":{"latest_flag":"Y"},
@@ -130,20 +130,22 @@ return $header;
 if(isset($parameters['vendor_type'])){
 $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
 }
-if (isset($parameters['prime_sub_cert'])) {
-foreach ($parameters['prime_sub_cert'] as $key => $value) {
+
+if (isset($parameters['is_women_owned'])) {
+$param = $parameters['is_women_owned'];
+unset($parameters['is_women_owned']);
+foreach ($param['is_women_owned'] as $key => $value) {
 if ($value == 'psemerg') {
-$parameters['is_emerging'] = 'Yes';
+$param['is_emerging'] = 'Yes';
 }
 if ($value == 'pswomen') {
-$parameters['is_women_owned'] = 'Yes';
+$param['is_women_owned'] = 'Yes';
 }
-}
-unset($parameters['prime_sub_cert']);
-$node->widgetConfig->logicalOrColumns[] = array("is_emerging", "is_women_owned");
 }
 
-$parameters['is_active_eft_2011'] = 1;
+$node->widgetConfig->logicalOrColumns[] = array('is_emerging', 'is_women_owned');
+}
+
 if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');
 }
