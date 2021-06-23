@@ -196,6 +196,12 @@
                 },
                 "less1m_count": {
                     "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) < 1000000 THEN 1 ELSE 0 END)"
+                },
+                "cert_women_count":{
+                  "function": "SUM(CASE WHEN is_women_owned = 'Yes' THEN 1 ELSE 0 END)"
+                },
+                "cert_emerging_count":{
+                  "function": "SUM(CASE WHEN is_emerging = 'Yes' THEN 1 ELSE 0 END)"
                 }
             }
         }
