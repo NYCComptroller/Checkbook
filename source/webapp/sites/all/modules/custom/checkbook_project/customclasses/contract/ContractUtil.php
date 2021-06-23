@@ -870,118 +870,178 @@ namespace { //global
          * @param $parameters
          * @return mixed
          */
-        public static function adjustActiveContractCommonParams(&$node, &$parameters) {
+        public static function adjustActiveContractCommonParams(&$node, &$parameters)
+        {
 
-            //Handle status and year parameter
-            $contractStatus = RequestUtilities::get('contstatus');
-            $reqYear = RequestUtilities::get('year');
-            $data_controller_instance = data_controller_get_operator_factory_instance();
-            $dashboard = RequestUtilities::get('dashboard');
-            $smnid = RequestUtilities::get('smnid');
+          //Handle status and year parameter
+          $contractStatus = RequestUtilities::get('contstatus');
+          $reqYear = RequestUtilities::get('year');
+          $data_controller_instance = data_controller_get_operator_factory_instance();
+          $dashboard = RequestUtilities::get('dashboard');
+          $smnid = RequestUtilities::get('smnid');
 
-            //Display contracts which are active from 2011
-            $parameters['is_active_eft_2011'] = 1;
+          //Display contracts which are active from 2011
+          $parameters['is_active_eft_2011'] = 1;
 
-            if(isset($reqYear)){
-                $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
-                $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+          if (isset($reqYear)) {
+            $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+            $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
 
-                if(self::showSubVendorData()){
-                    $parameters['sub_starting_year_id']= $leCondition;
-                    $parameters['sub_ending_year_id']= $geCondition;
-                }else if(!isset($dashboard) && !isset($smnid)){
-                    $parameters['starting_year_id']= $leCondition;
-                    $parameters['ending_year_id']= $geCondition;
-                }else{
-                    $parameters['prime_starting_year_id']= $leCondition;
-                    $parameters['prime_ending_year_id']= $geCondition;
-                    $parameters['sub_latest_flag'] = 'Y';
-                }
-
-                if($contractStatus=='R'){
-                    $parameters['registered_year_id']= array($reqYear);
-                } else if($contractStatus=='A'){
-                    if(self::showSubVendorData()){
-                        $parameters['sub_effective_begin_year_id']= $leCondition;
-                        $parameters['sub_effective_end_year_id']= $geCondition;
-                    }else if(!isset($dashboard) && !isset($smnid)){
-                        $parameters['effective_begin_year_id']= $leCondition;
-                        $parameters['effective_end_year_id']= $geCondition;
-                    }else{
-                        $parameters['prime_effective_begin_year_id']= $leCondition;
-                        $parameters['prime_effective_end_year_id']= $geCondition;
-                        $parameters['sub_latest_flag'] = 'Y';
-                    }
-                }
+            if (self::showSubVendorData()) {
+              $parameters['sub_starting_year_id'] = $leCondition;
+              $parameters['sub_ending_year_id'] = $geCondition;
+            } else if (!isset($dashboard) && !isset($smnid)) {
+              $parameters['starting_year_id'] = $leCondition;
+              $parameters['ending_year_id'] = $geCondition;
             } else {
-                $parameters['latest_flag'] = 'Y';
+              $parameters['prime_starting_year_id'] = $leCondition;
+              $parameters['prime_ending_year_id'] = $geCondition;
+              $parameters['sub_latest_flag'] = 'Y';
             }
 
-            //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
-            if(isset($parameters['vendor_code']) || (isset($parameters['vendor_code.vendor_code']) && $node->widgetConfig->functionality != 'search')) {
-                $vendor_Code = isset($parameters['vendor_code.vendor_code']) ? $parameters['vendor_code.vendor_code'] : $parameters['vendor_code'];
-                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($vendor_Code));
-                $parameters['prime_vendor_code'] = $condition;
-                $parameters['sub_vendor_code'] = $condition;
-                unset($parameters['vendor_code']);
+            if ($contractStatus == 'R') {
+              $parameters['registered_year_id'] = array($reqYear);
+            } else if ($contractStatus == 'A') {
+              if (self::showSubVendorData()) {
+                $parameters['sub_effective_begin_year_id'] = $leCondition;
+                $parameters['sub_effective_end_year_id'] = $geCondition;
+              } else if (!isset($dashboard) && !isset($smnid)) {
+                $parameters['effective_begin_year_id'] = $leCondition;
+                $parameters['effective_end_year_id'] = $geCondition;
+              } else {
+                $parameters['prime_effective_begin_year_id'] = $leCondition;
+                $parameters['prime_effective_end_year_id'] = $geCondition;
+                $parameters['sub_latest_flag'] = 'Y';
+              }
+            }
+          } else {
+            $parameters['latest_flag'] = 'Y';
+          }
+
+          //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
+          if (isset($parameters['vendor_code']) || (isset($parameters['vendor_code.vendor_code']) && $node->widgetConfig->functionality != 'search')) {
+            $vendor_Code = isset($parameters['vendor_code.vendor_code']) ? $parameters['vendor_code.vendor_code'] : $parameters['vendor_code'];
+            $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($vendor_Code));
+            $parameters['prime_vendor_code'] = $condition;
+            $parameters['sub_vendor_code'] = $condition;
+            unset($parameters['vendor_code']);
+          }
+
+          //Handle vendor_name mapping to prime_vendor_name and sub_vendor_name
+          if (isset($parameters['vendor_name'])) {
+            $vendornm_exact = RequestUtilities::get('vendornm_exact');
+            $vendornm = RequestUtilities::get('vendornm');
+
+            if (isset($vendornm_exact)) {
+              $vendornm_exact = explode('~', $vendornm_exact);
+              $vendornm_exact = implode('|', $vendornm_exact);
+              $vendornm_exact = self::_replaceSlashCharacter($vendornm_exact);
+              $pattern = "(^" . _checkbook_regex_replace_pattern($vendornm_exact) . "$)";
+              $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+              $parameters['prime_vendor_name'] = $condition;
+              $parameters['sub_vendor_name'] = $condition;
+            } else if (isset($vendornm)) {
+              $vendornm = explode('~', $vendornm);
+              $vendornm = implode('|', $vendornm);
+              $condition = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($vendornm, FALSE, TRUE));
+              $parameters['prime_vendor_name'] = $condition;
+              $parameters['sub_vendor_name'] = $condition;
             }
 
-            //Handle vendor_name mapping to prime_vendor_name and sub_vendor_name
-            if(isset($parameters['vendor_name'])) {
-                $vendornm_exact = RequestUtilities::get('vendornm_exact');
-                $vendornm = RequestUtilities::get('vendornm');
+            unset($parameters['vendor_name']);
+          }
 
-                if(isset($vendornm_exact)) {
-                    $vendornm_exact = explode('~',$vendornm_exact);
-                    $vendornm_exact = implode('|',$vendornm_exact);
-                    $vendornm_exact = self::_replaceSlashCharacter($vendornm_exact);
-                    $pattern = "(^" . _checkbook_regex_replace_pattern($vendornm_exact) . "$)";
-                    $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
-                    $parameters['prime_vendor_name'] = $condition;
-                    $parameters['sub_vendor_name'] = $condition;
-                } else if(isset($vendornm)) {
-                    $vendornm = explode('~',$vendornm);
-                    $vendornm = implode('|',$vendornm);
-                    $condition = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($vendornm,FALSE,TRUE));
-                    $parameters['prime_vendor_name'] = $condition;
-                    $parameters['sub_vendor_name'] = $condition;
+          //Handle vendor_type mapping to prime_vendor_type and sub_vendor_type
+          if ($node->widgetConfig->filterName != "Vendor Type") {
+            if (isset($parameters['vendor_type'])) {
+              $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['vendor_type']));
+              $parameters['prime_vendor_type'] = $condition;
+              $parameters['sub_vendor_type'] = $condition;
+              unset($parameters['vendor_type']);
+            }
+          }
+
+          //Vendor Name facet should query both prime/sub always
+          if ($node->widgetConfig->filterName != "Vendor") {
+            if (self::showSubVendorData()) {
+              $parameters['vendor_record_type'] = 'Sub Vendor';
+            }
+          }
+
+          //Handle minority_type_id mapping to prime_minority_type_id and sub_minority_type_id
+          if (isset($parameters['minority_type_id'])) {
+            $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['minority_type_id']));
+            if (!isset($dashboard) && !isset($smnid)) {
+              $node->widgetConfig->logicalOrColumns[] = array("prime_mwbe_adv_search_id", "sub_minority_type_id");
+              $parameters['prime_mwbe_adv_search_id'] = $condition;
+            } else {
+              $node->widgetConfig->logicalOrColumns[] = array("prime_minority_type_id", "sub_minority_type_id");
+              $parameters['prime_minority_type_id'] = $condition;
+            }
+            $parameters['sub_minority_type_id'] = $condition;
+            unset($parameters['minority_type_id']);
+          }
+
+          if ($node->widgetConfig->filterName != "Prime Certification") {
+            if (isset($parameters['prime_cert'])) {
+              foreach ($parameters['prime_cert'] as $key => $value) {
+                if ($value == 'pemerg') {
+                  $parameters['prime_emerging_adv_search'] = 'Yes';
                 }
 
-                unset($parameters['vendor_name']);
-            }
-
-            //Handle vendor_type mapping to prime_vendor_type and sub_vendor_type
-            if($node->widgetConfig->filterName != "Vendor Type") {
-                if(isset($parameters['vendor_type'])) {
-                    $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['vendor_type']));
-                    $parameters['prime_vendor_type'] = $condition;
-                    $parameters['sub_vendor_type'] = $condition;
-                    unset($parameters['vendor_type']);
+                if ($value == 'pwomen') {
+                  $parameters['prime_women_adv_search'] = 'Yes';
                 }
+              }
             }
+          }
 
-            //Vendor Name facet should query both prime/sub always
-            if($node->widgetConfig->filterName != "Vendor") {
-                if(self::showSubVendorData()){
-                    $parameters['vendor_record_type'] = 'Sub Vendor';
+          if ($node->widgetConfig->filterName != "Sub Certification") {
+            if (isset($parameters['sub_cert'])) {
+              foreach ($parameters['sub_cert'] as $key => $value) {
+                if ($value == 'semerg') {
+                  $parameters['is_sub_emerging'] = 'Yes';
                 }
-            }
-
-            //Handle minority_type_id mapping to prime_minority_type_id and sub_minority_type_id
-            if(isset($parameters['minority_type_id'])) {
-                $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($parameters['minority_type_id']));
-                if(!isset($dashboard) && !isset($smnid)){
-                        $node->widgetConfig->logicalOrColumns[] = array("prime_mwbe_adv_search_id","sub_minority_type_id");
-                        $parameters['prime_mwbe_adv_search_id'] = $condition;
-                }else{
-                    $node->widgetConfig->logicalOrColumns[] = array("prime_minority_type_id","sub_minority_type_id");
-                    $parameters['prime_minority_type_id'] = $condition;
+                if ($value == 'pwomen') {
+                  $parameters['is_sub_women_owned'] = 'Yes';
                 }
-                $parameters['sub_minority_type_id'] = $condition;
-                unset($parameters['minority_type_id']);
+              }
             }
+          }
 
-            //if ONLY Prime or ONLY Sub amount selected, need to filter only that type
+          if ($node->widgetConfig->filterName != "Certification") {
+            $women = FALSE;
+            $emerge = FALSE;
+            if (isset($parameters['prime_sub_cert'])) {
+              foreach ($parameters['prime_sub_cert'] as $key => $value) {
+                if ($value == 'psemerg') {
+                  $parameters['is_sub_emerging'] = 'Yes';
+                  $parameters['prime_emerging_adv_search'] = 'Yes';
+                  $emerge = TRUE;
+                }
+                if ($value == 'pswomen') {
+                  $parameters['is_sub_women_owned'] = 'Yes';
+                  $parameters['prime_women_adv_search'] = 'Yes';
+                  $women = TRUE;
+                }
+              }
+
+              if($women && $emerge){
+                $node->widgetConfig->logicalOrColumns[] = array("is_sub_emerging", "prime_emerging_adv_search", "is_sub_women_owned", "prime_women_adv_search");
+              }else if($women){
+                $node->widgetConfig->logicalOrColumns[] = array("is_sub_women_owned", "prime_women_adv_search");
+              }else if($emerge){
+                $node->widgetConfig->logicalOrColumns[] = array("is_sub_emerging", "prime_emerging_adv_search");
+              }
+            }
+          }
+
+          unset($parameters['prime_cert']);
+          unset($parameters['sub_cert']);
+          unset($parameters['prime_sub_cert']);
+
+
+          //if ONLY Prime or ONLY Sub amount selected, need to filter only that type
             $prime_cur_amt = RequestUtilities::get('pcuramtr');
             $sub_cur_amt = RequestUtilities::get('scuramtr');
 
