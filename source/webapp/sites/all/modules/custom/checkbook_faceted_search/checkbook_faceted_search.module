@@ -314,19 +314,25 @@ function _checkbook_faceted_search_update_cert_filter($node){
     $data = array(0 => array());
   }
 
+  $pWomenCount = isset($data[0]['prime_cert_women_count']) ? $data[0]['prime_cert_women_count'] : $data[0]['cert_women_count'];
+  $sWomenCount = isset($data[0]['sub_cert_women_count']) ? $data[0]['sub_cert_women_count'] : 0;
+  $pEmergeCount = isset($data[0]['prime_cert_emerging_count']) ? $data[0]['prime_cert_emerging_count'] : $data[0]['cert_emerging_count'];
+  $sEmergeCount = isset($data[0]['sub_cert_emerging_count']) ? $data[0]['sub_cert_emerging_count'] : 0;
+
+
   $initial = array();
   switch($node->widgetConfig->filterName){
     case "Prime Certification":
-      $initial[0] = array('pwomen', 'Woman Owned', $data[0]['prime_cert_women_count']);
-      $initial[1] = array('pemerg', 'Emerging', $data[0]['prime_cert_emerging_count']);
+      $initial[0] = array('pwomen', 'Woman Owned', $pWomenCount);
+      $initial[1] = array('pemerg', 'Emerging', $pEmergeCount);
       break;
     case "Sub Certification":
-      $initial[0] = array('swomen', 'Woman Owned', $data[0]['sub_cert_women_count']);
-      $initial[1] = array('semerg', 'Emerging', $data[0]['sub_cert_emerging_count']);
+      $initial[0] = array('swomen', 'Woman Owned', $sWomenCount);
+      $initial[1] = array('semerg', 'Emerging', $sEmergeCount);
       break;
     default:
-      $initial[0] = array('pswomen', 'Woman Owned', ($data[0]['prime_cert_women_count'] + $data[0]['sub_cert_women_count']));
-      $initial[1] = array('psemerg', 'Emerging', ($data[0]['prime_cert_emerging_count'] + $data[0]['sub_cert_emerging_count']));
+      $initial[0] = array('pswomen', 'Woman Owned', ($pWomenCount + $sWomenCount));
+      $initial[1] = array('psemerg', 'Emerging', ($pEmergeCount + $sEmergeCount));
       break;
   }
 
