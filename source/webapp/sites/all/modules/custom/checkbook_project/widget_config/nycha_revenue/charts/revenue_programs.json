@@ -54,6 +54,14 @@
     "respcenter" : "responsibility_center_id.responsibility_center_id",
     "fundsrc": "funding_source_id.funding_source_id"
   },
+  "adjustParameters":"
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+      $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    $adjustedParameters['program_phase_id.program_phase_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+    $adjustedParameters['program_phase_description.program_phase_description'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotWildcardOperatorHandler::$OPERATOR__NAME, 'No Program Assigned',FALSE,TRUE);
+    return $adjustedParameters;
+  ",
   "transformationPHP":"
   $landing_page =  '/' .  current_path()  ;
   $allZero = TRUE;
