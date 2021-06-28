@@ -250,14 +250,14 @@
   },
   "nycha_revenue_project_code_list": {
     "database": "checkbook_nycha",
-    "sql": "SELECT DISTINCT gl_project_code, gl_project_description FROM public.ref_gl_project where gl_project_code IS NOT NULL and gl_project_description IS NOT NULL AND gl_project_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT gl_project_description ~ '^'''",
+    "sql": "SELECT DISTINCT gl_project_code, gl_project_description FROM public.ref_gl_project where gl_project_code IS NOT NULL and gl_project_description IS NOT NULL AND gl_project_description NOT IN (' ','<Unknown>','xxxxxxx', 'DEFAULT') AND NOT gl_project_description ~ '^'''",
     "force_quote": [
       "gl_project_code"
     ]
   },
   "nycha_revenue_program_code_list": {
     "database": "checkbook_nycha",
-    "sql": "SELECT DISTINCT program_phase_code, program_phase_description FROM public.ref_program_phase where program_phase_code IS NOT NULL AND program_phase_description IS NOT NULL AND program_phase_description NOT IN (' ','<Unknown>','xxxxxxx') AND NOT program_phase_description ~ '^'''",
+    "sql": "SELECT DISTINCT program_phase_code, program_phase_description FROM public.ref_program_phase where program_phase_code IS NOT NULL AND program_phase_description IS NOT NULL AND program_phase_description NOT IN (' ','<Unknown>','xxxxxxx', 'DEFAULT') AND NOT program_phase_description ~ '^'''",
     "force_quote": [
       "program_phase_code"
     ]
