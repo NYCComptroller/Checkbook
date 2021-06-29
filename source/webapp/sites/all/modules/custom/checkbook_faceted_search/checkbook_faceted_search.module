@@ -305,6 +305,59 @@ function _checkbook_faceted_search_update_data($node)
  * @param $node
  * @return array
  */
+function _checkbook_faceted_search_update_cert_filter($node){
+  $data = $node->data;
+  $output = array();
+  $output['filter_name'] = $node->widgetConfig->filterName;
+  $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  if (!is_array($data[0])) {
+    $data = array(0 => array());
+  }
+
+  $pWomenCount = isset($data[0]['prime_cert_women_count']) ? $data[0]['prime_cert_women_count'] : $data[0]['cert_women_count'];
+  $sWomenCount = isset($data[0]['sub_cert_women_count']) ? $data[0]['sub_cert_women_count'] : 0;
+  $pEmergeCount = isset($data[0]['prime_cert_emerging_count']) ? $data[0]['prime_cert_emerging_count'] : $data[0]['cert_emerging_count'];
+  $sEmergeCount = isset($data[0]['sub_cert_emerging_count']) ? $data[0]['sub_cert_emerging_count'] : 0;
+
+  $initial = array();
+  switch($node->widgetConfig->filterName){
+    case "Prime Certification":
+      $initial[0] = array('pwomen', 'Woman Owned', $pWomenCount);
+      $initial[1] = array('pemerg', 'Emerging', $pEmergeCount);
+      break;
+    case "Sub Certification":
+      $initial[0] = array('swomen', 'Woman Owned', $sWomenCount);
+      $initial[1] = array('semerg', 'Emerging', $sEmergeCount);
+      break;
+    default:
+      $initial[0] = array('pswomen', 'Woman Owned', ($pWomenCount + $sWomenCount));
+      $initial[1] = array('psemerg', 'Emerging', ($pEmergeCount + $sEmergeCount));
+      break;
+  }
+
+  for ($i = 0; $i < 2; $i++) {
+    $checked = false;
+    foreach ($params as $param) {
+      if ($param == $initial[$i][0]) {
+        $checked = true;
+      }
+    }
+    if ($checked) {
+      $output['checked'][] = $initial[$i];
+    } else {
+      if ($initial[$i][2] > 0) {
+        $output['unchecked'][] = $initial[$i];
+      }
+    }
+  }
+  $output['autocomplete_id'] = $node->widgetConfig->autocompleteID;
+  return $output;
+}
+
+/**
+ * @param $node
+ * @return array
+ */
 function _checkbook_faceted_search_update_data_range_filter($node)
 {
   $data = $node->data;
@@ -335,16 +388,6 @@ function _checkbook_faceted_search_update_data_range_filter($node)
       $initial[5] = array(1, 'Less than $1M', $data[0]['less1m_' . $rangeColumnNameVariant . 'count']);
       break;
   }
-  //sort
-  /*usort($initial,
-      function($a, $b)
-      {
-          if ($a[2] == $b[2]) {
-              return 0;
-          }
-          return ($a[2] > $b[2]) ? -1 : 1;
-      }
-  );*/
 
   for ($i = 0; $i < 6; $i++) {
     $checked = false;
@@ -670,6 +713,8 @@ function checkbook_faceted_search_preprocess_individual_filter(&$variables)
     $data = _checkbook_faceted_search_update_data_range2_filter($node);
   } elseif ($node->widgetConfig->urlParameterType == "rangeid3") {
     $data = _checkbook_faceted_search_update_data_range3_filter($node);
+  } elseif ($node->widgetConfig->urlParameterType == "cert") {
+    $data = _checkbook_faceted_search_update_cert_filter($node);
   } elseif (isset($logicalOrFacet) && $logicalOrFacet) {
     $data = _checkbook_faceted_search_update_data_logical_or_filter($node);
   } elseif (isset($unionOrFacet) && $unionOrFacet) {
@@ -706,6 +751,8 @@ function checkbook_faceted_search_preprocess_pagination(&$variables)
     $data = _checkbook_faceted_search_update_data_range2_filter($node);
   } elseif ($node->widgetConfig->urlParameterType == "rangeid3") {
     $data = _checkbook_faceted_search_update_data_range3_filter($node);
+  } elseif ($node->widgetConfig->urlParameterType == "cert") {
+    $data = _checkbook_faceted_search_update_cert_filter($node);
   } elseif (isset($logicalOrFacet) && $logicalOrFacet) {
     $data = _checkbook_faceted_search_update_data_logical_or_filter($node);
   } elseif (isset($unionOrFacet) && $unionOrFacet) {

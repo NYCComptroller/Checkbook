@@ -361,6 +361,7 @@ if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->p
     if($count > 0 )array_push($checked,array($id,'Asian American',$count));
 }
 
+//M/WBE category facet changes
 if($is_prime_filter || $is_sub_filter || $is_prime_sub_filter){
   if(isset($unchecked) && $unchecked) {
     foreach ($unchecked as $key => $value) {
@@ -383,6 +384,7 @@ if($is_prime_filter || $is_sub_filter || $is_prime_sub_filter){
     }
   }
 }
+
 //Data alteration for Vendor Type Facet
 //Vendor Type facet for parentNid == 932/939 is a different implementation and should be ignored
 if($node->widgetConfig->filterName == 'Vendor Type'){

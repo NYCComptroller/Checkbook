@@ -1,7 +1,9 @@
 {
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
-    "cleanURLParameters":["vendornm_exact","vendortype","mwbe","doctype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize"],
+    "cleanURLParameters":["vendornm_exact","vendortype","mwbe","doctype","agency","vendor",
+      "curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","contnum_exact","aptpin",
+      "pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","pscert"],
     "urlParamMap":{
         "vendortype":"vendor_type",
         "vendornm":"vendor_name",
@@ -24,10 +26,12 @@
         "enddate":"effective_end_date",
         "regdate":"registered_date",
         "cindustry":"industry_type_id",
-        "csize":"award_size_id"
+        "csize":"award_size_id",
+        "pscert":"is_women_owned"
     },
-    "allowRequestParams":["contstatus"],
-    "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range"},
+    "allowRequestParams":["contstatus","pscert"],
+    "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"contains","contnum":"like",
+      "contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range"},
     "defaultParameters":{"latest_flag":"Y"},
     "header":"
     $header = NULL;
@@ -126,7 +130,22 @@ return $header;
 if(isset($parameters['vendor_type'])){
 $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
 }
-$parameters['is_active_eft_2011'] = 1;
+
+if (isset($parameters['is_women_owned'])) {
+$param = $parameters['is_women_owned'];
+unset($parameters['is_women_owned']);
+foreach ($param['is_women_owned'] as $key => $value) {
+if ($value == 'psemerg') {
+$parameters['is_emerging'] = 'Yes';
+}
+if ($value == 'pswomen') {
+$parameters['is_women_owned'] = 'Yes';
+}
+}
+
+$node->widgetConfig->logicalOrColumns[] = array('is_emerging', 'is_women_owned');
+}
+
 if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');
 }
@@ -191,6 +210,7 @@ var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
 var oVendorType = getNamedFilterCriteria('fvendorType');
 var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
 var oContractNumber = getNamedFilterCriteria('fContractNumber');
+var oPrimeSubCert = getNamedFilterCriteria('fPrimeSubCert');
 
 var  cUrl = oTable.fnSettings().sAjaxSource;
 cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -201,6 +221,7 @@ cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
 cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
 cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
 cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
+cUrl = adjustUrlParameter(cUrl,'pscert',oPrimeSubCert);
 
 
 return cUrl;

@@ -4,7 +4,8 @@
     "stickyHeader":true,
     "cleanURLParameters":[
         "vendortype","pmwbe","smwbe","psmwbe","doctype","contstatus","year","calyear","agency","curamt","pcuramtr","scuramtr","vendor","vendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
-        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","startdate","enddate","regdate","cindustry","pcindustry","scindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus","cevent"
+        "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","startdate","enddate","regdate","cindustry","pcindustry","scindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus","cevent",
+        "pscert", "pcert", "scert"
     ],
     "urlParamMap":{
         "agrmnttype":"agreement_type_id",
@@ -44,7 +45,10 @@
         "contnum":"contract_number",
         "contnum_exact":"contract_number",
         "year":"year",
-        "cevent":"event_id"
+        "cevent":"event_id",
+        "pcert":"prime_cert",
+        "scert":"sub_cert",
+        "pscert":"prime_sub_cert"
     },
     "allowRequestParams": [
       "smnid",
@@ -54,7 +58,10 @@
       "psmwbe",
       "vendor",
       "pcuramtr",
-      "scuramtr"
+      "scuramtr",
+      "pcert",
+      "scert",
+      "pscert"
     ],
     "paramTypeConfig": {
       "vendornm_exact": "eqignorecase",
@@ -463,6 +470,9 @@
             var oPrimeIndustryType = getNamedFilterCriteria('fPrimeIndustryTypeId');
             var oSubIndustryType = getNamedFilterCriteria('fSubIndustryTypeId');
             var oSubContStatus = getNamedFilterCriteria('fSubContStatus');
+            var oPrimeSubCert = getNamedFilterCriteria('fPrimeSubCert');
+            var oPrimeCert = getNamedFilterCriteria('fPrimeCert');
+            var oSubCert = getNamedFilterCriteria('fSubCert');
 
             var cUrl = oTable.fnSettings().sAjaxSource;
 
@@ -485,6 +495,9 @@
             cUrl = adjustUrlParameter(cUrl,'pcindustry',oPrimeIndustryType);
             cUrl = adjustUrlParameter(cUrl,'scindustry',oSubIndustryType);
             cUrl = adjustUrlParameter(cUrl,'subcontstatus',oSubContStatus);
+            cUrl = adjustUrlParameter(cUrl,'pscert',oPrimeSubCert);
+            cUrl = adjustUrlParameter(cUrl,'pcert',oPrimeCert);
+            cUrl = adjustUrlParameter(cUrl,'scert',oSubCert);
 
             return cUrl;
         }
