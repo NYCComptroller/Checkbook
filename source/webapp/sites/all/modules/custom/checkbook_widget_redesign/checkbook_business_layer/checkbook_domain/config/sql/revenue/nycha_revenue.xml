@@ -114,6 +114,7 @@
         <exp op="=" dbField="program_phase_id" paramName="program" />
       </exp>
     </where>
+    AND COALESCE(gl_project_description, '') NOT iLIKE  '%no project assigned%'
     GROUP BY gl_project_description, gl_project_id
     </sql>
   </statement>
@@ -143,6 +144,7 @@
           <exp op="=" dbField="gl_project_id" paramName="project" />
         </exp>
       </where>
+      AND COALESCE(program_phase_description, '') NOT iLIKE  '%no program assigned%'
       GROUP BY program_phase_description, program_phase_id
     </sql>
   </statement>

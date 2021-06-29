@@ -1084,7 +1084,7 @@ function _budget_program_options($dataSource = Datasource::CITYWIDE, $feeds = tr
     case Datasource::NYCHA :
       $query = "SELECT DISTINCT program_phase_description || ' [' || program_phase_code  || ']' AS program,
                   program_phase_description, program_phase_id
-                FROM ref_program_phase WHERE program_phase_description NOT iLIKE '%default%' ORDER BY program ASC";
+                FROM ref_program_phase WHERE program_phase_description NOT iLIKE 'default' ORDER BY program ASC";
       $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
       $title = 'Select Program';
       $options[''] = $title;
@@ -1115,7 +1115,7 @@ function _budget_project_options($dataSource = Datasource::CITYWIDE, $feeds = tr
     case Datasource::NYCHA :
       $query = "SELECT gl_project_description || ' [' || gl_project_code  || ']' AS project,
                 gl_project_description, gl_project_id FROM ref_gl_project
-                WHERE gl_project_description NOT iLIKE '%Default%' ORDER BY gl_project_description ASC";
+                WHERE gl_project_description NOT iLIKE 'default' ORDER BY gl_project_description ASC";
       $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
       $title = 'Select Project';
       $options[''] = $title;
