@@ -197,7 +197,7 @@
       "release_original_amount": "Release Original Amount",
       "funding_source_name": "Funding source",
       "release_spend_to_date": "Release Invoiced Amount",
-      "program_phase_code": "Program",
+      "program_phase_name": "Program",
       "agreement_total_amount": "Contract Current Amount",
       "gl_project_name": "Project",
       "agreement_original_amount": "Contract Original Amount",
@@ -326,7 +326,7 @@
       "grant_name": "Grant Name",
       "expenditure_type_name": "Expenditure Type",
       "funding_source_name": "Funding source",
-      "program_phase_code": "Program",
+      "program_phase_name": "Program",
       "gl_project_name": "Project"
     },
     "budget":{
