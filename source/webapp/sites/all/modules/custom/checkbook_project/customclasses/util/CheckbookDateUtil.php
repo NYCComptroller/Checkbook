@@ -105,7 +105,7 @@ class CheckbookDateUtil{
    *
    * @return string
    */
-  public static function getMaxDatasourceFiscalYear(string $data_source){
+  public static function getMaxDatasourceFiscalYear(string $data_source = DataSource::CITYWIDE){
     self::setCurrentYears();
     $key = 'current_' . $data_source . '_fy';
     if ($year = _checkbook_dmemcache_get($key)) {
