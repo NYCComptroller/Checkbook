@@ -606,7 +606,7 @@
         $(enclosingDiv).find(':input').each(function () {
           switch (this.type) {
             case 'select-one':
-              var default_option = $(this).attr('default_selected_value');
+              let default_option = $(this).find("option[selected=selected]").val();
               if (default_option) {
                 $(this).find('option[value=' + default_option + ']').attr("selected", "selected");
               } else {
@@ -3087,7 +3087,7 @@
       switch (this.type) {
         case 'select-one':
           $("select#edit-checkbook-contracts-category").val("all");
-          var defaultoption = $(this).attr('default_selected_value');
+          let defaultoption = $(this).find("option[selected=selected]").val();
           if (defaultoption) {
             $(this).find('option[value=' + defaultoption + ']').attr("selected", "selected");
           } else {
@@ -3144,7 +3144,7 @@
       }
 
       if (this.type == 'select-one') {
-        var default_option = $(this).attr('default_selected_value');
+        let default_option = $(this).find("option[selected=selected]").val();
         if (!default_option)
           $(this).find('option:first').attr("selected", "selected");
         else
@@ -3180,7 +3180,7 @@
         $(this).val('');
       }
       if (this.type == 'select-one') {
-        let default_option = $(this).attr('default_selected_value');
+        let default_option = $(this).find("option[selected=selected]").val();
         if (!default_option)
           $(this).find('option:first').attr("selected", "selected");
         else

@@ -125,11 +125,12 @@ class Field
 
     public function getDropDownDefault()
     {
-        if (isset($this->options[0]) && !(is_null($this->options[0]))) {
-            return $this->options[0];
-        }
-        else {
-            return 'Select ' . $this->getFieldTitle();
+        if(isset($this->default_value)){
+          return $this->default_value;
+        }if (isset($this->options[0]) && !(is_null($this->options[0]))) {
+          return $this->options[0];
+        } else {
+          return 'Select ' . $this->getFieldTitle();
         }
     }
 }

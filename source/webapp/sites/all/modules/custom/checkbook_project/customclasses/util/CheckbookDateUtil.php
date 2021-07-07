@@ -99,15 +99,41 @@ class CheckbookDateUtil{
    * @param $data_source
    *
    * SET THESE VARS ON SERVER (AT DATA-SOURCE LEVEL):
-   * drush vset current_checkbook_fy 2021
-   * drush vset current_checkbook_oge_fy 2021
-   * drush vset current_checkbook_nycha_fy 2020
+   * drush vset default_checkbook_fy 2021
+   * drush vset default_checkbook_oge_fy 2021
+   * drush vset default_checkbook_nycha_fy 2021
+   *
+   * @return string
+   */
+  public static function getMaxDatasourceFiscalYear(string $data_source){
+    self::setCurrentYears();
+    $key = 'current_' . $data_source . '_fy';
+    if ($year = _checkbook_dmemcache_get($key)) {
+      return $year;
+    }
+    $year = variable_get($key, FALSE);
+    isset($year) ? $year : null;
+    if (FALSE === $year) {
+      LogHelper::log_warn('Drush variable ' . $key . ' not found!');
+      $year = self::$currentFiscalYear;
+    }
+    _checkbook_dmemcache_set($key, $year);
+    return isset($year) ? $year : null;
+  }
+
+  /**
+   * @param $data_source
+   *
+   * SET THESE VARS ON SERVER (AT DATA-SOURCE LEVEL):
+   * drush vset current_checkbook_fy 2022
+   * drush vset current_checkbook_oge_fy 2022
+   * drush vset current_checkbook_nycha_fy 2021
    *
    * @return string
    */
   public static function getCurrentDatasourceFiscalYear(string $data_source){
     self::setCurrentYears();
-    $key = 'current_' . $data_source . '_fy';
+    $key = 'default_' . $data_source . '_fy';
     if ($year = _checkbook_dmemcache_get($key)) {
       return $year;
     }
@@ -270,7 +296,7 @@ class CheckbookDateUtil{
    * @return array
    */
   public static function getFiscalYearsRange($data_source = Datasource::CITYWIDE, $domain = null){
-    $last = self::getCurrentFiscalYear($data_source);
+    $last = self::getMaxDatasourceFiscalYear($data_source);
     $first = self::getStartingFiscalYear($data_source, $domain);
     $results = [];
     for ($i = $last; $i >= $first; $i--) {
@@ -285,7 +311,7 @@ class CheckbookDateUtil{
    * @return array
    */
   public static function getFiscalYearOptionsRange($data_source, $domain = NULL){
-    $last = self::getCurrentDatasourceFiscalYear($data_source);
+    $last = self::getMaxDatasourceFiscalYear($data_source);
     $first = self::getStartingFiscalYear($data_source, $domain);
 
     $results = [];
