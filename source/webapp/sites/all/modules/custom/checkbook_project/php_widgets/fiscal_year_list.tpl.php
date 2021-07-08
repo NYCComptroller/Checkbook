@@ -19,7 +19,7 @@
 */
 
 
-$filter_years = CheckbookDateUtil::getCurrentYears();
+$filter_years = CheckbookDateUtil::getFiscalYearOptionsRange(DataSource::CITYWIDE);
 $q = request_uri();
 $array_q = explode('/',$q);
 

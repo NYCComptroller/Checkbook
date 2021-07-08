@@ -647,7 +647,7 @@
       const contract_type = $.fn.emptyToZero($('#edit-contract-type', context).val());
       const agency = $.fn.emptyToZero($('#edit-agency', context).val());
       const award_method = $.fn.emptyToZero($('#edit-award-method', context).val());
-      const year = ($('#edit-year', context).attr('disabled')) ? 0 : $('#edit-year', context).val();
+      const year = ($('#edit-year', context).attr('disabled')) ? 0 : getYearValue($('#edit-year', context).val());
       const mwbecat = ($('#edit-mwbe-category').val()) ? $('#edit-mwbe-category').val() : 0;
       const industry = $.fn.emptyToZero($('#edit-industry', context).val());
       const includes_sub_vendors = $.fn.emptyToZero($('#edit-contract_includes_sub_vendors_id', context).val());
@@ -660,7 +660,7 @@
         "event_id":catastrophic_event,
         "agency_code":agency,
         "award_method_id":award_method,
-        "fiscal_year_id":year,
+        "fiscal_year":year,
         "minority_type_id" :mwbecat,
         "scntrc_status":includes_sub_vendors,
         "aprv_sta":sub_vendor_status,
@@ -707,7 +707,7 @@
           const catastrophic_event = $.fn.emptyToZero($('#edit-catastrophic_event', context).val());
           const agency = $.fn.emptyToZero($('#edit-agency', context).val());
           const award_method = $.fn.emptyToZero($('#edit-award-method', context).val());
-          const year = ($('#edit-year', context).attr('disabled')) ? 0 : $('#edit-year', context).val();
+          const year = ($('#edit-year', context).attr('disabled')) ? 0 : getYearValue($('#edit-year', context).val());
           let mwbecat = ($('#edit-mwbe-category').val()) ? $('#edit-mwbe-category').val() : 0;
           mwbecat = mwbecat == null ? 0 : mwbecat;
           const industry = $.fn.emptyToZero($('#edit-industry', context).val());
@@ -722,7 +722,7 @@
             "event_id":catastrophic_event,
             "agency_code":agency,
             "award_method_id":award_method,
-            "fiscal_year_id":year,
+            "fiscal_year":year,
             "minority_type_id" :mwbecat,
             "scntrc_status":includes_sub_vendors,
             "aprv_sta":sub_vendor_status,
@@ -900,15 +900,20 @@
 
   //Function to retrieve numeric year value
   function getYearValue(input) {
-    var year_value = input.split('FY');
-    return year_value[1];
+    let yearValue;
+    if(input.includes('FY')){
+      yearValue = input.split('FY');
+      return yearValue[1];
+    }else{
+      return 'all';
+    }
   }
 
   // update year drop down when event is chosen
   function updateYearValue(cevent) {
     $("#edit-year option").each(function() {
-      var yval =  (this.text).split(' ')[1];
-      if ( yval < 2020 && cevent != 0){
+      let yearValue =  (this.text).split(' ')[1];
+      if (yearValue < 2020 && cevent != 0){
         $(" option[value='" + $(this).val() + "']").hide();
       }
       else{
