@@ -97,7 +97,8 @@
      if($('#edit-catastrophic-event').val() === "1"){
        for (let i = 0; i < budget_fiscal_year.length; i++) {
          let year = budget_fiscal_year.options[i].text.toLowerCase();
-         let include = (year === "2021" || year === "2020");
+         //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
+         let include = (year === "2021" || year === "2020" || year === "2022");
          budget_fiscal_year.options[i].style.display = include ? '':'none';
        }
      }

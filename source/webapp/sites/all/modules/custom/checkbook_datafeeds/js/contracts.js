@@ -459,7 +459,7 @@
       //Show Sub or Prime vendor icon
       $.fn.showHidePrimeAndSubIcon();
 
-      // disable if covid is not selected
+      // disable if Catastrophic event is not selected
       if ( year_value < 2020 || catval == 'revenue' ){
         $("#edit-catastrophic_event").attr('disabled', 'disabled');
         $("#edit-catastrophic_event").val('0');

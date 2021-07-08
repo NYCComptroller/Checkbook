@@ -1355,7 +1355,8 @@
           if(div.ele('catastrophic_events').val() === "1"){
             for (let i = 0; i < budget_fiscal_year.length; i++) {
               let year = budget_fiscal_year.options[i].text.toLowerCase();
-              let include = (year === "all fiscal years" || year === "2021" || year === "2020");
+              //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
+              let include = (year === "all fiscal years" || year === "2021" || year === "2020" || year === "2022");
               budget_fiscal_year.options[i].style.display = include ? '':'none';
             }
           }
@@ -1384,7 +1385,8 @@
           if(div.ele('catastrophic_events').val() === "1"){
             for (let i = 0; i < budget_fiscal_year.length; i++) {
               let year = budget_fiscal_year.options[i].text.toLowerCase();
-              let include = (year === "all fiscal years" || year === "2021" || year === "2020");
+              //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
+              let include = (year === "all fiscal years" || year === "2021" || year === "2020" || year === "2022");
               budget_fiscal_year.options[i].style.display = include ? '':'none';
             }
           }
@@ -1767,7 +1769,8 @@
             if(div.ele('catastrophic_events').val() === "1"){
               for (let i = 0; i < fiscal_year.length; i++) {
                 let year = fiscal_year.options[i].text.toLowerCase();
-                let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
+                //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
+                let include = (year === "fy 2020" || year === "fy 2021" || year === "fy 2022" || year === "all years");
                 fiscal_year.options[i].style.display = include ? '':'none';
               }
             }
@@ -1793,7 +1796,8 @@
             if(div.ele('catastrophic_events').val() === "1"){
               for (let i = 0; i < fiscal_year.length; i++) {
                 let year = fiscal_year.options[i].text.toLowerCase();
-                let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
+                //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
+                let include = (year === "fy 2020" || year === "fy 2021" || year === "fy 2022" || year === "all years");
                 fiscal_year.options[i].style.display = include ? '':'none';
               }
             }

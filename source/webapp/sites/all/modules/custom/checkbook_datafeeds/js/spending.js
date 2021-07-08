@@ -121,7 +121,8 @@
     if(catastrophic_event.value === "1"){
       for (let i = 0; i < fiscal_year.length; i++) {
         let year = fiscal_year.options[i].text.toLowerCase();
-        let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
+        //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
+        let include = (year === "fy 2020" || year === "fy 2021" || year === "all years" || year === "fy 2022");
         fiscal_year.options[i].style.display = include ? '':'none';
       }
     }
