@@ -117,8 +117,8 @@ function onBudgetFiscalYearChange() {
     let budget_fiscal_year = ($('#edit-budget-fiscal-year').val()) ? $('#edit-budget-fiscal-year').val() : 0;
     let catastrophic_event = document.getElementById("edit-catastrophic-event");
     let enabled_count = catastrophic_event.length;
-
-    if(!(budget_fiscal_year === "2021" || budget_fiscal_year === "2020")){
+    //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
+    if(!(budget_fiscal_year === "2021" || budget_fiscal_year === "2020" || budget_fiscal_year === "2022")){
       for (let i = 0; i < catastrophic_event.length; i++) {
         let event = catastrophic_event.options[i].text.toLowerCase();
         catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";

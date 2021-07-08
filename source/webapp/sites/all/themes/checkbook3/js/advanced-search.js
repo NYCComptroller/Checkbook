@@ -1326,7 +1326,8 @@
             let catastrophic_event = document.getElementById("edit-checkbook-revenue-catastrophic-events");
             let enabled_count = catastrophic_event.length;
 
-            if(!(budget_fiscal_year === "0" || budget_fiscal_year === "122" || budget_fiscal_year === "121")){
+            //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
+            if(!(budget_fiscal_year === "0" || budget_fiscal_year === "122" || budget_fiscal_year === "121"  || budget_fiscal_year === "123")){
               for (let i = 0; i < catastrophic_event.length; i++) {
                 let event = catastrophic_event.options[i].text.toLowerCase();
                 catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
@@ -1826,7 +1827,8 @@
           if(data_source == 'checkbook') {
             let fiscal_year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
             let exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
-            if(fiscal_year && !(fiscal_year === "fy~all" || fiscal_year === "fy~122" || fiscal_year === "fy~121")) disable_input(div.ele('catastrophic_events'));
+            //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
+            if(fiscal_year && !(fiscal_year === "fy~all" || fiscal_year === "fy~122" || fiscal_year === "fy~121" || fiscal_year === "fy~123")) disable_input(div.ele('catastrophic_events'));
             else if(exptype == '2' || exptype == '4') disable_input(div.ele('catastrophic_events'));
             else enable_input(div.ele('catastrophic_events'));
             agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;

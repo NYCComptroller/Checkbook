@@ -148,7 +148,8 @@
       disable_input($('select[name="catastrophic_event"]'));
       return;
     }
-    else if(!(fiscal_year === "0" || fiscal_year === "fy2021" || fiscal_year === "fy2020")){
+    //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
+    else if(!(fiscal_year === "0" || fiscal_year === "fy2021" || fiscal_year === "fy2020" || fiscal_year === "fy2022")){
       for (let i = 0; i < catastrophic_event.length; i++) {
         let event = catastrophic_event.options[i].text.toLowerCase();
         catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
