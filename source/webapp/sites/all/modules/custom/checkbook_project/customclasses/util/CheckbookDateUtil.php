@@ -282,9 +282,10 @@ class CheckbookDateUtil{
    * @param $data_source
    */
   function getCurrentYears($data_source = Datasource::CITYWIDE){
+    $maxYear = self::getMaxDatasourceFiscalYear($data_source);
     return [
-      'year_value' => self::getCurrentFiscalYear($data_source),
-      'year_id' => self::getCurrentFiscalYearId($data_source),
+      'year_value' => $maxYear,
+      'year_id' => self::year2yearId($maxYear),
       'cal_year_value' => self::getCurrentCalendarYear(),
       'cal_year_id' => self::getCurrentCalendarYearId()
     ];
