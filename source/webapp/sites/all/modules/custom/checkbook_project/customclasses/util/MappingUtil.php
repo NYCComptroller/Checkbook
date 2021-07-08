@@ -391,7 +391,7 @@ class MappingUtil {
                     $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
                 }
 
-                $sql = 'SELECT a1.minority_type_id FROM ' . $table . ' a1' . $where_filter . 'GROUP BY a1.minority_type_id  ';
+                $sql = 'SELECT a1.minority_type_id FROM ' . $table . ' a1 ' . $where_filter . ' GROUP BY a1.minority_type_id  ';
                 $data = _checkbook_project_execute_sql($sql);
                 break;
             case "contracts":
