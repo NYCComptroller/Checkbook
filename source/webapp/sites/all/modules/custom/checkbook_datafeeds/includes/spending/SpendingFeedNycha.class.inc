@@ -34,6 +34,7 @@ class SpendingFeedNycha extends SpendingFeed
 
     //OGE Display
     $this->form['filter']['agency'] = array('#markup' => '<div><strong>' . $this->oge_label .':</strong> ' . $this->oge_name_code . '</div>',);
+    $this->user_criteria[$this->oge_label] = $this->oge_name_code;
     $this->formatted_search_criteria[$this->oge_label] = $this->oge_name_code;
 
     //Expense Category
@@ -46,7 +47,7 @@ class SpendingFeedNycha extends SpendingFeed
       $this->user_criteria['Expense Category'] = $this->values['expense_category'];
       $this->formatted_search_criteria['Expense Category'] = $this->values['expense_category'];
     }
-    
+
     //Spending Category
     if ($this->values['nycha_expense_type']) {
       $this->form['filter']['nycha_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $this->values['nycha_expense_type'] . '</div>');
