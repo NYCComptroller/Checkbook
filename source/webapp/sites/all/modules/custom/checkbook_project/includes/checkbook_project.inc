@@ -626,24 +626,14 @@ function _checkbook_project_querydataset($dataset, $columns, $parameters = null)
 function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters, $contractType, $dimension = null){
   $contractStatusParam = 'contstatus';
   $yearParam = 'year';
-  $yearTypeParam = 'yeartype';
   $data_controller_instance = data_controller_get_operator_factory_instance();
+  //Adjust Certification parameters
+  $parameters = ContractUtil::adjustCertificationFacetParameters($node, $parameters);
+  //Display contracts which are active from 2011
+  $parameters['is_active_eft_2011'] = 1;
 
   switch ($contractType) {
     case "active_registered":
-      //adjust dataset
-      $yearTypeCol = $node->widgetConfig->urlParamMap->$yearTypeParam;
-      $reqYearType = $node->widgetConfig->requestParams[$yearTypeCol];
-
-      if (isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage()) {
-        if (isset($node->widgetConfig->dataset)) {
-          $node->widgetConfig->dataset = 'checkbook:all_agreement_transactions_cy';
-        } else if (isset($node->widgetConfig->model->series) && is_array($node->widgetConfig->model->series)) {
-          foreach ($node->widgetConfig->model->series as $series) {
-            $series->dataset = 'checkbook:all_agreement_transactions_cy';
-          }
-        }
-      }
       //adjust status
       $contractStatusCol = $node->widgetConfig->urlParamMap->$contractStatusParam;
       $contractStatus = $node->widgetConfig->requestParams[$contractStatusCol];
