@@ -153,7 +153,7 @@
       disable_input($('select[name="catastrophic_event"]'));
       return;
     }
-    else if(removeFY(fiscal_year) < 2020){
+    else if(fiscal_year !== "0" && removeFY(fiscal_year) < 2020){
       for (let i = 0; i < catastrophic_event.length; i++) {
         let event = catastrophic_event.options[i].text.toLowerCase();
         catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
