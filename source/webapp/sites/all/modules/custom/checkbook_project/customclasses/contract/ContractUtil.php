@@ -1057,6 +1057,32 @@ namespace { //global
             return $parameters;
         }
 
+      /**
+       * @param $node
+       * @param $parameters
+       * @return mixed
+       */
+        public static function adjustCertificationFacetParameters($node, $parameters){
+          //Mapped certification parameter to a existing column in DB before altering
+          if ($node->widgetConfig->filterName != "Certification") {
+            if (isset($parameters['is_women_owned'])) {
+              $param = $parameters['is_women_owned'];
+              unset($parameters['is_women_owned']);
+              foreach ($param as $key => $value) {
+                if ($value == 'psemerg') {
+                  $parameters['is_emerging'] = 'Yes';
+                }
+                if ($value == 'pswomen') {
+                  $parameters['is_women_owned'] = 'Yes';
+                }
+              }
+
+              $node->widgetConfig->logicalOrColumns[] = array('is_emerging', 'is_women_owned');
+            }
+          }
+          return $parameters;
+        }
+
         private static function _replaceSlashCharacter($string) {
             return str_replace('__', '/', $string);
         }
