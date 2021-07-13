@@ -97,7 +97,7 @@
      if($('#edit-catastrophic-event').val() === "1"){
        for (let i = 0; i < budget_fiscal_year.length; i++) {
          let year = budget_fiscal_year.options[i].text.toLowerCase();
-         let include = (year === "2021" || year === "2020");
+         let include = (year >= 2020);
          budget_fiscal_year.options[i].style.display = include ? '':'none';
        }
      }
@@ -116,7 +116,7 @@ function onBudgetFiscalYearChange() {
     let catastrophic_event = document.getElementById("edit-catastrophic-event");
     let enabled_count = catastrophic_event.length;
 
-    if(!(budget_fiscal_year === "2021" || budget_fiscal_year === "2020")){
+    if(budget_fiscal_year < 2020){
       for (let i = 0; i < catastrophic_event.length; i++) {
         let event = catastrophic_event.options[i].text.toLowerCase();
         catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
