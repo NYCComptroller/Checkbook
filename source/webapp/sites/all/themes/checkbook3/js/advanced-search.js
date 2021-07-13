@@ -17,7 +17,7 @@
   //Helper function to remove "FY", and remove "~" if present from string
   removeFY = (year) => {
     return year.replace(/fy[~]*/ig,'').trim();
-}
+  }
 
   Drupal.behaviors.advancedSearchAndAlerts = {
     attach: function (context, settings) {

@@ -1,5 +1,10 @@
 (function ($) {
 
+  //Helper function to remove "FY", and remove "~" if present from string
+  removeFY = (year) => {
+    year.replace(/fy[~]*/ig,'').trim();
+  }
+
   // When Agency Filter is changed reload Department and Expense Category drop-downs
   let reloadSpendingDepartments = function () {
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
@@ -121,7 +126,7 @@
     if(catastrophic_event.value === "1"){
       for (let i = 0; i < fiscal_year.length; i++) {
         let year = fiscal_year.options[i].text.toLowerCase();
-        let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
+        let include = (year === "all years" || removeFY(year) >= 2020);
         fiscal_year.options[i].style.display = include ? '':'none';
       }
     }
@@ -147,7 +152,7 @@
       disable_input($('select[name="catastrophic_event"]'));
       return;
     }
-    else if(!(fiscal_year === "0" || fiscal_year === "fy2021" || fiscal_year === "fy2020")){
+    else if(removeFY(fiscal_year) < 2020){
       for (let i = 0; i < catastrophic_event.length; i++) {
         let event = catastrophic_event.options[i].text.toLowerCase();
         catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
