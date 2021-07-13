@@ -14,6 +14,11 @@
     advancedSearchFormLoading = false;
   }
 
+  //Helper function to remove "FY", and remove "~" if present from string
+  removeFY = (year) => {
+    return year.replace(/fy[~]*/ig,'').trim();
+}
+
   Drupal.behaviors.advancedSearchAndAlerts = {
     attach: function (context, settings) {
 
@@ -1329,7 +1334,7 @@
             let catastrophic_event = document.getElementById("edit-checkbook-revenue-catastrophic-events");
             let enabled_count = catastrophic_event.length;
 
-            if(!(budget_fiscal_year === "0" || budget_fiscal_year === "122" || budget_fiscal_year === "121")){
+            if(!(budget_fiscal_year === "0" || budget_fiscal_year >= 121)){
               for (let i = 0; i < catastrophic_event.length; i++) {
                 let event = catastrophic_event.options[i].text.toLowerCase();
                 catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
@@ -1358,7 +1363,7 @@
           if(div.ele('catastrophic_events').val() === "1"){
             for (let i = 0; i < budget_fiscal_year.length; i++) {
               let year = budget_fiscal_year.options[i].text.toLowerCase();
-              let include = (year === "all fiscal years" || year === "2021" || year === "2020");
+              let include = (year === "all fiscal years" || year >= 2020);
               budget_fiscal_year.options[i].style.display = include ? '':'none';
             }
           }
@@ -1387,7 +1392,7 @@
           if(div.ele('catastrophic_events').val() === "1"){
             for (let i = 0; i < budget_fiscal_year.length; i++) {
               let year = budget_fiscal_year.options[i].text.toLowerCase();
-              let include = (year === "all fiscal years" || year === "2021" || year === "2020");
+              let include = (year === "all fiscal years" || year >= 2020);
               budget_fiscal_year.options[i].style.display = include ? '':'none';
             }
           }
@@ -1776,7 +1781,7 @@
             if(div.ele('catastrophic_events').val() === "1"){
               for (let i = 0; i < fiscal_year.length; i++) {
                 let year = fiscal_year.options[i].text.toLowerCase();
-                let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
+                let include = (year === "all years" || removeFY(year) >= 2020);
                 fiscal_year.options[i].style.display = include ? '':'none';
               }
             }
@@ -1802,7 +1807,7 @@
             if(div.ele('catastrophic_events').val() === "1"){
               for (let i = 0; i < fiscal_year.length; i++) {
                 let year = fiscal_year.options[i].text.toLowerCase();
-                let include = (year === "fy 2020" || year === "fy 2021" || year === "all years");
+                let include = (year === "all years" || removeFY(year) >= 2020);
                 fiscal_year.options[i].style.display = include ? '':'none';
               }
             }
@@ -1831,7 +1836,7 @@
           if(data_source == 'checkbook') {
             let fiscal_year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
             let exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
-            if(fiscal_year && !(fiscal_year === "fy~all" || fiscal_year === "fy~122" || fiscal_year === "fy~121")) disable_input(div.ele('catastrophic_events'));
+            if(fiscal_year && !(fiscal_year === "fy~all" || removeFY(fiscal_year) >= 121)) disable_input(div.ele('catastrophic_events'));
             else if(exptype == '2' || exptype == '4') disable_input(div.ele('catastrophic_events'));
             else enable_input(div.ele('catastrophic_events'));
             agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
