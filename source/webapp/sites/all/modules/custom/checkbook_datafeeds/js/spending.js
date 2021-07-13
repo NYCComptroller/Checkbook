@@ -2,7 +2,7 @@
 
   //Helper function to remove "FY", and remove "~" if present from string
   removeFY = (year) => {
-    year.replace(/fy[~]*/ig,'').trim();
+    return year.replace(/fy[~]*/ig,'').trim();
   }
 
   // When Agency Filter is changed reload Department and Expense Category drop-downs
@@ -126,6 +126,7 @@
     if(catastrophic_event.value === "1"){
       for (let i = 0; i < fiscal_year.length; i++) {
         let year = fiscal_year.options[i].text.toLowerCase();
+        console.log(removeFY(year));
         let include = (year === "all years" || removeFY(year) >= 2020);
         fiscal_year.options[i].style.display = include ? '':'none';
       }
