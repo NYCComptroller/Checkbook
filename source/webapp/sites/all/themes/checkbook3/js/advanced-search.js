@@ -1792,32 +1792,6 @@
           }
         }
 
-        //On change of "Catastrophic event"
-        div_checkbook_spending.ele('catastrophic_events').change(function(){
-          onCatastrophicEventChange(div_checkbook_spending);
-        });
-
-        function onCatastrophicEventChange(div){
-            //Selecting 'COVID-19' option causes the following changes:
-            //Data within following fields update: Payee Name, Contract ID, Document ID, Capital Project
-            //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
-            let fiscal_year = div.ele('fiscal_year').attr("name");
-            fiscal_year = document.getElementsByName(fiscal_year)[0];
-
-            if(div.ele('catastrophic_events').val() === "1"){
-              for (let i = 0; i < fiscal_year.length; i++) {
-                let year = fiscal_year.options[i].text.toLowerCase();
-                let include = (year === "all years" || removeFY(year) >= 2020);
-                fiscal_year.options[i].style.display = include ? '':'none';
-              }
-            }
-            else{
-              for (let i = 0; i < fiscal_year.length; i++) {
-                fiscal_year.options[i].style.display = '';
-              }
-            }
-        }
-
         //On change of "Fiscal Year"
         div_checkbook_spending.ele('fiscal_year').change(function () {
           onFiscalYearChange(div_checkbook_spending);
