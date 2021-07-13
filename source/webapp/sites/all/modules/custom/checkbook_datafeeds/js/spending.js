@@ -126,7 +126,6 @@
     if(catastrophic_event.value === "1"){
       for (let i = 0; i < fiscal_year.length; i++) {
         let year = fiscal_year.options[i].text.toLowerCase();
-        console.log(removeFY(year));
         let include = (year === "all years" || removeFY(year) >= 2020);
         fiscal_year.options[i].style.display = include ? '':'none';
       }
