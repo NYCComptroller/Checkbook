@@ -48,7 +48,8 @@
       "subvendor",
       "vendortype",
       "fvendor",
-      "bdgcode"
+      "bdgcode",
+      "pscert"
     ],
     "urlParamMap":{
       "contnum_exact": "reference_document_number",
@@ -98,7 +99,8 @@
       "subvendor": "vendor_id",
       "vendortype": "vendor_type",
       "fvendor": "vendor_name",
-      "bdgcode" : "budget_code"
+      "bdgcode" : "budget_code",
+      "pscert":"is_women_owned"
     },
     "paramTypeConfig":{
       "vendornm_exact": "eqignorecase",
@@ -118,7 +120,7 @@
       "expcategorynm": "eqignorecase",
       "vendornm": "like"
     },
-    "allowRequestParams":["dtsmnid","smnid"],
+    "allowRequestParams":["dtsmnid","smnid","pscert"],
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
@@ -435,6 +437,9 @@
             $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
         }
 
+        //Adjust Certification parameters
+        $parameters = ContractUtil::adjustCertificationFacetParameters($node,$parameters);
+
         $adjustedParameters = $parameters;
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
@@ -508,9 +513,9 @@
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
         var oBudgetCode = getNamedFilterCriteria('fBudgetCode');
+        var oPrimeSubCert = getNamedFilterCriteria('fPrimeSubCert');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
-
         var cUrlArray = cUrl.split('/');
         var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
 
@@ -534,6 +539,7 @@
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
         cUrl = adjustUrlParameter(cUrl,'bdgcode',oBudgetCode);
+        cUrl = adjustUrlParameter(cUrl,'pscert',oPrimeSubCert);
 
         return cUrl;
     }"
