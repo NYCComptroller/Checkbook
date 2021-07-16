@@ -6,7 +6,7 @@
         "mcagency","agencyh","year","yeartype","calyear","mcvendor","expcategory","category","checkamtr","dept",
         "contnum","checkamt","chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
         "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month",
-        "industry","mwbe","vendor","svendor","subvendor","vendortype","fvendor", "bdgcode"
+        "industry","mwbe","vendor","svendor","subvendor","vendortype","fvendor", "bdgcode", "pscert"
     ],
     "urlParamMap":{
         "contnum_exact":"reference_document_number",
@@ -35,7 +35,7 @@
         "mwbe":"minority_type_id","industry":"industry_type_id",
         "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id",
         "vendortype":"vendor_type","fvendor":"vendor_id",
-        "bdgcode":"budget_code"
+        "bdgcode":"budget_code","pscert":"is_women_owned"
     },
     "defaultParameters":{"is_prime_or_sub":"S"},
     "paramTypeConfig":{
@@ -44,7 +44,7 @@
         "captprj":"like","vendornm":"like","contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le",
         "scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase"
     },
-    "allowRequestParams":["dtsmnid","smnid"],
+    "allowRequestParams":["dtsmnid","smnid","pscert"],
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
@@ -274,6 +274,7 @@
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
         var oBudgetCode = getNamedFilterCriteria('fBudgetCode');
+        var oPrimeSubCert = getNamedFilterCriteria('fPrimeSubCert');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
 
@@ -290,7 +291,7 @@
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
         cUrl = adjustUrlParameter(cUrl,'bdgcode',oBudgetCode);
-
+        cUrl = adjustUrlParameter(cUrl,'pscert',oPrimeSubCert);
         return cUrl;
     }"
 }

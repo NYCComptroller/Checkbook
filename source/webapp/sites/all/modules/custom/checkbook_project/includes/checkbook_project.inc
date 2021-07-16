@@ -723,6 +723,10 @@ function _checkbook_project_adjust_date_spending_parameter_filters(&$node, &$par
 
   unset($parameters['year_type']);
   unset($parameters['year_id']);
+
+  //Adjust Certification parameters
+  $parameters = ContractUtil::adjustCertificationFacetParameters($node,$parameters);
+
   return $parameters;
 }
 
@@ -796,7 +800,6 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
   if ($dtsmnid == 764) {
     $parameters['contract_document_code'] = array('CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1', 'MA1', 'MMA1', 'PON1');
   }
-
   return $parameters;
 }
 

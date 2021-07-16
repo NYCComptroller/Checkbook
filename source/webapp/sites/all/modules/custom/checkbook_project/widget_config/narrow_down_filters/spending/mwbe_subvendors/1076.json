@@ -1,0 +1,35 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":757,
+  "no_results_content":"No Results Found",
+  "limit":10,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "autocomplete":false,
+  "filterName":"Certification",
+  "urlParameterName":"pscert",
+  "urlParameterType":"cert",
+  "autocompleteID":"fPrimeSubCert",
+  "defaultParameters":{"is_prime_or_sub":"S"},
+  "columns":["prime_cert_women_count", "prime_cert_emerging_count","sub_cert_women_count", "sub_cert_emerging_count"],
+  "adjustParameters":"
+    if(isset($parameters['vendor_type'])){
+      $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+    }
+    if(function_exists('_checkbook_project_adjust_date_spending_parameter_filters')){
+    $parameters = _checkbook_project_adjust_date_spending_parameter_filters($node, $parameters);
+    }
+    checkbook_faceted_search_adjust_param($node);
+    if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
+      $parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
+    }
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+    $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    return $adjustedParameters;
+    }
+    return $parameters;
+  ",
+"template":"individual_filter"
+}
