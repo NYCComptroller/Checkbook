@@ -715,7 +715,6 @@ class CheckbookSolrQuery
   private function get_spending_category_mapping($exptype, $data_source = Datasource::CITYWIDE)
   {
     $spending_exptype = "'(^$exptype$)'";
-    LogHelper::log_info($data_source);
     try {
       if ($data_source == Datasource::NYCHA) {
         $query = "SELECT spending_category_id FROM ref_spending_category WHERE spending_category_code ~* " . $spending_exptype . " OR display_spending_category_name ~* " . $spending_exptype;
