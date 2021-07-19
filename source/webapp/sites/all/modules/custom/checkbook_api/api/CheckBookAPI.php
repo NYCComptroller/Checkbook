@@ -36,7 +36,7 @@ class CheckBookAPI {
      *   Request criteria
      * @throws Exception
      */
-public  function __construct($request_criteria) {
+public function __construct($request_criteria) {
     // Increasing to handle memory limits when exporting.
     ini_set('memory_limit', '512M');
 
@@ -76,7 +76,7 @@ public  function __construct($request_criteria) {
    * @return array
    *   Data
    */
-public  function getData() {
+public function getData() {
     return $this->request_handler->execute();
   }
 
@@ -182,7 +182,7 @@ public  function getData() {
    * @return mixed
    *   Response.
    */
-  function getErrorResponse() {
+  public function getErrorResponse() {
     return $this->request_handler->getErrorResponse();
   }
 
@@ -197,7 +197,7 @@ public  function getData() {
    * @return array|null
    *   Request Details
    */
-  static function getRequestDetailsByToken($token) {
+  public static function getRequestDetailsByToken($token) {
     global $conf;
 
     if (empty($token)) {
@@ -230,11 +230,11 @@ public  function getData() {
      * @return array
      *   Data
      */
-    function generateFile() {
+    public function generateFile() {
         return $this->request_handler->generateFile();
     }
 
-    function outputFile($fileName){
+    public function outputFile($fileName){
         return $this->request_handler->outputFile($fileName);
     }
 }

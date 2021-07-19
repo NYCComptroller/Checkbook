@@ -31,6 +31,18 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 						<td class="color"><img src="/<?php print drupal_get_path("module","checkbook_mwbe_agency_grading")?>/images/legend-color-3.png"></td>
 						<td class="desc"><span name="legend_description">Women</span></td>
 					</tr>
+          <tr class="legend_entry">
+            <td><!-- <span name="lengend_checkbox"></span> --><input id="chk_na_mwbe" type="checkbox" <?php echo (in_array('na_mwbe',$mwbe_cats))?  'checked=""':'';?>
+                                                                     value="na_mwbe" name="mwbe_right_filter"><label for="chk_na_mwbe"></label></td>
+            <td class="color"><img src="/<?php print drupal_get_path("module","checkbook_mwbe_agency_grading")?>/images/legend-color-6.png"></td>
+            <td class="desc"><span name="legend_description">Native</span></td>
+          </tr>
+          <tr class="legend_entry">
+            <td><!-- <span name="lengend_checkbox"></span> --><input id="chk_em_mwbe" type="checkbox" <?php echo (in_array('em_mwbe',$mwbe_cats))?  'checked=""':'';?>
+                                                                     value="em_mwbe" name="mwbe_right_filter"><label for="chk_em_mwbe"></label></td>
+            <td class="color"><img src="/<?php print drupal_get_path("module","checkbook_mwbe_agency_grading")?>/images/legend-color-7.png"></td>
+            <td class="desc"><span name="legend_description">Emerging</span></td>
+          </tr>
 					<tr class="legend_entry">
 						<td><!-- <span name="lengend_checkbox"></span> --><input id="chk_n_mwbe" type="checkbox" <?php echo (in_array('n_mwbe',$mwbe_cats))?  'checked=""':'';?>
 									 value="n_mwbe" name="mwbe_right_filter"><label for="chk_n_mwbe"></label></td>
@@ -65,41 +77,42 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
 
 </div>
 <script>
+  function getNamedFilterCriteria(filterName){
+    var filterId = '';
+    var filterUrlValue = '';
+    var oFilterIds = document.getElementsByName(filterName);
 
-	(function ($) {
-    function getNamedFilterCriteria(filterName){
-      var filterId = '';
-      var filterUrlValue = '';
-      var oFilterIds = document.getElementsByName(filterName);
-
-      if(!eval(oFilterIds)){
-        return filterId;
-      }
-
-      //Get the new facet selected values
-      for(var i = 0; i < oFilterIds.length; i++)
-      {
-        if(oFilterIds[i].checked)
-        {
-          if(filterId.length>0){
-            filterId = filterId  +'~'+ oFilterIds[i].value;
-          }else{
-            filterId = oFilterIds[i].value;
-          }
-        }
-      }
-
-      //Append the selected filter values to URL value
-      if(filterUrlValue != ''){
-        if(filterId != ''){
-          filterId = filterUrlValue +'~'+ filterId;
-        }
-        else{
-          return filterUrlValue;
-        }
-      }
+    if(!eval(oFilterIds)){
       return filterId;
     }
+
+    //Get the new facet selected values
+    for(var i = 0; i < oFilterIds.length; i++)
+    {
+      if(oFilterIds[i].checked)
+      {
+        if(filterId.length>0){
+          filterId = filterId  +'~'+ oFilterIds[i].value;
+        }else{
+          filterId = oFilterIds[i].value;
+        }
+      }
+    }
+
+    //Append the selected filter values to URL value
+    if(filterUrlValue != ''){
+      if(filterId != ''){
+        filterId = filterUrlValue +'~'+ filterId;
+      }
+      else{
+        return filterUrlValue;
+      }
+    }
+    return filterId;
+  }
+
+    (function ($) {
+
 	//hover show/hide list for mwbe menu item
 	    Drupal.behaviors.agency_grading = {
 	            attach:function (context, settings) {

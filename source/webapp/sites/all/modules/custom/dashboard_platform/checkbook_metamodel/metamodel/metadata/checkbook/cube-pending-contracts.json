@@ -99,7 +99,7 @@
                             "sourceColumnName": "vendor_id"
                         }
                     ]
-                },                
+                },
 				{
                     "name": "vendor_legal_name",
                     "levels": [
@@ -309,7 +309,25 @@
                     "name":"event_id",
                     "sourceColumnName":"event_id"
                   }]
-                }
+                },
+              {
+                "name": "is_women_owned",
+                "levels": [
+                  {
+                    "name": "is_women_owned",
+                    "sourceColumnName": "is_women_owned"
+                  }
+                ]
+              },
+              {
+                "name": "is_emerging",
+                "levels": [
+                  {
+                    "name": "is_emerging",
+                    "sourceColumnName": "is_emerging"
+                  }
+                ]
+              }
             ],
             "measures": {
                 "original_amount_sum": {
@@ -318,8 +336,8 @@
                 "current_amount_sum": {
                     "function": "SUM(COALESCE(revised_maximum_amount,0))"
                 },
-				"total_contracts": {
-					"function": "COUNT(contract_number)"
+				        "total_contracts": {
+                    "function": "COUNT(contract_number)"
                 },
                 "txcount": {
                     "function": "COUNT(*)"
@@ -359,6 +377,12 @@
                 },
                 "total_num_rev_pending_contracts": {
                     "function": "SUM(CASE WHEN document_code IN ('RCT1') THEN  1 ELSE 0 END)"
+                },
+                "cert_women_count":{
+                  "function": "SUM(CASE WHEN is_women_owned = 'Yes' THEN 1 ELSE 0 END)"
+                },
+                "cert_emerging_count":{
+                  "function": "SUM(CASE WHEN is_emerging = 'Yes' THEN 1 ELSE 0 END)"
                 }
             }
         }

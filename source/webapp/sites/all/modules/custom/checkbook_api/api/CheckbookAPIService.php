@@ -37,8 +37,7 @@ class CheckbookAPIService {
 
     private $apiRepository;
 
-    function __construct()
-    {
+    public function __construct(){
         $this->apiRepository = new CheckbookAPIRepository();
     }
 

@@ -349,7 +349,7 @@ if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->p
                 $id = "4~5";
                 unset($checked[$key]);
             } else {
-                array_push($checked, array($value[0], MappingUtil::getMinorityCategoryById($value[0]), $value[2]));
+                array_push($checked, array($value[0], MappingUtil::getMinorityCategoryById($value[0], true), $value[2]));
                 unset($checked[$key]);
             }
             //Remove N/A from facet
@@ -359,6 +359,30 @@ if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->p
         }
     }
     if($count > 0 )array_push($checked,array($id,'Asian American',$count));
+}
+
+//M/WBE category facet changes
+if($is_prime_filter || $is_sub_filter || $is_prime_sub_filter){
+  if(isset($unchecked) && $unchecked) {
+    foreach ($unchecked as $key => $value) {
+      if($value[0] == 99){
+        $unchecked[$key] = array($value[0], "Emerging (Non-M/WBE)", $value[2]);
+      }
+      if($value[0] == 9){
+        $unchecked[$key] = array($value[0], "Women (Non-M/WBE)", $value[2]);
+      }
+    }
+  }
+  if(isset($checked) && $checked) {
+    foreach ($checked as $key => $value) {
+      if($value[0] == 99){
+        $checked[$key] = array($value[0], "Emerging (Non-M/WBE)", $value[2]);
+      }
+      if($value[0] == 9){
+        $checked[$key] = array($value[0], "Women (Non-M/WBE)", $value[2]);
+      }
+    }
+  }
 }
 
 //Data alteration for Vendor Type Facet

@@ -20,7 +20,7 @@
 "no_results_content":"No Results Found",
 "dataset": "checkbook:pending_contracts",
 "columns": ["minority_type_id","minority_type_name","fms_contract_number","contract_number","fms_parent_contract_number","description","document_version","revised_maximum_amount","vendor_legal_name","cif_received_date","document_agency_name","contract_type_name"
-,"award_method_name","revised_start_date","revised_end_date","board_award_number","tracking_number","original_or_modified","document_code@checkbook:ref_document_code","original_agreement_id","industry_type_name@checkbook:industry_type","dollar_difference","percent_difference","original_maximum_amount"],
+,"award_method_name","revised_start_date","revised_end_date","board_award_number","tracking_number","original_or_modified","document_code@checkbook:ref_document_code","original_agreement_id","industry_type_name@checkbook:industry_type","dollar_difference","percent_difference","original_maximum_amount","is_women_owned","is_emerging"],
 "caption":"",
 "derivedColumns": {
 	"formatted__maximum_amount": {
@@ -85,7 +85,9 @@
 	    {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
         {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name@checkbook:industry_type"},
 	    {"labelAlias": "pin","column": "tracking_number"},
-	    {"labelAlias": "apt_pin","column": "board_award_number"}
+	    {"labelAlias": "apt_pin","column": "board_award_number"},
+      {"labelAlias": "woman_owned_business","column":"is_women_owned"},
+      {"labelAlias": "emerging_business","column":"is_emerging"}
 	  ],
 "adjustParameters":"
             if(isset($parameters['vendor_type'])){
@@ -213,6 +215,14 @@
         {
             "sClass": "text",
             "sWidth": "180px","asSorting": [ "asc","desc" ]
+        },
+        {
+            "sClass": "text",
+            "sWidth": "100px","asSorting": [ "asc","desc" ]
+        },
+        {
+            "sClass": "text",
+            "sWidth": "100px","asSorting": [ "asc","desc" ]
         }
     ],
     "bInfo": true,

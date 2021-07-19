@@ -601,6 +601,10 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
  */
 function _checkbook_project_querydataset($dataset, $columns, $parameters = null){
   try {
+    if (function_exists('_checkbook_project_execute_dataset_test')) {
+      // the following function is only avalable when phpunit runs
+      return _checkbook_project_execute_dataset_test();
+    }
     $dataController = data_controller_get_instance();
     $dataset = _update_dataset_datasource($dataset);
     $data = $dataController->queryDataset($dataset, $columns, $parameters, NULL, 0, NULL, NULL);
@@ -622,24 +626,14 @@ function _checkbook_project_querydataset($dataset, $columns, $parameters = null)
 function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters, $contractType, $dimension = null){
   $contractStatusParam = 'contstatus';
   $yearParam = 'year';
-  $yearTypeParam = 'yeartype';
   $data_controller_instance = data_controller_get_operator_factory_instance();
+  //Adjust Certification parameters
+  $parameters = ContractUtil::adjustCertificationFacetParameters($node, $parameters);
+  //Display contracts which are active from 2011
+  $parameters['is_active_eft_2011'] = 1;
 
   switch ($contractType) {
     case "active_registered":
-      //adjust dataset
-      $yearTypeCol = $node->widgetConfig->urlParamMap->$yearTypeParam;
-      $reqYearType = $node->widgetConfig->requestParams[$yearTypeCol];
-
-      if (isset($reqYearType) && ($reqYearType == 'C') && !_checkbook_check_isEDCPage()) {
-        if (isset($node->widgetConfig->dataset)) {
-          $node->widgetConfig->dataset = 'checkbook:all_agreement_transactions_cy';
-        } else if (isset($node->widgetConfig->model->series) && is_array($node->widgetConfig->model->series)) {
-          foreach ($node->widgetConfig->model->series as $series) {
-            $series->dataset = 'checkbook:all_agreement_transactions_cy';
-          }
-        }
-      }
       //adjust status
       $contractStatusCol = $node->widgetConfig->urlParamMap->$contractStatusParam;
       $contractStatus = $node->widgetConfig->requestParams[$contractStatusCol];
@@ -729,6 +723,10 @@ function _checkbook_project_adjust_date_spending_parameter_filters(&$node, &$par
 
   unset($parameters['year_type']);
   unset($parameters['year_id']);
+
+  //Adjust Certification parameters
+  $parameters = ContractUtil::adjustCertificationFacetParameters($node,$parameters);
+
   return $parameters;
 }
 
@@ -802,7 +800,6 @@ function _checkbook_project_adjust_mwbe_spending_parameter_filters(&$node, &$par
   if ($dtsmnid == 764) {
     $parameters['contract_document_code'] = array('CT1', 'CTA1', 'POD', 'POC', 'PCC1', 'DO1', 'MA1', 'MMA1', 'PON1');
   }
-
   return $parameters;
 }
 
@@ -2161,7 +2158,7 @@ function _is_mwbe_vendor($agreement_id){
   if (!($agreement_id = intval($agreement_id))) {
     return false;
   }
-  $query1 = "SELECT (CASE WHEN fa.minority_type_id IN (2,3,4,5,9)  THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
+  $query1 = "SELECT (CASE WHEN fa.minority_type_id IN (".MappingUtil::getTotalMinorityIds().")  THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
 	                 (CASE WHEN fa.minority_type_id in (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
               FROM {agreement_snapshot} fa
 	          WHERE fa.latest_flag = 'Y' and fa.original_agreement_id = " . $agreement_id . " limit 1";

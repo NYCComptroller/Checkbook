@@ -6,7 +6,7 @@
         "mcagency","agencyh","year","yeartype","calyear","mcvendor","expcategory","category","checkamtr","dept",
         "contnum","checkamt","chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
         "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month",
-        "industry","mwbe","vendor","subvendor","fvendor","vendortype","svendor","sagency","sindustry", "bdgcode"
+        "industry","mwbe","vendor","subvendor","fvendor","vendortype","svendor","sagency","sindustry", "bdgcode", "pscert"
     ],
     "urlParamMap":{
         "contnum_exact":"reference_document_number",
@@ -37,7 +37,7 @@
         "expcategorycode":"expenditure_object_code", "month":"check_eft_issued_cal_month_id",
         "mwbe":"minority_type_id","industry":"industry_type_id",
         "vendor":"prime_vendor_id","subvendor":"vendor_id","fvendor":"vendor_id","vendortype":"vendor_type",
-        "svendor":"vendor_id", "bdgcode":"budget_code"
+        "svendor":"vendor_id", "bdgcode":"budget_code","pscert":"is_women_owned"
     },
     "paramTypeConfig":{
         "vendornm_exact":"eqignorecase","expdoc_exact":"eqignorecase","captprj_exact":"eqignorecase",
@@ -45,7 +45,7 @@
         "captprj":"like","vendornm":"like","contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le",
         "scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase"
     },
-    "allowRequestParams":["dtsmnid","smnid"],
+    "allowRequestParams":["dtsmnid","smnid","pscert"],
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
@@ -92,7 +92,9 @@
         "minority_type_id",
         "is_prime_or_sub",
         "original_agreement_id@checkbook:sub_vendor_agid",
-        "budget_code"
+        "budget_code",
+        "is_women_owned",
+        "is_emerging"
     ],
     "derivedColumns": {
         "associated_prime_vendor_name":{
@@ -192,6 +194,8 @@
         {"labelAlias":"spending_category","column":"spending_category_name"},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
         {"labelAlias":"budget_code","column":"budget_code_formatted", "sortSourceColumn":"budget_code","exportColumn":"budget_code_formatted"},
+        {"labelAlias": "woman_owned_business","column":"is_women_owned"},
+        {"labelAlias": "emerging_business","column":"is_emerging"},
         {"label":"","column":"","export":false}
     ],
     "exportColumnSqlOverride":[
@@ -202,9 +206,11 @@
                 case
                 when minority_type_id = 2 then 'Black American'
                 when minority_type_id = 3 then 'Hispanic American'
+                when minority_type_id = 6 THEN 'Native'
                 when minority_type_id = 7 then 'Non-M/WBE'
                 when minority_type_id = 9 then 'Women'
                 when minority_type_id = 11 then 'Individuals and Others'
+                when minority_type_id = 99 THEN 'Emerging'
                 else 'Asian American'
                 end as minority_type_name
                 "
@@ -232,10 +238,12 @@
         if(function_exists('_checkbook_project_adjust_date_spending_parameter_filters')){
             $parameters = _checkbook_project_adjust_date_spending_parameter_filters($node, $parameters);
         }
+
         $adjustedParameters = $parameters;
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
         }
+
         return $adjustedParameters;
     ",
     "summaryView":{
@@ -277,7 +285,9 @@
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"175px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]},
+            {"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
+            {"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]},
             {"bSortable":false,"sWidth":"10px"}
         ],
         "aaSorting":[[8,"desc"]],
@@ -305,6 +315,7 @@
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
         var oBudgetCode = getNamedFilterCriteria('fBudgetCode');
+        var oPrimeSubCert = getNamedFilterCriteria('fPrimeSubCert');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
 
@@ -324,7 +335,7 @@
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
         cUrl = adjustUrlParameter(cUrl,'bdgcode',oBudgetCode);
-
+        cUrl = adjustUrlParameter(cUrl,'pscert',oPrimeSubCert);
         return cUrl;
     }"
 }

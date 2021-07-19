@@ -85,10 +85,31 @@
 		case '2~3~4~5~9' :
 			$sort_column = 9;
 			$ethinicty_case = ' WHEN minority_type_id = 2 THEN total_spending_amount
-           						 WHEN minority_type_id = 3 THEN total_spending_amount
-            					 WHEN minority_type_id = 4 THEN total_spending_amount
-            					 WHEN minority_type_id = 5 THEN total_spending_amount
-             					 WHEN minority_type_id = 9 THEN total_spending_amount
+           						WHEN minority_type_id = 3 THEN total_spending_amount
+            				 	WHEN minority_type_id = 4 THEN total_spending_amount
+            					WHEN minority_type_id = 5 THEN total_spending_amount
+             					WHEN minority_type_id = 9 THEN total_spending_amount
+            				 ';
+			break;
+		case '6' :
+			$sort_column = 10;
+			$ethinicty_case = ' WHEN minority_type_id = 6 THEN total_spending_amount
+            				';
+			break;
+		case '99' :
+			$sort_column = 11;
+			$ethinicty_case = ' WHEN minority_type_id = 99 THEN total_spending_amount
+            				';
+			break;
+		case '2~3~4~5~6~9~99' :
+			$sort_column = 9;
+			$ethinicty_case = ' WHEN minority_type_id = 2 THEN total_spending_amount
+           						WHEN minority_type_id = 3 THEN total_spending_amount
+            					WHEN minority_type_id = 4 THEN total_spending_amount
+            					WHEN minority_type_id = 5 THEN total_spending_amount
+								WHEN minority_type_id = 6 THEN total_spending_amount
+             					WHEN minority_type_id = 9 THEN total_spending_amount
+								WHEN minority_type_id = 99 THEN total_spending_amount
             				 ';
 			break;
 
@@ -105,7 +126,9 @@
             WHEN minority_type_id = 3 THEN total_spending_amount
             WHEN minority_type_id = 4 THEN total_spending_amount
             WHEN minority_type_id = 5 THEN total_spending_amount
-             WHEN minority_type_id = 9 THEN total_spending_amount
+			WHEN minority_type_id = 6 THEN total_spending_amount
+            WHEN minority_type_id = 9 THEN total_spending_amount
+			WHEN minority_type_id = 99 THEN total_spending_amount
             ELSE 0
 	END) total_mwbe,
 		SUM(
@@ -166,7 +189,8 @@
 	$amount_column = 'ethinicty_mwbe';
 
 	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
-	if($mwbe_filter =='4~5' || $mwbe_filter =='2' || $mwbe_filter =='3' || $mwbe_filter =='9' ){
+  $is_mwbe_certified = MappingUtil::isMWBECertified(array($mwbe_filter));
+  if($is_mwbe_certified){
 		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Spending';
 
 		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Top Ten Agencies Spending';

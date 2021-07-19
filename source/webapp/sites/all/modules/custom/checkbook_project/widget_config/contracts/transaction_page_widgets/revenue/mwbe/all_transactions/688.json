@@ -1,7 +1,9 @@
 {
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
-    "cleanURLParameters":["vendornm_exact","vendortype","mwbe","doctype","agency","vendor","curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize"],
+    "cleanURLParameters":["vendornm_exact","vendortype","mwbe","doctype","agency","vendor",
+      "curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","contnum_exact","aptpin",
+      "pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","pscert"],
     "urlParamMap":{
         "vendortype":"vendor_type",
         "vendornm":"vendor_name",
@@ -24,10 +26,12 @@
         "enddate":"effective_end_date",
         "regdate":"registered_date",
         "cindustry":"industry_type_id",
-        "csize":"award_size_id"
+        "csize":"award_size_id",
+        "pscert":"is_women_owned"
     },
-    "allowRequestParams":["contstatus"],
-    "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range"},
+    "allowRequestParams":["contstatus","pscert"],
+    "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"contains","contnum":"like",
+      "contnum_exact":"eqignorecase","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range"},
     "defaultParameters":{"latest_flag":"Y"},
     "header":"
     $header = NULL;
@@ -43,7 +47,7 @@ return $header;
 "no_results_content":"No Results Found",
 "dataset": "checkbook:all_agreement_transactions",
 "uniqueSortColumn":"agreement_id",
-"columns": ["prime_vendor_name","sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","contract_number","contract_original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name"],
+"columns": ["prime_vendor_name","sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","contract_number","contract_original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name","is_women_owned","is_emerging"],
 "caption":"",
 "derivedColumns": {
 "contract_link": {
@@ -118,13 +122,14 @@ return $header;
 {"labelAlias": "end_date","column": "effective_end_date"},
 {"labelAlias": "reg_date","column": "registered_date"},
 {"labelAlias": "pin","column": "tracking_number"},
-{"labelAlias": "apt_pin","column": "brd_awd_no"}
+{"labelAlias": "apt_pin","column": "brd_awd_no"},
+{"labelAlias": "woman_owned_business","column": "is_women_owned"},
+{"labelAlias": "emerging_business","column": "is_emerging"}
 ],
 "adjustParameters":"
 if(isset($parameters['vendor_type'])){
 $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
 }
-$parameters['is_active_eft_2011'] = 1;
 if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');
 }
@@ -166,7 +171,9 @@ return $parameters;
 {"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]},
-{"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]}
+{"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]},
+{"sClass":"text","sWidth":"70px","asSorting": [ "asc","desc" ]},
+{"sClass":"text","sWidth":"70px","asSorting": [ "asc","desc" ]}
 ],
 
 "aaSorting":[[0,"desc"]],
@@ -187,6 +194,7 @@ var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
 var oVendorType = getNamedFilterCriteria('fvendorType');
 var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
 var oContractNumber = getNamedFilterCriteria('fContractNumber');
+var oPrimeSubCert = getNamedFilterCriteria('fPrimeSubCert');
 
 var  cUrl = oTable.fnSettings().sAjaxSource;
 cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -197,6 +205,7 @@ cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
 cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
 cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
 cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
+cUrl = adjustUrlParameter(cUrl,'pscert',oPrimeSubCert);
 
 
 return cUrl;

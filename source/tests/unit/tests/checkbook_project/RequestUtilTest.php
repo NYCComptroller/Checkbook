@@ -48,7 +48,7 @@ class RequestUtilTest extends TestCase
 //    }
 
     /**
-     *
+     * Test IsPendingExpenseContractPath function
      */
     public function testIsPendingExpenseContractPath()
     {
@@ -59,7 +59,7 @@ class RequestUtilTest extends TestCase
     }
 
     /**
-     *
+     *Test is PendingRevenueContractPath function
      */
     public function isPendingRevenueContractPath()
     {
@@ -70,7 +70,7 @@ class RequestUtilTest extends TestCase
     }
 
     /**
-     *
+     *Test isExpenseContractPath function
      */
     public function testIsExpenseContractPath()
     {
@@ -81,7 +81,7 @@ class RequestUtilTest extends TestCase
     }
 
     /**
-     *
+     *test IsRevenueContractPath function
      */
     public function testIsRevenueContractPath()
     {
@@ -92,7 +92,7 @@ class RequestUtilTest extends TestCase
     }
 
     /**
-     *
+     *Test isNychaContractPath function
      */
     public function testisNYCHAContractPath()
     {
@@ -103,7 +103,7 @@ class RequestUtilTest extends TestCase
 
 
     /**
-     *
+     *Test GetDomain function
      */
     public function testGetDomain()
     {
@@ -125,40 +125,9 @@ class RequestUtilTest extends TestCase
         $this->assertNull(RequestUtil::getDomain());
     }
 
-    /**
-     *
-     */
-    public function testGetBudgetBreadcrumbTitle()
-    {
-        global $mock_current_path;
-
-        function _get_budget_breadcrumb_title_drilldown($a = 3)
-        {
-            return '5' . $a;
-        }
-
-        function filter_xss($text)
-        {
-            return $text;
-        }
-
-        $mock_current_path = '/panel_html/budget_agency_perecent_difference_transactions/budget/agency_details/dtsmnid/560/yeartype/B/year/119';
-        $_REQUEST['expandBottomContURL'] = 'budget/yeartype/B/year/119';
-
-        $this->assertEquals('53 Expense Budget', CustomBreadcrumbs::getBudgetBreadcrumbTitle());
-
-        $mock_current_path = 'panel_html/budget_agency_perecent_difference_transactions/budget/agency_details/dtsmnid/560/yeartype/B/year/119';
-        unset($_REQUEST['expandBottomContURL']);
-
-        $this->assertEquals('getInitNodeSummaryTitle :: 560', CustomBreadcrumbs::getBudgetBreadcrumbTitle());
-
-        $mock_current_path = 'budget/transactions/year/119';
-        unset($_REQUEST['expandBottomContURL']);
-        $this->assertEquals('Expense Budget Transactions', CustomBreadcrumbs::getBudgetBreadcrumbTitle());
-    }
 
     /**
-     *
+     *Test getDashboardTitle function
      */
     public function testgetDashboardTitle()
     {
@@ -169,7 +138,7 @@ class RequestUtilTest extends TestCase
     }
 
     /**
-     *
+     *Test is AdvancedSearchPage function
      */
     public function testisAdvancedSearchPage()
     {
@@ -192,6 +161,48 @@ class RequestUtilTest extends TestCase
 
         $mock_current_path = '/nycha_payroll/search/transactions/something';
         $this->assertTrue(RequestUtil::isAdvancedSearchPage($mock_current_path));
-
     }
+
+    /**
+     *Test getLandingPageUrl function
+     */
+    public function testgetLandingPageUrl()
+    {
+        $this->assertEquals('spending_landing/yeartype/B/year/122',RequestUtil::getLandingPageUrl('spending','122',null));
+        $this->assertEquals('contracts_landing/status/A/yeartype/B/year/122',RequestUtil::getLandingPageUrl('contracts','122',null));
+        $this->assertEquals('payroll/yeartype/C/year/122',RequestUtil::getLandingPageUrl('payroll','122','C'));
+        $this->assertEquals('budget/yeartype/B/year/122',RequestUtil::getLandingPageUrl('budget','122',null));
+        $this->assertEquals('revenue/yeartype/B/year/122',RequestUtil::getLandingPageUrl('revenue','122',null));
+    }
+
+    /**
+     *Test getTopNavURL function
+     */
+    public function testgetTopNavURL()
+    {
+        $this->assertEquals('contracts_landing/status/A/yeartype/B/year/119',RequestUtil::getTopNavURL('contracts'));
+        $this->assertEquals('spending_landing/yeartype/B/year/119',RequestUtil::getTopNavURL('spending'));
+        $this->assertEquals('/nycha_spending/datasource/checkbook_nycha/year/119',RequestUtil::getTopNavURL('nycha_spending'));
+        $this->assertEquals('budget/yeartype/B/year/119',RequestUtil::getTopNavURL('budget'));
+        $this->assertEquals('/nycha_budget/datasource/checkbook_nycha/year/119',RequestUtil::getTopNavURL('nycha_budget'));
+        $this->assertEquals('revenue/yeartype/B/year/119',RequestUtil::getTopNavURL('revenue'));
+        $this->assertEquals('/nycha_revenue/datasource/checkbook_nycha/year/119',RequestUtil::getTopNavURL('nycha_revenue'));
+    }
+
+
+
+    /**
+     *Test getCurrentDomainURLFromParams function
+     */
+    public function testgetCurrentDomainURLFromParams()
+    {
+        $this->assertEquals('contracts_landing/status/A/yeartype/B/year/119',RequestUtil::getTopNavURL('contracts'));
+        $this->assertEquals('spending_landing/yeartype/B/year/119',RequestUtil::getTopNavURL('spending'));
+        $this->assertEquals('/nycha_spending/datasource/checkbook_nycha/year/119',RequestUtil::getTopNavURL('nycha_spending'));
+        $this->assertEquals('budget/yeartype/B/year/119',RequestUtil::getTopNavURL('budget'));
+        $this->assertEquals('/nycha_budget/datasource/checkbook_nycha/year/119',RequestUtil::getTopNavURL('nycha_budget'));
+        $this->assertEquals('revenue/yeartype/B/year/119',RequestUtil::getTopNavURL('revenue'));
+        $this->assertEquals('/nycha_revenue/datasource/checkbook_nycha/year/119',RequestUtil::getTopNavURL('nycha_revenue'));
+    }
+
 }

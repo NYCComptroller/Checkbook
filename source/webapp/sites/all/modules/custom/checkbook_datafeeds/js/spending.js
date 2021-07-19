@@ -589,7 +589,8 @@
 
       if (data_source === 'checkbook'){
         $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
-      } else {
+      }
+      else {
         $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name', filters)});
       }
       $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
@@ -599,7 +600,7 @@
       $('#edit-entity-contract-number', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_entity_contract_number', filters)});
       $('#edit-commodity-line', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_commodity_line', filters)});
       $('#edit-budget-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_budget_name', filters)});
-      
+
       $('.watch:input', context).each(function () {
         $(this).focusin(function () {
           //set variables for each field's value
@@ -627,7 +628,7 @@
             industry = emptyToZero($('#edit-industry', context).val());}
           spend_cat = getSpendingExpenseType(data_source);
           catastrophic_event_id = $('#edit-catastrophic-event', context).val() ? $('#edit-catastrophic-event', context).val() : 0;
-          
+
           if(year.toLowerCase().indexOf("fy") >= 0){
             year = year.toLowerCase().split('fy')[1];
           }
@@ -652,7 +653,8 @@
           // No code display for edc payee name in datafeed (refer to 10131 for document with information on code display for necessary fields)
           if (data_source === 'checkbook'){
             $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
-          } else {
+          }
+          else {
             $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name', filters)});
           }
 

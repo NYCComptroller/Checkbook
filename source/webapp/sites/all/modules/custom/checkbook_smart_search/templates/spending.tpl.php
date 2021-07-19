@@ -58,12 +58,12 @@ if ($isOge) {
   } elseif (strtolower($spending_results['is_prime_or_sub']) == 'no' && strtolower($spending_results['is_minority_vendor'])=='y') {
     $linkable_fields = array(
       "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
-      "vendor_name" => "/spending_landing/yeartype/B/year/" . $fiscal_year_id . "/category/" . $spending_results['spending_category_id'] . "/mwbe/2~3~4~5~9/dashboard/mp/vendor/" . $spending_results["vendor_id"],
+      "vendor_name" => "/spending_landing/yeartype/B/year/" . $fiscal_year_id . "/category/" . $spending_results['spending_category_id'] . "/mwbe/".MappingUtil::getTotalMinorityIds('url')."/dashboard/mp/vendor/" . $spending_results["vendor_id"],
     );
   } elseif (strtolower($spending_results['is_prime_or_sub']) == 'yes' && strtolower($spending_results['is_minority_vendor'])=='y') {
     $linkable_fields = array(
       "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
-      "vendor_name" => "/spending_landing/yeartype/B/year/" . $fiscal_year_id . "/category/" . $spending_results['spending_category_id'] . "/mwbe/2~3~4~5~9/dashboard/ms/subvendor/" . $spending_results["vendor_id"],
+      "vendor_name" => "/spending_landing/yeartype/B/year/" . $fiscal_year_id . "/category/" . $spending_results['spending_category_id'] . "/mwbe/".MappingUtil::getTotalMinorityIds('url')."/dashboard/ms/subvendor/" . $spending_results["vendor_id"],
     );
   } else {
     $linkable_fields = array(
