@@ -6,7 +6,7 @@
         "mcagency","agencyh","year","yeartype","calyear","mcvendor","expcategory","category","checkamtr","dept",
         "contnum","checkamt","chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
         "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month",
-        "industry","mwbe","vendor","svendor","subvendor","vendortype","fvendor", "bdgcoe"
+        "industry","mwbe","vendor","svendor","subvendor","vendortype","fvendor", "bdgcoe", "pscert"
     ],
     "urlParamMap":{
         "contnum_exact":"reference_document_number",
@@ -31,7 +31,8 @@
         "cindustry":"industry_type_id@checkbook:contracts_spending_transactions",
         "expcategorycode":"expenditure_object_code", "month":"check_eft_issued_cal_month_id",
         "mwbe":"minority_type_id","industry":"industry_type_id", "bdgcoe":"budget_code",
-        "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"vendor_type","fvendor":"vendor_id"
+        "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"vendor_type","fvendor":"vendor_id",
+        "pscert":"is_women_owned"
     },
     "paramTypeConfig":{
         "vendornm_exact":"eqignorecase","expdoc_exact":"eqignorecase","captprj_exact":"eqignorecase",
@@ -39,7 +40,7 @@
         "captprj":"like","vendornm":"like","contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le",
         "scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase"
     },
-    "allowRequestParams":["dtsmnid","smnid"],
+    "allowRequestParams":["dtsmnid","smnid","pscert"],
     "defaultParameters":{"is_prime_or_sub":"S"},
     "header":"
         $header = NULL;
@@ -276,9 +277,9 @@
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
         var oBudgetCode = getNamedFilterCriteria('fBudgetCode');
+        var oPrimeSubCert = getNamedFilterCriteria('fPrimeSubCert');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
-
         var cUrlArray = cUrl.split('/');
         var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
 
@@ -294,6 +295,7 @@
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
         cUrl = adjustUrlParameter(cUrl,'bdgcode',oBudgetCode);
+        cUrl = adjustUrlParameter(cUrl,'pscert',oPrimeSubCert);
 
         return cUrl;
     }"

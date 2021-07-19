@@ -14,6 +14,8 @@
     "showAllRecords":true,
     "allowFacetDeselect":true,
     "adjustParameters":"
+    //Adjust Certification parameters
+    $parameters = ContractUtil::adjustCertificationFacetParameters($node,$parameters);
     if(isset($parameters['vendor_type'])){
         $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
     }
