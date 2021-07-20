@@ -6,7 +6,7 @@
         "mcagency","agencyh","year","yeartype","calyear","mcvendor","expcategory","category","checkamtr","dept",
         "contnum","checkamt","chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
         "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month",
-        "industry","mwbe","vendor","svendor","subvendor","vendortype","fvendor", "bdgcoe", "pscert"
+        "industry","mwbe","vendor","svendor","subvendor","vendortype","fvendor", "bdgcode", "pscert"
     ],
     "urlParamMap":{
         "contnum_exact":"reference_document_number",
@@ -30,7 +30,7 @@
         "csize":"award_size_id@checkbook:contracts_spending_transactions",
         "cindustry":"industry_type_id@checkbook:contracts_spending_transactions",
         "expcategorycode":"expenditure_object_code", "month":"check_eft_issued_cal_month_id",
-        "mwbe":"minority_type_id","industry":"industry_type_id", "bdgcoe":"budget_code",
+        "mwbe":"minority_type_id","industry":"industry_type_id", "bdgcode":"budget_name_code",
         "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id","vendortype":"vendor_type","fvendor":"vendor_id",
         "pscert":"is_women_owned"
     },
@@ -86,7 +86,7 @@
         "minority_type_id",
         "is_prime_or_sub",
         "original_agreement_id@checkbook:sub_vendor_agid",
-        "budget_code",
+        "budget_name_code",
         "is_women_owned",
         "is_emerging"
     ],
@@ -147,9 +147,6 @@
         },
         "industry_name_formatted": {
             "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
-        },
-        "budget_code_formatted": {
-          "expression": "(strlen($row['budget_name']) > 0) ? $row['budget_code'].' ('.$row['budget_name']. ')' : $row['budget_code']"
         }
     },
     "table_columns": [
@@ -169,7 +166,7 @@
         {"labelAlias":"capital_project","column":"reporting_code"},
         {"labelAlias":"spending_category","column":"spending_category_name"},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
-        {"labelAlias":"budget_code","column":"budget_code_formatted", "sortSourceColumn":"budget_code","exportColumn":"budget_code_formatted"},
+        {"labelAlias":"budget_code","column":"budget_name_code"},
         {"labelAlias": "woman_owned_business","column":"is_women_owned"},
         {"labelAlias": "emerging_business","column":"is_emerging"},
         {"label":"","column":""}
@@ -195,12 +192,7 @@
           "column":"is_sub_vendor",
           "sourceColumn":"vendor_type",
           "sql":"case when vendor_type = 'P' then 'No' else 'Yes' end as is_sub_vendor"
-        },
-      {
-        "column":"budget_code_formatted",
-        "sourceColumn":"budget_code",
-        "sql":"CASE WHEN budget_name IS NOT NULL AND budget_name != '' THEN budget_code || ' (' || budget_name || ')' ELSE budget_code END"
-      }
+        }
     ],
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
