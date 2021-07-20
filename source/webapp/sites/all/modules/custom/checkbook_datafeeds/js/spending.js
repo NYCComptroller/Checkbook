@@ -578,7 +578,7 @@
         "agency_code":agency,
         "expenditure_object_code":exp_cat,
         "department_code":dept,
-        "spending_category":spend_cat,
+        "spending_category_code":spend_cat,
         "minority_type_id":mwbe_cat,
         "industry_type_id":industry,
         "agreement_type_code":agg_type,
@@ -599,7 +599,7 @@
       $('#edit-entity-contract-number', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_entity_contract_number', filters)});
       $('#edit-commodity-line', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_commodity_line', filters)});
       $('#edit-budget-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_budget_name', filters)});
-      
+
       $('.watch:input', context).each(function () {
         $(this).focusin(function () {
           //set variables for each field's value
@@ -627,7 +627,7 @@
             industry = emptyToZero($('#edit-industry', context).val());}
           spend_cat = getSpendingExpenseType(data_source);
           catastrophic_event_id = $('#edit-catastrophic-event', context).val() ? $('#edit-catastrophic-event', context).val() : 0;
-          
+
           if(year.toLowerCase().indexOf("fy") >= 0){
             year = year.toLowerCase().split('fy')[1];
           }
@@ -640,7 +640,7 @@
             "agency_code":agency,
             "expenditure_object_code":exp_cat,
             "department_code":dept,
-            "spending_category":spend_cat,
+            "spending_category_code":spend_cat,
             "minority_type_id":mwbe_cat,
             "industry_type_id":industry,
             "agreement_type_code":agg_type,
