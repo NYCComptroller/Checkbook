@@ -39,7 +39,7 @@
                     "elementsColumn":{
                         "agency":"agency_name",
                         "associated_prime_vendor":"prime_vendor_name",
-                        "budget_code":"budget_code",
+                        "budget_code":"budget_name_code",
                         "capital_project":"reporting_code",
                         "check_amount":"check_amount",
                         "contract_id":"reference_document_number",
@@ -104,7 +104,7 @@
                         "M/WBE Category":"mwbe_category_ui",
                         "Woman Owned Business": "is_women_owned",
                         "Emerging Business": "is_emerging",
-                        "Budget Code":"budget_code"
+                        "Budget Code":"budget_name_code"
                     },
                     "required_non_display_columns":["vendor_type"]
                 }

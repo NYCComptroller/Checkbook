@@ -390,13 +390,13 @@
                         "sourceColumnName": "is_emerging"
                       }
                     ]
-                  },   
+                  },
                 {
-                    "name":"budget_code",
+                    "name":"budget_name_code",
                     "levels": [
                       {
-                        "name":"budget_code",
-                        "sourceColumnName":"budget_code"
+                        "name":"budget_name_code",
+                        "sourceColumnName":"budget_name_code"
                       }
                   ]
                 }
