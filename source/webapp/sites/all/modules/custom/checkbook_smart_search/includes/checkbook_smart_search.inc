@@ -438,7 +438,7 @@ function adjustExportResults($result,$domain){
          case "citywide_spending":
            if ($headers[$key] == 'budget_code') {
              $a = array_search ('spending_budget_name', $headers);
-             $field = strlen($field) > 0 ? $field . " (" . $data[$a] . ")" : " ";
+             $field = $field . " (" . $data[$a] . ")";
            }
            break;
 
