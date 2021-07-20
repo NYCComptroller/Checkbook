@@ -147,7 +147,7 @@ class CheckbookSolrQuery
     $this->facetsConfig = (array)CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
     $this->sortConfig = CheckbookSolr::getSortConfig($solr_datasource);
     $this->autocompleteMapping = (array)CheckbookSolr::getAutocompleteMapping();
-    $this->datasourcename = CheckbookSolr::getDatasourceName($solr_datasource);
+    $this->datasourcename = $solr_datasource;
 
     if ($searchTerms) {
       $this
@@ -500,7 +500,7 @@ class CheckbookSolrQuery
     if ('vendor_type' == $param) {
       $value = $this->get_vendor_type_mapping($value);
     }
-    elseif('spending_category' == $param){
+    elseif('spending_category_code' == $param){
       $value = $this->get_spending_category_mapping($value,$this->datasourcename);
       $param = 'spending_category_id';
     }
@@ -714,9 +714,15 @@ class CheckbookSolrQuery
    */
   private function get_spending_category_mapping($exptype, $data_source = Datasource::CITYWIDE)
   {
+    $spending_exptype = "'(^$exptype$)'";
     try {
-      $dataController = data_controller_get_instance();
-      $results = $dataController->queryDataset($data_source.':spending_category', array('spending_category_id'), array('spending_category_code' => $exptype));
+      if ($data_source == Datasource::NYCHA) {
+        $query = "SELECT spending_category_id FROM ref_spending_category WHERE spending_category_code ~* " . $spending_exptype . " OR display_spending_category_name ~* " . $spending_exptype;
+      }
+      else{
+        $query = "SELECT spending_category_id FROM ref_spending_category WHERE spending_category_code ~* " . $spending_exptype . " OR spending_category_name ~* " . $spending_exptype;
+      }
+      $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
       if ($results && $results[0]['spending_category_id']) return $results[0]['spending_category_id'];
     } catch (Exception $e) {
       log_error("Error getting data from controller: \n" . $e->getMessage());

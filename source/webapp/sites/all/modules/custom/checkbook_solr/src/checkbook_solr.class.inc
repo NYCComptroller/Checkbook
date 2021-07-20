@@ -72,15 +72,6 @@ class CheckbookSolr
   }
 
   /**
-   * @param string $dataSource
-   * @return string
-   */
-  public static function getDatasourceName(string $solr_datasource): string
-  {
-    return $solr_datasource;
-  }
-
-  /**
    * @return mixed
    */
   public static function getParamMapping(): object
