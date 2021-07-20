@@ -145,7 +145,7 @@ class CheckbookSolrQuery
     $this->facetsConfig = (array)CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
     $this->sortConfig = CheckbookSolr::getSortConfig($solr_datasource);
     $this->autocompleteMapping = (array)CheckbookSolr::getAutocompleteMapping();
-    $this->datasourcename = CheckbookSolr::getDatasourceName($solr_datasource);
+    $this->datasourcename = $solr_datasource;
     if ($searchTerms) {
       $this
         ->setSearchTerms(explode('*!*', $searchTerms));
