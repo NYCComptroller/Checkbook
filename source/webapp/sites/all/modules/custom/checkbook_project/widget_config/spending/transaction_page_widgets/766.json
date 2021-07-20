@@ -99,7 +99,7 @@
       "subvendor": "vendor_id",
       "vendortype": "vendor_type",
       "fvendor": "vendor_name",
-      "bdgcode" : "budget_code",
+      "bdgcode" : "budget_name_code",
       "pscert":"is_women_owned"
     },
     "paramTypeConfig":{
@@ -167,7 +167,7 @@
         "minority_type_id",
         "is_prime_or_sub",
         "original_agreement_id@checkbook:sub_vendor_agid",
-        "budget_code",
+        "budget_name_code",
         "is_women_owned",
         "is_emerging"
     ],
@@ -243,9 +243,6 @@
         },
         "industry_name_formatted": {
             "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
-        },
-        "budget_code_formatted": {
-          "expression": "(strlen($row['budget_name']) > 0) ? $row['budget_code'].' ('.$row['budget_name']. ')' : $row['budget_code']"
         }
     },
     "table_columns": [
@@ -360,7 +357,7 @@
         "labelAlias": "emerging_business",
         "column": "is_emerging"
       },
-      {"labelAlias":"budget_code","column":"budget_code_formatted", "sortSourceColumn":"budget_code","exportColumn":"budget_code_formatted"},
+      {"labelAlias":"budget_code","column":"budget_name_code"},
       {
         "label": "",
         "column": "",
@@ -408,11 +405,6 @@
           "column":"contract_purpose_text",
           "sourceColumn":"purpose",
           "sql":"case when spending_category_name IN ('Payroll','Others') then 'N/A' else purpose end"
-        },
-        {
-          "column":"budget_code_formatted",
-          "sourceColumn":"budget_code",
-          "sql":"CASE WHEN budget_name IS NOT NULL AND budget_name != '' THEN budget_code || ' (' || budget_name || ')' ELSE budget_code END"
         }
     ],
     "adjustParameters":"
