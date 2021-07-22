@@ -986,13 +986,13 @@ namespace { //global
             if (isset($parameters['prime_cert'])) {
               foreach ($parameters['prime_cert'] as $key => $value) {
                 if ($value == 'pemerg') {
-                  $parameters['prime_emerging_adv_search'] = 'Yes';
+                  $parameters['is_prime_emerging'] = 'Yes';
                 }
-
                 if ($value == 'pwomen') {
-                  $parameters['prime_women_adv_search'] = 'Yes';
+                  $parameters['is_prime_women_owned'] = 'Yes';
                 }
               }
+              $node->widgetConfig->logicalOrColumns[] = array("is_prime_emerging", "is_prime_women_owned");
             }
           }
 
@@ -1002,10 +1002,11 @@ namespace { //global
                 if ($value == 'semerg') {
                   $parameters['is_sub_emerging'] = 'Yes';
                 }
-                if ($value == 'pwomen') {
+                if ($value == 'swomen') {
                   $parameters['is_sub_women_owned'] = 'Yes';
                 }
               }
+              $node->widgetConfig->logicalOrColumns[] = array("is_sub_emerging", "is_sub_women_owned");
             }
           }
 

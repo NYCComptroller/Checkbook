@@ -17,7 +17,6 @@
   $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
   if(function_exists('_checkbook_project_applyParameterFilters')){
   $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
-  $parameters['vendor_record_type'] = 'Prime Vendor';
 }
 return $parameters;
 ",
