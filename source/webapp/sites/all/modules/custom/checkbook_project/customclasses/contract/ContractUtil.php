@@ -812,7 +812,6 @@ namespace { //global
          * @return mixed
          */
         public static function adjustSubContractTransactionsCommonParams(&$node, &$parameters) {
-
             $data_controller_instance = data_controller_get_operator_factory_instance();
 
             //Handle year parameter mapping
@@ -860,6 +859,8 @@ namespace { //global
                 unset($parameters['prime_minority_type_id']);
             }
 
+            //Adjust Certification parameters
+            $parameters = ContractUtil::adjustCertificationFacetParameters($node,$parameters);
 
             return $parameters;
         }
