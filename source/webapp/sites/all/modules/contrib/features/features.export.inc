@@ -1033,9 +1033,6 @@ function features_set_signature($module, $component, $signature = NULL, $message
  * that were using a -dev branch after 7.x-2.11.
  * Since #3162854, it is stored in a dedicated non-cache table.
  *
- * @param bool $reset
- *   TRUE, to reset the static cache.
- *
  * @return string
  *   One of 'table', 'cache' or 'type'.
  *   On a fully updated database, this value will be 'table'.
@@ -1044,11 +1041,8 @@ function features_set_signature($module, $component, $signature = NULL, $message
  * @see \features_set_signature()
  * @see \features_update_7202()
  */
-function _features_get_signature_storage_type($reset = FALSE) {
-  static $type;
-  if ($reset) {
-    $type = NULL;
-  }
+function _features_get_signature_storage_type() {
+  $type = &drupal_static(__FUNCTION__);
   if ($type !== NULL) {
     return $type;
   }
