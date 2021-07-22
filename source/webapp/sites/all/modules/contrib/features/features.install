@@ -17,13 +17,13 @@ function features_schema() {
       'module' => array(
         'description' => 'Name of the feature module.',
         'type' => 'varchar',
-        'length' => 255,
+        'length' => 64,
         'not null' => TRUE,
       ),
       'component' => array(
         'description' => 'Name of the features component.',
         'type' => 'varchar',
-        'length' => 255,
+        'length' => 128,
         'not null' => TRUE,
       ),
       'signature' => array(
@@ -76,6 +76,8 @@ function features_uninstall() {
   variable_del('features_ignored_orphans');
   variable_del('features_feature_locked');
   variable_del('features_lock_mode');
+  variable_del('features_update_7202_fixed_tmp');
+  variable_del('features_update_7202_possibly_broken');
 
   db_delete('variable')
     ->condition('name', 'features_admin_show_component_%', 'LIKE')
@@ -209,13 +211,13 @@ function features_update_7202() {
         'module' => array(
           'description' => 'Name of the feature module.',
           'type' => 'varchar',
-          'length' => 255,
+          'length' => 64,
           'not null' => TRUE,
         ),
         'component' => array(
           'description' => 'Name of the features component.',
           'type' => 'varchar',
-          'length' => 255,
+          'length' => 128,
           'not null' => TRUE,
         ),
         'signature' => array(
@@ -246,10 +248,10 @@ function features_update_7202() {
     db_create_table('features_signature', $schema);
   }
 
-
   // Load existing signatures.
-  if (db_table_exists('cache_features')) {
-    // The original version of the previous update has already run.
+  if (db_table_exists('cache_featurestate')) {
+    // The old version of features_update_7201() has run in the past, and a
+    // cache table was created to replace the 'features_codecache' variable.
     $cache = cache_get('features_codecache', 'cache_featurestate');
     $signaturess = !empty($cache->data)
       ? $cache->data
@@ -257,7 +259,8 @@ function features_update_7202() {
     $message = __FUNCTION__ . '() - from cache storage';
   }
   else {
-    // The update is from an earlier version of features.
+    // The current (inactive) version of features_update_7201() has run, and the
+    // 'features_codecache' variable still exists.
     $signaturess = variable_get('features_codecache', array());
     $message = __FUNCTION__ . '() - from variable storage';
   }
@@ -297,10 +300,57 @@ function features_update_7202() {
   // On failure, allow the exception to trickle up.
   $insert->execute();
 
+  // Set a temporary marker variable for subsequent updates.
+  // This variable was not set in an older version of this update.
+  variable_set('features_update_7202_fixed_tmp', TRUE);
+
   // Delete the old table and variable if the data migration was successful.
   variable_del('features_codecache');
 
   if (db_table_exists('cache_featurestate')) {
     db_drop_table('cache_featurestate');
+  }
+
+  // Reset the static cache that determines the storage type.
+  drupal_static_reset('_features_get_signature_storage_type');
+}
+
+/**
+ * Reduce varchar lengths in 'features_signature' table. See #3181858.
+ */
+function features_update_7203() {
+  // The following operations are only needed for sites that previously ran an
+  // older version of features_update_7202(). Trying to check this would
+  // probably be more copmlex, so we run it anyway.
+  db_change_field('features_signature', 'module', 'module', array(
+    'description' => 'Name of the feature module.',
+    'type' => 'varchar',
+    'length' => 64,
+    'not null' => TRUE,
+  ));
+  db_change_field('features_signature', 'component', 'component', array(
+    'description' => 'Name of the features component.',
+    'type' => 'varchar',
+    'length' => 128,
+    'not null' => TRUE,
+  ));
+}
+
+/**
+ * Set a marker variable, if the site could be affected by undesired reverts.
+ */
+function features_update_7204() {
+  if (variable_get('features_update_7202_fixed_tmp')) {
+    // The fixed version of features_update_7202() did run.
+    // Delete the temporary marker variable.
+    variable_del('features_update_7202_fixed_tmp');
+  }
+  else {
+    // Either the old broken version of features_update_7202() ran, or features
+    // was newly installed in a version where 7202 or 7203 was the latest
+    // update.
+    // Set a marker variable, indicating that some overridden features
+    // components might have been accidentally reverted. See #3183346.
+    variable_set('features_update_7202_possibly_broken', TRUE);
   }
 }
