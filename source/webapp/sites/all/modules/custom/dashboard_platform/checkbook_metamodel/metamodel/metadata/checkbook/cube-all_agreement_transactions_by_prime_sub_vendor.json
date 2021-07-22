@@ -340,16 +340,16 @@
                     "function": "SUM(CASE WHEN COALESCE($COLUMN{sub_maximum_contract_amount},0) < 1000000 THEN 1 ELSE 0 END)"
                 },
                 "prime_cert_women_count":{
-                  "function": "SUM(CASE WHEN vendor_record_type = 'Prime Vendor' AND is_prime_women_owned = 'Yes' THEN 1 ELSE 0 END)"
+                  "function": "COUNT(DISTINCT(CASE WHEN is_prime_women_owned = 'Yes' THEN prime_vendor_name||contract_number END))"
                 },
                 "prime_cert_emerging_count":{
-                  "function": "SUM(CASE WHEN vendor_record_type = 'Prime Vendor' AND is_prime_emerging = 'Yes' THEN 1 ELSE 0 END)"
+                  "function": "COUNT(DISTINCT(CASE WHEN is_prime_emerging = 'Yes' THEN prime_vendor_name||contract_number END))"
                 },
                 "sub_cert_women_count":{
-                  "function": "SUM(CASE WHEN vendor_record_type = 'Sub Vendor' AND is_sub_women_owned = 'Yes' THEN 1 ELSE 0 END)"
+                  "function": "COUNT(DISTINCT(CASE WHEN is_sub_women_owned = 'Yes' THEN sub_vendor_name||contract_number||sub_contract_id END))"
                 },
                 "sub_cert_emerging_count":{
-                  "function": "SUM(CASE WHEN vendor_record_type = 'Sub Vendor' AND is_sub_emerging = 'Yes' THEN 1 ELSE 0 END)"
+                  "function": "COUNT(DISTINCT(CASE WHEN is_sub_emerging = 'Yes' THEN sub_vendor_name||contract_number||sub_contract_id END))"
                 }
             }
         },
