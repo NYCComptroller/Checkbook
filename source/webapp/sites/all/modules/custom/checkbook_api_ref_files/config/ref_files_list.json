@@ -1,4 +1,10 @@
 {
+  "agency_code_list": {
+    "sql": "SELECT DISTINCT t1.agency_code, t1.agency_name FROM ref_agency t1 where t1.is_display = 'Y' AND EXISTS ( select 1 from all_disbursement_transactions t2 where t2.agency_id = t1.agency_id ) ORDER BY t1.agency_name",
+    "force_quote": [
+      "agency_code"
+    ]
+  },
   "vendor_code_list": {
     "sql": "SELECT DISTINCT t1.vendor_customer_code, t1.legal_name FROM vendor t1 WHERE EXISTS ( select 1 from all_disbursement_transactions t2 where t2.vendor_id = t1.vendor_id ) ORDER BY t1.vendor_customer_code",
     "force_quote": [
@@ -14,6 +20,9 @@
   },
   "spending_mwbe_code_list": {
       "sql": "select minority_type_id,minority_type_name from (select minority_type_id::text,CASE WHEN minority_type_id = 2 THEN 'Black American' WHEN minority_type_id = 3 THEN 'Hispanic American' WHEN minority_type_id = 4 THEN 'Asian American' WHEN minority_type_id = 5 THEN 'Asian American'  WHEN minority_type_id = 6 THEN 'Native' WHEN minority_type_id = 7 THEN 'Non-M/WBE' WHEN minority_type_id = 9 THEN 'Women' WHEN minority_type_id = 11 THEN 'Individuals & Others' WHEN minority_type_id = 99 THEN 'Emerging'  END AS minority_type_name FROM ref_minority_type where minority_type_id in (2,3,4,5,6,7,9,11,99) union SELECT  '2~3~4~5~6~9~99' as minority_type_id , 'Total M/WBE' as minority_type_name )A order by idx(array['2','3','4','5','6','7','9','11','99','2~3~4~5-6~9-99'],minority_type_id)"
+  },
+  "industry_code_list": {
+    "sql": "SELECT DISTINCT t1.industry_type_id, t1.industry_type_name FROM ref_industry_type t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.industry_type_id = t1.industry_type_id ) ORDER BY t1.industry_type_id"
   },
   "budget_code_list": {
     "sql": "SELECT DISTINCT bc.budget_code \"Budget Code\", bc.attribute_name \"Budget Code Name\" FROM ref_budget_code bc WHERE EXISTS ( select 1 from budget b where bc.budget_code_id = b.budget_code_id ) ORDER BY bc.attribute_name",
@@ -31,6 +40,18 @@
     "sql": "SELECT DISTINCT t1.revenue_class_code, t1.revenue_class_name FROM ref_revenue_class t1 WHERE EXISTS ( select 1 from revenue_details t2 where t2.revenue_class_id  = t1.revenue_class_id ) ORDER BY t1.revenue_class_name",
     "force_quote": [
       "revenue_class_code"
+    ]
+  },
+  "fund_class_code_list": {
+    "sql": "SELECT DISTINCT t1.fund_class_code, t1.fund_class_name FROM ref_fund_class t1 WHERE t1.fund_class_name = 'General Fund' AND EXISTS ( select 1 from revenue_details t2 where t2.fund_class_id = t1.fund_class_id ) ORDER BY t1.fund_class_name",
+    "force_quote": [
+      "fund_class_code"
+    ]
+  },
+  "funding_source_code_list": {
+    "sql": "SELECT DISTINCT t1.funding_class_code, t1.funding_class_name FROM ref_funding_class t1 WHERE EXISTS ( select 1 from revenue_details t2 where t2.funding_class_id = t1.funding_class_id ) ORDER BY t1.funding_class_name",
+    "force_quote": [
+      "funding_class_code"
     ]
   },
   "revenue_category_code_list": {
@@ -76,6 +97,12 @@
       "disbursement_number"
     ]
   },
+  "spending_category_code_list": {
+    "sql": "SELECT DISTINCT spending_category_name, spending_category_code FROM ref_spending_category ORDER BY spending_category_name",
+    "force_quote": [
+      "spending_category_name"
+    ]
+  },
   "contract_type_code_list": {
     "sql": "SELECT DISTINCT agreement_type_code, agreement_type_name FROM ref_agreement_type ORDER BY agreement_type_code",
     "force_quote": [
@@ -109,11 +136,32 @@
       "award_method_code"
     ]
   },
+  "nycha_industry_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT t1.industry_type_code, t1.display_industry_type_name FROM ref_industry_type t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.industry_type_code = t1.industry_type_code ) ORDER BY t1.industry_type_code",
+    "force_quote": [
+      "display_industry_type_name"
+    ]
+  },
+  "nycha_purchase_order_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT agreement_type_code, agreement_type_name FROM ref_agreement_type ORDER BY agreement_type_code",
+    "force_quote": [
+      "agreement_type_name"
+    ]
+  },
   "nycha_responsibility_center_code_list": {
     "database": "checkbook_nycha",
     "sql": "SELECT DISTINCT responsibility_center_code, responsibility_center_description FROM ref_responsibility_center WHERE responsibility_center_description IS NOT NULL AND responsibility_center_id NOT IN (1032,2066) ORDER BY responsibility_center_code",
     "force_quote": [
       "responsibility_center_description"
+    ]
+  },
+  "nycha_spending_category_code_list": {
+    "database": "checkbook_nycha",
+    "sql": "SELECT DISTINCT spending_category_code,spending_category_id, display_spending_category_name AS spending_category_name FROM ref_spending_category order by 1",
+    "force_quote": [
+      "spending_category_name"
     ]
   },
   "nycha_department_code_list": {
