@@ -225,7 +225,7 @@
 
         //Move Issue Date fields to left column for NYCHA
         $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
-       // $('#df-payeename').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
+        $('#df-payeename').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
         $('label[for=edit-payee-name]').text('Vendor:');
         $('label[for=edit-agency]').text('Other Government Entity:');
         break;
