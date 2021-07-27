@@ -89,7 +89,7 @@ switch ($arg){
 //css to indicate no child menus for featured dashboards
 $feature_db_css = "expense-container";
 ?>
-<div class="top-navigation-left">
+<div class="top-navigation-left nycha">
     <table class="expense">
         <tr>
             <td class="budget first<?php if($budget_active){print $budget_active;}?>">
@@ -114,43 +114,4 @@ $feature_db_css = "expense-container";
             </td>
         </tr>
     </table>
-</div>
-<?php
-    //M/WBE and Section links of NYCHA Contracts
-    // Disabling link for nycha feature board
-    //$mwbe_link = l('<span class="nav-title">M/WBE</span><br>'.custom_number_formatter_format(0 ,1,'$'),RequestUtil::getTopNavURL("nycha_contracts"),$options);
-    //$section_link = l('<span class="nav-title">Section 3</span><br>'.custom_number_formatter_format(0 ,1,'$'),RequestUtil::getTopNavURL("nycha_contracts"),$options);
-    $mwbe_link = l('<span class="nav-title">M/WBE</span><br>'.custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
-    $section_link = l('<span class="nav-title">Section 3</span><br>'.custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
-    //css to indicate no child menus for featured dashboards
-    //Remove no-menu when M/WBE and Subvendors dashboards are implemented
-    $fdexpclass = "expense-container no-menu";
-?>
-
-<div class="top-navigation-right">
-    <div class="featured-dashboard-title"><a  alt="The amounts represented in the featured dashboards are subset amounts of either the Spending or Contract Domains">
-            <?php echo (preg_match('/contract/',$_GET['q']))?"Contracts ":"Spending " ;?>Featured Dashboard</a>
-    </div>
-    <div class="featured-dashboard-table">
-        <table class="expense">
-            <tr>
-                <td class="mwbe<?php if($mwbeclass){print $mwbeclass;}?>">
-                    <div class="<?php print $fdexpclass;?>"><?php print $mwbe_link ?>
-                        <?php print '<div class="drop-down-menu-triangle">'  . $mwbe_filters .'</div>' ?>
-                    </div>
-                    <?php if($featured_dashboard == "mp" ||$featured_dashboard == "ms"){?>
-                        <div class='indicator'></div>
-                    <?php }?>
-                </td>
-                <td class="mwbe subvendors<?php if($svclass){print $svclass;}?>">
-                    <div class="<?php print $fdexpclass;?>">
-                        <?php print $section_link; print '<div class="drop-down-menu-triangle">'  . $svendor_filters .'</div>' ?>
-                    </div>
-                    <?php if($featured_dashboard == "sp" ||$featured_dashboard == "ss"){?>
-                        <div class='indicator'></div>
-                    <?php }?>
-                </td>
-            </tr>
-        </table>
-    </div>
-</div>
+</div>Osettings
