@@ -637,6 +637,9 @@ body.page-smart-search #filter-header{margin-top:5px;}
     float: left;
     margin-right: 22px;
 }
+.top-navigation-left.nycha{
+  width: 1000px !important;
+}
 .top-navigation-right{
     width: 262px;
     float: left;
@@ -717,6 +720,9 @@ table.expense td {
     margin-bottom: 0;
     text-align: center;
     background: url(../images/tile-bg.png) repeat-x 0 0;
+}
+.top-navigation-left.nycha table.expense td {
+  width: 187px !important;
 }
 table.expense td.active {
     background: url(../images/active-tile.png) repeat-x center 0;
