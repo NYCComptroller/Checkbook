@@ -72,7 +72,7 @@
            "funding_class":{"valueType":"value", "dataType":"text", "maxLength":4},
            "revenue_category":{"valueType":"value", "dataType":"text", "maxLength":2},
            "revenue_source":{"valueType":"value", "dataType":"text", "maxLength":100},
-           "catastrophic_event":{"valueType":"value","dataType":"text","maxLength":"20"},
+           "catastrophic_event":{"valueType":"value","dataType":"text","maxLength":"2"},
             //"revenue_source_name":{"valueType":"value", "dataType":"text", "maxLength":100},
             "recognized":{"valueType":"range", "dataType":"amount", "maxLength":18},
            "adopted":{"valueType":"range", "dataType":"amount", "maxLength":18},
