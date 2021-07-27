@@ -115,6 +115,12 @@
       "award_method_code"
     ]
   },
+  "catastrophic_event_code_list": {
+    "sql": "SELECT DISTINCT event_id, event_name from ref_event WHERE event_id IS NOT NULL and event_name IS NOT NULL ORDER BY event_id",
+    "force_quote": [
+      "event_id"
+    ]
+  },
   "nycha_vendor_code_list": {
     "database": "checkbook_nycha",
     "sql": "SELECT DISTINCT t1.vendor_customer_code, t1.vendor_name FROM vendor t1 WHERE EXISTS ( select 1 from all_disbursement_transactions t2 where t2.vendor_id = t1.vendor_id ) ORDER BY t1.vendor_customer_code",
