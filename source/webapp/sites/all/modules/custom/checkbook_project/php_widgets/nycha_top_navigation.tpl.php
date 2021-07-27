@@ -114,4 +114,4 @@ $feature_db_css = "expense-container";
             </td>
         </tr>
     </table>
-</div>Osettings
+</div>
