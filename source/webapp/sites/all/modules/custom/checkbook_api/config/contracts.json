@@ -238,7 +238,7 @@
             "award_method":{"valueType":"value","dataType":"text","maxLength":"3"},
             "expense_category":{"valueType":"value","dataType":"text","maxLength":"4"},
             "contract_id":{"valueType":"value","dataType":"text","maxLength":"32"},
-            "catastrophic_event":{"valueType":"value","dataType":"text","maxLength":"20"},
+            "catastrophic_event":{"valueType":"value","dataType":"text","maxLength":"2"},
             "contract_type":{"valueType":"value","dataType":"text","maxLength":"2"},
             "start_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
             "end_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
@@ -781,7 +781,7 @@
            "catastrophic_event":{
              "valueType":"value",
              "dataType":"text",
-             "maxLength":"20"
+             "maxLength":"2"
            },
             "purpose":{
                 "valueType":"value",
@@ -975,7 +975,7 @@
            "catastrophic_event":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"20"
+                "maxLength":"2"
            },
             "purpose":{
                 "valueType":"value",
@@ -1258,7 +1258,7 @@
             "catastrophic_event":{
                "valueType":"value",
                "dataType":"text",
-               "maxLength":"20"
+               "maxLength":"2"
             },
             "purpose":{
                 "valueType":"value",
@@ -1587,7 +1587,7 @@
            "catastrophic_event": {
              "valueType":"value",
              "dataType":"text",
-             "maxLength":"20"
+             "maxLength":"2"
            },
             "pin":{
                 "valueType":"value",
@@ -1787,7 +1787,7 @@
            "catastrophic_event":{
              "valueType":"value",
              "dataType":"text",
-             "maxLength":"20"
+             "maxLength":"2"
            },
             "purpose":{
                 "valueType":"value",
