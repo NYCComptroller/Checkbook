@@ -1600,7 +1600,8 @@
             dept = dept.toString().replace(/\//g, "__");
           }
           let exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
-          let expCat = (div.ele('exp_category').val()) ? (div.ele('exp_category').val()) : '';
+          let expCat = (div.ele('exp_category').val() && div.ele('exp_category').text() !== "Select Expense Category") 
+                        ? (div.ele('exp_category').val()) : '';
 
           $.ajax({
             url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
