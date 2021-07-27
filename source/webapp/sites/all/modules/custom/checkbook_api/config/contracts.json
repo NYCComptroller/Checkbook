@@ -578,7 +578,7 @@
            "catastrophic_event":{
              "valueType":"value",
              "dataType":"text",
-             "maxLength":"20"
+             "maxLength":"2"
            },
             "purpose":{
                 "valueType":"value",
