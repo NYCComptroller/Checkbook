@@ -1378,7 +1378,7 @@ class SpendingUtil{
     	}
     }
 
-  /** Prepares Payroll bottom navigation filter
+  /** Prepares Spending bottom navigation filter
    * @param $page
    * @param $category
    * @return string
@@ -1391,7 +1391,7 @@ class SpendingUtil{
       $url .= "/category/" . $category;
     }
     $url .= _checkbook_append_url_params();
-    $allowedFilters = array("year", "calyear", "agency", "yeartype", "vendor", "industry");
+    $allowedFilters = array("year", "calyear", "agency", "yeartype", "vendor", "industry","mwbe","dashboard");
     for ($i = 1; $i < count($pathParams); $i++) {
       if (in_array($pathParams[$i], $allowedFilters)) {
         $url .= '/' . $pathParams[$i] . '/' . $pathParams[($i + 1)];

@@ -150,7 +150,7 @@
           "catastrophic_event":{
             "valueType":"value",
             "dataType":"text",
-            "maxLength":"20"
+            "maxLength":"2"
           },
             "post_adjustment":{
                 "valueType":"range",

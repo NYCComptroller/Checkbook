@@ -183,7 +183,7 @@ function generateNYCHASpendingSearchUrl($form){
   $redirectUrl .= ($department != "Select Department" && !empty($department)) ?  _checkbook_advanced_search_generate_redirect_url($department, 'deptnm'): "";
   //Expense Category
   $expenseCategory = trim($form[$filterDimension][$filterDimension . '_expense_category']['#value']);
-  $redirectUrl .= ($expenseCategory != "Select Expense Category" && !empty($expenseCategory)) ?  _checkbook_advanced_search_generate_redirect_url($expenseCategory, 'expcategorycode'): "";
+  $redirectUrl .= ($expenseCategory != "Select Expense Category" && ($expenseCategory === "0" || !empty($expenseCategory))) ?  _checkbook_advanced_search_generate_redirect_url($expenseCategory, 'expcategorycode'): "";
   //Spending Category
   $spendingCategory = trim($form[$filterDimension][$filterDimension . '_expense_type']['#value']);
   $redirectUrl .= !empty($spendingCategory) ? _checkbook_advanced_search_generate_redirect_url($spendingCategory, 'category') : "";
