@@ -812,7 +812,6 @@ namespace { //global
          * @return mixed
          */
         public static function adjustSubContractTransactionsCommonParams(&$node, &$parameters) {
-
             $data_controller_instance = data_controller_get_operator_factory_instance();
 
             //Handle year parameter mapping
@@ -860,6 +859,8 @@ namespace { //global
                 unset($parameters['prime_minority_type_id']);
             }
 
+            //Adjust Certification parameters
+            $parameters = self::adjustPrimeSubCertificationFacetParameters($node, $parameters);
 
             return $parameters;
         }
@@ -982,64 +983,7 @@ namespace { //global
             unset($parameters['minority_type_id']);
           }
 
-          if ($node->widgetConfig->filterName != "Prime Certification") {
-            if (isset($parameters['prime_cert'])) {
-              foreach ($parameters['prime_cert'] as $key => $value) {
-                if ($value == 'pemerg') {
-                  $parameters['is_prime_emerging'] = 'Yes';
-                }
-                if ($value == 'pwomen') {
-                  $parameters['is_prime_women_owned'] = 'Yes';
-                }
-              }
-              $node->widgetConfig->logicalOrColumns[] = array("is_prime_emerging", "is_prime_women_owned");
-            }
-          }
 
-          if ($node->widgetConfig->filterName != "Sub Certification") {
-            if (isset($parameters['sub_cert'])) {
-              foreach ($parameters['sub_cert'] as $key => $value) {
-                if ($value == 'semerg') {
-                  $parameters['is_sub_emerging'] = 'Yes';
-                }
-                if ($value == 'swomen') {
-                  $parameters['is_sub_women_owned'] = 'Yes';
-                }
-              }
-              $node->widgetConfig->logicalOrColumns[] = array("is_sub_emerging", "is_sub_women_owned");
-            }
-          }
-
-          if ($node->widgetConfig->filterName != "Certification") {
-            $women = FALSE;
-            $emerge = FALSE;
-            if (isset($parameters['prime_sub_cert'])) {
-              foreach ($parameters['prime_sub_cert'] as $key => $value) {
-                if ($value == 'psemerg') {
-                  $parameters['is_sub_emerging'] = 'Yes';
-                  $parameters['prime_emerging_adv_search'] = 'Yes';
-                  $emerge = TRUE;
-                }
-                if ($value == 'pswomen') {
-                  $parameters['is_sub_women_owned'] = 'Yes';
-                  $parameters['prime_women_adv_search'] = 'Yes';
-                  $women = TRUE;
-                }
-              }
-
-              if($women && $emerge){
-                $node->widgetConfig->logicalOrColumns[] = array("is_sub_emerging", "prime_emerging_adv_search", "is_sub_women_owned", "prime_women_adv_search");
-              }else if($women){
-                $node->widgetConfig->logicalOrColumns[] = array("is_sub_women_owned", "prime_women_adv_search");
-              }else if($emerge){
-                $node->widgetConfig->logicalOrColumns[] = array("is_sub_emerging", "prime_emerging_adv_search");
-              }
-            }
-          }
-
-          unset($parameters['prime_cert']);
-          unset($parameters['sub_cert']);
-          unset($parameters['prime_sub_cert']);
 
 
           //if ONLY Prime or ONLY Sub amount selected, need to filter only that type
@@ -1052,12 +996,82 @@ namespace { //global
                 $parameters['sub_amount_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
             }
 
+            //Adjust Certification parameters
+            $parameters = self::adjustPrimeSubCertificationFacetParameters($node, $parameters);
+
             unset($parameters['year']);
             unset($parameters['status_flag']);
 
             return $parameters;
         }
 
+      /**
+       * @param $node
+       * @param $parameters
+       * @return mixed
+       */
+      public static function adjustPrimeSubCertificationFacetParameters($node, $parameters){
+        if ($node->widgetConfig->filterName != "Prime Certification") {
+          if (isset($parameters['prime_cert'])) {
+            foreach ($parameters['prime_cert'] as $key => $value) {
+              if ($value == 'pemerg') {
+                $parameters['is_prime_emerging'] = 'Yes';
+              }
+              if ($value == 'pwomen') {
+                $parameters['is_prime_women_owned'] = 'Yes';
+              }
+            }
+            $node->widgetConfig->logicalOrColumns[] = array("is_prime_emerging", "is_prime_women_owned");
+          }
+        }
+
+        if ($node->widgetConfig->filterName != "Sub Certification") {
+          if (isset($parameters['sub_cert'])) {
+            foreach ($parameters['sub_cert'] as $key => $value) {
+              if ($value == 'semerg') {
+                $parameters['is_sub_emerging'] = 'Yes';
+              }
+              if ($value == 'swomen') {
+                $parameters['is_sub_women_owned'] = 'Yes';
+              }
+            }
+            $node->widgetConfig->logicalOrColumns[] = array("is_sub_emerging", "is_sub_women_owned");
+          }
+        }
+
+        if ($node->widgetConfig->filterName != "Certification") {
+          $women = FALSE;
+          $emerge = FALSE;
+          if (isset($parameters['prime_sub_cert'])) {
+            foreach ($parameters['prime_sub_cert'] as $key => $value) {
+              if ($value == 'psemerg') {
+                $parameters['is_sub_emerging'] = 'Yes';
+                $parameters['prime_emerging_adv_search'] = 'Yes';
+                $emerge = TRUE;
+              }
+              if ($value == 'pswomen') {
+                $parameters['is_sub_women_owned'] = 'Yes';
+                $parameters['prime_women_adv_search'] = 'Yes';
+                $women = TRUE;
+              }
+            }
+
+            if($women && $emerge){
+              $node->widgetConfig->logicalOrColumns[] = array("is_sub_emerging", "prime_emerging_adv_search", "is_sub_women_owned", "prime_women_adv_search");
+            }else if($women){
+              $node->widgetConfig->logicalOrColumns[] = array("is_sub_women_owned", "prime_women_adv_search");
+            }else if($emerge){
+              $node->widgetConfig->logicalOrColumns[] = array("is_sub_emerging", "prime_emerging_adv_search");
+            }
+          }
+        }
+
+        unset($parameters['prime_cert']);
+        unset($parameters['sub_cert']);
+        unset($parameters['prime_sub_cert']);
+
+        return $parameters;
+      }
       /**
        * @param $node
        * @param $parameters

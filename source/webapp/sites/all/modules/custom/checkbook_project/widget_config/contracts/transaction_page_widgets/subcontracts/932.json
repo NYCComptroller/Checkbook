@@ -1,8 +1,9 @@
 {
     "widgetType":"data_tables",
     "widgetSubType":"dataTableList",
-    "cleanURLParameters":["year","agency","vendorcode","vendortype","contnum","subvendorstatus","pmwbe","smwbe","awdmethod","cindustry","scindustry","pcindustry","csize"],
-    "allowRequestParams":["smnid","dashboard"],
+    "cleanURLParameters":["year","agency","vendorcode","vendortype","contnum","subvendorstatus","pmwbe","smwbe",
+      "awdmethod","cindustry","scindustry","pcindustry","csize","pscert", "pcert", "scert"],
+    "allowRequestParams":["smnid","dashboard", "pcert", "scert", "pscert"],
     "urlParamMap":{
         "year":"year",
         "agency":"agency_id",
@@ -17,7 +18,10 @@
         "cindustry":"industry_type_id",
         "scindustry":"industry_type_id",
         "pcindustry":"industry_type_id",
-        "csize":"award_size_id"
+        "csize":"award_size_id",
+        "pcert":"prime_cert",
+        "scert":"sub_cert",
+        "pscert":"prime_sub_cert"
     },
     "header":"
         $header = NULL;
@@ -204,6 +208,9 @@
         var oPrimeMinorityTypeId = getNamedFilterCriteria('fPrimeMinorityTypeId');
         var oSubMinorityTypeId = getNamedFilterCriteria('fSubMinorityTypeId');
         var oVendorType = getNamedFilterCriteria('fvendorType');
+        var oPrimeSubCert = getNamedFilterCriteria('fPrimeSubCert');
+        var oPrimeCert = getNamedFilterCriteria('fPrimeCert');
+        var oSubCert = getNamedFilterCriteria('fSubCert');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
 
@@ -216,6 +223,9 @@
         cUrl = adjustUrlParameter(cUrl,'pmwbe',oPrimeMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'smwbe',oSubMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
+        cUrl = adjustUrlParameter(cUrl,'pscert',oPrimeSubCert);
+        cUrl = adjustUrlParameter(cUrl,'pcert',oPrimeCert);
+        cUrl = adjustUrlParameter(cUrl,'scert',oSubCert);
 
         return cUrl;
     }"
