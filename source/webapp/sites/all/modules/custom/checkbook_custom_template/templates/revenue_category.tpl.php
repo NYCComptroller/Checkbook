@@ -1,29 +1,29 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/PHP2Json.php');
 if (module_exists('widget_highcharts')){
-    drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts/8.2.2/code/highcharts.js', array('group'=>JS_LIBRARY,'weight'=>-1));
+    drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts/9.1.2/code/highcharts.js', array('group'=>JS_LIBRARY,'weight'=>-1));
     drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts-globals.js',array('group'=>JS_LIBRARY,'weight'=>0));
 } else if (module_exists('widget_highstock')) {
-    drupal_add_js(drupal_get_path('module', 'widget_highstock') .'/highstock/8.2.2/code/highstock.js');
+    drupal_add_js(drupal_get_path('module', 'widget_highstock') .'/highstock/9.1.2/code/highstock.js');
     drupal_add_js(drupal_get_path('module', 'widget_highstock') .'/highstock-globals.js');
 }
 
