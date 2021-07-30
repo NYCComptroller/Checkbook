@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -44,16 +44,16 @@ function widget_highcharts_widget_data(&$node) {
     $datasets = $node->widgetConfig->datasets;
     $isXAxisDate = false;
     $xAxisColumn = null;
-    $chartTitle = null;  
+    $chartTitle = null;
 
     if (isset($node->widgetConfig->chartConfig->xAxis->categories->ds)) {
         foreach ($datasets as $ds) {
             if ($ds->name == $node->widgetConfig->chartConfig->xAxis->categories->ds) {
                 $xAxisColumn = $ds->column;
                 if ($ds->type == 'date') {
-                    $isXAxisDate = true;            
+                    $isXAxisDate = true;
                 }
-                break;                
+                break;
             }
         }
     } else if (isset($node->widgetConfig->chartConfig->xAxisDataPoint->ds)) {
@@ -61,33 +61,33 @@ function widget_highcharts_widget_data(&$node) {
             if ($ds->name == $node->widgetConfig->chartConfig->xAxisDataPoint->ds) {
                 $xAxisColumn = $ds->column;
                 if ($ds->type == 'date') {
-                    $isXAxisDate = true;            
+                    $isXAxisDate = true;
                 }
-                break;                
+                break;
             }
-        }      
+        }
     } else{
-    	
+
     }
     $results = array();
     if (is_array($node->data)) {
         foreach ($node->data as $row) {
             $xAxisDataPoint = $row[$xAxisColumn];
-            if ($isXAxisDate) {                                
+            if ($isXAxisDate) {
                 if (($xAxisUTC = strtotime($xAxisDataPoint) * 1000) === false) {
                     continue;
                 }
             } else {
                 $xAxisUTC = $xAxisDataPoint;
-            }   
+            }
           //  dsm($xAxisUTC);
             if(is_array($datasets))
             foreach ($datasets as $ds) {
-            	                	                	                		 
+
                 if (isset($ds->column) && $ds->column == $xAxisColumn) {
-                    if (is_null($row[$ds->column])) {  
+                    if (is_null($row[$ds->column])) {
                         continue;
-                    } 
+                    }
                 	$results[$ds->name][] = $xAxisUTC;//$row[$ds->column];
                 	continue;
                 }
@@ -99,34 +99,34 @@ function widget_highcharts_widget_data(&$node) {
                 		foreach ($ds->columns as $col) {
 						    if (isset($ds->allowNullValues)){
 						    	$allowNullValues = $ds->allowNullValues;
-						    }   
-	                		if (($col->name == 'x' || $col->name =='y' || $col->name =='title') && is_null($row[$col->value]) && !$allowNullValues) {	                			
-	                			unset($dataPoint);                      
+						    }
+	                		if (($col->name == 'x' || $col->name =='y' || $col->name =='title') && is_null($row[$col->value]) && !$allowNullValues) {
+	                			unset($dataPoint);
 		                    	break;
-		                    }  
+		                    }
                 			$dataPoint[$col->name] = $row[$col->value];
-       
-                			foreach($col as $colKey=>$value){                			  
+
+                			foreach($col as $colKey=>$value){
                 			  if($colKey !='x' && $colKey != 'y' && $colKey != 'name' && $colKey != 'value'){
                 			    $dataPoint[$colKey] = $row[$col->$colKey];
-                			  }                			  
+                			  }
                 			}
                 		}
-                		
+
                 		if (sizeof($dataPoint)) {
                 			$results[$ds->name][] = $dataPoint;
                 			unset($dataPoint);
-                		}                		
-                	} else {               		
+                		}
+                	} else {
 	                    //if allowNullValue is false or not set, then dont set the values.
-	                    if (is_null($row[$ds->column]) && !$allowNullValues) {                      
+	                    if (is_null($row[$ds->column]) && !$allowNullValues) {
 	                    	continue;
 	                    }
-	                    //if allowNullValue flag is set, then set the Null values without casting. 
+	                    //if allowNullValue flag is set, then set the Null values without casting.
 	                    if (is_null($row[$ds->column]) && $allowNullValues){
 	                    	$results[$ds->name][] = array($xAxisUTC,$row[$ds->column]);
 	                    	continue;
-	                    }                
+	                    }
 	                    if ($ds->type == 'float') {
 	                            $results[$ds->name][] = array($xAxisUTC,(float)$row[$ds->column]);
 	                    } else if ($ds->type == 'int') {
@@ -136,13 +136,13 @@ function widget_highcharts_widget_data(&$node) {
 	                    }
                 	}
                 } else if (!isset($results[$ds->name])){
-                    if ($ds->type == 'float') {                    
+                    if ($ds->type == 'float') {
                         $results[$ds->name] = (float)$row[$ds->column];
                     } else if ($ds->type == 'int') {
                         $results[$ds->name] = (int)$row[$ds->column];
                     } else {
                         $results[$ds->name] = $row[$ds->column];
-                    }                      
+                    }
                 }
             }
         }
@@ -150,8 +150,8 @@ function widget_highcharts_widget_data(&$node) {
 
 
     if (isset($node->widgetConfig->chartConfig->title->text->ds)) {
-    	$node->widgetConfig->chartConfig->title->text = $results[$node->widgetConfig->chartConfig->title->text->ds]; 
-    } 
+    	$node->widgetConfig->chartConfig->title->text = $results[$node->widgetConfig->chartConfig->title->text->ds];
+    }
 
     if (!isset($node->widgetConfig->chartConfig->chart)) {
       $node->widgetConfig->chartConfig->chart = new stdClass();
@@ -160,10 +160,10 @@ function widget_highcharts_widget_data(&$node) {
     //removed zoomtype
     if (!isset($node->widgetConfig->chartConfig->chart->zoomType)) {
         $node->widgetConfig->chartConfig->chart->zoomType = '';
-    }    
-    
+    }
+
     $categories = $results[$node->widgetConfig->chartConfig->xAxis->categories->ds];
-    //$node->categories = $categories; 
+    //$node->categories = $categories;
 
     if (isset($node->widgetConfig->chartConfig->xAxis->categories->ds)) {
     if (!$isXAxisDate && isset($node->widgetConfig->chartConfig->xAxis->categories->ds)) {
@@ -178,13 +178,13 @@ function widget_highcharts_widget_data(&$node) {
         $tickPositions = $results[$node->widgetConfig->chartConfig->xAxis->tickPositions->ds];
         $node->widgetConfig->chartConfig->xAxis->tickPositions = $tickPositions;
 
-    }    
-    
+    }
+
     if (isset($node->widgetConfig->chartConfig->series)) {
     	if (is_array($node->widgetConfig->chartConfig->series)) {
             foreach ($node->widgetConfig->chartConfig->series as $series) {
                 if (isset($series->data->ds)) {
-                   $series->data = $results[$series->data->ds] == null ? array() : $results[$series->data->ds];  
+                   $series->data = $results[$series->data->ds] == null ? array() : $results[$series->data->ds];
                 } elseif (isset($series->ds)){
 					$node->widgetConfig->chartConfig->series= $results[$series->ds];
                 }
@@ -194,14 +194,14 @@ function widget_highcharts_widget_data(&$node) {
         	if (!$node->widgetConfig->chartConfig->series->additionalData) {
             	$node->widgetConfig->chartConfig->series->data = $results[$node->widgetConfig->chartConfig->series->data->ds] == null ? array() : $results[$node->widgetConfig->chartConfig->series->data->ds];
         	} else {
-        		
+
         	}
         }
     }
     if (isset($node->widgetConfig->chartConfig->yAxis->title->text->ds)) {
         $node->widgetConfig->chartConfig->yAxis->title->text = $results[$node->widgetConfig->chartConfig->yAxis->title->text->ds];
     }
-//    dsm($results);	
+//    dsm($results);
     $node->widgetConfig->chartConfig->chart->renderTo = 'node-chart-' . widget_unique_identifier($node);
     if (!isset($node->widgetConfig->chartConfig->credits)) {
       $node->widgetConfig->chartConfig->credits = new stdClass();
@@ -217,10 +217,10 @@ function replaceDatasourceWithValues(&$chartConfig, $result) {
             replaceDatasourceWithValues($value, $result);
         } else {
             if ($key == 'ds') {
-                $chartConfig = $result[$value];            
+                $chartConfig = $result[$value];
             }
         }
-    }    
+    }
 }
 
 function widget_highcharts_add_datatable_js($node){
@@ -244,7 +244,7 @@ function widget_highcharts_widget_view(&$node) {
 
 	switch ($node->widgetConfig->widgetSubType){
 		case "highstock":
-			drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highstock/8.2.2/code/highstock.src.js',array('group'=>JS_LIBRARY,'weight'=>-1));
+			drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highstock/9.1.2/code/highstock.src.js',array('group'=>JS_LIBRARY,'weight'=>-1));
 			drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts-globals.js',array('group'=>JS_LIBRARY,'weight'=>0));
 			return theme('widget_highstocks_default_theme', array('node' => $node));
 		break;
@@ -264,7 +264,7 @@ function widget_highcharts_widget_view(&$node) {
 
 function _widget_highcharts_include_plugin(){
 //	drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts/4.0.4/js/highcharts.src.js',array('group'=>JS_LIBRARY,'weight'=>-1));
-	drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts/8.2.2/code/highcharts.src.js',array('group'=>JS_LIBRARY,'weight'=>-1));
+	drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts/9.1.2/code/highcharts.src.js',array('group'=>JS_LIBRARY,'weight'=>-1));
 }
 
 
@@ -299,7 +299,7 @@ function widget_highcharts_theme($existing, $type, $theme, $path) {
 	'widget_highstocks_default_theme' => array(
 	  'template' => 'highstocks',
       'arguments' => array('node' => NULL),
-	)	
+	)
 	);
 }
 
@@ -308,5 +308,5 @@ function widget_highcharts_get_color($key){
 
     $colors = array('#2BB673', '#EF4C77', '#FFDE15', '#78D1F1', '#FEC10E');
     return $colors[$key % 5];
-	
+
 }
