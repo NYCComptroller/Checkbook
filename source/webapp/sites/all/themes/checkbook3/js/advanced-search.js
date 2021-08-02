@@ -955,6 +955,7 @@
             if (data_source === 'checkbook') {
               div.ele('registration_date_from').val('').attr("disabled", "disabled");
               div.ele('registration_date_to').val('').attr("disabled", "disabled");
+              div.ele('catastrophic_events').val('').attr("disabled", "disabled");
             }
             div.ele('year').attr("disabled", "disabled");
             div.ele('year').val("");
@@ -964,6 +965,7 @@
             if (data_source === 'checkbook') {
               div.ele('registration_date_from').removeAttr("disabled");
               div.ele('registration_date_to').removeAttr("disabled");
+              div.ele('catastrophic_events').removeAttr("disabled");
             }
             div.ele('year').removeAttr("disabled");
             div.ele('received_date_from').attr("disabled", "disabled");
@@ -1026,8 +1028,9 @@
         function updateEventsField(div) {
           let yval = (div_checkbook_contracts.ele('year').find("option:selected").text()).split(' ')[1];
           let contract_category = div.ele('category').val();
+          let contract_status = div.ele('status').val();
 
-          if(contract_category == 'revenue' || yval < 2020 ){
+          if(contract_category == 'revenue' || yval < 2020 ||contract_status === 'P' ){
             div.ele('catastrophic_events').attr("disabled", "disabled");
             div.ele('catastrophic_events').val("");
             let catas_event = div_checkbook_contracts.ele('catastrophic_events').val();
@@ -1600,7 +1603,7 @@
             dept = dept.toString().replace(/\//g, "__");
           }
           let exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
-          let expCat = (div.ele('exp_category').val() && div.ele('exp_category').text() !== "Select Expense Category") 
+          let expCat = (div.ele('exp_category').val() && div.ele('exp_category').text() !== "Select Expense Category")
                         ? (div.ele('exp_category').val()) : '';
           $.ajax({
             url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
