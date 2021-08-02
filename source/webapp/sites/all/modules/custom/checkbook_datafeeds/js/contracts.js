@@ -494,9 +494,14 @@
         $.fn.resetSelectedColumns();
         $.fn.hideShow(csval, catval, datasource);
         $.fn.showHidePrimeAndSubIcon();
-        if (csval === 'pending') {
+        if (csval == 'pending') {
           $('#edit-year option:selected').removeAttr('selected');
           $('#edit-year').attr('disabled','disabled');
+          $("#edit-catastrophic_event").attr('disabled', 'disabled');
+          $("#edit-catastrophic_event").val('');
+        }
+        else if( catval != 'revenue') {
+          $("#edit-catastrophic_event").removeAttr('disabled');
         }
       });
 
@@ -512,6 +517,9 @@
           $("#edit-catastrophic_event").val('');
           let cevent = $('#edit-catastrophic_event', context).val();
           updateYearValue(cevent);
+        }
+        else if (csval == 'pending'){
+          $("#edit-catastrophic_event").attr('disabled', 'disabled');
         }
         $.fn.resetSelectedColumns();
         $.fn.hideShow(csval, catval, datasource);
