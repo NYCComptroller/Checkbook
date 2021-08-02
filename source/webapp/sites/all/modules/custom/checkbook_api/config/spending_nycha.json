@@ -122,7 +122,7 @@
       "amount_spent":{"valueType":"range", "dataType":"amount", "maxLength":"22"},
       "purchase_order_type":{"valueType": "value", "dataType": "text", "maxLength": "9"},
       "contract_id": {"valueType": "value", "dataType": "text", "maxLength": "32"},
-      "document_id": {"valueType": "value", "dataType": "text", "maxLength": "32"},
+      "document_id": {"valueType": "value", "dataType": "text", "maxLength": "36"},
       "fiscal_year": {"valueType": "value", "dataType": "year", "maxLength": "4"},
       "issue_date":{"valueType":"range", "dataType":"date", "format":"YYYY-MM-DD"}
     }
