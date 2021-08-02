@@ -1399,7 +1399,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $user_criteria['Category'] = $values['category'];
         $formatted_search_criteria['Category'] = $values['category'];
       }
-      if ($values['category'] != 'revenue') {
+      if ($values['category'] != 'revenue' && $values['df_contract_status'] != 'pending') {
         if ($values['catastrophic_event'] && ($values['year'] == '0' ||  (substr($values['year'],-4) >= 2020 ))) {
           $form['filter']['catastrophic_event'] = array('#markup' => '<div><strong>Catastrophic Event:</strong> ' . $values['catastrophic_event'] . '</div>');
           $user_criteria['Catastrophic Event'] = $values['catastrophic_event'];
