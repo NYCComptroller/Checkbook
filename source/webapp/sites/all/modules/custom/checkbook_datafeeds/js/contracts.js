@@ -502,6 +502,7 @@
         }
         else if( catval != 'revenue') {
           $("#edit-catastrophic_event").removeAttr('disabled');
+          $("#edit-catastrophic_event").val('');
         }
       });
 
@@ -520,6 +521,7 @@
         }
         else if (csval == 'pending'){
           $("#edit-catastrophic_event").attr('disabled', 'disabled');
+          $("#edit-catastrophic_event").val('');
         }
         $.fn.resetSelectedColumns();
         $.fn.hideShow(csval, catval, datasource);
