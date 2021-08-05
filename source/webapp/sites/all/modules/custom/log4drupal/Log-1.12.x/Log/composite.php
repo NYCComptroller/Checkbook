@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -162,12 +162,12 @@ class Log_composite extends Log
         }
 
         /*
-         * Abort early if the priority is above the composite handler's 
+         * Abort early if the priority is above the composite handler's
          * maximum logging level.
          *
          * XXX: Consider whether or not introducing this change would break
-         * backwards compatibility.  Some users may be expecting composite 
-         * handlers to pass on all events to their children regardless of 
+         * backwards compatibility.  Some users may be expecting composite
+         * handlers to pass on all events to their children regardless of
          * their own priority.
          */
         #if (!$this->_isMasked($priority)) {
@@ -175,9 +175,9 @@ class Log_composite extends Log
         #}
 
         /*
-         * Iterate over all of our children.  If a unopened child will respond 
+         * Iterate over all of our children.  If a unopened child will respond
          * to this log event, we attempt to open it immediately.  The composite
-         * handler's opened state will be enabled as soon as the first child 
+         * handler's opened state will be enabled as soon as the first child
          * handler is successfully opened.
          *
          * We track an overall success state that indicates whether or not all
@@ -233,12 +233,12 @@ class Log_composite extends Log
     /**
      * Sets this identification string for all of this composite's children.
      *
-     * @param string    $ident      The new identification string.
+     * @param string $ident      The new identification string.
      *
      * @access public
      * @since  Log 1.6.7
      */
-    function setIdent($ident)
+    function setIdent(string $ident)
     {
         /* Call our base class's setIdent() method. */
         parent::setIdent($ident);
