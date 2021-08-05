@@ -8,35 +8,50 @@
 
 class ContractsUrlService
 {
-
-    static function contractIdUrl($original_agreement_id, $document_code)
+  /**
+   * @param $original_agreement_id
+   * @param $document_code
+   * @return string
+   */
+    public static function contractIdUrl($original_agreement_id, $document_code): string
     {
-        $url = "/panel_html/contract_transactions/agid/" . $original_agreement_id
+        return "/panel_html/contract_transactions/agid/" . $original_agreement_id
             . RequestUtilities::buildUrlFromParam([
                 'status',
                 'bottom_slider',
             ])
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . "/doctype/" . $document_code;
-        return $url;
     }
 
-    static function masterContractIdUrl($original_agreement_id, $document_code)
+  /**
+   * @param $original_agreement_id
+   * @param $document_code
+   * @return string
+   */
+    public static function masterContractIdUrl($original_agreement_id, $document_code): string
     {
-        $url = "/panel_html/contract_transactions/contract_details/magid/" . $original_agreement_id
+        return "/panel_html/contract_transactions/contract_details/magid/" . $original_agreement_id
             . RequestUtilities::buildUrlFromParam([
                 'status',
                 'bottom_slider',
             ])
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . "/doctype/" . $document_code;
-        return $url;
     }
 
-    static function pendingMasterContractIdUrl($original_agreement_id, $doctype, $fms_contract_number, $pending_contract_number = null, $version = null, $linktype = null)
+  /**
+   * @param $original_agreement_id
+   * @param $doctype
+   * @param $fms_contract_number
+   * @param null $pending_contract_number
+   * @param null $version
+   * @param null $linktype
+   * @return string
+   */
+    public static function pendingMasterContractIdUrl($original_agreement_id, $doctype, $fms_contract_number, $pending_contract_number = null, $version = null, $linktype = null): string
     {
         $lower_doctype = strtolower($doctype);
-
         if ($original_agreement_id) {
             if (($lower_doctype == 'ma1') || ($lower_doctype == 'mma1') || ($lower_doctype == 'rct1')) {
                 $url = '/panel_html/contract_transactions/magid/' . $original_agreement_id
@@ -58,7 +73,16 @@ class ContractsUrlService
         return $url;
     }
 
-    static function pendingContractIdLink($original_agreement_id, $doctype, $fms_contract_number, $pending_contract_number = null, $version = null, $linktype = null)
+  /**
+   * @param $original_agreement_id
+   * @param $doctype
+   * @param $fms_contract_number
+   * @param null $pending_contract_number
+   * @param null $version
+   * @param null $linktype
+   * @return string
+   */
+    public static function pendingContractIdLink($original_agreement_id, $doctype, $fms_contract_number, $pending_contract_number = null, $version = null, $linktype = null): string
     {
         $lower_doctype = strtolower($doctype);
         if ($original_agreement_id) {
@@ -84,10 +108,9 @@ class ContractsUrlService
      * @param null $legacy_node_id
      * @return string
      */
-    static function spentToDateUrl($spend_type_parameter, $legacy_node_id = null)
+    public static function spentToDateUrl($spend_type_parameter, $legacy_node_id = null): string
     {
-
-        $url = "/contract/spending/transactions"
+        return "/contract/spending/transactions"
             . $spend_type_parameter
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . RequestUtilities::buildUrlFromParam([
@@ -104,13 +127,11 @@ class ContractsUrlService
             . "/doctype/CT1~CTA1~MA1"
             . "/contcat/" . ContractCategory::getCurrent()
             . (isset($legacy_node_id) ? "/smnid/" . $legacy_node_id . "/newwindow" : "/newwindow");
-        return $url;
     }
 
-    static function masterAgreementSpentToDateUrl($spend_type_parameter, $legacy_node_id = null)
+    public static function masterAgreementSpentToDateUrl($spend_type_parameter, $legacy_node_id = null)
     {
-
-        $url = "/contract/spending/transactions"
+        return "/contract/spending/transactions"
             . $spend_type_parameter
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . RequestUtilities::buildUrlFromParam('status|contstatus')
@@ -125,7 +146,6 @@ class ContractsUrlService
             . RequestUtilities::buildUrlFromParam('year|syear')
             . "/contcat/" . ContractCategory::getCurrent()
             . (isset($legacy_node_id) ? "/smnid/" . $legacy_node_id . "/newwindow" : "/newwindow");
-        return $url;
     }
 
     /**
@@ -133,14 +153,11 @@ class ContractsUrlService
      * @param $minority_type_id
      * @return NULL or string
      */
-    static function primeMinorityTypeUrl($minority_type_id)
+    public static function primeMinorityTypeUrl($minority_type_id): ?string
     {
-
         $showLink = Dashboard::isPrimeDashboard() && MinorityTypeService::isMWBECertified($minority_type_id);
         $dashboard = DashboardParameter::MWBE;
-        $url = $showLink ? self::minorityTypeUrl($minority_type_id, $dashboard) : null;
-
-        return $url;
+        return $showLink ? self::minorityTypeUrl($minority_type_id, $dashboard) : null;
     }
 
     /**
@@ -155,15 +172,12 @@ class ContractsUrlService
      * @param $minority_type_id
      * @return string
      */
-    public static function subMinorityTypeUrl($minority_type_id)
+    public static function subMinorityTypeUrl($minority_type_id): ?string
     {
-
         $showLink = Dashboard::isSubDashboard() && MinorityTypeService::isMWBECertified($minority_type_id);
         $dashboard = DashboardParameter::getCurrent();
         $dashboard = $dashboard == DashboardParameter::SUB_VENDORS ? DashboardParameter::SUB_VENDORS_MWBE : $dashboard;
-        $url = $showLink ? self::minorityTypeUrl($minority_type_id, $dashboard) : null;
-
-        return $url;
+        return $showLink ? self::minorityTypeUrl($minority_type_id, $dashboard) : null;
     }
 
     /**
@@ -172,7 +186,7 @@ class ContractsUrlService
      * @param $dashboard
      * @return NULL or string
      */
-    static function minorityTypeUrl($minority_type_id, $dashboard)
+    public static function minorityTypeUrl($minority_type_id, $dashboard): ?string
     {
         $url = NULL;
         if (MinorityTypeService::isMWBECertified($minority_type_id)) {
@@ -196,11 +210,15 @@ class ContractsUrlService
         return $url;
     }
 
-
-    static function agencyUrl($agency_id, $original_agreement_id = null)
+  /**
+   * @param $agency_id
+   * @param null $original_agreement_id
+   * @return string
+   */
+    public static function agencyUrl($agency_id, $original_agreement_id = null): string
     {
         $currentUrl = RequestUtilities::_getCurrentPage();
-        $url = $currentUrl
+        return $currentUrl
             . (isset($original_agreement_id) ? ("/magid/" . $original_agreement_id) : '')
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . RequestUtilities::buildUrlFromParam([
@@ -214,13 +232,16 @@ class ContractsUrlService
             . _checkbook_project_get_year_url_param_string()
             . "/agency/" . $agency_id
             . "?expandBottomCont=true";
-        return $url;
     }
 
-    static function awardmethodUrl($award_method_id)
+  /**
+   * @param $award_method_id
+   * @return string
+   */
+    public static function awardmethodUrl($award_method_id): string
     {
         $currentUrl = RequestUtilities::_getCurrentPage();
-        $url = $currentUrl
+        return $currentUrl
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . RequestUtilities::buildUrlFromParam([
                 'vendor',
@@ -232,13 +253,16 @@ class ContractsUrlService
             . _checkbook_project_get_year_url_param_string()
             . "/awdmethod/" . $award_method_id
             . "?expandBottomCont=true";
-        return $url;
     }
 
-    static function industryUrl($industry_type_id)
-    {
+  /**
+   * @param $industry_type_id
+   * @return string
+   */
+   public static function industryUrl($industry_type_id): string
+   {
         $currentUrl = RequestUtilities::_getCurrentPage();
-        $url = $currentUrl
+        return $currentUrl
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . RequestUtilities::buildUrlFromParam([
                 'vendor',
@@ -251,13 +275,16 @@ class ContractsUrlService
             . _checkbook_project_get_year_url_param_string()
             . "/cindustry/" . $industry_type_id
             . "?expandBottomCont=true";
-        return $url;
     }
 
-    static function contractSizeUrl($award_size_id)
+  /**
+   * @param $award_size_id
+   * @return string
+   */
+    public static function contractSizeUrl($award_size_id): string
     {
         $currentUrl = RequestUtilities::_getCurrentPage();
-        $url = $currentUrl
+        return $currentUrl
             . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
             . RequestUtilities::buildUrlFromParam([
                 'vendor',
@@ -270,7 +297,6 @@ class ContractsUrlService
             . _checkbook_project_get_year_url_param_string()
             . "/csize/" . $award_size_id
             . "?expandBottomCont=true";
-        return $url;
     }
 
     /**
@@ -278,7 +304,7 @@ class ContractsUrlService
      * @param null $legacy_node_id
      * @return string
      */
-    static function getFooterUrl($parameters, $legacy_node_id = null)
+    public static function getFooterUrl($parameters, $legacy_node_id = null): string
     {
         list($subvendor, $vendor, $mwbe, $industry) = RequestUtilities::get(['subvendor', 'vendor', 'mwbe', 'cindustry']);
         $category = ContractCategory::getCurrent();
@@ -300,7 +326,6 @@ class ContractsUrlService
             $mwbe_param = isset($mwbe) ? '/pmwbe/' . $mwbe : "";
         }
 
-
         $category_param = '/contcat/' . (isset($category) ? $category : ContractCategory::EXPENSE);
         $smnid_param = isset($legacy_node_id) ? '/smnid/' . $legacy_node_id : '';
         $contract_status = RequestUtilities::buildUrlFromParam('status|contstatus');
@@ -310,7 +335,7 @@ class ContractsUrlService
             ? '/panel_html/sub_contracts_transactions/subcontract/transactions'
             : '/panel_html/contract_details/contract/transactions';
 
-        $url = $path . $category_param
+        return $path . $category_param
             . $contract_status
             . _checkbook_append_url_params()
             . RequestUtilities::buildUrlFromParam([
@@ -326,14 +351,15 @@ class ContractsUrlService
             . _checkbook_project_get_year_url_param_string()
             . self::getDocumentCodeUrlString($parameters)
             . $smnid_param;
-        return $url;
     }
 
-    static function getDocumentCodeUrlString($parameters)
+  /**
+   * @param $parameters
+   * @return string
+   */
+    public static function getDocumentCodeUrlString($parameters): string
     {
-
         $doc_type = $parameters['doctype'];
-
         if (isset($doc_type)) {
             $doc_type = explode(",", $doc_type);
             $doc_type = implode("~", str_replace("'", "", $doc_type));
@@ -342,7 +368,6 @@ class ContractsUrlService
             //contract category or doc type is derived from the page path
             $status = ContractStatus::getCurrent();
             $category = ContractCategory::getCurrent();
-
             switch ($status) {
                 case ContractStatus::PENDING:
                     switch ($category) {
@@ -350,16 +375,16 @@ class ContractsUrlService
                             $doc_type = "RCT1";
                             break;
                         default:
-                            if ($parameters['contract_type'] == 'master_agreement')
-                                $doc_type = "MMA1~MA1~MAR";
-                            else if ($parameters['contract_type'] == 'child_contract')
-                                $doc_type = "CT1~CTA1~CTR";
-                            else
-                                $doc_type = "MMA1~MA1~MAR~CT1~CTA1~CTR";
+                            if ($parameters['contract_type'] == 'master_agreement') {
+                              $doc_type = "MMA1~MA1~MAR";
+                            }else if ($parameters['contract_type'] == 'child_contract') {
+                              $doc_type = "CT1~CTA1~CTR";
+                            }else {
+                              $doc_type = "MMA1~MA1~MAR~CT1~CTA1~CTR";
+                            }
                             break;
                     }
                     break;
-
                 default:
                     switch ($category) {
                         case ContractCategory::REVENUE:
@@ -382,9 +407,8 @@ class ContractsUrlService
      *        Active/Registered Expense Contracts Modifications details links
      * @return string
      */
-    static function getAmtModificationUrlString($blnIsMasterAgreement = false, $primeOrSub = NULL)
+    public static function getAmtModificationUrlString($blnIsMasterAgreement = false, $primeOrSub = NULL): string
     {
-
         // Set modification parameter for Active/Registered Expense Contracts Modifications details links
         if ($primeOrSub == 'P') {
             return '/modamt/0/pmodamt/0';
@@ -392,10 +416,12 @@ class ContractsUrlService
             return '/modamt/0/smodamt/0';
         }
 
-        if ($blnIsMasterAgreement)
-            $url = "/modamt/0" . (ContractUtil::showSubVendorData() ? '/smodamt/0' : '/pmodamt/0');
-        else
-            $url = "/modamt/0/pmodamt/0/smodamt/0";
+        if ($blnIsMasterAgreement) {
+          $url = "/modamt/0" . (ContractUtil::showSubVendorData() ? '/smodamt/0' : '/pmodamt/0');
+        }else {
+          $url = "/modamt/0/pmodamt/0/smodamt/0";
+        }
+
         return $url;
     }
 
@@ -403,18 +429,15 @@ class ContractsUrlService
      * Returns Contracts Prime Vendor Landing page URL for the given prime vendor id, year and year type
      * @param $vendor_id
      * @param $year_id
-     * @param $current
+     * @param bool $current
      * @return string
      */
-    static function primeVendorUrl($vendor_id, $year_id = null, $current = true)
+    public static function primeVendorUrl($vendor_id, $year_id = null, bool $current = true): string
     {
-
         $url = RequestUtilities::buildUrlFromParam([
                 'agency',
                 'contstatus|status',
-//                'cindustry',//NYCCHKBK-8560
                 'csize',
-//                'awdmethod',//NYCCHKBK-8560
             ])
             . _checkbook_project_get_year_url_param_string();
 
@@ -460,8 +483,7 @@ class ContractsUrlService
          }
 
         $currentUrl = RequestUtilities::_getCurrentPage();
-        $url = ($current) ? $currentUrl . $url : $url;
-        return $url;
+        return ($current) ? $currentUrl . $url : $url;
     }
 
     /**
@@ -471,7 +493,7 @@ class ContractsUrlService
      * @param $year_id
      * @return string
      */
-    static function subVendorUrl($vendor_id, $year_id = null)
+    public static function subVendorUrl($vendor_id, $year_id = null): string
     {
         list($year_type, $agency_id) = RequestUtilities::get(['yeartype', 'agency']);
         $currentUrl = RequestUtilities::_getCurrentPage();
@@ -506,7 +528,11 @@ class ContractsUrlService
         }
     }
 
-    static function applyLandingParameter($docType)
+  /**
+   * @param $docType
+   * @return string
+   */
+    public static function applyLandingParameter($docType): string
     {
         if ($docType == "RCT1") {
             $page = "/contracts_revenue_landing";
@@ -514,6 +540,5 @@ class ContractsUrlService
             $page = "/contracts_landing";
         }
         return $page;
-
     }
 }

@@ -7,15 +7,23 @@ class WidgetViewConfigModel {
     public $visibility_parameters;
     public $param_config;
 
+  /**
+   * WidgetViewConfigModel constructor.
+   * @param $config
+   */
     function __construct($config) {
-        if(isset($config->legacy_node_id))
-            $this->legacy_node_id = $config->legacy_node_id;
-        if(isset($config->visibility_parameters))
-            $this->visibility_parameters = $config->visibility_parameters;
-        if(isset($config->widget_config))
-            $this->widget_config = $config->widget_config;
-        if(isset($config->param_config))
-           $this->param_config = $config->param_config;
+        if(isset($config->legacy_node_id)) {
+          $this->legacy_node_id = $config->legacy_node_id;
+        }
+        if(isset($config->visibility_parameters)) {
+          $this->visibility_parameters = $config->visibility_parameters;
+        }
+        if(isset($config->widget_config)) {
+          $this->widget_config = $config->widget_config;
+        }
+        if(isset($config->param_config)) {
+          $this->param_config = $config->param_config;
+        }
 
     }
 }
@@ -27,10 +35,16 @@ class WidgetController {
 
     protected static $instance = NULL;
 
+  /**
+   * WidgetController constructor.
+   */
     protected function __construct() {
         $this->widgetViewConfigs = array();
     }
 
+  /**
+   * @return null
+   */
     public static function getInstance() {
         if (!isset(static::$instance)) {
             static::$instance = new WidgetController();
@@ -50,22 +64,18 @@ class WidgetController {
         return $legacy_node_id;
     }
     public function getWidgetParamConfig($widget) {
-
         $config = self::_getCurrentWidgetViewConfig($widget);
-        $param_config= $config->param_config;
-        return $param_config;
+        return $config->param_config;
     }
 
     /**
      * @param $widget
      * @return null|WidgetViewConfigModel
      */
-    private function _getCurrentWidgetViewConfig($widget) {
-
+    private function _getCurrentWidgetViewConfig($widget): ?WidgetViewConfigModel
+    {
         $domain = CheckbookDomain::getCurrent();
         $dashboard = Dashboard::getCurrent();
-        $config = null;
-
         $config = $this->widgetViewConfigs[$domain][$dashboard][$widget];
         if(!isset($config)) {
             $config = self::_loadWidgetViewConfig($domain,$dashboard,$widget);
@@ -80,8 +90,8 @@ class WidgetController {
      * @param $widget
      * @return null|WidgetViewConfigModel
      */
-    private function _loadWidgetViewConfig($domain,$dashboard,$widget) {
-
+    private function _loadWidgetViewConfig($domain,$dashboard,$widget): ?WidgetViewConfigModel
+    {
         $config_str = file_get_contents(realpath(drupal_get_path('module', 'checkbook_view_configs')) . "/{$domain}.json");
         $converter = new Json2PHPObject();
         $configuration = $converter->convert($config_str);
@@ -118,9 +128,6 @@ class WidgetController {
      * @return null
      */
     public function getWidgetViewConfigName($widget) {
-
-        $view = null;
-
         $config = $this->_getCurrentWidgetViewConfig($widget);
         $widget_config = $config->widget_config;
 
@@ -144,8 +151,9 @@ class WidgetController {
                         else{
                             $param_value = explode(':', $value);
                             if(!((count($param_value) == 1 && RequestUtilities::get($param_value[0])) ||
-                               (count($param_value) == 2 && $param_value[1] == RequestUtilities::get($param_value[0]))))
-                                return null;
+                               (count($param_value) == 2 && $param_value[1] == RequestUtilities::get($param_value[0])))) {
+                              return null;
+                            }
                         }
                     }
                 }
