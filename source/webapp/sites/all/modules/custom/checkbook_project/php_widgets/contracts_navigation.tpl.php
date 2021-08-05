@@ -65,10 +65,9 @@ if($has_vendor_parameter && (!$contracts_advanced_search && !$spending_advanced_
         $payroll_link = l('<span class="nav-title">Payroll</span><br>'.custom_number_formatter_format($node->data[1]['total_gross_pay'] ,1,'$'),RequestUtil::getTopNavURL("payroll"),$options);
     }
 }
-$has_mwbe_parameter = preg_match('/\/mwbe/',$_GET['q']);
-if($spending_amount  == 0 || ($has_vendor_parameter && $has_mwbe_parameter)){
-    $spending_amount = isset($spending_amount) ? $spending_amount:0;
-    $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format($spending_amount  ,1,'$'),'',$options_disabled);
+
+if($spending_amount  == 0){
+    $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
 }else{
     $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format($spending_amount ,1,'$'),RequestUtil::getTopNavURL("spending"),$options);
 }
@@ -84,10 +83,7 @@ if ($contract_amount > 0) {
     $contracts_url = RequestUtil::getTopNavURL("contracts", $contracts_url);
     $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), $contracts_url, $options);
   }else{
-    if ($has_mwbe_parameter && $has_vendor_parameter){
-      $contract_amount = isset($contract_amount)? $contract_amount : 0;
-    }
-    $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format($contract_amount, 1, '$'), '', $options_disabled);
+    $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), '', $options_disabled);
   }
 }
 
