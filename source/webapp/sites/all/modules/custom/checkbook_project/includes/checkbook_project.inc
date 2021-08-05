@@ -625,7 +625,9 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
   $yearTypeParam = 'yeartype';
   $data_controller_instance = data_controller_get_operator_factory_instance();
   //Display contracts which are active from 2011
-  $parameters['is_active_eft_2011'] = 1;
+  if($contractType != 'pending') {
+    $parameters['is_active_eft_2011'] = 1;
+  }
 
   switch ($contractType) {
     case "active_registered":
