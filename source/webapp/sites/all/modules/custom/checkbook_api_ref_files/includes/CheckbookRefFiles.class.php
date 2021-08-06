@@ -194,7 +194,7 @@ class CheckbookRefFiles
     public function mail(&$message)
     {
         global $conf;
-        $result = $this->generate_files();
+        //$result = $this->generate_files();
         $message['body'] =
             [
                 'status' => $this->successSubject,

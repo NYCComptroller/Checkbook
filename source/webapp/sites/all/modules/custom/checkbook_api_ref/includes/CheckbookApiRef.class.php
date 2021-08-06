@@ -108,7 +108,11 @@ class CheckbookApiRef
         continue;
       }
 
-      $file = $dir . '/' . $filename . '.csv';
+      $new_file = $dir . '/' . $filename . '.csv';
+      $old_file = $dir . '/' . $filename . '_old.csv';
+      if(file_exists($new_file)){
+        copy($new_file, $old_file);
+      }
       $data_source = $ref_file->database ?? 'checkbook';
       $record_count_sql = "SELECT COUNT(*) as record_count FROM ( " . $ref_file->sql . ")  sub_query";
       $record_count = _checkbook_project_execute_sql_by_data_source($record_count_sql, $data_source);
@@ -117,7 +121,7 @@ class CheckbookApiRef
       // If record count is less than 100000 process as is
       if ($total_records <= 100000) {
         $result = _checkbook_project_execute_sql_by_data_source($ref_file->sql, $data_source);
-        $file = fopen($file, 'w');
+        $file = fopen($new_file, 'w');
         self::generateCsvFiles($file,$result,$flag,$total_records,$ref_file->force_quote[0]);
         fclose($file);
         unset($result);
@@ -128,10 +132,7 @@ class CheckbookApiRef
         $startLimit = 100000;
         $offset = 0;
         $flag = 0;
-        if (file_exists($file)){
-          unlink($file);
-        }
-        $file = fopen($file, 'a+');
+        $file = fopen($new_file, 'a+');
         while($total_records > 0 ) {
           $php_sql = str_replace('\\','',$ref_file->sql);
           $limit = ' LIMIT '.$startLimit .' OFFSET ' . $offset;
@@ -145,54 +146,50 @@ class CheckbookApiRef
       }
 
       $file_info = [];
-      $file = $dir . '/' . $filename . '.csv';
       $file_info['error'] = false;
-      $file_info['old_timestamp'] = filemtime($file);
+      $file_info['old_timestamp'] = file_exists($old_file) ? filemtime($old_file) : filemtime($file);
       if ($file_info['old_timestamp']) {
         $file_info['old_timestamp'] = date('Y-m-d', $file_info['old_timestamp']);
       }
-      $file_info['old_filesize'] = filesize($file);
-      $file_new = $file.'.new';
-      $db_name = 'main';
+      $file_info['old_filesize'] = file_exists($old_file) ? filesize($old_file): filesize($file);
 
       try{
-        $file_info['new_filesize'] = filesize($file_new);
-        $file_info['new_timestamp'] = filemtime($file_new);
+        LogHelper::log_info("File Nitish: ".$new_file);
+        $file_info['new_filesize'] = filesize($new_file);
+        $file_info['new_timestamp'] = filemtime($new_file);
         if ($file_info['new_filesize']) {
           $file_info['new_timestamp'] = date('Y-m-d', $file_info['new_timestamp']);
           if ($file_info['new_filesize'] !== $file_info['old_filesize']) {
-            if (rename($file_new, $file)) {
-                $file_info['updated'] = true;
-                if ('No changes' == $this->successSubject) {
-                  $this->successSubject = 'Updated';
-                }
-            }
-            else {
-                $file_info['error'] = 'Could not replace old file with new one: mv ' . $file_new .' ' .  $file;
-                $this->successSubject = 'Fail';
+            $file_info['updated'] = true;
+            if ('No changes' == $this->successSubject) {
+              $this->successSubject = 'Updated';
             }
           } 
           else {
             $file_info['info'] = 'New file is same as old one, no changes needed';
             $file_info['updated'] = false;
-            if(file_exists($file_new)){
-              unlink($file_new);
+            if(file_exists($old_file)){
+              rename($old_file, $new_file);
             }
           }
         }   
         else {
           $file_info['warning'] = 'Newly generated file is zero byte size, keeping old file intact ';
-          if(file_exists($file_new)){
-            unlink($file_new);
+          if(file_exists($old_file)){
+            rename($old_file, $new_file);
           }
         }
       } catch(Exception $ex){
-        $file_info['error'] = "Could not run sql command: $command Error:".$ex->getMessage();
+        $file_info['error'] = "Error:".$ex->getMessage();
         $this->successSubject = 'Fail';
       }
 
-      $php_sql = str_replace('\\','',$ref_file->sql);
-      $file_info['sample'] = _checkbook_project_execute_sql($php_sql.' LIMIT 5', $db_name, $data_source);
+      if(file_exists($old_file)){
+        unlink($old_file);
+      }
+
+      $php_sql = str_replace('\\','',$ref_file->sql) .' LIMIT 5';
+      $file_info['sample'] = _checkbook_project_execute_sql_by_data_source($php_sql, $data_source);
       $return['files'][$filename] = $file_info;
     }
     return $return;
