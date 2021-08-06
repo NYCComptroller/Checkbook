@@ -11,6 +11,11 @@ class CheckbookApiRef
   public static $message_body = '';
 
   /**
+    * @var string
+    */
+  public $successSubject = 'No changes';
+
+  /**
    * Last ETL must successfully finish within last 12 hours
    */
   const SUCCESS_IF_RUN_LESS_THAN_X_SECONDS_AGO = 60 * 60 * 12;
@@ -77,6 +82,11 @@ class CheckbookApiRef
 
     global $conf;
 
+    $return = [
+      'error' => false,
+      'files' => [],
+    ];
+
     ini_set('max_execution_time',60*60);
 
     $dir = variable_get('file_public_path', 'sites/default/files') . '/' . $conf['check_book']['data_feeds']['output_file_dir'];
@@ -133,7 +143,59 @@ class CheckbookApiRef
         }
         fclose($file);
       }
+
+      $file_info = [];
+      $file = $dir . '/' . $filename . '.csv';
+      $file_info['error'] = false;
+      $file_info['old_timestamp'] = filemtime($file);
+      if ($file_info['old_timestamp']) {
+        $file_info['old_timestamp'] = date('Y-m-d', $file_info['old_timestamp']);
+      }
+      $file_info['old_filesize'] = filesize($file);
+      $file_new = $file.'.new';
+      $db_name = 'main';
+
+      try{
+        $file_info['new_filesize'] = filesize($file_new);
+        $file_info['new_timestamp'] = filemtime($file_new);
+        if ($file_info['new_filesize']) {
+          $file_info['new_timestamp'] = date('Y-m-d', $file_info['new_timestamp']);
+          if ($file_info['new_filesize'] !== $file_info['old_filesize']) {
+            if (rename($file_new, $file)) {
+                $file_info['updated'] = true;
+                if ('No changes' == $this->successSubject) {
+                  $this->successSubject = 'Updated';
+                }
+            }
+            else {
+                $file_info['error'] = 'Could not replace old file with new one: mv ' . $file_new .' ' .  $file;
+                $this->successSubject = 'Fail';
+            }
+          } 
+          else {
+            $file_info['info'] = 'New file is same as old one, no changes needed';
+            $file_info['updated'] = false;
+            if(file_exists($file_new)){
+              unlink($file_new);
+            }
+          }
+        }   
+        else {
+          $file_info['warning'] = 'Newly generated file is zero byte size, keeping old file intact ';
+          if(file_exists($file_new)){
+            unlink($file_new);
+          }
+        }
+      } catch(Exception $ex){
+        $file_info['error'] = "Could not run sql command: $command Error:".$ex->getMessage();
+        $this->successSubject = 'Fail';
+      }
+
+      $php_sql = str_replace('\\','',$ref_file->sql);
+      $file_info['sample'] = _checkbook_project_execute_sql($php_sql.' LIMIT 5', $db_name, $data_source);
+      $return['files'][$filename] = $file_info;
     }
+    return $return;
   }
 
 
@@ -144,25 +206,19 @@ class CheckbookApiRef
   public function gatherData(&$message)
   {
     global $conf;
-    self::generateRefFiles();
-    //var_dump ($result);
-
-    $msg = [];
-    $msg['body'] = "Test API REF FILE Generated";
-
-    self::$message_body =
-      [
-        'file_generation_status' => "Generated ref files",
-        'subject' =>"API Success"
-      ];
+    $result = self::generateRefFiles();
+    $msg['body'] =
+    [
+        'status' => $this->successSubject,
+        'error' => $result['error'],
+        'files' => $result['files'],
+    ];
 
     $date = self::get_date('m-d-Y');
-    $msg['subject'] = $conf['CHECKBOOK_ENV']."API REF FILES GENERATED: " . " ($date)";
-    $msg['body'] = self::$message_body;
+    $msg['subject'] = "[{$conf['CHECKBOOK_ENV']}] API Ref Files Generated: " . $this->successSubject . " ($date)";
     $message = array_merge($message, $msg);
-
     $message['to'] = $conf['checkbook_dev_group_email'];
-    return $message;
+    return true;
   }
   /**
    * @return bool
@@ -182,13 +238,20 @@ class CheckbookApiRef
       return false;
     }
 
-    //if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['DEV2'])) {
-      // we run this cron only on DEV2 and PHPUNIT
-    //  return false;
-    //}
-
     $today = self::get_date('Y-m-d');
+    $current_week = self::get_date('Y-W');
     $current_hour = (int)self::get_date('H');
+    $first_monday_of_current_month = date('Y-m-d', strtotime("first monday of this month"));
+
+    //If it is production, then run cron only on the first monday of the current month
+    if (defined('CHECKBOOK_PROD') && $today !== $first_monday_of_current_month) {
+      return false;
+    }
+
+    //If it is an internal environment, then run cron only on a Monday
+    if (defined('CHECKBOOK_DEV') && variable_get(self::CRON_LAST_RUN_DRUPAL_VAR) == $current_week) {
+      return false;
+    }
 
     if (variable_get(self::CRON_LAST_RUN_DRUPAL_VAR) == $today) {
       //error_log("ETL STATUS MAIL CRON skips. Reason: already ran today :: $today :: ".variable_get($variable_name));
