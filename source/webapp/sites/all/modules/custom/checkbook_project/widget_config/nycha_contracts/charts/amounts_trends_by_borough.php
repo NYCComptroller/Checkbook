@@ -49,17 +49,17 @@ $results = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_nych
 <table id="table-sparkline">
   <thead>
   <tr>
-    <th>Borough</th>
-    <th>CurrentAmount<br/>FY 2018</th>
-    <th>Previous<br/>Current Amounts</th>
-    <th>Spent to Date<br/>FY 2018</th>
-    <th>Previous<br/>Spending</th>
-    <th>Trend</th>
+    <th scope="col">Borough</th>
+    <th scope="col">CurrentAmount<br/>FY 2018</th>
+    <th scope="col">Previous<br/>Current Amounts</th>
+    <th scope="col">Spent to Date<br/>FY 2018</th>
+    <th scope="col">Previous<br/>Spending</th>
+    <th scope="col">Trend</th>
   </tr>
   </thead>
   <tbody id="tbody-sparkline">
   <tr>
-    <th>Bronx</th>
+    <th scope="col">Bronx</th>
     <td>$31.6M</td>
     <td data-sparkline="21.0, 15.2, 29.8, 23.1"/>
     <td>$23.2M</td>
@@ -67,7 +67,7 @@ $results = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_nych
     <td data-sparkline="-1.1, 1.1, 2.2, 2.0 ; column"/>
   </tr>
   <tr>
-    <th>Brooklyn</th>
+    <th scope="col">Brooklyn</th>
     <td>$28.2M</td>
     <td data-sparkline="47.8, 33.1, 43.5, 31.1 "/>
     <td>$19.7M</td>
@@ -75,7 +75,7 @@ $results = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_nych
     <td data-sparkline="3.1, 1.1, -2.2, -1.2 ; column"/>
   </tr>
   <tr>
-    <th>Manhattan</th>
+    <th scope="col">Manhattan</th>
     <td>$70.0M</td>
     <td data-sparkline="190.5, 107.5, 76.0, 56.8 "/>
     <td>$49.6M</td>
@@ -83,7 +83,7 @@ $results = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_nych
     <td data-sparkline=" 1.4, -8.0, 2.2, 1.2 ; column"/>
   </tr>
   <tr>
-    <th>Queens</th>
+    <th scope="col">Queens</th>
     <td>$98.8M</td>
     <td data-sparkline="44.7, 47.2, 123.3,  77.3"/>
     <td>$71.8M</td>
@@ -91,7 +91,7 @@ $results = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_nych
     <td data-sparkline="0.5, 0.4, 1.0, 0.7 ; column"/>
   </tr>
   <tr>
-    <th>Staten Island</th>
+    <th scope="col">Staten Island</th>
     <td>$3.8M</td>
     <td data-sparkline="4.3, 4.9, 1.3, 3.6 "/>
     <td>$3.0M</td>

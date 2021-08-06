@@ -22,50 +22,43 @@ namespace { //global
     class ContractUtil{
 
         static $landingPageParams = array("status"=>"status","bottom_slider"=>"bottom_slider","awdmethod"=>"awdmethod","cindustry"=>"cindustry","csize"=>"csize","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
-
         /**
          * NYCCHKBK-3573 - Contract ID page notepad icon should be displayed only if there is a difference between OGE
          * and Citywide values for any the following fields:
-         *
          * 1. Current Amount
          * 2. Original Amount
          * 3. Spent to date
          * @param $agreement_id
          * @return bool
          */
-        public static function childAgreementAmountsDiffer($agreement_id){
+        public static function childAgreementAmountsDiffer($agreement_id): bool
+        {
+          $checkbook_ca = new checkbook_project_custom_classes_contract\ChildAgreement('checkbook', $agreement_id);
+          $checkbook_oge_ca = new checkbook_project_custom_classes_contract\ChildAgreement('checkbook_oge', $agreement_id);
 
-            $checkbook_ca = new checkbook_project_custom_classes_contract\ChildAgreement('checkbook', $agreement_id);
-            $checkbook_oge_ca = new checkbook_project_custom_classes_contract\ChildAgreement('checkbook_oge', $agreement_id);
-
-            $data_source_amounts_differ =
-                ($checkbook_ca->getCurrentAmount() - $checkbook_oge_ca->getCurrentAmount()) != 0 ||
-                ($checkbook_ca->getOriginalAmount() - $checkbook_oge_ca->getOriginalAmount()) != 0 ||
-                ($checkbook_ca->getSpentAmount() - $checkbook_oge_ca->getSpentAmount()) != 0;
-
-            return $data_source_amounts_differ;
+          return ($checkbook_ca->getCurrentAmount() - $checkbook_oge_ca->getCurrentAmount()) != 0 ||
+          ($checkbook_ca->getOriginalAmount() - $checkbook_oge_ca->getOriginalAmount()) != 0 ||
+          ($checkbook_ca->getSpentAmount() - $checkbook_oge_ca->getSpentAmount()) != 0;
         }
 
       /**
        * @param $agreement_id
        * @return bool
        */
-        public static function masterAgreementAmountsDiffer($agreement_id){
-            $checkbook_ca = new checkbook_project_custom_classes_contract\MasterAgreement('checkbook', $agreement_id);
-            $checkbook_oge_ca = new checkbook_project_custom_classes_contract\MasterAgreement('checkbook_oge', $agreement_id);
-
-            $data_source_amounts_differ =
-                ($checkbook_ca->getCurrentAmount() - $checkbook_oge_ca->getCurrentAmount()) != 0 ||
-                ($checkbook_ca->getOriginalAmount() - $checkbook_oge_ca->getOriginalAmount()) != 0 ||
-                ($checkbook_ca->getSpentAmount() - $checkbook_oge_ca->getSpentAmount()) != 0;
-
-            return $data_source_amounts_differ;
+        public static function masterAgreementAmountsDiffer($agreement_id): bool
+        {
+          $checkbook_ca = new checkbook_project_custom_classes_contract\MasterAgreement('checkbook', $agreement_id);
+          $checkbook_oge_ca = new checkbook_project_custom_classes_contract\MasterAgreement('checkbook_oge', $agreement_id);
+          return ($checkbook_ca->getCurrentAmount() - $checkbook_oge_ca->getCurrentAmount()) != 0 ||
+          ($checkbook_ca->getOriginalAmount() - $checkbook_oge_ca->getOriginalAmount()) != 0 ||
+          ($checkbook_ca->getSpentAmount() - $checkbook_oge_ca->getSpentAmount()) != 0;
         }
 
       /**
        * @return array
        */
-        public static function getCurrentPageDocumentIdsArray(){
+        public static function getCurrentPageDocumentIdsArray(): array
+        {
         	if(preg_match('/revenue/',$_GET['q']) || preg_match('/pending_rev/',$_GET['q']) ){
         		$document_codes = array('RCT1') ;
         	}else if(preg_match('/pending_exp/',$_GET['q'])){
@@ -79,7 +72,8 @@ namespace { //global
       /**
        * @return string
        */
-        public static function getCurrentPageDocumentIds(){
+        public static function getCurrentPageDocumentIds(): string
+        {
         	if(preg_match('/revenue/',$_GET['q']) || preg_match('/pending_rev/',$_GET['q'])){
         		$document_codes = "'RCT1'" ;
         	}else if(preg_match('/pending_exp/',$_GET['q'])){
@@ -93,7 +87,8 @@ namespace { //global
       /**
        * @return string
        */
-        public static function getSubvendorDashboard(){
+        public static function getSubvendorDashboard(): string
+        {
             $dashboard = RequestUtilities::get('dashboard');
             if($dashboard == 'mp') {
               return '/dashboard/sp';
@@ -107,7 +102,8 @@ namespace { //global
       /**
        * @return string
        */
-      public static function getCurrentContractStatusandType(){
+      public static function getCurrentContractStatusandType(): string
+      {
         $status = NULL;
         if(RequestUtilities::get('status') == 'A'){
           $status = 'Active';
@@ -123,7 +119,6 @@ namespace { //global
         }else if(preg_match('/pending_rev/',$_GET['q'])){
           $contract_type = 'Pending Revenue';
         }
-
         return $status . ' ' . $contract_type ;
       }
 
@@ -141,11 +136,10 @@ namespace { //global
          * @param $row
          * @return string
          */
-        public static function getMWBECategory($node,$row){
+        public static function getMWBECategory($node,$row): string
+        {
 
-            $minority_type_id = isset($row["prime_minority_type_prime_minority_type"])
-                ? $row["prime_minority_type_prime_minority_type"]
-                : $row["minority_type_minority_type"];
+            $minority_type_id = $row["prime_minority_type_prime_minority_type"] ?? $row["minority_type_minority_type"];
             $minority_category = MappingUtil::getMinorityCategoryById($minority_type_id);
             $is_mwbe_certified = MappingUtil::isMWBECertified(array($minority_type_id));
             $dtsmnid = RequestUtilities::get("dtsmnid");
@@ -202,7 +196,8 @@ namespace { //global
        * @param string $is_prime_or_sub
        * @return string
        */
-       public static function get_contract_vendor_minority_category($vendor_id, $year_id = null, $year_type = null, $agency_id = null, $is_prime_or_sub = 'P'){
+       public static function get_contract_vendor_minority_category($vendor_id, $year_id = null, $year_type = null, $agency_id = null, $is_prime_or_sub = 'P'): string
+       {
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, $is_prime_or_sub);
             $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
             if($is_prime_or_sub == 'P'){
@@ -212,9 +207,8 @@ namespace { //global
                     return  _checkbook_project_get_year_url_param_string().RequestUtilities::buildUrlFromParam('contstatus|status')."/vendor/".$vendor_id;
                 }
             }else if($is_prime_or_sub == 'S'){
-               return self::get_contracts_vendor_link_sub($vendor_id, $year_id = null, $year_type = null,$agency_id = null);
+               return self::get_contracts_vendor_link_sub($vendor_id);
             }
-
             return '';
         }
 
@@ -224,10 +218,11 @@ namespace { //global
          * @param $row
          * @return string
          */
-        public static function get_contracts_vendor_link_by_mwbe_category($row){
+        public static function get_contracts_vendor_link_by_mwbe_category($row): string
+        {
 
             $vendor_id = $row["vendor_vendor"] != null ? $row["vendor_vendor"] : $row["vendor_id"];
-            $vendor_id = isset($vendor_id) ? $vendor_id : $row["prime_vendor_id"];
+            $vendor_id = $vendor_id ?? $row["prime_vendor_id"];
 
             $year_id = RequestUtilities::get("year");
             $year_type = $row["yeartype_yeartype"];
@@ -242,8 +237,9 @@ namespace { //global
               $minority_type_id = $row["minority_type_id"];
             }
 
-            if($row["prime_minority_type_id"])
-                $minority_type_id = $row["prime_minority_type_id"];
+            if($row["prime_minority_type_id"]) {
+              $minority_type_id = $row["prime_minority_type_id"];
+            }
 
             $smnid = RequestUtilities::get("smnid");
             if($smnid == 720 || $smnid == 784){
@@ -251,7 +247,7 @@ namespace { //global
             }
 
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
-            $latest_minority_id = isset($latest_minority_id) ? $latest_minority_id : $minority_type_id;
+            $latest_minority_id = $latest_minority_id ?? $minority_type_id;
             $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
 
             $status = RequestUtilities::buildUrlFromParam('contstatus|status');
@@ -280,13 +276,13 @@ namespace { //global
        * @param string $is_prime_or_sub
        * @return string
        */
-        public static function get_contracts_vendor_link($vendor_id, $year_id = null, $year_type = null, $agency_id = null, $mwbe_cat = null, $is_prime_or_sub = 'P'){
-
+        public static function get_contracts_vendor_link($vendor_id, $year_id = null, $year_type = null, $agency_id = null, $mwbe_cat = null, $is_prime_or_sub = 'P'): string
+        {
             //For the 3rd menu option on contracts sub vendor, contract status should be set to active for links
             $contract_status = RequestUtilities::buildUrlFromParam('contstatus|status');
             $contract_status = $contract_status == "" ? "/status/A" : $contract_status;
 
-            $latest_minority_id = isset($mwbe_cat) ? $mwbe_cat : self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
+            $latest_minority_id = $mwbe_cat ?? self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
             $url = RequestUtilities::buildUrlFromParam('agency') . $contract_status . _checkbook_project_get_year_url_param_string();
             $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
             if($is_mwbe_certified && RequestUtilities::get('dashboard') == 'mp'){
@@ -308,9 +304,9 @@ namespace { //global
        * @param null $mwbe_cat
        * @return string
        */
-        public static function get_contracts_vendor_link_sub($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $mwbe_cat = null){
-
-            $latest_minority_id = isset($mwbe_cat) ? $mwbe_cat : self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, "S");
+        public static function get_contracts_vendor_link_sub($vendor_id, $year_id = null, $year_type = null,$agency_id = null, $mwbe_cat = null): string
+        {
+            $latest_minority_id = $mwbe_cat ?? self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, "S");
             $url = RequestUtilities::buildUrlFromParam('agency') .  RequestUtilities::buildUrlFromParam('contstatus|status') . _checkbook_project_get_year_url_param_string();
 
             $current_dashboard = RequestUtilities::get("dashboard");
@@ -344,9 +340,7 @@ namespace { //global
        * @return null
        */
         static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
-
           STATIC $contract_vendor_latest_mwbe_category = array();
-
         	if($agency_id == null){
         		$agency_id =  RequestUtilities::get('agency');
         	}
@@ -367,10 +361,7 @@ namespace { //global
               $year_type = "B";
               $year_id = CheckbookDateUtil::getCurrentFiscalYearId();
           }
-
-        	$latest_minority_type_id = null;
           $agency_query = isset($agency_id) ? "agency_id = " . $agency_id : "agency_id IS NULL";
-
         	if(!isset($contract_vendor_latest_mwbe_category)){
         		$query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                       FROM contract_vendor_latest_mwbe_category
@@ -403,7 +394,8 @@ namespace { //global
        * @param null $year_type
        * @return bool
        */
-        public static function getLatestMwbeCategoryByVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
+        public static function getLatestMwbeCategoryByVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null): bool
+        {
           if($year_id == null){
               $year_id =  RequestUtilities::get('year');
           }
@@ -443,7 +435,8 @@ namespace { //global
        * @param $minority_type_id
        * @return string
        */
-        public static function get_contract_vendor_link($vendor_id, $is_prime_or_sub, $minority_type_id){
+        public static function get_contract_vendor_link($vendor_id, $is_prime_or_sub, $minority_type_id): string
+        {
            $is_mwbe_certified = MappingUtil::isMWBECertified(array($minority_type_id));
            if($is_prime_or_sub == "P" && $is_mwbe_certified){
                return "/dashboard/mp/mwbe/".MappingUtil::getTotalMinorityIds('url')."/vendor/".$vendor_id;
@@ -456,7 +449,8 @@ namespace { //global
        * @param $vendor_id
        * @return string
        */
-        public static function get_pending_contract_vendor_minority_category($vendor_id){
+        public static function get_pending_contract_vendor_minority_category($vendor_id): string
+        {
             STATIC $mwbe_vendors;
             $agency_id =  RequestUtilities::get('agency');
             $agency_query = isset($agency_id) ? " AND awarding_agency_id = " . $agency_id : " ";
@@ -549,9 +543,7 @@ namespace { //global
             . RequestUtilities::buildUrlFromParam('vendor')
             . RequestUtilities::buildUrlFromParam('subvendor');
 
-            $result = (!in_array($minority_type_category_id,array(7,11)))?"<a href='".$url."'>".$minority_type_category_name."</a>" : $minority_type_category_name;
-
-            return $result;
+            return (!in_array($minority_type_category_id,array(7,11)))?"<a href='".$url."'>".$minority_type_category_name."</a>" : $minority_type_category_name;
         }
 
       /**
@@ -612,7 +604,8 @@ namespace { //global
          * @param array $override_params
          * @return string
          */
-        public static function getLandingPageWidgetUrl($override_params = array()) {
+        public static function getLandingPageWidgetUrl($override_params = array()): string
+        {
             $node =  node_load(363);
             widget_config($node);
             widget_prepare($node);
@@ -632,7 +625,6 @@ namespace { //global
             } else if($node->data[6]['total_contracts'] > 0 || $node->data[6]['current_amount_sum'] > 0){
               $contracts_landing_path = "contracts_pending_rev_landing/";
             }
-
             return self::getContractUrl($contracts_landing_path,$override_params);
         }
 
@@ -643,7 +635,8 @@ namespace { //global
        * @param null $type
        * @return string
        */
-        public static function getRevenueLandingPageUrl($vendor_id,$row,$year_id=null,$type=null){
+        public static function getRevenueLandingPageUrl($vendor_id,$row,$year_id=null,$type=null): string
+        {
             if($year_id == null){
               $year_id =  RequestUtilities::get('year');
             }
@@ -693,7 +686,7 @@ namespace { //global
             }
 
             $latest_minority_id = self::getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id, $year_type, $is_prime_or_sub);
-            $latest_minority_id = isset($latest_minority_id) ? $latest_minority_id : $minority_type_id;
+            $latest_minority_id = $latest_minority_id ?? $minority_type_id;
             $is_mwbe_certified = MappingUtil::isMWBECertified(array($latest_minority_id));
             $url = $contracts_landing_page.RequestUtilities::buildUrlFromParam('agency') . $status . _checkbook_project_get_year_url_param_string();
 
@@ -719,7 +712,8 @@ namespace { //global
          * @param array $override_params
          * @return string
          */
-        public static function getContractUrl($path, $override_params = array()) {
+        public static function getContractUrl($path, $override_params = array()): string
+        {
             $url =  $path . _checkbook_project_get_year_url_param_string();
             $pathParams = explode('/',drupal_get_path_alias($_GET['q']));
             $url_params = self::$landingPageParams;
@@ -750,7 +744,8 @@ namespace { //global
       /**
        * @return string
        */
-        public static function getSpentToDateParams(){
+        public static function getSpentToDateParams(): string
+        {
             $url = $_GET['q'];
             $parameters = '';
             $contract_status = RequestUtilities::get('status');
@@ -828,9 +823,12 @@ namespace { //global
 
             //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
             if(isset($parameters['vendor_code']) || (isset($parameters['vendor_code.vendor_code']) && $node->widgetConfig->functionality != 'search')) {
-                $vendor_Code = isset($parameters['vendor_code.vendor_code']) ? $parameters['vendor_code.vendor_code'] : $parameters['vendor_code'];
+                $vendor_Code = $parameters['vendor_code.vendor_code'] ?? $parameters['vendor_code'];
+              try {
                 $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($vendor_Code));
-                $parameters['prime_vendor_code'] = $condition;
+              } catch (IllegalArgumentException | ReflectionException $e) {
+              }
+              $parameters['prime_vendor_code'] = $condition;
                 $parameters['sub_vendor_code'] = $condition;
                 unset($parameters['vendor_code']);
             }
@@ -861,7 +859,6 @@ namespace { //global
 
             //Adjust Certification parameters
             $parameters = self::adjustPrimeSubCertificationFacetParameters($node, $parameters);
-
             return $parameters;
         }
 
@@ -873,7 +870,6 @@ namespace { //global
          */
         public static function adjustActiveContractCommonParams(&$node, &$parameters)
         {
-
           //Handle status and year parameter
           $contractStatus = RequestUtilities::get('contstatus');
           $reqYear = RequestUtilities::get('year');
@@ -885,8 +881,14 @@ namespace { //global
           $parameters['is_active_eft_2011'] = 1;
 
           if (isset($reqYear)) {
-            $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
-            $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+            try {
+              $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+            } catch (IllegalArgumentException | ReflectionException $e) {
+            }
+            try {
+              $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+            } catch (IllegalArgumentException | ReflectionException $e) {
+            }
 
             if (self::showSubVendorData()) {
               $parameters['sub_starting_year_id'] = $leCondition;
@@ -921,8 +923,11 @@ namespace { //global
 
           //Handle vendor_code mapping to prime_vendor_code and sub_vendor_code
           if (isset($parameters['vendor_code']) || (isset($parameters['vendor_code.vendor_code']) && $node->widgetConfig->functionality != 'search')) {
-            $vendor_Code = isset($parameters['vendor_code.vendor_code']) ? $parameters['vendor_code.vendor_code'] : $parameters['vendor_code'];
-            $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($vendor_Code));
+            $vendor_Code = $parameters['vendor_code.vendor_code'] ?? $parameters['vendor_code'];
+            try {
+              $condition = $data_controller_instance->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, array($vendor_Code));
+            } catch (IllegalArgumentException | ReflectionException $e) {
+            }
             $parameters['prime_vendor_code'] = $condition;
             $parameters['sub_vendor_code'] = $condition;
             unset($parameters['vendor_code']);
@@ -938,7 +943,10 @@ namespace { //global
               $vendornm_exact = implode('|', $vendornm_exact);
               $vendornm_exact = self::_replaceSlashCharacter($vendornm_exact);
               $pattern = "(^" . _checkbook_regex_replace_pattern($vendornm_exact) . "$)";
-              $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+              try {
+                $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
+              } catch (IllegalArgumentException | ReflectionException $e) {
+              }
               $parameters['prime_vendor_name'] = $condition;
               $parameters['sub_vendor_name'] = $condition;
             } else if (isset($vendornm)) {
@@ -998,7 +1006,6 @@ namespace { //global
 
             //Adjust Certification parameters
             $parameters = self::adjustPrimeSubCertificationFacetParameters($node, $parameters);
-
             unset($parameters['year']);
             unset($parameters['status_flag']);
 
@@ -1134,7 +1141,7 @@ namespace { //global
                 $industry_param = self::showSubVendorData() || $subvendor_widget ? '/scindustry/'.$industry : '/pcindustry/'.$industry;
             }
 
-            $url = '/panel_html/'. $detailsPageURL .'/contract/transactions/contcat/expense'
+            return '/panel_html/'. $detailsPageURL .'/contract/transactions/contcat/expense'
                 . RequestUtilities::buildUrlFromParam('status|contstatus')
                 . _checkbook_append_url_params()
                 . RequestUtilities::buildUrlFromParam('agency')
@@ -1145,7 +1152,6 @@ namespace { //global
                 . $mwbe_param
                 . ((!_checkbook_check_isEDCPage())? $subvendorURLString . $vendorURLString : RequestUtilities::buildUrlFromParam('vendor'))
                 . _checkbook_project_get_year_url_param_string();
-            return $url;
         }
 
       /**
@@ -1161,11 +1167,9 @@ namespace { //global
                     WHERE v.vendor_id = ".$subVendorId;
 
             $subVendorCustomerCode = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
-
             if($subVendorCustomerCode) {
                 return $subVendorCustomerCode[0]['vendor_customer_code'];
-            }
-            else {
+            } else {
                 return null;
             }
         }
@@ -1186,8 +1190,8 @@ namespace { //global
       /**
        * @return bool
        */
-        public static function checkStatusOfSubVendorByPrimeCounts(){
-            $count = null;
+        public static function checkStatusOfSubVendorByPrimeCounts(): bool
+        {
             $query = "SELECT count(*) AS count
                     FROM aggregateon_mwbe_contracts_cumulative_spending l1
                     WHERE l1.type_of_year = 'B'
@@ -1213,7 +1217,6 @@ namespace { //global
 namespace checkbook_project_custom_classes_contract {
 
     interface Contract  {
-
         function initializeAmounts();
     }
 
@@ -1309,6 +1312,7 @@ namespace checkbook_project_custom_classes_contract {
     }
 
     class MasterAgreement extends AbstractContract{
+
       /**
        *
        */

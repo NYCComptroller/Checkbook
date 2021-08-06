@@ -630,7 +630,9 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
   //Adjust Certification parameters
   $parameters = ContractUtil::adjustCertificationFacetParameters($node, $parameters);
   //Display contracts which are active from 2011
-  $parameters['is_active_eft_2011'] = 1;
+  if($contractType != 'pending') {
+    $parameters['is_active_eft_2011'] = 1;
+  }
 
   switch ($contractType) {
     case "active_registered":

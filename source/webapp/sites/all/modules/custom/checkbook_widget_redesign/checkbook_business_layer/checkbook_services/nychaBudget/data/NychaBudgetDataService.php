@@ -2,64 +2,168 @@
 
 class NychaBudgetDataService extends DataService implements INychaBudgetDataService {
   /* NYCHA Budget */
-  function GetNychaExpenseCategoriesByBudget($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetNychaExpenseCategoriesByBudget($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
-  function GetNychaExpenseCategoriesByCommittedExpenseBudget($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetNychaExpenseCategoriesByCommittedExpenseBudget($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
-  function GetNychaExpenseCategoriesByPercentDifference($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetNychaExpenseCategoriesByPercentDifference($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
-  function GetNychaResponsibilityCentersByPercentDifference($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetNychaResponsibilityCentersByPercentDifference($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
-
-  function GetResponsibilityCenters($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetResponsibilityCenters($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
-  function GetResponsibilityCentersByCommittedExpense($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetResponsibilityCentersByCommittedExpense($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
-  function GetFundingSources($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetFundingSources($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
-  function GetFundingSourcesByCommittedExpense($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetFundingSourcesByCommittedExpense($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
-  function GetNychaFundingSourcesByPercentDifference($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetNychaFundingSourcesByPercentDifference($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
-  function GetPrograms($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetPrograms($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
-  function GetProgramsByCommittedExpense($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetProgramsByCommittedExpense($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
-  function GetNychaProgramsByPercentDifference($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetNychaProgramsByPercentDifference($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
-  function GetProjects($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetProjects($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
-  function GetProjectsByCommittedExpense($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetProjectsByCommittedExpense($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
-  function GetProjectsByPercentDifference($parameters, $limit = null, $orderBy = null) {
+  /**
+   * @param $parameters
+   * @param null $limit
+   * @param null $orderBy
+   * @return DataService
+   */
+  public function GetProjectsByPercentDifference($parameters, $limit = null, $orderBy = null): DataService
+  {
     return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
   }
 
@@ -71,7 +175,8 @@ class NychaBudgetDataService extends DataService implements INychaBudgetDataServ
      * @param null $orderBy
      * @return DataService
      */
-    private function configureNycha($dataFunction, $parameters, $limit = null, $orderBy = null) {
+    private function configureNycha($dataFunction, $parameters, $limit = null, $orderBy = null): DataService
+    {
         return $this->configure($dataFunction,$parameters,$limit,$orderBy,SqlConfigPath::NychaBudget);
     }
 }

@@ -18,8 +18,7 @@ abstract class WidgetSqlService extends WidgetService {
      * @throws Exception
      */
     public function getWidgetData($parameters, $limit, $orderBy) {
-        $data = $this->getRepository()->getWidgetData($parameters, $limit, $orderBy);
-        return $data;
+        return $this->getRepository()->getWidgetData($parameters, $limit, $orderBy);
     }
 
     /**
@@ -30,8 +29,7 @@ abstract class WidgetSqlService extends WidgetService {
      * @throws Exception
      */
     public function getWidgetDataCount($parameters) {
-        $data = $this->getRepository()->getTotalRowCount($parameters);
-        return $data;
+        return $this->getRepository()->getTotalRowCount($parameters);
     }
 
     /**
@@ -41,9 +39,10 @@ abstract class WidgetSqlService extends WidgetService {
      * @throws Exception
      */
     public function getWidgetHeaderCount($parameters) {
-        if(!($this->repository instanceof WidgetRepository)) return null;
-        $count = $this->getRepository()->getHeaderCount($parameters);
-        return $count;
+        if(!($this->repository instanceof WidgetRepository)) {
+          return null;
+        }
+        return $this->getRepository()->getHeaderCount($parameters);
     }
 
     /**
