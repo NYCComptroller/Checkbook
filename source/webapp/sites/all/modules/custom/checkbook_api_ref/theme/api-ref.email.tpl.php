@@ -21,7 +21,7 @@
             background: #ddd;
         }
 
-        table.status th {
+        table.status th, table.status td {
             text-align: center;
         }
 
@@ -69,6 +69,8 @@
         table.sample-data, table.sample-data tr, table.sample-data td, table.sample-data th{
             background: #fefefe !important;
             font-size:smaller;
+            margin-left: auto;
+            margin-right: auto;
         }
     </style>
 
