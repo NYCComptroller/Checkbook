@@ -22,7 +22,7 @@
         }
 
         table.status th {
-            text-align: right;
+            text-align: center;
         }
 
         thead tr.header th, tbody th.env {
