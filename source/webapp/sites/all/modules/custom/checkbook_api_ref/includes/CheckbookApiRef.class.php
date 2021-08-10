@@ -226,7 +226,7 @@ class CheckbookApiRef
 
     date_default_timezone_set('America/New_York');
     //always run cron for developer
-    if (defined('CHECKBOOK_DEV')) {
+    if (isset($conf['CHECKBOOK_DEV_TEST']) && $conf['CHECKBOOK_DEV_TEST'] === 'DEV') {
       return self::sendmail();
     }
 
@@ -241,12 +241,12 @@ class CheckbookApiRef
     $first_monday_of_current_month = date('Y-m-d', strtotime("first monday of this month"));
 
     //If it is production, then run cron only on the first monday of the current month
-    if (defined('CHECKBOOK_PROD') && $today !== $first_monday_of_current_month) {
+    if (isset($conf['CHECKBOOK_ENV']) && $conf['CHECKBOOK_ENV'] === 'PROD' && $today !== $first_monday_of_current_month) {
       return false;
     }
 
     //If it is an internal environment, then run cron only on a Monday
-    if (defined('CHECKBOOK_DEV') && variable_get(self::CRON_LAST_RUN_DRUPAL_VAR) == $current_week) {
+    if (isset($conf['CHECKBOOK_ENV']) && $conf['CHECKBOOK_ENV'] === 'DEV' && variable_get(self::CRON_LAST_RUN_DRUPAL_VAR) == $current_week) {
       return false;
     }
 
