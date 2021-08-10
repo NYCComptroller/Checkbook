@@ -66,8 +66,9 @@ if($has_vendor_parameter && (!$contracts_advanced_search && !$spending_advanced_
     }
 }
 
-if($spending_amount  == 0){
-    $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
+if($spending_amount  == 0 || (($has_vendor_parameter && Dashboard::isMWBE()) && (!$contracts_advanced_search && !$spending_advanced_search))){
+    $spending_amount = isset($spending_amount) ? $spending_amount:0;
+    $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format($spending_amount  ,1,'$'),'',$options_disabled);
 }else{
     $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format($spending_amount ,1,'$'),RequestUtil::getTopNavURL("spending"),$options);
 }
@@ -75,15 +76,26 @@ if($spending_amount  == 0){
 $current_dashboard = RequestUtilities::get("dashboard");
 
 if ($contract_amount > 0) {
-  $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format($contract_amount, 1, '$'), RequestUtil::getTopNavURL("contracts"), $options);
+  if(($has_vendor_parameter && Dashboard::isMWBE()) && (!$contracts_advanced_search && !$spending_advanced_search)) {
+    $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format($contract_amount, 1, '$'), RequestUtil::getTopNavURL("contracts"), $options_disabled);
+
+  }
+  else {
+    $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format($contract_amount, 1, '$'), RequestUtil::getTopNavURL("contracts"), $options);
+  }
 }else{
   //Get URL if there are any contracts exists in Contracts bottom container from 363.json
   $contracts_url = RequestUtil::getContractsBottomSliderPath();
   if(isset($contracts_url)){
     $contracts_url = RequestUtil::getTopNavURL("contracts", $contracts_url);
-    $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), $contracts_url, $options);
+    if(($has_vendor_parameter && Dashboard::isMWBE()) && (!$contracts_advanced_search && !$spending_advanced_search)){
+      $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), $contracts_url, $options_disabled);
+    }
+    else {
+      $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), $contracts_url, $options);
+    }
   }else{
-    $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), '', $options_disabled);
+      $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), '', $options_disabled);
   }
 }
 
