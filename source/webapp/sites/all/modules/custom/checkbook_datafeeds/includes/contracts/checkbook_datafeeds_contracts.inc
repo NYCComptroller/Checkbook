@@ -475,7 +475,11 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'catastrophic_event', $first_time_load, 0),
     '#states' => array(
       'disabled' => array(
-        'select[name="category"]' => array('value' => 'revenue')
+        array(
+          array('select[name="df_contract_status"]' => array('value' => 'pending')),
+          'or',
+          array('select[name="category"]' => array('value' => 'revenue'))
+        )
       )
     )
   );
@@ -1399,7 +1403,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $user_criteria['Category'] = $values['category'];
         $formatted_search_criteria['Category'] = $values['category'];
       }
-      if ($values['category'] != 'revenue') {
+      if ($values['category'] != 'revenue' && $values['df_contract_status'] != 'pending') {
         if ($values['catastrophic_event'] && ($values['year'] == '0' ||  (substr($values['year'],-4) >= 2020 ))) {
           $form['filter']['catastrophic_event'] = array('#markup' => '<div><strong>Catastrophic Event:</strong> ' . $values['catastrophic_event'] . '</div>');
           $user_criteria['Catastrophic Event'] = $values['catastrophic_event'];
@@ -1805,7 +1809,7 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
         $criteria['value']['industry'] = trim($imatches[1], '[ ]');
       }
 
-      if ($values['category'] != 'revenue') {
+      if ($values['category'] != 'revenue' && $values['df_contract_status'] != 'pending') {
         if ($values['catastrophic_event'] && ((substr($values['year'], -4) >= 2020) || $values['year'] == '0')) {
           preg_match($pattern, $values['catastrophic_event'], $ematches);
           $criteria['value']['catastrophic_event'] = trim($ematches[1], '[ ]');;

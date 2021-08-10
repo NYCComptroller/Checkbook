@@ -86,7 +86,7 @@
         'width': (width - Drupal.CTools.Modal.currentSettings.modalSize.contentRight) + 'px',
         'height': (height - Drupal.CTools.Modal.currentSettings.modalSize.contentBottom) + 'px'
       });
-    }
+    };
 
     if (!Drupal.CTools.Modal.modal) {
       Drupal.CTools.Modal.modal = $(Drupal.theme(settings.modalTheme));
@@ -120,9 +120,9 @@
    * Provide the HTML to create the modal dialog.
    */
   Drupal.theme.prototype.CToolsModalDialog = function () {
-    var html = ''
-    html += '<div id="ctools-modal">'
-    html += '  <div class="ctools-modal-content">' // panels-modal-content
+    var html = '';
+    html += '<div id="ctools-modal">';
+    html += '  <div class="ctools-modal-content">'; // panels-modal-content
     html += '    <div class="modal-header">';
     html += '      <a class="close" href="#">';
     html +=          Drupal.CTools.Modal.currentSettings.closeText + Drupal.CTools.Modal.currentSettings.closeImage;
@@ -135,7 +135,7 @@
     html += '</div>';
 
     return html;
-  }
+  };
 
   /**
    * Provide the HTML to create the throbber.
@@ -159,7 +159,7 @@
     if (match) {
       return match[1];
     }
-  }
+  };
 
   /**
    * Click function for modals that can be cached.
@@ -186,7 +186,7 @@
 
     setTimeout(function() { Drupal.CTools.AJAX.ajaxSubmit($form, url); }, 1);
     return false;
-  }
+  };
 
   /**
    * Bind links that will open modals to the appropriate function.
@@ -250,7 +250,7 @@
 
         element_settings.url = $this.attr('action');
         element_settings.event = 'submit';
-        element_settings.progress = { 'type': 'throbber' }
+        element_settings.progress = { 'type': 'throbber' };
         var base = $this.attr('id');
 
         Drupal.ajax[base] = new Drupal.ajax(base, this, element_settings);
@@ -291,8 +291,14 @@
    * AJAX responder command to place HTML within the modal.
    */
   Drupal.CTools.Modal.modal_display = function(ajax, response, status) {
+    var settings = response.settings || ajax.settings || Drupal.settings;
+    // If the modal does not exist yet, create it.
     if ($('#modalContent').length == 0) {
       Drupal.CTools.Modal.show(Drupal.CTools.Modal.getSettings(ajax.element));
+    }
+    // If the modal exists run detachBehaviors before removing existing content.
+    else {
+      Drupal.detachBehaviors($('#modalContent'), settings, 'unload');
     }
     $('#modal-title').html(response.title);
     // Simulate an actual page load by scrolling to the top after adding the
@@ -302,7 +308,6 @@
     $(document).trigger('CToolsAttachBehaviors', $('#modalContent'));
 
     // Attach behaviors within a modal dialog.
-    var settings = response.settings || ajax.settings || Drupal.settings;
     Drupal.attachBehaviors($('#modalContent'), settings);
 
     if ($('#modal-content').hasClass('ctools-modal-loading')) {
@@ -315,7 +320,7 @@
       // button by the show() function called above.)
       $('#modal-content :focusable:first').focus();
     }
-  }
+  };
 
   /**
    * AJAX responder command to dismiss the modal.
@@ -323,7 +328,7 @@
   Drupal.CTools.Modal.modal_dismiss = function(command) {
     Drupal.CTools.Modal.dismiss();
     $('link.ctools-temporary-css').remove();
-  }
+  };
 
   /**
    * Display loading
@@ -334,7 +339,7 @@
       output: Drupal.theme(Drupal.CTools.Modal.currentSettings.throbberTheme),
       title: Drupal.CTools.Modal.currentSettings.loadingText
     });
-  }
+  };
 
   /**
    * Find a URL for an AJAX button.
@@ -590,6 +595,7 @@
       $('body').unbind( 'keydown', modalTabTrapHandler );
       $('.close', $modalHeader).unbind('click', modalContentClose);
       $(document).unbind('keydown', modalEventEscapeCloseHandler);
+      $(document).trigger('CToolsCloseModalBehaviors', $('#modalContent'));
       $(document).trigger('CToolsDetachBehaviors', $('#modalContent'));
 
       // Closing animation.
@@ -675,7 +681,7 @@
     var $modalContent = $('#modalContent');
     var $modalHeader = $modalContent.find('.modal-header');
     $('.close', $modalHeader).unbind('click', modalContentClose);
-    $('body').unbind('keypress', modalEventEscapeCloseHandler);
+    $(document).unbind('keydown', modalEventEscapeCloseHandler);
     $(document).trigger('CToolsDetachBehaviors', $modalContent);
 
     // jQuery magic loop through the instances and run the animations or removal.

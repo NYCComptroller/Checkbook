@@ -12,7 +12,8 @@ class ContractsWidgetVisibilityService {
      * @param string $widget
      * @return string
      */
-    static function getWidgetVisibility($widget) {
+    public static function getWidgetVisibility(string $widget): ?string
+    {
         $dashboard = RequestUtilities::get('dashboard');
         $category = ContractsParameters::getContractCategory();
         $view = NULL;
@@ -23,10 +24,11 @@ class ContractsWidgetVisibilityService {
                 if(RequestUtilities::get('agency')) {
                     if($category === 'expense'){
                         if(RequestUtilities::isEDCPage()){
-                            if(RequestUtilities::get('vendor'))
-                                $view = 'contracts_departments_view';
-                            else
-                                $view = 'oge_contracts_departments_view';
+                            if(RequestUtilities::get('vendor')) {
+                              $view = 'contracts_departments_view';
+                            }else {
+                              $view = 'oge_contracts_departments_view';
+                            }
                         }else{
                             if(($dashboard == NULL || $dashboard == 'mp') && RequestUtilities::get('agency')){
                                 $view = 'contracts_departments_view';

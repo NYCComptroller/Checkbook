@@ -6,52 +6,50 @@
  * Time: 4:55 PM
  */
 
-require_once(__DIR__ . '/../constants/Constants.php');
-
+module_load_include('php', 'checkbook_project', 'customclasses/constants/Constants.php');
 class PayrollUtil {
-
-    static function getEmploymentTypeByAmountBasisId($amount_basis_id){
-        $type_of_employment = $amount_basis_id == 1 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
-        return $type_of_employment;
+  /**
+   * @param $amount_basis_id
+   * @return string
+   */
+    public static function getEmploymentTypeByAmountBasisId($amount_basis_id): string
+    {
+        return $amount_basis_id == 1 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
     }
 
     /**
      * Function updates the current payroll facet data, maps amount_basis_id from the database to the Payroll Type
-     *
      * @param $node
      * @return array
      */
-    static function updatePayrollTypeFacetData($node) {
-
+    public static function updatePayrollTypeFacetData($node): array
+    {
         $data = array();
         $count = 0;
         foreach($node->data as $row) {
-            if($row['payroll_type'] == PayrollType::$SALARIED) {
-                $new_row = array(
-                    'amount_basis_id_amount_basis_id' => '1',
-                    'payroll_type' => $row['payroll_type'],
-                    'txcount' => $row['txcount']
-                );
-                array_push($data, $new_row);
-            }
-            else {
-                $count = $count+$row['txcount'];
-            }
+          if($row['payroll_type'] == PayrollType::$SALARIED) {
+              $new_row = array(
+                  'amount_basis_id_amount_basis_id' => '1',
+                  'payroll_type' => $row['payroll_type'],
+                  'txcount' => $row['txcount']
+              );
+              array_push($data, $new_row);
+          } else {
+              $count = $count+$row['txcount'];
+          }
         }
-
         if($count > 0){
-            array_push($data, array('amount_basis_id_amount_basis_id' => '2~3',
-                'payroll_type' => PayrollType::$NON_SALARIED,
-                'txcount' => $count
-            ));
+          array_push($data, array('amount_basis_id_amount_basis_id' => '2~3',
+              'payroll_type' => PayrollType::$NON_SALARIED,
+              'txcount' => $count
+          ));
         }
-
         return $data;
     }
 
-    static function updateRateTypeFacetData($node) {
-
-        $data = array();
+    public static function updateRateTypeFacetData($node): array
+    {
+      $data = array();
         foreach($node->data as $row) {
             if($row['amount_basis_id_amount_basis_id'] == 2) {
                 $new_row = array(
@@ -70,9 +68,6 @@ class PayrollUtil {
                 array_push($data, $new_row);
             }
         }
-
-
-
         return $data;
     }
 
@@ -80,11 +75,11 @@ class PayrollUtil {
      * Checks the current URL to determine if this is the title landing page.
      * @return bool
      */
-    static function isTitleLandingPage(){
-        $http_ref = $_SERVER['HTTP_REFERER'];
-        $current_url = $_GET['q'];
-        $title_landing_page = preg_match('/title_landing/',$current_url) || preg_match('/title_landing/',$http_ref);
-        return $title_landing_page;
+    public static function isTitleLandingPage(): bool
+    {
+        $httpRef = $_SERVER['HTTP_REFERER'];
+        $currentUrl = $_GET['q'];
+        return preg_match('/title_landing/',$currentUrl) || preg_match('/title_landing/',$httpRef);
     }
 
     /**
@@ -92,13 +87,13 @@ class PayrollUtil {
      * @param $civil_service_title_code
      * @return string
      */
-    static function getTitleByCode($civil_service_title_code) {
+    public static function getTitleByCode($civil_service_title_code): string
+    {
         $data_source = Datasource::getCurrent();
         $title = "";
         $sql = "SELECT civil_service_title
                 FROM lookup_civil_service_title
                 WHERE civil_service_title_code = {$civil_service_title_code}";
-
         try {
             $result = _checkbook_project_execute_sql_by_data_source($sql,$data_source);
             $title = $result[0]['civil_service_title'];
@@ -117,8 +112,8 @@ class PayrollUtil {
      * @param null $title
      * @return int|null
      */
-    static function getSalariedEmployeeCount($year, $year_type, $agency_id = null, $title = null) {
-
+    public static function getSalariedEmployeeCount($year, $year_type, $agency_id = null, $title = null): ?int
+    {
         $data_source = Datasource::getCurrent();
         $employee_count = null;
         $sub_query_where = "WHERE fiscal_year_id = '$year' AND type_of_year = '$year_type'";
@@ -143,17 +138,14 @@ class PayrollUtil {
                 AND latest_emp.type_of_year = emp.type_of_year
                 AND type_of_employment = 'Salaried'
                 {$where}";
-//        log_error('getSalariedEmployeeCount:' .$sql);
-
         try {
             $result = _checkbook_project_execute_sql_by_data_source($sql,$data_source);
-            $employee_count= (int)$result[0]['record_count'];
+            $employee_count = (int)$result[0]['record_count'];
         }
         catch (Exception $e) {
             log_error("Error in function getEmployeeCount() \nError getting data from controller: \n" . $e->getMessage());
         }
-
-        return isset($employee_count) ? $employee_count : 0;
+        return $employee_count ?? 0;
     }
 
     /**
@@ -163,10 +155,11 @@ class PayrollUtil {
      * @param null $title
      * @return array
      */
-    static function getAgencyEmployeeCountByType($year, $year_type, $title = null) {
+    public static function getAgencyEmployeeCountByType($year, $year_type, $title = null): array
+    {
         $data_source = Datasource::getCurrent();
+        $where = $sub_query_where = "";
 
-        $where = $sub_query_where = $agency_select = $latest_emp_where = "";
         if(isset($year)) {
             $where .= $where == "" ? "WHERE emp.fiscal_year_id = $year" : " AND emp.fiscal_year_id = $year";
             $sub_query_where .= $sub_query_where == "" ? "WHERE fiscal_year_id = $year" : " AND fiscal_year_id = $year";
@@ -234,11 +227,9 @@ class PayrollUtil {
                 emp.type_of_year,
                 emp.agency_id
     ";
-//        log_error('getAgencyEmployeeCountByType:' .$query);
         $employee_totals = array();
         try {
             $result = _checkbook_project_execute_sql_by_data_source($query,$data_source);
-
             foreach ($result as $row) {
                 $employee_totals[$row['agency_id']] = array(
                     'total_salaried_employees'=>$row['total_salaried_employees'],
@@ -251,8 +242,12 @@ class PayrollUtil {
         return $employee_totals;
     }
 
-    static function getDataByPayFrequency($pay_frequency, $array) {
-
+  /**
+   * @param $pay_frequency
+   * @param $array
+   * @return mixed|null
+   */
+    public static function getDataByPayFrequency($pay_frequency, $array) {
         foreach($array as $data) {
             if($data['pay_frequency'] == $pay_frequency) {
                 return $data;
@@ -261,20 +256,27 @@ class PayrollUtil {
         return null;
     }
 
-    static function getTitleByEmployeeId($employeeId,$agency_id,$year_type,$year){
+  /**
+   * @param $employeeId
+   * @param $agency_id
+   * @param $year_type
+   * @param $year
+   * @return mixed
+   */
+    public static function getTitleByEmployeeId($employeeId,$agency_id,$year_type,$year){
         $data_source = Datasource::getCurrent();
         $where = "WHERE fiscal_year_id = $year AND type_of_year = '$year_type'";
         $where .= isset($agency_id) ? " AND agency_id = $agency_id" : "";
         $where .= isset($employeeId) ? " AND employee_id = $employeeId" : "";
         $query="select s1.pay_date,
           s1.civil_service_title_code,
-          s1.civil_service_title 
+          s1.civil_service_title
         from aggregateon_payroll_employee_agency s1
         inner join
         (
           select max(pay_date) pay_date,
           employee_id
-          from aggregateon_payroll_employee_agency 
+          from aggregateon_payroll_employee_agency
             {$where}
           group by employee_id
         ) s2
@@ -291,7 +293,12 @@ class PayrollUtil {
         }
     }
 
-    static function getPayrollTitlebyType($type){
+  /**
+   * @param $type
+   * @return string
+   */
+    public static function getPayrollTitlebyType($type): string
+    {
       $title = '';
       switch($type){
         case "nonsalaried":
@@ -301,7 +308,11 @@ class PayrollUtil {
       return $title;
     }
 
-    static function getPayrollType(){
+  /**
+   * @return string
+   */
+    public static function getPayrollType(): string
+    {
       $URL =  $_SERVER['HTTP_REFERER'];
       $payroll_type = RequestUtil::getRequestKeyValueFromURL("payroll_type", $URL);
       if($payroll_type){
@@ -312,7 +323,12 @@ class PayrollUtil {
       }
     }
 
-    static function getAmountUrl($row){
+  /**
+   * @param $row
+   * @return string
+   */
+    public static function getAmountUrl($row): string
+    {
       $landingPageUrl = '/payroll'.((RequestUtilities::getRequestParamValue(UrlParameter::AGENCY) || DataSource::isNYCHA()) ? '/agency_landing' : '')
         . '/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . _checkbook_project_get_url_param_string('datasource')
         . ((DataSource::isNYCHA()) ? '/agency/' . $row['agency_id'] : '');
@@ -323,7 +339,12 @@ class PayrollUtil {
       return $landingPageUrl . $bottomUrl;
     }
 
-    static function getAnnualSalaryLink($row){
+  /**
+   * @param $row
+   * @return string
+   */
+    public static function getAnnualSalaryLink($row): string
+    {
       if($row['amount_basis_id'] === 1){
         $url = self::getAmountUrl($row);
         $link = '<a href='. $url . '>'. $row['formatted_salary_amount'] .'</a>';
@@ -333,31 +354,43 @@ class PayrollUtil {
       }
     }
 
-  static function getNonSalaryLink($row){
+  /**
+   * @param $row
+   * @return string
+   */
+  public static function getNonSalaryLink($row): string
+  {
     if($row['amount_basis_id'] === 1){
       return'-';
     }else{
       $url = self::getAmountUrl($row);
-      $link = '<a href='. $url . '>'. $row['formatted_non_salary_amount'] .'</a>';
-      return $link;
+      return '<a href='. $url . '>'. $row['formatted_non_salary_amount'] .'</a>';
     }
   }
 
-  static function getDailyWageLink($row){
+  /**
+   * @param $row
+   * @return string
+   */
+  public static function getDailyWageLink($row): string
+  {
     if($row['amount_basis_id'] === 2 ){
       $url = self::getAmountUrl($row);
-      $link = '<a href='. $url . '>'. $row['formatted_daily_wage_amount'] .'</a>';
-      return $link;
+      return '<a href='. $url . '>'. $row['formatted_daily_wage_amount'] .'</a>';;
     }else{
       return'-';
     }
   }
 
-  static function getHourlyRateLink($row){
+  /**
+   * @param $row
+   * @return string
+   */
+  public static function getHourlyRateLink($row): string
+  {
     if($row['amount_basis_id'] === 3 ){
       $url = self::getAmountUrl($row);
-      $link = '<a href='. $url . '>'. $row['formatted_hourly_rate_amount'] .'</a>';
-      return $link;
+      return '<a href='. $url . '>'. $row['formatted_hourly_rate_amount'] .'</a>';;
     }else{
       return'-';
     }

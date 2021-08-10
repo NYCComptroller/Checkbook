@@ -12,9 +12,9 @@ class NychaSpendingUrlService{
      * @param $parameters
      * @return string
      */
-    static function getFooterUrl($parameters = null)
+    public static function getFooterUrl($parameters = null): string
     {
-        $url = "/panel_html/nycha_spending_transactions/nycha_spending/transactions"
+        return "/panel_html/nycha_spending_transactions/nycha_spending/transactions"
             . RequestUtilities::buildUrlFromParam('year')
             . RequestUtilities::buildUrlFromParam('category')
             . RequestUtilities::buildUrlFromParam('agency')
@@ -22,21 +22,19 @@ class NychaSpendingUrlService{
             . RequestUtilities::buildUrlFromParam('fundsrc')
             . RequestUtilities::buildUrlFromParam('industry')
             . RequestUtilities::buildUrlFromParam('datasource');
-        return $url;
     }
 
-    /**
-     * Returns NYCHA Spending Landing page URL
-     * @param $urlParamName
-     * @param $urlParamValue
-     * @param $yearId parameter
-     * @return string
-     */
-    static function generateLandingPageUrl($urlParamName, $urlParamValue, $yearId = null)
+  /**
+   * @param $urlParamName
+   * @param $urlParamValue
+   * @param null $yearId
+   * @return string
+   */
+    public static function generateLandingPageUrl($urlParamName, $urlParamValue, $yearId = null): string
     {
         $yearId = (isset($yearId)) ? $yearId : RequestUtilities::getRequestParamValue('year');
         $yearURL = '/year/'. ((isset($yearId)) ? $yearId : CheckbookDateUtil::getCurrentFiscalYearId(Datasource::NYCHA));
-        $url = '/nycha_spending'
+        return '/nycha_spending'
             . $yearURL
             . RequestUtilities::buildUrlFromParam('category')
             . RequestUtilities::buildUrlFromParam('agency')
@@ -45,18 +43,17 @@ class NychaSpendingUrlService{
             . RequestUtilities::buildUrlFromParam('industry')
             . RequestUtilities::buildUrlFromParam('datasource')
             . '/'.$urlParamName.'/'. $urlParamValue;
-
-        return $url;
     }
 
-    /* Gets the YTD Spending link in a generic way
+    /** Gets the YTD Spending link in a generic way
     * @param $dynamic_parameter - custom dynamic parameters to be used in the URL
-    * @param null $legacy_node_id
+    * @param $widget
     * @return string
-    */
-      static function ytdSpendingUrl($dynamic_parameter, $widget) {
-        $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
-        $url = "/panel_html/nycha_spending_transactions/nycha_spending/transactions"
+   */
+    public static function ytdSpendingUrl($dynamic_parameter, $widget): string
+      {
+        $dynamic_parameter = $dynamic_parameter ?? '';
+        return "/panel_html/nycha_spending_transactions/nycha_spending/transactions"
           . RequestUtilities::buildUrlFromParam('year')
           . RequestUtilities::buildUrlFromParam('issue_date')
           . RequestUtilities::buildUrlFromParam('category')
@@ -67,48 +64,49 @@ class NychaSpendingUrlService{
           . RequestUtilities::buildUrlFromParam('datasource')
           . '/widget/'. $widget
           . $dynamic_parameter;
-
-          return $url;
       }
 
-  /* Gets the issue date Spending link in a generic way
-* @param $dynamic_parameter - custom dynamic parameters to be used in the URL
-* @param null $legacy_node_id
-* @return string
-*/
-  static function idateSpendingUrl($dynamic_parameter,$year_parameter, $widget) {
-    $url = drupal_get_path_alias($_GET['q']);
-    $year_parameter = isset($year_parameter) ? $year_parameter : '';
-    $category = $vendor = RequestUtilities::buildUrlFromParam('category');
+  /**
+   * @param $dynamic_parameter
+   * @param $year_parameter
+   * @param $widget
+   * @return string
+   */
+  public static function idateSpendingUrl($dynamic_parameter,$year_parameter, $widget): string
+  {
+    $year_parameter = $year_parameter ?? '';
+    $category = RequestUtilities::buildUrlFromParam('category');
     $category = str_replace("category", "category_inv", $category);
-    $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
-    $url = "/panel_html/nycha_spending_transactions/nycha_spending/transactions"
+    $dynamic_parameter = $dynamic_parameter ?? '';
+    return "/panel_html/nycha_spending_transactions/nycha_spending/transactions"
       . RequestUtilities::buildUrlFromParam('datasource')
       . $year_parameter.$category
-      //. RequestUtilities::buildUrlFromParam('category')
       . RequestUtilities::buildUrlFromParam('vendor')
       . '/widget/'. $widget
       . $dynamic_parameter;
-    return $url;
-  }
-      /* Gets the Invoice amount Spending link in a generic way for NYCHA Contracts
-    * @param $dynamic_parameter - custom dynamic parameters to be used in the URL
-    * @param null $legacy_node_id
-    * @return string
-    */
-      static function invContractSpendingUrl($dynamic_parameter = null , $widget,$agreement_type = null,$tcode = null ) {
+    }
+
+    /** Gets the Invoice amount Spending link in a generic way for NYCHA Contracts
+   * @param null $dynamic_parameter
+   * @param $widget
+   * @param null $agreement_type
+   * @param null $tcode
+   * @return string
+   */
+     public static function invContractSpendingUrl($dynamic_parameter = null , $widget = null,$agreement_type = null, $tcode = null ): string
+      {
         $url = drupal_get_path_alias($_GET['q']);
         $year = RequestUtil::getRequestKeyValueFromURL('year', $url);
         $vendor = RequestUtilities::buildUrlFromParam('vendor');
         $industry = RequestUtilities::buildUrlFromParam('industry');
         $vendor = str_replace("vendor", "vendor_inv", $vendor);
         $industry = str_replace("industry", "industry_inv", $industry);
-        $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
+        $dynamic_parameter = $dynamic_parameter ?? '';
         $syear = "/syear/".$year;
-        $agreement_type = isset($agreement_type) ? $agreement_type : '';
+        $agreement_type = $agreement_type ?? '';
         $newwindow='/newwindow'; // open content in new window and also strip menu contents
-        $tcode = isset($tcode) ? $tcode : '';
-        $url = "/nycha_spending/transactions"
+        $tcode = $tcode ?? '';
+        return "/nycha_spending/transactions"
           . RequestUtilities::buildUrlFromParam('year')
           .$vendor.$industry
           . RequestUtilities::buildUrlFromParam('category')
@@ -121,24 +119,25 @@ class NychaSpendingUrlService{
           . $syear
           . '/widget/'. $widget
           . $dynamic_parameter.$agreement_type.$tcode.$newwindow;
-
-        return $url;
       }
-  /* Gets the Invoice amount Spending link in a generic way for NYCHA Contracts
-* @param $dynamic_parameter - custom dynamic parameters to be used in the URL
-* @param null $legacy_node_id
-* @return string
-*/
-  static function invIDContractSpendingUrl($dynamic_parameter = null , $widget,$agreement_type = null ,$tcode =null) {
+  /** Gets the Invoice amount Spending link in a generic way for NYCHA Contracts
+   * @param null $dynamic_parameter
+   * @param null $widget
+   * @param null $agreement_type
+   * @param null $tcode
+   * @return string
+   */
+  public static function invIDContractSpendingUrl($dynamic_parameter = null , $widget = null, $agreement_type = null ,$tcode =null): string
+  {
     $vendor = RequestUtilities::buildUrlFromParam('vendor');
     $industry = RequestUtilities::buildUrlFromParam('industry');
     $vendor = str_replace("vendor", "vendor_inv", $vendor);
     $industry = str_replace("industry", "industry_inv", $industry);
-    $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
-    $agreement_type = isset($agreement_type) ? $agreement_type : '';
+    $dynamic_parameter = $dynamic_parameter ?? '';
+    $agreement_type = $agreement_type ?? '';
     $newwindow='/newwindow'; // open content in new window and also strip menu contents
-    $tcode = isset($tcode) ? $tcode : '';
-    $url = "/nycha_spending/transactions"
+    $tcode = $tcode ?? '';
+    return "/nycha_spending/transactions"
       .$vendor.$industry
       . RequestUtilities::buildUrlFromParam('category')
       . RequestUtilities::buildUrlFromParam('agency')
@@ -149,19 +148,20 @@ class NychaSpendingUrlService{
       . RequestUtilities::buildUrlFromParam('datasource')
       . '/widget/'. $widget
       . $dynamic_parameter.$agreement_type.$tcode.$newwindow;
-    return $url;
   }
 
-      /** Builds Contract ID link for Spending widgets
-       * @param $contract_id contract number
-       * @param $year_id year parameter
-       ***/
-      static function generateContractIdLink($contract_id, $year_id = null){
+      /**
+     * Builds Contract ID link for Spending widgets
+     * @param $contract_id
+     * @param null $year_id
+     * @return string
+     */
+      public static function generateContractIdLink($contract_id, $year_id = null): string
+      {
         $year_id = (isset($year_id)) ? $year_id : RequestUtilities::getRequestParamValue('year');
         $year_id = (isset($year_id)) ? $year_id : CheckbookDateUtil::getCurrentFiscalYear(Datasource::NYCHA);
         $class = "new_window";
         $url ='/nycha_contract_details' . '/year/'.$year_id.'/contract/' . $contract_id .'/newwindow';
-        $value = "<a class='{$class}' href='{$url}'>{$contract_id}</a>";
-        return $value;
+        return "<a class='{$class}' href='{$url}'>{$contract_id}</a>";
       }
 }

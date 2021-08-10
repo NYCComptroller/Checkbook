@@ -38,15 +38,16 @@ abstract class CheckbookDomain {
     const NYCHA_BUDGET = "nycha_budget";
     const NYCHA_REVENUE = "nycha_revenue";
 
-    public static function getCurrent() {
-
+  /**
+   * @return string|null
+   */
+    public static function getCurrent(): ?string
+    {
         $urlPath = '//' . $_GET['q'];
-
         if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
             // that's AJAX
             $urlPath = '//' . $_SERVER['HTTP_REFERER'];
         }
-
         $domain = null;
         $contracts_endpoints = array(
             '/contracts_landing/',
@@ -117,7 +118,11 @@ abstract class Datasource {
     const SOLR_NYCHA = 'nycha';
     const EDC_TITLE = "NYCEDC";
 
-     public static function getCurrent() {
+  /**
+   * @return string
+   */
+     public static function getCurrent(): string
+     {
         $datasource = RequestUtilities::get(UrlParameter::DATASOURCE);
         switch($datasource) {
             case self::OGE: return self::OGE;
@@ -125,38 +130,63 @@ abstract class Datasource {
             default: return self::CITYWIDE;
         }
     }
-    public static function isOGE() {
+
+  /**
+   * @return bool
+   */
+    public static function isOGE(): bool
+    {
         return self::getCurrent() == Datasource::OGE;
     }
 
-    public static function isNYCHA() {
+  /**
+   * @return bool
+   */
+    public static function isNYCHA(): bool
+    {
         return (self::getCurrent() == Datasource::NYCHA || self::smartSearchDataSource() == Datasource::NYCHA);
     }
 
-    public static function getNYCHAUrl() {
+  /**
+   * @return string
+   */
+    public static function getNYCHAUrl(): string
+    {
         $nychaId = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id'), array('agency_short_name' => 'HOUSING AUTH'));
         $path =  (self::getCurrent() == Datasource::NYCHA) ? '/agency/' . $nychaId[0]['agency_id'] : '';
         return $path;
     }
+
+  /**
+   * @return mixed
+   */
     public static function getNYCHAId() {
         $nychaId = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id'), array('agency_short_name' => 'HOUSING AUTH'));
         $agency_id= $nychaId[0]['agency_id'];
         return $agency_id;
     }
 
+  /**
+   * @return mixed
+   */
     public static function getEDCId() {
       $edcId = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id'), array('agency_short_name' => 'NYC EDC'));
-      $agency_id = $edcId[0]['agency_id'];
-      return $agency_id;
+      return $edcId[0]['agency_id'];
     }
 
+  /**
+   * @return mixed
+   */
     public static function getEDCCode() {
       $edcCode = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_code'), array('agency_short_name' => 'NYC EDC'));
-      $agency_code = $edcCode[0]['agency_code'];
-      return $agency_code;
+      return $edcCode[0]['agency_code'];
     }
 
-    public static function smartSearchDataSource(){
+  /**
+   * @return string
+   */
+    public static function smartSearchDataSource(): string
+    {
       $solr_datasource = _checkbook_get_datasource();
       switch($solr_datasource) {
         case self::SOLR_EDC: return self::OGE;
@@ -167,7 +197,6 @@ abstract class Datasource {
 }
 
 abstract class Dashboard {
-
     const CITYWIDE = "citywide";
     const OGE = "oge";
     const NYCHA = "nycha";
@@ -178,15 +207,20 @@ abstract class Dashboard {
     const CURRENT = "current_year";
     const PREVIOUS = "previous_year";
 
-     public static function getCurrent() {
+  /**
+   * @return string
+   */
+     public static function getCurrent(): string
+     {
         $domain = CheckbookDomain::getCurrent();
         $year = RequestUtilities::get(UrlParameter::YEAR);
 
         if($domain == CheckbookDomain::REVENUE){
-            if($year >= RequestUtilities::getCurrentYearID())
-                return self::CURRENT;
-            else
-                return self::PREVIOUS;
+            if($year >= RequestUtilities::getCurrentYearID()) {
+              return self::CURRENT;
+            }else {
+              return self::PREVIOUS;
+            }
         }else{
             $dashboard = DashboardParameter::getCurrent();
             switch($dashboard) {
@@ -195,35 +229,56 @@ abstract class Dashboard {
                 case DashboardParameter::MWBE_SUB_VENDORS: return self::MWBE_SUB_VENDORS;
                 case DashboardParameter::MWBE: return self::MWBE;
                 default:
-                    if(Datasource::isOGE())
-                        return self::OGE;
-                    else if(Datasource::isNYCHA())
-                        return self::NYCHA;
-                    else
-                        return self::CITYWIDE;
+                    if(Datasource::isOGE()) {
+                      return self::OGE;
+                    }else if(Datasource::isNYCHA()) {
+                      return self::NYCHA;
+                    }else {
+                      return self::CITYWIDE;
+                    }
             }
         }
      }
 
-    public static function isOGE() {
+  /**
+   * @return bool
+   */
+    public static function isOGE(): bool
+    {
         return self::getCurrent() == self::OGE;
     }
 
-    public static function isNYCHA() {
+  /**
+   * @return bool
+   */
+    public static function isNYCHA(): bool
+    {
         return self::getCurrent() == self::NYCHA;
     }
 
-     public static function isMWBE() {
+  /**
+   * @return bool
+   */
+     public static function isMWBE(): bool
+     {
         $dashboard = self::getCurrent();
         return $dashboard == self::MWBE || $dashboard == self::SUB_VENDORS_MWBE || $dashboard == self::MWBE_SUB_VENDORS;
      }
 
-     public static function isSubDashboard() {
+  /**
+   * @return bool
+   */
+     public static function isSubDashboard(): bool
+     {
         $dashboard = self::getCurrent();
         return $dashboard == self::SUB_VENDORS || $dashboard == self::SUB_VENDORS_MWBE || $dashboard == self::MWBE_SUB_VENDORS;
      }
 
-      public static function isPrimeDashboard() {
+  /**
+   * @return bool
+   */
+      public static function isPrimeDashboard(): bool
+      {
         $dashboard = self::getCurrent();
         return $dashboard == self::MWBE || $dashboard == self::CITYWIDE || $dashboard == self::OGE || $dashboard == self::NYCHA;
       }
@@ -236,6 +291,9 @@ abstract class DashboardParameter {
     const SUB_VENDORS_MWBE = "sp";
     const MWBE_SUB_VENDORS = "ms";
 
+  /**
+   * @return array|string|null
+   */
      public static function getCurrent() {
         return RequestUtilities::get(UrlParameter::DASHBOARD);
     }
@@ -248,9 +306,14 @@ abstract class PageType {
     const ADVANCED_SEARCH_PAGE = "advanced_search_page";
     const SMART_SEARCH_PAGE = "smart_search_page";
     const TRENDS_PAGE = "trends_page";
-    public static function getCurrent() {
-        $urlPath =  isset($_GET['q']) ? $_GET['q'] : FALSE;
-        $ajaxPath = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : FALSE;
+
+  /**
+   * @return string|null
+   */
+    public static function getCurrent(): ?string
+    {
+        $urlPath = $_GET['q'] ?? FALSE;
+        $ajaxPath = $_SERVER['HTTP_REFERER'] ?? FALSE;
         $pageType = null;
         if(preg_match("/trends/", $urlPath) || preg_match("/featured_trends/", $urlPath)){
           return self::TRENDS_PAGE;
@@ -334,11 +397,19 @@ abstract class PageType {
         return $pageType;
     }
 
-    public static function isSpendingAdvancedSearch() {
+  /**
+   * @return bool
+   */
+    public static function isSpendingAdvancedSearch(): bool
+    {
         return static::getCurrent() == self::ADVANCED_SEARCH_PAGE && CheckbookDomain::getCurrent() == CheckbookDomain::SPENDING;
     }
 
-     public static function isContractsAdvancedSearch() {
+  /**
+   * @return bool
+   */
+     public static function isContractsAdvancedSearch(): bool
+     {
         return static::getCurrent() == self::ADVANCED_SEARCH_PAGE && CheckbookDomain::getCurrent() == CheckbookDomain::CONTRACTS;
      }
 }

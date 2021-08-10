@@ -1994,7 +1994,7 @@ function checkbook_datafeeds_download_notification($key, &$message, $params)
   $user_criteria = $params['user_criteria'];
   $search_criteria = "";
   foreach ($user_criteria['Formatted'] as $key => $value) {
-    $search_criteria .= "{$key}: {$value} \n";
+    $search_criteria .= "{$key}: {$value} \t\r\n";
   }
   $variables['@tracking_num'] = $params['tracking_num'];
   $variables['@expiration_date'] = $params['expiration_date'];
@@ -2023,7 +2023,7 @@ function checkbook_datafeeds_confirmation_notification($key, &$message, $params)
   $user_criteria = $params['user_criteria'];
   $search_criteria = "";
   foreach ($user_criteria['Formatted'] as $key => $value) {
-    $search_criteria .= "{$key}: {$value} \r\n";
+    $search_criteria .= "{$key}: {$value} \t\r\n";
   }
   $email = $params['email'];
   if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
