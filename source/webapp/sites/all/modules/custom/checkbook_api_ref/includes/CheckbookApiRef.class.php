@@ -154,7 +154,6 @@ class CheckbookApiRef
       $file_info['old_filesize'] = file_exists($old_file) ? filesize($old_file): filesize($file);
 
       try{
-        LogHelper::log_info("File Nitish: ".$new_file);
         $file_info['new_filesize'] = filesize($new_file);
         $file_info['new_timestamp'] = filemtime($new_file);
         if ($file_info['new_filesize']) {
