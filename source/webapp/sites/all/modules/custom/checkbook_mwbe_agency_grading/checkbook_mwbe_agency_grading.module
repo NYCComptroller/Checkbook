@@ -297,38 +297,57 @@ function _mwbe_agency_grading_current_cats(){
 		return array('aa_mwbe','ba_mwbe','ha_mwbe','w_mwbe');
 	}
 
-} 
+}
+
+/**
+ * Function to map the csv header with the filter parameters
+ */
+function _mwbe_agency_grading_current_csv_header(): string
+{
+  $mwbe_cats = _mwbe_agency_grading_current_cats();
+  $title = array(
+    "aa_mwbe" => "Asian American",
+    "w_mwbe" => "Women",
+    "ba_mwbe" => "Black American",
+    "ha_mwbe" => "Hispanic American",
+    "na_mwbe" => "Native",
+    "em_mwbe" => "Emerging",
+    "n_mwbe" => "Non M/WBE",
+  );
+
+  foreach($mwbe_cats as $mwbe_cat){
+    $csv_header .= $title[$mwbe_cat] .",";
+  }
+  $csv_header = "Agency," . $csv_header ."M/WBE Spending\n";
+  return $csv_header;
+}
 
 
 function _checkbook_mwbe_agency_grading_csv(){
 
-	$agencies_data =  _checkbook_mwbe_agency_grading_getdata();
-	$data = "Agency, Asian American, Black American, Women, Hispanic American, M/WBE Spending, Non M/WBE";
-    $mwbe_cats = _mwbe_agency_grading_current_cats();
-	foreach($agencies_data as $row){
-        $total = 0;
-        foreach($mwbe_cats as $mwbe_cat){
-            $total += $row[$mwbe_cat];
-        }
-        if($total > 0){
-            $data .= PHP_EOL;
-            $data .=  $row['agency_name'];
-            $data .=  "," . $row['aa_mwbe'];
-            $data .=  "," . $row['ba_mwbe'];
-            $data .=  "," . $row['w_mwbe'];
-            $data .=  "," . $row['ha_mwbe'];
-            $data .=  "," . $row['total_mwbe'];
-            $data .=  "," . $row['n_mwbe'];
+  $agencies_data =  _checkbook_mwbe_agency_grading_getdata();
+  $data =_mwbe_agency_grading_current_csv_header();
+  $mwbe_cats = _mwbe_agency_grading_current_cats();
 
-        }
+  foreach($agencies_data as $row) {
+    $total = 0;
+    $csv_data = $row['agency_name'] . ",";
+    foreach ($mwbe_cats as $mwbe_cat) {
+      $csv_data .= $row[$mwbe_cat] . ",";
+      $total += $row[$mwbe_cat];
     }
-	
+    $csv_data .= $row['total_mwbe'] . "\n";
+    if ($total > 0) {
+      $data .= $csv_data;
+    }
+  }
+
 	drupal_add_http_header("Content-Type", "text/csv");
 	drupal_add_http_header("Content-Length",strlen($data));
 	drupal_add_http_header("Content-Disposition", "attachment; filename=TransactionsData.csv");
 	drupal_add_http_header("Pragma", "cache");
 	drupal_add_http_header("Expires", "-1");
-	
+
 	echo ($data);
-	
+
 }
