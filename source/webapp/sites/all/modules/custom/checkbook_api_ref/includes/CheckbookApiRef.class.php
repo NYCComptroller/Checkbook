@@ -240,9 +240,9 @@ class CheckbookApiRef
     $first_monday_of_current_month = date('Y-m-d', strtotime("first monday of this month"));
 
     //If it is production, then run cron only on the first monday of the current month
-    if (isset($conf['CHECKBOOK_ENV']) && $conf['CHECKBOOK_ENV'] === 'PROD' && $today !== $first_monday_of_current_month) {
-      return false;
-    }
+    // if (isset($conf['CHECKBOOK_ENV']) && $conf['CHECKBOOK_ENV'] === 'PROD' && $today !== $first_monday_of_current_month) {
+    //   return false;
+    // }
 
     //If it is an internal environment, then run cron only on a Monday
     if (isset($conf['CHECKBOOK_ENV']) && $conf['CHECKBOOK_ENV'] === 'DEV' && variable_get(self::CRON_LAST_RUN_DRUPAL_VAR) == $current_week) {
