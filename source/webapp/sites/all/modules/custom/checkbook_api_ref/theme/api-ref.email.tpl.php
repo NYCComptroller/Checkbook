@@ -111,7 +111,7 @@
                 <th>
                     <?php echo $filename ?>.csv
                     <small>
-                        <?php echo($info['error'] ? '❌' : '✅'); ?>
+                        <?php echo($info['error'] ? '❌' : ''); ?>
                         <?php if($info['old_timestamp']):?>
                             <br /> Old file: <?php echo $info['old_timestamp'] ?>
                         <?php endif; ?>
