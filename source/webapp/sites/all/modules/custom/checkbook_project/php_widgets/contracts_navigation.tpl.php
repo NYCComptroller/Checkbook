@@ -43,7 +43,6 @@ if(preg_match('/contract\/all\/transactions/',$urlPath) || preg_match('/contract
     $contracts_advanced_search = true;
 }
 $has_vendor_parameter = preg_match('/\/vendor/',$_GET['q']);
-$has_mwbe_parameter = preg_match('/\/mwbe/',$_GET['q']);
 
 if($has_vendor_parameter && (!$contracts_advanced_search && !$spending_advanced_search)){
     $budget_link = l('<span class="nav-title">Budget</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') ,'',$options_disabled);
@@ -67,7 +66,7 @@ if($has_vendor_parameter && (!$contracts_advanced_search && !$spending_advanced_
     }
 }
 
-if($spending_amount  == 0 || (($has_vendor_parameter && $has_mwbe_parameter) && (!$contracts_advanced_search && !$spending_advanced_search))){
+if($spending_amount  == 0 || (($has_vendor_parameter && Dashboard::isMWBE()) && (!$contracts_advanced_search && !$spending_advanced_search))){
     $spending_amount = isset($spending_amount) ? $spending_amount:0;
     $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format($spending_amount  ,1,'$'),'',$options_disabled);
 }else{
@@ -77,7 +76,7 @@ if($spending_amount  == 0 || (($has_vendor_parameter && $has_mwbe_parameter) && 
 $current_dashboard = RequestUtilities::get("dashboard");
 
 if ($contract_amount > 0) {
-  if(($has_vendor_parameter && $has_mwbe_parameter) && (!$contracts_advanced_search && !$spending_advanced_search)) {
+  if(($has_vendor_parameter && Dashboard::isMWBE()) && (!$contracts_advanced_search && !$spending_advanced_search)) {
     $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format($contract_amount, 1, '$'), RequestUtil::getTopNavURL("contracts"), $options_disabled);
   }
   else {
@@ -88,7 +87,7 @@ if ($contract_amount > 0) {
   $contracts_url = RequestUtil::getContractsBottomSliderPath();
   if(isset($contracts_url)){
     $contracts_url = RequestUtil::getTopNavURL("contracts", $contracts_url);
-    if(($has_vendor_parameter && $has_mwbe_parameter) && (!$contracts_advanced_search && !$spending_advanced_search)){
+    if(($has_vendor_parameter && Dashboard::isMWBE()) && (!$contracts_advanced_search && !$spending_advanced_search)){
       $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), $contracts_url, $options_disabled);
     }
     else {

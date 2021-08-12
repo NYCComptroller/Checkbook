@@ -8,7 +8,7 @@ include_once 'includes/CheckbookRefFiles.class.php';
 function checkbook_api_ref_files_cron()
 {
     $CRF = new CheckbookRefFiles();
-    return $CRF->run_cron();
+    //return $CRF->run_cron();
 }
 
 /**
@@ -21,7 +21,7 @@ function checkbook_api_ref_files_cron()
 function checkbook_api_ref_files_mail($key, &$message, $params)
 {
     $CRF = new CheckbookRefFiles();
-    $CRF->mail($message);
+    //$CRF->mail($message);
 }
 
 /**
