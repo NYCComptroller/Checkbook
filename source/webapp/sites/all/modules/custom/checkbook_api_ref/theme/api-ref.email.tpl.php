@@ -72,6 +72,10 @@
             margin-left: auto;
             margin-right: auto;
         }
+        .ref-filename{
+            display: inline-block;
+            margin-bottom: 3%;
+        }
     </style>
 
 </head>
@@ -109,7 +113,9 @@
         <?php foreach($files as $filename => $info): ?>
             <tr class="<?php echo ((empty($c) || $c=='even')?($c = 'odd'):($c = 'even')) ?>">
                 <th>
-                    <?php echo $filename ?>.csv
+                    <div class="ref-filename">
+                        <?php echo $filename ?>.csv
+                    </div>
                     <small>
                         <?php echo($info['error'] ? '❌' : ''); ?>
                         <?php if($info['old_timestamp']):?>
