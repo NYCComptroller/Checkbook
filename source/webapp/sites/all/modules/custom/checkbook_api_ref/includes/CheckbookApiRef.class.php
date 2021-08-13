@@ -235,19 +235,19 @@ class CheckbookApiRef
     }
 
     $today = self::get_date('Y-m-d');
-    $current_week = self::get_date('W');
+    $monday_of_current_week = date('Y-m-d', strtotime("monday this week"));
     $cron_last_run_week = new DateTime(variable_get(self::CRON_LAST_RUN_DRUPAL_VAR));
     $cron_last_run_week = $cron_last_run_week->format("W");
     $current_hour = (int)self::get_date('H');
     $first_monday_of_current_month = date('Y-m-d', strtotime("first monday of this month"));
 
     //If it is staging or production environment, then run cron only on the first monday of every month
-    if (isset($conf['CHECKBOOK_ENV']) && ($conf['CHECKBOOK_ENV'] === 'PROD' || $conf['CHECKBOOK_ENV'] === 'STAGE') && $today !== $first_monday_of_current_month) {
+    if (isset($conf['CHECKBOOK_ENV']) && ($conf['CHECKBOOK_ENV'] === "PROD" || $conf['CHECKBOOK_ENV'] === "STAGE") && $today !== $first_monday_of_current_month) {
       return false;
     }
 
     //If it is an internal environment, then run cron only once every Monday
-    if (isset($conf['CHECKBOOK_ENV']) && $conf['CHECKBOOK_ENV'] === 'DEV' && $cron_last_run_week === $current_week) {
+    if (isset($conf['CHECKBOOK_ENV']) && $conf['CHECKBOOK_ENV'] === "DEV" && $today !== $monday_of_current_week) {
       return false;
     }
 
