@@ -255,6 +255,10 @@ class CheckbookApiRef
       return false;
     }
 
+    if ($current_hour < 9 || $current_hour > 10) {
+      return false;
+    }
+
     variable_set(self::CRON_LAST_RUN_DRUPAL_VAR, $today);
     return self::sendmail();
   }
