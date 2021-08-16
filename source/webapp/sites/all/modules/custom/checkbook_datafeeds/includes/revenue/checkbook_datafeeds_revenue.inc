@@ -44,7 +44,7 @@ function checkbook_datafeeds_revenue($form, &$form_state){
   );
 
   $data_source = $form_state['values']['datafeeds-revenue-domain-filter'] ?? Datasource::CITYWIDE;
-  //$form['datafeeds-revenue-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, Domain::$REVENUE);
+  $form['datafeeds-revenue-domain-filter'] = DatafeedsConfigUtil::dataSourceRadio($data_source, Domain::$REVENUE);
   //</editor-fold>
 
   $form['filter'] = array(
