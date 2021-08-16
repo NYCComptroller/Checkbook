@@ -320,13 +320,14 @@ class RequestUtil
                 $path = preg_replace('/\/dashboard\/[^\/]*/','',$path);
                 $path = preg_replace('/\/mwbe\/[^\/]*/','',$path);
             }else{
-                if(!stripos(' '.$path,'/mwbe/')) {
-                  $path .= RequestUtilities::buildUrlFromParam('mwbe');
-                }
-
               if(!stripos(' '.$path,'/dashboard/')) {
                 $path .= RequestUtilities::buildUrlFromParam('dashboard');
               }
+              //using RequestUtilities::buildUrlFromParam urlencodes mwbe parameter
+              if(!stripos(' '.$path,'/mwbe/')) {
+                  $mwbe_param = RequestUtilities::get('mwbe');
+                  $path .= '/mwbe/'.$mwbe_param;
+                }
             }
         }
         return $path;
