@@ -72,14 +72,12 @@
       disable_input($('#edit-expense-category'));
     }else{
       $('#edit-expense-category').addClass('loading');
-
       let year = 0;
       if ($('input:radio[name=date_filter]:checked').val() == 0) {
-        if(data_source =='checkbook'){
-        year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
-        }
-        else{
+        if(data_source =='checkbook_nycha'){
           year = ($('#edit-nycha-year').val()) ? $('#edit-nycha-year').val() : 0;
+        }else{
+          year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
         }
       }
       //We need agency filter only for citywide
