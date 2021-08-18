@@ -209,7 +209,7 @@ class MappingUtil {
      * @param null $minority_type_ids
      * @return string
      */
-    public static function getCurrenEthnicityName($minority_type_ids = null): string
+    public static function getCurrenEthnicityName($minority_type_ids = null)
     {
         $mwbe_url_params = $minority_type_ids ?? explode('~', RequestUtilities::get('mwbe'));
         foreach(self::$minority_type_category_map_multi_chart as $key=>$values){
