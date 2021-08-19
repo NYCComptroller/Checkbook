@@ -162,7 +162,7 @@ return $parameters;
 {"sClass":"number","sWidth":"120px","asSorting": [ "desc","asc" ]},
 {"sClass":"number pad-left","sWidth":"120px","asSorting": [ "desc","asc" ]},
 {"sClass":"text pad-left","sWidth":"225px","asSorting": [ "asc","desc" ]},
-{"sClass":"text","sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left","sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"135px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"135px","asSorting": [ "asc","desc" ]},
@@ -172,8 +172,8 @@ return $parameters;
 {"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]},
-{"sClass":"text","sWidth":"70px","asSorting": [ "asc","desc" ]},
-{"sClass":"text","sWidth":"70px","asSorting": [ "asc","desc" ]}
+{"sClass":"text width-70-percent-center header-no-left-padding","sWidth":"125px","asSorting": [ "asc","desc" ]},
+{"sClass":"text width-70-percent-center header-no-left-padding","sWidth":"83px","asSorting": [ "asc","desc" ]}
 ],
 
 "aaSorting":[[0,"desc"]],

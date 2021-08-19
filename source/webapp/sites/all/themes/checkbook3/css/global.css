@@ -2013,6 +2013,11 @@ td.text.width-90-percent-center div {
     text-align: center;
 }
 
+td.text.width-70-percent-center div {
+    width: 70%;
+    text-align: center;
+}
+
 td.margin-left-text-15 div{
     margin-left: 15px;
 }
@@ -2056,6 +2061,11 @@ td.endCol div,
 .outerTable td.endCol div{
     margin-right: 15px;
 }
+
+th.header-no-left-padding div span{
+    padding-left: 0 !important;
+}
+
 td.pad div{margin-left:5px;margin-right:5px;}
 
 /*class sub-cont-status*/
