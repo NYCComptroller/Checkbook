@@ -247,7 +247,8 @@ class CheckbookApiRef
     }
 
     //If it is an internal environment, then run cron only once every Monday
-    if (isset($conf['CHECKBOOK_ENV']) && $conf['CHECKBOOK_ENV'] === "DEV" && $today !== $monday_of_current_week) {
+    $internal_environments = array("DEV", "QA", "UAT");
+    if (isset($conf['CHECKBOOK_ENV']) && in_array($conf['CHECKBOOK_ENV'], $internal_environments) && $today !== $monday_of_current_week) {
       return false;
     }
 
