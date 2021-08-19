@@ -125,3 +125,8 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
+td.text.width-90-percent-center div {
+  width: 90%;
+  text-align: center;
+}
