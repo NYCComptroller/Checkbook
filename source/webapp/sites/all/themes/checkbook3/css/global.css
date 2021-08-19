@@ -2003,27 +2003,9 @@ td.number-center {
     text-align: center;
 }
 
-td.text.full-width-center div{
-    width: 100%;
-    text-align: center;
-}
-
-td.text.width-90-percent-center div {
-    width: 90%;
-    text-align: center;
-}
-
 td.text.width-70-percent-center div {
     width: 70%;
     text-align: center;
-}
-
-td.margin-left-text-15 div{
-    margin-left: 15px;
-}
-
-td.margin-left-text-25 div{
-    margin-left: 25px;
 }
 
 table.dataTable tr.even,
