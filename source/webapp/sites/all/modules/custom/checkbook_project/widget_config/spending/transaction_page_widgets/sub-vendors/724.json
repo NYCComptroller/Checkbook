@@ -208,8 +208,8 @@
             {"sClass":"text pad-left","sWidth":"200px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]}
+            {"sClass":"text pad-left-60","sWidth":"115px","asSorting":["asc","desc"]},
+            {"sClass":"text pad-left-30","sWidth":"100px","asSorting":["asc","desc"]}
         ],
          "aaSorting":[[6,"desc"]],
        		"sScrollX":"100%",
