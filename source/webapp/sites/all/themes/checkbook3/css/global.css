@@ -1896,6 +1896,14 @@ td.pad-left div{
     margin-left: 20px !important;
 }
 
+td.pad-left-30 div{
+    margin-left: 30px !important;
+}
+
+td.pad-left-60 div {
+    margin-left: 60px !important;
+}
+
 /* Begin - Overriding data table css for 634.json,653.json */
 .dataTable th.text-left,
 .dataTable th.text-left-no-padding {
