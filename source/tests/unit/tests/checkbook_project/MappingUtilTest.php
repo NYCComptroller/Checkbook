@@ -1,19 +1,13 @@
 <?php
 
-//include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_business_layer/checkbook_services/common/MinorityTypeService.php';
-include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/constants/util/MappingUtil.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/util/MappingUtil.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/constants/Constants.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/RequestUtil.php';
-include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/utilities/RequestUtilities.php';
-include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
-include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/constants/CommonConstants.php';
-include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/constants/SpendingConstants.php';
-
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class MinorityTypeServiceTest
+ * Class MappingUtilTest
  */
 class MappingUtilTest extends TestCase
 {
@@ -21,9 +15,10 @@ class MappingUtilTest extends TestCase
      * Tests getVendorTypeValue() function
      */
     public function test_getVendorTypeValue(){
-        $parameters['vendor_type'] = 'pv';
-        //$result = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
-        //$this->assertEquals('S~SM', $result);
+        $vendor_type = 'pv';
+        $result = MappingUtil::getVendorTypeValue(array($vendor_type));
+        $this->assertEquals('P', $result[0]);
+        $this->assertEquals('PM', $result[1]);
     }
 
     /**
@@ -86,24 +81,24 @@ class MappingUtilTest extends TestCase
      * Tests getCurrenEthnicityName() function
      */
     public function test_getCurrenEthnicityName(){
-        //$result = MappingUtil::getCurrenEthnicityName();
-        //$this->assertIsArray($result);
+        $result = MappingUtil::getCurrenEthnicityName(array('2'));
+        $this->assertEquals('Black American', $result);
     }
 
     /**
-     * Tests getCurrenEthnicityName() function
+     * Tests getaprv_sta_name() function
      */
-    public function test_isDefaultMWBEDashboard(){
-        //$result = MappingUtil::getCurrenEthnicityName();
-        //$this->assertIsArray($result);
+    public function test_getaprv_sta_name(){
+        $result = MappingUtil::getaprv_sta_name('6');
+        $this->assertEquals('No Subcontract Information Submitted', $result);
     }
 
     /**
-     * Tests getCurrenEthnicityName() function
+     * Tests getMixedVendorTypeNames() function
      */
-    public function test_getCurrentSubVendorsTopNavFilters(){
-        //$result = MappingUtil::getCurrentSubVendorsTopNavFilters();
-        //$this->assertIsArray($result);
+    public function test_getMixedVendorTypeNames(){
+        $result = MappingUtil::getMixedVendorTypeNames('P~PM');
+        $this->assertEquals('PRIME VENDOR', $result);
     }
 
 }
