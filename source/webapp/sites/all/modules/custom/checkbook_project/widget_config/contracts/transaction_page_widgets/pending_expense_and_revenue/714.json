@@ -220,8 +220,8 @@
         {"sClass":"text pad-left","sWidth": "155px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "130px","asSorting": [ "asc","desc" ]},
         {"sClass":"text pad-left","sWidth": "65px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text pad-left mwbe-col-data","sWidth": "155px","asSorting": [ "asc","desc" ]},
-        {"sClass":"text pad-left mwbe-col-data","sWidth": "131px","asSorting": [ "asc","desc" ]}
+        {"sClass":"text pad-left-60","sWidth": "155px","asSorting": [ "asc","desc" ]},
+        {"sClass":"text pad-left-60","sWidth": "131px","asSorting": [ "asc","desc" ]}
     ],
     "bInfo": true,
     "aaSorting": [[6,"desc"]],

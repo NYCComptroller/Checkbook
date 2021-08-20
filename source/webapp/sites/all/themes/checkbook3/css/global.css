@@ -2011,10 +2011,6 @@ td.number-center {
     text-align: center;
 }
 
-td.mwbe-col-data div {
-    margin-left: 60px !important;
-}
-
 table.dataTable tr.even,
 table.outerTable.ma-history tr.even{
     background-color: #f8f8f8;
