@@ -2003,11 +2003,6 @@ td.number-center {
     text-align: center;
 }
 
-td.text.width-70-percent-center div {
-    width: 70%;
-    text-align: center;
-}
-
 td.mwbe-col-data div {
     margin-left: 60px !important;
 }
@@ -2046,10 +2041,6 @@ td.endCol div,
 .outerTable th.endCol div,
 .outerTable td.endCol div{
     margin-right: 15px;
-}
-
-th.header-no-left-padding div span{
-    padding-left: 0 !important;
 }
 
 td.pad div{margin-left:5px;margin-right:5px;}
