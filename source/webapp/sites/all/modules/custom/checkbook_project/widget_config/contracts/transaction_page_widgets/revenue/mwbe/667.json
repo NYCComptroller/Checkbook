@@ -206,8 +206,8 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 {"sClass":"number","sWidth":"100px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"120px","asSorting": [ "asc","desc" ]},
 {"sClass":"text pad-left","sWidth":"120px","asSorting": [ "asc","desc" ]},
-{"sClass":"text pad-left width-90-percent-center","sWidth": "100px","asSorting": [ "asc","desc" ]},
-{"sClass":"text pad-left width-90-percent-center","sWidth": "100px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left-60","sWidth": "126px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left-30","sWidth": "98px","asSorting": [ "asc","desc" ]},
 {"bSortable":false,"sWidth":"10px"}
 ],
 
