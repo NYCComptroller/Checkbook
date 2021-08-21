@@ -142,9 +142,12 @@
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"disb_purpose"},
         {"labelAlias":"capital_project","column":"disb_reporting_code"},
         {"labelAlias":"spending_category","column":"disb_spending_category_name"},
+        {"label":"","column":""},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"disb_minority_type_id","exportColumn":"mwbe_category_name"},
+        {"label":"","column":""},
         {"labelAlias": "woman_owned_business","column":"is_women_owned"},
-        {"labelAlias": "emerging_business","column":"is_emerging"}
+        {"labelAlias": "emerging_business","column":"is_emerging"},
+        {"label":"","column":""}
     ],
     "exportColumnSqlOverride":[
         {
@@ -235,10 +238,13 @@
             {"bSortable":false,"sWidth":"50px"},
             {"sClass":"text","sWidth":"180px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]}
+            {"sClass":"number","sWidth":"165px","asSorting":["asc","desc"]},
+            {"bSortable":false,"sWidth":"30px"},
+            {"sClass":"number","sWidth":"110px","asSorting":["asc","desc"]},
+            {"bSortable":false,"sWidth":"30px"},
+            {"sClass":"number","sWidth":"113px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
+            {"bSortable":false,"sWidth":"30px"}
         ],
         "aaSorting":[[8,"desc"]],
         "sScrollX":"100%",
