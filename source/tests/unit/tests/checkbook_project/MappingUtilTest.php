@@ -22,7 +22,7 @@ class MappingUtilTest extends TestCase
     }
 
     /**
-     * Tests getVendorTypeValue() function
+     * Tests getVendorTypeName() function
      */
     public function test_getVendorTypeName(){
         $result = MappingUtil::getVendorTypeName('sv');
