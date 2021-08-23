@@ -124,7 +124,8 @@ return $header;
 {"labelAlias": "pin","column": "tracking_number"},
 {"labelAlias": "apt_pin","column": "brd_awd_no"},
 {"labelAlias": "woman_owned_business","column": "is_women_owned"},
-{"labelAlias": "emerging_business","column": "is_emerging"}
+{"labelAlias": "emerging_business","column": "is_emerging"},
+{"label":"","column":""}
 ],
 "adjustParameters":"
 if(isset($parameters['vendor_type'])){
@@ -169,11 +170,12 @@ return $parameters;
 {"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
-{"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
-{"sClass":"text","sWidth":"150px","asSorting": [ "asc","desc" ]},
+{"sClass":"text text-left-padding","sWidth":"134px","asSorting": [ "asc","desc" ]},
+{"sClass":"text","sWidth":"170px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]},
-{"sClass":"text","sWidth":"70px","asSorting": [ "asc","desc" ]},
-{"sClass":"text","sWidth":"70px","asSorting": [ "asc","desc" ]}
+{"sClass":"number","sWidth":"112px","asSorting": [ "asc","desc" ]},
+{"sClass":"number","sWidth":"110px","asSorting": [ "asc","desc" ]},
+{"bSortable":false,"sWidth":"30px"}
 ],
 
 "aaSorting":[[0,"desc"]],
