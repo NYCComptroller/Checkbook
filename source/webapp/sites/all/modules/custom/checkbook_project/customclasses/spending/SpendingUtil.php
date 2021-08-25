@@ -348,7 +348,7 @@ class SpendingUtil{
      * @param string $is_prime_or_sub
      * @return null
      */
-     public static function getLatestMwbeCategoryTitleByVendor($vendor_id, $year_id = NULL, $year_type = NULL, $is_prime_or_sub = "P"): ?bool
+     public static function getLatestMwbeCategoryTitleByVendor($vendor_id, $year_id = NULL, $year_type = NULL, $is_prime_or_sub = "P"):string
      {
         if($year_id == null){
             $year_id =  RequestUtilities::get('year');
