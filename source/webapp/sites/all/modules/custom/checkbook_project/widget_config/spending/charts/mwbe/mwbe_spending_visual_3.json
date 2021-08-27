@@ -2,7 +2,6 @@
 "widgetType": "highcharts",
 "widgetDatahandler": "highcharts",
 "html_class":"",
-
 "header":"
        $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
        $header .= ChartUtil::generateWidgetGridViewLink($node);
@@ -32,7 +31,7 @@
                   "formatType": "amount"
              },
              {
-                  "labelAlias": "Women",
+                  "labelAlias": "Women(Non-Minority)",
                   "columnType": "number",
                   "formatType": "amount"
              },
@@ -47,7 +46,7 @@
                 "formatType": "amount"
             },
             {
-                "labelAlias": "Emerging",
+                "labelAlias": "Emerging(Non-Minority)",
                 "columnType": "number",
                 "formatType": "amount"
            }
@@ -158,10 +157,10 @@
 	 						'Month: '. $months[$i] . '<br/>' .
 							'Asian American: ' . custom_number_formatter_format($series_aa[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]->y,1,null,'%') . ')' .  '<br/>'
 							. 'Black American: ' . custom_number_formatter_format($series_ba[$i]->total,2,'$')  . ' (' .custom_number_formatter_format($series_ba[$i]->y,1,null,'%') . ')' . '<br/>'
-							. 'Women: ' . custom_number_formatter_format($series_w[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_w[$i]->y,1,null,'%') . ')' . '<br/>'
+							. 'Women(Non-Minority): ' . custom_number_formatter_format($series_w[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_w[$i]->y,1,null,'%') . ')' . '<br/>'
 							. 'Hispanic American: ' . custom_number_formatter_format($series_ha[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_ha[$i]->y,1,null,'%') . ')' . '<br/>'
                             . 'Native American: ' . custom_number_formatter_format($series_na[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_na[$i]->y,1,null,'%') . ')' . '<br/>'
-                            . 'Emerging: ' . custom_number_formatter_format($series_em[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_em[$i]->y,1,null,'%') . ')' . '<br/>';
+                            . 'Emerging(Non-Minority): ' . custom_number_formatter_format($series_em[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_em[$i]->y,1,null,'%') . ')' . '<br/>';
 		$series_ba[$i]->tooltip_label = $tooltip_label;
 		$series_ha[$i]->tooltip_label = $tooltip_label;
 		$series_aa[$i]->tooltip_label = $tooltip_label;
@@ -191,7 +190,7 @@
         $series_em_points[] = $series_em[$index];
 	}
 
-	$node->widgetConfig->chartConfig->series[0]->name = 'Women';
+	$node->widgetConfig->chartConfig->series[0]->name = 'Women(Non-Minority)';
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_w_points;
@@ -216,7 +215,7 @@
 	$node->widgetConfig->chartConfig->series[4]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[4]->data = $series_na_points;
 
-    $node->widgetConfig->chartConfig->series[5]->name = 'Emerging';
+    $node->widgetConfig->chartConfig->series[5]->name = 'Emerging(Non-Minority)';
 	$node->widgetConfig->chartConfig->series[5]->type = 'column';
 	$node->widgetConfig->chartConfig->series[5]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[5]->data = $series_em_points;
