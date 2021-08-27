@@ -203,11 +203,11 @@
                 case
                 when minority_type_id = 2 then 'Black American'
                 when minority_type_id = 3 then 'Hispanic American'
-                when minority_type_id = 6 THEN 'Native'
+                when minority_type_id = 6 THEN 'Native American'
                 when minority_type_id = 7 then 'Non-M/WBE'
-                when minority_type_id = 9 then 'Women'
+                when minority_type_id = 9 then 'Women(Non-Minority)'
                 when minority_type_id = 11 then 'Individuals and Others'
-                when minority_type_id = 99 THEN 'Emerging'
+                when minority_type_id = 99 THEN 'Emerging(Non-Minority)'
                 else 'Asian American'
                 end as minority_type_name
                 "
