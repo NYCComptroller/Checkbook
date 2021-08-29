@@ -63,7 +63,7 @@ class MappingUtilTest extends TestCase
      */
     public function test_getMinorityCategoryByName(){
         $result = MappingUtil::getMinorityCategoryByName('Native');
-        $this->assertEquals('Native', $result);
+        $this->assertEquals('Native American', $result);
         $result = MappingUtil::getMinorityCategoryByName('African American');
         $this->assertEquals('Black American', $result);
 
