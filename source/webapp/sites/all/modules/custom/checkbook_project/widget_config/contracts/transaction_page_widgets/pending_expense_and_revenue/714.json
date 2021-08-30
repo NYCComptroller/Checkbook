@@ -124,7 +124,7 @@
         {"labelAlias": "apt_pin","column":"board_award_number"},
         {"labelAlias": "woman_owned_business","column":"is_women_owned"},
         {"labelAlias": "emerging_business","column":"is_emerging"},
-        {"label":"","column":""}
+        {"label":"","column":"","export":false}
 
     ],
   "exportColumnSqlOverride":[
