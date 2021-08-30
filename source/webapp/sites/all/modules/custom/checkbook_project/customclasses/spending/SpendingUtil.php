@@ -30,7 +30,7 @@ class SpendingUtil{
      * @param array $columns
      * @return array|null
      */
-    public static function getSpendingCategoryDetails($categoryId, array $columns=array('spending_category_id','display_name')): ?array
+    public static function getSpendingCategoryDetails($categoryId, $columns=array('spending_category_id','display_name')): ?array
     {
         if(!isset($categoryId)){
             return NULL;
