@@ -182,7 +182,7 @@ echo '<div class=\"chart-right\">
     $node->widgetConfig->gridConfig->data[] = array('Native American',$mwbe_data['na'] ,
 										custom_number_formatter_format($mwbe_data['na']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
     $node->widgetConfig->gridConfig->data[] = array('Emerging (Non-Minority)',$mwbe_data['em'] ,
-										custom_number_formatter_format($mwbe_data['em']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
+custom_number_formatter_format($mwbe_data['em']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
 $node->widgetConfig->gridConfig->data[] = array('Non-M/WBE', $toal_non_mwbe,
 custom_number_formatter_format(($toal_non_mwbe)/($total_mwbe + $toal_non_mwbe)*100,1, null, '%'));
 
