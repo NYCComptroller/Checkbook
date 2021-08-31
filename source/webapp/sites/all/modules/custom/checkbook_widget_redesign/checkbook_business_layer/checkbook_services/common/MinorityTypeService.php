@@ -14,9 +14,9 @@ class MinorityTypeService {
         6 => 'Native American',
         5 => 'Asian American',
         7 => 'Non-M/WBE',
-        9 => 'Women(Non-Minority)',
+        9 => 'Women (Non-Minority)',
         11 => 'Individuals and Others',
-        99 => 'Emerging(Non-Minority)'
+        99 => 'Emerging (Non-Minority)'
     );
 
     public static $minority_type_category_map_multi_chart = array(
@@ -25,9 +25,9 @@ class MinorityTypeService {
         'Asian American' => array(4,5),
         'Native American' => array(6),
         'Non-M/WBE' => array(7),
-        'Women(Non-Minority)' => array(9),
+        'Women (Non-Minority)' => array(9),
         'Individuals and Others' => array(11),
-        'Emerging(Non-Minority)' => array(99),
+        'Emerging (Non-Minority)' => array(99),
         'M/WBE' => array(2,3,4,5,6,9,99),
         //Remove after DB update for name change
         'Women' => array(9),

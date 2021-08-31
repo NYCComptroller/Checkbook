@@ -76,9 +76,9 @@ class MappingUtil {
         5 => 'Asian American',
         6 => 'Native American',
         7 => 'Non-M/WBE',
-        9 => 'Women(Non-Minority)',
+        9 => 'Women (Non-Minority)',
         11 => 'Individuals and Others',
-        99 => 'Emerging(Non-Minority)'
+        99 => 'Emerging (Non-Minority)'
     );
 
   /**
@@ -91,9 +91,9 @@ class MappingUtil {
       5 => 'Asian American',
       6 => 'Native American',
       7 => 'Non-M/WBE',
-      9 => 'Women(Non-Minority)',
+      9 => 'Women (Non-Minority)',
       11 => 'Individuals and Others',
-      99 => 'Emerging(Non-Minority)'
+      99 => 'Emerging (Non-Minority)'
     );
 
   /**
@@ -105,14 +105,14 @@ class MappingUtil {
         'Asian-Pacific' => 'Asian American',
         'Asian-Indian' => 'Asian American',
         'Non-Minority' => 'Non-M/WBE',
-        'Women(Non-Minority)' => 'Women(Non-Minority)',
+        'Women (Non-Minority)' => 'Women (Non-Minority)',
         'Individuals & Others' => 'Individuals and Others',
         'Native American' => 'Native American',
-        'Emerging(Non-Minority)' => 'Emerging(Non-Minority)',
+        'Emerging (Non-Minority)' => 'Emerging (Non-Minority)',
         //Remove after DB update for name change
-        'Caucasian Woman' => 'Women(Non-Minority)',
+        'Caucasian Woman' => 'Women (Non-Minority)',
         'Native' => 'Native American',
-        'Emerging' => 'Emerging(Non-Minority)',
+        'Emerging' => 'Emerging (Non-Minority)',
     );
 
   /**
@@ -122,10 +122,10 @@ class MappingUtil {
         'Total M/WBE' => array(2,3,4,5,6,9,99),
         'Asian American' => array(4,5),
         'Black American' => array(2),
-        'Women(Non-Minority)' => array(9),
+        'Women (Non-Minority)' => array(9),
         'Hispanic American' => array(3),
         'Native American' => array(6),
-        'Emerging(Non-Minority)' => array(99),
+        'Emerging (Non-Minority)' => array(99),
         'Non-M/WBE' => array(7),
         'Individuals and Others' => array(11),
         //Remove after DB update for name change
@@ -152,10 +152,10 @@ class MappingUtil {
         'Hispanic American' => array(3),
         'Asian American' => array(4,5),
         'Non-M/WBE' => array(7),
-        'Women(Non-Minority)' => array(9),
+        'Women (Non-Minority)' => array(9),
         'Individuals and Others' => array(11),
         'Native American' => array(6),
-        'Emerging(Non-Minority)' => array(99),
+        'Emerging (Non-Minority)' => array(99),
         'M/WBE' => array(2,3,4,5,6,9,99),
         //Remove after DB update for name change
         'Women' => array(9),
@@ -284,7 +284,7 @@ class MappingUtil {
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/2'>Black American</a></li>";
         }
         if(array_intersect($applicable_minority_types,array(9))){
-            $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/9'>Women(Non-Minority)</a></li>";
+            $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/9'>Women (Non-Minority)</a></li>";
         }
         if(array_intersect($applicable_minority_types,array(3))){
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
@@ -295,7 +295,8 @@ class MappingUtil {
         }
 
         if(array_intersect($applicable_minority_types,array(99)) || self::isDefaultMWBEDashboard()){
-            $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging(Non-Minority)</a></li>";
+            $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging (Non-Minority)</a></li>";
+
         }
 
         $total_mwbe_link = RequestUtil::getTotalMWBELink();
@@ -340,7 +341,7 @@ class MappingUtil {
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/2'>Black American</a></li>";
             }
             if(array_intersect($applicable_minority_types,array(9))){
-                $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/9'>Women(Non-Minority)</a></li>";
+                $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/9'>Women (Non-Minority)</a></li>";
             }
             if(array_intersect($applicable_minority_types,array(3))){
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
@@ -351,7 +352,7 @@ class MappingUtil {
             }
 
             if(array_intersect($applicable_minority_types,array(99)) || self::isDefaultMWBEDashboard()){
-                $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging(Non-Minority)</a></li>";
+                $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging (Non-Minority)</a></li>";
             }
 
             if($mwbe_filters_html != "") {
