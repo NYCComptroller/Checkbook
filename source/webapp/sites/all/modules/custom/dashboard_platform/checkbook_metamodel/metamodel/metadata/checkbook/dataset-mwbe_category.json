@@ -6,11 +6,11 @@
                        SELECT 3 as minority_type_id, 'Hispanic American' as mwbe_category_name UNION
                        SELECT 4 as minority_type_id, 'Asian American' as mwbe_category_name UNION
                        SELECT 5 as minority_type_id, 'Asian American' as mwbe_category_name UNION
-                       SELECT 6 as minority_type_id, 'Native' as mwbe_category_name UNION
+                       SELECT 6 as minority_type_id, 'Native American' as mwbe_category_name UNION
                        SELECT 7 as minority_type_id, 'Non-M/WBE' as mwbe_category_name UNION
-                       SELECT 9 as minority_type_id, 'Women' as mwbe_category_name UNION
+                       SELECT 9 as minority_type_id, 'Women (Non-Minority)' as mwbe_category_name UNION
                        SELECT 11 as minority_type_id, 'Individuals and Others' as mwbe_category_name UNION
-                       SELECT 99 as minority_type_id, 'Emerging' as mwbe_category_name",
+                       SELECT 99 as minority_type_id, 'Emerging (Non-Minority)' as mwbe_category_name",
             "columns": [
                 {
                     "name": "minority_type_id",

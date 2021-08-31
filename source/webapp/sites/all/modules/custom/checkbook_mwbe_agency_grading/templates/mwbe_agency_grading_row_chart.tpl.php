@@ -67,7 +67,7 @@ jQuery(document).ready(function ($) {
           data: [<?php echo ($data_row['n_mwbe'])? $data_row['n_mwbe'] : null ; ?>],
           color: '#2e5a8b'
          },
-         {name: 'Women',
+         {name: 'Women (Non-Minority)',
           data: [<?php echo ($data_row['w_mwbe'])? $data_row['w_mwbe'] : null ; ?>],
           color: '#eb8e27'
          },
@@ -83,11 +83,11 @@ jQuery(document).ready(function ($) {
           data: [<?php echo ($data_row['aa_mwbe'])? $data_row['aa_mwbe'] : null ; ?>],
           color: '#b8d8ef'
          },
-        {name: 'Native',
+        {name: 'Native American',
           data: [<?php echo ($data_row['na_mwbe'])? $data_row['na_mwbe'] : null ; ?>],
           color: '#F3F386'
         },
-        {name: 'Emerging',
+        {name: 'Emerging (Non-Minority)',
           data: [<?php echo ($data_row['em_mwbe'])? $data_row['em_mwbe'] : null ; ?>],
           color: '#D2B8EF'
         }

@@ -13,11 +13,11 @@ class MappingUtilities {
         3 => 'Hispanic American',
         4 => 'Asian American',
         5 => 'Asian American',
-        6 => 'Native',
+        6 => 'Native American',
         7 => 'Non-M/WBE',
-        9 => 'Women',
+        9 => 'Women (Non-Minority)',
         11 => 'Individuals and Others',
-        99 => 'Emerging'
+        99 => 'Emerging (Non-Minority)'
     );
 
     static $mwbe_prefix = "M/WBE" ;
@@ -28,11 +28,11 @@ class MappingUtilities {
         'Black American' => array(2),
         'Hispanic American' => array(3),
         'Asian American' => array(4,5),
-        'Native' => array(6),
+        'Native American' => array(6),
         'Non-M/WBE' => array(7),
-        'Women' => array(9),
+        'Women (Non-Minority)' => array(9),
         'Individuals and Others' => array(11),
-        'Emerging' => array(99),
+        'Emerging (Non-Minority)' => array(99),
         'M/WBE' => array(2,3,4,5,6,9,99),
     );
 
