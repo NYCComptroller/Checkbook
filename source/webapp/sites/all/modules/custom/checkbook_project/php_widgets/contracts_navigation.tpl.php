@@ -179,7 +179,7 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 
         $mwbe_prime_amount = $node->data[5]['check_amount_sum'];
         // if prime is zero and sub amount is not zero. change dashboard to ms
-        if( $mwbe_prime_amount == null && $mwbe_subven_amount > 0){
+        if( $mwbe_prime_amount == null && $mwbe_subven_amount > 0 && $has_vendor_parameter != null){
             $mwbe_amount += $mwbe_subven_amount;
             RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero = true;
             $mwbe_active_domain_link = preg_replace('/\/dashboard\/../','/dashboard/ms',$mwbe_active_domain_link);

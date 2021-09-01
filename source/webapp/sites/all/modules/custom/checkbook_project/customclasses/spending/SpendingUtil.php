@@ -346,9 +346,9 @@ class SpendingUtil{
      * @param $year_id
      * @param $year_type
      * @param string $is_prime_or_sub
-     * @return null
+     * @return string|null
      */
-     public static function getLatestMwbeCategoryTitleByVendor($vendor_id, $year_id = NULL, $year_type = NULL, $is_prime_or_sub = "P"): ?bool
+     public static function getLatestMwbeCategoryTitleByVendor($vendor_id, $year_id = NULL, $year_type = NULL, $is_prime_or_sub = "P"): ?string
      {
         if($year_id == null){
             $year_id =  RequestUtilities::get('year');
@@ -381,7 +381,7 @@ class SpendingUtil{
             return $results[0]['minority_type_id'];
         }
         else{
-            return false;
+            return null;
         }
     }
 
@@ -389,9 +389,9 @@ class SpendingUtil{
      * @param $vendor_id
      * @param null $year_id
      * @param null $year_type
-     * @return bool
+     * @return string|null
      */
-    public static function getLatestMwbeCategoryByVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null): bool
+    public static function getLatestMwbeCategoryByVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null): ?string
     {
         if($year_id == null){
             $year_id =  RequestUtilities::get('year');
@@ -412,7 +412,7 @@ class SpendingUtil{
             return $results[0]['minority_type_id'];
         }
         else{
-            return false;
+            return null;
         }
     }
 
@@ -421,9 +421,9 @@ class SpendingUtil{
      * @param $vendor_id
      * @param null $year_id
      * @param null $year_type
-     * @return bool
+     * @return string|null
      */
-    public static function getLatestMwbeCategoryBySpendingVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null): bool
+    public static function getLatestMwbeCategoryBySpendingVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null): ?string
     {
         if($year_id == null){
             $year_id =  RequestUtilities::get('year');
@@ -447,7 +447,7 @@ class SpendingUtil{
             return $results[0]['minority_type_id'];
         }
         else{
-            return false;
+            return null;
         }
     }
 
