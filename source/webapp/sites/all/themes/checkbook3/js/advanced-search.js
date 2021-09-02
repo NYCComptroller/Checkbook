@@ -860,7 +860,6 @@
           let solr_datasource = data_source;
           let year = div.ele('year').val() || 0;
           let year_id = 0;
-          let reg_year_id = 0;
 
           if(year.indexOf("fy") >= 0){
             year_id = year.split('~')[1];
@@ -888,12 +887,8 @@
             div.ele('contract_id').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'contract_number', nycha_filters)});
             div.ele('pin').autocomplete({source:$.fn.autoCompleteSourceUrl(solr_datasource,'pin', nycha_filters)});
           }else {
-              if (contract_status == 'R') {
-                reg_year_id = year_id;
-                year_id = 0;
-              }
-              var filters = {
-                event_id:catastrophic_events_id,
+            let filters = {
+              event_id: catastrophic_events_id,
               contract_status: contract_status,
               contract_category_name: contract_category_name,
               agency_id: agency_id,
@@ -902,10 +897,25 @@
               industry_type_id: industry_type_id,
               scntrc_status: scntrc_status,
               aprv_sta: aprv_sta,
-              fiscal_year_id: year_id,
-              registered_fiscal_year_id: reg_year_id,
-                contract_type_id: contract_type_id,
+              contract_type_id: contract_type_id,
             };
+
+            let year;
+            if ('checkbook_oge' == solr_datasource && year_id != 'all'){
+              year = $('#edit-checkbook-oge-contracts-year option:selected').text().replace("FY ", "") || 0;
+            } else if('checkbook' == solr_datasource && year_id != 'all'){
+              year = $('#edit-checkbook-contracts-year option:selected').text().replace("FY ", "") || 0;
+            }
+
+            if(year) {
+              if (contract_status == 'R') {
+                filters['registered_fiscal_year'] = year;
+              }
+
+              if (contract_status == 'A') {
+                filters['facet_year_array'] = year;
+              }
+            }
 
             div.ele('vendor_name').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'vendor_name',filters)});
             div.ele('contract_id').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'contract_number', filters)});
