@@ -235,8 +235,8 @@ class RequestUtil
                 }
                 break;
             case "contracts":
-                $contracts_landing_path = isset($contracts_url) ? $contracts_url : "contracts_landing/status/A/yeartype/B/year/";
-                $path = $contracts_landing_path . $fiscalYearId . _checkbook_append_url_params(null, array(), true);
+                $contracts_landing_path = isset($contracts_url) ? $contracts_url."/yeartype/B/year/" : "contracts_landing/status/A/yeartype/B/year/";
+                $path = $contracts_landing_path .$fiscalYearId . _checkbook_append_url_params(null, array(), true);
                 if (RequestUtilities::get("agency") > 0) {
                     $path = $path . "/agency/" . RequestUtilities::get("agency");
                 } else if (_checkbook_check_isEDCPage()) {
@@ -347,7 +347,6 @@ class RequestUtil
               $path .= Datasource::getNYCHAUrl();
               break;
         }
-
         return $path;
     }
 
