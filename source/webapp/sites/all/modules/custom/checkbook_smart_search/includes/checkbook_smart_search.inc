@@ -192,7 +192,7 @@ function getRegisteredContractsQuery($query, $selectedFacets){
     //Registered contracts count
     $query = str_replace('&fq=contract_status:"pending"','',$query);
     $query = str_replace('&fq=facet_year_array','&fq=registered_fiscal_year',$query);
-    $query .= '&fq=contract_status:registered';
+    $query .= (strpos($query, '&fq=contract_status:registered') !== false) ? '&fq=contract_status:registered' : '';
     return $query;
   }else{
     return;
@@ -210,7 +210,7 @@ function getActiveContractsQuery($query, $selectedFacets){
     //Active contracts count
     $query = str_replace('&fq=contract_status:"pending"','',$query);
     $query = str_replace('&fq=registered_fiscal_year','&fq=facet_year_array',$query);
-    $query .= '&fq=contract_status:registered';
+    $query .= (strpos($query, '&fq=contract_status:registered') !== false) ? '&fq=contract_status:registered' : '';
     return $query;
   }else{
     return;
@@ -600,7 +600,7 @@ function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'cit
  */
 function _checkbook_autocomplete(string $solr_datasource, string $facet): array{
   $solr_query = new CheckbookSolrQuery($solr_datasource, $_REQUEST['search_term'] ?? '');
-
+log_error($solr_query);
   $solr_query->setFqAutocompleteTerm($facet, $_REQUEST['term'] ?? '');
 
   $solr = new CheckbookSolr($solr_datasource);
