@@ -192,7 +192,7 @@ function getRegisteredContractsQuery($query, $selectedFacets){
     //Registered contracts count
     $query = str_replace('&fq=contract_status:"pending"','',$query);
     $query = str_replace('&fq=facet_year_array','&fq=registered_fiscal_year',$query);
-    $query .= '&fq=contract_status:registered';
+    $query .= (strpos($query, '&fq=contract_status:registered') !== false) ? '&fq=contract_status:registered' : '';
     return $query;
   }else{
     return;
@@ -210,7 +210,7 @@ function getActiveContractsQuery($query, $selectedFacets){
     //Active contracts count
     $query = str_replace('&fq=contract_status:"pending"','',$query);
     $query = str_replace('&fq=registered_fiscal_year','&fq=facet_year_array',$query);
-    $query .= '&fq=contract_status:registered';
+    $query .= (strpos($query, '&fq=contract_status:registered') !== false) ? '&fq=contract_status:registered' : '';
     return $query;
   }else{
     return;
