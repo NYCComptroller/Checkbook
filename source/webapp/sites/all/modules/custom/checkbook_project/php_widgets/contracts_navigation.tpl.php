@@ -78,7 +78,7 @@ $current_dashboard = RequestUtilities::get("dashboard");
 
 if ($contract_amount > 0) {
   if(($has_vendor_parameter && Dashboard::isMWBE()) && (!$contracts_advanced_search && !$spending_advanced_search) && $current_domain != Domain::$SPENDING) {
-    $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format($contract_amount, 1, '$'), RequestUtil::getTopNavURL("contracts"), $options_disabled);
+    $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format($contract_amount, 1, '$'), '', $options_disabled);
   }
   else {
     $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format($contract_amount, 1, '$'), RequestUtil::getTopNavURL("contracts"), $options);
@@ -89,7 +89,7 @@ if ($contract_amount > 0) {
   if(isset($contracts_url)){
     $contracts_url = RequestUtil::getTopNavURL("contracts", $contracts_url);
     if(($has_vendor_parameter && Dashboard::isMWBE()) && (!$contracts_advanced_search && !$spending_advanced_search) && $current_domain != Domain::$SPENDING){
-      $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), $contracts_url, $options_disabled);
+      $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), '', $options_disabled);
     }
     else {
       $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), $contracts_url, $options);
