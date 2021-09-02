@@ -183,6 +183,38 @@ class RequestUtil
       return $contracts_landing_path;
     }
 
+
+
+  /** Returns top navigation URL
+   * @param $domain
+   * @param $contracts_url
+   * @return string
+   */
+  public static function getTopNavVendorMwbe($domain,$vendorId, $yearId,$urlpath)
+  {
+    $non_minority_type_ids = array(7, 11);
+    $vendor_minority_type_ids = VendorService::getAllVendorMinorityTypesByYear($domain, $vendorId, $yearId);
+    $vendor_non_minority_type_ids = array_intersect($non_minority_type_ids ,$vendor_minority_type_ids);
+
+    if(count($vendor_non_minority_type_ids) > 0){
+      $urlpath = preg_replace('/\/dashboard\/[^\/]*/','',$urlpath);
+      $urlpath = preg_replace('/\/mwbe\/[^\/]*/','',$urlpath);
+    }else{
+      if(!stripos(' '.$urlpath,'/dashboard/')) {
+        $urlpath .= RequestUtilities::buildUrlFromParam('dashboard');
+      }
+      //using RequestUtilities::buildUrlFromParam urlencodes mwbe parameter
+      if(!stripos(' '.$urlpath,'/mwbe/')) {
+        $mwbe_param = RequestUtilities::get('mwbe');
+        $urlpath .= '/mwbe/'.$mwbe_param;
+      }
+    }
+    return $urlpath;
+
+  }
+
+
+
     /** Returns top navigation URL
      * @param $domain
      * @param $contracts_url
@@ -203,15 +235,19 @@ class RequestUtil
                 }
                 break;
             case "contracts":
-                $contracts_landing_path = isset($contracts_url) ? $contracts_url : "contracts_landing/status/A";
-                $path = $contracts_landing_path . "/yeartype/B/year/" . $fiscalYearId . _checkbook_append_url_params(null, array(), true);
+                $contracts_landing_path = isset($contracts_url) ? $contracts_url : "contracts_landing/status/A/yeartype/B/year/";
+                $path = $contracts_landing_path . $fiscalYearId . _checkbook_append_url_params(null, array(), true);
                 if (RequestUtilities::get("agency") > 0) {
                     $path = $path . "/agency/" . RequestUtilities::get("agency");
                 } else if (_checkbook_check_isEDCPage()) {
                     $path = $path . "/agency/9000";
                 }
                 if (RequestUtilities::get("vendor") > 0) {
-                    $path = $path . "/vendor/" . RequestUtilities::get("vendor");
+                  $path = ContractsUrlService::primeVendorUrl(RequestUtilities::get("vendor"));
+                  if (!preg_match('/\/contracts_landing\/[^\/]*/',$path)){
+                    $path = $contracts_landing_path.ContractsUrlService::primeVendorUrl(RequestUtilities::get("vendor"));
+                  }
+                  $path = preg_replace('/\/spending_landing\/[^\/]*/','',$path);
                 }
                 break;
             case "spending":
@@ -222,7 +258,8 @@ class RequestUtil
                     $path = $path . "/agency/9000";
                 }
                 if (RequestUtilities::get("vendor") > 0) {
-                    $path = $path . "/vendor/" . RequestUtilities::get("vendor");
+                  $path = self::getTopNavVendorMwbe('spending',RequestUtilities::get("vendor"),$fiscalYearId,$path);
+                  $path = $path . "/vendor/" . RequestUtilities::get("vendor");
                 }
                 break;
             case "nycha_spending":
@@ -311,25 +348,6 @@ class RequestUtil
               break;
         }
 
-        if(RequestUtilities::get("vendor") > 0 && in_array($domain, array('contracts','spending'))){
-            $non_minority_type_ids = array(7, 11);
-            $vendor_minority_type_ids = VendorService::getAllVendorMinorityTypesByYear($domain, RequestUtilities::get("vendor"), $fiscalYearId);
-            $vendor_non_minority_type_ids = array_intersect($non_minority_type_ids ,$vendor_minority_type_ids);
-
-            if(count($vendor_non_minority_type_ids) > 0){
-                $path = preg_replace('/\/dashboard\/[^\/]*/','',$path);
-                $path = preg_replace('/\/mwbe\/[^\/]*/','',$path);
-            }else{
-              if(!stripos(' '.$path,'/dashboard/')) {
-                $path .= RequestUtilities::buildUrlFromParam('dashboard');
-              }
-              //using RequestUtilities::buildUrlFromParam urlencodes mwbe parameter
-              if(!stripos(' '.$path,'/mwbe/')) {
-                  $mwbe_param = RequestUtilities::get('mwbe');
-                  $path .= '/mwbe/'.$mwbe_param;
-                }
-            }
-        }
         return $path;
     }
 
