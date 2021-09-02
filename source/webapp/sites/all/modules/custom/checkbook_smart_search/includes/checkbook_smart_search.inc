@@ -600,7 +600,7 @@ function _checkbook_smart_search_autocomplete_main_input($solr_datasource = 'cit
  */
 function _checkbook_autocomplete(string $solr_datasource, string $facet): array{
   $solr_query = new CheckbookSolrQuery($solr_datasource, $_REQUEST['search_term'] ?? '');
-log_error($solr_query);
+
   $solr_query->setFqAutocompleteTerm($facet, $_REQUEST['term'] ?? '');
 
   $solr = new CheckbookSolr($solr_datasource);
