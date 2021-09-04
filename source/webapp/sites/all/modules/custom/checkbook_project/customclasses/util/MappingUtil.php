@@ -233,22 +233,10 @@ class MappingUtil {
 
     private static function isDefaultMWBEDashboard(): bool
     {
-        $currentURL = request_uri();
-        $isMWBEDashboardURL = false;
-        $isDefaultMWBEDashboardURL = false;
-
-        $dashboard = RequestUtilities::get('dashboard');
-        if($dashboard === 'sp' || $dashboard === 'mp' || $dashboard === 'ss' || $dashboard === 'ms'){
-            $isMWBEDashboardURL = true;
-        }
-
-        if($isMWBEDashboardURL && !strpos($currentURL, "agency/") && !strpos($currentURL, "vendor/") &&
-           !strpos($currentURL, "expandBottomContURL=") && !strpos($currentURL, "expandBottomCont=") &&
-           !strpos($currentURL, "industry/")){
-            
-            $isDefaultMWBEDashboardURL = true;
-        }
-        return $isDefaultMWBEDashboardURL;
+        $currentURL = request_uri();      
+        return  !strpos($currentURL, "agency/") && 
+                !strpos($currentURL, "vendor/") &&
+                !strpos($currentURL, "industry/");
     }
 
     /**
