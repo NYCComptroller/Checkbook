@@ -245,12 +245,8 @@ class MappingUtil {
         if($isMWBEDashboardURL && !strpos($currentURL, "agency/") && !strpos($currentURL, "vendor/") &&
            !strpos($currentURL, "expandBottomContURL=") && !strpos($currentURL, "expandBottomCont=") &&
            !strpos($currentURL, "industry/")){
-
-            $mwbeFilter = RequestUtilities::get('mwbe');
-
-            if($mwbeFilter == '' || $mwbeFilter === self::$total_mwbe_cats){
-                $isDefaultMWBEDashboardURL = true;
-            }
+            
+            $isDefaultMWBEDashboardURL = true;
         }
         return $isDefaultMWBEDashboardURL;
     }
