@@ -234,9 +234,7 @@ class MappingUtil {
     private static function isDefaultMWBEDashboard(): bool
     {
         $currentURL = request_uri();      
-        return  !strpos($currentURL, "agency/") && 
-                !strpos($currentURL, "vendor/") &&
-                !strpos($currentURL, "industry/");
+        return !strpos($currentURL, "agency/") && !strpos($currentURL, "vendor/") && !strpos($currentURL, "industry/");
     }
 
     /**
