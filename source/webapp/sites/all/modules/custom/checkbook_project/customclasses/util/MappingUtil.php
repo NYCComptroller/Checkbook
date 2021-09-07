@@ -235,8 +235,8 @@ class MappingUtil {
     {
         $currentURL = request_uri();      
         $filters_applied = strpos($currentURL, "agency/") || strpos($currentURL, "vendor/") ||
-                strpos($currentURL, "industry/") || strpos($currentURL, "expcategorycode/") ||
-                strpos($currentURL, "awdmethod/") || strpos($currentURL, "csize/");
+                strpos($currentURL, "industry/") || strpos($currentURL, "awdmethod/") ||
+                strpos($currentURL, "csize/");
         return !$filters_applied;
     }
 
