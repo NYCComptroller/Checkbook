@@ -233,26 +233,11 @@ class MappingUtil {
 
     private static function isDefaultMWBEDashboard(): bool
     {
-        $currentURL = request_uri();
-        $isMWBEDashboardURL = false;
-        $isDefaultMWBEDashboardURL = false;
-
-        $dashboard = RequestUtilities::get('dashboard');
-        if($dashboard === 'sp' || $dashboard === 'mp' || $dashboard === 'ss' || $dashboard === 'ms'){
-            $isMWBEDashboardURL = true;
-        }
-
-        if($isMWBEDashboardURL && !strpos($currentURL, "agency/") && !strpos($currentURL, "vendor/") &&
-           !strpos($currentURL, "expandBottomContURL=") && !strpos($currentURL, "expandBottomCont=") &&
-           !strpos($currentURL, "industry/")){
-
-            $mwbeFilter = RequestUtilities::get('mwbe');
-
-            if($mwbeFilter == '' || $mwbeFilter === self::$total_mwbe_cats){
-                $isDefaultMWBEDashboardURL = true;
-            }
-        }
-        return $isDefaultMWBEDashboardURL;
+        $currentURL = request_uri();      
+        $filters_applied = strpos($currentURL, "agency/") || strpos($currentURL, "vendor/") ||
+                strpos($currentURL, "industry/") || strpos($currentURL, "expcategorycode/") ||
+                strpos($currentURL, "awdmethod/") || strpos($currentURL, "csize/");
+        return !$filters_applied;
     }
 
     /**
