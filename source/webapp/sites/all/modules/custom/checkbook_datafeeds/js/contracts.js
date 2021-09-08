@@ -662,7 +662,6 @@
       const industry = $.fn.emptyToZero($('#edit-industry', context).val());
       const includes_sub_vendors = $.fn.emptyToZero($('#edit-contract_includes_sub_vendors_id', context).val());
       const sub_vendor_status = $.fn.emptyToZero($('#edit-sub_vendor_status_in_pip_id', context).val());
-      // Refactoring autocomplete for citywide similar to Nycha to use common autocomplete function
       let filters = {
         "contract_status":status,
         "contract_category_name":category,
@@ -670,16 +669,23 @@
         "event_id":catastrophic_event,
         "agency_code":agency,
         "award_method_id":award_method,
-        "fiscal_year":year,
         "minority_type_id" :mwbecat,
         "scntrc_status":includes_sub_vendors,
         "aprv_sta":sub_vendor_status,
         "industry_type_id":industry,
       };
+      if(year) {
+        if (status == 'registered') {
+          filters['registered_fiscal_year'] = year;
+        }
+        if (status == 'active') {
+          filters['facet_year_array'] = year;
+        }
+      }
+
       if (datasource === 'checkbook_oge') {
         $('#edit-vendor').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name', filters)});
-      }
-      else {
+      } else {
         $('#edit-vendor').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name_code', filters)});
       }
       $('#edit-contractno').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_number',filters)});
@@ -732,16 +738,23 @@
             "event_id":catastrophic_event,
             "agency_code":agency,
             "award_method_id":award_method,
-            "fiscal_year":year,
             "minority_type_id" :mwbecat,
             "scntrc_status":includes_sub_vendors,
             "aprv_sta":sub_vendor_status,
             "industry_type_id":industry,
           };
+          if(year) {
+            if (status == 'registered') {
+              filters['registered_fiscal_year'] = year;
+            }
+            if (status == 'active') {
+              filters['facet_year_array'] = year;
+            }
+          }
+
           if (datasource === 'checkbook_oge') {
             $('#edit-vendor').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name', filters)});
-          }
-          else {
+          } else {
             $('#edit-vendor').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name_code', filters)});
           }
           $('#edit-contractno').autocomplete({source: $.fn.autoCompleteSourceUrl(datasource,'contract_number',filters)});
