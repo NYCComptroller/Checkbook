@@ -109,10 +109,6 @@ class MappingUtil {
         'Individuals & Others' => 'Individuals and Others',
         'Native American' => 'Native American',
         'Emerging (Non-Minority)' => 'Emerging (Non-Minority)',
-        //Remove after DB update for name change
-        'Caucasian Woman' => 'Women (Non-Minority)',
-        'Native' => 'Native American',
-        'Emerging' => 'Emerging (Non-Minority)',
     );
 
   /**
@@ -128,10 +124,6 @@ class MappingUtil {
         'Emerging (Non-Minority)' => array(99),
         'Non-M/WBE' => array(7),
         'Individuals and Others' => array(11),
-        //Remove after DB update for name change
-        'Women' => array(9),
-        'Native' => array(6),
-        'Emerging' => array(99),
     );
 
   /**
@@ -157,10 +149,6 @@ class MappingUtil {
         'Native American' => array(6),
         'Emerging (Non-Minority)' => array(99),
         'M/WBE' => array(2,3,4,5,6,9,99),
-        //Remove after DB update for name change
-        'Women' => array(9),
-        'Native' => array(6),
-        'Emerging' => array(99),
     );
 
   /**
