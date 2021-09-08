@@ -65,7 +65,7 @@ class SpendingUrlServiceTest extends TestCase
     public function test_getFooterUrl()
     {
         $result = SpendingUrlService::getFooterUrl('','22');
-        $this->assertEquals("/panel_html/spending_transactions/spending/transactions/yeartype/B/year/-1/dtsmnid/22", $result);
+        $this->assertEquals("/dtsmnid/22", substr($result, -11));
     }
 
     /**
