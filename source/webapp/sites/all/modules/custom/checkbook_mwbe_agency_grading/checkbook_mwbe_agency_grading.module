@@ -330,7 +330,7 @@ function _mwbe_agency_grading_current_csv_header(): string
     "w_mwbe" => "Women (Non-Minority)",
     "ba_mwbe" => "Black American",
     "ha_mwbe" => "Hispanic American",
-    "na_mwbe" => "Native",
+    "na_mwbe" => "Native American",
     "em_mwbe" => "Emerging (Non-Minority)",
     "n_mwbe" => "Non M/WBE",
   );
