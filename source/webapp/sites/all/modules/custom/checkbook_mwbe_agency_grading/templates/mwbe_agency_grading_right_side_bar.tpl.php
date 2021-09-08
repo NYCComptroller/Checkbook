@@ -35,7 +35,7 @@ $mwbe_cats =  _mwbe_agency_grading_current_cats();
             <td><!-- <span name="lengend_checkbox"></span> --><input id="chk_na_mwbe" type="checkbox" <?php echo (in_array('na_mwbe',$mwbe_cats))?  'checked=""':'';?>
                                                                      value="na_mwbe" name="mwbe_right_filter"><label for="chk_na_mwbe"></label></td>
             <td class="color"><img src="/<?php print drupal_get_path("module","checkbook_mwbe_agency_grading")?>/images/legend-color-6.png"></td>
-            <td class="desc"><span name="legend_description">Native</span></td>
+            <td class="desc"><span name="legend_description">Native American</span></td>
           </tr>
           <tr class="legend_entry">
             <td><!-- <span name="lengend_checkbox"></span> --><input id="chk_em_mwbe" type="checkbox" <?php echo (in_array('em_mwbe',$mwbe_cats))?  'checked=""':'';?>
