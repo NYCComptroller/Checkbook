@@ -170,8 +170,8 @@
         },
         {
             "column":"associated_prime_vendor_name",
-            "sourceColumn":"l2.legal_name",
-            "sql":"case when is_prime_or_sub = 'S' then l2.legal_name else 'N/A' end"
+            "sourceColumn":"legal_name",
+            "sql":"case when is_prime_or_sub = 'S' then legal_name else 'N/A' end"
         }
     ],
     "adjustParameters":"
