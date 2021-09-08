@@ -1327,7 +1327,7 @@ function _checkbook_project_get_year_url_param_string($applySpendingYear = false
     }
 
     $curYear = CheckbookDateUtil::getCurrentFiscalYearId();
-    $curYear = isset($applyPreviousYear) ? ($curYear - 1) : $curYear;
+    $curYear = ($applyPreviousYear ? ($curYear - 1) : $curYear);
     return "/yeartype/B/year/" . $curYear . ($applySpendingYear ? ('/syear/' . $curYear) : '');
   }
 }
