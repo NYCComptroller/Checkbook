@@ -16,11 +16,12 @@ use PHPUnit\Framework\TestCase;
  * Class PrimeVendorServiceTest
  */
 class PrimeVendorServiceTest extends TestCase
-{   
+{
     /**
      * Tests getLatestMinorityType() function
      */
     public function test_getLatestMinorityType(){
+        $_GET['q']='/spending_landing/yeartype/B/year/121';
         $result = PrimeVendorService::getLatestMinorityType(129113,null,'P','spending');
         $this->assertEquals(2,$result);
     }
@@ -40,12 +41,12 @@ class PrimeVendorServiceTest extends TestCase
         $result = PrimeVendorService::getVendorCode(129113);
         $this->assertEquals("VC00153345", $result);
     }
-    
+
     /**
      * Tests getVendorCode() function
      */
     public function test_getVendorIdByName(){
         $result = PrimeVendorService::getVendorIdByName("WHERE TO GET IT SERVICES LLC");
         $this->assertEquals(129113, $result);
-    }  
+    }
 }

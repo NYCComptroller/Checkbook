@@ -93,13 +93,9 @@ class ContractsUrlServiceTest extends TestCase
      */
     public function test_getFooterUrl(){
         $parameter["doctype"] = "MA1,CTA1,CT1";
-        $parameter["status"] = "A";
-        $parameter["yeartype"] = "B";
-        $parameter["year"] = "121";
-        $parameter["dashboard"] = "mp";
-        $parameter["mwbe"] = "2";
+        $_GET['q']='/contracts_landing/status/A/yeartype/A/year/122';
         $result = ContractsUrlService::getFooterUrl($parameter,454);
-        $this->assertEquals("/panel_html/contract_details/contract/transactions/contcat/expense/contstatus/A/yeartype/B/year/123/doctype/MA1~CTA1~CT1/smnid/454", $result);
+        $this->assertEquals("/panel_html/contract_details/contract/transactions/contcat/expense/contstatus/A/yeartype/B/year/122/doctype/MA1~CTA1~CT1/smnid/454", $result);
     }
 
     /**
