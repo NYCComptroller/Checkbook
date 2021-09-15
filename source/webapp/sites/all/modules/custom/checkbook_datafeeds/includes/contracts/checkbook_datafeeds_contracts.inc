@@ -1343,12 +1343,16 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $user_criteria['Contract ID'] = $values['contractno'];
         $formatted_search_criteria[''] = null;
       }
-      if ($values['contract_includes_sub_vendors_id'] != '' && $values['contract_includes_sub_vendors_id'] != 0) {
+
+      if ($values['category'] != 'revenue' && $values['df_contract_status'] != 'pending') {
+        if ($values['contract_includes_sub_vendors_id'] != '' && $values['contract_includes_sub_vendors_id'] != 0) {
           $scntrc_status_name = MappingUtil::getscntrc_status_name($values['contract_includes_sub_vendors_id']);
           $form['filter']['contract_includes_sub_vendors_id'] = array('#markup' => '<div><strong>Contract Includes Sub Vendors:</strong> ' . $scntrc_status_name . '</div>');
           $user_criteria['Contract Includes Sub Vendors'] = $values['contract_includes_sub_vendors_id'];
           $formatted_search_criteria['Contract Includes Sub Vendors'] = $scntrc_status_name;
         }
+      }
+
       if ($values['pin']) {
         $form['filter']['pin'] = array(
           '#markup' => '<div><strong>PIN:</strong> ' . $values['pin'] . '</div>',
@@ -1410,14 +1414,17 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
           $formatted_search_criteria['Catastrophic Event'] = $values['catastrophic_event'];
         }
       }
-      if ($values['sub_vendor_status_in_pip_id']) {
-        if ($values['sub_vendor_status_in_pip_id'] != 'Select Status') {
-          $aprv_sta_name = MappingUtil::getaprv_sta_name($values['sub_vendor_status_in_pip_id']);
-          $form['filter']['sub_vendor_status_in_pip_id'] = array('#markup' => '<div><strong>Sub Vendor Status in PIP&nbsp;:</strong> ' . $aprv_sta_name . '</div>');
-          $user_criteria['Sub Vendor Status in PIP'] = $values['sub_vendor_status_in_pip_id'];
-          $formatted_search_criteria['Sub Vendor Status in PIP'] = $aprv_sta_name;
+      if ($values['category'] != 'revenue' && $values['df_contract_status'] != 'pending') {
+        if ($values['sub_vendor_status_in_pip_id']) {
+          if ($values['sub_vendor_status_in_pip_id'] != 'Select Status') {
+            $aprv_sta_name = MappingUtil::getaprv_sta_name($values['sub_vendor_status_in_pip_id']);
+            $form['filter']['sub_vendor_status_in_pip_id'] = array('#markup' => '<div><strong>Sub Vendor Status in PIP&nbsp;:</strong> ' . $aprv_sta_name . '</div>');
+            $user_criteria['Sub Vendor Status in PIP'] = $values['sub_vendor_status_in_pip_id'];
+            $formatted_search_criteria['Sub Vendor Status in PIP'] = $aprv_sta_name;
+          }
         }
       }
+      
       if ($values['purpose']) {
         $form['filter']['purpose'] = array(
           '#markup' => '<div><strong>Purpose:</strong> ' . $values['purpose'] . '</div>',
@@ -1814,12 +1821,12 @@ function checkbook_datafeeds_process_contracts_values($form, &$form_state, $data
           preg_match($pattern, $values['catastrophic_event'], $ematches);
           $criteria['value']['catastrophic_event'] = trim($ematches[1], '[ ]');;
         }
-      }
-      if ($values['contract_includes_sub_vendors_id'] != '' && $values['contract_includes_sub_vendors_id'] != 0) {
-        $criteria['value']['contract_includes_sub_vendors'] = $values['contract_includes_sub_vendors_id'];
-      }
-      if ($values['sub_vendor_status_in_pip_id'] != 'Select Status' && $values['sub_vendor_status_in_pip_id'] != 0) {
-        $criteria['value']['sub_vendor_status_in_pip'] = $values['sub_vendor_status_in_pip_id'];
+        if ($values['contract_includes_sub_vendors_id'] != '' && $values['contract_includes_sub_vendors_id'] != 0) {
+          $criteria['value']['contract_includes_sub_vendors'] = $values['contract_includes_sub_vendors_id'];
+        }
+        if ($values['sub_vendor_status_in_pip_id'] != 'Select Status' && $values['sub_vendor_status_in_pip_id'] != 0) {
+          $criteria['value']['sub_vendor_status_in_pip'] = $values['sub_vendor_status_in_pip_id'];
+        }
       }
 
       break;

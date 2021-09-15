@@ -966,6 +966,9 @@
               div.ele('registration_date_from').val('').attr("disabled", "disabled");
               div.ele('registration_date_to').val('').attr("disabled", "disabled");
               div.ele('catastrophic_events').val('').attr("disabled", "disabled");
+              div.ele('includes_sub_vendors').val('').attr("disabled", "disabled");
+              div.ele('sub_vendor_status').val('').attr("disabled", "disabled");
+              div.ele('year').val('').attr("disabled", "disabled");
             }
             div.ele('year').attr("disabled", "disabled");
             div.ele('year').val("");

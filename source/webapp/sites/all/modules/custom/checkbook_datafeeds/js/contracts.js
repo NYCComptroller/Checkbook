@@ -447,6 +447,19 @@
       const $contractStatus = $('select[name="df_contract_status"]', context);
       const $category = $('#edit-category', context);
       let csval = $('select[name="df_contract_status"]', context).val();
+      
+      if(csval === "pending") {
+        $('#edit-year option:selected').removeAttr('selected');
+        $('#edit-year').attr('disabled','disabled');
+        $("#edit-catastrophic_event").attr('disabled', 'disabled');
+        $("#edit-catastrophic_event").val('');
+        $("#edit-sub_vendor_status_in_pip_id").attr('disabled', 'disabled');
+        $("#edit-sub_vendor_status_in_pip_id").val('');
+        $("#edit-contract_includes_sub_vendors_id").attr('disabled', 'disabled');
+        $("#edit-contract_includes_sub_vendors_id").val('');
+        $.fn.subVendorStatusInPipChange(0, 0);
+      }
+
       let catval = $('#edit-category', context).val();
       let year_value = getYearValue($('#edit-year', context).val());
 
@@ -494,11 +507,16 @@
         $.fn.resetSelectedColumns();
         $.fn.hideShow(csval, catval, datasource);
         $.fn.showHidePrimeAndSubIcon();
-        if (csval == 'pending') {
+        if (csval === 'pending') {
           $('#edit-year option:selected').removeAttr('selected');
           $('#edit-year').attr('disabled','disabled');
           $("#edit-catastrophic_event").attr('disabled', 'disabled');
           $("#edit-catastrophic_event").val('');
+          $("#edit-sub_vendor_status_in_pip_id").attr('disabled', 'disabled');
+          $("#edit-sub_vendor_status_in_pip_id").val('');
+          $("#edit-contract_includes_sub_vendors_id").attr('disabled', 'disabled');
+          $("#edit-contract_includes_sub_vendors_id").val('');
+          $.fn.subVendorStatusInPipChange(0, 0);
         }
         else if( catval != 'revenue') {
           $("#edit-catastrophic_event").removeAttr('disabled');
