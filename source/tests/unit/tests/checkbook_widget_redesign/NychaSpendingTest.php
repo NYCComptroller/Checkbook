@@ -27,7 +27,7 @@ class NychaSpendingUrlServiceTest extends \PHPUnit\Framework\TestCase
     public function test_generateLandingPageUrl()
     {
         $result = NychaSpendingUrlService::generateLandingPageUrl('vendor', '138576');
-        $this->assertEquals("/nycha_spending/year/119/vendor/138576", $result);
+        $this->assertEquals("/nycha_spending/year/123/vendor/138576", $result);
     }
 
     /**
@@ -36,7 +36,7 @@ class NychaSpendingUrlServiceTest extends \PHPUnit\Framework\TestCase
     public function test_ytdSpendingUrl()
     {
         $result = NychaSpendingUrlService::ytdSpendingUrl('/dept_code/1', 'ytd_department');
-        $this->assertEquals("/panel_html/nycha_spending_transactions/nycha_spending/transactions/year/119/widget/ytd_department/dept_code/1", $result);
+        $this->assertEquals("/panel_html/nycha_spending_transactions/nycha_spending/transactions/year/123/widget/ytd_department/dept_code/1", $result);
     }
     /**
      * Tests generateContractIdLink() function
