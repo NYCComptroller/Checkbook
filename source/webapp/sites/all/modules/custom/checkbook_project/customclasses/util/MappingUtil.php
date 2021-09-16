@@ -235,7 +235,10 @@ class MappingUtil {
      */
     public static function getCurrentMWBETopNavFilters($active_domain_link, $domain): string
     {
-        if(RequestUtil::isDashboardFlowSubvendor()){
+        if(self::isDefaultMWBEDashboard()){
+            $applicable_minority_types = self::$minority_type_category_map_multi_chart['M/WBE'];
+        }
+        else if(RequestUtil::isDashboardFlowSubvendor()){
             $applicable_minority_types = self::getCurrentSubMWBEApplicableFilters($domain);
         }else{
             $applicable_minority_types = self::getCurrentPrimeMWBEApplicableFilters($domain);
@@ -261,11 +264,11 @@ class MappingUtil {
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
         }
 
-        if(array_intersect($applicable_minority_types,array(6)) || self::isDefaultMWBEDashboard()){
+        if(array_intersect($applicable_minority_types,array(6))){
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native American</a></li>";
         }
 
-        if(array_intersect($applicable_minority_types,array(99)) || self::isDefaultMWBEDashboard()){
+        if(array_intersect($applicable_minority_types,array(99))){
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging (Non-Minority)</a></li>";
 
         }
@@ -302,7 +305,13 @@ class MappingUtil {
 
         //M/WBE filters should be included in mp and sp dashboards
         if(RequestUtil::isDashboardFlowPrimevendor() || $tm_wbe == "Y") {
-            $applicable_minority_types = self::getCurrentSubMWBEApplicableFilters($domain);
+            if(self::isDefaultMWBEDashboard()){
+                $applicable_minority_types = self::$minority_type_category_map_multi_chart['M/WBE'];
+            }
+            else{
+                $applicable_minority_types = self::getCurrentSubMWBEApplicableFilters($domain);
+            }
+            
             $active_domain_link =  preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link);
 
             if(array_intersect($applicable_minority_types,array(4,5))){
@@ -318,11 +327,11 @@ class MappingUtil {
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
             }
 
-            if(array_intersect($applicable_minority_types,array(6)) || self::isDefaultMWBEDashboard()){
+            if(array_intersect($applicable_minority_types,array(6))){
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native American</a></li>";
             }
 
-            if(array_intersect($applicable_minority_types,array(99)) || self::isDefaultMWBEDashboard()){
+            if(array_intersect($applicable_minority_types,array(99))){
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging (Non-Minority)</a></li>";
             }
 
