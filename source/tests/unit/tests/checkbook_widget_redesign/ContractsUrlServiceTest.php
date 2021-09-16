@@ -91,11 +91,15 @@ class ContractsUrlServiceTest extends TestCase
     /**
      * Tests getFooterUrl() function
      */
-    public function test_getFooterUrl(){
+    public function test_getFooterUrl()
+    {
         $parameter["doctype"] = "MA1,CTA1,CT1";
-        $_GET['q']='/contracts_landing/status/A/yeartype/A/year/122';
-        $result = ContractsUrlService::getFooterUrl($parameter,454);
-        $this->assertEquals("/panel_html/contract_details/contract/transactions/contcat/expense/contstatus/A/yeartype/B/year/122/doctype/MA1~CTA1~CT1/smnid/454", $result);
+        $year_id = CheckbookDateUtil::getCurrentFiscalYear();
+        $_GET['q'] = '/contracts_landing/status/A/yeartype/A/year/'.$year_id;
+        $result = ContractsUrlService::getFooterUrl($parameter, 454);
+        $expected_results = '/panel_html/contract_details/contract/transactions/contcat/expense/contstatus/A/yeartype/B/year/'
+            . $year_id . '/doctype/MA1~CTA1~CT1/smnid/454';
+        $this->assertEquals($expected_results, $result);
     }
 
     /**

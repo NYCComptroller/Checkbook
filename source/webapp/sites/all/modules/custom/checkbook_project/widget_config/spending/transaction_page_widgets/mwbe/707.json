@@ -134,7 +134,6 @@
         {"labelAlias":"industry_name","column":"industry_name_formatted","sortSourceColumn":"industry_type_name@checkbook:industry_type"},
         {"labelAlias":"contract_id","column":"contract_number_link","sortSourceColumn":"disb_contract_number"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id_formatted","sortSourceColumn":"disb_sub_contract_id","exportColumn":"sub_contract_reference_id_formatted"},
-        {"label":"","column":"","export":false},
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"disb_purpose"},
         {"labelAlias":"capital_project","column":"disb_reporting_code"},
         {"labelAlias":"spending_category","column":"disb_spending_category_name"},
@@ -171,6 +170,11 @@
             "column":"associated_prime_vendor_name",
             "sourceColumn":"legal_name",
             "sql":"case when is_prime_or_sub = 'S' then legal_name else 'N/A' end"
+        },
+        {
+        "column":"sub_contract_reference_id_formatted",
+        "sourceColumn":"disb_sub_contract_id",
+        "sql":"case when disb_sub_contract_id IS NOT NULL then disb_sub_contract_id else 'N/A' end"
         }
     ],
     "adjustParameters":"
@@ -235,7 +239,6 @@
             {"sClass":"text pad-left","sWidth":"180px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"100px","bSortable": false,"asSorting":["asc","desc"]},
-            {"bSortable":false,"sWidth":"50px"},
             {"sClass":"text","sWidth":"180px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"165px","asSorting":["asc","desc"]},
