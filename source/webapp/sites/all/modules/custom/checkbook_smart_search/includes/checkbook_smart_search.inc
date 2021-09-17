@@ -441,12 +441,6 @@ function adjustExportResults($result,$domain){
             }
           }
           break;
-         case "citywide_spending":
-           if ($headers[$key] == 'budget_code') {
-             $a = array_search ('spending_budget_name', $headers);
-             $field = $field . " (" . $data[$a] . ")";
-           }
-           break;
          case "edc_contracts":
           if ($headers[$key] == 'contract_entity_contract_number') {
             // Add space between the number to display the comma correctly in excel
@@ -479,9 +473,6 @@ function adjustExportResults($result,$domain){
     if($domain == "citywide_payroll") {
       unset($row['daily_wage']);
     }
-    if($domain == "citywide_spending"){
-      unset($row['spending_budget_name']);
-    }
     // Write processed results to output
     fputcsv($output, $row);
   }
@@ -502,9 +493,6 @@ function _checkbook_smart_search_export_data(string $solr_datasource){
   // Remove daily wage display for citywide payroll
   if($domain == "citywide_payroll") {
     unset($fields['daily_wage']);
-  }
-  if($domain == "citywide_spending"){
-    unset($fields['spending_budget_name']);
   }
   // Write header content to output file
   echo implode(",", array_values($fields)) . "\n";
