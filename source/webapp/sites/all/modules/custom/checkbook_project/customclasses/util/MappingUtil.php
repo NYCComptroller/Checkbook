@@ -222,6 +222,10 @@ class MappingUtil {
     private static function isDefaultMWBEDashboard(): bool
     {
         $currentURL = request_uri();      
+        if(strpos($currentURL, "?expandBottomContURL=")){
+            $currentURL = explode("?expandBottomContURL=", $currentURL);
+            $currentURL = $currentURL[0];
+        }
         $filters_applied = strpos($currentURL, "agency/") || strpos($currentURL, "vendor/");
         return !$filters_applied;
     }
