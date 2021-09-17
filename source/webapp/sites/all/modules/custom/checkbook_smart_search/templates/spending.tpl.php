@@ -32,7 +32,6 @@ if ($spending_results['fiscal_year_id'][0] != '' && $spending_results['fiscal_ye
 else {
   $fiscal_year_id = $actual_fiscal_year_id;
 }
-$spending_results['budget_code'] = (strlen($spending_results['spending_budget_name']) > 0) ? $spending_results['budget_code'] . ' ('. $spending_results['spending_budget_name'] . ')' : $spending_results['budget_code'];
 
 if ($isOge) {
   $linkable_fields = array(

@@ -84,7 +84,7 @@
       "check_eft_issued_date": "Issue Date",
       "is_prime_or_sub": "Sub Vendor",
       "minority_type_name": "M/WBE Category",
-      "budget_code": "Budget Code",
+      "budget_code_name": "Budget Code",
       "is_women_owned": "Woman Owned Business",
       "industry_type_name": "Industry",
       "is_emerging": "Emerging Business",
@@ -171,9 +171,8 @@
       "contract_number": "Contract ID",
       "check_amount": "Check Amount",
       "check_eft_issued_date": "Issue Date",
-      "budget_code": "Budget Code",
-      "industry_type_name": "Industry",
-      "spending_budget_name": ""
+      "budget_code_name": "Budget Code",
+      "industry_type_name": "Industry"
     },
     "contracts": {
       "contract_status": "Status",
