@@ -4,7 +4,7 @@
     "cleanURLParameters":[
         "deptnm","expcategorynm","year","calyear","yeartype","status","agency","vendor","expcategory","category",
         "checkamtr","dept","syear","scalyear","magid","agid","cvendor","cagency","awdmethod","csize","cindustry",
-        "doctype","month","industry","mwbe","contnum","vendortype","fvendor"],
+        "doctype","month","industry","mwbe","contnum","vendortype","fvendor","bdgcode", "pscert"],
     "urlParamMap":{
         "deptnm":"disb_department_short_name","expcategorynm":"disb_expenditure_object_name","year":"disb_fiscal_year_id",
         "calyear":"disb_fiscal_year_id","yeartype":"type_of_year","status":"status_flag","agency":"disb_agency_id",
@@ -15,7 +15,7 @@
         "cindustry":"industry_type_id","doctype":"document_code@checkbook:ref_document_code",
         "month":"disb_check_eft_issued_cal_month_id",
         "mwbe":"prime_minority_type_id","industry":"industry_type_id","contnum":"disb_contract_number",
-        "fvendor":"disb_vendor_id","vendortype":"disb_vendor_type"},
+        "fvendor":"disb_vendor_id","vendortype":"disb_vendor_type","bdgcode":"budget_name_code","pscert":"is_women_owned"},
     "paramTypeConfig":{"doctype":"in","checkamtr":"rangeid","syear":"le","scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase"},
     "header":"
         $header = NULL;
@@ -139,6 +139,7 @@
         {"labelAlias":"spending_category","column":"disb_spending_category_name"},
         {"label":"","column":"","export":false},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"disb_minority_type_id","exportColumn":"mwbe_category_name"},
+        {"labelAlias":"budget_code","column":"disb_budget_name"},
         {"label":"","column":"","export":false},
         {"labelAlias": "woman_owned_business","column":"is_women_owned"},
         {"labelAlias": "emerging_business","column":"is_emerging"},
@@ -195,7 +196,8 @@
         else {
             $parameters['is_prime_or_sub'] = 'P';
         }
-
+        //Adjust Certification parameters
+        $parameters = ContractUtil::adjustCertificationFacetParameters($node,$parameters);
         $adjustedParameters = $parameters;
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
@@ -244,6 +246,7 @@
             {"sClass":"number","sWidth":"165px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"30px"},
             {"sClass":"number","sWidth":"110px","asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"120px","asSorting": [ "asc","desc" ]},
             {"bSortable":false,"sWidth":"30px"},
             {"sClass":"number","sWidth":"113px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
@@ -271,6 +274,8 @@
         var oDeptIds = getNamedFilterCriteria('fdeptNm');
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
+        var oPrimeSubCert = getNamedFilterCriteria('fPrimeSubCert');
+        var oBudgetCode = getNamedFilterCriteria('fBudgetCode');
 
         var  cUrl = oTable.fnSettings().sAjaxSource;
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -283,6 +288,8 @@
         cUrl = adjustUrlParameter(cUrl,'deptnm',oDeptIds);
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
+        cUrl = adjustUrlParameter(cUrl,'pscert',oPrimeSubCert);
+        cUrl = adjustUrlParameter(cUrl,'bdgcode',oBudgetCode);
 
            return cUrl;
     }"
