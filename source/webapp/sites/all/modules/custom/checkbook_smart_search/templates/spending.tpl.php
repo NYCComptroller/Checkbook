@@ -32,7 +32,6 @@ if ($spending_results['fiscal_year_id'][0] != '' && $spending_results['fiscal_ye
 else {
   $fiscal_year_id = $actual_fiscal_year_id;
 }
-$spending_results['budget_code'] = (strlen($spending_results['spending_budget_name']) > 0) ? $spending_results['budget_code'] . ' ('. $spending_results['spending_budget_name'] . ')' : $spending_results['budget_code'];
 
 if ($isOge) {
   $linkable_fields = array(
@@ -60,7 +59,14 @@ if ($isOge) {
       "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
       "vendor_name" => "/spending_landing/yeartype/B/year/" . $fiscal_year_id . "/category/" . $spending_results['spending_category_id'] . "/mwbe/".MappingUtil::getTotalMinorityIds('url')."/dashboard/mp/vendor/" . $spending_results["vendor_id"],
     );
-  } elseif (strtolower($spending_results['is_prime_or_sub']) == 'yes' && strtolower($spending_results['is_minority_vendor'])=='y') {
+  } 
+  else if(strtolower($spending_results['is_prime_or_sub']) == 'no' && strtolower($spending_results['is_minority_vendor'])=='n'){
+    $linkable_fields = array(
+      "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
+      "vendor_name" => "/spending_landing/yeartype/B/year/" . $fiscal_year_id . "/category/" . $spending_results['spending_category_id'] . "/mwbe/".MappingUtil::getTotalMinorityIds('url')."/dashboard/mp/vendor/" . $spending_results["vendor_id"],
+    );
+  }
+  elseif (strtolower($spending_results['is_prime_or_sub']) == 'yes' && strtolower($spending_results['is_minority_vendor'])=='y') {
     $linkable_fields = array(
       "agency_name" => "/spending_landing/category/" . $spending_results['spending_category_id'] . "/year/" . $fiscal_year_id . "/yeartype/B/agency/" . $spending_results["agency_id"],
       "vendor_name" => "/spending_landing/yeartype/B/year/" . $fiscal_year_id . "/category/" . $spending_results['spending_category_id'] . "/mwbe/".MappingUtil::getTotalMinorityIds('url')."/dashboard/ms/subvendor/" . $spending_results["vendor_id"],
