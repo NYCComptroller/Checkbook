@@ -22,8 +22,8 @@
 class ContractURLHelper
 {
 
-  static $landingPageParams = array("status" => "status", "vendor" => "vendor", "agency" => "agency", "awdmethod" => "awdmethod", "cindustry" => "cindustry", "csize" => "csize");
-  static $transactionPageParams = array("status" => "status", "vendor" => "cvendor", "agency" => "cagency", "awdmethod" => "awdmethod", "cindustry" => "cindustry", "csize" => "csize");
+  static $landingPageParams = array("status" => "status", "vendor" => "vendor", "agency" => "agency", "awdmethod" => "awdmethod", "cindustry" => "cindustry", "csize" => "csize","mwbe" => "mwbe" , "dashboard"=> "dashboard");
+  static $transactionPageParams = array("status" => "status", "vendor" => "cvendor", "agency" => "cagency", "awdmethod" => "awdmethod", "cindustry" => "cindustry", "csize" => "csize" ,"mwbe" => "mwbe" , "dashboard"=> "dashboard");
 
   /**
    * @param $row
