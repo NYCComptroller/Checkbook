@@ -186,7 +186,13 @@
                 },
                 "check_amount_sum": {
                     "function": "SUM(COALESCE(check_amount,0))"
-                }
+                },
+               "cert_women_count":{
+                "function": "SUM(CASE WHEN is_women_owned = 'Yes' THEN 1 ELSE 0 END)"
+               },
+               "cert_emerging_count":{
+                "function": "SUM(CASE WHEN is_emerging = 'Yes' THEN 1 ELSE 0 END)"
+               }
             }
         },
         "spending_transactions_all": {
