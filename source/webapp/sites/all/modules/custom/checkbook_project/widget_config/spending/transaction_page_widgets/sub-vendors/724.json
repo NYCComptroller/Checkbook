@@ -4,7 +4,7 @@
 "cleanURLParameters":[
     "deptnm","expcategorynm","year","calyear","yeartype","status","agency","vendor","category",
     "checkamtr","dept","syear","scalyear","magid","agid","cvendor","cagency","awdmethod","csize","cindustry",
-    "doctype","month","industry","mwbe","vendor","svendor","subvendor","csubvendor","vendortype","vendornm","contnum"
+    "doctype","month","industry","mwbe","vendor","svendor","subvendor","csubvendor","vendortype","vendornm","contnum","pscert","bdgcode"
 ],
 "urlParamMap":{
     "year":"disb_fiscal_year_id",
@@ -17,7 +17,7 @@
     "mwbe":"minority_type_id","industry":"industry_type_id",
     "cvendor":"prime_vendor_id","vendor":"prime_vendor_id","subvendor":"disb_vendor_id","csubvendor":"vendor_id","vendortype":"disb_vendor_type",
     "vendornm":"disb_vendor_name","vendor_facet":"disb_vendor_name","vendornm_exact":"disb_vendor_name",
-    "contnum":"disb_contract_number"
+    "contnum":"disb_contract_number","bdgcode":"budget_name_code","pscert":"is_women_owned"
 
 },
 "paramTypeConfig":{"checkamtr":"rangeid","syear":"le","scalyear":"le","deptnm":"eqignorecase","doctype":"in"},
@@ -131,6 +131,7 @@
     {"labelAlias":"spending_category","column":"disb_spending_category_name"},
     {"label":"","column":"","export":false},
     {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"disb_minority_type_id","exportColumn":"mwbe_category_name"},
+    //{"labelAlias":"budget_code","column":"disb_budget_name"},
     {"labelAlias": "woman_owned_business","column":"is_women_owned"},
     {"labelAlias": "emerging_business","column":"is_emerging"},
     {"label":"","column":"","export":false}
@@ -168,7 +169,8 @@
     if(isset($parameters['disb_vendor_type'])){
         $parameters['disb_vendor_type'] = MappingUtil::getVendorTypeValue($parameters['disb_vendor_type']);
     }
-
+    //Adjust Certification parameters
+    $parameters = ContractUtil::adjustCertificationFacetParameters($node,$parameters);
     $adjustedParameters = $parameters;
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
@@ -215,6 +217,7 @@
             {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"30px"},
             {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
+            //{"sClass":"text ","sWidth":"120px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"115px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"30px"}
@@ -242,6 +245,8 @@
     var oVendorType = getNamedFilterCriteria('fvendorType');
     var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
     var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
+    var oPrimeSubCert = getNamedFilterCriteria('fPrimeSubCert');
+    //var oBudgetCode = getNamedFilterCriteria('fBudgetCode');
 
     var  cUrl = oTable.fnSettings().sAjaxSource;
     cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -254,6 +259,8 @@
     cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
     cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
     cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
+    cUrl = adjustUrlParameter(cUrl,'pscert',oPrimeSubCert);
+    //cUrl = adjustUrlParameter(cUrl,'bdgcode',oBudgetCode);
 
        return cUrl;
     }"
