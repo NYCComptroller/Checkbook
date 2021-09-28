@@ -327,7 +327,7 @@ class RequestUtil
                 $path .= RequestUtilities::buildUrlFromParam('dashboard');
               }
               //using RequestUtilities::buildUrlFromParam urlencodes mwbe parameter
-              if(!stripos(' '.$path,'/mwbe/')) {
+              if(!stripos(' '.$path,'/mwbe/') && stripos(' '.$path,'/dashboard/')) {
                   $mwbe_param = RequestUtilities::get('mwbe');
                   $path .= '/mwbe/';
                   $path .= isset($mwbe_param)? $mwbe_param : MappingUtil::getTotalMinorityIds('url');
