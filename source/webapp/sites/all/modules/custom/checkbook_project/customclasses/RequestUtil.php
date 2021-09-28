@@ -311,6 +311,9 @@ class RequestUtil
               break;
         }
 
+        // Verify if the vendor is pure mwbe - meaning the vendor can only have certified minority ids
+        // There are situations where the vendor id can be both certified and non-minorty ,
+        // in this case the vendor is not pure mwbe certified.
         if(RequestUtilities::get("vendor") > 0 && in_array($domain, array('contracts','spending'))){
             $non_minority_type_ids = array(7, 11);
             $vendor_minority_type_ids = VendorService::getAllVendorMinorityTypesByYear($domain, RequestUtilities::get("vendor"), $fiscalYearId);
@@ -326,7 +329,8 @@ class RequestUtil
               //using RequestUtilities::buildUrlFromParam urlencodes mwbe parameter
               if(!stripos(' '.$path,'/mwbe/')) {
                   $mwbe_param = RequestUtilities::get('mwbe');
-                  $path .= '/mwbe/'.$mwbe_param;
+                  $path .= '/mwbe/';
+                  $path .= isset($mwbe_param)? $mwbe_param : MappingUtil::getTotalMinorityIds('url');
                 }
             }
         }
