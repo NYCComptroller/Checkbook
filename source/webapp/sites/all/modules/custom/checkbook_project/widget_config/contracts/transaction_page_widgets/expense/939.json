@@ -154,7 +154,9 @@
         "sub_effective_end_date",
         "sub_rfed_amount",
         "is_sub_women_owned",
-        "is_sub_emerging"
+        "is_sub_emerging",
+        "effective_end_year_id",
+        "prime_mwbe_adv_search_id"
     ],
     "logicalOrColumns":[
         ["prime_vendor_code","sub_vendor_code"],
@@ -227,11 +229,11 @@
             "expression":" '<a href=\"'
              .ContractsUrlService::applyLandingParameter($row['document_code'])
              ._checkbook_append_url_params()
-            .  '/year/'.(RequestUtilities::get('year')? RequestUtilities::get('year') :_getFiscalYearID())
-            .  '/yeartype/B'
-            .  RequestUtilities::buildUrlFromParam('contstatus|status')
-            . '/agency/' . $row['agency_id']
-            .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
+             . ContractsUrlService::applyYearParameter($row['effective_end_year_id'])
+             . '/yeartype/B'
+             . RequestUtilities::buildUrlFromParam('contstatus|status')
+             . '/agency/' . $row['agency_id']
+             . '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
         },
         "prime_purpose_formatted": {
             "expression":"_get_tooltip_markup($row['prime_purpose'],36)"
@@ -275,7 +277,7 @@
         "prime_vendor_name_link": {
            "expression": " '<a href=\"'.
                ContractsUrlService::applyLandingParameter($row['document_code'])
-              . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],_getRequestParamValue('year'), false)
+              . ContractsUrlService::primeVendorUrl($row['prime_vendor_id'],$row['prime_mwbe_adv_search_id'],$row['sub_minority_type_id'],_getRequestParamValue('year'),$row['effective_end_year_id'], false)
                . '?expandBottomCont=true\">'. $row['prime_vendor_name_formatted'] . '</a>'  "
           },
         "subvendor_name_formatted": {

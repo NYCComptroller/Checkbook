@@ -429,10 +429,11 @@ class ContractsUrlService
      * Returns Contracts Prime Vendor Landing page URL for the given prime vendor id, year and year type
      * @param $vendor_id
      * @param $year_id
+     * @param $effective_end_year_id
      * @param bool $current
      * @return string
      */
-    public static function primeVendorUrl($vendor_id, $year_id = null, bool $current = true): string
+    public static function primeVendorUrl($vendor_id, $prime_minority_id =null, $sub_minority_id =null ,$year_id = null, $effective_end_year_id=null,bool $current = true): string
     {
         $url = RequestUtilities::buildUrlFromParam([
                 'agency',
@@ -442,15 +443,12 @@ class ContractsUrlService
             . _checkbook_project_get_year_url_param_string();
 
         list($year_type, $agency_id) = RequestUtilities::get(['yeartype', 'agency']);
-        $advanced_search = false;
 
-        $current_url = $_SERVER['HTTP_REFERER'];
-        if (preg_match("/contract\/search\/transactions/", $current_url) || preg_match("/contract\/all\/transactions/", $current_url)) {
-            $advanced_search = true;
-        }
         // For advanced search, if the year value is not set, get the latest minority type category for current Fiscal Year
-        if ($advanced_search) {
-            $year_id = ($year_id == null) ? CheckbookDateUtil::getCurrentFiscalYearId() : $year_id;
+        if (RequestUtil::isAdvancedSearchPage()){
+          $year_url = self::applyYearParameter($effective_end_year_id);
+          $year_id = $effective_end_year_id;
+          $url = preg_replace("/\/year\/\d+/", $year_url, $url);
         }
 
         $latest_minority_id = $year_id
@@ -468,15 +466,16 @@ class ContractsUrlService
             }
         }
 
+        $minority_id = MappingUtil::getTotalMinorityIds('url');
         if ($is_mwbe_certified && isset($mwbe_amount)) {
-                $url .= "/dashboard/mp/mwbe/".MappingUtil::getTotalMinorityIds('url')."/vendor/" . $vendor_id;
+                $url .= "/dashboard/mp/mwbe/".$minority_id."/vendor/" . $vendor_id;
         }
         else if ( $mwbe_amount == 0 && $subven_amount>0 || !isset($mwbe_amount)&&$subven_amount>0){
          // if prime is zero and sub amount is not zero. change dashboard to ms
-          $url .= "/dashboard/ms/mwbe/".MappingUtil::getTotalMinorityIds('url')."/vendor/" . $vendor_id;
+          $url .= "/dashboard/ms/mwbe/".$minority_id."/vendor/" . $vendor_id;
         }
         else if($is_mwbe_certified){
-            $url .= "/dashboard/mp/mwbe/".MappingUtil::getTotalMinorityIds('url')."/vendor/" . $vendor_id;
+            $url .= "/dashboard/mp/mwbe/".$minority_id."/vendor/" . $vendor_id;
         }
         else {
             $url .= RequestUtilities::buildUrlFromParam('datasource') . "/vendor/" . $vendor_id;
@@ -541,4 +540,23 @@ class ContractsUrlService
         }
         return $page;
     }
+
+  /**
+   * @param $docType
+   * @return string
+   */
+  public static function applyYearParameter($effective_end_year_id = null): string
+  {
+   if (RequestUtil::isAdvancedSearchPage()){
+     if($effective_end_year_id != '' && $effective_end_year_id < CheckbookDateUtil::getCurrentFiscalYearId()){
+       $year_id = $effective_end_year_id;
+     }
+     else{
+       $year_id = CheckbookDateUtil::getCurrentFiscalYearId();
+     }
+   }
+    $url = '/year/'.$year_id;
+    return $url;
+  }
+
 }

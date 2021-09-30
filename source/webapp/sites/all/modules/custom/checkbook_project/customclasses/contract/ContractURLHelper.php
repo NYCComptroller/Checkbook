@@ -38,7 +38,7 @@ class ContractURLHelper
       $row['original_agreement_id'] = $row['contract_original_agreement_id'];
     }
     $row['original_agreement_id'] = ($original_agreement_id) ? $original_agreement_id : (isset($row['original_agreement_id']) ? $row['original_agreement_id'] : null);
-
+    $effective_year_id = ContractsUrlService::applyYearParameter($row['effective_end_year_id']);
     if ($parent && strlen($row['master_contract_number']) > 0) {
         $agrParamName = 'magid';
         $docTypeStr = substr($row['master_contract_number'], 0, 3);
@@ -67,7 +67,9 @@ class ContractURLHelper
             . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/' . $agrParamName . '/' . $row['original_agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params()
             . ' >' . $row['contract_number'] . '</a>';
     }
-
+    if (isset($effective_year_id)) {
+      $link =  preg_replace("/\/year\/\d+/", $effective_year_id, $link) ;
+    }
     return $link;
   }
 
@@ -79,13 +81,14 @@ class ContractURLHelper
   public static function prepareRevenueContractLink($row, $node){
 
     $link = NULL;
+
     $docType = $row['document_code'];
     if ($docType == "RCT1") {
         $page = "/contracts_revenue_landing";
     } else {
         $page = "/contracts_landing";
     }
-
+    $effective_year_id = ContractsUrlService::applyYearParameter($row['effective_end_year_id']);
     $agrParamName = 'magid';//in_array($docType, array('MMA1','MA1')) ? 'magid' : 'agid';
     $agid = isset($row['original_agreement_id']) ? $row['original_agreement_id'] : $row['contract_original_agreement_id'];
 
@@ -101,6 +104,10 @@ class ContractURLHelper
             )
             . '?expandBottomContURL=/panel_html/contract_transactions/' . $agrParamName . '/' . $agid . '/doctype/' . $docType
             . ' >' . $row['contract_number'] . '</a>';
+
+    }
+    if (isset($effective_year_id) && RequestUtil::isAdvancedSearchPage()) {
+      $link =  preg_replace("/\/year\/\d+/", $effective_year_id, $link) ;
     }
 
     return $link;
@@ -421,7 +428,7 @@ class ContractURLHelper
     public static function expenseContractsExpandLink($row, $node){
         $flag = (preg_match("/^mwbe/", $_GET['q'])) ? "has_mwbe_children" : "has_children";
         $show_expander = ($row[$flag] == 'Y') ? true : false;
-
+        $effective_year_id = ContractsUrlService::applyYearParameter($row['effective_end_year_id']);
         $link = ($show_expander) ? '<span id=dtl_expand class="toggler collapsed"  magid="' . ((isset($row['contract_original_agreement_id'])) ? $row['contract_original_agreement_id'] : $row['original_agreement_id']) . '" '
             . (RequestUtilities::get('dashboard') != '' ? ('dashboard="' . RequestUtilities::get('dashboard') . '" ') : '')
             . (RequestUtilities::get('mwbe') != '' ? ('mwbe="' . RequestUtilities::get('mwbe') . '" ') : '')
@@ -430,7 +437,9 @@ class ContractURLHelper
             . _checkbook_project_get_year_url_param_string()
             . ('mastercode="' . $row['document_code'] . '"')
             . '></span>' : '';
-
+        if (isset($effective_year_id) && RequestUtil::isAdvancedSearchPage()) {
+        $link =  preg_replace("/\/year\/\d+/", $effective_year_id, $link) ;
+        }
         return $link;
     }
 
@@ -447,7 +456,7 @@ class ContractURLHelper
           $row['original_agreement_id'] = $row['contract_original_agreement_id'];
         }
         $row['original_agreement_id'] = ($original_agreement_id) ? $original_agreement_id : $row['original_agreement_id'];
-
+        $effective_year_id = ContractsUrlService::applyYearParameter($row['effective_end_year_id']);
         if ($parent && strlen($row['master_contract_number']) > 0) {
             $agrParamName = 'magid';
             $docTypeStr = substr($row['master_contract_number'], 0, 3);
@@ -479,7 +488,9 @@ class ContractURLHelper
                 . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/' . $agrParamName . '/' . $row['original_agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params()
                 . ' >' . $row['contract_number'] . '</a>';
         }
-
+        if (isset($effective_year_id) && RequestUtil::isAdvancedSearchPage()) {
+          $link =  preg_replace("/\/year\/\d+/", $effective_year_id, $link) ;
+        }
         return $link;
     }
 
