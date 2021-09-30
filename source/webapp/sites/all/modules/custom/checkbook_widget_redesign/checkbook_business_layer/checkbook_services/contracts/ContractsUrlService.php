@@ -433,7 +433,7 @@ class ContractsUrlService
      * @param bool $current
      * @return string
      */
-    public static function primeVendorUrl($vendor_id, $prime_minority_id =null, $sub_minority_id =null ,$year_id = null, $effective_end_year_id=null,bool $current = true): string
+    public static function primeVendorUrl($vendor_id,$year_id = null, $effective_end_year_id=null,bool $current = true): string
     {
         $url = RequestUtilities::buildUrlFromParam([
                 'agency',
