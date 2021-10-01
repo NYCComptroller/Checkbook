@@ -58,7 +58,8 @@
         "industry_type_id",
         "industry_type_name@checkbook:industry_type",
         "is_women_owned",
-        "is_emerging"
+        "is_emerging",
+        "budget_name_code"
     ],
     "caption":"",
     "derivedColumns": {
@@ -139,7 +140,7 @@
         {"labelAlias":"spending_category","column":"disb_spending_category_name"},
         {"label":"","column":"","export":false},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"disb_minority_type_id","exportColumn":"mwbe_category_name"},
-        //{"labelAlias":"budget_code","column":"disb_budget_name"},
+        {"labelAlias":"budget_code","column":"budget_name_code"},
         {"label":"","column":"","export":false},
         {"labelAlias": "woman_owned_business","column":"is_women_owned"},
         {"labelAlias": "emerging_business","column":"is_emerging"},
@@ -246,7 +247,7 @@
             {"sClass":"number","sWidth":"165px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"30px"},
             {"sClass":"number","sWidth":"110px","asSorting":["asc","desc"]},
-            //{"sClass":"text pad-left","sWidth":"120px","asSorting": [ "asc","desc" ]},
+            {"sClass":"text pad-left","sWidth":"120px","asSorting": [ "asc","desc" ]},
             {"bSortable":false,"sWidth":"30px"},
             {"sClass":"number","sWidth":"113px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
@@ -275,7 +276,7 @@
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
         var oPrimeSubCert = getNamedFilterCriteria('fPrimeSubCert');
-        // var oBudgetCode = getNamedFilterCriteria('fBudgetCode');
+         var oBudgetCode = getNamedFilterCriteria('fBudgetCode');
 
         var  cUrl = oTable.fnSettings().sAjaxSource;
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -289,7 +290,7 @@
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
         cUrl = adjustUrlParameter(cUrl,'pscert',oPrimeSubCert);
-        //cUrl = adjustUrlParameter(cUrl,'bdgcode',oBudgetCode);
+        cUrl = adjustUrlParameter(cUrl,'bdgcode',oBudgetCode);
 
            return cUrl;
     }"

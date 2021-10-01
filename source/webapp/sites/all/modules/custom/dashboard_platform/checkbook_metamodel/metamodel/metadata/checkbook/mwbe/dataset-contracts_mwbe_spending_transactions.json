@@ -287,7 +287,16 @@
                             "sourceColumnName": "industry_type_id"
                         }
                     ]
-                }
+                },
+              {
+                "name": "budget_name_code",
+                "levels": [
+                  {
+                    "name": "budget_name_code",
+                    "sourceColumnName": "budget_name_code"
+                  }
+                ]
+              }
             ],
             "measures": {
                 "txcount": {
