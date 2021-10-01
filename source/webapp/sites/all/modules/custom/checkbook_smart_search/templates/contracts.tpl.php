@@ -161,7 +161,7 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
     }
 
     if($contracts_results['original_agreement_id']){
-        $contract_id_link .= $contract_id_link_year . (($isOge) ? '/datasource/checkbook_oge/agency/'.$contracts_results['agency_id'] : '') ."?expandBottomContURL=/panel_html/contract_transactions/contract_details";
+        $contract_id_link .= _checkbook_project_get_year_url_param_string() . (($isOge) ? '/datasource/checkbook_oge/agency/'.$contracts_results['agency_id'] : '') ."?expandBottomContURL=/panel_html/contract_transactions/contract_details";
         if($contracts_results['document_code'] == 'MA1' || $contracts_results['document_code'] == 'MMA1' || $contracts_results['document_code'] == 'RCT1'){
             $contract_id_link .= "/magid/".$contracts_results['original_agreement_id']."/doctype/".$contracts_results["document_code"];
         }else{
@@ -171,7 +171,7 @@ if(strtolower($contracts_results['contract_status']) == 'registered'){
         $contracts_results['contract_number'] = "<a href='".$contract_id_link ."'>".$contracts_results['contract_number']."</a>";
         $contracts_results['parent_contract_number'] = "<a href='". $master_contract_Id_link."'>".$contracts_results['parent_contract_number']."</a>";
     }else{
-       $contract_id_link .= $contract_id_link_year."?expandBottomContURL=/minipanels/pending_contract_transactions/contract/".
+       $contract_id_link .= _checkbook_project_get_year_url_param_string()."?expandBottomContURL=/minipanels/pending_contract_transactions/contract/".
                             $contracts_results['fms_pending_contract_number']."/version/".$contracts_results['document_version'];
        $contracts_results['contract_number'] = "<a href='".$contract_id_link ."'>".$contracts_results['contract_number']."</a>";
        $contracts_results['parent_contract_number'] = "<a href='". $master_contract_Id_link."'>".$contracts_results['parent_contract_number']."</a>";
