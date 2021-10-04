@@ -194,10 +194,13 @@ class SpendingUtil{
         $year_id = isset($calyear) ? $calyear : self::getFiscalYearIDByDate($issue_date);
         $vendor_id = $row["vendor_id"];
         $agency_id = $row["agency"];
+        $category_id = $row['spending_category_id'];
         $dashboard = RequestUtilities::get("dashboard");
         $link = $row["is_sub_vendor"] == "No" ? self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true) : self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true);
         $year_pattern = '/year\/(\d+)/i';
         $link = preg_replace($year_pattern,"year/". $year_id ,$link);
+        $category_pattern = '/category\/(\d+)/i';
+        $link = preg_replace($category_pattern,"category/". $category_id ,$link);
         return $link;
     }
 
