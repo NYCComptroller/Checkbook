@@ -25,6 +25,8 @@ class SpendingUtil{
      */
     static $landingPageParams = array("category"=>"category","industry"=>"industry","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
     static $spendingCategories = array(0 => 'Total', 2 => 'Payroll', 3 => 'Capital', 1 => 'Contract', 5 => 'Trust & Agency', 4 => 'Other',);
+    static $yeartoIDMap = array("2022" => "123", "2021" => "122", "2020" => "121", "2019" => "120", "2018" => "119", "2017" => "118", "2016" => "117", "2015" => "116", "2014" => "115", "2013" => "114", "2012" => "113", "2011" => "112", "2010" => "111");
+
     /**
      * @param $categoryId
      * @param array $columns
@@ -61,6 +63,20 @@ class SpendingUtil{
       return $defaultName;
     }
 
+    /**
+     * Returns the year ID based on in which fiscal year does the date belong to
+     * @param $date
+     * @return string
+     * */
+
+    public static function getFiscalYearIDByDate($date): string
+    {
+        $date_timestamp = strtotime($date);
+        $year = date('Y', $date_timestamp); 
+        $next_fy_timestamp = strtotime("07/01/" . $year);
+        $year = $date_timestamp >= $next_fy_timestamp ? strval(intval($year)+1) : $year;
+        return self::$yeartoIDMap[$year] ;
+    }
 
     /**
      * Returns Spending Footer Url based on values from current path
@@ -172,18 +188,17 @@ class SpendingUtil{
      */
     public static function getPayeeNameLinkUrl($node, $row): string
     {
-        $year = RequestUtilities::get("year");
         $calyear = RequestUtilities::get("calyear");
         $year_type = isset($calyear) ? "C" : "B";
-        $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : CheckbookDateUtil::getCurrentFiscalYearId());
+        $issue_date = $row["check_eft_issued_date"] ? $row["check_eft_issued_date"] : date("m/d/Y") ;
+        $year_id = isset($calyear) ? $calyear : self::getFiscalYearIDByDate($issue_date);
         $vendor_id = $row["vendor_id"];
         $agency_id = $row["agency"];
         $dashboard = RequestUtilities::get("dashboard");
-
-        return $row["is_sub_vendor"] == "No"
-            ? self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true)
-            : self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true);
-
+        $link = $row["is_sub_vendor"] == "No" ? self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true) : self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true);
+        $year_pattern = '/year\/(\d+)/i';
+        $link = preg_replace($year_pattern,"year/". $year_id ,$link);
+        return $link;
     }
 
     /**
