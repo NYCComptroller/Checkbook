@@ -784,7 +784,16 @@ class SpendingUtil{
             'dashboard'=>$row["is_sub_vendor"] == "No" ? "mp" : "ms",
             'mwbe' => $mwbe == 4 || $mwbe == 5 ? '4~5' : $mwbe
         );
-        return '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
+
+        $issue_date = $row["check_eft_issued_date"] ? $row["check_eft_issued_date"] : date("m/d/Y") ;
+        $year_id = self::getFiscalYearIDByDate($issue_date);
+        $category_id = $row['spending_category_id'];
+        $link = '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
+        $year_pattern = '/year\/(\d+)/i';
+        $link = preg_replace($year_pattern,"year/". $year_id ,$link);
+        $category_pattern = '/category\/(\d+)/i';
+        $link = preg_replace($category_pattern,"category/". $category_id ,$link);
+        return $link;
     }
 
     /**
