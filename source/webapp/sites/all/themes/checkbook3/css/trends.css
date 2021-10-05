@@ -191,6 +191,9 @@ body.page-featuredtrends .footnote{
     width:940px;
     clear:both;
 }
+body.page-trends .highlight{
+  font-weight: bold;
+}
 body.page-trends .amount-L,
 body.page-trends-landing .amount-L,
 body.page-featuredtrends .amount-L,
