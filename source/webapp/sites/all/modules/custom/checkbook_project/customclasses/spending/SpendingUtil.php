@@ -810,6 +810,13 @@ class SpendingUtil{
         $link = preg_replace($year_pattern,"year/". $year_id ,$link);
         $category_pattern = '/category\/(\d+)/i';
         $link = preg_replace($category_pattern,"category/". $category_id ,$link);
+        if(!strpos($link, 'category')){
+            $link .= '/category/' . $category_id;
+        }
+        if(!strpos($link, 'year')){
+            $link .= '/year/' . $year_id;
+        }
+
         return $link;
     }
 
