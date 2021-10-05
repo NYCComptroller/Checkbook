@@ -186,21 +186,38 @@ class SpendingUtil{
      * @param $row
      * @return string
      */
-    public static function getPayeeNameLinkUrl($node, $row): string
+    public static function getPayeeNameLinkUrl($node, $row, $isAdvancedSearchPage = false): string
     {
+        $year = RequestUtilities::get("year");
         $calyear = RequestUtilities::get("calyear");
         $year_type = isset($calyear) ? "C" : "B";
-        $issue_date = $row["check_eft_issued_date"] ? $row["check_eft_issued_date"] : date("m/d/Y") ;
-        $year_id = isset($calyear) ? $calyear : self::getFiscalYearIDByDate($issue_date);
+        $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : CheckbookDateUtil::getCurrentFiscalYearId());
+
+        if($isAdvancedSearchPage){
+            $issue_date = $row["check_eft_issued_date"] ? $row["check_eft_issued_date"] : date("m/d/Y") ;
+            $year_id = isset($calyear) ? $calyear : self::getFiscalYearIDByDate($issue_date);
+        }
+
         $vendor_id = $row["vendor_id"];
         $agency_id = $row["agency"];
-        $category_id = $row['spending_category_id'];
         $dashboard = RequestUtilities::get("dashboard");
         $link = $row["is_sub_vendor"] == "No" ? self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true) : self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true);
-        $year_pattern = '/year\/(\d+)/i';
-        $link = preg_replace($year_pattern,"year/". $year_id ,$link);
-        $category_pattern = '/category\/(\d+)/i';
-        $link = preg_replace($category_pattern,"category/". $category_id ,$link);
+
+        if($isAdvancedSearchPage){
+            $category_id = $row['spending_category_id'];
+            $year_pattern = '/year\/(\d+)/i';
+            $category_pattern = '/category\/(\d+)/i';
+            $link = preg_replace($year_pattern,"year/". $year_id ,$link);
+            $link = preg_replace($category_pattern,"category/". $category_id ,$link);
+            
+            if(!strpos($link, 'category')){
+                $link .= '/category/' . $category_id;
+            }
+            if(!strpos($link, 'year')){
+                $link .= '/year/' . $year_id;
+            }
+        }
+
         return $link;
     }
 
