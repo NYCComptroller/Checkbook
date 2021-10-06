@@ -330,6 +330,10 @@ class ContractsUrlService
         $smnid_param = isset($legacy_node_id) ? '/smnid/' . $legacy_node_id : '';
         $contract_status = RequestUtilities::buildUrlFromParam('status|contstatus');
         $contract_status = isset($contract_status) && $contract_status != '' ? $contract_status : "/contstatus/P";
+        // Add mwbe url parameter for pending contracts facet and transactions filtering
+        if ($contract_status == '/contstatus/P'){
+          $mwbe_param .= "/mwbe/".$mwbe;
+        }
 
         $path = Dashboard::isSubDashboard() && subVendorContractsByPrimeVendor::getCurrent() == ContractCategory::EXPENSE
             ? '/panel_html/sub_contracts_transactions/subcontract/transactions'
