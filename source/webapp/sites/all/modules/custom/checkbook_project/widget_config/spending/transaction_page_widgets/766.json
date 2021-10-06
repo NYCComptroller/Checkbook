@@ -169,7 +169,8 @@
         "original_agreement_id@checkbook:sub_vendor_agid",
         "budget_name_code",
         "is_women_owned",
-        "is_emerging"
+        "is_emerging",
+        "check_eft_issued_nyc_year_id"
     ],
     "derivedColumns": {
         "associated_prime_vendor_name":{
