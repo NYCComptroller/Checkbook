@@ -200,7 +200,7 @@ class SpendingUtil{
 
         if($isAdvancedSearchPage){
             $issue_date = $row["check_eft_issued_date"] ? $row["check_eft_issued_date"] : date("m/d/Y") ;
-            $year_id = isset($calyear) ? $calyear : self::getFiscalYearIDByDate($issue_date);
+            $year_id = $row['check_eft_issued_nyc_year_id'] ? $row['check_eft_issued_nyc_year_id'] : self::getFiscalYearIDByDate($issue_date);
         }
 
         $vendor_id = $row["vendor_id"];
