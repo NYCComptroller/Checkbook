@@ -25,7 +25,6 @@ class SpendingUtil{
      */
     static $landingPageParams = array("category"=>"category","industry"=>"industry","mwbe"=>"mwbe","dashboard"=>"dashboard","agency"=>"agency","vendor"=>"vendor","subvendor"=>"subvendor");
     static $spendingCategories = array(0 => 'Total', 2 => 'Payroll', 3 => 'Capital', 1 => 'Contract', 5 => 'Trust & Agency', 4 => 'Other',);
-    static $yeartoIDMap = array("2022" => "123", "2021" => "122", "2020" => "121", "2019" => "120", "2018" => "119", "2017" => "118", "2016" => "117", "2015" => "116", "2014" => "115", "2013" => "114", "2012" => "113", "2011" => "112", "2010" => "111");
 
     /**
      * @param $categoryId
@@ -75,7 +74,13 @@ class SpendingUtil{
         $year = date('Y', $date_timestamp); 
         $next_fy_timestamp = strtotime("07/01/" . $year);
         $year = $date_timestamp >= $next_fy_timestamp ? strval(intval($year)+1) : $year;
-        return self::$yeartoIDMap[$year] ;
+        $url = drupal_get_path_alias($_GET['q']);
+        $datasource = RequestUtil::getRequestKeyValueFromURL('datasource', $url);
+        $datasource = $datasource ? $datasource : Datasource::CITYWIDE;
+        $query = "SELECT year_id FROM ref_year where year_value = " . $year;  
+        $result = _checkbook_project_execute_sql($query,'main', $datasource);
+        $year_id = $result[0]['year_id'];
+        return $year_id;
     }
 
     /**
