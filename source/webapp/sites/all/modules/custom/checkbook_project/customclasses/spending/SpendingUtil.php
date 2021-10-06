@@ -27,6 +27,20 @@ class SpendingUtil{
     static $spendingCategories = array(0 => 'Total', 2 => 'Payroll', 3 => 'Capital', 1 => 'Contract', 5 => 'Trust & Agency', 4 => 'Other',);
 
     /**
+     * Returns year ID for advanced search results row
+     * @param $row
+     * @return string
+     */
+    public static function getAdvancedSearchYearID($row): int
+    {
+        $url = drupal_get_path_alias($_GET['q']);
+        $year_id_in_url = RequestUtil::getRequestKeyValueFromURL('year', $url);
+        $year_id = $row['check_eft_issued_nyc_year_id'] ? $row['check_eft_issued_nyc_year_id'] : $year_id_in_url;
+        $year_id = $year_id ? $year_id : CheckbookDateUtil::getCurrentFiscalYearId();
+        return $year_id;
+    }
+
+    /**
      * @param $categoryId
      * @param array $columns
      * @return array|null
@@ -60,27 +74,6 @@ class SpendingUtil{
         return $categories[$categoryId]. " Spending";
       }
       return $defaultName;
-    }
-
-    /**
-     * Returns the year ID based on in which fiscal year does the date belong to
-     * @param $date
-     * @return string
-     * */
-
-    public static function getFiscalYearIDByDate($date): string
-    {
-        $date_timestamp = strtotime($date);
-        $year = date('Y', $date_timestamp); 
-        $next_fy_timestamp = strtotime("07/01/" . $year);
-        $year = $date_timestamp >= $next_fy_timestamp ? strval(intval($year)+1) : $year;
-        $url = drupal_get_path_alias($_GET['q']);
-        $datasource = RequestUtil::getRequestKeyValueFromURL('datasource', $url);
-        $datasource = $datasource ? $datasource : Datasource::CITYWIDE;
-        $query = "SELECT year_id FROM ref_year where year_value = " . $year;  
-        $result = _checkbook_project_execute_sql($query,'main', $datasource);
-        $year_id = $result[0]['year_id'];
-        return $year_id;
     }
 
     /**
@@ -199,8 +192,7 @@ class SpendingUtil{
         $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : CheckbookDateUtil::getCurrentFiscalYearId());
 
         if($isAdvancedSearchPage){
-            $issue_date = $row["check_eft_issued_date"] ? $row["check_eft_issued_date"] : date("m/d/Y") ;
-            $year_id = $row['check_eft_issued_nyc_year_id'] ? $row['check_eft_issued_nyc_year_id'] : self::getFiscalYearIDByDate($issue_date);
+            $year_id = self::getAdvancedSearchYearID($row);
         }
 
         $vendor_id = $row["vendor_id"];
@@ -807,10 +799,9 @@ class SpendingUtil{
             'mwbe' => $mwbe == 4 || $mwbe == 5 ? '4~5' : $mwbe
         );
 
-        $issue_date = $row["check_eft_issued_date"] ? $row["check_eft_issued_date"] : date("m/d/Y") ;
-        $year_id = self::getFiscalYearIDByDate($issue_date);
+        $year_id = self::getAdvancedSearchYearID($row);
         $category_id = $row['spending_category_id'];
-        $link = '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
+        $link = '/' . self::getLandingPageWidgetUrl($custom_params);
         $year_pattern = '/year\/(\d+)/i';
         $link = preg_replace($year_pattern,"year/". $year_id ,$link);
         $category_pattern = '/category\/(\d+)/i';
@@ -821,6 +812,8 @@ class SpendingUtil{
         if(!strpos($link, 'year')){
             $link .= '/year/' . $year_id;
         }
+
+        $link .= '?expandBottomCont=true';
 
         return $link;
     }
