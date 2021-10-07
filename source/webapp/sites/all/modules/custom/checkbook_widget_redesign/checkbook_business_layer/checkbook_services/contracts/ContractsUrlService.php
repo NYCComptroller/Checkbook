@@ -331,8 +331,8 @@ class ContractsUrlService
         $contract_status = RequestUtilities::buildUrlFromParam('status|contstatus');
         $contract_status = isset($contract_status) && $contract_status != '' ? $contract_status : "/contstatus/P";
         // Add mwbe url parameter for pending contracts facet and transactions filtering
-        if ($contract_status == '/contstatus/P'){
-          $mwbe_param .= isset($mwbe) ? "/mwbe/".$mwbe : '';
+        if ($contract_status == '/contstatus/P' || $category == ContractCategory::REVENUE){
+          $mwbe_param = isset($mwbe) ? "/mwbe/".$mwbe : '';
         }
 
         $path = Dashboard::isSubDashboard() && subVendorContractsByPrimeVendor::getCurrent() == ContractCategory::EXPENSE
@@ -351,6 +351,7 @@ class ContractsUrlService
                 'csize',
                 'bottom_slider',
             ])
+            . RequestUtilities::buildUrlFromParam('dashboard')
             . $mwbe_param . $subvendor_param . $vendor_param . $industry_param
             . _checkbook_project_get_year_url_param_string()
             . self::getDocumentCodeUrlString($parameters)
