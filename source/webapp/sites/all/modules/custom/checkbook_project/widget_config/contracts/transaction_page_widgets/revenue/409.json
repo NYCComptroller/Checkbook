@@ -15,6 +15,10 @@
 	    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
 		 _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
 	    }
+      $node->is_mwbe = _checkbook_check_is_mwbe_page();
+      if($node->is_mwbe == NULL ){
+      unset($parameters['is_active_eft_2011']);
+      }
 
 	    if(function_exists('_checkbook_project_applyParameterFilters')){
 		  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
