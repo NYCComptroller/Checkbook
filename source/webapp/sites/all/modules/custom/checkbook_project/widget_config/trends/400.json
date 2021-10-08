@@ -30,7 +30,7 @@
     "sScrollY": 400,
     "bScrollCollapse": true,
     "sScrollX": "100%",
-    "sScrollXInner": "6175px",
+    "sScrollXInner": "7175px",
     "aoColumnDefs": [
       {"sWidth": "25px", "aTargets": [-1]}
     ],

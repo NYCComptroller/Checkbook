@@ -65,7 +65,7 @@ rsort($years);
             <?php
             foreach ($years as $year){
                 echo "<th></th>";
-                if($year == 2016)
+                if($year == 2020)
                     echo "<th class='number'><div>" . $year . "<sup>(b)</sup></div></th>";
                 else
                     echo "<th class='number'><div>" . $year . "</div></th>";
@@ -98,7 +98,6 @@ rsort($years);
             		break;
             	case "Percentage Increase (Decrease) from Prior Year":
             		$conditionCategory = "<div class='" . $cat_class ."'>Percentage Increase (Decrease)<br><span style='padding-left:10px;'>from Prior Year</span></div>";
-                    $row[2016]['amount'] = $row[2016]['amount'] . '(b)';
             		break;
             	default:
             		$conditionCategory = "<div class='" . $cat_class . "' >" . str_replace('(a)','<sup style="text-transform: lowercase">(a)</sup>',$row['category'])  . "</div>";
@@ -113,7 +112,7 @@ rsort($years);
                     if($row[$year]['amount'] > 0)
                         echo "<td><div></div></td><td class='" . $amount_class . "'><div>" . $row[$year]['amount'] . "%</div></td>";
                     else if($row[$year]['amount'] < 0)
-                       echo "<td><div></div></td><td class='" . $amount_class . "' ><div>(" . abs($row[$year]['amount']) . "%)</div></td>";
+                       echo "<td><div></div></td><td class='" . $amount_class . "' ><div>(" . abs($row[$year]['amount']) . "%)" . (($year == 2020) ? '(b)' : ''). "</div></td>";
                     else
                         echo "<td><div></div></td><td class='" . $amount_class . "' ><div>" . "NA" . "</div></td>";
                 }else{
@@ -139,12 +138,11 @@ rsort($years);
 </table>
     <div class="footnote">
         <p>(a) Includes rounding  adjustments</p>
-        <p>(b) Six month average</p>
-
-<!--        <p>Notes: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information. Other than the City of New York, no single-->
-<!--        employer employs more than 2 percent of total nonagricultural employees.</p>-->
-<!--        <p>Data are not seasonally adjusted.</p>-->
-<!--        <p>Source: New York State Department of Labor, Division of Research and Statistics.</p>-->
+        <p>(b) Six month average</p><br>
+       <p>Notes: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information. Other than the City of New York, no single
+       employer employs more than 2 percent of total nonagricultural employees.</p>
+       <p>Data are not seasonally adjusted.</p>
+        <p>Source: New York State Department of Labor, Division of Research and Statistics.</p>
     </div>
 <?php
 	widget_data_tables_add_js($node);
