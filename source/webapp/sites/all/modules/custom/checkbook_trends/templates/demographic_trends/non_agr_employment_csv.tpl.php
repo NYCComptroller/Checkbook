@@ -46,15 +46,18 @@
         foreach ($years as $year){
             if($i == count($table_rows)-1){
                 if($row[$year]['amount'] > 0){
-                    if($year == 2020)
-                        $amount = $row[$year]['amount'] . "(b)%";
-                    else
                        $amount = $row[$year]['amount'] . "%";
                 }
-                else if($row[$year]['amount'] < 0)
+                else if($row[$year]['amount'] < 0) {
+                  if($year == 2020) {
+                    $amount = $row[$year]['amount'] . "%(b)";
+                  }else {
                     $amount = '"' . "(" . abs($row[$year]['amount']) . "%)" . '"';
-                else
-                    $amount = "NA";
+                  }
+                }
+                else {
+                  $amount = "NA";
+                }
             }else{
                 if($row[$year]['amount'] > 0){
                    $amount = '"'. number_format($row[$year]['amount']) .'"';
