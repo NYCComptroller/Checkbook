@@ -70,7 +70,7 @@ echo eval($node->widgetConfig->header);
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['isp_revenue_3']>0)?number_format($row['isp_revenue_3']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['pilomrt_payment']>0)?number_format($row['pilomrt_payment']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['pilot']>0)?number_format($row['pilot']):'-') . "</td>";            //PILOT DATA
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['other_4']>0)?number_format($row['other_4']):'-') . ((  $row['fiscal_year'] == '2019')? "<sup class='endItem'>(9)</sup>":"<sup class='endItem' style='visibility: hidden;'>(9)</sup>") . "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['other_4']>0)?number_format($row['other_4']):'-') . ((in_array($row['fiscal_year'], ['2019', '2020']))? "<sup class='endItem'>(9)</sup>":"<sup class='endItem' style='visibility: hidden;'>(9)</sup>") . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['investment_earnings']>0)?number_format($row['investment_earnings']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_revenue']>0)?number_format($row['total_revenue']):'-') . "</td>";
             echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['interest']>0)?number_format($row['interest']):'-') . "</td>";
@@ -99,7 +99,7 @@ echo eval($node->widgetConfig->header);
     <p>(7) ISPs are to be made by the City under the terms of Support and Development Agreement, which obligates the City to pay HYIC, subject to annual appropriation, an ISP amount equal to the
         difference between the amount of funds available to HYIC to pay interest on its current outstanding bonds and the amount of interest due on such bonds.</p>
     <p>(8) Debt service payments are funded from excess prior years' revenues and from current year revenues.</p>
-    <p>(9) In December 2011, HYIC was obligated to make an arbitrage rebate payment to United States Treasury for $8.8M </p>
+    <p>(9) In December 2011, HYIC was obligated to make an arbitrage rebate payment to United States Treasury for $8.8M. In February 2019, the 8.8M Payment was refunded back to HYIC. </p>
     <br />
     <p>Source: Hudson Yards Infrastructure Corporation</p>
 </div>
