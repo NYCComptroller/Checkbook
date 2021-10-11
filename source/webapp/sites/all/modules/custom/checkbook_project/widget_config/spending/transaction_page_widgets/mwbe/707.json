@@ -14,7 +14,7 @@
         "cvendor":"prime_vendor_id","cagency":"document_agency_id","awdmethod":"award_method_id","csize":"award_size_id",
         "cindustry":"industry_type_id","doctype":"document_code@checkbook:ref_document_code",
         "month":"disb_check_eft_issued_cal_month_id",
-        "mwbe":"prime_minority_type_id","industry":"industry_type_id","contnum":"disb_contract_number",
+        "mwbe":"disb_minority_type_id","industry":"industry_type_id","contnum":"disb_contract_number",
         "fvendor":"disb_vendor_id","vendortype":"disb_vendor_type","bdgcode":"budget_name_code","pscert":"is_women_owned"},
     "paramTypeConfig":{"doctype":"in","checkamtr":"rangeid","syear":"le","scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase"},
     "header":"
@@ -138,13 +138,10 @@
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"disb_purpose"},
         {"labelAlias":"capital_project","column":"disb_reporting_code"},
         {"labelAlias":"spending_category","column":"disb_spending_category_name"},
-        {"label":"","column":"","export":false},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"disb_minority_type_id","exportColumn":"mwbe_category_name"},
         {"labelAlias":"budget_code","column":"budget_name_code"},
-        {"label":"","column":"","export":false},
         {"labelAlias": "woman_owned_business","column":"is_women_owned"},
-        {"labelAlias": "emerging_business","column":"is_emerging"},
-        {"label":"","column":"","export":false}
+        {"labelAlias": "emerging_business","column":"is_emerging"}
     ],
     "exportColumnSqlOverride":[
         {
@@ -231,9 +228,9 @@
         "aoColumns":[
             {"sClass":"text","sWidth":"170px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"190px","asSorting":["asc","desc"]},
-            {"sClass":"number","sWidth":"90px","bSortable": false,"asSorting":["asc","desc"]},
-            {"sClass":"number","sWidth":"170px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"90px","asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"100px","bSortable": false,"asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"170px","asSorting":["asc","desc"]},
+            {"sClass":"text pad-left","sWidth":"100px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"200px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"90px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"135px","asSorting":["desc","asc"]},
@@ -245,13 +242,10 @@
             {"sClass":"text","sWidth":"180px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"165px","asSorting":["asc","desc"]},
-            {"bSortable":false,"sWidth":"30px"},
             {"sClass":"number","sWidth":"110px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"120px","asSorting": [ "asc","desc" ]},
-            {"bSortable":false,"sWidth":"30px"},
             {"sClass":"number","sWidth":"113px","asSorting":["asc","desc"]},
-            {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
-            {"bSortable":false,"sWidth":"30px"}
+            {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]}
         ],
         "aaSorting":[[7,"desc"]],
         "sScrollX":"100%",
