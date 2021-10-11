@@ -813,7 +813,7 @@ class SpendingUtil{
      */
    public static function getLandingPageWidgetUrl($override_params = array()): string
    {
-        $url = self::getSpendingUrl('spending_landing',$override_params);
+        $url = self::getSpendingUrl('spending_landing',$override_params);log_error($url);
         return str_replace("calyear","year",$url);
    }
 
@@ -849,8 +849,6 @@ class SpendingUtil{
      */
     public static function getSpendingUrl($path, array $override_params = array()): string
     {
-
-        $url =  $path . _checkbook_project_get_year_url_param_string();
         $q = drupal_get_path_alias($_GET['q']);
         if (_checkbook_current_request_is_ajax()) {
           // remove query part
@@ -860,6 +858,9 @@ class SpendingUtil{
         $pathParams = explode('/', $q);
         $url_params = self::$landingPageParams;
         $exclude_params = array_keys($override_params);
+
+        $url =  !in_array('year',$exclude_params) ? $path . _checkbook_project_get_year_url_param_string() : $path;
+
         if(is_array($url_params)){
             foreach($url_params as $key => $value){
                 if(!in_array($key,$exclude_params)){
@@ -868,7 +869,7 @@ class SpendingUtil{
             }
         }
 
-        if(is_array($override_params)){
+      if(is_array($override_params)){
             foreach($override_params as $key => $value){
                 if(isset($value)){
                     if($key == 'yeartype' && $value == 'C'){
