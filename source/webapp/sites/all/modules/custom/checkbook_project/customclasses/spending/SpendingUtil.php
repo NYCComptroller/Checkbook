@@ -813,7 +813,7 @@ class SpendingUtil{
      */
    public static function getLandingPageWidgetUrl($override_params = array()): string
    {
-        $url = self::getSpendingUrl('spending_landing',$override_params);log_error($url);
+        $url = self::getSpendingUrl('spending_landing',$override_params);
         return str_replace("calyear","year",$url);
    }
 
