@@ -169,7 +169,8 @@
         "original_agreement_id@checkbook:sub_vendor_agid",
         "budget_name_code",
         "is_women_owned",
-        "is_emerging"
+        "is_emerging",
+        "check_eft_issued_nyc_year_id"
     ],
     "derivedColumns": {
         "associated_prime_vendor_name":{
@@ -188,7 +189,7 @@
             "expression": "_get_tooltip_markup($row['agency_name'], 40)"
         },
         "agency_name_link": {
-            "expression": " RequestUtil::isNewWindow() ? $row['agency_name_formatted']  : ('<a href=/spending_landing' . _checkbook_project_get_year_url_param_string(false,false,false,true) . SpendingUtil::getDataSourceParams()  . _checkbook_project_get_url_param_string('category') . '/agency/'. $row['agency_id']. '?expandBottomCont=true>'. $row['agency_name_formatted'] .'</a>') "
+            "expression": " RequestUtil::isNewWindow() ? $row['agency_name_formatted']  : ('<a href=/spending_landing/year/' . (isset($row['check_eft_issued_nyc_year_id']) ? $row['check_eft_issued_nyc_year_id'] : CheckbookDateUtil::getCurrentFiscalYearId()) . SpendingUtil::getDataSourceParams()  . _checkbook_project_get_url_param_string('category') . '/agency/'. $row['agency_id']. '?expandBottomCont=true>'. $row['agency_name_formatted'] .'</a>') "
         },
         "payee_name_formatted":{
             "expression": "_get_tooltip_markup($row['vendor_name'], 34)"
@@ -476,7 +477,7 @@
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"115px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"115px","asSorting":["asc","desc"]},
-            {"sClass":"number","sWidth":"115px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"115px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
         "aaSorting":[[8,"desc"]],
