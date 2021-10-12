@@ -32,10 +32,10 @@ if(RequestUtilities::get("magid") != ""){
 }
 
 if(_get_current_datasource() != "checkbook_oge"){
-  $queryVendorDetails = "SELECT cvlmc.minority_type_id, fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,
+  $queryVendorDetails = "SELECT cvlmc.minority_type_id, fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id, 
                                 fa.vendor_id, va.address_id, ve.legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
-                                (CASE WHEN cvlmc.minority_type_id IN (". implode(',', MappingUtil::$minority_type_category_map_multi_chart['M/WBE']) .") THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
-                                (CASE WHEN cvlmc.minority_type_id IN (4,5) then 'Asian American' ELSE rm.minority_type_name END) AS ethnicity
+                                (CASE WHEN cvlmc.minority_type_id IN (". implode(',', MappingUtil::$minority_type_category_map_multi_chart['M/WBE']) .") THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor, 
+                                (CASE WHEN cvlmc.minority_type_id IN (4,5) then 'Asian American' ELSE rm.minority_type_name END) AS ethnicity 
 	                        FROM agreement_snapshot fa
 	                            LEFT JOIN vendor_history vh ON fa.vendor_history_id = vh.vendor_history_id
 	                            LEFT JOIN vendor as ve ON ve.vendor_id = vh.vendor_id
@@ -46,7 +46,7 @@ if(_get_current_datasource() != "checkbook_oge"){
 	                            LEFT JOIN ref_business_type rb ON vb.business_type_id = rb.business_type_id
 	                            LEFT JOIN contract_vendor_latest_mwbe_category cvlmc ON cvlmc.vendor_id = fa.vendor_id
                                 LEFT JOIN ref_minority_type rm ON cvlmc.minority_type_id = rm.minority_type_id
-	                        WHERE ra.address_type_code = 'PR' AND fa.latest_flag = 'Y' AND cvlmc.latest_minority_flag ='Y' AND fa.original_agreement_id = " . $ag_id. "
+	                        WHERE ra.address_type_code = 'PR' AND fa.latest_flag = 'Y' AND cvlmc.latest_minority_flag ='Y' AND fa.original_agreement_id = " . $ag_id. " 
 	                        ORDER BY cvlmc.year_id DESC LIMIT 1";
 }else{
   $queryVendorDetails = "SELECT  fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,
