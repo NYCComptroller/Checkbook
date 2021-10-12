@@ -38,7 +38,7 @@ reset($node->data);
     <thead>
     <tr>
       <th>&nbsp;</th>
-      <th colspan="4" class="centrig bb"><div>2000-<?= $last_year ?><sup>*</sup></div></th>
+      <th colspan="4" class="centrig bb"><div>2001-<?= $last_year ?><sup>*</sup></div></th>
     </tr>
     <tr>
       <th class="number" ><div class="trendCen">Year</div></th>
