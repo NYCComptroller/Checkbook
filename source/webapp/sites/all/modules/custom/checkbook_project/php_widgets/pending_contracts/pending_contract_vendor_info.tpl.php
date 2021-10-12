@@ -102,7 +102,7 @@ if($node->data[0]["vendor_id"]){
           $ethnicities[] =MappingUtil::getMinorityCategoryById($minority_type_id);
         }
       }
-      $ethnicity = implode(',',$ethnicities);
+      $ethnicity = implode(',',array_unique($ethnicities));
      if($minority_type_id == "4" || $minority_type_id == "5"){
       $minority_type_id = "4~5";
        }
