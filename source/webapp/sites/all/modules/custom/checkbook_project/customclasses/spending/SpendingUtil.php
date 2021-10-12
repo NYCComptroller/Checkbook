@@ -172,13 +172,11 @@ class SpendingUtil{
      */
     public static function getPayeeNameLinkUrl($node, $row): string
     {
-        $year = RequestUtilities::get("year");
-        $calyear = RequestUtilities::get("calyear");
-        $year_type = isset($calyear) ? "C" : "B";
-        $year_id = isset($calyear) ? $calyear : (isset($year) ? $year : CheckbookDateUtil::getCurrentFiscalYearId());
+        $year_id = isset($row['check_eft_issued_nyc_year_id']) ? $row['check_eft_issued_nyc_year_id'] : CheckbookDateUtil::getCurrentFiscalYearId();
         $vendor_id = $row["vendor_id"];
         $agency_id = $row["agency"];
         $dashboard = RequestUtilities::get("dashboard");
+        $year_type = 'B';
 
         return $row["is_sub_vendor"] == "No"
             ? self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true)
@@ -223,7 +221,8 @@ class SpendingUtil{
                 "vendor"=>$vendor_id,
                 "subvendor"=>null,
                 "category"=>null,
-                "industry"=>null
+                "industry"=>null,
+                "year" => $year_id
             );
         } else {//if remaining in the same dashboard persist all filters (drill-down) except sub vendor
             $override_params = array(
@@ -231,7 +230,8 @@ class SpendingUtil{
                 "subvendor"=>null,
                 "agency"=>$agency_id,
                 "datasource"=>$datasource,
-                "vendor"=>$vendor_id
+                "vendor"=>$vendor_id,
+                "year" => $year_id
             );
             //payee name will never have a drill down, this is to avoid ajax issues on drill down
             if($payee_name) {
@@ -764,7 +764,8 @@ class SpendingUtil{
         $mwbe = isset($row["minority_type_id"]) ? $row["minority_type_id"] : $row["minority_type_minority_type"];
         $custom_params = array(
             'dashboard'=>$row["is_sub_vendor"] == "No" ? "mp" : "ms",
-            'mwbe' => $mwbe == 4 || $mwbe == 5 ? '4~5' : $mwbe
+            'mwbe' => $mwbe == 4 || $mwbe == 5 ? '4~5' : $mwbe,
+            'year' => isset($row['check_eft_issued_nyc_year_id']) ? $row['check_eft_issued_nyc_year_id'] : CheckbookDateUtil::getCurrentFiscalYearId()
         );
         return '/' . self::getLandingPageWidgetUrl($custom_params) . '?expandBottomCont=true';
     }
@@ -848,8 +849,6 @@ class SpendingUtil{
      */
     public static function getSpendingUrl($path, array $override_params = array()): string
     {
-
-        $url =  $path . _checkbook_project_get_year_url_param_string();
         $q = drupal_get_path_alias($_GET['q']);
         if (_checkbook_current_request_is_ajax()) {
           // remove query part
@@ -859,6 +858,9 @@ class SpendingUtil{
         $pathParams = explode('/', $q);
         $url_params = self::$landingPageParams;
         $exclude_params = array_keys($override_params);
+
+        $url =  !in_array('year',$exclude_params) ? $path . _checkbook_project_get_year_url_param_string() : $path;
+
         if(is_array($url_params)){
             foreach($url_params as $key => $value){
                 if(!in_array($key,$exclude_params)){
@@ -867,7 +869,7 @@ class SpendingUtil{
             }
         }
 
-        if(is_array($override_params)){
+      if(is_array($override_params)){
             foreach($override_params as $key => $value){
                 if(isset($value)){
                     if($key == 'yeartype' && $value == 'C'){
