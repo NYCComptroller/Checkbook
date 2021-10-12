@@ -6,7 +6,7 @@
     "headerSubTitle":"Contract Modifications",
     "footerUrl":"_widget_controller_footer_url($node).ContractsUrlService::getAmtModificationUrlString()",
     "table_columns":[
-        {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
+        {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"master_contract_id_link"},
         {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":20},
         {"labelAlias":"contract_agency","column":"agency_name","tooltip":30,"derivedColumn":"agency_landing_link"},
         {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":30,"derivedColumn":"prime_vendor_link"},
