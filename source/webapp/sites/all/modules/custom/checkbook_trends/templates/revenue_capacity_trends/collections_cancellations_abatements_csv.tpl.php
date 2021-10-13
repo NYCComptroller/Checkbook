@@ -52,7 +52,7 @@ reset($node->data);
 "(1) Abatements and Discounts include SCRIE Abatements (Senior citizen rent increase exemption), J-51 Abatements,"
 "Section 626 Abatements and other minor discounts offered by the City to property owners."
 
-"(2) The Tax Levy amounts are the amount from the City Council Resolution. In 2005 an 18% surcharge was imposed"
+"(2) The Tax Levy amounts are the amount from the City Council Resolution. In 2003 an 18% surcharge was imposed"
 "and is included in each year following."
 
 "Notes: Total uncollected balance at June 30, <?= $last_year ?> less allowance for uncollectible amounts equals net realizable amount"
