@@ -46,8 +46,8 @@
                     "levels": [
                         {
                             "name": "department",
-                            "datasetName": "department",
-                            "sourceColumnName": "department_id"
+                            "datasetName": "department_code",
+                            "sourceColumnName": "department_code"
                         }
                     ]
                 },
