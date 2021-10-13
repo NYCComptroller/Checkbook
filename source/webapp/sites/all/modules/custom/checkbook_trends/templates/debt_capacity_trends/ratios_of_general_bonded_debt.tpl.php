@@ -49,7 +49,7 @@ echo eval($node->widgetConfig->header);
     <?php   $count = 1;
     		foreach( $node->data as $row){
                 $dollar_sign = ($count == 1) ? '<div class="dollarItem" >$</div>':'';
-                $percent_sign = ($count == 1) ? '<span class="endItem">%</span>' : '<span class="endItem" style="visibility:hidden;">%</span>';
+                $percent_sign = ($count == 1) ? '<span class="endItem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%</span>' : '<span class="endItem" style="visibility:hidden;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%</span>';
 
 			    echo "<tr><td class='number bonded'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
                 echo "<td class='number bonded' style='padding-left: 30px;'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['general_bonded_debt']) . "</div></td>";
