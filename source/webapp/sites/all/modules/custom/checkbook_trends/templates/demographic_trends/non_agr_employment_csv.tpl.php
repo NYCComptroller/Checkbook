@@ -78,11 +78,13 @@
         $i++;
         echo '"'.$row['category'].'"'.$rowString . "\n";
    	}
+?>
 
-echo "\n"."\n"."(a) Includes rounding  adjustments"."\n"."\n"
-        ."(b) Six month average"."\n"."\n"
-
-.'"'."Notes: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information. Other than the City of New York, no single
-employer employs more than 2 percent of total nonagricultural employees.".'"'."\n\n".
-"Data are not seasonally adjusted."."\n\n".'"'.
-"Source: New York State Department of Labor, Division of Research and Statistics.".'"';
+"(a) Includes rounding  adjustments"
+"(b) Six month average"
+""
+""
+"NOTES: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information."
+"Other than the City of New York, no single employer employs more than 2 percent of total nonagricultural employees."
+"Data are not seasonally adjusted."
+"SOURCE: New York State Department of Labor, Division of Research and Statistics."

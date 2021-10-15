@@ -139,10 +139,10 @@ rsort($years);
     <div class="footnote">
         <p>(a) Includes rounding  adjustments</p>
         <p>(b) Six month average</p><br>
-       <p>Notes: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information. Other than the City of New York, no single
+       <p>NOTES: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information. Other than the City of New York, no single
        employer employs more than 2 percent of total nonagricultural employees.</p>
        <p>Data are not seasonally adjusted.</p>
-        <p>Source: New York State Department of Labor, Division of Research and Statistics.</p>
+        <p>SOURCE: New York State Department of Labor, Division of Research and Statistics.</p>
     </div>
 <?php
 	widget_data_tables_add_js($node);
