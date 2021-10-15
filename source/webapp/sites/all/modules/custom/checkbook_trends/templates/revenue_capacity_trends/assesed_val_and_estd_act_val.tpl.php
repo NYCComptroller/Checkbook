@@ -122,8 +122,9 @@ widget_data_tables_add_js($node);
     </tr>
   </table>
 
-  <p>Property in New York City is reassessed every year. The City assesses property at approximately 40 percent of
-    Market Value for commercial and industrial property and 20 percent of Market Value for residential property.</p>
-
-  <p><span style="font-variant: small-caps">Sources:</span> Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year <?= $last_year ?>. </p>
+  <p>Assesment Values are based on a percentage of the property's Market Value.</p>
+  <p>The Department of Finance assigns market values to all properties in New York City.</p>
+  <p>Market Value is the worth of a property's tax class and the New York State Law requirements for determining market value.</p>
+  <p><br></p>
+  <p>Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year 2020.</p>
 </div>
