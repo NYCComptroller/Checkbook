@@ -68,16 +68,16 @@
 
 
 "Notes:"
-"(1)   The Legal Debt Margin and the Net Debt Applicable to the Debt Limit as a Percentage of the Debt Limit are recalculated on July 1, the first day of each City fiscal year, based on the new assessed value in
-accordance with the new year’s enacted tax fixing resolution. For fiscal year 2021, beginning July 1, 2020, the Legal Debt Margin and the Net Debt Applicable to the Debt Limit as a Percentage of the Debt Limit
-are 45,813,177 and 62.76%, respectively. "
-"(2) A five-year average of full valuations of taxable real estate from the Resolutions of the Council Fixing the Tax Rates for the fiscal year beginning on July 1, 2019 and ending on June 30, 2020.
-"
-"(3)   The Constitution of the State of New York limits the general debt-incurring power of The City of New York to ten percent of the five-year average of full valuations of
-taxable real estate."
-(4)    Includes adjustments for Business Improvement Districts, Original Issue Discount, and cash on hand for defeasance.
-(5)   To provide for the City's capital program, State legislation was enacted which created the Transitional Finance Authority (TFA). TFA debt above 13.5 billion (Excludes TFA Building Aid Revenue bonds and
-Recovery Bonds) is subject to the general debt limit of the City.
-"(6)   Obligations for water supply and certain obligations for rapid transit are excluded pursuant to the State Constitution and in accordance with provisions of the State
-Local Finance Law. Resources of the General Debt Service Fund applicable to non-excluded debt and debt service appropriations for the redemption of such debt are
-deducted from the non-excluded funded debt to arrive at the funded debt within the debt limit."
+"(1)   The Legal Debt Margin and the Net Debt Applicable to the Debt Limit as a Percentage of the Debt Limit are recalculated on July 1, the first day of each City fiscal year,"
+"based on the new assessed value in accordance with the new year’s enacted tax fixing resolution."
+"For fiscal year 2021, beginning July 1, 2020, the Legal Debt Margin and the Net Debt Applicable to the Debt Limit as a Percentage of the Debt Limit"
+"are 45,813,177 and 62.76%, respectively. "
+"(2) A five-year average of full valuations of taxable real estate from the Resolutions of the Council Fixing the Tax Rates for the fiscal year beginning on July 1, 2019 and ending on June 30, 2020."
+"(3) The Constitution of the State of New York limits the general debt-incurring power of The City of New York to ten percent of the five-year average of full valuations of"
+"taxable real estate."
+"(4) Includes adjustments for Business Improvement Districts, Original Issue Discount, and cash on hand for defeasance."
+"(5) To provide for the City's capital program, State legislation was enacted which created the Transitional Finance Authority (TFA)."
+"TFA debt above 13.5 billion (Excludes TFA Building Aid Revenue bonds and Recovery Bonds) is subject to the general debt limit of the City."
+"(6) Obligations for water supply and certain obligations for rapid transit are excluded pursuant to the State Constitution and in accordance with provisions of the State Local Finance Law."
+"Resources of the General Debt Service Fund applicable to non-excluded debt and debt service appropriations for the redemption of such debt are deducted from the non-excluded funded debt"
+"to arrive at the funded debt within the debt limit."
