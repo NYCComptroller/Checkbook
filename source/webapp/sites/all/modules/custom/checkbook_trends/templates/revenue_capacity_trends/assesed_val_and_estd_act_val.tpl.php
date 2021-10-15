@@ -91,7 +91,8 @@ echo eval($node->widgetConfig->header);
 widget_data_tables_add_js($node);
 ?>
 <div class="footnote">
-  <p><sup>(1)</sup> Property tax rate based on every $100 of assessed valuation.</p>
+  <br>
+  <p>(1) Property tax rate based on every $100 of assessed valuation.</p>
 
   <p>Notes:</p>
 
