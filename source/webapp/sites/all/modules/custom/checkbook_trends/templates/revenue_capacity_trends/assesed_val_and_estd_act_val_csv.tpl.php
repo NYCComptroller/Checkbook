@@ -77,7 +77,8 @@ reset($node->data);
 
 " Class Four -  All other real property."
 
-"Property in New York City is reassessed every year. The City assesses property at approximately 40 percent of Market Value for"
-" commercial and industrial property and 20 percent of Market Value for residential property."
-
+"Assesment Values are based on a percentage of the property's Market Value."
+"The Department of Finance assigns market values to all properties in New York City."
+"Market Value is the worth of a property's tax class and the New York State Law requirements for determining market value."
+""
 "Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year <?= $last_year ?>."
