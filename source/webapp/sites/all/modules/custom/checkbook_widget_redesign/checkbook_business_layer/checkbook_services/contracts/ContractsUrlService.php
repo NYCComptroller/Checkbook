@@ -315,6 +315,9 @@ class ContractsUrlService
         $subvendor_param = isset($subvendor_code) ? '/vendorcode/' . $subvendor_code : '';
         $vendor_param = isset($vendor_code) ? '/vendorcode/' . $vendor_code : '';
         $mwbe_param = isset($mwbe) ? (Dashboard::isSubDashboard() || $legacy_node_id == 720 ? '/smwbe/' . $mwbe : '/pmwbe/' . $mwbe) : '';
+
+
+
         if (Datasource::isOGE()) {
             $industry_param = isset($industry) ? '/cindustry/' . $industry : '';
         } else {
@@ -331,6 +334,10 @@ class ContractsUrlService
         $contract_status = RequestUtilities::buildUrlFromParam('status|contstatus');
         $contract_status = isset($contract_status) && $contract_status != '' ? $contract_status : "/contstatus/P";
 
+      $contract_type = ContractType::getCurrent();
+        if ($contract_type == 'registered_revenue' || $contract_type == 'pending_expense' || $contract_type == 'active_revenue' ){
+          $mwbe_param = isset($mwbe) ? '/mwbe/' . $mwbe : "";
+        }
         $path = Dashboard::isSubDashboard() && subVendorContractsByPrimeVendor::getCurrent() == ContractCategory::EXPENSE
             ? '/panel_html/sub_contracts_transactions/subcontract/transactions'
             : '/panel_html/contract_details/contract/transactions';
