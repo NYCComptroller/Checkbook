@@ -2272,9 +2272,6 @@
               disableAccordionSection(ogeDisabledDomain);
             });
           }
-        }else if(data_source === "checkbook_nycha"){
-          disableAccordionSection('budget');
-          disableAccordionSection('revenue');
         }
       }
 
