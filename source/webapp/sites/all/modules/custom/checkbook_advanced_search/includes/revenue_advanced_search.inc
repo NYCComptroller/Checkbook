@@ -40,6 +40,7 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state, $dataSou
   $revenue_category = _checkbook_get_selected_value($form, $filterDimension, 'revenue_category');
   $revenue_source = _checkbook_get_selected_value($form, $filterDimension, 'revenue_source');
   $catastrophic_event = _checkbook_get_selected_value($form, $filterDimension, 'catastrophic_events');
+  $catastrophic_event = ($catastrophic_event == "Select Event") ? 0 : $catastrophic_event;
   $revenue_source_exact = _checkbook_get_selected_value($form, $filterDimension, 'revenue_source_exact');
   $adopted_from = _checkbook_get_selected_value($form, $filterDimension, 'adopted_budget_from');
   $adopted_to = _checkbook_get_selected_value($form, $filterDimension, 'adopted_budget_to');
