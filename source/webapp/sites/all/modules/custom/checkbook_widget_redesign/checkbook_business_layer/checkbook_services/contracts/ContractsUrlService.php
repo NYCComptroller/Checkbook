@@ -457,8 +457,7 @@ class ContractsUrlService
         list($year_type, $agency_id) = RequestUtilities::get(['yeartype', 'agency']);
 
         // For advanced search, if the year value is not set, get the latest minority type category for current Fiscal Year
-      $current_url = $_SERVER['HTTP_REFERER'];
-      if ( preg_match("/contract\/all\/transactions/", $current_url)){
+        if (RequestUtil::isAdvancedSearchPage()){
           $year_url = self::applyYearParameter($effective_end_year_id);
           $year_id = $effective_end_year_id;
           $url = preg_replace("/\/year\/\d+/", $year_url, $url);
@@ -560,21 +559,14 @@ class ContractsUrlService
    */
   public static function applyYearParameter($effective_end_year_id = null): string
   {
-
-    $current_url = $_SERVER['HTTP_REFERER'];
-    if (preg_match("/contract\/all\/transactions/", $current_url)){
+   if (RequestUtil::isAdvancedSearchPage()){
      if($effective_end_year_id != '' && $effective_end_year_id < CheckbookDateUtil::getCurrentFiscalYearId()){
        $year_id = $effective_end_year_id;
      }
      else{
        $year_id = CheckbookDateUtil::getCurrentFiscalYearId();
      }
-    }
-    else{
-      $year_id = RequestUtilities::get("year");
-      $year_id = isset($year_id) ? $year_id : CheckbookDateUtil::getCurrentFiscalYearId();
-
-    }
+   }
     $url = '/year/'.$year_id;
     return $url;
   }
