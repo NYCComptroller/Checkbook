@@ -39,6 +39,7 @@ class ContractURLHelper
     }
     $row['original_agreement_id'] = ($original_agreement_id) ? $original_agreement_id : (isset($row['original_agreement_id']) ? $row['original_agreement_id'] : null);
     $effective_year_id = ContractsUrlService::applyYearParameter($row['effective_end_year_id']);
+    $current_url = $_SERVER['HTTP_REFERER'];
     if ($parent && strlen($row['master_contract_number']) > 0) {
         $agrParamName = 'magid';
         $docTypeStr = substr($row['master_contract_number'], 0, 3);
@@ -67,7 +68,7 @@ class ContractURLHelper
             . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/' . $agrParamName . '/' . $row['original_agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params()
             . ' >' . $row['contract_number'] . '</a>';
     }
-    if (isset($effective_year_id)) {
+    if (preg_match("/contract\/all\/transactions/", $current_url) && isset($effective_year_id) ) {
       $link =  preg_replace("/\/year\/\d+/", $effective_year_id, $link) ;
     }
     return $link;
