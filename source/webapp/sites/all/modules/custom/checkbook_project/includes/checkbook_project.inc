@@ -627,11 +627,15 @@ function _checkbook_project_adjustContractParameterFilters(&$node, &$parameters,
   $contractStatusParam = 'contstatus';
   $yearParam = 'year';
   $data_controller_instance = data_controller_get_operator_factory_instance();
-  //Adjust Certification parameters
-  $parameters = ContractUtil::adjustCertificationFacetParameters($node, $parameters);
-  //Display contracts which are active from 2011
-  if($contractType != 'pending') {
-    $parameters['is_active_eft_2011'] = 1;
+
+  //TODO: DB and Solr needs to be updated to exclude contracts prior 2011 for EDC Also
+  if(Datasource::getCurrent() == Datasource::CITYWIDE) {
+    //Adjust Certification parameters
+    $parameters = ContractUtil::adjustCertificationFacetParameters($node, $parameters);
+    //Display contracts which are active from 2011
+    if ($contractType != 'pending') {
+      $parameters['is_active_eft_2011'] = 1;
+    }
   }
 
   switch ($contractType) {
