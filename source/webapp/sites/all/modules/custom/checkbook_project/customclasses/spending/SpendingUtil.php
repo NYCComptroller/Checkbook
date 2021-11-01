@@ -177,6 +177,7 @@ class SpendingUtil{
         $agency_id = $row["agency"];
         $dashboard = RequestUtilities::get("dashboard");
         $year_type = 'B';
+        $category = $row["spending_category_id"];
 
         return $row["is_sub_vendor"] == "No"
             ? self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true)
@@ -763,6 +764,7 @@ class SpendingUtil{
     {
         $mwbe = isset($row["minority_type_id"]) ? $row["minority_type_id"] : $row["minority_type_minority_type"];
         $custom_params = array(
+            'category' => $row["spending_category_id"],
             'dashboard'=>$row["is_sub_vendor"] == "No" ? "mp" : "ms",
             'mwbe' => $mwbe == 4 || $mwbe == 5 ? '4~5' : $mwbe,
             'year' => isset($row['check_eft_issued_nyc_year_id']) ? $row['check_eft_issued_nyc_year_id'] : CheckbookDateUtil::getCurrentFiscalYearId()
