@@ -55,7 +55,7 @@ if(is_array($records)){
     }
 
 
-   $value = $result[0]['department_department_department_name'];
+   $value = htmlentities($result[0]['department_department_department_name']);
 
 $summaryContent =  <<<EOD
 <div class="contract-details-heading">
