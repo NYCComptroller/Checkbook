@@ -559,15 +559,16 @@ class ContractsUrlService
    */
   public static function applyYearParameter($effective_end_year_id = null): string
   {
-   if (RequestUtil::isAdvancedSearchPage()){
+    $year_id = RequestUtilities::get("year");
+    if (RequestUtil::isAdvancedSearchPage() && !isset($year_id)){
      if($effective_end_year_id != '' && $effective_end_year_id < CheckbookDateUtil::getCurrentFiscalYearId()){
        $year_id = $effective_end_year_id;
      }
      else{
        $year_id = CheckbookDateUtil::getCurrentFiscalYearId();
      }
-   }
-    $url = '/year/'.$year_id;
+    }
+    $url = '/year/' . $year_id;
     return $url;
   }
 
