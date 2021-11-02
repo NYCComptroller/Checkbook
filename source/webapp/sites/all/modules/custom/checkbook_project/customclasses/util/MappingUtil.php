@@ -106,6 +106,7 @@ class MappingUtil {
         'Asian-Indian' => 'Asian American',
         'Non-Minority' => 'Non-M/WBE',
         'Women (Non-Minority)' => 'Women (Non-Minority)',
+        'Caucasian Woman' => 'Women (Non-Minority)',
         'Individuals & Others' => 'Individuals and Others',
         'Native American' => 'Native American',
         'Emerging (Non-Minority)' => 'Emerging (Non-Minority)',
@@ -221,7 +222,7 @@ class MappingUtil {
 
     private static function isDefaultMWBEDashboard(): bool
     {
-        $currentURL = request_uri();      
+        $currentURL = request_uri();
         if(strpos($currentURL, "?expandBottomContURL=")){
             $currentURL = explode("?expandBottomContURL=", $currentURL);
             $currentURL = $currentURL[0];
@@ -315,7 +316,7 @@ class MappingUtil {
             else{
                 $applicable_minority_types = self::getCurrentSubMWBEApplicableFilters($domain);
             }
-            
+
             $active_domain_link =  preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link);
 
             if(array_intersect($applicable_minority_types,array(4,5))){
