@@ -114,7 +114,7 @@ return $header;
     {"labelAlias": "apt_pin","column": "brd_awd_no"},
     {"labelAlias": "woman_owned_business","column":"is_women_owned"},
     {"labelAlias": "emerging_business","column":"is_emerging"},
-    {"labelAlias": "","column": "","export":false}
+    {"labelAlias": "","column": "","sortSourceColumn":"agreement_id","exportColumn":""}
 ],
 "exportColumnSqlOverride":[
   {
