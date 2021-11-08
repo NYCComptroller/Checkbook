@@ -47,13 +47,13 @@ return $header;
 "no_results_content":"No Results Found",
 "dataset": "checkbook:all_agreement_transactions",
 "uniqueSortColumn":"agreement_id",
-"columns": ["prime_vendor_name","sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","contract_number","contract_original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name","is_women_owned","is_emerging"],
+"columns": ["prime_vendor_name","sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","contract_number","contract_original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","master_agreement_yn","document_code@checkbook:ref_document_code","industry_type_name","is_women_owned","is_emerging","effective_end_year_id"],
 "caption":"",
 "derivedColumns": {
 "contract_link": {
 "expression": " '<a href=/contracts_revenue_landing'
 . _checkbook_project_get_url_param_string('contstatus','status')
-. _checkbook_project_get_year_url_param_string()
+. ContractsUrlService::adjustYeartypeParameter($row['effective_end_year_id'])
 . '?expandBottomContURL=/panel_html/contract_transactions/' . ($row['master_agreement_yn'] == 'Y' ? 'magid' : 'agid') . '/' . $row['contract_original_agreement_id'] .  '/doctype/' . $row['document_code@checkbook:ref_document_code']
 .  ' >'. $row['contract_number'] . '</a>' "
 },
@@ -76,7 +76,7 @@ return $header;
 },
 "agency_name_link": {
 "expression": " '<a href=\"/contracts_revenue_landing'
-.  _checkbook_project_get_year_url_param_string()
+. ContractsUrlService::adjustYeartypeParameter($row['effective_end_year_id'])
 .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
 .  '/agency/' . $row['agency_id']
 .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "

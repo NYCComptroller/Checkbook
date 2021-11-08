@@ -554,7 +554,7 @@ class ContractsUrlService
     }
 
   /**
-   * @param $docType
+   * @param $effective_end_year_id
    * @return string
    */
   public static function applyYearParameter($effective_end_year_id = null): string
@@ -572,4 +572,15 @@ class ContractsUrlService
     return $url;
   }
 
+  /**
+   * @param $effective_end_year_id
+   * @return string
+   */
+  public static function adjustYeartypeParameter($effective_end_year_id = null): string
+  {
+    $url = _checkbook_project_get_year_url_param_string();
+    $year = self::applyYearParameter($effective_end_year_id);
+    $url =  preg_replace("/\/year\/\d+/",$year, $url) ;
+    return $url;
+  }
 }
