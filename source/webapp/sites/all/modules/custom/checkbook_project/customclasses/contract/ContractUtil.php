@@ -225,6 +225,7 @@ namespace { //global
             $vendor_id = $vendor_id ?? $row["prime_vendor_id"];
 
             $year_id = RequestUtilities::get("year");
+            $year_id =isset($year_id) ? $year_id : ContractsUrlService::applyYearParameter($row['effective_end_year_id']);
             $year_type = $row["yeartype_yeartype"];
             $is_prime_or_sub = $row["is_prime_or_sub"] != null ? $row["is_prime_or_sub"] : "P";
             $agency_id = null;
@@ -252,7 +253,7 @@ namespace { //global
 
             $status = RequestUtilities::buildUrlFromParam('contstatus|status');
             $status = isset($status) && $status != "" ? $status : "/status/A";
-            $url = RequestUtilities::buildUrlFromParam('agency') . $status . _checkbook_project_get_year_url_param_string();
+            $url = RequestUtilities::buildUrlFromParam('agency') . $status . ContractsUrlService::adjustYeartypeParameter($row['effective_end_year_id']);
 
             if($is_mwbe_certified && RequestUtilities::get('dashboard') == 'mp') {
                 $url .= RequestUtilities::buildUrlFromParam('cindustry')
