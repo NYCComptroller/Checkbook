@@ -25,6 +25,7 @@
     <tr>
       <?php
       $class = "";
+      $year = RequestUtilities::get('year');
       $is_active_expense_contracts = false;
       $is_active_expense_contracts = preg_match("/^contracts_landing/", $_GET['q']) & RequestUtilities::get("status") == "A";
       if ($is_active_expense_contracts) {
@@ -122,7 +123,7 @@
       ?>
       <td<?php echo $class;?>>
         <div class="positioning">
-      <?php if($node->data[5]['total_contracts'] > 0 ){?>
+      <?php if($node->data[5]['total_contracts'] > 0 && $year == CheckbookDateUtil::getCurrentFiscalYearId() ){?>
           <a href="/<?php echo $pending_exp_link; ?>"><?php echo $count; ?><br>Pending<br>Expense Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
         <?php echo $count; ?><br>Pending<br>Expense Contracts<br><?php echo $dollars; ?>
@@ -142,7 +143,7 @@
       ?>
       <td class="last<?php echo $class;?>">
         <div class="positioning">
-        <?php if($node->data[7]['total_contracts'] > 0 ){?>
+        <?php if($node->data[7]['total_contracts'] > 0 && $year == CheckbookDateUtil::getCurrentFiscalYearId()){?>
           <a href="/<?php echo $pending_rev_link; ?>"><?php echo $count; ?><br>Pending<br>Revenue Contracts<br><?php echo $dollars; ?></a>
         <?php }else{?>
         <?php echo $count; ?><br>Pending<br>Revenue Contracts<br><?php echo $dollars; ?>
