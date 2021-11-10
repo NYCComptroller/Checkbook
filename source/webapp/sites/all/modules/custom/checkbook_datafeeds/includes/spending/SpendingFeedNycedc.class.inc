@@ -167,11 +167,17 @@ class SpendingFeedNycedc extends SpendingFeed
       preg_match($this->bracket_value_pattern, $this->values['nycedc_expense_type'], $etmatches);
       $this->criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
     }
-
+    if ($this->values['expense_category']) {
+      preg_match($this->bracket_value_pattern, $this->values['expense_category'], $ecmatches);
+     $this->criteria['value']['expense_category'] = trim($ecmatches[1], '[ ]');;
+    }
+    if ($this->values['dept']) {
+      preg_match($this->bracket_value_pattern, $this->values['dept'], $dpmatches);
+      $this->criteria['value']['department_code'] = trim($dpmatches[1], '[ ]');;
+    }
     if ($this->values['capital_project']) {
       $this->criteria['value']['capital_project_code'] = $this->values['capital_project'];
     }
-
     if ($this->values['commodity_line']) {
       $this->criteria['value']['commodity_line'] = $this->values['commodity_line'];
     }
