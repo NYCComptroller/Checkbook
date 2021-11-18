@@ -126,8 +126,13 @@
       <td<?php echo $class;?>>
         <div class="positioning">
           <a href="/<?php echo $pending_exp_link; ?>"><?php echo $count; ?><br>Pending<br>Expense Contracts<br><?php echo $dollars; ?></a>
-        <?php }else{?>
-      <td<?php echo $class;?> style="background-color:#E6E6E6;color:#a9aeb1;">
+        <?php }else{
+        $style ='';
+        if ($year != CheckbookDateUtil::getCurrentFiscalYearId()) {
+          $style = ' style="background-color:#E6E6E6;color:#a9aeb1;"';
+        }
+        ?>
+      <td<?php echo $class . $style;?>>
         <div class="positioning">
         <?php echo $count; ?><br>Pending<br>Expense Contracts<br><?php echo $dollars; ?>
         <?php }?>
@@ -149,8 +154,13 @@
       <td class="last<?php echo $class;?>">
         <div class="positioning">
           <a href="/<?php echo $pending_rev_link; ?>"><?php echo $count; ?><br>Pending<br>Revenue Contracts<br><?php echo $dollars; ?></a>
-        <?php }else{?>
-      <td class="last<?php echo $class;?>" style="background-color:#E6E6E6;color:#a9aeb1;">
+        <?php }else{
+          $style ='';
+          if ($year != CheckbookDateUtil::getCurrentFiscalYearId()) {
+            $style = ' style="background-color:#E6E6E6;color:#a9aeb1;"';
+          }
+          ?>
+      <td class="last<?php echo $class .'"'. $style;?>>
         <div class="positioning">
         <?php echo $count; ?><br>Pending<br>Revenue Contracts<br><?php echo $dollars; ?>
         <?php }?>
