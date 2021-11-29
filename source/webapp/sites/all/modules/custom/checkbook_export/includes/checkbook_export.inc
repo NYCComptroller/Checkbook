@@ -497,8 +497,14 @@ function _checkbook_export_generateExportFile($node, $headers, $exportConfigNode
                   if ($pos !== false) {
                     if ($isList) {
                       //Handle alias
-                      $pos -= 3;
-                      $alias_source_column = substr($sql, $pos, strlen($source_column) + 3);
+                      //Adjust the column fields only when alias fields are present
+                      $alias_val = explode('.',$sql);
+                      if (isset($alias_val[1]))
+                      {
+                        $pos -= 3;
+                        $alias_source_column = substr($sql, $pos, strlen($source_column) + 3);
+                      }
+                      else{ $alias_source_column = $source_column; }
                       $replace = array($source_column => $alias_source_column);
                       $override_sql = str_replace(array_keys($replace), array_values($replace), $override_sql);
                       $source_column = $alias_source_column;

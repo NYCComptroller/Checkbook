@@ -171,7 +171,7 @@
         }
     },
     "table_columns": [
-        {"labelAlias":"document_id","column":"disbursement_number_derived","sortSourceColumn":"disbursement_number","exportColumn":"disbursement_number_derived"},
+        {"labelAlias":"document_id","column":"disbursement_number_derived","sortSourceColumn":"disbursement_number","exportColumn":"disbursement_number"},
         {"labelAlias":"payee_name","column":"payee_name_link","sortSourceColumn":"vendor_name","exportColumn":"payee_name_export"},
         {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"vendor_type","exportColumn":"is_sub_vendor"},
         {"label":"","column":"","export":false},
@@ -221,6 +221,16 @@
             "column":"associated_prime_vendor_name",
             "sourceColumn":"prime_vendor_name",
             "sql":"case when is_prime_or_sub = 'P' then 'N/A' else prime_vendor_name end"
+        },
+        {
+        "column":"reference_document_number_link",
+        "sourceColumn":"reference_document_number",
+        "sql":"case when reference_document_number IS NULL then 'N/A' else reference_document_number end"
+        },
+        {
+        "column":"disbursement_number_derived",
+        "sourceColumn":"disbursement_number",
+        "sql":"case when disbursement_number IS NULL then 'N/A' else disbursement_number end"
         }
     ],
     "adjustParameters":"
