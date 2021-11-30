@@ -243,7 +243,13 @@
             "expression": " RequestUtil::isNewWindow() || !MappingUtil::isMWBECertified(array($row['minority_type_id'])) ? $row['mwbe_category_name_formatted']  : ('<a href=' . SpendingUtil::getAdvancedSearchMWBECategoryLinkUrl($node, $row) . '>'. $row['mwbe_category_name_formatted'] .'</a>') "
         },
         "industry_name_formatted": {
-            "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
+            "expression": "($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') ? 'N/A' : _get_tooltip_markup($row['industry_type_name'],36)"
+        },
+        "reporting_code_formatted": {
+            "expression": "$row['spending_category_id'] != 3  ? 'N/A' : $row['reporting_code']"
+        },
+        "sub_contract_id_formatted": {
+          "expression": "($row['vendor_type'] == 'P' ||  $row['vendor_type'] == 'PM') ? 'N/A' : $row['sub_contract_id']"
         }
     },
     "table_columns": [
@@ -322,7 +328,8 @@
       },
       {
         "labelAlias": "sub_contract_reference_id",
-        "column": "sub_contract_id",
+        "column": "sub_contract_id_formatted",
+        "sortSourceColumn":"sub_contract_id",
         "exportColumn": "sub_contract_id"
       },
       {
@@ -338,7 +345,8 @@
       },
       {
         "labelAlias": "capital_project",
-        "column": "reporting_code"
+        "column":"reporting_code_formatted",
+        "sortSourceColumn":"reporting_code"
       },
       {
         "labelAlias": "spending_category",
@@ -403,9 +411,24 @@
           "sql":"case when reference_document_number IS NULL then 'N/A' else reference_document_number end"
         },
         {
+        "column":"reporting_code_formatted",
+        "sourceColumn":"reporting_code",
+        "sql":"case when spending_category_id != 3 then 'N/A' else reporting_code end"
+        },
+        {
           "column":"contract_purpose_text",
           "sourceColumn":"purpose",
           "sql":"case when spending_category_name IN ('Payroll','Others') then 'N/A' else purpose end"
+        },
+        {
+        "column":"industry_name_formatted",
+        "sourceColumn":"industry_type_name",
+        "sql":"case when spending_category_id IN ('Payroll','Others') then 'N/A' else industry_type_name end"
+        },
+        {
+          "column":"sub_contract_id_formatted",
+          "sourceColumn":"sub_contract_id",
+          "sql":"case when vendor_type IN('P','PM') then 'N/A' else sub_contract_id end"
         }
     ],
     "adjustParameters":"
@@ -463,8 +486,8 @@
             {"sClass":"text","sWidth":"229px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"130px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"180px","asSorting":["asc","desc"]},
-            {"sClass":"text pad-left","sWidth":"180px","asSorting":["asc","desc"]},
-            {"sClass":"number pad-left","sWidth":"150px","asSorting":["desc","asc"]},
+            {"sClass":"number-center","sWidth":"180px","asSorting":["asc","desc"]},
+            {"sClass":"number-center","sWidth":"150px","asSorting":["desc","asc"]},
             {"bSortable":false,"sWidth":"50px"},
             {"sClass":"text pad-left","sWidth":"180px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"120px","asSorting":["asc","desc"]},
