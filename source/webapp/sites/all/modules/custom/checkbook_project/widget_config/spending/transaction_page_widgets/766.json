@@ -423,7 +423,7 @@
         {
         "column":"industry_name_formatted",
         "sourceColumn":"industry_type_name",
-        "sql":"case when spending_category_id IN ('Payroll','Others') then 'N/A' else industry_type_name end"
+        "sql":"case when spending_category_name IN ('Payroll','Others') then 'N/A' else industry_type_name end"
         },
         {
           "column":"sub_contract_id_formatted",
