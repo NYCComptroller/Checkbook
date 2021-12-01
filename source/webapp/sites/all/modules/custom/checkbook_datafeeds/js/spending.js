@@ -1,7 +1,7 @@
 (function ($) {
 
   //Helper function to remove "FY", and remove "~" if present from string
-  removeFY = (year) => {
+  let removeFY = function(year){
     return year.replace(/fy[~]*/ig,'').trim();
   }
 
