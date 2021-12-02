@@ -2,6 +2,7 @@
    "table_columns": [
         {"label":"Prime Contract ID","column":"contract_number"},
         {"label":"Contract Includes Sub Vendors","column":"scntrc_status_name"},
+        {"label":"MOCS Registered","column":"is_mocs_registered","visibility_flag":"show_difference"},
         {"label":"Vendor Record Type","column":"vendor_record_type"},
         {"label":"Prime Vendor","column":"prime_vendor_name"},
         {"label":"Prime Vendor M/WBE Category","column":"prime_minority_type_name"},
@@ -43,6 +44,7 @@
    ],
     "preProcessConfiguration":"
         $smnid = $doctype = RequestUtilities::getRequestParamValue('smnid');
-        $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722);
+        $cevent = RequestUtilities::getRequestParamValue('cevent');
+        $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722 || $cevent > 0);
     "
 }

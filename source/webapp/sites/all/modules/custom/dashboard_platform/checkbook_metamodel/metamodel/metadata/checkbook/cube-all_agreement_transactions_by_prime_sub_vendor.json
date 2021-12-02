@@ -102,6 +102,14 @@
                             "sourceColumnName":"contract_number"
                         }]
                 },
+              {
+                "name":"is_mocs_registered",
+                "levels": [
+                  {
+                    "name":"is_mocs_registered",
+                    "sourceColumnName":"is_mocs_registered"
+                  }]
+              },
                 {
                     "name":"scntrc_status",
                     "levels": [
