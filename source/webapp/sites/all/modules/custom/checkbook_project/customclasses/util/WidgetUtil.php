@@ -338,6 +338,7 @@ class WidgetUtil
         "sub_emerging_business" => "Sub Emerging <br/>Business",
         "woman_owned_business" => "Woman Owned<br/> Business",
         "emerging_business" => "Emerging<br/> Business",
+        "mocs_registered" => "MOCS<br/> Registered",
     );
 
   //For number cols, need to find out if they are uniform number of digits for formatting
