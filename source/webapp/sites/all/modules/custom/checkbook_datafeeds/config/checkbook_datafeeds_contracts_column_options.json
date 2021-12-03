@@ -62,6 +62,7 @@
                             "data_type":{
                                 "csv":{
                                     "Contract Includes Sub Vendors":"Contract Includes Sub Vendors",
+                                    "MOCS Registered": "MOCS Registered",
                                     "Document Code":"Document Code",
                                     "Parent Contract ID":"Parent Contract ID",
                                     "Prime Contract APT PIN":"Prime Contract APT PIN",
@@ -102,6 +103,7 @@
                                 },
                                 "xml":{
                                     "contract_includes_sub_vendors":"contract_includes_sub_vendors",
+                                    "mocs_registered": "mocs_registered",
                                     "document_code":"document_code",
                                     "parent_contract_id":"parent_contract_id",
                                     "prime_contract_apt_pin":"prime_contract_apt_pin",
@@ -194,6 +196,7 @@
                             "data_type":{
                                 "csv":{
                                     "Contract Includes Sub Vendors":"Contract Includes Sub Vendors",
+                                    "MOCS Registered":"MOCS Registered",
                                     "Document Code":"Document Code",
                                     "Parent Contract ID":"Parent Contract ID",
                                     "Prime Contract APT PIN":"Prime Contract APT PIN",
@@ -234,6 +237,7 @@
                                 },
                                 "xml":{
                                     "contract_includes_sub_vendors":"contract_includes_sub_vendors",
+                                    "mocs_registered": "mocs_registered",
                                     "document_code":"document_code",
                                     "parent_contract_id":"parent_contract_id",
                                     "prime_contract_apt_pin":"prime_contract_apt_pin",

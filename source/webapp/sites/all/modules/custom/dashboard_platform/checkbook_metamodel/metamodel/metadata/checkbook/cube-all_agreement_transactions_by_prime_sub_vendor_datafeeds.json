@@ -216,6 +216,14 @@
                     "name":"is_sub_emerging",
                     "sourceColumnName":"is_sub_emerging"
                   }]
+              },
+              {
+                "name":"is_mocs_registered",
+                "levels": [
+                  {
+                    "name":"is_mocs_registered",
+                    "sourceColumnName":"is_mocs_registered"
+                  }]
               }
             ],
             "measures": {
