@@ -173,7 +173,9 @@
         $node->is_master_agreement = $is_master_agreement;
         $smnid = $doctype = RequestUtilities::getRequestParamValue('smnid');
         $cevent = RequestUtilities::getRequestParamValue('cevent');
-        $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722 || $cevent > 0 );
+        $year = RequestUtilities::getRequestParamValue('year');
+        $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722);
+        $node->show_moc_registered= ($cevent > 0);
         $node->dashboard = RequestUtilities::getRequestParamValue('dashboard');
         $node->dashboard = RequestUtilities::getRequestParamValue('dashboard');
     ",
@@ -308,7 +310,7 @@
         {"label":"<div></div>","colLabel":"","column":"child_contrats_link"},
         {"labelAlias":"contract_id","column":"contract_link","sortSourceColumn":"contract_number"},
         {"labelAlias":"contract_includes_sub","column":"contract_includes_sub","sortSourceColumn":"scntrc_status_name"},
-        {"labelAlias":"mocs_registered","column":"is_mocs_registered","visibility_flag":"show_difference"},
+        {"labelAlias":"mocs_registered","column":"is_mocs_registered","visibility_flag":"show_moc_registered"},
         {"label":"","column":""},
         {"labelAlias":"prime_vendor","column":"prime_vendor_name_link","sortSourceColumn":"prime_vendor_name"},
         {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name","sortSourceColumn":"prime_minority_type_name"},
@@ -387,7 +389,7 @@
             {"sClass":"expander","sWidth":"30px","bSortable":false},
             {"sClass":"text", "sWidth":"130px","asSorting":["asc","desc"]},
             {"sClass":"sub-cont-status","sWidth":"180px","asSorting":["asc","desc"]},
-            {"sClass":"number-center","sWidth":"130px","asSorting":["asc","desc"],"visibility_flag":"show_difference"},
+            {"sClass":"number-center","sWidth":"130px","asSorting":["asc","desc"],"visibility_flag":"show_moc_registered"},
             {"bSortable":false,"sWidth":"30px"},
             //START PRIME
             {"sClass":"text", "sWidth":"200px","asSorting":["asc","desc"]},
