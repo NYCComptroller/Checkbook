@@ -447,7 +447,7 @@
       const $contractStatus = $('select[name="df_contract_status"]', context);
       const $category = $('#edit-category', context);
       let csval = $('select[name="df_contract_status"]', context).val();
-      
+
       if(csval === "pending") {
         $('#edit-year option:selected').removeAttr('selected');
         $('#edit-year').attr('disabled','disabled');
@@ -511,16 +511,16 @@
           $('#edit-year option:selected').removeAttr('selected');
           $('#edit-year').attr('disabled','disabled');
           $("#edit-catastrophic_event").attr('disabled', 'disabled');
-          $("#edit-catastrophic_event").val('');
+          $("#edit-catastrophic_event").val('0');
           $("#edit-sub_vendor_status_in_pip_id").attr('disabled', 'disabled');
           $("#edit-sub_vendor_status_in_pip_id").val('');
           $("#edit-contract_includes_sub_vendors_id").attr('disabled', 'disabled');
           $("#edit-contract_includes_sub_vendors_id").val('');
           $.fn.subVendorStatusInPipChange(0, 0);
         }
-        else if( catval != 'revenue') {
-          $("#edit-catastrophic_event").removeAttr('disabled');
-          $("#edit-catastrophic_event").val('');
+        else if( catval == 'revenue') {
+          $("#edit-catastrophic_event").attr('disabled', 'disabled');
+          $("#edit-catastrophic_event").val('0');
         }
       });
 
@@ -539,7 +539,7 @@
         }
         else if (csval == 'pending'){
           $("#edit-catastrophic_event").attr('disabled', 'disabled');
-          $("#edit-catastrophic_event").val('');
+          $("#edit-catastrophic_event").val('0');
         }
         $.fn.resetSelectedColumns();
         $.fn.hideShow(csval, catval, datasource);
@@ -549,7 +549,41 @@
       // On Catastrophic event change reload year drop down
       $('#edit-catastrophic_event', context).change(function () {
         let cevent = $('#edit-catastrophic_event', context).val();
+        if (cevent != 0) {
+          $('#edit-column-select-expense option[value="MOCS Registered"]', context).attr('disabled', '');
+          $('#edit-column-select-all option[value="MOCS Registered"]', context).attr('disabled', '');
+          $('#edit-column-select-expense option[value="mocs_registered"]', context).attr('disabled', '');
+          $('#edit-column-select-all option[value="mocs_registered"]', context).attr('disabled', '');
+        }
+        else{
+          $('#edit-column-select-expense option[value="MOCS Registered"]', context).attr('disabled', 'disabled');
+          $('#edit-column-select-all option[value="MOCS Registered"]', context).attr('disabled', 'disabled');
+          $('#edit-column-select-expense option[value="mocs_registered"]', context).attr('disabled', 'disabled');
+          $('#edit-column-select-all option[value="mocs_registered"]', context).attr('disabled', 'disabled');
+        }
         updateYearValue(cevent);
+        $('#edit-column-select-expense', context).multiSelect('refresh');
+        if (!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")) {
+          $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
+          $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="select">Add All</a>');
+        }
+        $('#ms-edit-column-select-expense a.select', context).click(function () {
+          $('#edit-column-select-expense', context).multiSelect('select_all');
+        });
+        $('#ms-edit-column-select-expense a.deselect', context).click(function () {
+          $('#edit-column-select-expense', context).multiSelect('deselect_all');
+        });
+        $('#edit-column-select-all', context).multiSelect('refresh');
+        if (!$('#ms-edit-column-select-all .ms-selection', context).next().is("a")) {
+          $('#ms-edit-column-select-all .ms-selection', context).after('<a class="deselect">Remove All</a>');
+          $('#ms-edit-column-select-all .ms-selection', context).after('<a class="select">Add All</a>');
+        }
+        $('#ms-edit-column-select-all a.select', context).click(function () {
+          $('#edit-column-select-all', context).multiSelect('select_all');
+        });
+        $('#ms-edit-column-select-all a.deselect', context).click(function () {
+          $('#edit-column-select-all', context).multiSelect('deselect_all');
+        });
       });
 
       //Set up jQuery datepickers
@@ -567,12 +601,72 @@
         $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', 'disabled');
         $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', 'disabled');
         $('#edit-column-select-all option[value="Year"]', context).attr('disabled', 'disabled');
-
       } else {
         $('#edit-column-select-expense option[value="Year"]', context).attr('disabled', '');
         $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', '');
         $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', '');
         $('#edit-column-select-all option[value="Year"]', context).attr('disabled', '');
+      }
+
+      //Disable Mocs option when Catastrophic filter is not choosen
+      if ($('#edit-catastrophic_event', context).val() === '0') {
+        $('#edit-column-select-expense option[value="MOCS Registered"]', context).attr('disabled', 'disabled');
+        $('#edit-column-select-all option[value="MOCS Registered"]', context).attr('disabled', 'disabled');
+        $('#edit-column-select-expense option[value="mocs_registered"]', context).attr('disabled', 'disabled');
+        $('#edit-column-select-all option[value="mocs_registered"]', context).attr('disabled', 'disabled');
+        // refersh the mocs column (need to refactor)
+        $('#edit-column-select-expense', context).multiSelect('refresh');
+        if (!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")) {
+          $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
+          $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="select">Add All</a>');
+        }
+        $('#ms-edit-column-select-expense a.select', context).click(function () {
+          $('#edit-column-select-expense', context).multiSelect('select_all');
+        });
+        $('#ms-edit-column-select-expense a.deselect', context).click(function () {
+          $('#edit-column-select-expense', context).multiSelect('deselect_all');
+        });
+        $('#edit-column-select-all', context).multiSelect('refresh');
+        if (!$('#ms-edit-column-select-all .ms-selection', context).next().is("a")) {
+          $('#ms-edit-column-select-all .ms-selection', context).after('<a class="deselect">Remove All</a>');
+          $('#ms-edit-column-select-all .ms-selection', context).after('<a class="select">Add All</a>');
+        }
+        $('#ms-edit-column-select-all a.select', context).click(function () {
+          $('#edit-column-select-all', context).multiSelect('select_all');
+        });
+        $('#ms-edit-column-select-all a.deselect', context).click(function () {
+          $('#edit-column-select-all', context).multiSelect('deselect_all');
+        });
+      }
+      else{
+        $('#edit-column-select-expense option[value="MOCS Registered"]', context).attr('disabled', '');
+        $('#edit-column-select-all option[value="MOCS Registered"]', context).attr('disabled', '');
+        $('#edit-column-select-expense option[value="mocs_registered"]', context).attr('disabled', '');
+        $('#edit-column-select-all option[value="mocs_registered"]', context).attr('disabled', '');
+        // refersh the mocs column (need to refactor)
+        $('#edit-column-select-expense', context).multiSelect('refresh');
+        if (!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")) {
+          $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
+          $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="select">Add All</a>');
+        }
+        $('#ms-edit-column-select-expense a.select', context).click(function () {
+          $('#edit-column-select-expense', context).multiSelect('select_all');
+        });
+        $('#ms-edit-column-select-expense a.deselect', context).click(function () {
+          $('#edit-column-select-expense', context).multiSelect('deselect_all');
+        });
+
+        $('#edit-column-select-all', context).multiSelect('refresh');
+        if (!$('#ms-edit-column-select-all .ms-selection', context).next().is("a")) {
+          $('#ms-edit-column-select-all .ms-selection', context).after('<a class="deselect">Remove All</a>');
+          $('#ms-edit-column-select-all .ms-selection', context).after('<a class="select">Add All</a>');
+        }
+        $('#ms-edit-column-select-all a.select', context).click(function () {
+          $('#edit-column-select-all', context).multiSelect('select_all');
+        });
+        $('#ms-edit-column-select-all a.deselect', context).click(function () {
+          $('#edit-column-select-all', context).multiSelect('deselect_all');
+        });
       }
       //Disable Year option for All Years - for NYCHA
       if ($('#edit-nycha-year', context).val() === '0') {
@@ -580,6 +674,8 @@
       } else {
         $('#edit-column-select-nycha option[value="Year"]').attr('disabled', '');
       }
+
+      //Disable MOCS option for pending , revenue and non covid years
 
       //Set up multiselects/option transfers
       //Active/Registered Expense -- CityWide
@@ -836,6 +932,7 @@
           }
           else{
             $("#edit-catastrophic_event").removeAttr('disabled');
+            $('select[name="catastrophic_event"]', context).val('0');
           }
         }
         else {
@@ -851,6 +948,7 @@
           }
           else{
             $("#edit-catastrophic_event").removeAttr('disabled');
+            $('select[name="catastrophic_event"]', context).val('0');
           }
         }
         $('#edit-column-select-expense', context).multiSelect('refresh');
@@ -961,6 +1059,7 @@
       }
     });
   }
+
 
   //Function to clear text fields and drop-downs
   $.fn.clearInputFields = function (dataSource) {
