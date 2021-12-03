@@ -1,6 +1,11 @@
 {
     "widgetType": "data_tables",
     "widgetSubType": "dataTableList",
+    "preProcessConfiguration":"
+      $cevent = RequestUtilities::getRequestParamValue('cevent');
+      $mocs = RequestUtilities::getRequestParamValue('mocs');
+      $node->show_moc_registered = ($cevent > 0 || isset($mocs));
+    ",
     "cleanURLParameters":[
       "vendornm_exact",
       "expdoc_exact",
@@ -170,7 +175,8 @@
         "budget_name_code",
         "is_women_owned",
         "is_emerging",
-        "check_eft_issued_nyc_year_id"
+        "check_eft_issued_nyc_year_id",
+        "is_mocs_registered"
     ],
     "derivedColumns": {
         "associated_prime_vendor_name":{
@@ -325,6 +331,12 @@
         "column": "reference_document_number_link",
         "sortSourceColumn": "reference_document_number",
         "exportColumn": "reference_document_number_export"
+      },
+      {
+        "labelAlias":"mocs_registered",
+        "column":"is_mocs_registered",
+        "sortSourceColumn": "is_mocs_registered",
+        "visibility_flag":"show_moc_registered"
       },
       {
         "labelAlias": "sub_contract_reference_id",
@@ -492,6 +504,7 @@
             {"sClass":"text pad-left","sWidth":"180px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"120px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"165px","asSorting":["asc","desc"]},
+            {"sClass":"number-center","sWidth":"100px","asSorting":["asc","desc"],"visibility_flag":"show_moc_registered"},
             {"sClass":"number","sWidth":"150px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"50px"},
             {"sClass":"text pad-left","sWidth":"165px","asSorting":["asc","desc"]},
