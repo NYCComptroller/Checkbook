@@ -5,7 +5,7 @@
     "cleanURLParameters":[
         "vendortype","pmwbe","smwbe","psmwbe","doctype","contstatus","year","calyear","agency","curamt","pcuramtr","scuramtr","vendor","vendorcode","vendornm","vendornm_exact","pcontdesc","scontdesc","agrmnttype",
         "agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","startdate","enddate","regdate","cindustry","pcindustry","scindustry","csize","pmodamt","smodamt","subcontstatus","subvendorstatus","cevent",
-        "pscert", "pcert", "scert"
+        "pscert", "pcert", "scert","mocs"
     ],
     "urlParamMap":{
         "agrmnttype":"agreement_type_id",
@@ -48,7 +48,8 @@
         "cevent":"event_id",
         "pcert":"prime_cert",
         "scert":"sub_cert",
-        "pscert":"prime_sub_cert"
+        "pscert":"prime_sub_cert",
+        "mocs": "is_mocs_registered"
     },
     "allowRequestParams": [
       "smnid",
@@ -173,9 +174,10 @@
         $node->is_master_agreement = $is_master_agreement;
         $smnid = $doctype = RequestUtilities::getRequestParamValue('smnid');
         $cevent = RequestUtilities::getRequestParamValue('cevent');
-        $year = RequestUtilities::getRequestParamValue('year');
+        $mocs = RequestUtilities::getRequestParamValue('mocs');
         $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722);
-        $node->show_moc_registered= ($cevent > 0);
+        $node->show_moc_registered= ($cevent > 0 || isset($mocs));
+        $node->show_spend_to_date = (!isset($mocs));
         $node->dashboard = RequestUtilities::getRequestParamValue('dashboard');
         $node->dashboard = RequestUtilities::getRequestParamValue('dashboard');
     ",
@@ -317,7 +319,7 @@
         {"labelAlias":"contract_purpose","column":"prime_purpose_formatted","sortSourceColumn":"prime_purpose"},
         {"labelAlias":"current_amount","column":"formatted_prime_current_amount","sortSourceColumn":"prime_maximum_contract_amount"},
         {"labelAlias":"original_amount","column":"formatted_prime_original_contract_amount","sortSourceColumn":"prime_original_contract_amount"},
-        {"labelAlias":"spent_to_date","column":"formatted_spent_to_date","sortSourceColumn":"prime_rfed_amount"},
+        {"labelAlias":"spent_to_date","column":"formatted_spent_to_date","sortSourceColumn":"prime_rfed_amount","visibility_flag":"show_spend_to_date"},
         {"labelAlias":"dollar_diff","column":"formatted_prime_dollar_diff","sortSourceColumn":"prime_dollar_difference","visibility_flag":"show_difference"},
         {"labelAlias":"percent_diff","column":"formatted_prime_percent_diff","sortSourceColumn":"prime_percent_difference","visibility_flag":"show_difference"},
         {"label":"","column":""},
@@ -397,7 +399,7 @@
             {"sClass":"text", "sWidth":"200px","asSorting":["desc","asc"]},
             {"sClass":"number","sWidth":"140px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"]},
-            {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"],"visibility_flag":"show_spend_to_date"},
             {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"],"visibility_flag":"show_difference"},
             {"sClass":"number","sWidth":"140px","asSorting":["desc","asc"],"visibility_flag":"show_difference"},
             {"bSortable":false,"sWidth":"30px"},
