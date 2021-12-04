@@ -14,6 +14,18 @@ class ContractsDataService extends DataService implements IContractsDataService 
             ->setOrderBy($orderBy);
     }
 
+    function GetMocsContracts($parameters, $limit = null, $orderBy = null) {
+    $sqlConfigPath = $parameters['contract_status'] == ContractStatus::PENDING
+      ? SqlConfigPath::PendingContracts
+      : SqlConfigPath::CitywideContracts;
+
+    return $this->setDataFunction(__FUNCTION__)
+      ->setSqlConfigPath($sqlConfigPath)
+      ->setParameters($parameters)
+      ->setLimit($limit)
+      ->setOrderBy($orderBy);
+  }
+
     function GetContractModifications($parameters, $limit = null, $orderBy = null) {
         $parameters["is_modification"] = true;
         return $this->GetContracts($parameters,$limit,$orderBy);
@@ -105,6 +117,16 @@ class ContractsDataService extends DataService implements IContractsDataService 
             ->setSqlConfigPath($sqlConfigPath)
             ->setParameters($parameters);
     }
+
+  function GetCountMocsContracts($parameters) {
+    $sqlConfigPath = $parameters['contract_status'] == ContractStatus::PENDING
+      ? SqlConfigPath::PendingContracts
+      : SqlConfigPath::CitywideContracts;
+
+    return $this->setDataFunction(__FUNCTION__)
+      ->setSqlConfigPath($sqlConfigPath)
+      ->setParameters($parameters);
+  }
 
     function GetCountContractsByPrimeVendors($parameters) {
         $sqlConfigPath = $parameters['contract_status'] == ContractStatus::PENDING

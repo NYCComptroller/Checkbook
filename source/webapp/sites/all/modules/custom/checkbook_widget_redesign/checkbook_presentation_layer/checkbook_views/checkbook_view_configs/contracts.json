@@ -14,6 +14,9 @@
                     "widget_config":"contracts_view",
                     "legacy_node_id":368
                 },
+               "mocs_contracts":{
+                "widget_config":"mocs_contracts_view"
+               },
                 "contracts_modifications":{
                     "widget_config":"contracts_modifications_view",
                     "legacy_node_id":366
@@ -64,6 +67,9 @@
                     "widget_config":"contracts_view",
                     "legacy_node_id":368
                 },
+               "mocs_contracts":{
+                "widget_config":"mocs_contracts_view"
+               },
                 "contracts_modifications":{
                     "widget_config":"contracts_modifications_view",
                     "legacy_node_id":366
@@ -888,7 +894,7 @@
                     "legacy_node_id":729,
                     "visibility_parameters":["-csize","-bottom_slider:sub_vendor"]
                 },
-                
+
                 "subcontract_status_by_prime_contract":{
                     "widget_config":"subcontract_status_by_prime_contract_view",
                     "visibility_parameters":["bottom_slider:sub_vendor"]
