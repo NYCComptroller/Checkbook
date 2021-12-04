@@ -1,6 +1,6 @@
 {
 "widgetType": "phpparser",
-"cleanURLParameters":["mwbe_vendor","mwbe","doctype","contstatus","year","calyear","yeartype","agency","fvendor","vendor","subvendor","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt"],
+"cleanURLParameters":["mwbe_vendor","mwbe","doctype","contstatus","year","calyear","yeartype","agency","fvendor","vendor","subvendor","vendornm","contdesc","agrmnttype","agencyh","contnum","aptpin","pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","modamt","mocs"],
 	"urlParamMap":{"mwbe_vendor":"cum_spend.cum_spend.vendor_id",
                     "mwbe":"cum_spend.cum_spend.minority_type_id",
                     "doctype":"document_code.document_code.document_code",
@@ -13,7 +13,7 @@
                     "agencyh":"agency_history_id","contnum":"contract_number","aptpin":"brd_awd_no",
                     "pin":"tracking_number","awdmethod":"award_method_id","curamt":"maximum_contract_amount",
                     "startdate":"effective_begin_date","enddate":"effective_end_date","regdate":"registered_date",
-                    "cindustry":"industry_type_id","csize":"award_size_id","modamt":"dollar_difference"},
+                    "cindustry":"industry_type_id","csize":"award_size_id","modamt":"dollar_difference","mocs": "is_mocs_registered"},
 	"paramTypeConfig":{"vendornm":"like","contdesc":"like","contnum":"like","aptpin":"like","pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","modamt":"ne"},
 	"defaultParameters":{"cum_spend.cum_spend.status_flag":"A"},
 "dataset": "checkbook:all_agreement_transactions",
