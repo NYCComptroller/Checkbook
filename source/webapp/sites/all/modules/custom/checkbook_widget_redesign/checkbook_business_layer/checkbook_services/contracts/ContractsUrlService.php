@@ -437,6 +437,14 @@ class ContractsUrlService
         return $url;
     }
 
+  /**
+   * @return string
+   */
+  public static function getMocUrlString(): string
+  {
+     $url = '/mocs/Yes';
+     return $url;
+  }
     /**
      * Returns Contracts Prime Vendor Landing page URL for the given prime vendor id, year and year type
      * @param $vendor_id
