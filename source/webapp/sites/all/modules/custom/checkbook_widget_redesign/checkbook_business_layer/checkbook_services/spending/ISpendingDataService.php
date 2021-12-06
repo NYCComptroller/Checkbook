@@ -17,6 +17,10 @@ interface ISpendingDataService {
     function GetCountContracts($parameters);
     function GetCountPrimeVendors($parameters);
 
+    /*MOCS Contracts Spending*/
+    function GetSpendingByMocsContracts($parameters, $limit = null, $orderBy = null);
+    function GetCountMocsContracts($parameters);
+
     /* Sub Contracts Spending */
     function GetSubVendorSpendingByChecks($parameters, $limit = null, $orderBy = null);
     function GetSubVendorSpendingByAgencies($parameters, $limit = null, $orderBy = null);

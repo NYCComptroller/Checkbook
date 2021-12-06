@@ -34,6 +34,11 @@
                 "widget_config":"spending_by_contracts_view",
                 "legacy_node_id": 20,
                 "visibility_parameters":["-category:2","-category:4"]
+            },
+            "mocs_contracts":{
+              "widget_config":"spending_by_mocs_contracts_view",
+              "legacy_node_id": 20,
+              "visibility_parameters":["-category:2","-category:4"]
             }
         }
     },
