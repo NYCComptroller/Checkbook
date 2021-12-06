@@ -518,9 +518,9 @@
           $("#edit-contract_includes_sub_vendors_id").val('');
           $.fn.subVendorStatusInPipChange(0, 0);
         }
-        else if( catval == 'revenue') {
-          $("#edit-catastrophic_event").attr('disabled', 'disabled');
-          $("#edit-catastrophic_event").val('0');
+        else if( catval != 'revenue') {
+          $("#edit-catastrophic_event").removeAttr('disabled');
+          $("#edit-catastrophic_event").val('');
         }
       });
 
@@ -539,7 +539,7 @@
         }
         else if (csval == 'pending'){
           $("#edit-catastrophic_event").attr('disabled', 'disabled');
-          $("#edit-catastrophic_event").val('0');
+          $("#edit-catastrophic_event").val('');
         }
         $.fn.resetSelectedColumns();
         $.fn.hideShow(csval, catval, datasource);
@@ -601,11 +601,19 @@
         $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', 'disabled');
         $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', 'disabled');
         $('#edit-column-select-all option[value="Year"]', context).attr('disabled', 'disabled');
+        $('#edit-column-select-expense option[value="year"]', context).attr('disabled', 'disabled');
+        $('#edit-column-select-oge-expense option[value="year"]', context).attr('disabled', 'disabled');
+        $('#edit-column-select-revenue option[value="year"]', context).attr('disabled', 'disabled');
+        $('#edit-column-select-all option[value="year"]', context).attr('disabled', 'disabled');
       } else {
         $('#edit-column-select-expense option[value="Year"]', context).attr('disabled', '');
         $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', '');
         $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', '');
         $('#edit-column-select-all option[value="Year"]', context).attr('disabled', '');
+        $('#edit-column-select-expense option[value="year"]', context).attr('disabled', '');
+        $('#edit-column-select-oge-expense option[value="year"]', context).attr('disabled', '');
+        $('#edit-column-select-revenue option[value="year"]', context).attr('disabled', '');
+        $('#edit-column-select-all option[value="year"]', context).attr('disabled', '');
       }
 
       //Disable Mocs option when Catastrophic filter is not choosen
@@ -926,13 +934,16 @@
           $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-all option[value="Year"]', context).attr('disabled', 'disabled');
+          $('#edit-column-select-expense option[value="year"]', context).attr('disabled', 'disabled');
+          $('#edit-column-select-oge-expense option[value="year"]', context).attr('disabled', 'disabled');
+          $('#edit-column-select-revenue option[value="year"]', context).attr('disabled', 'disabled');
+          $('#edit-column-select-all option[value="year"]', context).attr('disabled', 'disabled');
           if (catval == 'revenue') {
             $("#edit-catastrophic_event").attr('disabled', 'disabled');
             $('select[name="catastrophic_event"]', context).val('0');
           }
           else{
             $("#edit-catastrophic_event").removeAttr('disabled');
-            $('select[name="catastrophic_event"]', context).val('0');
           }
         }
         else {
@@ -941,6 +952,10 @@
           $('#edit-column-select-oge-expense option[value="Year"]', context).attr('disabled', '');
           $('#edit-column-select-revenue option[value="Year"]', context).attr('disabled', '');
           $('#edit-column-select-all option[value="Year"]', context).attr('disabled', '');
+          $('#edit-column-select-expense option[value="year"]', context).attr('disabled', '');
+          $('#edit-column-select-oge-expense option[value="year"]', context).attr('disabled', '');
+          $('#edit-column-select-revenue option[value="year"]', context).attr('disabled', '');
+          $('#edit-column-select-all option[value="year"]', context).attr('disabled', '');
           // disable event field when category is all and year value is less than 2020
           if (catval == 'revenue' || year_value < 2020){
             $("#edit-catastrophic_event").attr('disabled', 'disabled');
@@ -948,7 +963,6 @@
           }
           else{
             $("#edit-catastrophic_event").removeAttr('disabled');
-            $('select[name="catastrophic_event"]', context).val('0');
           }
         }
         $('#edit-column-select-expense', context).multiSelect('refresh');
