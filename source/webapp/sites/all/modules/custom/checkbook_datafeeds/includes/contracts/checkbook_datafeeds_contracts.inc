@@ -134,6 +134,10 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     '#default_value' => !empty($form_state['values']['column_select_nycha']) ? $form_state['values']['column_select_nycha'] : '',
   );
 
+  $form['columns']['hidden_data_format'] = array(
+    '#value' => $data_type,
+    '#type' => 'hidden',
+  );
   if ($data_source == Datasource::NYCHA) {
     $multi_select_hidden = isset($form_state['input']['column_select_nycha']) ? '|' . implode('||', $form_state['input']['column_select_nycha']) . '|' : '';
   } elseif ($data_source == Datasource::OGE) {
@@ -1424,7 +1428,7 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
           }
         }
       }
-      
+
       if ($values['purpose']) {
         $form['filter']['purpose'] = array(
           '#markup' => '<div><strong>Purpose:</strong> ' . $values['purpose'] . '</div>',
@@ -2093,6 +2097,8 @@ function checkbook_datafeeds_contracts_validate($form, &$form_state)
       }
     }
   }
+
+
 
   //Hidden Field for multi-select
   $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;

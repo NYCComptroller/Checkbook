@@ -1908,7 +1908,9 @@ function checkbook_datafeeds_format_columns($domain = null, $data_source = null)
     }
   }
   $cevent = $_POST['catastrophic_event'];
-  if ($cevent === '0') {
+  $year_value = explode('FY',$year);
+  if ($cevent === '0' && ($year != '0' || $year_value[1] <= 2020)) {
+
     if (strpos($hidden_selected_values, "|MOCS Registered|")) {
       $hidden_selected_values = str_replace("|MOCS Registered|", "", $hidden_selected_values);
     }
