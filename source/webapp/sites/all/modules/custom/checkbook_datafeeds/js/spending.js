@@ -121,6 +121,7 @@
     let fiscal_year = document.getElementById("edit-year");
     let catastrophic_event = document.getElementById("edit-catastrophic-event");
     let data_format = $('input:hidden[name="hidden_data_format"]').val();
+    let exptype = $('select[name="expense_type"]').val();
 
     if(catastrophic_event.value === "1"){
       for (let i = 0; i < fiscal_year.length; i++) {
@@ -130,13 +131,15 @@
       }
 
       //Add MOCS Registered column to response columns
-      if(data_format == 'xml'){
-        if($('#edit-column-select option[value="mocs_registered"]').length === 0) {
-          $('#edit-column-select option[value="payee_name"]').before('<option value="mocs_registered">mocs_registered</option>');
-        }
-      }else {
-        if($('#edit-column-select option[value="MOCS Registered"]').length === 0) {
-          $('#edit-column-select option[value="Payee Name"]').before('<option value="MOCS Registered">MOCS Registered</option>');
+      if(exptype !== 'Others [o]' && exptype !== 'Payroll [p]') {
+        if (data_format == 'xml') {
+          if ($('#edit-column-select option[value="mocs_registered"]').length === 0) {
+            $('#edit-column-select option[value="payee_name"]').before('<option value="mocs_registered">mocs_registered</option>');
+          }
+        } else {
+          if ($('#edit-column-select option[value="MOCS Registered"]').length === 0) {
+            $('#edit-column-select option[value="Payee Name"]').before('<option value="MOCS Registered">MOCS Registered</option>');
+          }
         }
       }
 
