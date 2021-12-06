@@ -3,7 +3,7 @@
     "widgetSubType": "dataTableList",
     "cleanURLParameters":["vendornm_exact","vendortype","mwbe","doctype","agency","vendor",
       "curamtr","vendornm","contdesc","agrmnttype","agencyh","contnum","contnum_exact","aptpin",
-      "pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","pscert"],
+      "pin","awdmethod","curamt","startdate","enddate","regdate","cindustry","csize","pscert","cevent"],
     "urlParamMap":{
         "vendortype":"vendor_type",
         "vendornm":"vendor_name",
@@ -27,7 +27,8 @@
         "regdate":"registered_date",
         "cindustry":"industry_type_id",
         "csize":"award_size_id",
-        "pscert":"is_women_owned"
+        "pscert":"is_women_owned",
+        "cevent":"event_id"
     },
     "allowRequestParams":["contstatus","pscert"],
     "paramTypeConfig":{"curamtr":"rangeid","vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"contains","contnum":"like",

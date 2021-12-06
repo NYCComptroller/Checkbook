@@ -43,6 +43,15 @@ class SpendingDataService extends DataService implements ISpendingDataService {
         return $this->configureCitywide(__FUNCTION__,$parameters);
     }
 
+    /*MOCS Contracts Spending*/
+    function GetSpendingByMocsContracts($parameters, $limit = null, $orderBy = null) {
+      return $this->configureCitywide(__FUNCTION__,$parameters,$limit,$orderBy);
+    }
+
+    function GetCountMocsContracts($parameters) {
+      return $this->configureCitywide(__FUNCTION__,$parameters);
+    }
+
     /* Sub Vendors Spending */
     function GetSubVendorSpendingByChecks($parameters, $limit = null, $orderBy = null) {
         return $this->configureSubVendor(__FUNCTION__,$parameters,$limit,$orderBy);

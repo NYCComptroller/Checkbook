@@ -279,7 +279,6 @@ class SpendingUrlService {
      */
     static function getFooterUrl($parameters = null ,$legacy_node_id = null) {
         $legacy_node_id = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
-
         $url = '/panel_html/spending_transactions/spending/transactions'
             . RequestUtilities::buildUrlFromParam('vendor')
             . static::getVendorFacetParameter()
@@ -291,6 +290,13 @@ class SpendingUrlService {
             . $legacy_node_id;
 
         return $url;
+    }
+
+  /**
+   * @return string
+   */
+    static function getMocUrlString(){
+      return '/cevent/1/mocs/Yes';
     }
 
     /**
