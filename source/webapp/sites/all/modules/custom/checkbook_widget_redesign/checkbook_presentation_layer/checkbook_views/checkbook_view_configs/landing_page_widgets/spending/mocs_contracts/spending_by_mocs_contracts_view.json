@@ -2,7 +2,7 @@
   "serviceName":"SpendingWidgetService",
   "dataFunc":"GetSpendingByMocsContracts",
   "countFunc":"GetCountMocsContracts",
-  "headerTitle":"MOCS Registered COVID19 Contracts",
+  "table_title":"MOCS Registered COVID19 Contracts",
   "headerSubTitle":"MOCS Registered COVID19 Contracts",
   "footerUrl":"_widget_controller_footer_url($node).SpendingUrlService::getMocUrlString()",
   "defaultParameters":{"doctype":"'CTA1'~'CT1'~'DO1'"},
