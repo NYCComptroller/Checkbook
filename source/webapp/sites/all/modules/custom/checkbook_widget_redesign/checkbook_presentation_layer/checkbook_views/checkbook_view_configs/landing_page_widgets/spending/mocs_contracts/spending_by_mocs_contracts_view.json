@@ -11,7 +11,7 @@
     {"labelAlias":"contract_purpose","column":"contract_purpose","derivedColumn":"contract_purpose_formatted"},
     {"labelAlias":"contract_agency","column":"agency_name","derivedColumn":"agency_name_link","tooltip":40},
     {"labelAlias":"prime_vendor","column":"prime_vendor_name","derivedColumn":"prime_vendor_link","tooltip":40},
-    {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"contracts_ytd_spending_link","format":"dollar"},
+    {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"mocs_contracts_ytd_spending_link","format":"dollar"},
     {"labelAlias":"total_contract_amount","column":"total_contract_amount_sum","format":"dollar"},
     {"label":"","column":""}
   ],
