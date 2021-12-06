@@ -90,6 +90,11 @@ function checkbook_datafeeds_spending($form, &$form_state){
     '#id' => 'edit-nycha-column-select',
   );
 
+  $form['columns']['hidden_data_format'] = array(
+    '#value' => $datatype,
+    '#type' => 'hidden',
+  );
+
   //Hidden Field for multi-select
   switch ($data_source) {
     case Datasource::NYCHA:

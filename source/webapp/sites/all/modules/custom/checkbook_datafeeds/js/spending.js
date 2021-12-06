@@ -120,6 +120,7 @@
     //Limit year filter options to 'FY 2020', 'FY 2021' and 'All years'
     let fiscal_year = document.getElementById("edit-year");
     let catastrophic_event = document.getElementById("edit-catastrophic-event");
+    let data_format = $('input:hidden[name="hidden_data_format"]').val();
 
     if(catastrophic_event.value === "1"){
       for (let i = 0; i < fiscal_year.length; i++) {
@@ -127,13 +128,40 @@
         let include = (year === "all years" || removeFY(year) >= 2020);
         fiscal_year.options[i].style.display = include ? '':'none';
       }
+
+      //Add MOCS Registered column to response columns
+      if(data_format == 'xml'){
+        if($('#edit-column-select option[value="mocs_registered"]').length === 0) {
+          $('#edit-column-select option[value="payee_name"]').before('<option value="mocs_registered">mocs_registered</option>');
+        }
+      }else {
+        if($('#edit-column-select option[value="MOCS Registered"]').length === 0) {
+          $('#edit-column-select option[value="Payee Name"]').before('<option value="MOCS Registered">MOCS Registered</option>');
+        }
+      }
+
     }
     else{
       for (let i = 0; i < fiscal_year.length; i++) {
         fiscal_year.options[i].style.display = '';
       }
+      //Remove MOCS Registered column from response columns
+      $('#edit-column-select option[value="MOCS Registered"]').remove();
+      $('#edit-column-select option[value="mocs_registered"]').remove();
     }
-}
+
+    $('#edit-column-select').multiSelect('refresh');
+    if (!$('#ms-edit-column-select .ms-selection').next().is("a")) {
+      $('#ms-edit-column-select .ms-selection').after('<a class="deselect">Remove All</a>');
+      $('#ms-edit-column-select .ms-selection').after('<a class="select">Add All</a>');
+    }
+    $('#ms-edit-column-select a.select').click(function () {
+      $('#edit-column-select').multiSelect('select_all');
+    });
+    $('#ms-edit-column-select a.deselect').click(function () {
+      $('#edit-column-select').multiSelect('deselect_all');
+    });
+  }
 
   //On Year filter dropdown change
   let onYearFilterChange = function(){
@@ -424,6 +452,9 @@
         enable_input($('#edit-agency'));
       });
 
+      //Remove MOCS Registered column from response columns
+      //$('#edit-column-select option[value="MOCS Registered"]', context).remove();
+      //$('#edit-column-select option[value="mocs_registered"]', context).remove();
       // Sets up multi-select/option transfer for CityWide
       $('#edit-column-select', context).multiSelect();
       if (!$('#ms-edit-column-select .ms-selection', context).next().is("a")) {
