@@ -1907,15 +1907,17 @@ function checkbook_datafeeds_format_columns($domain = null, $data_source = null)
       $hidden_selected_values = str_replace("|Year|", "", $hidden_selected_values);
     }
   }
-  $cevent = $_POST['catastrophic_event'];
-  $year_value = explode('FY',$year);
-  if ($cevent === '0' && ($year != '0' || $year_value[1] <= 2020)) {
+  if ($domain == Domain::$CONTRACTS && $data_source == Datasource::CITYWIDE) {
+    $cevent = $_POST['catastrophic_event'];
+    $year_value = explode('FY', $year);
+    if ($cevent === '0' && ($year != '0' || $year_value[1] <= 2020)) {
 
-    if (strpos($hidden_selected_values, "|MOCS Registered|")) {
-      $hidden_selected_values = str_replace("|MOCS Registered|", "", $hidden_selected_values);
-    }
-    if (strpos($hidden_selected_values, "|mocs_registered|")) {
-      $hidden_selected_values = str_replace("|mocs_registered|", "", $hidden_selected_values);
+      if (strpos($hidden_selected_values, "|MOCS Registered|")) {
+        $hidden_selected_values = str_replace("|MOCS Registered|", "", $hidden_selected_values);
+      }
+      if (strpos($hidden_selected_values, "|mocs_registered|")) {
+        $hidden_selected_values = str_replace("|mocs_registered|", "", $hidden_selected_values);
+      }
     }
   }
 
