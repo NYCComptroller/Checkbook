@@ -166,10 +166,10 @@
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"purpose","exportColumn":"contract_purpose_export"},
         {"labelAlias":"spending_category","column":"spending_category_name"},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
-        {"labelAlias":"budget_code","column":"budget_name_code"},
         {"labelAlias": "woman_owned_business","column":"is_women_owned"},
         {"labelAlias": "emerging_business","column":"is_emerging"},
-        {"label": "","column": ""}
+        {"labelAlias":"budget_code","column":"budget_name_code"},
+        {"label": "","column": "","export":false}
     ],
     "exportColumnSqlOverride":[
         {
@@ -237,9 +237,9 @@
             {"sClass":"text pad-left","sWidth":"175px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"145px","asSorting":["asc","desc"]},
             {"sClass":"text ","sWidth":"150px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
-            {"sClass":"number","sWidth":"115px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
         "aaSorting":[[6,"desc"]],
