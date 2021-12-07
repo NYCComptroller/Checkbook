@@ -151,7 +151,7 @@ class CustomBreadcrumbs
         $title = $title . " with ";
       }
       if (isset($mocs)) {
-        $title = "MOCS Registered COVID19 Contracts";
+        $title = "MOCS Registered COVID-19 Contracts";
       }
 
       if (preg_match('/^contracts_landing/', current_path()) && preg_match('/status\/A/', current_path())) {

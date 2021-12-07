@@ -3,8 +3,8 @@
   "dataFunc":"GetMocsContracts",
   "uniqueSortColumn":"current_amount_sum",
   "defaultParameters":{"doctype":"'CTA1'~'CT1','MMA1','MA1','DO1'"},
-  "table_title":"MOCS Registered COVID19 Contracts",
-  "headerSubTitle":"MOCS Registered COVID19 Contracts",
+  "table_title":"MOCS Registered COVID-19 Contracts",
+  "headerSubTitle":"MOCS Registered COVID-19 Contracts",
   "footerUrl":"_widget_controller_footer_url($node).ContractsUrlService::getMocUrlString()",
   "table_columns":[
     {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
