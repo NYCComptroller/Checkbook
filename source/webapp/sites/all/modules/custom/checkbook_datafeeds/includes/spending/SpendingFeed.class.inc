@@ -356,7 +356,7 @@ abstract class SpendingFeed
         break;
       default:
         $multi_select_hidden = isset($form_state['input']['column_select']) ? '|' . implode('||', $form_state['input']['column_select']) . '|' : '';
-    }
+    }log_error($multi_select_hidden);
     $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;
 
     $this->_validate_by_datasource($form, $form_state);
