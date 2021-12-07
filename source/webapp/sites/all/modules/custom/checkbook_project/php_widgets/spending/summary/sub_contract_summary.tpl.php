@@ -45,7 +45,8 @@ $summaryContent =  <<<EOD
             {$row['formatted_check_amount_sum']}
             <div class="amount-title">{$ytdspending}</div>
         </div>
-    </div>
+  </div>
+  <div><br/></div>
 </div>
 <div class="contract-information">
 	<ul>
