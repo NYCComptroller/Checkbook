@@ -130,7 +130,7 @@ class MappingUtil {
   /**
    * @var string
    */
-    static $mwbe_prefix = "M/WBE" ;
+    static $mwbe_prefix = "Total M/WBE" ;
 
   /**
    * @var string

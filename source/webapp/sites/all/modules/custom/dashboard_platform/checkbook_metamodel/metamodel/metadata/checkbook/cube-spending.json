@@ -15,6 +15,10 @@
         "expenditure_vendor_spending": {
             "datasourceName": "main",
             "source": "aggregateon_spending_vendor_exp_object"
+        },
+        "mocs_contracts_spending": {
+          "datasourceName": "main",
+          "source": "aggregateon_mocs_spending_contract"
         }
     },
     "cubes": {
@@ -336,7 +340,96 @@
                     "function": "SUM(COALESCE(total_spending_amount,0))"
                 }
             }
+        },
+        "mocs_contracts_spending": {
+        "sourceDatasetName": "mocs_contracts_spending",
+        "dimensions": [
+          {
+            "name": "agency",
+            "levels": [
+              {
+                "name": "agency",
+                "datasetName": "agency",
+                "sourceColumnName": "agency_id"
+              }
+            ]
+          },
+          {
+            "name": "year",
+            "levels": [
+              {
+                "name": "year",
+                "datasetName": "year",
+                "sourceColumnName": "year_id"
+              }
+            ]
+          },
+          {
+            "name": "yeartype",
+            "levels": [
+              {
+                "name": "yeartype",
+                "datasetName": "year",
+                "sourceColumnName": "type_of_year"
+              }
+            ]
+          },
+          {
+            "name": "vendor",
+            "levels": [
+              {
+                "name": "vendor",
+                "datasetName": "vendor",
+                "sourceColumnName": "vendor_id"
+              }
+            ]
+          },
+          {
+            "name": "contract_purpose",
+            "levels": [
+              {
+                "name": "contract_purpose",
+                "sourceColumnName": "description"
+              }
+            ]
+          },
+          {
+            "name": "document_id",
+            "levels": [
+              {
+                "name": "document_id",
+                "sourceColumnName": "document_id"
+              }
+            ]
+          },
+          {
+            "name": "agreement_id",
+            "levels": [
+              {
+                "name": "agreement_id",
+                "sourceColumnName": "agreement_id"
+              }
+            ]
+          },
+          {
+            "name": "document_code",
+            "levels": [
+              {
+                "name": "document_code",
+                "sourceColumnName": "document_code"
+              }
+            ]
+          }
+        ],
+        "measures": {
+          "check_amount_sum": {
+            "function": "SUM(COALESCE(total_spending_amount,0))"
+          },
+          "total_contract_amount_sum": {
+            "function": "MAX(COALESCE(total_contract_amount,0))"
+          }
         }
+      }
     },
 
 	"references": {

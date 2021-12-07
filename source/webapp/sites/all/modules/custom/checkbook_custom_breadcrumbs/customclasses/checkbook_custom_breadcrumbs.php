@@ -96,7 +96,7 @@ class CustomBreadcrumbs
         }
         $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' '.SpendingUtil::getSpendingCategoryName();
       }
-      $title = RequestUtil::getRequestKeyValueFromURL('mocs', $bottomURL) ? str_replace('Contracts', 'MOCS Registered COVID19 Contracts', $title) : $title;
+      $title = RequestUtil::getRequestKeyValueFromURL('mocs', $bottomURL) ? str_replace('Contracts', 'MOCS Registered COVID-19 Contracts', $title) : $title;
     } else {
       $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' '.SpendingUtil::getSpendingCategoryName();
     }
@@ -151,7 +151,7 @@ class CustomBreadcrumbs
         $title = $title . " with ";
       }
       if (isset($mocs)) {
-        $title = "MOCS Registered COVID19 Contracts";
+        $title = "MOCS Registered COVID-19 Contracts";
       }
 
       if (preg_match('/^contracts_landing/', current_path()) && preg_match('/status\/A/', current_path())) {

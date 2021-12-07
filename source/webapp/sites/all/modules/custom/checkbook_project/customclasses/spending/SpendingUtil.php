@@ -1135,6 +1135,12 @@ class SpendingUtil{
             $dashboard_title = MappingUtil::getCurrenEthnicityName();
         } elseif(($widgetTitle == "Contracts" || $widgetTitle == "Contract") && $category == 1) {//Contract Exception
           $catName = "Spending";
+        }else if(RequestUtilities::get('mocs') == 'Yes'){
+          if($category != 1) {
+            return "MOCS Registered COVID-19 Contract " . $catName . " Transactions";
+          }else{
+            return "MOCS Registered COVID-19 Contract Spending Transactions";
+          }
         }
         //Visualization - Sub Vendors (M/WBE) "Ethnicity" Exception
         elseif($smnid == "723" && $dashboard == "sp") {
