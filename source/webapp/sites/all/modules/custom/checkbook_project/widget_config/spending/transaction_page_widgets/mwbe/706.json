@@ -41,11 +41,6 @@
         "svendor":"vendor_id", "bdgcode":"budget_name_code","pscert":"is_women_owned",
         "mocs": "is_mocs_registered", "cevent":"event_id"
     },
-    "preProcessConfiguration":"
-      $cevent = RequestUtilities::getRequestParamValue('cevent');
-      $mocs = RequestUtilities::getRequestParamValue('mocs');
-      $node->show_moc_registered = ($cevent > 0 || isset($mocs));
-    ",
     "paramTypeConfig":{
         "vendornm_exact":"eqignorecase","expdoc_exact":"eqignorecase","captprj_exact":"eqignorecase",
         "contnum_exact":"eqignorecase","checkamtr":"rangeid","checkamt":"range","chkdate":"range",
@@ -101,8 +96,7 @@
         "original_agreement_id@checkbook:sub_vendor_agid",
         "budget_name_code",
         "is_women_owned",
-        "is_emerging",
-        "is_mocs_registered"
+        "is_emerging"
     ],
     "derivedColumns": {
         "associated_prime_vendor_name":{
@@ -199,7 +193,6 @@
         {"labelAlias":"expense_category","column":"expense_cat_formatted","sortSourceColumn":"expenditure_object_name"},
         {"labelAlias":"industry_name","column":"industry_name_formatted","sortSourceColumn":"industry_type_name"},
         {"labelAlias":"contract_id","column":"reference_document_number_link","sortSourceColumn":"reference_document_number","exportColumn":"reference_document_number_export"},
-        {"labelAlias":"mocs_registered", "column":"is_mocs_registered", "sortSourceColumn": "is_mocs_registered", "visibility_flag":"show_moc_registered"},
         {"labelAlias":"sub_contract_reference_id","column":"sub_contract_id_formatted","sortSourceColumn":"sub_contract_id","exportColumn":"sub_contract_id"},
         {"label":"","column":"","export":false},
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"purpose","exportColumn":"contract_purpose_export"},
@@ -317,7 +310,6 @@
             {"sClass":"text pad-left ","sWidth":"120px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"120px","asSorting":["asc","desc"]},
             {"sClass":"number-center","sWidth":"120px","asSorting":["asc","desc"]},
-            {"sClass":"number-center","sWidth":"100px","asSorting":["asc","desc"],"visibility_flag":"show_moc_registered"},
             {"sClass":"number-center","sWidth":"130px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"50px"},
             {"sClass":"text ","sWidth":"120px","asSorting":["asc","desc"]},
