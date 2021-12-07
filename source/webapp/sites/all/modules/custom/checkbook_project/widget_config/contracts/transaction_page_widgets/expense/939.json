@@ -176,7 +176,7 @@
         $cevent = RequestUtilities::getRequestParamValue('cevent');
         $mocs = RequestUtilities::getRequestParamValue('mocs');
         $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722);
-        $node->show_moc_registered= ($cevent > 0 || isset($mocs));
+        $node->show_moc_registered= ($cevent > 0 );
         $node->show_spend_to_date = (!isset($mocs));
         $node->dashboard = RequestUtilities::getRequestParamValue('dashboard');
         $node->dashboard = RequestUtilities::getRequestParamValue('dashboard');
