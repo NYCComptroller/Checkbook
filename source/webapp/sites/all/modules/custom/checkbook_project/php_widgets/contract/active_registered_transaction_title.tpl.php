@@ -65,7 +65,7 @@ if(!$suppress_widget_title) {
     $summaryTitle .= NodeSummaryUtil::getInitNodeSummaryTitle();
 }
 if ($mocsContracts == 'Yes'){
-  $summaryTitle = 'MOCS Registered COVID19 Contracts';
+  $summaryTitle = 'MOCS Registered COVID-19 Contracts';
 }
 $summaryTitle = $summaryTitle != '' ? $summaryTitle : '';
 global $checkbook_breadcrumb_title;
