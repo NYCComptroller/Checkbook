@@ -28,7 +28,7 @@ class MinorityTypeService {
         'Women (Non-Minority)' => array(9),
         'Individuals and Others' => array(11),
         'Emerging (Non-Minority)' => array(99),
-        'M/WBE' => array(2,3,4,5,6,9,99),
+        'Total M/WBE' => array(2,3,4,5,6,9,99),
     );
 
     static $mwbe_prefix = "M/WBE" ;
