@@ -1137,9 +1137,9 @@ class SpendingUtil{
           $catName = "Spending";
         }else if(RequestUtilities::get('mocs') == 'Yes'){
           if($category != 1) {
-            return "MOCS Registered COVID19 Contract " . $catName . " Transactions";
+            return "MOCS Registered COVID-19 Contract " . $catName . " Transactions";
           }else{
-            return "MOCS Registered COVID19 Contract Spending Transactions";
+            return "MOCS Registered COVID-19 Contract Spending Transactions";
           }
         }
         //Visualization - Sub Vendors (M/WBE) "Ethnicity" Exception
