@@ -642,6 +642,26 @@ function checkbook_datafeeds_spending_filter_selected_columns($selected_columns,
 }
 
 /**
+ * @param $selected_columns
+ * @param $cevent
+ * @param $year
+ * @param $year_value
+ * @return mixed
+ */
+
+function checkbook_datafeeds_spending_reset_selected_columns($selected_columns, $cevent, $year, $year_value){
+  if ($cevent != 1 || ($year != '0' && $year_value < 2020)) {
+    if (strpos($selected_columns, "|MOCS Registered|")) {
+      $selected_columns = str_replace("|MOCS Registered|", "", $selected_columns);
+    }
+    if (strpos($selected_columns, "|mocs_registered|")) {
+      $selected_columns = str_replace("|mocs_registered|", "", $selected_columns);
+    }
+  }
+  return $selected_columns;
+}
+
+/**
  * Outputs selected search criteria and number of records found for Spending.
  *
  * @param array $form
