@@ -1907,9 +1907,10 @@ function checkbook_datafeeds_format_columns($domain = null, $data_source = null)
       $hidden_selected_values = str_replace("|Year|", "", $hidden_selected_values);
     }
   }
+
+  $cevent = $_POST['catastrophic_event'];
+  $year_value = explode('FY', $year);
   if ($domain == Domain::$CONTRACTS && $data_source == Datasource::CITYWIDE) {
-    $cevent = $_POST['catastrophic_event'];
-    $year_value = explode('FY', $year);
     if ($cevent === '0' && ($year != '0' || $year_value[1] <= 2020)) {
 
       if (strpos($hidden_selected_values, "|MOCS Registered|")) {
@@ -1919,6 +1920,10 @@ function checkbook_datafeeds_format_columns($domain = null, $data_source = null)
         $hidden_selected_values = str_replace("|mocs_registered|", "", $hidden_selected_values);
       }
     }
+  }
+
+  if($domain == Domain::$SPENDING && $data_source == 'citywide'){
+    $hidden_selected_values = checkbook_datafeeds_spending_reset_selected_columns($hidden_selected_values, $cevent, $year, $year_value);
   }
 
   $array_selected_values = explode("|", $hidden_selected_values); //convert the values into array
