@@ -961,6 +961,7 @@
         function onStatusChange(div) {
           var data_source = $('input[name=contracts_advanced_search_domain_filter]:checked').val();
           var contract_status = div.ele('status').val();
+          let contract_category = div.ele('category').val();
           if (contract_status === 'P') {
             if (data_source === 'checkbook') {
               div.ele('registration_date_from').val('').attr("disabled", "disabled");
@@ -974,7 +975,11 @@
             div.ele('year').val("");
             div.ele('received_date_from').removeAttr("disabled");
             div.ele('received_date_to').removeAttr("disabled");
-          }  else {
+          }
+          else if(contract_category == 'revenue') {
+            div.ele('catastrophic_events').val('').attr("disabled", "disabled");
+          }
+          else {
             if (data_source === 'checkbook') {
               div.ele('registration_date_from').removeAttr("disabled");
               div.ele('registration_date_to').removeAttr("disabled");
@@ -985,7 +990,6 @@
             div.ele('received_date_to').attr("disabled", "disabled");
             div.ele('received_date_from').val("");
             div.ele('received_date_to').val("");
-
           }
           updateSubVendorFields(div);
         }
