@@ -206,17 +206,26 @@ class MappingUtil {
         return self::$minority_type_category_map_multi;
     }
 
-    /**
-     * @param null $minority_type_ids
-     * @return string
-     */
-    public static function getCurrenEthnicityName($minority_type_ids = null)
+  /**
+   * @param null $minority_type_ids
+   * @param bool $feed
+   * @return int|string
+   */
+    public static function getCurrenEthnicityName($minority_type_ids = null, $feed = false)
     {
         $mwbe_url_params = $minority_type_ids ?? explode('~', RequestUtilities::get('mwbe'));
-        foreach(self::$minority_type_category_map_multi_chart as $key=>$values){
-            if(count(array_diff($mwbe_url_params, $values)) == 0){
-                return $key;
+        if($feed) {
+          foreach (self::$minority_type_category as $key => $values) {
+            if (count(array_diff($mwbe_url_params, $values)) == 0) {
+              return $key;
             }
+          }
+        }else{
+          foreach (self::$minority_type_category_map_multi as $key => $values) {
+            if (count(array_diff($mwbe_url_params, $values)) == 0) {
+              return $key;
+            }
+          }
         }
     }
 
