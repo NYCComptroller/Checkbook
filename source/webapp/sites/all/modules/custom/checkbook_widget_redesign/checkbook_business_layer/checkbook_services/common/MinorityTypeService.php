@@ -11,20 +11,24 @@ class MinorityTypeService {
         2 => 'Black American',
         3 => 'Hispanic American',
         4 => 'Asian American',
+        6 => 'Native American',
         5 => 'Asian American',
         7 => 'Non-M/WBE',
-        9 => 'Women',
+        9 => 'Women (Non-Minority)',
         11 => 'Individuals and Others',
+        99 => 'Emerging (Non-Minority)'
     );
 
     public static $minority_type_category_map_multi_chart = array(
         'Black American' => array(2),
         'Hispanic American' => array(3),
         'Asian American' => array(4,5),
+        'Native American' => array(6),
         'Non-M/WBE' => array(7),
-        'Women' => array(9),
+        'Women (Non-Minority)' => array(9),
         'Individuals and Others' => array(11),
-        'M/WBE' => array(2,3,4,5,9),
+        'Emerging (Non-Minority)' => array(99),
+        'M/WBE' => array(2,3,4,5,6,9,99),
     );
 
     static $mwbe_prefix = "M/WBE" ;
@@ -65,7 +69,7 @@ class MinorityTypeService {
 
                     $query = "SELECT minority_type_id,vendor_id,agency_id,is_prime_or_sub
                               FROM spending_vendor_latest_mwbe_category
-                              WHERE minority_type_id IN (2,3,4,5,9)
+                              WHERE minority_type_id IN (".MappingUtil::getTotalMinorityIds().")
                               AND year_id = ".$year_id."
                               AND type_of_year = '".$type_of_year."'";
 
@@ -88,12 +92,12 @@ class MinorityTypeService {
                     if (stripos($ajaxReferer, 'contracts_pending_exp_landing')
                         || stripos($ajaxReferer, 'contracts_pending_rev_landing')) {
                         $query = "SELECT
-                                minority_type_id, 
-                                vendor_id, 
-                                document_agency_id as agency_id, 
+                                minority_type_id,
+                                vendor_id,
+                                document_agency_id as agency_id,
                                 is_prime_or_sub
                               FROM pending_contracts
-                              WHERE minority_type_id IN (2,3,4,5,9)
+                              WHERE minority_type_id IN (".MappingUtil::getTotalMinorityIds().")
                               AND is_prime_or_sub = 'P'";
 
                         $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
@@ -111,7 +115,7 @@ class MinorityTypeService {
 
                     $query = "SELECT minority_type_id,vendor_id,agency_id,is_prime_or_sub
                               FROM contract_vendor_latest_mwbe_category
-                              WHERE minority_type_id IN (2,3,4,5,9)
+                              WHERE minority_type_id IN (".MappingUtil::getTotalMinorityIds().")
                               AND year_id = ".$year_id."
                               AND type_of_year = '".$type_of_year."'";
 

@@ -2,18 +2,21 @@
    "table_columns": [
         {"label":"Prime Contract ID","column":"contract_number"},
         {"label":"Contract Includes Sub Vendors","column":"scntrc_status_name"},
+        {"label":"MOCS Registered","column":"is_mocs_registered","visibility_flag":"show_moc_registered"},
         {"label":"Vendor Record Type","column":"vendor_record_type"},
         {"label":"Prime Vendor","column":"prime_vendor_name"},
         {"label":"Prime Vendor M/WBE Category","column":"prime_minority_type_name"},
         {"label":"Prime Contract Purpose","column":"prime_purpose"},
         {"label":"Prime Contract Current Amount","column":"prime_maximum_contract_amount"},
         {"label":"Prime Contract Original Amount","column":"prime_original_contract_amount"},
-        {"label":"Prime Vendor Spend to Date","column":"prime_rfed_amount"},
+        {"label":"Prime Vendor Spend to Date","column":"prime_rfed_amount","visibility_flag":"show_spend_to_date"},
         {"label":"Prime Contract Dollar Difference","column":"prime_dollar_difference","visibility_flag":"show_difference"},
         {"label":"Prime Contract Percent Difference","column":"prime_percent_difference","visibility_flag":"show_difference"},
         {"label":"Prime Contract Start Date","column":"prime_effective_begin_date"},
         {"label":"Prime Contract End Date","column":"prime_effective_end_date"},
         {"label":"Prime Contract Registration Date","column":"registered_date"},
+        {"label":"Prime Woman Owned Business","column":"is_prime_women_owned"},
+        {"label":"Prime Emerging Business","column":"is_prime_emerging"},
         {"label":"Prime Contracting Agency","column":"agency_name"},
         {"label":"Prime Contract Version","column":"prime_document_version"},
         {"label":"FMS Document/Parent Contract ID","column":"master_contract_number_export"},
@@ -35,10 +38,16 @@
         {"label":"Sub Contract Percent Difference","column":"sub_percent_difference","visibility_flag":"show_difference"},
         {"label":"Sub Contract Start Date","column":"sub_effective_begin_date_export"},
         {"label":"Sub Contract End Date","column":"sub_effective_end_date_export"},
-        {"label":"Sub Contract Reference ID","column":"sub_contract_id_export"}
-    ],
+        {"label":"Sub Contract Reference ID","column":"sub_contract_id_export"},
+        {"label":"Sub Woman Owned Business","column":"is_sub_women_owned"},
+        {"label":"Sub Emerging Business","column":"is_sub_emerging"}
+   ],
     "preProcessConfiguration":"
         $smnid = $doctype = RequestUtilities::getRequestParamValue('smnid');
+        $cevent = RequestUtilities::getRequestParamValue('cevent');
+        $mocs = RequestUtilities::getRequestParamValue('mocs');
         $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722);
+        $node->show_moc_registered = ($cevent > 0 );
+        $node->show_spend_to_date = (!isset($mocs));
     "
 }

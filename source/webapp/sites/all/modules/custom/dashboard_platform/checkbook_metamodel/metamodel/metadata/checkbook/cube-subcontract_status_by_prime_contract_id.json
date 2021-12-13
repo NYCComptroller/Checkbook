@@ -180,6 +180,18 @@
                 },
                 "count_sub_mwbe": {
                     "function":"COUNT(DISTINCT sub_vendor_name||contract_number||sub_contract_id)"
+                },
+                "prime_cert_women_count":{
+                  "function": "COUNT(DISTINCT(CASE WHEN is_prime_women_owned = 'Yes' THEN prime_vendor_name||contract_number END))"
+                },
+                "prime_cert_emerging_count":{
+                  "function": "COUNT(DISTINCT(CASE WHEN is_prime_emerging = 'Yes' THEN prime_vendor_name||contract_number END))"
+                },
+                "sub_cert_women_count":{
+                  "function": "COUNT(DISTINCT(CASE WHEN is_sub_women_owned = 'Yes' THEN sub_vendor_name||contract_number||sub_contract_id END))"
+                },
+                "sub_cert_emerging_count":{
+                  "function": "COUNT(DISTINCT(CASE WHEN is_sub_emerging = 'Yes' THEN sub_vendor_name||contract_number||sub_contract_id END))"
                 }
             }
         },

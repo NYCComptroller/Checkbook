@@ -29,6 +29,10 @@ abstract class SpendingFeed
   /**
    * @var string
    */
+  protected $domain = 'spending';
+  /**
+   * @var string
+   */
   protected $data_source = '';
   /**
    * @var string
@@ -102,7 +106,7 @@ abstract class SpendingFeed
     $this->_process_criteria();
     $this->form_state['step_information']['confirmation']['stored_values']['criteria'] = $this->criteria;
     $this->form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $this->user_criteria;
-    $modified_form = checkbook_datafeeds_end_of_confirmation_form($this->form, $this->form_state, $this->criteria, $this->response_type, 'spending');
+    $modified_form = checkbook_datafeeds_end_of_confirmation_form($this->form, $this->form_state, $this->criteria, $this->response_type, $this->domain);
     $form_state = $this->form_state;
     return $modified_form;
   }
@@ -129,7 +133,7 @@ abstract class SpendingFeed
     ];
 
     //Used to maintain the order of the columns
-    $this->selected_columns = checkbook_datafeeds_format_columns();
+    $this->selected_columns = checkbook_datafeeds_format_columns($this->domain, $this->data_source);
     //Filter columns for current data source
     $this->filtered_columns = checkbook_datafeeds_spending_filter_selected_columns($this->selected_columns, $this->data_source, $this->response_type);
 

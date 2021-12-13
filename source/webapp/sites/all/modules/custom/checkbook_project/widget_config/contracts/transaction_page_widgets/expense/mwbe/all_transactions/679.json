@@ -71,7 +71,9 @@
         "scntrc_status",
         "scntrc_status_name",
         "aprv_sta",
-        "aprv_sta_name"
+        "aprv_sta_name",
+        "is_women_owned",
+        "is_emerging"
     ],
     "caption":"",
     "derivedColumns": {
@@ -218,7 +220,9 @@
     {"label":"","column":"","export":false},
     {"labelAlias": "pin","column": "tracking_number"},
     {"labelAlias": "apt_pin","column": "brd_awd_no"},
-    {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"}
+    {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
+    {"labelAlias": "woman_owned_business","column":"is_women_owned"},
+    {"labelAlias": "emerging_business","column":"is_emerging"}
     ],
     "exportColumnSqlOverride":[
         {
@@ -228,9 +232,11 @@
             case
             when minority_type_id = 2 then 'Black American'
             when minority_type_id = 3 then 'Hispanic American'
+            when minority_type_id = 6 then 'Native American'
             when minority_type_id = 7 then 'Non-M/WBE'
-            when minority_type_id = 9 then 'Women'
+            when minority_type_id = 9 then 'Women (Non-Minority)'
             when minority_type_id = 11 then 'Individuals and Others'
+            when minority_type_id = 99 then 'Emerging (Non-Minority)'
             else 'Asian American'
             end as minority_type_name
             "
@@ -315,7 +321,9 @@
     {"bSortable":false,"sWidth":"30px"},
     {"sClass":"text","sWidth":"170px","asSorting": [ "asc","desc" ]},
     {"sClass":"text","sWidth":"170px","asSorting": [ "asc","desc" ]},
-    {"sClass":"text","sWidth":"170px","asSorting": [ "asc","desc" ]}
+    {"sClass":"text","sWidth":"170px","asSorting": [ "asc","desc" ]},
+    {"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]},
+    {"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]}
     ],
     "aaSorting":[[9,"desc"]],
     "sScrollX": "100%",
@@ -428,6 +436,8 @@
     sOut += '<td class=\"text\"  style=\"width:170px\">'+ (row[24] == null ? '': row[24])+'</td>';
     sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[25] == null ? '': row[25])+'</td>';
     sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[26] == null ? '': row[26])+'</td>';
+    sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[27] == null ? '': row[27])+'</td>';
+    sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[28] == null ? '': row[28])+'</td>';
     sOut += '<td style=\"width:10px\"></td>';
     sOut += '</tr>';
 

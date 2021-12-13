@@ -50,6 +50,8 @@
         "prime_effective_begin_date",
         "prime_effective_end_date",
         "prime_rfed_amount",
+        "is_prime_women_owned",
+        "is_prime_emerging",
         "sub_vendor_id",
         "sub_vendor_name",
         "sub_vendor_type",
@@ -63,7 +65,9 @@
         "sub_purpose",
         "sub_effective_begin_date",
         "sub_effective_end_date",
-        "sub_rfed_amount"
+        "sub_rfed_amount",
+        "is_sub_women_owned",
+        "is_sub_emerging"
     ],
     "logicalOrColumns":[
         ["prime_vendor_code","sub_vendor_code"],
@@ -217,6 +221,8 @@
         {"labelAlias":"start_date","column":"prime_effective_begin_date"},
         {"labelAlias":"end_date","column":"prime_effective_end_date"},
         {"labelAlias":"reg_date","column":"registered_date"},
+        {"labelAlias":"prime_woman_owned_business","column":"is_prime_women_owned"},
+        {"labelAlias":"prime_emerging_business","column":"is_prime_emerging"},
         {"labelAlias":"contract_agency","column":"agency_name_link"},
         {"labelAlias":"version","column":"prime_document_version"},
         {"labelAlias":"fms_doc_id","column":"parent_contract_link"},
@@ -238,6 +244,8 @@
         {"labelAlias":"percent_diff","column":"formatted_sub_percent_diff"},
         {"labelAlias":"start_date","column":"formatted_sub_effective_begin_date"},
         {"labelAlias":"end_date","column":"formatted_sub_effective_end_date"},
-        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id"}
+        {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id"},
+        {"labelAlias":"sub_woman_owned_business","column":"is_sub_women_owned"},
+        {"labelAlias":"sub_emerging_business","column":"is_sub_emerging"}
     ]
 }

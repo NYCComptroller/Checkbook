@@ -168,6 +168,13 @@ class SpendingWidgetService extends WidgetDataService implements IWidgetService
                 $url = SpendingUrlService::ytdSpendingUrl($dynamic_parameter, $this->getLegacyNodeId());
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
+          case "mocs_contracts_ytd_spending_link":
+                $column = $row['check_amount_sum'];
+                $class = "bottomContainerReload";
+                $dynamic_parameter = '/agid/' . $row['agreement_id'] . '/doctype/' . $row['document_code'];
+                $url = SpendingUrlService::ytdSpendingUrl($dynamic_parameter, $this->getLegacyNodeId()).'/mocs/Yes';
+                $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
+                break;
 
         }
 

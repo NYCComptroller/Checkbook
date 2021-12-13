@@ -114,7 +114,7 @@ class SpendingUrlService {
 
         $url = RequestUtilities::_getCurrentPage() . _checkbook_project_get_year_url_param_string();
 
-        $mwbe = $is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "";
+        $mwbe = $is_mwbe_certified ? "/mwbe/".MappingUtil::getTotalMinorityIds('url') : "";
         $industry = isset($industry) ? "/industry/{$industry}" : "";
         $agency = isset($agency_id) ? "/agency/{$agency_id}" : "";
         $category = isset($category) ? "/category/{$category}" : "";
@@ -165,7 +165,7 @@ class SpendingUrlService {
 
         $url = RequestUtilities::_getCurrentPage() . _checkbook_project_get_year_url_param_string();
 
-        $mwbe = $is_mwbe_certified ? "/mwbe/2~3~4~5~9" : "";
+        $mwbe = $is_mwbe_certified ? "/mwbe/".MappingUtil::getTotalMinorityIds('url') : "";
         $agency = isset($agency_id) ? "/agency/{$agency_id}" : "";
         $industry = isset($industry) ? "/industry/{$industry}" : "";
         $vendor = isset($vendor_id) ? "/subvendor/{$vendor_id}" : "";
@@ -279,7 +279,6 @@ class SpendingUrlService {
      */
     static function getFooterUrl($parameters = null ,$legacy_node_id = null) {
         $legacy_node_id = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
-
         $url = '/panel_html/spending_transactions/spending/transactions'
             . RequestUtilities::buildUrlFromParam('vendor')
             . static::getVendorFacetParameter()
@@ -291,6 +290,13 @@ class SpendingUrlService {
             . $legacy_node_id;
 
         return $url;
+    }
+
+  /**
+   * @return string
+   */
+    static function getMocUrlString(){
+      return '/cevent/1/mocs/Yes';
     }
 
     /**

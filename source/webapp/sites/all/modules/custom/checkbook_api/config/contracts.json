@@ -25,7 +25,6 @@
             "purpose":"purpose",
             "mwbe_category":"minority_type_id",
             "current_amount":"amount_id"
-
         },
         "dataset":{
             "sortColumn":["-contract_number", "vendor_record_type", "-agreement_id"],
@@ -43,6 +42,7 @@
                     "rowParentElement":"transaction",
                     "elementsColumn":{
                         "contract_includes_sub_vendors":"scntrc_status_name",
+                        "mocs_registered":"is_mocs_registered",
                         "document_code":"document_code",
                         "parent_contract_id":"master_contract_number_export",
                         "prime_contract_apt_pin":"prime_apt_pin",
@@ -63,6 +63,8 @@
                         "prime_vendor":"prime_vendor_name",
                         "prime_vendor_mwbe_category":"prime_minority_type_name",
                         "prime_vendor_spent_to_date":"prime_rfed_amount",
+                        "prime_woman_owned_business":"is_prime_women_owned",
+                        "prime_emerging_business": "is_prime_emerging",
                         "sub_contract_current_amount":"sub_maximum_contract_amount",
                         "sub_contract_end_date":"sub_effective_end_date_export",
                         "sub_contract_industry":"sub_industry_type_name_export",
@@ -74,6 +76,8 @@
                         "sub_vendor_mwbe_category":"sub_minority_type_name_export",
                         "sub_vendor_paid_to_date":"sub_rfed_amount",
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
+                        "sub_woman_owned_business":"is_sub_women_owned",
+                        "sub_emerging_business": "is_sub_emerging",
                         "vendor_record_type":"vendor_record_type",
                         "year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     },
@@ -82,6 +86,7 @@
                         "document_code":"document_code",
                         "prime_contract_id":"prime_contract_id",
                         "contract_includes_sub_vendors":"contract_includes_sub_vendors",
+                        "mocs_registered":"mocs_registered",
                         "vendor_record_type":"vendor_record_type",
                         "prime_vendor":"prime_vendor",
                         "prime_vendor_mwbe_category":"prime_vendor_mwbe_category",
@@ -101,6 +106,8 @@
                         "prime_contract_industry":"prime_contract_industry",
                         "prime_contract_pin":"prime_contract_pin",
                         "prime_contract_apt_pin":"prime_contract_apt_pin",
+                        "prime_woman_owned_business":"prime_woman_owned_business",
+                        "prime_emerging_business": "prime_emerging_business",
                         "sub_vendor":"sub_vendor",
                         "sub_vendor_mwbe_category":"sub_vendor_mwbe_category",
                         "sub_contract_purpose":"sub_contract_purpose",
@@ -111,13 +118,16 @@
                         "sub_vendor_paid_to_date":"sub_vendor_paid_to_date",
                         "sub_contract_start_date":"sub_contract_start_date",
                         "sub_contract_end_date":"sub_contract_end_date",
-                        "sub_contract_reference_id":"sub_contract_reference_id"
+                        "sub_contract_reference_id":"sub_contract_reference_id",
+                        "sub_woman_owned_business":"sub_woman_owned_business",
+                        "sub_emerging_business": "sub_emerging_business"
                     },
                     "rowElements":[
                         "year",
                         "document_code",
                         "prime_contract_id",
                         "contract_includes_sub_vendors",
+                        "mocs_registered",
                         "vendor_record_type",
                         "prime_vendor",
                         "prime_vendor_mwbe_category",
@@ -137,6 +147,8 @@
                         "prime_contract_industry",
                         "prime_contract_pin",
                         "prime_contract_apt_pin",
+                        "prime_woman_owned_business",
+                        "prime_emerging_business",
                         "sub_vendor",
                         "sub_vendor_mwbe_category",
                         "sub_contract_purpose",
@@ -147,12 +159,15 @@
                         "sub_vendor_paid_to_date",
                         "sub_contract_start_date",
                         "sub_contract_end_date",
-                        "sub_contract_reference_id"
+                        "sub_contract_reference_id",
+                        "sub_woman_owned_business",
+                        "sub_emerging_business"
                     ]
                 },
                 "csv":{
                     "elementsColumn":{
                         "Contract Includes Sub Vendors":"scntrc_status_name",
+                        "MOS Registered":"is_mocs_registered",
                         "Document Code":"document_code",
                         "Parent Contract ID":"master_contract_number_export",
                         "Prime Contract APT PIN":"prime_apt_pin",
@@ -173,6 +188,8 @@
                         "Prime Vendor":"prime_vendor_name",
                         "Prime Vendor M/WBE Category":"prime_minority_type_name",
                         "Prime Vendor Spend to Date":"prime_rfed_amount",
+                        "Prime Woman Owned Business": "is_prime_women_owned",
+                        "Prime Emerging Business": "is_prime_emerging",
                         "Sub Contract Current Amount":"sub_maximum_contract_amount",
                         "Sub Contract End Date":"sub_effective_end_date_export",
                         "Sub Contract Industry":"sub_industry_type_name_export",
@@ -184,6 +201,8 @@
                         "Sub Vendor M/WBE Category":"sub_minority_type_name_export",
                         "Sub Vendor Paid To Date":"sub_rfed_amount",
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
+                        "Sub Woman Owned Business": "is_sub_women_owned",
+                        "Sub Emerging Business": "is_sub_emerging",
                         "Vendor Record Type":"vendor_record_type",
                         "Year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     },
@@ -192,6 +211,7 @@
                         "Document Code":                                      "Document Code",
                         "Prime Contract ID":                              "Prime Contract ID",
                         "Contract Includes Sub Vendors":      "Contract Includes Sub Vendors",
+                        "MOCS Registered":                             "MOCS Registered",
                         "Vendor Record Type":                            "Vendor Record Type",
                         "Prime Vendor":                                        "Prime Vendor",
                         "Prime Vendor M/WBE Category":          "Prime Vendor M/WBE Category",
@@ -211,6 +231,8 @@
                         "Prime Contract Industry":                  "Prime Contract Industry",
                         "Prime Contract PIN":                            "Prime Contract PIN",
                         "Prime Contract APT PIN":                    "Prime Contract APT PIN",
+                        "Prime Woman Owned Business":            "Prime Woman Owned Business",
+                        "Prime Emerging Business":                  "Prime Emerging Business",
                         "Sub Vendor":                                            "Sub Vendor",
                         "Sub Vendor M/WBE Category":              "Sub Vendor M/WBE Category",
                         "Sub Contract Purpose":                        "Sub Contract Purpose",
@@ -221,7 +243,9 @@
                         "Sub Vendor Paid To Date":                  "Sub Vendor Paid To Date",
                         "Sub Contract Start Date":                  "Sub Contract Start Date",
                         "Sub Contract End Date":                      "Sub Contract End Date",
-                        "Sub Contract Reference ID":              "Sub Contract Reference ID"
+                        "Sub Contract Reference ID":              "Sub Contract Reference ID",
+                        "Sub Woman Owned Business":                "Sub Woman Owned Business",
+                        "Sub Emerging Business":                       "Sub Emerging Business"
                     }
                 }
             },
@@ -238,7 +262,7 @@
             "award_method":{"valueType":"value","dataType":"text","maxLength":"3"},
             "expense_category":{"valueType":"value","dataType":"text","maxLength":"4"},
             "contract_id":{"valueType":"value","dataType":"text","maxLength":"32"},
-            "catastrophic_event":{"valueType":"value","dataType":"text","maxLength":"20"},
+            "catastrophic_event":{"valueType":"value","dataType":"text","maxLength":"2"},
             "contract_type":{"valueType":"value","dataType":"text","maxLength":"2"},
             "start_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
             "end_date":{"valueType":"range","dataType":"date","format":"YYYY-MM-DD"},
@@ -268,7 +292,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"15"
             },
             "industry":{
                 "valueType":"value",
@@ -326,6 +350,7 @@
                     "rowParentElement":"transaction",
                     "elementsColumn":{
                         "contract_includes_sub_vendors":"scntrc_status_name",
+                        "mocs_registered": "is_mocs_registered",
                         "document_code":"document_code",
                         "parent_contract_id":"master_contract_number_export",
                         "prime_contract_apt_pin":"prime_apt_pin",
@@ -346,6 +371,8 @@
                         "prime_vendor":"prime_vendor_name",
                         "prime_vendor_mwbe_category":"prime_minority_type_name",
                         "prime_vendor_spent_to_date":"prime_rfed_amount",
+                        "prime_woman_owned_business":"is_prime_women_owned",
+                        "prime_emerging_business": "is_prime_emerging",
                         "sub_contract_current_amount":"sub_maximum_contract_amount",
                         "sub_contract_end_date":"sub_effective_end_date_export",
                         "sub_contract_industry":"sub_industry_type_name_export",
@@ -357,6 +384,8 @@
                         "sub_vendor_mwbe_category":"sub_minority_type_name_export",
                         "sub_vendor_paid_to_date":"sub_rfed_amount",
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
+                        "sub_woman_owned_business":"is_sub_women_owned",
+                        "sub_emerging_business": "is_sub_emerging",
                         "vendor_record_type":"vendor_record_type"
                     },
                     "overrideColumns":{
@@ -364,6 +393,7 @@
                         "document_code":"document_code",
                         "prime_contract_id":"prime_contract_id",
                         "contract_includes_sub_vendors":"contract_includes_sub_vendors",
+                        "mocs_registered": "mocs_registered",
                         "vendor_record_type":"vendor_record_type",
                         "prime_vendor":"prime_vendor",
                         "prime_vendor_mwbe_category":"prime_vendor_mwbe_category",
@@ -383,6 +413,8 @@
                         "prime_contract_industry":"prime_contract_industry",
                         "prime_contract_pin":"prime_contract_pin",
                         "prime_contract_apt_pin":"prime_contract_apt_pin",
+                        "prime_woman_owned_business":"prime_woman_owned_business",
+                        "prime_emerging_business": "prime_emerging_business",
                         "sub_vendor":"sub_vendor",
                         "sub_vendor_mwbe_category":"sub_vendor_mwbe_category",
                         "sub_contract_purpose":"sub_contract_purpose",
@@ -393,13 +425,16 @@
                         "sub_vendor_paid_to_date":"sub_vendor_paid_to_date",
                         "sub_contract_start_date":"sub_contract_start_date",
                         "sub_contract_end_date":"sub_contract_end_date",
-                        "sub_contract_reference_id":"sub_contract_reference_id"
+                        "sub_contract_reference_id":"sub_contract_reference_id",
+                        "sub_woman_owned_business":"sub_woman_owned_business",
+                        "sub_emerging_business": "sub_emerging_business"
                     },
                     "rowElements":[
                         "year",
                         "document_code",
                         "prime_contract_id",
                         "contract_includes_sub_vendors",
+                        "mocs_registered",
                         "vendor_record_type",
                         "prime_vendor",
                         "prime_vendor_mwbe_category",
@@ -419,6 +454,8 @@
                         "prime_contract_industry",
                         "prime_contract_pin",
                         "prime_contract_apt_pin",
+                        "prime_woman_owned_business",
+                        "prime_emerging_business",
                         "sub_vendor",
                         "sub_vendor_mwbe_category",
                         "sub_contract_purpose",
@@ -429,12 +466,15 @@
                         "sub_vendor_paid_to_date",
                         "sub_contract_start_date",
                         "sub_contract_end_date",
-                        "sub_contract_reference_id"
+                        "sub_contract_reference_id",
+                        "sub_woman_owned_business",
+                        "sub_emerging_business"
                     ]
                 },
                 "csv":{
                     "elementsColumn":{
                         "Contract Includes Sub Vendors":"scntrc_status_name",
+                        "MOCS Registered": "is_mocs_registered",
                         "Document Code":"document_code",
                         "Parent Contract ID":"master_contract_number_export",
                         "Prime Contract APT PIN":"prime_apt_pin",
@@ -455,6 +495,8 @@
                         "Prime Vendor":"prime_vendor_name",
                         "Prime Vendor M/WBE Category":"prime_minority_type_name",
                         "Prime Vendor Spend to Date":"prime_rfed_amount",
+                        "Prime Woman Owned Business":"is_prime_women_owned",
+                        "Prime Emerging Business": "is_prime_emerging",
                         "Sub Contract Current Amount":"sub_maximum_contract_amount",
                         "Sub Contract End Date":"sub_effective_end_date_export",
                         "Sub Contract Industry":"sub_industry_type_name_export",
@@ -466,6 +508,8 @@
                         "Sub Vendor M/WBE Category":"sub_minority_type_name_export",
                         "Sub Vendor Paid To Date":"sub_rfed_amount",
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
+                        "Sub Woman Owned Business":"is_sub_women_owned",
+                        "Sub Emerging Business": "is_sub_emerging",
                         "Vendor Record Type":"vendor_record_type"
                     },
                     "overrideColumns":{
@@ -473,6 +517,7 @@
                         "Document Code":                                      "Document Code",
                         "Prime Contract ID":                              "Prime Contract ID",
                         "Contract Includes Sub Vendors":      "Contract Includes Sub Vendors",
+                        "MOCS Registered":                                  "MOCS Registered",
                         "Vendor Record Type":                            "Vendor Record Type",
                         "Prime Vendor":                                        "Prime Vendor",
                         "Prime Vendor M/WBE Category":          "Prime Vendor M/WBE Category",
@@ -492,6 +537,8 @@
                         "Prime Contract Industry":                  "Prime Contract Industry",
                         "Prime Contract PIN":                            "Prime Contract PIN",
                         "Prime Contract APT PIN":                    "Prime Contract APT PIN",
+                        "Prime Woman Owned Business":            "Prime Woman Owned Business",
+                        "Prime Emerging Business":                  "Prime Emerging Business",
                         "Sub Vendor":                                            "Sub Vendor",
                         "Sub Vendor M/WBE Category":              "Sub Vendor M/WBE Category",
                         "Sub Contract Purpose":                        "Sub Contract Purpose",
@@ -502,7 +549,9 @@
                         "Sub Vendor Paid To Date":                  "Sub Vendor Paid To Date",
                         "Sub Contract Start Date":                  "Sub Contract Start Date",
                         "Sub Contract End Date":                      "Sub Contract End Date",
-                        "Sub Contract Reference ID":              "Sub Contract Reference ID"
+                        "Sub Contract Reference ID":              "Sub Contract Reference ID",
+                        "Sub Woman Owned Business":                "Sub Woman Owned Business",
+                        "Sub Emerging Business":                      "Sub Emerging Business"
                     }
                 }
             },
@@ -578,7 +627,7 @@
            "catastrophic_event":{
              "valueType":"value",
              "dataType":"text",
-             "maxLength":"20"
+             "maxLength":"2"
            },
             "purpose":{
                 "valueType":"value",
@@ -596,7 +645,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"15"
             },
             "industry":{
                 "valueType":"value",
@@ -667,7 +716,9 @@
                         "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
                         "prime_mwbe_category":"minority_type_name",
-                        "industry":"industry_type_name"
+                        "industry":"industry_type_name",
+                        "woman_owned_business": "is_women_owned",
+                        "emerging_business": "is_emerging"
                     },
                     "rowElements":[
                         "agency",
@@ -687,6 +738,8 @@
                         "end_date",
                         "document_code",
                         "prime_mwbe_category",
+                        "woman_owned_business",
+                        "emerging_business",
                         "industry"
                     ]
                 },
@@ -710,7 +763,9 @@
                         "Contract Category":"award_category_name@checkbook:award_category",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Industry":"industry_type_name",
-                        "Prime M/WBE Category":"minority_type_name"
+                        "Prime M/WBE Category":"minority_type_name",
+                        "Woman Owned Business": "is_women_owned",
+                        "Emerging Business": "is_emerging"
                     }
                 }
             },
@@ -781,7 +836,7 @@
            "catastrophic_event":{
              "valueType":"value",
              "dataType":"text",
-             "maxLength":"20"
+             "maxLength":"2"
            },
             "purpose":{
                 "valueType":"value",
@@ -799,7 +854,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"15"
             },
             "industry":{
                 "valueType":"value",
@@ -868,7 +923,9 @@
                         "apt_pin":"brd_awd_no",
                         "document_code":"document_code@checkbook:ref_document_code",
                         "prime_mwbe_category":"minority_type_name",
-                        "industry":"industry_type_name"
+                        "industry":"industry_type_name",
+                        "woman_owned_business": "is_women_owned",
+                        "emerging_business": "is_emerging"
                     },
                     "rowElements":[
                         "agency",
@@ -887,7 +944,9 @@
                         "end_date",
                         "document_code",
                         "industry",
-                        "prime_mwbe_category"
+                        "prime_mwbe_category",
+                        "woman_owned_business",
+                        "emerging_business"
                     ]
                 },
                 "csv":{
@@ -909,7 +968,9 @@
                         "Contract Category":"award_category_name@checkbook:award_category",
                         "Document Code":"document_code@checkbook:ref_document_code",
                         "Industry":"industry_type_name",
-                        "Prime M/WBE Category":"minority_type_name"
+                        "Prime M/WBE Category":"minority_type_name",
+                        "Woman Owned Business": "is_women_owned",
+                        "Emerging Business": "is_emerging"
                     }
                 }
             },
@@ -975,7 +1036,7 @@
            "catastrophic_event":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"20"
+                "maxLength":"2"
            },
             "purpose":{
                 "valueType":"value",
@@ -993,7 +1054,7 @@
             "mwbe_category":{
                 "valueType":"range",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"15"
             },
             "industry":{
                 "valueType":"value",
@@ -1046,6 +1107,7 @@
                     "rowParentElement":"transaction",
                     "elementsColumn":{
                         "contract_includes_sub_vendors":"scntrc_status_name",
+                        "mocs_registered": "is_mocs_registered",
                         "document_code":"document_code",
                         "parent_contract_id":"master_contract_number_export",
                         "prime_contract_apt_pin":"prime_apt_pin",
@@ -1066,6 +1128,8 @@
                         "prime_vendor":"prime_vendor_name",
                         "prime_vendor_mwbe_category":"prime_minority_type_name",
                         "prime_vendor_spent_to_date":"prime_rfed_amount",
+                        "prime_woman_owned_business":"is_prime_women_owned",
+                        "prime_emerging_business": "is_prime_emerging",
                         "sub_contract_current_amount":"sub_maximum_contract_amount",
                         "sub_contract_end_date":"sub_effective_end_date_export",
                         "sub_contract_industry":"sub_industry_type_name_export",
@@ -1077,6 +1141,8 @@
                         "sub_vendor_mwbe_category":"sub_minority_type_name_export",
                         "sub_vendor_paid_to_date":"sub_rfed_amount",
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
+                        "sub_woman_owned_business":"is_sub_women_owned",
+                        "sub_emerging_business": "is_sub_emerging",
                         "vendor_record_type":"vendor_record_type",
                         "year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
                     },
@@ -1085,6 +1151,7 @@
                         "document_code":"document_code",
                         "prime_contract_id":"prime_contract_id",
                         "contract_includes_sub_vendors":"contract_includes_sub_vendors",
+                        "mocs_registered": "mocs_registered",
                         "vendor_record_type":"vendor_record_type",
                         "prime_vendor":"prime_vendor",
                         "prime_vendor_mwbe_category":"prime_vendor_mwbe_category",
@@ -1104,6 +1171,8 @@
                         "prime_contract_industry":"prime_contract_industry",
                         "prime_contract_pin":"prime_contract_pin",
                         "prime_contract_apt_pin":"prime_contract_apt_pin",
+                        "prime_woman_owned_business":"prime_woman_owned_business",
+                        "prime_emerging_business": "prime_emerging_business",
                         "sub_vendor":"sub_vendor",
                         "sub_vendor_mwbe_category":"sub_vendor_mwbe_category",
                         "sub_contract_purpose":"sub_contract_purpose",
@@ -1114,13 +1183,16 @@
                         "sub_vendor_paid_to_date":"sub_vendor_paid_to_date",
                         "sub_contract_start_date":"sub_contract_start_date",
                         "sub_contract_end_date":"sub_contract_end_date",
-                        "sub_contract_reference_id":"sub_contract_reference_id"
+                        "sub_contract_reference_id":"sub_contract_reference_id",
+                        "sub_woman_owned_business":"sub_woman_owned_business",
+                        "sub_emerging_business": "sub_emerging_business"
                     },
                     "rowElements":[
                         "year",
                         "document_code",
                         "prime_contract_id",
                         "contract_includes_sub_vendors",
+                        "mocs_registered",
                         "vendor_record_type",
                         "prime_vendor",
                         "prime_vendor_mwbe_category",
@@ -1140,6 +1212,8 @@
                         "prime_contract_industry",
                         "prime_contract_pin",
                         "prime_contract_apt_pin",
+                        "prime_woman_owned_business",
+                        "prime_emerging_business",
                         "sub_vendor",
                         "sub_vendor_mwbe_category",
                         "sub_contract_purpose",
@@ -1150,12 +1224,15 @@
                         "sub_vendor_paid_to_date",
                         "sub_contract_start_date",
                         "sub_contract_end_date",
-                        "sub_contract_reference_id"
+                        "sub_contract_reference_id",
+                        "sub_woman_owned_business",
+                        "sub_emerging_business"
                     ]
                 },
                 "csv":{
                     "elementsColumn":{
                         "Contract Includes Sub Vendors":"scntrc_status_name",
+                        "MOCS Registered": "is_mocs_registered",
                         "Document Code":"document_code",
                         "Parent Contract ID":"master_contract_number_export",
                         "Prime Contract APT PIN":"prime_apt_pin",
@@ -1176,6 +1253,8 @@
                         "Prime Vendor":"prime_vendor_name",
                         "Prime Vendor M/WBE Category":"prime_minority_type_name",
                         "Prime Vendor Spend to Date":"prime_rfed_amount",
+                        "Prime Woman Owned Business":"is_prime_women_owned",
+                        "Prime Emerging Business": "is_prime_emerging",
                         "Sub Contract Current Amount":"sub_maximum_contract_amount",
                         "Sub Contract End Date":"sub_effective_end_date_export",
                         "Sub Contract Industry":"sub_industry_type_name_export",
@@ -1187,6 +1266,8 @@
                         "Sub Vendor M/WBE Category":"sub_minority_type_name_export",
                         "Sub Vendor Paid To Date":"sub_rfed_amount",
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
+                        "Sub Woman Owned Business":"is_sub_women_owned",
+                        "Sub Emerging Business": "is_sub_emerging",
                         "Vendor Record Type":"vendor_record_type",
                         "Version":"version",
                         "Year":"fiscal_year@checkbook:contracts_coa_aggregates_datafeeds"
@@ -1196,6 +1277,7 @@
                         "Document Code":                                      "Document Code",
                         "Prime Contract ID":                              "Prime Contract ID",
                         "Contract Includes Sub Vendors":      "Contract Includes Sub Vendors",
+                        "MOCS Registered":                                  "MOCS Registered",
                         "Vendor Record Type":                            "Vendor Record Type",
                         "Prime Vendor":                                        "Prime Vendor",
                         "Prime Vendor M/WBE Category":          "Prime Vendor M/WBE Category",
@@ -1215,6 +1297,8 @@
                         "Prime Contract Industry":                  "Prime Contract Industry",
                         "Prime Contract PIN":                            "Prime Contract PIN",
                         "Prime Contract APT PIN":                    "Prime Contract APT PIN",
+                        "Prime Woman Owned Business":            "Prime Woman Owned Business",
+                        "Prime Emerging Business":                  "Prime Emerging Business",
                         "Sub Vendor":                                            "Sub Vendor",
                         "Sub Vendor M/WBE Category":              "Sub Vendor M/WBE Category",
                         "Sub Contract Purpose":                        "Sub Contract Purpose",
@@ -1225,7 +1309,9 @@
                         "Sub Vendor Paid To Date":                  "Sub Vendor Paid To Date",
                         "Sub Contract Start Date":                  "Sub Contract Start Date",
                         "Sub Contract End Date":                      "Sub Contract End Date",
-                        "Sub Contract Reference ID":              "Sub Contract Reference ID"
+                        "Sub Contract Reference ID":              "Sub Contract Reference ID",
+                        "Sub Woman Owned Business":                "Sub Woman Owned Business",
+                        "Sub Emerging Business":                       "Sub Emerging Business"
                     }
                 }
             },
@@ -1258,7 +1344,7 @@
             "catastrophic_event":{
                "valueType":"value",
                "dataType":"text",
-               "maxLength":"20"
+               "maxLength":"2"
             },
             "purpose":{
                 "valueType":"value",
@@ -1276,7 +1362,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"15"
             },
             "industry":{
                 "valueType":"value",
@@ -1336,6 +1422,7 @@
                     "rowParentElement":"transaction",
                     "elementsColumn":{
                         "contract_includes_sub_vendors":"scntrc_status_name",
+                        "mocs_registered": "is_mocs_registered",
                         "document_code":"document_code",
                         "parent_contract_id":"master_contract_number_export",
                         "prime_contract_apt_pin":"prime_apt_pin",
@@ -1356,6 +1443,8 @@
                         "prime_vendor":"prime_vendor_name",
                         "prime_vendor_mwbe_category":"prime_minority_type_name",
                         "prime_vendor_spent_to_date":"prime_rfed_amount",
+                        "prime_woman_owned_business":"is_prime_women_owned",
+                        "prime_emerging_business": "is_prime_emerging",
                         "sub_contract_current_amount":"sub_maximum_contract_amount",
                         "sub_contract_end_date":"sub_effective_end_date_export",
                         "sub_contract_industry":"sub_industry_type_name_export",
@@ -1367,6 +1456,8 @@
                         "sub_vendor_mwbe_category":"sub_minority_type_name_export",
                         "sub_vendor_paid_to_date":"sub_rfed_amount",
                         "sub_vendor_status_in_pip":"aprv_sta_name_export",
+                        "sub_woman_owned_business":"is_sub_women_owned",
+                        "sub_emerging_business": "is_sub_emerging",
                         "vendor_record_type":"vendor_record_type"
                     },
                     "overrideColumns":{
@@ -1374,6 +1465,7 @@
                         "document_code":"document_code",
                         "prime_contract_id":"prime_contract_id",
                         "contract_includes_sub_vendors":"contract_includes_sub_vendors",
+                        "mocs_registered": "mocs_registered",
                         "vendor_record_type":"vendor_record_type",
                         "prime_vendor":"prime_vendor",
                         "prime_vendor_mwbe_category":"prime_vendor_mwbe_category",
@@ -1393,6 +1485,8 @@
                         "prime_contract_industry":"prime_contract_industry",
                         "prime_contract_pin":"prime_contract_pin",
                         "prime_contract_apt_pin":"prime_contract_apt_pin",
+                        "prime_woman_owned_business":"prime_woman_owned_business",
+                        "prime_emerging_business": "prime_emerging_business",
                         "sub_vendor":"sub_vendor",
                         "sub_vendor_mwbe_category":"sub_vendor_mwbe_category",
                         "sub_contract_purpose":"sub_contract_purpose",
@@ -1403,13 +1497,16 @@
                         "sub_vendor_paid_to_date":"sub_vendor_paid_to_date",
                         "sub_contract_start_date":"sub_contract_start_date",
                         "sub_contract_end_date":"sub_contract_end_date",
-                        "sub_contract_reference_id":"sub_contract_reference_id"
+                        "sub_contract_reference_id":"sub_contract_reference_id",
+                        "sub_woman_owned_business":"sub_woman_owned_business",
+                        "sub_emerging_business": "sub_emerging_business"
                     },
                     "rowElements":[
                         "year",
                         "document_code",
                         "prime_contract_id",
                         "contract_includes_sub_vendors",
+                        "mocs_registered",
                         "vendor_record_type",
                         "prime_vendor",
                         "prime_vendor_mwbe_category",
@@ -1429,6 +1526,8 @@
                         "prime_contract_industry",
                         "prime_contract_pin",
                         "prime_contract_apt_pin",
+                        "prime_woman_owned_business",
+                        "prime_emerging_business",
                         "sub_vendor",
                         "sub_vendor_mwbe_category",
                         "sub_contract_purpose",
@@ -1439,12 +1538,15 @@
                         "sub_vendor_paid_to_date",
                         "sub_contract_start_date",
                         "sub_contract_end_date",
-                        "sub_contract_reference_id"
+                        "sub_contract_reference_id",
+                        "sub_woman_owned_business",
+                        "sub_emerging_business"
                     ]
                 },
                 "csv":{
                     "elementsColumn":{
                         "Contract Includes Sub Vendors":"scntrc_status_name",
+                        "MOCS Registered": "is_mocs_registered",
                         "Document Code":"document_code",
                         "Parent Contract ID":"master_contract_number_export",
                         "Prime Contract APT PIN":"prime_apt_pin",
@@ -1465,6 +1567,8 @@
                         "Prime Vendor":"prime_vendor_name",
                         "Prime Vendor M/WBE Category":"prime_minority_type_name",
                         "Prime Vendor Spend to Date":"prime_rfed_amount",
+                        "Prime Woman Owned Business":"is_prime_women_owned",
+                        "Prime Emerging Business": "is_prime_emerging",
                         "Sub Contract Current Amount":"sub_maximum_contract_amount",
                         "Sub Contract End Date":"sub_effective_end_date_export",
                         "Sub Contract Industry":"sub_industry_type_name_export",
@@ -1476,13 +1580,16 @@
                         "Sub Vendor M/WBE Category":"sub_minority_type_name_export",
                         "Sub Vendor Paid To Date":"sub_rfed_amount",
                         "Sub Vendor Status in PIP":"aprv_sta_name_export",
-                        "Vendor Record Type":"vendor_record_type"
+                        "Vendor Record Type":"vendor_record_type",
+                        "Sub Woman Owned Business":"is_sub_women_owned",
+                        "Sub Emerging Business": "is_sub_emerging"
                     },
                     "overrideColumns":{
                         "Year":                                                        "Year",
                         "Document Code":                                      "Document Code",
                         "Prime Contract ID":                              "Prime Contract ID",
                         "Contract Includes Sub Vendors":      "Contract Includes Sub Vendors",
+                        "MOCS Registered":                                  "MOCS Registered",
                         "Vendor Record Type":                            "Vendor Record Type",
                         "Prime Vendor":                                        "Prime Vendor",
                         "Prime Vendor M/WBE Category":          "Prime Vendor M/WBE Category",
@@ -1502,6 +1609,8 @@
                         "Prime Contract Industry":                  "Prime Contract Industry",
                         "Prime Contract PIN":                            "Prime Contract PIN",
                         "Prime Contract APT PIN":                    "Prime Contract APT PIN",
+                        "Prime Woman Owned Business":            "Prime Woman Owned Business",
+                        "Prime Emerging Business":                  "Prime Emerging Business",
                         "Sub Vendor":                                            "Sub Vendor",
                         "Sub Vendor M/WBE Category":              "Sub Vendor M/WBE Category",
                         "Sub Contract Purpose":                        "Sub Contract Purpose",
@@ -1512,7 +1621,9 @@
                         "Sub Vendor Paid To Date":                  "Sub Vendor Paid To Date",
                         "Sub Contract Start Date":                  "Sub Contract Start Date",
                         "Sub Contract End Date":                      "Sub Contract End Date",
-                        "Sub Contract Reference ID":              "Sub Contract Reference ID"
+                        "Sub Contract Reference ID":              "Sub Contract Reference ID",
+                        "Sub Woman Owned Business":                "Sub Woman Owned Business",
+                        "Sub Emerging Business":                       "Sub Emerging Business"
                     }
                 }
             },
@@ -1587,7 +1698,7 @@
            "catastrophic_event": {
              "valueType":"value",
              "dataType":"text",
-             "maxLength":"20"
+             "maxLength":"2"
            },
             "pin":{
                 "valueType":"value",
@@ -1605,7 +1716,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"15"
             },
             "industry":{
                 "valueType":"value",
@@ -1675,7 +1786,9 @@
                         "original_modified":"original_or_modified_desc",
                         "industry":"industry_type_name@checkbook:industry_type",
                         "prime_mwbe_category":"mwbe_category_name@checkbook:mwbe_category",
-                        "version":"document_version"
+                        "version":"document_version",
+                        "woman_owned_business":"is_women_owned",
+                        "emerging_business": "is_emerging"
                     },
                     "rowElements":[
                         "agency",
@@ -1693,6 +1806,8 @@
                         "end_date",
                         "document_code",
                         "version",
+                        "woman_owned_business",
+                        "emerging_business",
                         "original_amount",
                         "purpose",
                         "original_modified",
@@ -1720,7 +1835,9 @@
                         "Original Modified":"original_or_modified_desc",
                         "Industry":"industry_type_name@checkbook:industry_type",
                         "Prime M/WBE Category":"mwbe_category_name@checkbook:mwbe_category",
-                        "Version":"document_version"
+                        "Version":"document_version",
+                        "Woman Owned Business": "is_women_owned",
+                        "Emerging Business": "is_emerging"
                     }
                 }
             },
@@ -1787,7 +1904,7 @@
            "catastrophic_event":{
              "valueType":"value",
              "dataType":"text",
-             "maxLength":"20"
+             "maxLength":"2"
            },
             "purpose":{
                 "valueType":"value",
@@ -1805,7 +1922,7 @@
             "mwbe_category":{
                 "valueType":"range",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"15"
             },
             "industry":{
                 "valueType":"value",

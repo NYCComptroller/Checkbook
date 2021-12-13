@@ -8,7 +8,7 @@ Table of contents:
  * Optional configuration for scalability and performance
  * Installation
  * Troubleshooting
- 
+
 Introduction
 ------------
 
@@ -39,7 +39,7 @@ and by joining us in the Checkbook NYC technical discussion forum at
 be subscribed to post there, though we recommend you subscribe if
 you're interested in following Checkbook development).
 
-Requirements 
+Requirements
 -------------
 
 Please note that unlike most Drupal-based applications, Checkbook uses
@@ -53,11 +53,11 @@ The full list of dependencies is:
  * GNU/Linux or similar operating system
  * Drupal 7.x  _(Note: Checkbook includes Drupal, so don't download Drupal separately.)_
  * PHP 5.3 or higher
- * MySQL 5.0.15 or higher (<http://www.mysql.com/> -- we have not tested 
+ * MySQL 5.0.15 or higher (<http://www.mysql.com/> -- we have not tested
    with a drop-in replacement such as MariaDB <https://mariadb.org/>
-   but would be interested to know if it works) 
+   but would be interested to know if it works)
  * PostgreSQL 8.3 or higher (<http://www.postgresql.org/> -- any
-   database that supports PostgresSQL is compatible for storing 
+   database that supports PostgresSQL is compatible for storing
    Checkbook data (e.g., PostgreSQL, Greenplum)
  * psql client (PostgreSQL command line interface)
  * Apache HTTPD with following PHP extensions
@@ -85,7 +85,7 @@ to divide services among multiple machines, and (for example) use:
  * A load balancer for distributing requests across multiple instances.
  * Varnish or any other reverse proxy cache for caching last access pages.
  * PGPool for distributing load across multiple PostgreSQL or
-   Greenplum databases. 
+   Greenplum databases.
 
 If you are configuring for scalability and performance in this way,
 then parts of the instructions below will need adjustment, of course.
@@ -100,7 +100,7 @@ The following assumptions are also made about the installation:
    (It could be somewhere else; `/var/www/html` is just the location
    we use in these instructions.)
 
-The initial installation of the GNU/Linux server with LAMP stack takes on average 20 minutes. 
+The initial installation of the GNU/Linux server with LAMP stack takes on average 20 minutes.
 
 Steps to install:
 
@@ -178,7 +178,7 @@ Steps to install:
     later, as Checkbook currently installs Solr in an unusual way.*
 
 3.  Download the latest version of the base Checkbook code:
-   
+
         $ git clone https://github.com/NYCComptroller/Checkbook.git
 
     (It doesn't matter where you put it; later installation steps will
@@ -209,14 +209,14 @@ Steps to install:
         COPYRIGHT.txt INSTALL.pgsql.txt  MAINTAINERS.txt robots.txt UPGRADE.txt
         cron.php      install.php        misc/           scripts/   web.config
         includes/     INSTALL.sqlite.txt modules/        sites/     xmlrpc.php
-        $ 
+        $
 
     (If the `/var/www/html` directory is already there, then you'll
     need to adjust these instructions in the appropriate way.  Also,
     all of this assumes that directory `/var/www/` already exists and
     is owned by user `www-data` and group `www-data`.  If that's not
     the case, you may need to properly create and set root permissions
-    for the www-data user with the following command. 
+    for the www-data user with the following command.
      `sudo chown -R www-data.www-data /var/www` would be one
     way to do that on Ubuntu 12.04.)
 
@@ -237,31 +237,31 @@ Steps to install:
 5.  Bring over some third-party libraries.
 
     **Highcharts:**
-    - Download version 8.2.2 from <http://www.highcharts.com/products/highcharts>:
+    - Download version 9.3.2 from <http://www.highcharts.com/products/highcharts>:
 
-            $ wget https://code.highcharts.com/zips/Highcharts-8.2.2.zip
+            $ wget https://code.highcharts.com/zips/Highcharts-9.3.2.zip
     - Unpack it into the appropriate place in the web application:
 
             $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/
-            $ unzip Highcharts-8.2.2.zip -d \
-            /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/8.2.2
+            $ unzip Highcharts-9.3.2.zip -d \
+            /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/9.3.2
 
     - Verify that it unpacked into the right place, by checking the path to `highcharts.src.js`:
 
-            $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/8.2.2/js/highcharts.src.js
+            $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highcharts/9.3.2/js/highcharts.src.js
 
     **Highstock:**
-    - Download version 8.2.2 from <http://www.highcharts.com/products/highstock>:
+    - Download version 9.3.2 from <http://www.highcharts.com/products/highstock>:
 
-            $ wget https://code.highcharts.com/zips/Highcharts-Stock-8.2.2.zip
+            $ wget https://code.highcharts.com/zips/Highcharts-Stock-9.3.2.zip
     - Unpack it:
 
             $ mkdir -p /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/
-            $ unzip Highstock-8.2.2.zip -d \
-            /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/8.2.2
+            $ unzip Highstock-9.3.2.zip -d \
+            /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/9.3.2
     - Verify that it is unpacked into the right place, by checking that the path to `highstock.src.js`:
 
-            $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/8.2.2/js/highstock.src.js
+            $ ls /var/www/html/sites/all/modules/custom/widget_framework/widget_highcharts/highstock/9.3.2/js/highstock.src.js
 
     Note that these Highcharts and Highstock downloads are available at
     no charge, but they are not licensed under open source licenses.
@@ -302,7 +302,7 @@ Steps to install:
     installation, you would want to use a better password of course.
 
 7.  Install the Checkbook (PostgreSQL) database.
-    Begin by inilitizing the PostgreSQL database with the following command: 
+    Begin by inilitizing the PostgreSQL database with the following command:
        $ service postgresql-9.3 initdb
        $ service postgresql-9.3 start;
 
@@ -325,12 +325,12 @@ Steps to install:
         bash-4.1$ psql checkbook -f         data/checkbook_demo_database_for_postgres_db_20140708/checkbook_demo_database_for_postgres_db_20140708.sql
         bash-4.1$ psql checkbook_ogent -f         data/checkbook_demo_database_for_postgres_ogent_db_20140708/checkbook_demo_database_for_postgres_ogent_db_20140708.sql
          bash-4.1$ exit
-       
-    
+
+
     Set the PostgreSQL database user's username and password with the following command:
     $ sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'postgres';"
-    
-    Verify that PostgreSQL can accept password authentication from the postgres user with the following command: 
+
+    Verify that PostgreSQL can accept password authentication from the postgres user with the following command:
     $ PGPASSWORD=postgres psql -U postgres checkbook
     *Notes:*
 
@@ -355,8 +355,8 @@ Steps to install:
 8.  Check the basic database settings in `settings.php`.
 
     Look for: $databases = array (); text in the following file `/var/www/html/sites/default/settings.php`:
-    Insert the following settings listed below. 
-        
+    Insert the following settings listed below.
+
         $databases = array(
             'default' => array(
                 'default' => array(
@@ -394,7 +394,7 @@ Steps to install:
                 ),
             ),
         );
-     
+
     If any of the settings don't look right for you, fix them.  (However,
     the default settings provided there should work assuming you used the
     defaults in the rest of these instructions.)
@@ -428,7 +428,7 @@ Steps to install:
      postgres username and password, put in the correct values, which
      are "postgres" for both if you've been using the defaults from
      these instructions, and similarly "checkbook" for the db name.
-     
+
    **Site URL:**
    - URL of the site (this is included in email notifications):
 
@@ -440,7 +440,7 @@ Steps to install:
    **File paths:**
    - Make sure this setting points to a directory that is writable by
      the user Apache HTTPD runs as:
-              
+
             $conf['check_book']['data_feeds']['db_file_dir'] = '/data/datafeeds';
 
      This is an absolute path.  You don't have to use
@@ -458,7 +458,7 @@ Steps to install:
      too, and ensure it's writeable by `www-data`.
    - Adjust location of reference data text files. This directory is
      used to write reference data files.
-  
+
             //Reference data outputDirectory
             $conf['check_book']['ref_data_dir'] = 'refdata';
 
@@ -493,7 +493,7 @@ Steps to install:
         Novecentowide-Normal-webfont.eot
         Novecentowide-Normal-webfont.svg
         Novecentowide-Normal-webfont.ttf
-        Novecentowide-Normal-webfont.woff  
+        Novecentowide-Normal-webfont.woff
 
     should be copied into
 
@@ -530,7 +530,7 @@ Steps to install:
           ErrorLog ${APACHE_LOG_DIR}/checkbook_error.log
           LogLevel debug
         </VirtualHost>
-        
+
         <Directory /var/www/html>
           AllowOverride all
         </Directory>
@@ -619,6 +619,6 @@ and once we've figured out the solution we'll list it here too.
 
     Then restart HTTPD and Tomcat:
 
-    `service httpd restart` 
+    `service httpd restart`
 
     `./bin/shutdown.sh` (from within the apache-tomcat directory)

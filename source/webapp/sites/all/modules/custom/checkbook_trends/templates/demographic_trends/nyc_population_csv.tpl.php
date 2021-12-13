@@ -22,7 +22,7 @@
     reset($node->data);
 
 
-    $header .= ",,,2000-{$last_year}*,,,\n";
+    $header .= ",,,2001-{$last_year}*,,,\n";
     $header .= 'Year';
     $header .=  ",United States" ;
     $header .=  ",Percentage Change from Prior Period," ;
@@ -45,6 +45,4 @@
    	}
 ?>
 
-"*Amounts as of March 22, 2019 and May 2019."
-
-"Source: U.S Department of Commerce, Bureau of Economic Analysis. US Census Bureau and American Fact Finder."
+"*Amounts as of November 2019"

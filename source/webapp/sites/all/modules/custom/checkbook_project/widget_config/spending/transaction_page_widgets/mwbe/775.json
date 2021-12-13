@@ -5,7 +5,8 @@
                           "fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm",
                           "syear","scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize",
                           "cindustry","expcategorycode","month","scomline",
-                          "comline","comline_exact","budname_exact","budname","entcontnum_exact","entcontnum","industry","mwbe","subvendor","vendortype","fvendor"
+                          "comline","comline_exact","budname_exact","budname","entcontnum_exact","entcontnum","industry",
+                          "mwbe","subvendor","vendortype","fvendor","mocs", "cevent"
     ],
     "urlParamMap":{
         "year":"check_eft_issued_nyc_year_id","calyear":"calendar_fiscal_year_id","agency":"agency_id",
@@ -29,7 +30,8 @@
         "budname":"oge_budget_name",
         "mwbe":"minority_type_id",
         "industry":"industry_type_id",
-        "subvendor":"vendor_id","vendortype":"vendor_type","fvendor":"vendor_id"
+        "subvendor":"vendor_id","vendortype":"vendor_type","fvendor":"vendor_id",
+        "mocs": "is_mocs_registered", "cevent":"event_id"
     },
     "paramTypeConfig":{"checkamtr":"rangeid","checkamt":"range","chkdate":"range","captprj":"like","vendornm":"like",
         "contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le","scalyear":"le",

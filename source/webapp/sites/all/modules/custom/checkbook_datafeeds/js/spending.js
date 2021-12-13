@@ -1,5 +1,10 @@
 (function ($) {
 
+  //Helper function to remove "FY", and remove "~" if present from string
+  let removeFY = function(year){
+    return year.replace(/fy[~]*/ig,'').trim();
+  }
+
   // When Agency Filter is changed reload Department and Expense Category drop-downs
   let reloadSpendingDepartments = function () {
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
@@ -67,14 +72,12 @@
       disable_input($('#edit-expense-category'));
     }else{
       $('#edit-expense-category').addClass('loading');
-
       let year = 0;
       if ($('input:radio[name=date_filter]:checked').val() == 0) {
-        if(data_source =='checkbook'){
-        year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
-        }
-        else{
+        if(data_source =='checkbook_nycha'){
           year = ($('#edit-nycha-year').val()) ? $('#edit-nycha-year').val() : 0;
+        }else{
+          year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
         }
       }
       //We need agency filter only for citywide
@@ -117,21 +120,51 @@
     //Limit year filter options to 'FY 2020', 'FY 2021' and 'All years'
     let fiscal_year = document.getElementById("edit-year");
     let catastrophic_event = document.getElementById("edit-catastrophic-event");
+    let data_format = $('input:hidden[name="hidden_data_format"]').val();
+    let exptype = $('select[name="expense_type"]').val();
 
     if(catastrophic_event.value === "1"){
       for (let i = 0; i < fiscal_year.length; i++) {
         let year = fiscal_year.options[i].text.toLowerCase();
-        //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
-        let include = (year === "fy 2020" || year === "fy 2021" || year === "all years" || year === "fy 2022");
+        let include = (year === "all years" || removeFY(year) >= 2020);
         fiscal_year.options[i].style.display = include ? '':'none';
       }
+
+      //Add MOCS Registered column to response columns
+      if(exptype !== 'Others [o]' && exptype !== 'Payroll [p]') {
+        if (data_format == 'xml') {
+          if ($('#edit-column-select option[value="mocs_registered"]').length === 0) {
+            $('#edit-column-select option[value="payee_name"]').before('<option value="mocs_registered">mocs_registered</option>');
+          }
+        } else {
+          if ($('#edit-column-select option[value="MOCS Registered"]').length === 0) {
+            $('#edit-column-select option[value="Payee Name"]').before('<option value="MOCS Registered">MOCS Registered</option>');
+          }
+        }
+      }
+
     }
     else{
       for (let i = 0; i < fiscal_year.length; i++) {
         fiscal_year.options[i].style.display = '';
       }
+      //Remove MOCS Registered column from response columns
+      $('#edit-column-select option[value="MOCS Registered"]').remove();
+      $('#edit-column-select option[value="mocs_registered"]').remove();
     }
-}
+
+    $('#edit-column-select').multiSelect('refresh');
+    if (!$('#ms-edit-column-select .ms-selection').next().is("a")) {
+      $('#ms-edit-column-select .ms-selection').after('<a class="deselect">Remove All</a>');
+      $('#ms-edit-column-select .ms-selection').after('<a class="select">Add All</a>');
+    }
+    $('#ms-edit-column-select a.select').click(function () {
+      $('#edit-column-select').multiSelect('select_all');
+    });
+    $('#ms-edit-column-select a.deselect').click(function () {
+      $('#edit-column-select').multiSelect('deselect_all');
+    });
+  }
 
   //On Year filter dropdown change
   let onYearFilterChange = function(){
@@ -148,8 +181,7 @@
       disable_input($('select[name="catastrophic_event"]'));
       return;
     }
-    //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
-    else if(!(fiscal_year === "0" || fiscal_year === "fy2021" || fiscal_year === "fy2020" || fiscal_year === "fy2022")){
+    else if(fiscal_year !== "0" && removeFY(fiscal_year) < 2020){
       for (let i = 0; i < catastrophic_event.length; i++) {
         let event = catastrophic_event.options[i].text.toLowerCase();
         catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
@@ -222,7 +254,7 @@
 
         //Move Issue Date fields to left column for NYCHA
         $('#df-check_amount').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
-       // $('#df-payeename').detach().prependTo('.spending.data-feeds-wizard .column.column-right');
+        $('#df-payeename').detach().appendTo('.spending.data-feeds-wizard .column.column-left');
         $('label[for=edit-payee-name]').text('Vendor:');
         $('label[for=edit-agency]').text('Other Government Entity:');
         break;
@@ -423,6 +455,9 @@
         enable_input($('#edit-agency'));
       });
 
+      //Remove MOCS Registered column from response columns
+      //$('#edit-column-select option[value="MOCS Registered"]', context).remove();
+      //$('#edit-column-select option[value="mocs_registered"]', context).remove();
       // Sets up multi-select/option transfer for CityWide
       $('#edit-column-select', context).multiSelect();
       if (!$('#ms-edit-column-select .ms-selection', context).next().is("a")) {
@@ -575,7 +610,7 @@
         "agency_code":agency,
         "expenditure_object_code":exp_cat,
         "department_code":dept,
-        "spending_category":spend_cat,
+        "spending_category_code":spend_cat,
         "minority_type_id":mwbe_cat,
         "industry_type_id":industry,
         "agreement_type_code":agg_type,
@@ -586,7 +621,8 @@
 
       if (data_source === 'checkbook'){
         $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
-      } else {
+      }
+      else {
         $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name', filters)});
       }
       $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
@@ -596,7 +632,7 @@
       $('#edit-entity-contract-number', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_entity_contract_number', filters)});
       $('#edit-commodity-line', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_commodity_line', filters)});
       $('#edit-budget-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'spending_budget_name', filters)});
-      
+
       $('.watch:input', context).each(function () {
         $(this).focusin(function () {
           //set variables for each field's value
@@ -624,7 +660,7 @@
             industry = emptyToZero($('#edit-industry', context).val());}
           spend_cat = getSpendingExpenseType(data_source);
           catastrophic_event_id = $('#edit-catastrophic-event', context).val() ? $('#edit-catastrophic-event', context).val() : 0;
-          
+
           if(year.toLowerCase().indexOf("fy") >= 0){
             year = year.toLowerCase().split('fy')[1];
           }
@@ -637,7 +673,7 @@
             "agency_code":agency,
             "expenditure_object_code":exp_cat,
             "department_code":dept,
-            "spending_category":spend_cat,
+            "spending_category_code":spend_cat,
             "minority_type_id":mwbe_cat,
             "industry_type_id":industry,
             "agreement_type_code":agg_type,
@@ -648,8 +684,9 @@
 
           // No code display for edc payee name in datafeed (refer to 10131 for document with information on code display for necessary fields)
           if (data_source === 'checkbook'){
-          $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
-          } else {
+            $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters)});
+          }
+          else {
             $('#edit-payee-name', context).autocomplete({source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name', filters)});
           }
 

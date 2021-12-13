@@ -22,256 +22,289 @@
 class ContractURLHelper
 {
 
-    static $landingPageParams = array("status" => "status", "vendor" => "vendor", "agency" => "agency", "awdmethod" => "awdmethod", "cindustry" => "cindustry", "csize" => "csize");
-    static $transactionPageParams = array("status" => "status", "vendor" => "cvendor", "agency" => "cagency", "awdmethod" => "awdmethod", "cindustry" => "cindustry", "csize" => "csize");
+  static $landingPageParams = array("status" => "status", "vendor" => "vendor", "agency" => "agency", "awdmethod" => "awdmethod", "cindustry" => "cindustry", "csize" => "csize","mwbe" => "mwbe" , "dashboard"=> "dashboard");
+  static $transactionPageParams = array("status" => "status", "vendor" => "cvendor", "agency" => "cagency", "awdmethod" => "awdmethod", "cindustry" => "cindustry", "csize" => "csize" ,"mwbe" => "mwbe" , "dashboard"=> "dashboard");
 
-    static function prepareExpenseContractLink($row, $node, $parent = false, $original_agreement_id = null)
-    {
-
-        $link = NULL;
-        if (isset($row['contract_original_agreement_id'])) $row['original_agreement_id'] = $row['contract_original_agreement_id'];
-        $row['original_agreement_id'] = ($original_agreement_id) ? $original_agreement_id : (isset($row['original_agreement_id']) ? $row['original_agreement_id'] : null);
-
-        if ($parent && strlen($row['master_contract_number']) > 0) {
-            $agrParamName = 'magid';
-            $docTypeStr = substr($row['master_contract_number'], 0, 3);
-            $docType = ($docTypeStr == 'MA1') ? 'MA1' : 'MMA1';
-            $row['original_agreement_id'] = isset($row['master_agreement_id']) ? $row['master_agreement_id'] : null;
-            $row['contract_number'] = isset($row['master_contract_number']) ? $row['master_contract_number'] : null;
-        } else if ($parent && strlen($row['master_contract_number']) == 0) {
-            return "N/A";
-        } else {
-            $docType = isset($row['document_code@checkbook:ref_document_code']) ? $row['document_code@checkbook:ref_document_code'] : _get_contract_type($row['contract_number']);
-            $agrParamName = in_array($docType, array('MMA1', 'MA1')) ? 'magid' : 'agid';
-        }
-
-        if (RequestUtil::isExpandBottomContainer()) {
-            $link = '<a href=/panel_html/contract_transactions/contract_details/' . $agrParamName . '/' . $row['original_agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params() . ' class=bottomContainerReload>' . $row['contract_number'] . '</a>';
-        } else {
-            $link = '<a href=/contracts_landing'
-                . RequestUtilities::buildUrlFromParam('contstatus|status')
-                . _checkbook_append_url_params()
-                . (
-                isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ?
-                    ($row['type_of_year@checkbook:contracts_coa_aggregates'] == 'B' ? ('/yeartype/B/year/' . $row['fiscal_year_id@checkbook:contracts_coa_aggregates']) : ('/yeartype/C/calyear/' . $row['fiscal_year_id@checkbook:contracts_coa_aggregates']))
-                    : (_checkbook_project_get_year_url_param_string())
-                )
-                . ((_checkbook_check_isEDCPage()) ? '/agency/' . (isset($row['agency_id']) ? $row['agency_id'] : null) : '')
-                . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/' . $agrParamName . '/' . $row['original_agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params()
-                . ' >' . $row['contract_number'] . '</a>';
-        }
-
-        return $link;
+  /**
+   * @param $row
+   * @param $node
+   * @param bool $parent
+   * @param null $original_agreement_id
+   * @return null|string
+   */
+  public static function prepareExpenseContractLink($row, $node, $parent = false, $original_agreement_id = null){
+    $link = NULL;
+    if (isset($row['contract_original_agreement_id'])){
+      $row['original_agreement_id'] = $row['contract_original_agreement_id'];
+    }
+    $row['original_agreement_id'] = ($original_agreement_id) ? $original_agreement_id : (isset($row['original_agreement_id']) ? $row['original_agreement_id'] : null);
+    $effective_year_id = ContractsUrlService::applyYearParameter($row['effective_end_year_id']);
+    if ($parent && strlen($row['master_contract_number']) > 0) {
+        $agrParamName = 'magid';
+        $docTypeStr = substr($row['master_contract_number'], 0, 3);
+        $docType = ($docTypeStr == 'MA1') ? 'MA1' : 'MMA1';
+        $row['original_agreement_id'] = isset($row['master_agreement_id']) ? $row['master_agreement_id'] : null;
+        $row['contract_number'] = isset($row['master_contract_number']) ? $row['master_contract_number'] : null;
+    } else if ($parent && strlen($row['master_contract_number']) == 0) {
+        return "N/A";
+    } else {
+        $docType = isset($row['document_code@checkbook:ref_document_code']) ? $row['document_code@checkbook:ref_document_code'] : _get_contract_type($row['contract_number']);
+        $agrParamName = in_array($docType, array('MMA1', 'MA1')) ? 'magid' : 'agid';
     }
 
-    static function prepareRevenueContractLink($row, $node)
-    {
-
-        $link = NULL;
-        /* $docType = $row['document_code@checkbook:ref_document_code'];*/
-        $docType = $row['document_code'];
-        if ($docType == "RCT1") {
-            $page = "/contracts_revenue_landing";
-        } else {
-            $page = "/contracts_landing";
-        }
-
-        $agrParamName = 'magid';//in_array($docType, array('MMA1','MA1')) ? 'magid' : 'agid';
-        $agid = isset($row['original_agreement_id']) ? $row['original_agreement_id'] : $row['contract_original_agreement_id'];
-
-        if (RequestUtil::isExpandBottomContainer()) {
-            $link = '<a href=/panel_html/contract_transactions/' . $agrParamName . '/' . $agid . '/doctype/' . $docType . ' class=bottomContainerReload>' . $row['contract_number'] . '</a>';
-        } else {
-            $link = '<a href='
-                . $page . RequestUtilities::buildUrlFromParam('contstatus|status')
-                . (
-                isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ?
-                    ($row['type_of_year@checkbook:contracts_coa_aggregates'] == 'B' ? ('/yeartype/B/year/' . $row['fiscal_year_id@checkbook:contracts_coa_aggregates']) : ('/yeartype/C/calyear/' . $row['fiscal_year_id@checkbook:contracts_coa_aggregates']))
-                    : (_checkbook_project_get_year_url_param_string())
-                )
-                . '?expandBottomContURL=/panel_html/contract_transactions/' . $agrParamName . '/' . $agid . '/doctype/' . $docType
-                . ' >' . $row['contract_number'] . '</a>';
-        }
-
-        return $link;
+    if (RequestUtil::isExpandBottomContainer()) {
+        $link = '<a href=/panel_html/contract_transactions/contract_details/' . $agrParamName . '/' . $row['original_agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params() . ' class=bottomContainerReload>' . $row['contract_number'] . '</a>';
+    } else {
+        $link = '<a href=/contracts_landing'
+            . RequestUtilities::buildUrlFromParam('contstatus|status')
+            . _checkbook_append_url_params()
+            . (
+            isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ?
+                ($row['type_of_year@checkbook:contracts_coa_aggregates'] == 'B' ? ('/yeartype/B/year/' . $row['fiscal_year_id@checkbook:contracts_coa_aggregates']) : ('/yeartype/C/calyear/' . $row['fiscal_year_id@checkbook:contracts_coa_aggregates']))
+                : (_checkbook_project_get_year_url_param_string())
+            )
+            . ((_checkbook_check_isEDCPage()) ? '/agency/' . (isset($row['agency_id']) ? $row['agency_id'] : null) : '')
+            . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/' . $agrParamName . '/' . $row['original_agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params()
+            . ' >' . $row['contract_number'] . '</a>';
     }
-
-    static function preparePendingContractLink($row, $node)
-    {
-
-        $agreementId = $row['original_agreement_id'];
-        if (!isset($agreementId)) {//No link if mag is not present
-            return '<a class="bottomContainerReload" href = "/minipanels/pending_contract_transactions/contract/' . $row['fms_contract_number'] . '/version/' . $row['document_version'] . '">' . $row['contract_number'] . '</a>';
-        }
-
-        $link = NULL;
-        $docType = $row['document_code@checkbook:ref_document_code'];
-        $agrParamName = in_array($docType, array('MMA1', 'MA1', 'RCT1')) ? 'magid' : 'agid';
-
-        if (RequestUtil::isExpandBottomContainer()) {
-            $link = '<a href=/panel_html/contract_transactions/' . $agrParamName . '/' . $row['original_agreement_id'] . '/doctype/' . $docType . ' class=bottomContainerReload>' . $row['contract_number'] . '</a>';
-        } else {
-            $link = '<a href=/' . ($docType == 'RCT1' ? 'contracts_pending_rev_landing' : 'contracts_pending_exp_landing') . '/'
-                . RequestUtilities::buildUrlFromParam('contstatus|status')
-                . (
-                isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ?
-                    ($row['type_of_year@checkbook:contracts_coa_aggregates'] == 'B' ? ('/yeartype/B/year/' . $row['fiscal_year_id@checkbook:contracts_coa_aggregates']) : ('/yeartype/C/calyear/' . $row['fiscal_year_id@checkbook:contracts_coa_aggregates']))
-                    : (_checkbook_project_get_year_url_param_string())
-                )
-                . '?expandBottomContURL=/panel_html/contract_transactions/' . $agrParamName . '/' . $row['original_agreement_id'] . '/doctype/' . $docType
-                . ' >' . $row['contract_number'] . '</a>';
-        }
-
-        return $link;
+    if (isset($effective_year_id)) {
+      $link =  preg_replace("/\/year\/\d+/", $effective_year_id, $link) ;
     }
+    return $link;
+  }
 
-    static function prepareSpendingContractLink($row, $node)
-    {
-        if ($row['spending_category_name'] == 'Payroll' || $row['spending_category_name'] == 'Others') {
-            return 'N/A';
-        }
+  /**
+   * @param $row
+   * @param $node
+   * @return null|string
+   */
+  public static function prepareRevenueContractLink($row, $node){
 
-        if (empty($row['agreement_id'])) {
-            return $row['reference_document_number'];
-        }
+    $link = NULL;
 
-        $link = NULL;
-        $docType = $row['reference_document_code'];
-
-        if (RequestUtil::isExpandBottomContainer()) {
-            $link = '<a href=/panel_html/contract_transactions/contract_details/agid/' . $row['agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params() . ' class=bottomContainerReload>' . $row['reference_document_number'] . '</a>';
-        } else if (RequestUtil::isNewWindow()) {
-            $link = '<span href=/contracts_landing/status/A'
-                . _checkbook_project_get_year_url_param_string()
-                . _checkbook_append_url_params()
-                . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/agid/' . $row['agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params()
-                . ' class=loadParentWindow>' . $row['reference_document_number'] . '</span>';
-        } else {
-            $link = "<a class='new_window' href='/contract_details" . _checkbook_append_url_params() . _checkbook_project_get_contract_url($row['reference_document_number'], $row['agreement_id']) . "/newwindow'>" . $row['reference_document_number'] . "</a>";
-        }
-
-        return $link;
+    $docType = $row['document_code'];
+    if ($docType == "RCT1") {
+        $page = "/contracts_revenue_landing";
+    } else {
+        $page = "/contracts_landing";
     }
+    $effective_year_id = ContractsUrlService::applyYearParameter($row['effective_end_year_id']);
+    $agrParamName = 'magid';//in_array($docType, array('MMA1','MA1')) ? 'magid' : 'agid';
+    $agid = isset($row['original_agreement_id']) ? $row['original_agreement_id'] : $row['contract_original_agreement_id'];
 
-    static function prepareSpendingContractTransactionsLink($row, $node)
-    {
-
-        $link = NULL;
-        $docType = $row['document_code@checkbook:ref_document_code'];
-
-        if (RequestUtil::isExpandBottomContainer()) {
-            $link = '<a href=/panel_html/contract_transactions/contract_details/agid/' . $row['disb_agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params() . ' class=bottomContainerReload>' . $row['disb_contract_number'] . '</a>';
-        } else if (RequestUtil::isNewWindow()) {
-            $link = '<span href=/contracts_landing/status/A'
-                . _checkbook_project_get_year_url_param_string()
-                . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/agid/' . $row['disb_agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params()
-                . ' class=loadParentWindow>' . $row['disb_contract_number'] . '</span>';
-        } else {
-            $link = '<a href=/contracts_landing/status/A'
-                . _checkbook_project_get_year_url_param_string()
-                . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/agid/' . $row['disb_agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params()
-                . ' >' . $row['disb_contract_number'] . '</a>';
-        }
-
-        return $link;
-    }
-
-    public static function prepareActRegContractsSliderFilter($page, $status)
-    {
-
-        $pathParams = explode('/', drupal_get_path_alias($_GET['q']));
-        $url = $page;
-        if (strlen($status) > 0) {
-            $url .= "/status/" . $status;
-        }
-        $url .= _checkbook_append_url_params();
-        if (preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q']))) {
-            $allowedFilters = array("agency", "vendor", "awrdmthd", "awdmethod", "csize", "cindustry", "agid", "dashboard", "subvendor", "mwbe");
-            $url .= "/yeartype/B/year/" . CheckbookDateUtil::getCurrentFiscalYearId();
-        } else {
-            $allowedFilters = array("year", "calyear", "agency", "yeartype", "awdmethod", "vendor", "csize", "cindustry", "agid", "dashboard", "subvendor", "mwbe");
-        }
-        for ($i = 1; $i < count($pathParams); $i++) {
-
-            if (in_array($pathParams[$i], $allowedFilters)) {
-                $newPathParams = explode('/', $url);
-                $url .= (!in_array($pathParams[$i], $newPathParams)) ? '/' . $pathParams[$i] . '/' . $pathParams[($i + 1)] : '';
-            }
-            $i++;
-        }
-        return $url;
+    if (RequestUtil::isExpandBottomContainer()) {
+        $link = '<a href=/panel_html/contract_transactions/' . $agrParamName . '/' . $agid . '/doctype/' . $docType . ' class=bottomContainerReload>' . $row['contract_number'] . '</a>';
+    } else {
+        $link = '<a href='
+            . $page . RequestUtilities::buildUrlFromParam('contstatus|status')
+            . (
+            isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ?
+                ($row['type_of_year@checkbook:contracts_coa_aggregates'] == 'B' ? ('/yeartype/B/year/' . $row['fiscal_year_id@checkbook:contracts_coa_aggregates']) : ('/yeartype/C/calyear/' . $row['fiscal_year_id@checkbook:contracts_coa_aggregates']))
+                : (_checkbook_project_get_year_url_param_string())
+            )
+            . '?expandBottomContURL=/panel_html/contract_transactions/' . $agrParamName . '/' . $agid . '/doctype/' . $docType
+            . ' >' . $row['contract_number'] . '</a>';
 
     }
-
-    public static function prepareSubvendorContractsSliderFilter($page, $dashboard = NULL, $third_bottom_slider = FALSE)
-    {
-
-        $pathParams = explode('/', drupal_get_path_alias($_GET['q']));
-        $url = $page;
-        $url .= _checkbook_append_url_params();
-        if (preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q']))) {
-            $allowedFilters = array("agency", "vendor", "awrdmthd", "awdmethod", "csize", "cindustry", "agid", "dashboard", "subvendor", "mwbe");
-            $url .= "/yeartype/B/year/" . CheckbookDateUtil::getCurrentFiscalYearId();
-        } else {
-            $allowedFilters = array("year", "calyear", "agency", "yeartype", "awdmethod", "vendor", "csize", "cindustry", "agid", "subvendor", "mwbe", "status");
-            //Add new parameter for bottom slider
-            $dashboard = isset($dashboard) ? $dashboard : RequestUtilities::get("dashboard");
-
-            //Remove dashboard parameter before appending the new value
-            $url = preg_replace("/\/dashboard\/../", "", $url);
-            $url .= (($third_bottom_slider) ? "/bottom_slider/sub_vendor" : "") . "/status/A"
-                . (isset($dashboard) ? '/dashboard/' . $dashboard : "");
-        }
-        for ($i = 1; $i < count($pathParams); $i++) {
-
-            if (in_array($pathParams[$i], $allowedFilters)) {
-                $newPathParams = explode('/', $url);
-                $url .= (!in_array($pathParams[$i], $newPathParams)) ? '/' . $pathParams[$i] . '/' . $pathParams[($i + 1)] : '';
-            }
-            $i++;
-        }
-
-        //Persist the last parameter in the current page URL as the last param only to fix the title issues
-        $lastReqParam = _getLastRequestParamValue();
-        if ($lastReqParam != _getLastRequestParamValue($url)) {
-            foreach ($lastReqParam as $key => $value) {
-                $url = preg_replace("/\/" . $key . "\/" . $value . "/", "", $url);
-                $url .= "/" . $key . "/" . $value;
-            }
-        }
-
-        return $url;
-
+    if (isset($effective_year_id) && RequestUtil::isAdvancedSearchPage()) {
+      $link =  preg_replace("/\/year\/\d+/", $effective_year_id, $link) ;
     }
 
-    public static function preparePendingContractsSliderFilter($page)
-    {
+    return $link;
+  }
 
-        $pathParams = explode('/', drupal_get_path_alias($_GET['q']));
-        $url = $page;
-        if (preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q']))) {
-            $allowedFilters = array("year", "calyear", "agency", "yeartype", "awrdmthd", "awdmethod", "vendor", "csize", "cindustry", "mwbe", "dashboard");
+  /**
+   * @param $row
+   * @param $node
+   * @return null|string
+   */
+  public static function preparePendingContractLink($row, $node){
 
-        } else {
-            $allowedFilters = array("year", "calyear", "agency", "yeartype", "awdmethod", "vendor", "csize", "cindustry", "mwbe", "dashboard");
-        }
-        for ($i = 1; $i < count($pathParams); $i++) {
+    $agreementId = $row['original_agreement_id'];
+    if (!isset($agreementId)) {//No link if mag is not present
+      return '<a class="bottomContainerReload" href = "/minipanels/pending_contract_transactions/contract/' . $row['fms_contract_number'] . '/version/' . $row['document_version'] . '">' . $row['contract_number'] . '</a>';
+    }
 
-            if (in_array($pathParams[$i], $allowedFilters)) {
-                $newPathParams = explode('/', $url);
-                $url .= (!in_array($pathParams[$i], $newPathParams)) ? '/' . $pathParams[$i] . '/' . $pathParams[($i + 1)] : '';
-            }
-            $i++;
-        }
-        return $url;
+    $link = NULL;
+    $docType = $row['document_code@checkbook:ref_document_code'];
+    $agrParamName = in_array($docType, array('MMA1', 'MA1', 'RCT1')) ? 'magid' : 'agid';
 
+    if (RequestUtil::isExpandBottomContainer()) {
+      $link = '<a href=/panel_html/contract_transactions/' . $agrParamName . '/' . $row['original_agreement_id'] . '/doctype/' . $docType . ' class=bottomContainerReload>' . $row['contract_number'] . '</a>';
+    } else {
+      $link = '<a href=/' . ($docType == 'RCT1' ? 'contracts_pending_rev_landing' : 'contracts_pending_exp_landing') . '/'
+      . RequestUtilities::buildUrlFromParam('contstatus|status')
+      . (
+      isset($row['type_of_year@checkbook:contracts_coa_aggregates']) ?
+          ($row['type_of_year@checkbook:contracts_coa_aggregates'] == 'B' ? ('/yeartype/B/year/' . $row['fiscal_year_id@checkbook:contracts_coa_aggregates']) : ('/yeartype/C/calyear/' . $row['fiscal_year_id@checkbook:contracts_coa_aggregates']))
+          : (_checkbook_project_get_year_url_param_string())
+      )
+      . '?expandBottomContURL=/panel_html/contract_transactions/' . $agrParamName . '/' . $row['original_agreement_id'] . '/doctype/' . $docType
+      . ' >' . $row['contract_number'] . '</a>';
+    }
+
+    return $link;
+  }
+
+  /**
+   * @param $row
+   * @param $node
+   * @return null|string
+   */
+  public static function prepareSpendingContractLink($row, $node){
+    if ($row['spending_category_name'] == 'Payroll' || $row['spending_category_name'] == 'Others') {
+        return 'N/A';
+    }
+
+    if (empty($row['agreement_id'])) {
+      return $row['reference_document_number'];
+    }
+
+    $link = NULL;
+    $docType = $row['reference_document_code'];
+
+    if (RequestUtil::isExpandBottomContainer()) {
+        $link = '<a href=/panel_html/contract_transactions/contract_details/agid/' . $row['agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params() . ' class=bottomContainerReload>' . $row['reference_document_number'] . '</a>';
+    } else if (RequestUtil::isNewWindow()) {
+        $link = '<span href=/contracts_landing/status/A'
+            . _checkbook_project_get_year_url_param_string()
+            . _checkbook_append_url_params()
+            . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/agid/' . $row['agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params()
+            . ' class=loadParentWindow>' . $row['reference_document_number'] . '</span>';
+    } else {
+        $link = "<a class='new_window' href='/contract_details" . _checkbook_append_url_params() . _checkbook_project_get_contract_url($row['reference_document_number'], $row['agreement_id']) . "/newwindow'>" . $row['reference_document_number'] . "</a>";
+    }
+
+    return $link;
+  }
+
+  /**
+   * @param $row
+   * @param $node
+   * @return null|string
+   */
+  public static function prepareSpendingContractTransactionsLink($row, $node){
+    $link = NULL;
+    $docType = $row['document_code@checkbook:ref_document_code'];
+
+    if (RequestUtil::isExpandBottomContainer()) {
+      $link = '<a href=/panel_html/contract_transactions/contract_details/agid/' . $row['disb_agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params() . ' class=bottomContainerReload>' . $row['disb_contract_number'] . '</a>';
+    } else if (RequestUtil::isNewWindow()) {
+      $link = '<span href=/contracts_landing/status/A'
+            . _checkbook_project_get_year_url_param_string()
+            . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/agid/' . $row['disb_agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params()
+            . ' class=loadParentWindow>' . $row['disb_contract_number'] . '</span>';
+    } else {
+      $link = '<a href=/contracts_landing/status/A'
+            . _checkbook_project_get_year_url_param_string()
+            . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/agid/' . $row['disb_agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params()
+            . ' >' . $row['disb_contract_number'] . '</a>';
+    }
+
+    return $link;
+  }
+
+  /**
+   * @param $page
+   * @param $status
+   * @return string
+   */
+  public static function prepareActRegContractsSliderFilter($page, $status){
+    $pathParams = explode('/', drupal_get_path_alias($_GET['q']));
+    $url = $page;
+    if (strlen($status) > 0) {
+      $url .= "/status/" . $status;
+    }
+    $url .= _checkbook_append_url_params();
+    if (preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q']))) {
+      $allowedFilters = array("agency", "vendor", "awrdmthd", "awdmethod", "csize", "cindustry", "agid", "dashboard", "subvendor", "mwbe");
+      $url .= "/yeartype/B/year/" . CheckbookDateUtil::getCurrentFiscalYearId();
+    } else {
+      $allowedFilters = array("year", "calyear", "agency", "yeartype", "awdmethod", "vendor", "csize", "cindustry", "agid", "dashboard", "subvendor", "mwbe");
+    }
+    for ($i = 1; $i < count($pathParams); $i++) {
+      if (in_array($pathParams[$i], $allowedFilters)) {
+        $newPathParams = explode('/', $url);
+        $url .= (!in_array($pathParams[$i], $newPathParams)) ? '/' . $pathParams[$i] . '/' . $pathParams[($i + 1)] : '';
+      }
+      $i++;
+    }
+    return $url;
+  }
+
+  /**
+   * @param $page
+   * @param null $dashboard
+   * @param bool $third_bottom_slider
+   * @return null|string|string[]
+   */
+    public static function prepareSubvendorContractsSliderFilter($page, $dashboard = NULL, $third_bottom_slider = FALSE){
+      $pathParams = explode('/', drupal_get_path_alias($_GET['q']));
+      $url = $page;
+      $url .= _checkbook_append_url_params();
+      if (preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q']))) {
+          $allowedFilters = array("agency", "vendor", "awrdmthd", "awdmethod", "csize", "cindustry", "agid", "dashboard", "subvendor", "mwbe");
+          $url .= "/yeartype/B/year/" . CheckbookDateUtil::getCurrentFiscalYearId();
+      } else {
+          $allowedFilters = array("year", "calyear", "agency", "yeartype", "awdmethod", "vendor", "csize", "cindustry", "agid", "subvendor", "mwbe", "status");
+          //Add new parameter for bottom slider
+          $dashboard = isset($dashboard) ? $dashboard : RequestUtilities::get("dashboard");
+
+          //Remove dashboard parameter before appending the new value
+          $url = preg_replace("/\/dashboard\/../", "", $url);
+          $url .= (($third_bottom_slider) ? "/bottom_slider/sub_vendor" : "") . "/status/A"
+              . (isset($dashboard) ? '/dashboard/' . $dashboard : "");
+      }
+      for ($i = 1; $i < count($pathParams); $i++) {
+
+          if (in_array($pathParams[$i], $allowedFilters)) {
+              $newPathParams = explode('/', $url);
+              $url .= (!in_array($pathParams[$i], $newPathParams)) ? '/' . $pathParams[$i] . '/' . $pathParams[($i + 1)] : '';
+          }
+          $i++;
+      }
+
+      //Persist the last parameter in the current page URL as the last param only to fix the title issues
+      $lastReqParam = _getLastRequestParamValue();
+      if ($lastReqParam != _getLastRequestParamValue($url)) {
+          foreach ($lastReqParam as $key => $value) {
+              $url = preg_replace("/\/" . $key . "\/" . $value . "/", "", $url);
+              $url .= "/" . $key . "/" . $value;
+          }
+      }
+
+      return $url;
+    }
+
+  /**
+   * @param $page
+   * @return string
+   */
+    public static function preparePendingContractsSliderFilter($page){
+      $pathParams = explode('/', drupal_get_path_alias($_GET['q']));
+      $url = $page;
+      if (preg_match("/^contracts_pending/", drupal_get_path_alias($_GET['q']))) {
+          $allowedFilters = array("year", "calyear", "agency", "yeartype", "awrdmthd", "awdmethod", "vendor", "csize", "cindustry", "mwbe", "dashboard");
+
+      } else {
+          $allowedFilters = array("year", "calyear", "agency", "yeartype", "awdmethod", "vendor", "csize", "cindustry", "mwbe", "dashboard");
+      }
+      for ($i = 1; $i < count($pathParams); $i++) {
+
+          if (in_array($pathParams[$i], $allowedFilters)) {
+              $newPathParams = explode('/', $url);
+              $url .= (!in_array($pathParams[$i], $newPathParams)) ? '/' . $pathParams[$i] . '/' . $pathParams[($i + 1)] : '';
+          }
+          $i++;
+      }
+      return $url;
     }
 
     /**
      * returns the year type and year values string to be appended to the URL for spending trans link.
      * @return string
      */
-    function _checkbook_project_spending_get_year_url_param_string()
+    public function _checkbook_project_spending_get_year_url_param_string()
     {
         $urlPath = drupal_get_path_alias($_GET['q']);
         $pathParams = explode('/', $urlPath);
@@ -292,68 +325,78 @@ class ContractURLHelper
         }
     }
 
-    function _prepare_oge_contracts_spending_url($row, $node)
-    {
-        $agencies = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id', 'agency_name'), array('agency_id' => $row['agency_id'], 'is_oge_agency' => 'Y'));
-        $oge_agency_name = $agencies[0]['agency_name'];
+  /**
+   * @param $row
+   * @param $node
+   * @return string
+   */
+    public function _prepare_oge_contracts_spending_url($row, $node){
+      $agencies = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id', 'agency_name'), array('agency_id' => $row['agency_id'], 'is_oge_agency' => 'Y'));
+      $oge_agency_name = $agencies[0]['agency_name'];
 
-        $vendors = _checkbook_project_querydataset('checkbook_oge:vendor', array('vendor_id', 'legal_name'), array('vendor_id' => $row['vendor_id']));
-        $oge_vendor_name = $vendors[0]['legal_name'];
+      $vendors = _checkbook_project_querydataset('checkbook_oge:vendor', array('vendor_id', 'legal_name'), array('vendor_id' => $row['vendor_id']));
+      $oge_vendor_name = $vendors[0]['legal_name'];
 
-        $vendor_url = '';
-        if (strtolower($oge_agency_name) != strtolower($oge_vendor_name)) {
-            $vendor_url = '/svendor/' . $row['vendor_id'];
-        }
+      $vendor_url = '';
+      if (strtolower($oge_agency_name) != strtolower($oge_vendor_name)) {
+          $vendor_url = '/svendor/' . $row['vendor_id'];
+      }
 
-        $year_url = '';
-        if ((!(RequestUtilities::get('year') || RequestUtilities::get('calyear')))) {
-            $year_url = '/yeartype/B/year/' . _getFiscalYearID() . '/syear/' . _getFiscalYearID();
-        } else {
-            $year_url = $row['type_of_year'] == 'B' ? ('/year/' . $row['fiscal_year_id'] . '/syear/' . $row['fiscal_year_id']) : ('/calyear/' . $row['fiscal_year_id'] . '/scalyear/' . $row['fiscal_year_id']);
-        }
+      if ((!(RequestUtilities::get('year') || RequestUtilities::get('calyear')))) {
+          $year_url = '/yeartype/B/year/' . _getFiscalYearID() . '/syear/' . _getFiscalYearID();
+      } else {
+          $year_url = $row['type_of_year'] == 'B' ? ('/year/' . $row['fiscal_year_id'] . '/syear/' . $row['fiscal_year_id']) : ('/calyear/' . $row['fiscal_year_id'] . '/scalyear/' . $row['fiscal_year_id']);
+      }
 
-        $url = "<a href='/spending/transactions"
-            . ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
-            . ($row['master_agreement_yn'] == 'Y' ? $vendor_url : '/svendor/' . $row['vendor_id'])
-            . ($row['master_agreement_yn'] == 'Y' ? '' : ('/scomline/' . $row['fms_commodity_line']))
-            . $year_url
-//             . RequestUtilities::buildUrlFromParam('agency')
-            . RequestUtilities::buildUrlFromParam('vendor')
-            . _checkbook_append_url_params()
-            . "/newwindow' class='new_window'>" . custom_number_formatter_basic_format($row['spending_amount_disb']) . '</a>';
-        return $url;
+      $url = "<a href='/spending/transactions"
+          . ($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['original_agreement_id']
+          . ($row['master_agreement_yn'] == 'Y' ? $vendor_url : '/svendor/' . $row['vendor_id'])
+          . ($row['master_agreement_yn'] == 'Y' ? '' : ('/scomline/' . $row['fms_commodity_line']))
+          . $year_url
+          . RequestUtilities::buildUrlFromParam('vendor')
+          . _checkbook_append_url_params()
+          . "/newwindow' class='new_window'>" . custom_number_formatter_basic_format($row['spending_amount_disb']) . '</a>';
+      return $url;
     }
 
-    function _prepare_oge_spent_to_date_url($row, $node)
-    {
-        $oge_agency_name = isset($row['agency_name_checkbook_oge_agency']) ? $row['agency_name_checkbook_oge_agency'] : null;
-        $oge_vendor_name = isset($row['legal_name_checkbook_oge_vendor']) ? $row['legal_name_checkbook_oge_vendor'] : null;
+  /**
+   * @param $row
+   * @param $node
+   * @return string
+   */
+    public function _prepare_oge_spent_to_date_url($row, $node){
+      $oge_agency_name = isset($row['agency_name_checkbook_oge_agency']) ? $row['agency_name_checkbook_oge_agency'] : null;
+      $oge_vendor_name = isset($row['legal_name_checkbook_oge_vendor']) ? $row['legal_name_checkbook_oge_vendor'] : null;
 
-        $vendor_url = $year_url = '';
-        if (strtolower($oge_agency_name) != strtolower($oge_vendor_name)) {
-            $vendor_url = '/svendor/' . $row['vendor_id'];
-        }
-        if ((!(RequestUtilities::get('year') || RequestUtilities::get('calyear')))) {
-            $year_url = '/yeartype/B/year/' . _getFiscalYearID() . '/syear/' . _getFiscalYearID();
-        } else {
-            $year_url = $row['type_of_year'] == 'B' ? ('/year/' . $row['fiscal_year_id'] . '/syear/' . $row['fiscal_year_id']) : ('/calyear/' . $row['fiscal_year_id'] . '/scalyear/' . $row['fiscal_year_id']);
-        }
+      $vendor_url = $year_url = '';
+      if (strtolower($oge_agency_name) != strtolower($oge_vendor_name)) {
+          $vendor_url = '/svendor/' . $row['vendor_id'];
+      }
+      if ((!(RequestUtilities::get('year') || RequestUtilities::get('calyear')))) {
+          $year_url = '/yeartype/B/year/' . _getFiscalYearID() . '/syear/' . _getFiscalYearID();
+      } else {
+          $year_url = $row['type_of_year'] == 'B' ? ('/year/' . $row['fiscal_year_id'] . '/syear/' . $row['fiscal_year_id']) : ('/calyear/' . $row['fiscal_year_id'] . '/scalyear/' . $row['fiscal_year_id']);
+      }
 
-        $master_agreement_yn = isset($row['master_agreement_yn']) ? $row['master_agreement_yn'] : null;
-        $url = "<a href='/spending/transactions"
-            . ($master_agreement_yn == 'Y' ? '/magid/' : '/agid/') . (isset($row['original_agreement_id']) ? $row['original_agreement_id'] : null)
-            . ($master_agreement_yn == 'Y' ? $vendor_url : '/svendor/' . (isset($row['vendor_id']) ? $row['vendor_id'] : null))
-            . ($master_agreement_yn == 'Y' ? '' : ('/scomline/' . (isset($row['fms_commodity_line']) ? $row['fms_commodity_line'] : null)))
-            . $year_url
-            . RequestUtilities::buildUrlFromParam('vendor')
-            . _checkbook_append_url_params()
-            . "/newwindow' class='new_window'>" . custom_number_formatter_basic_format($row['spending_amount_disb']) . '</a>';
+      $master_agreement_yn = isset($row['master_agreement_yn']) ? $row['master_agreement_yn'] : null;
+      $url = "<a href='/spending/transactions"
+          . ($master_agreement_yn == 'Y' ? '/magid/' : '/agid/') . (isset($row['original_agreement_id']) ? $row['original_agreement_id'] : null)
+          . ($master_agreement_yn == 'Y' ? $vendor_url : '/svendor/' . (isset($row['vendor_id']) ? $row['vendor_id'] : null))
+          . ($master_agreement_yn == 'Y' ? '' : ('/scomline/' . (isset($row['fms_commodity_line']) ? $row['fms_commodity_line'] : null)))
+          . $year_url
+          . RequestUtilities::buildUrlFromParam('vendor')
+          . _checkbook_append_url_params()
+          . "/newwindow' class='new_window'>" . custom_number_formatter_basic_format($row['spending_amount_disb']) . '</a>';
 
-        return $url;
+      return $url;
     }
 
-    static function prepareExpandLink($row, $node)
-    {
+  /**
+   * @param $row
+   * @param $node
+   * @return string
+   */
+    public static function prepareExpandLink($row, $node){
         $flag = (preg_match("/^mwbe/", $_GET['q'])) ? "has_mwbe_children" : "has_children";
         $show_expander = ($row[$flag] == 'Y') ? true : false;
 
@@ -377,12 +420,15 @@ class ContractURLHelper
     }
 
     /*Start Expense Contracts Transaction Page*/
-
-    static function expenseContractsExpandLink($row, $node)
-    {
+  /**
+   * @param $row
+   * @param $node
+   * @return string
+   */
+    public static function expenseContractsExpandLink($row, $node){
         $flag = (preg_match("/^mwbe/", $_GET['q'])) ? "has_mwbe_children" : "has_children";
         $show_expander = ($row[$flag] == 'Y') ? true : false;
-
+        $effective_year_id = ContractsUrlService::applyYearParameter($row['effective_end_year_id']);
         $link = ($show_expander) ? '<span id=dtl_expand class="toggler collapsed"  magid="' . ((isset($row['contract_original_agreement_id'])) ? $row['contract_original_agreement_id'] : $row['original_agreement_id']) . '" '
             . (RequestUtilities::get('dashboard') != '' ? ('dashboard="' . RequestUtilities::get('dashboard') . '" ') : '')
             . (RequestUtilities::get('mwbe') != '' ? ('mwbe="' . RequestUtilities::get('mwbe') . '" ') : '')
@@ -391,17 +437,26 @@ class ContractURLHelper
             . _checkbook_project_get_year_url_param_string()
             . ('mastercode="' . $row['document_code'] . '"')
             . '></span>' : '';
-
+        if (isset($effective_year_id) && RequestUtil::isAdvancedSearchPage()) {
+        $link =  preg_replace("/\/year\/\d+/", $effective_year_id, $link) ;
+        }
         return $link;
     }
 
-    static function expenseContractsLink($row, $node, $parent = false, $original_agreement_id = null)
-    {
-
+  /**
+   * @param $row
+   * @param $node
+   * @param bool $parent
+   * @param null $original_agreement_id
+   * @return null|string
+   */
+    public static function expenseContractsLink($row, $node, $parent = false, $original_agreement_id = null){
         $link = NULL;
-        if (isset($row['contract_original_agreement_id'])) $row['original_agreement_id'] = $row['contract_original_agreement_id'];
+        if (isset($row['contract_original_agreement_id'])) {
+          $row['original_agreement_id'] = $row['contract_original_agreement_id'];
+        }
         $row['original_agreement_id'] = ($original_agreement_id) ? $original_agreement_id : $row['original_agreement_id'];
-
+        $effective_year_id = ContractsUrlService::applyYearParameter($row['effective_end_year_id']);
         if ($parent && strlen($row['master_contract_number']) > 0) {
             $agrParamName = 'magid';
             $docTypeStr = substr($row['master_contract_number'], 0, 3);
@@ -414,6 +469,7 @@ class ContractURLHelper
             $docType = $row['document_code'];
             $agrParamName = in_array($docType, array('MMA1', 'MA1')) ? 'magid' : 'agid';
         }
+
         if ($docType == "RCT1") {
             $page = "/contracts_revenue_landing";
         } else {
@@ -432,12 +488,16 @@ class ContractURLHelper
                 . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/' . $agrParamName . '/' . $row['original_agreement_id'] . '/doctype/' . $docType . _checkbook_append_url_params()
                 . ' >' . $row['contract_number'] . '</a>';
         }
-
+        if (isset($effective_year_id) && RequestUtil::isAdvancedSearchPage()) {
+          $link =  preg_replace("/\/year\/\d+/", $effective_year_id, $link) ;
+        }
         return $link;
     }
 
-    static function thirdBottomSliderValue()
-    {
+  /**
+   * @return bool
+   */
+    public static function thirdBottomSliderValue(){
 
         $node = node_load(737);
         widget_config($node);

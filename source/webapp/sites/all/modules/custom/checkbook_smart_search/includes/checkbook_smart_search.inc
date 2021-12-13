@@ -23,7 +23,7 @@
  *
 */
 
-/** Submit handler for smart serch
+/** Submit handler for smart search
  * @param $form
  * @param $form_state
  */
@@ -192,7 +192,7 @@ function getRegisteredContractsQuery($query, $selectedFacets){
     //Registered contracts count
     $query = str_replace('&fq=contract_status:"pending"','',$query);
     $query = str_replace('&fq=facet_year_array','&fq=registered_fiscal_year',$query);
-    $query .= '&fq=contract_status:registered';
+    $query .= (strpos($query, '&fq=contract_status:registered') !== false) ? '&fq=contract_status:registered' : '';
     return $query;
   }else{
     return;
@@ -210,7 +210,7 @@ function getActiveContractsQuery($query, $selectedFacets){
     //Active contracts count
     $query = str_replace('&fq=contract_status:"pending"','',$query);
     $query = str_replace('&fq=registered_fiscal_year','&fq=facet_year_array',$query);
-    $query .= '&fq=contract_status:registered';
+    $query .= (strpos($query, '&fq=contract_status:registered') !== false) ? '&fq=contract_status:registered' : '';
     return $query;
   }else{
     return;
@@ -348,9 +348,15 @@ function _checkbook_smart_search_export_download(string $solr_datasource){
  * @return string $modified_result
  */
 function adjustExportResults($result,$domain){
+  // Write to browser export file
+  $output = fopen('php://output', 'w');
   $lines = explode("\n", $result);
   $headers = str_getcsv(array_shift($lines));
-  $modified_result = "";
+  $lines = str_replace("\,", " ", $lines);
+  $lines = preg_replace("/1970-01-01T05:00:00Z/", "N/A", $lines);
+  $lines = preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $lines);
+  $lines= str_replace("Registered,Expense", "Active,Expense", $lines);
+  $lines = str_replace("Registered,Revenue", "Active,Revenue", $lines);
   foreach ($lines as $line) {
     $row = array();
     $data = str_getcsv($line);
@@ -435,12 +441,12 @@ function adjustExportResults($result,$domain){
             }
           }
           break;
-         case "citywide_spending":
-           if ($headers[$key] == 'budget_code') {
-             $a = array_search ('spending_budget_name', $headers);
-             $field = $field . " (" . $data[$a] . ")";
-           }
-           break;
+         case "edc_contracts":
+          if ($headers[$key] == 'contract_entity_contract_number') {
+            // Add space between the number to display the comma correctly in excel
+            $field = str_replace(",", " , ", $field); ;
+          }
+          break;
 
       }
 
@@ -467,13 +473,10 @@ function adjustExportResults($result,$domain){
     if($domain == "citywide_payroll") {
       unset($row['daily_wage']);
     }
-    if($domain == "citywide_spending"){
-      unset($row['spending_budget_name']);
-    }
-    $rows = implode(",", $row);
-    $modified_result .= $rows . "\n";
+    // Write processed results to output
+    fputcsv($output, $row);
   }
-  return($modified_result);
+  fclose($output);
 }
 /** Exports the smart search export data
  * @param string $solr_datasource
@@ -491,9 +494,7 @@ function _checkbook_smart_search_export_data(string $solr_datasource){
   if($domain == "citywide_payroll") {
     unset($fields['daily_wage']);
   }
-  if($domain == "citywide_spending"){
-    unset($fields['spending_budget_name']);
-  }
+  // Write header content to output file
   echo implode(",", array_values($fields)) . "\n";
 
   while ($remaining > 0) {
@@ -511,22 +512,7 @@ function _checkbook_smart_search_export_data(string $solr_datasource){
     }
 
     // Process records before display
-    if (in_array($domain, array('nycha_contracts', 'nycha_payroll', 'nycha_spending', 'nycha_revenue', 'nycha_budget', 'citywide_payroll', "citywide_spending"))){
-      $csv_result = adjustExportResults($result,$domain);
-    } else{
-      $results = explode("\n", $result);
-      unset($results[0]);
-      $csv_result = implode("\n", $results);
-    }
-
-    $csv_result= str_replace("Registered,Expense", "Active,Expense", $csv_result);
-    $csv_result = str_replace("Registered,Revenue", "Active,Revenue", $csv_result);
-    // replacing '\,' to ' ' in export results to match UI results (earlier it was replaced by , and results were not printing properly in csv)
-    $csv_result = str_replace("\,", " ", $csv_result);
-    $csv_result = preg_replace("/1970-01-01T05:00:00Z/", "N/A", $csv_result);
-    $csv_result = preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $csv_result);
-    // Print the final output
-    echo $csv_result;
+    adjustExportResults($result,$domain);
     ob_flush();
     flush();
   }

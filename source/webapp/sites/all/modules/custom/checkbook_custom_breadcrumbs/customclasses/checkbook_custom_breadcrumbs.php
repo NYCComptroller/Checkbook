@@ -68,11 +68,11 @@ class CustomBreadcrumbs
   public static function getSpendingBreadcrumbTitle()
   {
     $title = '';
-    $bottomURL = $_REQUEST['expandBottomContURL'];
-    if (preg_match('/^spending\/search\/transactions/', current_path())){
+    $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
+    if ((!isset($bottomURL) || $bottomURL === FALSE) && preg_match('/^spending\/search\/transactions/', current_path())){
       $title = (Datasource::isOGE()) ? Datasource::EDC_TITLE . " " : "";
       $title .=  SpendingUtil::getSpendingTransactionsTitle();
-    } elseif (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
+    } elseif (isset($bottomURL) && $bottomURL !== FALSE && preg_match('/transactions/', $bottomURL)) {
       $dtsmnid = RequestUtil::getRequestKeyValueFromURL("dtsmnid", $bottomURL);
       $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
       if ($dtsmnid > 0) {
@@ -81,13 +81,13 @@ class CustomBreadcrumbs
         $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
       } else {
         $last_id = _getLastRequestParamValue($bottomURL);
-        if ($last_id['vendor'] > 0) {
+        if (isset($last_id['vendor']) > 0) {
           $title = _checkbook_project_get_name_for_argument("vendor_id", RequestUtil::getRequestKeyValueFromURL("vendor", $bottomURL));
-        } elseif ($last_id["agency"] > 0) {
+        } elseif (isset($last_id["agency"]) > 0) {
           $title = _checkbook_project_get_name_for_argument("agency_id", RequestUtil::getRequestKeyValueFromURL("agency", $bottomURL));
-        } elseif ($last_id["expcategory"] > 0) {
+        } elseif (isset($last_id["expcategory"]) > 0) {
           $title = _checkbook_project_get_name_for_argument("expenditure_object_id", RequestUtil::getRequestKeyValueFromURL("expcategory", $bottomURL));
-        } elseif ($last_id["dept"] > 0) {
+        } elseif (isset($last_id["dept"]) > 0) {
           $title = _checkbook_project_get_name_for_argument("department_id", RequestUtil::getRequestKeyValueFromURL("dept", $bottomURL));
         } elseif (preg_match("/\/agid/", $bottomURL)) {
           $title = _checkbook_project_get_name_for_argument("agreement_id", RequestUtil::getRequestKeyValueFromURL("agid", $bottomURL));
@@ -96,6 +96,7 @@ class CustomBreadcrumbs
         }
         $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' '.SpendingUtil::getSpendingCategoryName();
       }
+      $title = RequestUtil::getRequestKeyValueFromURL('mocs', $bottomURL) ? str_replace('Contracts', 'MOCS Registered COVID-19 Contract', $title) : $title;
     } else {
       $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' '.SpendingUtil::getSpendingCategoryName();
     }
@@ -107,7 +108,7 @@ class CustomBreadcrumbs
   public static function getContractBreadcrumbTitle()
   {
     $title = '';
-    $bottomURL = $_REQUEST['expandBottomContURL'];
+    $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
     //For NYCEDC advanced search results
     $edcSubTitle = (!isset($bottomURL) && preg_match('/transactions/', $bottomURL) && Datasource::isOGE()) ? Datasource::EDC_TITLE ." " : '';
 
@@ -126,6 +127,7 @@ class CustomBreadcrumbs
     } else if (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
       $smnid = RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL);
       $dashboard = RequestUtil::getRequestKeyValueFromURL("dashboard", $bottomURL);
+      $mocs = RequestUtil::getRequestKeyValueFromURL("mocs", $bottomURL);
       $title = NodeSummaryUtil::getInitNodeSummaryTitle($smnid);
       if ($smnid == 720 && $dashboard != 'mp') {
         $title = '';
@@ -147,6 +149,9 @@ class CustomBreadcrumbs
       }
       if ($smnid == 725 || $smnid == 783) {
         $title = $title . " with ";
+      }
+      if (isset($mocs)) {
+        $title = "MOCS Registered COVID-19 Contracts";
       }
 
       if (preg_match('/^contracts_landing/', current_path()) && preg_match('/status\/A/', current_path())) {
@@ -295,9 +300,9 @@ class CustomBreadcrumbs
   /** Returns NYCHA Spending page title and Breadcrumb */
   public static function getNYCHASpendingBreadcrumbTitle()
   {
-    $bottomURL = $_REQUEST['expandBottomContURL'];
+    $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
     $title = "";
-    if(preg_match('/^nycha_spending\/search\/transactions/', current_path())){
+    if (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
       $title = 'NYCHA '.NYCHASpendingUtil::getCategoryName().' Spending Transactions';
     }elseif (isset($bottomURL) && preg_match('/transactions/', $bottomURL)) {
       $title = NychaSpendingUtil::getTransactionsTitle($bottomURL);
@@ -326,8 +331,9 @@ class CustomBreadcrumbs
   /** Returns NYCHA Contracts page title and Breadcrumb */
   public static function getNYCHAContractBreadcrumbTitle()
   {
-    $bottomURL = $_REQUEST['expandBottomContURL'];
-    if (!$bottomURL && preg_match('/^nycha_contracts\/search\/transactions/', current_path()) || preg_match('/^nycha_contracts\/all\/transactions/', current_path())) {
+    $title = "";
+    $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
+    if (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
       $title = 'NYCHA Contracts Transactions';
     } else if(stripos($bottomURL, 'transactions')){
       $code= RequestUtil::getRequestKeyValueFromURL("tCode",$bottomURL);
@@ -366,7 +372,7 @@ class CustomBreadcrumbs
   /** Returns NYCHA Budget page title and Breadcrumb */
   public static function getNYCHABudgetBreadcrumbTitle(){
     $title = "";
-    $bottomURL = $_REQUEST['expandBottomContURL'];
+    $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
     if (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
       $title = 'NYCHA Expense Budget Transactions';
     } else if (isset($bottomURL)){
@@ -402,7 +408,7 @@ class CustomBreadcrumbs
   /** Returns NYCHA Revenue page title and Breadcrumb */
   public static function getNYCHARevenueBreadcrumbTitle(){
     $title = "";
-    $bottomURL = $_REQUEST['expandBottomContURL'];
+    $bottomURL = isset($_REQUEST['expandBottomContURL']) ? $_REQUEST['expandBottomContURL'] : FALSE;
     if (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
       $title = 'NYCHA RevenueTransactions';
     } else if (isset($bottomURL)){

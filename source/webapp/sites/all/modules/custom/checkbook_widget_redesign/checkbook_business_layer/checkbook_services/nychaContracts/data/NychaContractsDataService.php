@@ -10,7 +10,7 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param null $orderBy
      * @return DataService
      */
-    function GetContractsByVendors($parameters, $limit = null, $orderBy = null)
+    public function GetContractsByVendors($parameters, $limit = null, $orderBy = null): DataService
     {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
@@ -21,7 +21,7 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param null $orderBy
      * @return DataService
      */
-    function GetContractsByAwardMethods($parameters, $limit = null, $orderBy = null)
+    public function GetContractsByAwardMethods($parameters, $limit = null, $orderBy = null): DataService
     {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
@@ -32,7 +32,7 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param null $orderBy
      * @return DataService
      */
-    function GetContractsByPurchaseOrders($parameters, $limit = null, $orderBy = null)
+    public function GetContractsByPurchaseOrders($parameters, $limit = null, $orderBy = null): DataService
     {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
@@ -43,7 +43,7 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param null $orderBy
      * @return DataService
      */
-    function GetContractsByBoroughs($parameters, $limit = null, $orderBy = null)
+    public function GetContractsByBoroughs($parameters, $limit = null, $orderBy = null): DataService
     {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
@@ -54,7 +54,7 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param null $orderBy
      * @return DataService
      */
-    function GetContractsBlanketAgreements($parameters, $limit = null, $orderBy = null)
+    public function GetContractsBlanketAgreements($parameters, $limit = null, $orderBy = null): DataService
     {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
@@ -65,7 +65,7 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param null $orderBy
      * @return DataService
      */
-    function GetContractsBlanketAgreementModifications($parameters, $limit = null, $orderBy = null)
+    public function GetContractsBlanketAgreementModifications($parameters, $limit = null, $orderBy = null): DataService
     {
         $parameters["is_modification"] = true;
         return $this->configureNycha('GetContractsBlanketAgreements',$parameters,$limit,$orderBy);
@@ -77,7 +77,7 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param null $orderBy
      * @return DataService
      */
-    function GetContractsPlannedAgreements($parameters, $limit = null, $orderBy = null)
+    public function GetContractsPlannedAgreements($parameters, $limit = null, $orderBy = null): DataService
     {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
@@ -88,7 +88,7 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param null $orderBy
      * @return DataService
      */
-    function GetContractsPlannedAgreementModifications($parameters, $limit = null, $orderBy = null)
+    public function GetContractsPlannedAgreementModifications($parameters, $limit = null, $orderBy = null): DataService
     {
         $parameters["is_modification"] = true;
         return $this->configureNycha('GetContractsPlannedAgreements',$parameters,$limit,$orderBy);
@@ -100,7 +100,7 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param null $orderBy
      * @return DataService
      */
-    function GetContractsByDepartments($parameters, $limit = null, $orderBy = null)
+    public function GetContractsByDepartments($parameters, $limit = null, $orderBy = null): DataService
     {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
@@ -111,7 +111,7 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param null $orderBy
      * @return DataService
      */
-    function GetContractsByIndustries($parameters, $limit = null, $orderBy = null)
+    public function GetContractsByIndustries($parameters, $limit = null, $orderBy = null): DataService
     {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
@@ -122,7 +122,7 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param null $orderBy
      * @return DataService
      */
-    function GetContractsByRespCenters($parameters, $limit = null, $orderBy = null)
+    public function GetContractsByRespCenters($parameters, $limit = null, $orderBy = null): DataService
     {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
@@ -133,7 +133,7 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param null $orderBy
      * @return DataService
      */
-    function GetContractsBySize($parameters, $limit = null, $orderBy = null)
+    public function GetContractsBySize($parameters, $limit = null, $orderBy = null): DataService
     {
         return $this->configureNycha(__FUNCTION__,$parameters,$limit,$orderBy);
     }
@@ -142,7 +142,8 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param $parameters
      * @return DataService
      */
-    function GetCountNychaContracts($parameters){
+    public function GetCountNychaContracts($parameters): DataService
+    {
         return $this->configureNycha(__FUNCTION__,$parameters);
     }
 
@@ -154,7 +155,8 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      * @param null $orderBy
      * @return DataService
      */
-    private function configureNycha($dataFunction, $parameters, $limit = null, $orderBy = null) {
+    private function configureNycha($dataFunction, $parameters, $limit = null, $orderBy = null): DataService
+    {
         return $this->configure($dataFunction,$parameters,$limit,$orderBy,SqlConfigPath::NychaContracts);
     }
 }

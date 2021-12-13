@@ -6,7 +6,7 @@
         "mcagency","agencyh","year","yeartype","calyear","mcvendor","expcategory","category","checkamtr","dept",
         "contnum","checkamt","chkdate","fundcls","bdgcodenm","captprj","expdoc","vendornm","deptnm","expcategorynm","syear",
         "scalyear","magid","agid","cvendor","cagency","awdmethod","status","csize","cindustry","expcategorycode","month",
-        "industry","mwbe","vendor","svendor","subvendor","vendortype","fvendor", "bdgcode"
+        "industry","mwbe","vendor","svendor","subvendor","vendortype","fvendor", "bdgcode", "pscert"
     ],
     "urlParamMap":{
         "contnum_exact":"reference_document_number",
@@ -35,7 +35,7 @@
         "mwbe":"minority_type_id","industry":"industry_type_id",
         "vendor":"prime_vendor_id","svendor":"prime_vendor_id","subvendor":"vendor_id",
         "vendortype":"vendor_type","fvendor":"vendor_id",
-        "bdgcode":"budget_code"
+        "bdgcode":"budget_name_code","pscert":"is_women_owned"
     },
     "defaultParameters":{"is_prime_or_sub":"S"},
     "paramTypeConfig":{
@@ -44,7 +44,7 @@
         "captprj":"like","vendornm":"like","contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le",
         "scalyear":"le","deptnm":"eqignorecase","expcategorynm":"eqignorecase"
     },
-    "allowRequestParams":["dtsmnid","smnid"],
+    "allowRequestParams":["dtsmnid","smnid","pscert"],
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
@@ -86,7 +86,9 @@
         "minority_type_id",
         "is_prime_or_sub",
         "original_agreement_id@checkbook:sub_vendor_agid",
-        "budget_code"
+        "budget_name_code",
+        "is_women_owned",
+        "is_emerging"
     ],
     "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Sub Vendors');",
     "summaryView":{
@@ -147,9 +149,6 @@
         },
         "industry_name_formatted": {
             "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
-        },
-        "budget_code_formatted": {
-          "expression": "(strlen($row['budget_name']) > 0) ? $row['budget_code'].' ('.$row['budget_name']. ')' : $row['budget_code']"
         }
     },
     "table_columns": [
@@ -167,8 +166,10 @@
         {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"purpose","exportColumn":"contract_purpose_export"},
         {"labelAlias":"spending_category","column":"spending_category_name"},
         {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
-        {"labelAlias":"budget_code","column":"budget_code_formatted", "sortSourceColumn":"budget_code","exportColumn":"budget_code_formatted"},
-        {"label": "","column": ""}
+        {"labelAlias": "woman_owned_business","column":"is_women_owned"},
+        {"labelAlias": "emerging_business","column":"is_emerging"},
+        {"labelAlias":"budget_code","column":"budget_name_code"},
+        {"label": "","column": "","export":false}
     ],
     "exportColumnSqlOverride":[
         {
@@ -178,9 +179,11 @@
                 case
                 when minority_type_id = 2 then 'Black American'
                 when minority_type_id = 3 then 'Hispanic American'
+                when minority_type_id = 6 THEN 'Native American'
                 when minority_type_id = 7 then 'Non-M/WBE'
-                when minority_type_id = 9 then 'Women'
+                when minority_type_id = 9 then 'Women (Non-Minority)'
                 when minority_type_id = 11 then 'Individuals and Others'
+                when minority_type_id = 99 THEN 'Emerging (Non-Minority)'
                 else 'Asian American'
                 end as minority_type_name
                 "
@@ -189,12 +192,7 @@
           "column":"is_sub_vendor",
           "sourceColumn":"vendor_type",
           "sql":"case when vendor_type = 'P' then 'No' else 'Yes' end as is_sub_vendor"
-        },
-      {
-        "column":"budget_code_formatted",
-        "sourceColumn":"budget_code",
-        "sql":"CASE WHEN budget_name IS NOT NULL AND budget_name != '' THEN budget_code || ' (' || budget_name || ')' ELSE budget_code END"
-      }
+        }
     ],
     "adjustParameters":"
         if(isset($parameters['vendor_type'])){
@@ -215,7 +213,7 @@
         "bProcessing":true,
         "bFilter": false,
         "bPaginate": true,
-         "iDisplayLength":35,
+        "iDisplayLength":35,
         "sPaginationType":"full_numbers",
         "bLengthChange": false,
         "sDom":"<pr><t><ip>",
@@ -238,8 +236,10 @@
             {"sClass":"number","sWidth":"125px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"175px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"145px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"175px","asSorting":["asc","desc"]},
+            {"sClass":"text ","sWidth":"150px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
+            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
             {"bSortable":false,"sWidth":"10px"}
         ],
         "aaSorting":[[6,"desc"]],
@@ -266,6 +266,7 @@
         var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
         var oBudgetCode = getNamedFilterCriteria('fBudgetCode');
+        var oPrimeSubCert = getNamedFilterCriteria('fPrimeSubCert');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
 
@@ -282,7 +283,7 @@
         cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
         cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
         cUrl = adjustUrlParameter(cUrl,'bdgcode',oBudgetCode);
-
+        cUrl = adjustUrlParameter(cUrl,'pscert',oPrimeSubCert);
         return cUrl;
     }"
 }

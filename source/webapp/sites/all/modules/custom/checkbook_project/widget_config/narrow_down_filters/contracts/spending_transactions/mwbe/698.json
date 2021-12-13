@@ -7,6 +7,7 @@
     "maxSelect":5,
     "columns":["vendor_type.vendor_type","txcount"],
     "orderBy":"-txcount",
+    "autocomplete":false,
     "facetPager":true,
     "filterName":"Vendor Type",
     "urlParameterName":"vendortype",
@@ -28,6 +29,8 @@
         if(function_exists('_checkbook_project_adjust_spending_parameter_filters')){
             $parameters = _checkbook_project_adjust_spending_parameter_filters($node, $parameters);
         }
+        //Adjust Certification parameters
+        $parameters = ContractUtil::adjustCertificationFacetParameters($node,$parameters);
         if(function_exists('_checkbook_project_applyParameterFilters')){
             $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
             $adjustedParameters['vendor.vendor'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);

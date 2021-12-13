@@ -38,7 +38,7 @@ reset($node->data);
     <thead>
     <tr>
       <th>&nbsp;</th>
-      <th colspan="4" class="centrig bb"><div>2000-<?= $last_year ?><sup>*</sup></div></th>
+      <th colspan="4" class="centrig bb"><div>2001-<?= $last_year ?><sup>*</sup></div></th>
     </tr>
     <tr>
       <th class="number" ><div class="trendCen">Year</div></th>
@@ -86,8 +86,7 @@ reset($node->data);
     </tbody>
   </table>
   <div class="footnote">
-    <p>*Amounts as of March 22, 2019 and May 2019.</p>
-    <p>Source: U.S Department of Commerce, Bureau of Economic Analysis. US Census Bureau and American Fact Finder.</p>
+    <p>*Amounts as of November 2019</p>
   </div>
 <?php
 widget_data_tables_add_js($node);

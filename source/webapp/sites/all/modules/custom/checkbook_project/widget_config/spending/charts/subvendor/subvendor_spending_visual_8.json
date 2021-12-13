@@ -32,7 +32,7 @@
                   "formatType": "amount"
              },
              {
-                  "labelAlias": "Women",
+                  "labelAlias": "Women (Non-Minority)",
                   "columnType": "number",
                   "formatType": "amount"
              },
@@ -40,7 +40,17 @@
                   "labelAlias": "Hispanic American",
                   "columnType": "number",
                   "formatType": "amount"
-             }
+             },
+             {
+                "labelAlias": "Native American",
+                "columnType": "number",
+                "formatType": "amount"
+            },
+            {
+                "labelAlias": "Emerging (Non-Minority)",
+                "columnType": "number",
+                "formatType": "amount"
+            }
         ]
 },
 "no_results_content":"No Results Found",
@@ -78,7 +88,8 @@
 	$series_ha =  [];
 	$series_w =  [];
 	$series_aa =  [];
-	$series_e =  [];
+    $series_na =  [];
+	$series_em =  [];
   $non_mwbe_data = [];
   $total = [];
 
@@ -98,8 +109,14 @@
 	 		case '5':
         $series_aa[$row['month_value'] - 1]->y += $row['total_spending'];
         break;
+            case '6':
+        $series_na[$row['month_value'] - 1]->y += $row['total_spending'];
+        break;
 	 		case '9':
         $series_w[$row['month_value'] - 1]->y += $row['total_spending'];
+        break;
+            case '99':
+        $series_em[$row['month_value'] - 1]->y += $row['total_spending'];
         break;
 	 		case '7':
         $non_mwbe_data[$row['month_value'] - 1] = $row['total_spending'];
@@ -137,8 +154,10 @@
 	 						'Month: '. $months[$i] . '<br/>' .
 							'Asian American: ' . custom_number_formatter_format($series_aa[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]->y,1,null,'%') . ')' .  '<br/>'
 							. 'Black American: ' . custom_number_formatter_format($series_ba[$i]->total,2,'$')  . ' (' .custom_number_formatter_format($series_ba[$i]->y,1,null,'%') . ')' . '<br/>'
-							. 'Women: ' . custom_number_formatter_format($series_w[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_w[$i]->y,1,null,'%') . ')' . '<br/>'
-							. 'Hispanic American: ' . custom_number_formatter_format($series_ha[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_ha[$i]->y,1,null,'%') . ')' . '<br/>';
+							. 'Women (Non-Minority): ' . custom_number_formatter_format($series_w[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_w[$i]->y,1,null,'%') . ')' . '<br/>'
+							. 'Hispanic American: ' . custom_number_formatter_format($series_ha[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_ha[$i]->y,1,null,'%') . ')' . '<br/>'
+                            . 'Native American: ' . custom_number_formatter_format($series_na[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_na[$i]->y,1,null,'%') . ')' . '<br/>'
+                            . 'Emerging (Non-Minority): ' . custom_number_formatter_format($series_em[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_em[$i]->y,1,null,'%') . ')' . '<br/>';
 		$series_ba[$i]->tooltip_label = $tooltip_label;
 		$series_ha[$i]->tooltip_label = $tooltip_label;
 		$series_aa[$i]->tooltip_label = $tooltip_label;
@@ -149,7 +168,9 @@
 														$series_aa[$i]->total,
 														$series_ba[$i]->total,
 														$series_w[$i]->total,
-														$series_ha[$i]->total
+														$series_ha[$i]->total,
+                                                        $series_na[$i]->total,
+                                                        $series_em[$i]->total
 														 );
 
 		$i +=1;
@@ -161,10 +182,12 @@
 		$series_aa_points[] = $series_aa[$index];
 		$series_ba_points[] = $series_ba[$index];
 		$series_ha_points[] = $series_ha[$index];
+        $series_na_points[] = $series_na[$index];
+        $series_em_points[] = $series_em[$index];
 	}
 
 
-	$node->widgetConfig->chartConfig->series[0]->name = 'Women';
+	$node->widgetConfig->chartConfig->series[0]->name = 'Women (Non-Minority)';
 	$node->widgetConfig->chartConfig->series[0]->type = 'column';
 	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[0]->data = $series_w_points;
@@ -184,6 +207,15 @@
 	$node->widgetConfig->chartConfig->series[3]->pointWidth = 30;
 	$node->widgetConfig->chartConfig->series[3]->data = $series_ha_points;
 
+    $node->widgetConfig->chartConfig->series[4]->name = 'Native American';
+	$node->widgetConfig->chartConfig->series[4]->type = 'column';
+	$node->widgetConfig->chartConfig->series[4]->pointWidth = 30;
+	$node->widgetConfig->chartConfig->series[4]->data = $series_na_points;
+
+    $node->widgetConfig->chartConfig->series[5]->name = 'Emerging (Non-Minority)';
+	$node->widgetConfig->chartConfig->series[5]->type = 'column';
+	$node->widgetConfig->chartConfig->series[5]->pointWidth = 30;
+	$node->widgetConfig->chartConfig->series[5]->data = $series_em_points;
 
 ",
 "chartConfig" : {
@@ -196,7 +228,7 @@
                 }
             }
     },
-    "colors":["#EB8E27","#B8D8ED","#99B473","#7DB8E1"],
+    "colors":["#EB8E27","#B8D8ED","#99B473","#7DB8E1","#FFFC44","#E0CCFC"],
     "chart":{
     	"height":"275"
     },

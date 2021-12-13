@@ -28,7 +28,7 @@
                             	"sourceColumnName": "agency_id"
                             }
                     ]
-                }    ,  
+                }    ,
 				{
                     "name": "vendor",
                     "levels": [
@@ -151,7 +151,34 @@
                             "sourceColumnName": "aprv_sta_name"
                         }
                     ]
-                }
+                },
+              {
+                "name": "is_women_owned",
+                "levels": [
+                  {
+                    "name": "is_women_owned",
+                    "sourceColumnName": "is_women_owned"
+                  }
+                ]
+              },
+              {
+                "name": "is_emerging",
+                "levels": [
+                  {
+                    "name": "is_emerging",
+                    "sourceColumnName": "is_emerging"
+                  }
+                ]
+              },
+              {
+                "name": "is_mocs_registered",
+                "levels": [
+                  {
+                    "name": "is_mocs_registered",
+                    "sourceColumnName": "is_mocs_registered"
+                  }
+                ]
+              }
 
             ],
             "measures": {
@@ -178,6 +205,12 @@
                 },
                 "less1m_count": {
                     "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) < 1000000 THEN 1 ELSE 0 END)"
+                },
+                "cert_women_count":{
+                  "function": "SUM(CASE WHEN is_women_owned = 'Yes' THEN 1 ELSE 0 END)"
+                },
+                "cert_emerging_count":{
+                  "function": "SUM(CASE WHEN is_emerging = 'Yes' THEN 1 ELSE 0 END)"
                 }
             }
         }

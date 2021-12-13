@@ -25,6 +25,7 @@
     <tr>
       <?php
       $class = "";
+      $year = RequestUtilities::get('year');
       $is_active_expense_contracts = false;
       $is_active_expense_contracts = preg_match("/^contracts_landing/", $_GET['q']) & RequestUtilities::get("status") == "A";
       if ($is_active_expense_contracts) {
@@ -120,11 +121,19 @@
       $count = "<span class='count'>" . number_format($node->data[5]['total_contracts']) . "</span>";
       $dollars = "<span class='dollars'>" . custom_number_formatter_format($node->data[4]['total_contract_amount'],1,'$') . "</span>";
       ?>
+
+      <?php if($node->data[5]['total_contracts'] > 0 && $year == CheckbookDateUtil::getCurrentFiscalYearId() ){?>
       <td<?php echo $class;?>>
         <div class="positioning">
-      <?php if($node->data[5]['total_contracts'] > 0 ){?>
           <a href="/<?php echo $pending_exp_link; ?>"><?php echo $count; ?><br>Pending<br>Expense Contracts<br><?php echo $dollars; ?></a>
-        <?php }else{?>
+        <?php }else{
+        $style ='';
+        if ($year != CheckbookDateUtil::getCurrentFiscalYearId()) {
+          $style = ' style="background-color:#E6E6E6;color:#a9aeb1;"';
+        }
+        ?>
+      <td<?php echo $class . $style;?>>
+        <div class="positioning">
         <?php echo $count; ?><br>Pending<br>Expense Contracts<br><?php echo $dollars; ?>
         <?php }?>
         </div>
@@ -140,11 +149,19 @@
       $dollars = "<span class='dollars'>" . custom_number_formatter_format($node->data[6]['total_contract_amount'],1,'$') . "</span>";
 
       ?>
+
+        <?php if($node->data[7]['total_contracts'] > 0 && $year == CheckbookDateUtil::getCurrentFiscalYearId()){?>
       <td class="last<?php echo $class;?>">
         <div class="positioning">
-        <?php if($node->data[7]['total_contracts'] > 0 ){?>
           <a href="/<?php echo $pending_rev_link; ?>"><?php echo $count; ?><br>Pending<br>Revenue Contracts<br><?php echo $dollars; ?></a>
-        <?php }else{?>
+        <?php }else{
+          $style ='';
+          if ($year != CheckbookDateUtil::getCurrentFiscalYearId()) {
+            $style = ' style="background-color:#E6E6E6;color:#a9aeb1;"';
+          }
+          ?>
+      <td class="last<?php echo $class .'"'. $style;?>>
+        <div class="positioning">
         <?php echo $count; ?><br>Pending<br>Revenue Contracts<br><?php echo $dollars; ?>
         <?php }?>
         </div>

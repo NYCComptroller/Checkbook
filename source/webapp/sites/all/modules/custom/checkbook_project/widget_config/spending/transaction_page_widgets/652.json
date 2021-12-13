@@ -20,8 +20,8 @@
         "comline_exact":"agreement_commodity_line_number",
         "comline":"agreement_commodity_line_number",
         "scomline":"agreement_commodity_line_number",
-        "budname_exact":"oge_budget_name",
-        "budname":"oge_budget_name",
+        "budname_exact":"budget_name",
+        "budname":"budget_name",
         "year":"check_eft_issued_nyc_year_id","calyear":"calendar_fiscal_year_id","agency":"agency_id",
         "mcagency":"master_child_contract_agency_id","agencyh":"agency_history_id","vendor":"vendor_id","svendor":"vendor_id",
         "mcvendor":"master_child_contract_vendor_id","expcategory":"expenditure_object_id",
@@ -160,7 +160,7 @@ return $header;
 "expression": "_get_tooltip_markup($row['department_name'],40)"
 },
 "budget_name_formatted":{
-"expression": "_get_tooltip_markup($row['budget_name@checkbook:oge_contract'],36)"
+"expression": "_get_tooltip_markup($row['budget_name'],36)"
 }
 },
 "table_columns": [
@@ -232,7 +232,7 @@ return $header;
     "labelAlias": "budget_name",
     "datasource": "checkbook_oge",
     "column": "budget_name_formatted",
-    "sortSourceColumn": "budget_name@checkbook:oge_contract"
+    "sortSourceColumn": "budget_name"
   }
 ],
   "exportColumnSqlOverride": [

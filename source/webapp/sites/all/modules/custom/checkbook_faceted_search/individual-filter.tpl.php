@@ -349,7 +349,7 @@ if($node->widgetConfig->filterName == 'M/WBE Category' && $node->widgetConfig->p
                 $id = "4~5";
                 unset($checked[$key]);
             } else {
-                array_push($checked, array($value[0], MappingUtil::getMinorityCategoryById($value[0]), $value[2]));
+                array_push($checked, array($value[0], MappingUtil::getMinorityCategoryById($value[0], true), $value[2]));
                 unset($checked[$key]);
             }
             //Remove N/A from facet

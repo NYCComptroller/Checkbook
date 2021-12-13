@@ -39,10 +39,11 @@
                     "elementsColumn":{
                         "agency":"agency_name",
                         "associated_prime_vendor":"prime_vendor_name",
-                        "budget_code":"budget_code",
+                        "budget_code":"budget_name_code",
                         "capital_project":"reporting_code",
                         "check_amount":"check_amount",
                         "contract_id":"reference_document_number",
+                        "mocs_registered":"is_mocs_registered",
                         "contract_purpose":"purpose",
                         "expense_category":"expenditure_object_name",
                         "department":"department_name",
@@ -51,6 +52,8 @@
                         "industry":"industry_type_name",
                         "issue_date":"check_eft_issued_date",
                         "mwbe_category":"mwbe_category_ui",
+                        "woman_owned_business": "is_women_owned",
+                        "emerging_business": "is_emerging",
                         "payee_name":"vendor_name",
                         "spending_category":"spending_category_name",
                         "sub_contract_reference_id":"sub_contract_id",
@@ -62,6 +65,7 @@
                         "budget_code",
                         "capital_project",
                         "contract_id",
+                        "mocs_registered",
                         "contract_purpose",
                         "check_amount",
                         "department",
@@ -71,6 +75,8 @@
                         "industry",
                         "issue_date",
                         "mwbe_category",
+                        "woman_owned_business",
+                        "emerging_business",
                         "payee_name",
                         "spending_category",
                         "sub_contract_reference_id",
@@ -91,6 +97,7 @@
                         "Check Amount":"check_amount",
                         "Expense Category":"expenditure_object_name",
                         "Contract ID":"reference_document_number",
+                        "MOCS Registered":"is_mocs_registered",
                         "Contract Purpose":"purpose",
                         "Capital Project":"reporting_code",
                         "Spending Category":"spending_category_name",
@@ -98,7 +105,9 @@
                         "Sub Vendor":"vendor_type",
                         "Associated Prime Vendor":"prime_vendor_name",
                         "M/WBE Category":"mwbe_category_ui",
-                        "Budget Code":"budget_code"
+                        "Woman Owned Business": "is_women_owned",
+                        "Emerging Business": "is_emerging",
+                        "Budget Code":"budget_name_code"
                     },
                     "required_non_display_columns":["vendor_type"]
                 }
@@ -141,7 +150,7 @@
             "catastrophic_event":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"20"
+                "maxLength":"2"
             },
             "department_code":{
                 "valueType":"value",
@@ -176,7 +185,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"9"
+                "maxLength":"18"
             },
             "industry":{
                 "valueType":"value",

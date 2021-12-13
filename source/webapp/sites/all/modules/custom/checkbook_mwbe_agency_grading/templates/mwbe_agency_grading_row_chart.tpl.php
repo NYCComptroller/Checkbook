@@ -8,7 +8,7 @@ jQuery(document).ready(function ($) {
          defaultSeriesType: 'bar',
          backgroundColor:'rgba(255, 255, 255, 0.002)',
          height:50    ,
-         animation: false     
+         animation: false
       },
       title: {
          text: null
@@ -39,7 +39,7 @@ jQuery(document).ready(function ($) {
          labels: {
              enabled: false
        	}
-         
+
       },
       tooltip: {
          formatter: function() {
@@ -55,7 +55,7 @@ jQuery(document).ready(function ($) {
             minPointLength: 3,
             pointWidth: 18,
             animation: false,
-            shadow: false            
+            shadow: false
          }
       },
       series: [
@@ -67,23 +67,31 @@ jQuery(document).ready(function ($) {
           data: [<?php echo ($data_row['n_mwbe'])? $data_row['n_mwbe'] : null ; ?>],
           color: '#2e5a8b'
          },
-         {name: 'Women',
+         {name: 'Women (Non-Minority)',
           data: [<?php echo ($data_row['w_mwbe'])? $data_row['w_mwbe'] : null ; ?>],
           color: '#eb8e27'
          },
          {name: 'Hispanic American',
           data: [<?php echo ($data_row['ha_mwbe'])? $data_row['ha_mwbe'] : null ; ?>],
           color: '#9ab46a'
-         }, 
+         },
          {name: 'Black American',
           data: [<?php echo ($data_row['ba_mwbe'])? $data_row['ba_mwbe'] : null ; ?>],
           color: '#7db7e5'
-         },   
+         },
         {name: 'Asian American',
           data: [<?php echo ($data_row['aa_mwbe'])? $data_row['aa_mwbe'] : null ; ?>],
           color: '#b8d8ef'
-         }
+         },
+        {name: 'Native American',
+          data: [<?php echo ($data_row['na_mwbe'])? $data_row['na_mwbe'] : null ; ?>],
+          color: '#F3F386'
+        },
+        {name: 'Emerging (Non-Minority)',
+          data: [<?php echo ($data_row['em_mwbe'])? $data_row['em_mwbe'] : null ; ?>],
+          color: '#D2B8EF'
+        }
       ]
  });
 });
-</script>  
+</script>

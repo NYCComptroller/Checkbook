@@ -21,7 +21,7 @@
     $header .=  ",General Bonded Debt (1)" ;
     $header .=  ",Debt Secure by Revenue other than property tax (2) (3)" ;
     $header .=  ",City Net General Obligation Bonded Debt" ;
-    $header .=  ",City Net General Obligation Bonded Debt as a Percentage of  Assessed Taxable Value of Property (4)" ;
+    $header .=  ",City Net General Obligation Bonded Debt as a Percentage of  Assessed Taxable Value of Property (4)," ;
     $header .=  ",Per Capita (5)";
 	echo $header . "\n";
 

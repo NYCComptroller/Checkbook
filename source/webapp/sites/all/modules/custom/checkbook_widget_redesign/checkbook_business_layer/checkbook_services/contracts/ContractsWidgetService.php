@@ -1,7 +1,6 @@
 <?php
 
 class ContractsWidgetService extends WidgetDataService implements IWidgetService {
-
     /**
      * Function to allow the client to initialize the data service
      * @return mixed
@@ -10,6 +9,11 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
         return new ContractsDataService();
     }
 
+  /**
+   * @param $column_name
+   * @param $row
+   * @return mixed|string|null
+   */
     public function implementDerivedColumn($column_name,$row) {
         $value = null;
         $legacy_node_id = $this->getLegacyNodeId();
@@ -19,21 +23,22 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
             case "contract_id_link":
                 $column = $row['contract_number'];
                 $class = "bottomContainerReload";
-                if(ContractStatus::getCurrent() == ContractStatus::PENDING)
-                    $url = ContractsUrlService::pendingContractIdLink($row['original_agreement_id'],$row['document_code'],$row['pending_contract_number'],$row['contract_number'],$row['document_version']);
-                else
-                    $url = ContractsUrlService::contractIdUrl($row['original_agreement_id'],$row['document_code']);
-
+                if(ContractStatus::getCurrent() == ContractStatus::PENDING) {
+                  $url = ContractsUrlService::pendingContractIdLink($row['original_agreement_id'], $row['document_code'], $row['pending_contract_number'], $row['contract_number'], $row['document_version']);
+                }else {
+                  $url = ContractsUrlService::contractIdUrl($row['original_agreement_id'], $row['document_code']);
+                }
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
             case "master_contract_id_link":
                 $column = $row['contract_number'];
                 $class = "bottomContainerReload";
-                if(ContractStatus::getCurrent() == ContractStatus::PENDING)
-                    $url = ContractsUrlService::pendingMasterContractIdUrl($row['original_agreement_id'],$row['document_code'],$row['pending_contract_number'],$row['contract_number'],$row['document_version']);
-                else
-                    $url = ContractsUrlService::masterContractIdUrl($row['original_agreement_id'],$row['document_code']);
+                if(ContractStatus::getCurrent() == ContractStatus::PENDING) {
+                  $url = ContractsUrlService::pendingMasterContractIdUrl($row['original_agreement_id'], $row['document_code'], $row['pending_contract_number'], $row['contract_number'], $row['document_version']);
+                }else {
+                  $url = ContractsUrlService::masterContractIdUrl($row['original_agreement_id'], $row['document_code']);
+                }
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;
 
@@ -81,7 +86,7 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
                 if($data_source == 'checkbook_oge'){
                     return $column;
                 }
-                $url = ContractsUrlService::primeVendorUrl($row['vendor_id'], null, true, $row);
+                $url = ContractsUrlService::primeVendorUrl($row['vendor_id'],null,null,true);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
 
@@ -200,19 +205,19 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
                 break;
         }
 
-        if(isset($value)) {
-            return $value;
-        }
-        return $value;
+      return $value;
     }
 
+  /**
+   * @param $parameters
+   * @param $urlPath
+   * @return mixed
+   */
     public function adjustParameters($parameters, $urlPath) {
-
         $status = ContractStatus::getCurrent();
         if($status == ContractStatus::ACTIVE) {
             $parameters['effective_year'] = $parameters['year'];
-        }
-        else if($status == ContractStatus::REGISTERED) {
+        } else if($status == ContractStatus::REGISTERED) {
             $parameters['registered_year'] = $parameters['year'];
         }
 
@@ -226,14 +231,23 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
         return $parameters;
     }
 
-    public function getWidgetFooterUrl($parameters) {
+  /**
+   * @param $parameters
+   * @return string
+   */
+    public function getWidgetFooterUrl($parameters): string
+    {
         return ContractsUrlService::getFooterUrl($parameters,$this->getLegacyNodeId());
     }
 
-    private function deriveDocumentCode($category, $status, $contractType = "all") {
-
-        $docCode = null;
-
+  /**
+   * @param $category
+   * @param $status
+   * @param string $contractType
+   * @return string
+   */
+    private function deriveDocumentCode($category, $status, $contractType = "all"): string
+    {
         switch($contractType) {
             case "master_agreement":
                 $docCode =

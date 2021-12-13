@@ -4,7 +4,7 @@
 "cleanURLParameters":[
     "deptnm","expcategorynm","year","calyear","yeartype","status","agency","vendor","category",
     "checkamtr","dept","syear","scalyear","magid","agid","cvendor","cagency","awdmethod","csize","cindustry",
-    "doctype","month","industry","mwbe","vendor","svendor","subvendor","csubvendor","vendortype","vendornm","contnum"
+    "doctype","month","industry","mwbe","vendor","svendor","subvendor","csubvendor","vendortype","vendornm","contnum","pscert","bdgcode"
 ],
 "urlParamMap":{
     "year":"disb_fiscal_year_id",
@@ -17,7 +17,7 @@
     "mwbe":"minority_type_id","industry":"industry_type_id",
     "cvendor":"prime_vendor_id","vendor":"prime_vendor_id","subvendor":"disb_vendor_id","csubvendor":"vendor_id","vendortype":"disb_vendor_type",
     "vendornm":"disb_vendor_name","vendor_facet":"disb_vendor_name","vendornm_exact":"disb_vendor_name",
-    "contnum":"disb_contract_number"
+    "contnum":"disb_contract_number","bdgcode":"budget_name_code","pscert":"is_women_owned"
 
 },
 "paramTypeConfig":{"checkamtr":"rangeid","syear":"le","scalyear":"le","deptnm":"eqignorecase","doctype":"in"},
@@ -56,7 +56,9 @@
     "disb_vendor_type",
     "disb_sub_contract_id",
     "industry_type_id",
-    "industry_type_name@checkbook:industry_type"
+    "industry_type_name@checkbook:industry_type",
+    "is_women_owned",
+    "is_emerging"
 ],
 "caption":"",
 "derivedColumns": {
@@ -117,15 +119,22 @@
     {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"disb_vendor_type","exportColumn":"is_sub_vendor"},
     {"label":"","column":"","export":false},
     {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"legal_name@checkbook:prime_vendor","exportColumn":"associated_prime_vendor_name_export"},
+    {"label":"","column":"","export":false},
     {"labelAlias":"issue_date","column":"disb_check_eft_issued_date"},
     {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"disb_agency_name"},
     {"labelAlias":"check_amount","column":"formatted_check_amount","sortSourceColumn":"disb_check_amount"},
+    {"label":"","column":"","export":false},
     {"labelAlias":"industry_name","column":"industry_name_formatted","sortSourceColumn":"industry_type_name@checkbook:industry_type"},
     {"labelAlias":"contract_id","column":"contract_number_link","sortSourceColumn":"disb_contract_number"},
     {"labelAlias":"sub_contract_reference_id","column":"disb_sub_contract_id","exportColumn":"disb_sub_contract_id"},
     {"labelAlias":"contract_purpose","column":"contract_purpose_text","sortSourceColumn":"disb_purpose"},
     {"labelAlias":"spending_category","column":"disb_spending_category_name"},
-    {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"disb_minority_type_id","exportColumn":"mwbe_category_name"}
+    {"label":"","column":"","export":false},
+    {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"disb_minority_type_id","exportColumn":"mwbe_category_name"},
+    //{"labelAlias":"budget_code","column":"disb_budget_name"},
+    {"labelAlias": "woman_owned_business","column":"is_women_owned"},
+    {"labelAlias": "emerging_business","column":"is_emerging"},
+    {"label":"","column":"","export":false}
 ],
 "exportColumnSqlOverride":[
     {
@@ -135,9 +144,11 @@
             case
             when disb_minority_type_id = 2 then 'Black American'
             when disb_minority_type_id = 3 then 'Hispanic American'
+            when disb_minority_type_id = 6 then 'Native American'
             when disb_minority_type_id = 7 then 'Non-M/WBE'
-            when disb_minority_type_id = 9 then 'Women'
+            when disb_minority_type_id = 9 then 'Women (Non-Minority)'
             when disb_minority_type_id = 11 then 'Individuals and Others'
+            when disb_minority_type_id = 99 then 'Emerging (Non-Minority)'
             else 'Asian American'
             end as minority_type_name
         "
@@ -158,7 +169,8 @@
     if(isset($parameters['disb_vendor_type'])){
         $parameters['disb_vendor_type'] = MappingUtil::getVendorTypeValue($parameters['disb_vendor_type']);
     }
-
+    //Adjust Certification parameters
+    $parameters = ContractUtil::adjustCertificationFacetParameters($node,$parameters);
     $adjustedParameters = $parameters;
     if(function_exists('_checkbook_project_applyParameterFilters')){
         $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
@@ -192,18 +204,25 @@
             {"sClass":"text","sWidth":"200px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"80px","asSorting":["asc","desc"]},
             {"sWidth":"20px","bSortable": false},
-            {"sClass":"text","sWidth":"229px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"155px","asSorting":["asc","desc"]},
+            {"bSortable":false,"sWidth":"30px"},
             {"sClass":"text pad-left","sWidth":"100px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"200px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"130px","asSorting":["desc","asc"]},
+            {"bSortable":false,"sWidth":"30px"},
             {"sClass":"text pad-left","sWidth":"150px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"150px","asSorting":["asc","desc"]},
             {"sClass":"number","sWidth":"110px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"200px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
+            {"bSortable":false,"sWidth":"30px"},
             {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"100px","asSorting":["asc","desc"]}
+            //{"sClass":"text ","sWidth":"120px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"115px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"100px","asSorting":["asc","desc"]},
+            {"bSortable":false,"sWidth":"30px"}
         ],
-         "aaSorting":[[6,"desc"]],
+         "aaSorting":[[7,"desc"]],
        		"sScrollX":"100%",
 
  		"bScrollCollapse": false,
@@ -226,6 +245,8 @@
     var oVendorType = getNamedFilterCriteria('fvendorType');
     var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
     var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
+    var oPrimeSubCert = getNamedFilterCriteria('fPrimeSubCert');
+    //var oBudgetCode = getNamedFilterCriteria('fBudgetCode');
 
     var  cUrl = oTable.fnSettings().sAjaxSource;
     cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -238,6 +259,8 @@
     cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
     cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
     cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
+    cUrl = adjustUrlParameter(cUrl,'pscert',oPrimeSubCert);
+    //cUrl = adjustUrlParameter(cUrl,'bdgcode',oBudgetCode);
 
        return cUrl;
     }"

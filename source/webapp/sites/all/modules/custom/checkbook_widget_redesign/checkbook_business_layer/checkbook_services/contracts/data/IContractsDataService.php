@@ -9,6 +9,7 @@ interface IContractsDataService {
      * Citywide Contracts Methods
      */
     function GetContracts($parameters, $limit = null, $orderBy = null);
+    function GetMocsContracts($parameters, $limit = null, $orderBy = null);
     function GetContractModifications($parameters, $limit = null, $orderBy = null);
     function GetMasterAgreementContracts($parameters, $limit = null, $orderBy = null);
     function GetMasterAgreementContractModifications($parameters, $limit = null, $orderBy = null);
@@ -20,6 +21,7 @@ interface IContractsDataService {
     function GetContractsBySize($parameters, $limit = null, $orderBy = null);
     /* Count Queries */
     function GetCountContracts($parameters);
+    function GetCountMocsContracts($parameters);
     function GetCountContractsByPrimeVendors($parameters);
     /* Sub Vendor */
     function GetContractsSubvendorStatusByPrime($parameters, $limit = null, $orderBy = null);
@@ -69,4 +71,4 @@ interface IContractsDataService {
     function GetCountSubContractsBySubVendors($parameters);
     function GetCountSubContractsByPrimeVendors($parameters);
 
-} 
+}

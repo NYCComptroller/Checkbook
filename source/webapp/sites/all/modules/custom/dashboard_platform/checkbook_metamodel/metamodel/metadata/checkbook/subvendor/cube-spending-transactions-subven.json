@@ -186,7 +186,13 @@
                 },
                 "check_amount_sum": {
                     "function": "SUM(COALESCE(check_amount,0))"
-                }
+                },
+               "cert_women_count":{
+                "function": "SUM(CASE WHEN is_women_owned = 'Yes' THEN 1 ELSE 0 END)"
+               },
+               "cert_emerging_count":{
+                "function": "SUM(CASE WHEN is_emerging = 'Yes' THEN 1 ELSE 0 END)"
+               }
             }
         },
         "spending_transactions_all": {
@@ -374,11 +380,29 @@
                     ]
                 },
                 {
-                    "name":"budget_code",
+                    "name": "is_women_owned",
                     "levels": [
                       {
-                        "name":"budget_code",
-                        "sourceColumnName":"budget_code"
+                        "name": "is_women_owned",
+                        "sourceColumnName": "is_women_owned"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "is_emerging",
+                    "levels": [
+                      {
+                        "name": "is_emerging",
+                        "sourceColumnName": "is_emerging"
+                      }
+                    ]
+                  },
+                {
+                    "name":"budget_name_code",
+                    "levels": [
+                      {
+                        "name":"budget_name_code",
+                        "sourceColumnName":"budget_name_code"
                       }
                   ]
                 }
@@ -407,6 +431,18 @@
                 },
                 "check_amount_sum": {
                     "function": "SUM(COALESCE(check_amount,0))"
+                },
+                "prime_cert_women_count":{
+                  "function": "SUM(CASE WHEN (vendor_type = 'P' OR vendor_type = 'PM') AND is_women_owned = 'Yes' THEN 1 ELSE 0 END)"
+                },
+                "prime_cert_emerging_count":{
+                  "function": "SUM(CASE WHEN (vendor_type = 'P' OR vendor_type = 'PM') AND is_emerging = 'Yes' THEN 1 ELSE 0 END)"
+                },
+                "sub_cert_women_count":{
+                  "function": "SUM(CASE WHEN (vendor_type = 'S' OR vendor_type = 'SM') AND is_women_owned = 'Yes' THEN 1 ELSE 0 END)"
+                },
+                "sub_cert_emerging_count":{
+                  "function": "SUM(CASE WHEN (vendor_type = 'S' OR vendor_type = 'SM') AND is_emerging = 'Yes' THEN 1 ELSE 0 END)"
                 }
             }
         }

@@ -102,6 +102,14 @@
                             "sourceColumnName":"contract_number"
                         }]
                 },
+              {
+                "name":"is_mocs_registered",
+                "levels": [
+                  {
+                    "name":"is_mocs_registered",
+                    "sourceColumnName":"is_mocs_registered"
+                  }]
+              },
                 {
                     "name":"scntrc_status",
                     "levels": [
@@ -253,7 +261,39 @@
                             "name":"sub_amount_id",
                             "sourceColumnName":"sub_amount_id"
                         }]
-                }
+                },
+              {
+                "name":"is_prime_women_owned",
+                "levels": [
+                  {
+                    "name":"is_prime_women_owned",
+                    "sourceColumnName":"is_prime_women_owned"
+                  }]
+              },
+              {
+                "name":"is_sub_women_owned",
+                "levels": [
+                  {
+                    "name":"is_sub_women_owned",
+                    "sourceColumnName":"is_sub_women_owned"
+                  }]
+              },
+              {
+                "name":"is_prime_emerging",
+                "levels": [
+                  {
+                    "name":"is_prime_emerging",
+                    "sourceColumnName":"is_prime_emerging"
+                  }]
+              },
+              {
+                "name":"is_sub_emerging",
+                "levels": [
+                  {
+                    "name":"is_sub_emerging",
+                    "sourceColumnName":"is_sub_emerging"
+                  }]
+              }
             ],
             "measures": {
                 "txcount": {
@@ -306,6 +346,18 @@
                 },
                 "less1m_sub_count": {
                     "function": "SUM(CASE WHEN COALESCE($COLUMN{sub_maximum_contract_amount},0) < 1000000 THEN 1 ELSE 0 END)"
+                },
+                "prime_cert_women_count":{
+                  "function": "COUNT(DISTINCT(CASE WHEN is_prime_women_owned = 'Yes' THEN prime_vendor_name||contract_number END))"
+                },
+                "prime_cert_emerging_count":{
+                  "function": "COUNT(DISTINCT(CASE WHEN is_prime_emerging = 'Yes' THEN prime_vendor_name||contract_number END))"
+                },
+                "sub_cert_women_count":{
+                  "function": "COUNT(DISTINCT(CASE WHEN is_sub_women_owned = 'Yes' THEN sub_vendor_name||contract_number||sub_contract_id END))"
+                },
+                "sub_cert_emerging_count":{
+                  "function": "COUNT(DISTINCT(CASE WHEN is_sub_emerging = 'Yes' THEN sub_vendor_name||contract_number||sub_contract_id END))"
                 }
             }
         },
@@ -559,7 +611,6 @@
         }
     },
     "references": {
-
         "all_agreement_transactions_by_prime_sub_vendor__ref_agency": [
             {"datasetName": "all_agreement_transactions_by_prime_sub_vendor", "columnNames": ["agency_id"]},
             {"datasetName": "agency", "columnNames": ["agency_id"]}

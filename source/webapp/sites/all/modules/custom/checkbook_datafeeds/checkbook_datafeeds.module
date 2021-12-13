@@ -1915,6 +1915,25 @@ function checkbook_datafeeds_format_columns($domain = null, $data_source = null)
       $hidden_selected_values = str_replace("|Year|", "", $hidden_selected_values);
     }
   }
+
+  $cevent = $_POST['catastrophic_event'];
+  $year_value = explode('FY', $year);
+  if ($domain == Domain::$CONTRACTS && $data_source == Datasource::CITYWIDE) {
+    if ($cevent === '0' && ($year != '0' || $year_value[1] <= 2020)) {
+
+      if (strpos($hidden_selected_values, "|MOCS Registered|")) {
+        $hidden_selected_values = str_replace("|MOCS Registered|", "", $hidden_selected_values);
+      }
+      if (strpos($hidden_selected_values, "|mocs_registered|")) {
+        $hidden_selected_values = str_replace("|mocs_registered|", "", $hidden_selected_values);
+      }
+    }
+  }
+
+  if($domain == Domain::$SPENDING && $data_source == 'citywide'){
+    $hidden_selected_values = checkbook_datafeeds_spending_reset_selected_columns($hidden_selected_values, $cevent, $year, $year_value);
+  }
+
   $array_selected_values = explode("|", $hidden_selected_values); //convert the values into array
   $filter_array = array_filter($array_selected_values); //remove empty index
 
@@ -2002,7 +2021,7 @@ function checkbook_datafeeds_download_notification($key, &$message, $params)
   $user_criteria = $params['user_criteria'];
   $search_criteria = "";
   foreach ($user_criteria['Formatted'] as $key => $value) {
-    $search_criteria .= "{$key}: {$value} \n";
+    $search_criteria .= "{$key}: {$value} \t\r\n";
   }
   $variables['@tracking_num'] = $params['tracking_num'];
   $variables['@expiration_date'] = $params['expiration_date'];
@@ -2031,7 +2050,7 @@ function checkbook_datafeeds_confirmation_notification($key, &$message, $params)
   $user_criteria = $params['user_criteria'];
   $search_criteria = "";
   foreach ($user_criteria['Formatted'] as $key => $value) {
-    $search_criteria .= "{$key}: {$value} \r\n";
+    $search_criteria .= "{$key}: {$value} \t\r\n";
   }
   $email = $params['email'];
   if (filter_var($email, FILTER_VALIDATE_EMAIL)) {

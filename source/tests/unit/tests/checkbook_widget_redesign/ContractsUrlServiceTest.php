@@ -39,11 +39,11 @@ class ContractsUrlServiceTest extends TestCase
         $result = ContractsUrlService::pendingMasterContractIdUrl("5868332", "MA1", NULL, NULL, NULL, NULL);
         $this->assertEquals("/panel_html/contract_transactions/magid/5868332", substr($result, 0, 47));
         $this->assertEquals("/doctype/MA1", substr($result, -12));
-        
+
         $result = ContractsUrlService::pendingMasterContractIdUrl(NULL, NULL, "RCT184620218200842", NULL, "0", NULL);
         $this->assertEquals("/minipanels/pending_contract_transactions/contract/RCT184620218200842", substr($result, 0, 69));
         $this->assertEquals("/version/0", substr($result, -10));
-    }   
+    }
 
     /**
      * Tests pendingContractIdLink() function
@@ -51,7 +51,7 @@ class ContractsUrlServiceTest extends TestCase
     public function test_pendingContractIdLink(){
         $result = ContractsUrlService::pendingContractIdLink("5868332", "CT1", NULL, NULL, NULL, NULL);
         $this->assertEquals("/panel_html/contract_transactions/agid/5868332/doctype/CT1", $result);
-        
+
         $result = ContractsUrlService::pendingContractIdLink(NULL, NULL, NULL, "RCT184620218200842", "7", NULL);
         $this->assertEquals("/minipanels/pending_contract_transactions/contract/RCT184620218200842/version/7", $result);
     }
@@ -91,17 +91,17 @@ class ContractsUrlServiceTest extends TestCase
     /**
      * Tests getFooterUrl() function
      */
-    public function test_getFooterUrl(){
+    public function test_getFooterUrl()
+    {
         $parameter["doctype"] = "MA1,CTA1,CT1";
-        $parameter["status"] = "A";
-        $parameter["yeartype"] = "B";
-        $parameter["year"] = "121";
-        $parameter["dashboard"] = "mp";
-        $parameter["mwbe"] = "2";
-        $result = ContractsUrlService::getFooterUrl($parameter,454);
-        $this->assertEquals("/panel_html/contract_details/contract/transactions/contcat/expense/contstatus/P/yeartype/C/year/119/doctype/MA1~CTA1~CT1/smnid/454", $result);
+        $year_id = CheckbookDateUtil::getCurrentFiscalYear();
+        $_GET['q'] = '/contracts_landing/status/A/yeartype/A/year/'.$year_id;
+        $result = ContractsUrlService::getFooterUrl($parameter, 454);
+        $expected_results = '/panel_html/contract_details/contract/transactions/contcat/expense/contstatus/A/yeartype/B/year/'
+            . $year_id . '/doctype/MA1~CTA1~CT1/smnid/454';
+        $this->assertEquals($expected_results, $result);
     }
-    
+
     /**
      * Tests getAmtModificationUrlString() function
      */
@@ -110,3 +110,4 @@ class ContractsUrlServiceTest extends TestCase
         $this->assertEquals("/modamt/0/pmodamt/0/smodamt/0", $result);
     }
 }
+

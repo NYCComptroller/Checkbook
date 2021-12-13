@@ -21,8 +21,11 @@
 
 class WidgetUtil
 {
-
-    static function getLabel($labelAlias){
+  /**
+   * @param $labelAlias
+   * @return array|string|string[]
+   */
+    public static function getLabel($labelAlias){
         $dynamic_labelAlias = array("current_modified","previous_modified","previous_1_modified","previous_2_modified",
                                     "recognized_current","recognized_1","recognized_2","recognized_3");
         $labelAliases_br = array("spent_to_date", "original_amount", "current_amount", "dollar_diff", "percent_diff",
@@ -48,11 +51,20 @@ class WidgetUtil
         }
     }
 
-    static function getLabelDiv($labelAlias) {
+  /**
+   * @param $labelAlias
+   * @return array|string|string[]
+   */
+    public static function getLabelDiv($labelAlias) {
         return self::generateLabelMapping($labelAlias);
     }
 
-    static function generateLabelMapping($labelAlias, $labelOnly = false){
+  /**
+   * @param $labelAlias
+   * @param false $labelOnly
+   * @return array|string|string[]
+   */
+    public static function generateLabelMapping($labelAlias, bool $labelOnly = false){
         $dynamic_labelAlias = array("current_modified","previous_modified","previous_1_modified","previous_2_modified",
                                     "recognized_current","recognized_1","recognized_2","recognized_3");
         if(in_array($labelAlias,$dynamic_labelAlias)){
@@ -69,17 +81,18 @@ class WidgetUtil
             $label = "<div><span>". $dynamic_labels[$labelAlias] ."</span></div>";
 
         }else{
-            $label = NULL;
             if($labelOnly){
                 $label = self::getLabel($labelAlias);
             }else{
                 $label  = "<div><span>". self::$labels[$labelAlias] ."</span></div>";
             }
         }
-
         return $label;
     }
 
+  /**
+   * @var string[]
+   */
     static $labels = array(
         "contract_id" => "Contract<br/>ID",
         "contract_type" => "Contract<br/>Type",
@@ -319,15 +332,23 @@ class WidgetUtil
         "agreement_type" => "Agreement<br/>Type",
         "budget_type" => "Budget<br/>Type",
         "revenue_expense_category" => "Revenue<br/>Expense Category",
+        "prime_woman_owned_business" => "Prime Woman Owned <br/> Business",
+        "sub_woman_owned_business" => "Sub Woman Owned <br/> Business",
+        "prime_emerging_business" => "Prime Emerging <br/> Business",
+        "sub_emerging_business" => "Sub Emerging <br/>Business",
+        "woman_owned_business" => "Woman Owned<br/> Business",
+        "emerging_business" => "Emerging<br/> Business",
+        "mocs_registered" => "MOCS<br/> Registered",
     );
 
-    //For number cols, need to find out if they are uniform number of digits for formatting
-    static function populateMaxColumnLength(&$rows) {
-
+  //For number cols, need to find out if they are uniform number of digits for formatting
+  /**
+   * @param $rows
+   */
+    public static function populateMaxColumnLength(&$rows) {
         $number_rows = count($rows);
         $number_columns = count($rows[0]['columns']);
         $col_index = 0;
-
         while ($col_index < $number_columns) {
             $max_length = 0;
             for ($row_index = 0; $row_index < $number_rows; $row_index++) {
@@ -336,66 +357,67 @@ class WidgetUtil
                     $max_length = $column_length > $max_length ? $column_length : $max_length;
                 }
             }
-            for ($row_index = 0; $row_index < $number_rows; $row_index++)
-                if(isset($rows[$row_index]['columns']))
-                    $rows[$row_index]['columns'][$col_index]['max_column_length'] = $max_length;
+            for ($row_index = 0; $row_index < $number_rows; $row_index++) {
+              if (isset($rows[$row_index]['columns'])) {
+                $rows[$row_index]['columns'][$col_index]['max_column_length'] = $max_length;
+              }
+            }
             $col_index++;
         }
     }
 
-    static function generateTable($table_definition, $is_main = true) {
-
+  /**
+   * @param $table_definition
+   * @param bool $is_main
+   * @return string
+   */
+   public static function generateTable($table_definition, $is_main = true): string
+    {
         $html = '';
-        $border = "";
-//        $border = 'border: 1px solid black !important; ';
-
-        $header_title = isset($table_definition["header"]["title"]) ? $table_definition["header"]["title"] : null;
-        $header_columns = isset($table_definition["header"]["columns"]) ? $table_definition["header"]["columns"] : null;
-        $table_body = isset($table_definition["body"]) ? $table_definition["body"] : null;
-        $table_rows = isset($table_definition["body"]["rows"]) ? $table_definition["body"]["rows"] : null;
-
-
+        $header_title = $table_definition["header"]["title"] ?? null;
+        $header_columns = $table_definition["header"]["columns"] ?? null;
+        $table_body = $table_definition["body"] ?? null;
+        $table_rows = $table_definition["body"]["rows"] ?? null;
         //Title
-        if($header_title)
-            $html .= $header_title;
-
-        if($is_main)
-            $html .= "<table class='dataTable outerTable' style='border: 1px solid #CACACA;'>";
-        else
-            $html .= "<table class='sub-table dataTable'>";
+        if($header_title) {
+          $html .= $header_title;
+        }
+        if($is_main) {
+          $html .= "<table class='dataTable outerTable' style='border: 1px solid #CACACA;'>";
+        }else {
+          $html .= "<table class='sub-table dataTable'>";
+        }
 
         //Header row
         if($header_columns) {
             $html .= "<thead>";
             $html .= "<tr>";
-//            $html .= "<tr style='border: 1px solid black !important;'>";
             $html .= WidgetUtil::generateHeaderColumns($header_columns);
             $html .= "</tr>";
             $html .= "</thead>";
         }
 
         //Table body
-        if(isset($table_body)) {
-            $html .= "<tbody>";
-            //Table rows
+      $html .= "<tbody>";
+      if(isset($table_body)) {
+        //Table rows
             if(isset($table_rows)) {
                 $alternating_row_count = 0;
                 $inner_tbl_count = 0;
                 $outer_table_count = 0;
                 for ($row_index = 0; $row_index < count($table_rows); $row_index++) {
                     if(isset($table_rows[$row_index]['columns'])) {
-                        if ($alternating_row_count % 2 == 0)
-                            $class = "even outer";
-                        else
-                            $class = "odd outer";
+                        if ($alternating_row_count % 2 == 0) {
+                          $class = "even outer";
+                        }else {
+                          $class = "odd outer";
+                        }
                         $alternating_row_count++;
                         WidgetUtil::populateMaxColumnLength($table_rows);
-//                        $html .= "<tr class='".$class."' style='border: 1px solid black !important;'>";
                         $html .= "<tr class='".$class."' >";
                         $html .= WidgetUtil::generateColumns($table_rows[$row_index]['columns']);
                         $html .= "</tr>";
-                    }
-                    elseif(isset($table_rows[$row_index]['child_tables'])) {
+                    } elseif(isset($table_rows[$row_index]['child_tables'])) {
                     	$display_main = $outer_table_count > 0 ? "display: none;" : "";
                     	$outer_table_count++;
                         $col_span = count($table_rows[$row_index-1]['columns']);
@@ -403,14 +425,12 @@ class WidgetUtil
                         $html .= "<td colspan='".$col_span."'>";
                         $html .= "<div>";
                         for ($tbl_index = 0; $tbl_index < count($table_rows[$row_index]['child_tables']); $tbl_index++) {
-//                            $html .= "<tr class='showHide' style='border: 1px solid black !important;'>";
                         	$html .=  WidgetUtil::generateTable($table_rows[$row_index]['child_tables'][$tbl_index]);
                         }
                         $html .= "</div>";
                         $html .= "</td>";
                         $html .= "</tr>";
-                    }
-                    elseif(isset($table_rows[$row_index]['embed_node'])) {
+                    } elseif(isset($table_rows[$row_index]['embed_node'])) {
                         $display_main = $outer_table_count > 0 ? "display: none;" : "";
                         $outer_table_count++;
                         $col_span = count($table_rows[$row_index-1]['columns']);
@@ -418,18 +438,15 @@ class WidgetUtil
                         $html .= "<td colspan='".$col_span."'>";
                         $html .= "<div>";
                         for ($tbl_index = 0; $tbl_index < count($table_rows[$row_index]['embed_node']); $tbl_index++) {
-//                            $html .= "<tr class='showHide' style='border: 1px solid black !important;'>";
                             $html .=  $table_rows[$row_index]['embed_node'][$tbl_index];
                         }
                         $html .= "</div>";
                         $html .= "</td>";
                         $html .= "</tr>";
-                    }
-                    elseif(isset($table_rows[$row_index]['inner_table'])) {
+                    } elseif(isset($table_rows[$row_index]['inner_table'])) {
                         $display = $inner_tbl_count > 0 ? "display: none;" : "";
                         $inner_tbl_count++;
                         $col_span = count($table_rows[$row_index-1]['columns']);
-//                        $html .= "<tr class='showHide' style='".$display." border: 1px solid black !important;'>";
                         $html .= "<tr class='showHide' style='".$display."'>";
                         $html .= "<td colspan='".$col_span."'>";
                         $html .= "<div class='scroll'>";
@@ -440,61 +457,56 @@ class WidgetUtil
                     }
                 }
             }
-            $html .= "</tbody>";
-        }
-        else {
-            $html .= "<tbody>";
-            $html .= "<tr class='odd'>";
+      } else {
+          $html .= "<tr class='odd'>";
             $html .= "<td class='dataTables_empty' valign='top' colspan='" . count($header_columns). "'>";
             $html .= "<div id='no-records-datatable' class='clearfix'>";
             $html .= "<span>No Matching Records Found</span>";
             $html .= "</div>";
             $html .= "</td>";
             $html .= "</tr>";
-            $html .= "</tbody>";
         }
-        $html .= "</table>";
-
-        return $html;
+      $html .= "</tbody>";
+      $html .= "</table>";
+      return $html;
     }
 
-    static function generateHeaderColumns($header_columns) {
+  /**
+   * @param $header_columns
+   * @return string
+   */
+    public static function generateHeaderColumns($header_columns): string
+    {
         $html = "";
         $border = "";
-//        $border = 'border: 1px solid black !important; ';
-
         foreach($header_columns as $index => $header_column) {
-
             $value = $header_column['value'];
             $type = $header_column['type'];
             $first_column = $index == 0;
-
             if($first_column) {
                 $html .= '<th style="'.$border.'text-align: left !important; vertical-align: middle;">';
                 $html .= '<span style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: center !important;">'. $value .'</span></th>';
-            }
-            else {
+            } else {
                 if($type == 'number') {
                     $html .= '<th style="'.$border.'text-align: center !important; vertical-align: middle; padding-right:6% !important">';
-                    $html .= '<span style="margin:8px 0px 8px 0px!important;display:inline-block; text-align: center !important;">'. $value .'</span></th>';
-                }
-                else {
+                } else {
                     $html .= '<th style="'.$border.'text-align: left !important; vertical-align: middle; padding-left:10px !important">';
-                    $html .= '<span style="margin:8px 0px 8px 0px!important;display:inline-block; text-align: center !important;">'. $value .'</span></th>';
                 }
+              $html .= '<span style="margin:8px 0px 8px 0px!important;display:inline-block; text-align: center !important;">'. $value .'</span></th>';
             }
         }
         return $html;
     }
 
-    static function generateColumns($columns) {
-
+  /**
+   * @param $columns
+   * @return string
+   */
+    public static function generateColumns($columns): string
+    {
         $html = "";
         $border = "";
-//        $border = 'border: 1px solid black !important; ';
-
         foreach($columns as $index => $column) {
-
             $value = $column['value'];
             $type = $column['type'];
             $max_column_length = $column['max_column_length'];
@@ -503,8 +515,7 @@ class WidgetUtil
             if($first_column) {
                 $html .= '<td style="'.$border.'text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">';
                 $html .= '<span style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: left !important;">'. $value .'</span></td>';
-            }
-            else {
+            } else {
                 //Numbers are center aligned and padded to align right
                 if($type == 'number') {
                     $column_length = strlen($value);
@@ -514,8 +525,7 @@ class WidgetUtil
                     }
                     $html .= '<td style="'.$border.'text-align: center !important; vertical-align: middle; padding-right:6% !important">';
                     $html .= '<span style="display:inline-block; text-align: right !important;">'. $value .'</span></td>';
-                }
-                else if($type == 'number_link') {
+                } else if($type == 'number_link') {
                     $link_value = $column['link_value'];
                     $actual_value = $value;
                     $column_length = strlen($value);
@@ -528,9 +538,7 @@ class WidgetUtil
                     }
                     $html .= '<td style="'.$border.'text-align: center !important; vertical-align: middle; padding-right:6% !important">';
                     $html .= '<span style="display:inline-block; text-align: right !important;">'. $value .'</span></td>';
-                }
-                //Text is left aligned
-                else {
+                } else {//Text is left aligned
                     $html .= '<td style="'.$border.'text-align: left !important; vertical-align: middle; padding-left:10px !important">';
                     $html .= '<span style="display:inline-block; text-align: left !important;">'. $value .'</span></td>';
                 }
@@ -539,7 +547,12 @@ class WidgetUtil
         return $html;
     }
 
-    static function generateLabelMappingNoDiv($labelAlias, $labelOnly = false){
+  /**
+   * @param $labelAlias
+   * @param false $labelOnly
+   * @return array|string|string[]
+   */
+    public static function generateLabelMappingNoDiv($labelAlias, $labelOnly = false){
         $dynamic_labelAlias = array("current_modified","previous_modified","previous_1_modified","previous_2_modified",
             "recognized_current","recognized_1","recognized_2","recognized_3");
         if(in_array($labelAlias,$dynamic_labelAlias)){
@@ -552,18 +565,14 @@ class WidgetUtil
                 "recognized_1" => "Recognized<br/>".($year+1),
                 "recognized_2" => "Recognized<br/>".($year+2),
                 "recognized_3" => "Recognized<br/>".($year+3));
-
             $label = $dynamic_labels[$labelAlias];
-
         }else{
-            $label = NULL;
             if($labelOnly){
                 $label = self::getLabel($labelAlias);
             }else{
                 $label  = self::$labels[$labelAlias];
             }
         }
-
         return $label;
     }
 }

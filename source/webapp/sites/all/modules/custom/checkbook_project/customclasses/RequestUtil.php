@@ -311,6 +311,9 @@ class RequestUtil
               break;
         }
 
+        // Verify if the vendor is pure mwbe - meaning the vendor can only have certified minority ids
+        // There are situations where the vendor id can be both certified and non-minorty ,
+        // in this case the vendor is not pure mwbe certified.
         if(RequestUtilities::get("vendor") > 0 && in_array($domain, array('contracts','spending'))){
             $non_minority_type_ids = array(7, 11);
             $vendor_minority_type_ids = VendorService::getAllVendorMinorityTypesByYear($domain, RequestUtilities::get("vendor"), $fiscalYearId);
@@ -320,13 +323,15 @@ class RequestUtil
                 $path = preg_replace('/\/dashboard\/[^\/]*/','',$path);
                 $path = preg_replace('/\/mwbe\/[^\/]*/','',$path);
             }else{
-                if(!stripos(' '.$path,'/mwbe/')) {
-                  $path .= RequestUtilities::buildUrlFromParam('mwbe');
-                }
-
               if(!stripos(' '.$path,'/dashboard/')) {
                 $path .= RequestUtilities::buildUrlFromParam('dashboard');
               }
+              //using RequestUtilities::buildUrlFromParam urlencodes mwbe parameter
+              if(!stripos(' '.$path,'/mwbe/') && stripos(' '.$path,'/dashboard/')) {
+                  $mwbe_param = RequestUtilities::get('mwbe');
+                  $path .= '/mwbe/';
+                  $path .= isset($mwbe_param)? $mwbe_param : MappingUtil::getTotalMinorityIds('url');
+                }
             }
         }
         return $path;
@@ -548,7 +553,7 @@ class RequestUtil
                     if (RequestUtilities::get("mwbe") != null) {
                         $url .= "/mwbe/" . RequestUtilities::get("mwbe");
                     } else {
-                        $url .= "/mwbe/2~3~4~5~9";
+                        $url .= "/mwbe/".MappingUtil::getTotalMinorityIds('url');
                     }
                 }
                 break;
@@ -557,7 +562,7 @@ class RequestUtil
                     $url = preg_replace('/\/dashboard\/[^\/]*/', '', $url);
                 }
                 // tm_wbe is an exception case for total MWBE link. When prime data is not present but sub data is present for the agency vendor combination.
-                if (RequestUtilities::get("dashboard") == 'ms' && RequestUtilities::get("mwbe") == '2~3~4~5~9' && RequestUtilities::get("tm_wbe") != 'Y') {
+                if (RequestUtilities::get("dashboard") == 'ms' && RequestUtilities::get("mwbe") == MappingUtil::getTotalMinorityIds('url') && RequestUtilities::get("tm_wbe") != 'Y') {
                     $url = preg_replace('/\/mwbe\/[^\/]*/', '', $url);
                 }
 
@@ -812,14 +817,14 @@ class RequestUtil
                 $table_subven = "aggregateon_subven_spending_coa_entities";
                 $urlParamMap = array("year" => "year_id", "agency" => "agency_id", "vendor" => "vendor_id");
                 $urlParamMapSubven = array("year" => "year_id", "agency" => "agency_id", "vendor" => "prime_vendor_id");
-                $default_params = array("minority_type_id" => "2~3~4~5~9", 'type_of_year' => 'B');
+                $default_params = array("minority_type_id" => MappingUtil::getTotalMinorityIds('url'), 'type_of_year' => 'B');
                 break;
             case "contracts":
                 $table = "aggregateon_mwbe_contracts_cumulative_spending";
                 $table_subven = "aggregateon_subven_contracts_cumulative_spending";
                 $urlParamMap = array("year" => "fiscal_year_id", "agency" => "agency_id", "vendor" => "vendor_id");
                 $urlParamMapSubven = array("year" => "fiscal_year_id", "agency" => "agency_id", "vendor" => "prime_vendor_id");
-                $default_params = array("status_flag" => "A", "minority_type_id" => "2~3~4~5~9", 'type_of_year' => 'B');
+                $default_params = array("status_flag" => "A", "minority_type_id" => MappingUtil::getTotalMinorityIds('url'), 'type_of_year' => 'B');
                 break;
         }
         if (self::get_top_nav_records_count($urlParamMap, $default_params, $table) > 0) {

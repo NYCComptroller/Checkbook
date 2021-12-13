@@ -20,7 +20,9 @@
 $smnid = RequestUtilities::get('smnid');
 $dashboard= RequestUtilities::get('dashboard');
 $contactStatus = RequestUtilities::get('contstatus');
+$mocsContracts = RequestUtilities::get('mocs');
 $bottomNavigation = "";
+
 if ($contactStatus == 'A') {
     $contactStatusLabel = 'Active';
 }
@@ -47,6 +49,7 @@ if ($contactCategory == 'revenue') {
 if ($contactCategory == 'all') {
     $contactCategoryLabel = '';
 }
+
 $current_url = explode('/', request_uri());
 if($current_url[1] == 'contract' && ($current_url[2] == 'search' || $current_url[2] == 'all')&& $current_url[3] == 'transactions'){
   $summaryTitle = "";
@@ -61,7 +64,9 @@ $suppress_widget_title = ($dashboard == "ss" && $smnid == 720) || //Sub Vendors
 if(!$suppress_widget_title) {
     $summaryTitle .= NodeSummaryUtil::getInitNodeSummaryTitle();
 }
-
+if ($mocsContracts == 'Yes'){
+  $summaryTitle = 'MOCS Registered COVID-19 Contracts';
+}
 $summaryTitle = $summaryTitle != '' ? $summaryTitle : '';
 global $checkbook_breadcrumb_title;
 

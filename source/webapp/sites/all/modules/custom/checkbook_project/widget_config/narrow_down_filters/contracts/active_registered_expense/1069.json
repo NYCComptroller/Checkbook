@@ -1,0 +1,24 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":939,
+  "no_results_content":"No Results Found",
+  "limit":10,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "autocomplete":false,
+  "filterName":"Prime Certification",
+  "urlParameterName":"pcert",
+  "urlParameterType":"cert",
+  "autocompleteID":"fPrimeCert",
+  "columns":["prime_cert_women_count", "prime_cert_emerging_count"],
+  "adjustParameters":"
+  $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
+  if(function_exists('_checkbook_project_applyParameterFilters')){
+  $parameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+return $parameters;
+",
+"template":"individual_filter"
+}

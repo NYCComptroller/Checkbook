@@ -14,6 +14,11 @@
     advancedSearchFormLoading = false;
   }
 
+  //Helper function to remove "FY", and remove "~" if present from string
+  let removeFY = function(year) {
+    return year.replace(/fy[~]*/ig,'').trim();
+  }
+
   Drupal.behaviors.advancedSearchAndAlerts = {
     attach: function (context, settings) {
 
@@ -855,7 +860,6 @@
           let solr_datasource = data_source;
           let year = div.ele('year').val() || 0;
           let year_id = 0;
-          let reg_year_id = 0;
 
           if(year.indexOf("fy") >= 0){
             year_id = year.split('~')[1];
@@ -883,12 +887,8 @@
             div.ele('contract_id').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'contract_number', nycha_filters)});
             div.ele('pin').autocomplete({source:$.fn.autoCompleteSourceUrl(solr_datasource,'pin', nycha_filters)});
           }else {
-              if (contract_status == 'R') {
-                reg_year_id = year_id;
-                year_id = 0;
-              }
-              var filters = {
-                event_id:catastrophic_events_id,
+            let filters = {
+              event_id: catastrophic_events_id,
               contract_status: contract_status,
               contract_category_name: contract_category_name,
               agency_id: agency_id,
@@ -897,10 +897,25 @@
               industry_type_id: industry_type_id,
               scntrc_status: scntrc_status,
               aprv_sta: aprv_sta,
-              fiscal_year_id: year_id,
-              registered_fiscal_year_id: reg_year_id,
-                contract_type_id: contract_type_id,
+              contract_type_id: contract_type_id,
             };
+
+            let year;
+            if ('checkbook_oge' == solr_datasource && year_id != 'all'){
+              year = $('#edit-checkbook-oge-contracts-year option:selected').text().replace("FY ", "") || 0;
+            } else if('checkbook' == solr_datasource && year_id != 'all'){
+              year = $('#edit-checkbook-contracts-year option:selected').text().replace("FY ", "") || 0;
+            }
+
+            if(year) {
+              if (contract_status == 'R') {
+                filters['registered_fiscal_year'] = year;
+              }
+
+              if (contract_status == 'A') {
+                filters['facet_year_array'] = year;
+              }
+            }
 
             div.ele('vendor_name').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'vendor_name',filters)});
             div.ele('contract_id').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'contract_number', filters)});
@@ -946,26 +961,35 @@
         function onStatusChange(div) {
           var data_source = $('input[name=contracts_advanced_search_domain_filter]:checked').val();
           var contract_status = div.ele('status').val();
+          let contract_category = div.ele('category').val();
           if (contract_status === 'P') {
             if (data_source === 'checkbook') {
               div.ele('registration_date_from').val('').attr("disabled", "disabled");
               div.ele('registration_date_to').val('').attr("disabled", "disabled");
+              div.ele('catastrophic_events').val('').attr("disabled", "disabled");
+              div.ele('includes_sub_vendors').val('').attr("disabled", "disabled");
+              div.ele('sub_vendor_status').val('').attr("disabled", "disabled");
+              div.ele('year').val('').attr("disabled", "disabled");
             }
             div.ele('year').attr("disabled", "disabled");
             div.ele('year').val("");
             div.ele('received_date_from').removeAttr("disabled");
             div.ele('received_date_to').removeAttr("disabled");
-          }  else {
+          }
+          else if(contract_category == 'revenue') {
+            div.ele('catastrophic_events').val('').attr("disabled", "disabled");
+          }
+          else {
             if (data_source === 'checkbook') {
               div.ele('registration_date_from').removeAttr("disabled");
               div.ele('registration_date_to').removeAttr("disabled");
+              div.ele('catastrophic_events').removeAttr("disabled");
             }
             div.ele('year').removeAttr("disabled");
             div.ele('received_date_from').attr("disabled", "disabled");
             div.ele('received_date_to').attr("disabled", "disabled");
             div.ele('received_date_from').val("");
             div.ele('received_date_to').val("");
-
           }
           updateSubVendorFields(div);
         }
@@ -1021,8 +1045,9 @@
         function updateEventsField(div) {
           let yval = (div_checkbook_contracts.ele('year').find("option:selected").text()).split(' ')[1];
           let contract_category = div.ele('category').val();
+          let contract_status = div.ele('status').val();
 
-          if(contract_category == 'revenue' || yval < 2020 ){
+          if(contract_category == 'revenue' || yval < 2020 ||contract_status === 'P' ){
             div.ele('catastrophic_events').attr("disabled", "disabled");
             div.ele('catastrophic_events').val("");
             let catas_event = div_checkbook_contracts.ele('catastrophic_events').val();
@@ -1149,6 +1174,9 @@
                   $.each(data, function (key, year) {
                     html = html + '<option value="' + year.value + '" title="' + year.label +'">' + year.label + '</option>';
                   });
+                }
+                else {
+                  html = html + '<option value="">' + data[0] + '</option>';
                 }
               }
               $("#edit-payroll-year").html(html);
@@ -1326,8 +1354,7 @@
             let catastrophic_event = document.getElementById("edit-checkbook-revenue-catastrophic-events");
             let enabled_count = catastrophic_event.length;
 
-            //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
-            if(!(budget_fiscal_year === "0" || budget_fiscal_year === "122" || budget_fiscal_year === "121"  || budget_fiscal_year === "123")){
+            if(!(budget_fiscal_year === "0" || budget_fiscal_year >= 121)){
               for (let i = 0; i < catastrophic_event.length; i++) {
                 let event = catastrophic_event.options[i].text.toLowerCase();
                 catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
@@ -1356,8 +1383,7 @@
           if(div.ele('catastrophic_events').val() === "1"){
             for (let i = 0; i < budget_fiscal_year.length; i++) {
               let year = budget_fiscal_year.options[i].text.toLowerCase();
-              //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
-              let include = (year === "all fiscal years" || year === "2021" || year === "2020" || year === "2022");
+              let include = (year === "all fiscal years" || year >= 2020);
               budget_fiscal_year.options[i].style.display = include ? '':'none';
             }
           }
@@ -1386,8 +1412,7 @@
           if(div.ele('catastrophic_events').val() === "1"){
             for (let i = 0; i < budget_fiscal_year.length; i++) {
               let year = budget_fiscal_year.options[i].text.toLowerCase();
-              //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
-              let include = (year === "all fiscal years" || year === "2021" || year === "2020" || year === "2022");
+              let include = (year === "all fiscal years" || year >= 2020);
               budget_fiscal_year.options[i].style.display = include ? '':'none';
             }
           }
@@ -1595,8 +1620,8 @@
             dept = dept.toString().replace(/\//g, "__");
           }
           let exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
-          let expCat = (div.ele('exp_category').val()) ? (div.ele('exp_category').val()) : '';
-
+          let expCat = (div.ele('exp_category').val() && div.ele('exp_category').text() !== "Select Expense Category")
+                        ? (div.ele('exp_category').val()) : '';
           $.ajax({
             url: '/advanced-search/autocomplete/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source
             , success: function (data) {
@@ -1609,6 +1634,9 @@
                       html = html + '<option value="' + exp_cat.code + '" title="' + exp_cat.title + '">' + exp_cat.name + '</option>';
                     }
                   });
+                }
+                else {
+                  html = html + '<option value="">' + data[0] + '</option>';
                 }
               }
               div.ele('exp_category').html(html);
@@ -1642,6 +1670,9 @@
                   for (let i = 0; i < data.length; i++) {
                     html = html + '<option value="' + data[i] + ' ">' + data[i] + '</option>';
                   }
+                }
+                else {
+                  html = html + '<option value="">' + data[0] + '</option>';
                 }
               }
               div.ele('dept').html(html);
@@ -1770,8 +1801,7 @@
             if(div.ele('catastrophic_events').val() === "1"){
               for (let i = 0; i < fiscal_year.length; i++) {
                 let year = fiscal_year.options[i].text.toLowerCase();
-                //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
-                let include = (year === "fy 2020" || year === "fy 2021" || year === "fy 2022" || year === "all years");
+                let include = (year === "all years" || removeFY(year) >= 2020);
                 fiscal_year.options[i].style.display = include ? '':'none';
               }
             }
@@ -1780,33 +1810,6 @@
                 fiscal_year.options[i].style.display = '';
             }
           }
-        }
-
-        //On change of "Catastrophic event"
-        div_checkbook_spending.ele('catastrophic_events').change(function(){
-          onCatastrophicEventChange(div_checkbook_spending);
-        });
-
-        function onCatastrophicEventChange(div){
-            //Selecting 'COVID-19' option causes the following changes:
-            //Data within following fields update: Payee Name, Contract ID, Document ID, Capital Project
-            //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
-            let fiscal_year = div.ele('fiscal_year').attr("name");
-            fiscal_year = document.getElementsByName(fiscal_year)[0];
-
-            if(div.ele('catastrophic_events').val() === "1"){
-              for (let i = 0; i < fiscal_year.length; i++) {
-                let year = fiscal_year.options[i].text.toLowerCase();
-                //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
-                let include = (year === "fy 2020" || year === "fy 2021" || year === "fy 2022" || year === "all years");
-                fiscal_year.options[i].style.display = include ? '':'none';
-              }
-            }
-            else{
-              for (let i = 0; i < fiscal_year.length; i++) {
-                fiscal_year.options[i].style.display = '';
-              }
-            }
         }
 
         //On change of "Fiscal Year"
@@ -1827,8 +1830,7 @@
           if(data_source == 'checkbook') {
             let fiscal_year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
             let exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
-            //Todo: Refactor code to enable  Catastrophic  drop-down for Fiscal years >= 2020
-            if(fiscal_year && !(fiscal_year === "fy~all" || fiscal_year === "fy~122" || fiscal_year === "fy~121" || fiscal_year === "fy~123")) disable_input(div.ele('catastrophic_events'));
+            if(fiscal_year && !(fiscal_year === "fy~all" || removeFY(fiscal_year) >= 121)) disable_input(div.ele('catastrophic_events'));
             else if(exptype == '2' || exptype == '4') disable_input(div.ele('catastrophic_events'));
             else enable_input(div.ele('catastrophic_events'));
             agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
@@ -2274,9 +2276,6 @@
               disableAccordionSection(ogeDisabledDomain);
             });
           }
-        }else if(data_source === "checkbook_nycha"){
-          disableAccordionSection('budget');
-          disableAccordionSection('revenue');
         }
       }
 

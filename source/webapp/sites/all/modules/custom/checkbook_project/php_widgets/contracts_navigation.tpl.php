@@ -43,6 +43,7 @@ if(preg_match('/contract\/all\/transactions/',$urlPath) || preg_match('/contract
     $contracts_advanced_search = true;
 }
 $has_vendor_parameter = preg_match('/\/vendor/',$_GET['q']);
+$current_domain = CheckbookDomain::getCurrent();
 
 if($has_vendor_parameter && (!$contracts_advanced_search && !$spending_advanced_search)){
     $budget_link = l('<span class="nav-title">Budget</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') ,'',$options_disabled);
@@ -67,9 +68,9 @@ if($has_vendor_parameter && (!$contracts_advanced_search && !$spending_advanced_
 }
 
 if($spending_amount  == 0){
-    $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
+  $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format(0 ,1,'$'),'',$options_disabled);
 }else{
-    $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format($spending_amount ,1,'$'),RequestUtil::getTopNavURL("spending"),$options);
+  $spending_link =  l('<span class="nav-title">Spending</span><br>'. custom_number_formatter_format($spending_amount ,1,'$'),RequestUtil::getTopNavURL("spending"),$options);
 }
 
 $current_dashboard = RequestUtilities::get("dashboard");
@@ -167,7 +168,7 @@ if(preg_match('/datasource\/checkbook_oge/',$_GET['q'])){
 
         $mwbe_prime_amount = $node->data[5]['check_amount_sum'];
         // if prime is zero and sub amount is not zero. change dashboard to ms
-        if( $mwbe_prime_amount == null && $mwbe_subven_amount > 0){
+        if( $mwbe_prime_amount == null && $mwbe_subven_amount > 0 && $has_vendor_parameter != null){
             $mwbe_amount += $mwbe_subven_amount;
             RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero = true;
             $mwbe_active_domain_link = preg_replace('/\/dashboard\/../','/dashboard/ms',$mwbe_active_domain_link);
@@ -222,11 +223,13 @@ if($svendor_amount  == 0 && $svendor_amount_active_inc == 0){
     if($svendor_amount_active_inc == 0 && preg_match('/contract/',$_GET['q']) && !_checkbook_check_isEDCPage() && ContractUtil::checkStatusOfSubVendorByPrimeCounts()){
         $dashboard = (isset($featured_dashboard) && $featured_dashboard == 'mp')? 'sp': 'ss';
 //        $svendor_active_domain_link = ContractURLHelper::prepareSubvendorContractsSliderFilter('contracts_landing', $dashboard, TRUE);
+        $svendor_active_domain_link = ContractURLHelper::prepareSubvendorContractsSliderFilter($svendor_active_domain_link, $dashboard, ContractURLHelper::thirdBottomSliderValue());
         $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);
     }else{
         $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format(0 ,1,'$') . '</div></div>','',$options_disabled);
     }
 }else{
+
     $subvendors_link = l('<div><div class="top-navigation-amount"><span class="nav-title">' .RequestUtil::getDashboardTopNavTitle("subvendor")  .'</span><br>&nbsp;'. custom_number_formatter_format($svendor_amount ,1,'$') . '</div></div>',$svendor_active_domain_link ,$options);
 }
 

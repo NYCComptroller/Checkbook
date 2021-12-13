@@ -90,6 +90,11 @@ function checkbook_datafeeds_spending($form, &$form_state){
     '#id' => 'edit-nycha-column-select',
   );
 
+  $form['columns']['hidden_data_format'] = array(
+    '#value' => $datatype,
+    '#type' => 'hidden',
+  );
+
   //Hidden Field for multi-select
   switch ($data_source) {
     case Datasource::NYCHA:
@@ -444,7 +449,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
   $form['filter']['document_id'] = array(
     '#type' => 'textfield',
     '#title' => t('Document ID:'),
-    '#maxlength' => 30,
+    '#maxlength' => 36,
     '#prefix' => '<div class="datafield expenseid citywide nycha">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
@@ -634,6 +639,26 @@ function checkbook_datafeeds_spending_filter_selected_columns($selected_columns,
     }
   }
   return $filtered_columns;
+}
+
+/**
+ * @param $selected_columns
+ * @param $cevent
+ * @param $year
+ * @param $year_value
+ * @return mixed
+ */
+
+function checkbook_datafeeds_spending_reset_selected_columns($selected_columns, $cevent, $year, $year_value){
+  if ($cevent != 1 || ($year != '0' && $year_value < 2020)) {
+    if (strpos($selected_columns, "|MOCS Registered|")) {
+      $selected_columns = str_replace("|MOCS Registered|", "", $selected_columns);
+    }
+    if (strpos($selected_columns, "|mocs_registered|")) {
+      $selected_columns = str_replace("|mocs_registered|", "", $selected_columns);
+    }
+  }
+  return $selected_columns;
 }
 
 /**
