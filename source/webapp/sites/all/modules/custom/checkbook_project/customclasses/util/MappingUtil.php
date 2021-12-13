@@ -214,14 +214,14 @@ class MappingUtil {
     public static function getCurrenEthnicityName($minority_type_ids = null, $feed = false)
     {
         $mwbe_url_params = $minority_type_ids ?? explode('~', RequestUtilities::get('mwbe'));
-        if($feed) {
-          foreach (self::$minority_type_category as $key => $values) {
+        if($feed){
+          foreach (self::$minority_type_category_map_multi as $key => $values) {
             if (count(array_diff($mwbe_url_params, $values)) == 0) {
               return $key;
             }
           }
-        }else{
-          foreach (self::$minority_type_category_map_multi as $key => $values) {
+        }else {
+          foreach (self::$minority_type_category_map_multi_chart as $key => $values) {
             if (count(array_diff($mwbe_url_params, $values)) == 0) {
               return $key;
             }
