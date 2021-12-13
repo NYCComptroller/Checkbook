@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * @file
+ * Update, uninstall, etc scripts for Metatag: Views.
+ */
+
+/**
+ * Implements hook_disable().
+ */
+function metatag_views_disable() {
+  // Clear the Views caches to avoid the now-missing Metatag integration from
+  // borking the system.
+  views_invalidate_cache();
+}
+
+/**
+ * Fixes context of Metatag Views translations.
+ */
+function metatag_views_update_7101() {
+  if (!module_exists('i18n_string') || variable_get('metatag_i18n_disabled', FALSE)) {
+    return;
+  }
+
+  $views = views_get_all_views();
+  $needs_update = array();
+  foreach ($views as $view_id => $view) {
+    foreach ($view->display as $display_id => $display) {
+      if (isset($display->display_options['metatags'][LANGUAGE_NONE])) {
+        $needs_update[$view_id][$display->display_plugin][] = $display_id;
+      }
+    }
+  }
+
+  if (count($needs_update) > 0) {
+    $t = get_t();
+    foreach ($needs_update as $view_id => $plugins) {
+      foreach ($plugins as $plugin => $displays) {
+        if (count($displays) > 1) {
+          // If there are multiple displays using the same plugin type, we can't
+          // update the context automatically, since the old name is ambiguous.
+          drupal_set_message($t("The metatag translations for the displays %displays of the view %view can't be converted automatically. You need to resubmit the metatag options for those view displays and remove the old translations manually.", array(
+            '%displays' => implode(', ', $displays),
+            '%view' => $view_id,
+          )));
+        }
+        else {
+          $old = 'metatag:metatag_views:' . $view_id . '_' . $plugin . ':*';
+          $new = 'metatag:metatag_views:' . $view_id . METATAG_VIEWS_CONTEXT_SEPARATOR . $displays[0] . ':*';
+          i18n_string_update_context($old, $new);
+        }
+      }
+    }
+  }
+}
