@@ -338,16 +338,12 @@
         "sortSourceColumn": "is_mocs_registered",
         "visibility_flag":"show_moc_registered"
       },
+      {"label":"","column":"","export": false},
       {
         "labelAlias": "sub_contract_reference_id",
         "column": "sub_contract_id_formatted",
         "sortSourceColumn":"sub_contract_id",
         "exportColumn": "sub_contract_id"
-      },
-      {
-        "label": "",
-        "column": "",
-        "export": false
       },
       {
         "labelAlias": "contract_purpose",
@@ -378,12 +374,8 @@
         "labelAlias": "emerging_business",
         "column": "is_emerging"
       },
-      {"labelAlias":"budget_code","column":"budget_name_code"},
-      {
-        "label": "",
-        "column": "",
-        "export": false
-      }
+      {"label":"","column":"","export": false},
+      {"labelAlias":"budget_code","column":"budget_name_code"}
     ],
     "exportColumnSqlOverride":[
         {
@@ -498,23 +490,23 @@
             {"sClass":"text","sWidth":"229px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"130px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"180px","asSorting":["asc","desc"]},
-            {"sClass":"number-center","sWidth":"180px","asSorting":["asc","desc"]},
-            {"sClass":"number-center","sWidth":"150px","asSorting":["desc","asc"]},
+            {"sClass":"text pad-left","sWidth":"180px","asSorting":["asc","desc"]},
+            {"sClass":"number","sWidth":"150px","asSorting":["desc","asc"]},
             {"bSortable":false,"sWidth":"50px"},
             {"sClass":"text pad-left","sWidth":"180px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"120px","asSorting":["asc","desc"]},
             {"sClass":"text pad-left","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"number-center","sWidth":"100px","asSorting":["asc","desc"],"visibility_flag":"show_moc_registered"},
+            {"bSortable":false,"sWidth":"30px"},
             {"sClass":"number","sWidth":"150px","asSorting":["asc","desc"]},
-            {"bSortable":false,"sWidth":"50px"},
             {"sClass":"text pad-left","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"165px","asSorting":["asc","desc"]},
             {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
-            {"sClass":"number","sWidth":"115px","asSorting":["asc","desc"]},
-            {"sClass":"number","sWidth":"115px","asSorting":["asc","desc"]},
-            {"sClass":"text","sWidth":"115px","asSorting":["asc","desc"]},
-            {"bSortable":false,"sWidth":"10px"}
+            {"sClass":"number-center","sWidth":"100px","asSorting":["asc","desc"]},
+            {"sClass":"number-center","sWidth":"70px","asSorting":["asc","desc"]},
+            {"bSortable":false,"sWidth":"30px"},
+            {"sClass":"text ","sWidth":"115px","asSorting":["asc","desc"]}
         ],
         "aaSorting":[[8,"desc"]],
         "sScrollX": "100%",
