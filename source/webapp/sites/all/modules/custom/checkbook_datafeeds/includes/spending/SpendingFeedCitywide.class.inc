@@ -93,9 +93,9 @@ class SpendingFeedCitywide extends SpendingFeed
 
     //M/WBE Category
     if ($this->values['mwbe_category']) {
-      $this->form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category'])) . '</div>');
+      $this->form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category']), true) . '</div>');
       $this->user_criteria['M/WBE Category'] = $this->values['mwbe_category'];
-      $this->formatted_search_criteria['M/WBE Category'] = \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category']));
+      $this->formatted_search_criteria['M/WBE Category'] = \MappingUtil::getCurrenEthnicityName(explode('~', $this->values['mwbe_category']), true);
     }
 
     //Vendor

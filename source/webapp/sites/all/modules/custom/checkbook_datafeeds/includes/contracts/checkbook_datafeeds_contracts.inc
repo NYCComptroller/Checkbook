@@ -1329,9 +1329,9 @@ function checkbook_datafeeds_contracts_confirmation($form, &$form_state)
         $formatted_search_criteria['Vendor'] = $values['vendor'];
       }
       if ($values['mwbe_category']) {
-        $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEthnicityName(explode('~', $values['mwbe_category'])) . '</div>');
+        $form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEthnicityName(explode('~', $values['mwbe_category']), true) . '</div>');
         $user_criteria['M/WBE Category'] = $values['mwbe_category'];
-        $formatted_search_criteria['M/WBE Category'] = MappingUtil::getCurrenEthnicityName(explode('~', $values['mwbe_category']));
+        $formatted_search_criteria['M/WBE Category'] = MappingUtil::getCurrenEthnicityName(explode('~', $values['mwbe_category']), true);
       }
       if ($values['contract_type']) {
         if ($values['contract_type'] != 'No Contract Type Selected') {

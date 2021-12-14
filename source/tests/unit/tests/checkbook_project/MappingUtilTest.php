@@ -81,7 +81,7 @@ class MappingUtilTest extends TestCase
      * Tests getCurrenEthnicityName() function
      */
     public function test_getCurrenEthnicityName(){
-        $result = MappingUtil::getCurrenEthnicityName(array('2'));
+        $result = MappingUtil::getCurrenEthnicityName(array(2));
         $this->assertEquals('Black American', $result);
     }
 
