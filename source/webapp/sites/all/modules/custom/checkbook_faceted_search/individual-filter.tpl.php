@@ -33,7 +33,7 @@ $pagetype = PageType::getCurrent();
 $domain = CheckbookDomain::getCurrent();
 $setAutoDeselect= RequestUtil::isNychaAmountLinks();
 $urlParameter = $node->widgetConfig->urlParameterName;
-// Set disableFacet variable to true when the page is not advanced search and allowFacetDeselect is not set
+// Set disbaleFacet variable to true when the page is not advanced search and allowFacetDeselect is not set
 if (($pagetype != 'advanced_search_page') && (!(isset($node->widgetConfig->allowFacetDeselect)) || ($setAutoDeselect == 1))){
   $disableFacet = true;
 }
@@ -49,7 +49,7 @@ if($disableFacet) { //only URL parameters count and can be disabled
 }
 
 if(isset($node->widgetConfig->maxSelect) && !$disableFacet){
-  $tooltip = 'title="Select up to ' . $node->widgetConfig->maxSelect . '"';
+  $tooltip = 'title="Select upto ' . $node->widgetConfig->maxSelect . '"';
 }
 else{
 $tooltip = "";
@@ -80,7 +80,7 @@ if($is_payroll_range_filter) {
         }
     }
 }
-//do not show annual in ratetype facet
+//donot show annual in ratetype facet
 if($node->widgetConfig->filterName == 'Rate Type'){
     if ($unchecked && $unchecked)
         foreach($unchecked as $key => $value) {
@@ -145,7 +145,7 @@ if($node->widgetConfig->filterName == 'Document ID') {
 }
 
 //Budget Name and Budget Type filter display N/A values as N/A for Nycha budget and Nycha revenue fields
-if( $node->nid == '1043' || $node->nid == '1044' || $node->nid == '1059' || $node->nid == '1060' )
+if( $node->nid == '1043' || $node->nid == '1044' || $node->nid == '1059' || $node->nid == '1060')
 {
   if ($unchecked && $unchecked)
     foreach($unchecked as $key => $value) {
@@ -162,21 +162,6 @@ if( $node->nid == '1043' || $node->nid == '1044' || $node->nid == '1059' || $nod
       }
     }
 }
-
-// Hide row if Budget Code name is null
-if ($node->widgetConfig->filterName == 'Budget Code') {
-    foreach($unchecked as $key => $value) {
-      if($value[1] == null ) {
-        unset($unchecked[$key]);
-      }
-    }
-    foreach($checked as $key => $value) {
-      if($value[1] == null) {
-        unset($checked[$key]);
-      }
-    }
-}
-
 // NYCHA Contracts special condition in advanced search disable purchase order when selected.
 if($node->widgetConfig->filterName == 'Purchase Order Type') {
   $disableFacet = !(isset($node->widgetConfig->allowFacetDeselect) ? $node->widgetConfig->allowFacetDeselect : false);
