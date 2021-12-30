@@ -3411,7 +3411,7 @@ body.page-mwbe-agency-grading .grid-3 .checkbook-grading-right .value {
     margin: 0 auto;
 }
 body.page-mwbe-agency-grading #grading_table{
-    width: 700px !important;
+    width: 700px !important; 
     border: 1px solid #cacaca;
 }
 body.page-mwbe-agency-grading #grading_table .number{
