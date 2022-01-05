@@ -168,20 +168,31 @@ class SpendingUtil{
      *
      * @param $node
      * @param $row
+     * @param null $category_id
      * @return string
      */
-    public static function getPayeeNameLinkUrl($node, $row): string
+    public static function getPayeeNameLinkUrl($node, $row,$category_id = null): string
     {
         $year_id = isset($row['check_eft_issued_nyc_year_id']) ? $row['check_eft_issued_nyc_year_id'] : CheckbookDateUtil::getCurrentFiscalYearId();
         $vendor_id = $row["vendor_id"];
         $agency_id = $row["agency"];
         $dashboard = RequestUtilities::get("dashboard");
         $year_type = 'B';
-        $category = $row["spending_category_id"];
+        $nid = $node->nid;
 
-        return $row["is_sub_vendor"] == "No"
-            ? self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true)
-            : self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true);
+        $url = $row["is_sub_vendor"] == "No"
+          ? self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true)
+          : self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true);
+
+        // Title does not display correctly for payee name link from advanced search
+        // when the category filter is added in the end of the url parameters
+        // move the category parameter to the beginning of the url
+
+        if ($nid == 766){
+          $replace = 'spending_landing/category/'.$category_id;
+          $url = preg_replace('/spending_landing/', $replace, $url);
+        }
+        return $url;
 
     }
 
