@@ -64,8 +64,10 @@ class SpendingUrlServiceTest extends TestCase
      */
     public function test_getFooterUrl()
     {
-        $result = SpendingUrlService::getFooterUrl('','22');
-        $this->assertEquals("/dtsmnid/22", substr($result, -11));
+        $_GET['q'] ='spending_landing/yeartype/B/year/119/dashboard/mp/mwbe/2~3~4~5~6~9~99/vendor/36036';
+        $result = SpendingUrlService::getFooterUrl(null,'763');
+        $expected = '/panel_html/spending_transactions/spending/transactions/vendor/36036/mwbe/2~3~4~5~6~9~99/dashboard/mp/yeartype/B/year/119/dtsmnid/763';
+        $this->assertEquals($expected,$result);
     }
 
     /**
@@ -74,8 +76,8 @@ class SpendingUrlServiceTest extends TestCase
     public function test_ytdSpendingUrl()
     {
         $_GET['q'] ='spending_landing/yeartype/B/year/122';
-        $result = SpendingUrlService::ytdSpendingUrl(null,'22');
-        $this->assertEquals("/panel_html/spending_transactions/spending/transactions/yeartype/B/year/122/smnid/22", $result);
+        $result = SpendingUrlService::ytdSpendingUrl(null,'763');
+        $this->assertEquals("/panel_html/spending_transactions/spending/transactions/yeartype/B/year/122/smnid/763", $result);
     }
 
     /**
