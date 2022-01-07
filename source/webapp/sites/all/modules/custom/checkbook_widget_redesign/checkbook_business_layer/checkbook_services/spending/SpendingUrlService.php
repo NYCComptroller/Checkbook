@@ -254,7 +254,7 @@ class SpendingUrlService {
      */
     static function ytdSpendingUrl($dynamic_parameter, $legacy_node_id = null) {
         // Pass the correct fvendor parameter (subvendor id not vendor id) to the sub vendor ytd links
-        $vendor_facet_parameter = (isset($legacy_node_id) &&  $legacy_node_id = 763) ? ''  : static::getVendorFacetParameter();
+        $vendor_facet_parameter = (isset($legacy_node_id) &&  $legacy_node_id == 763) ? ''  : static::getVendorFacetParameter();
         $legacy_node_id = isset($legacy_node_id) ? '/smnid/'.$legacy_node_id : '';
         $dynamic_parameter = isset($dynamic_parameter) ? $dynamic_parameter : '';
 
@@ -280,7 +280,7 @@ class SpendingUrlService {
      */
     static function getFooterUrl($parameters = null ,$legacy_node_id = null) {
         // Donot pass fvendor parameter for subvendor details links
-        $vendor_facet_parameter = (isset($legacy_node_id) &&  $legacy_node_id = 763) ? ''  : static::getVendorFacetParameter();
+        $vendor_facet_parameter = (isset($legacy_node_id) &&  $legacy_node_id == 763) ? ''  : static::getVendorFacetParameter();
         $legacy_node_id = isset($legacy_node_id) ? '/dtsmnid/'.$legacy_node_id : '';
 
 
