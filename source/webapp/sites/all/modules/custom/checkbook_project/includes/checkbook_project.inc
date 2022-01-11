@@ -2302,10 +2302,13 @@ function _checkbook_vendor_link($vendor_id, $prime = FALSE){
     } elseif (stripos($url, 'contracts_revenue_landing')) {
       $page = '/contracts_revenue_landing';
     }
-
+    $minority_type_id = PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, CheckbookDateUtil::getCurrentFiscalYearId(), 'B');
+    if($minority_type_id == "4" || $minority_type_id == "5"){
+      $minority_type_id = "4~5";
+    }
     $mwbe = (_is_mwbe_vendor(RequestUtilities::get("agid")) || _is_mwbe_vendor(RequestUtilities::get("magid"))
-      || PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, CheckbookDateUtil::getCurrentFiscalYearId(), 'B')) ?
-      RequestUtilities::_appendMWBESubVendorDatasourceUrlParams() : '';
+      || $minority_type_id) ?
+      '/dashboard/mp/mwbe/'.$minority_type_id : '';
   }
 
   $vendor_link = $page . $status . '/year/' . CheckbookDateUtil::getCurrentFiscalYearId() . '/yeartype/B/vendor/' . $vendor_id . $mwbe . '?expandBottomCont=true';
