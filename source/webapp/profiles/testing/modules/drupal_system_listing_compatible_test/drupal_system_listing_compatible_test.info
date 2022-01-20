@@ -6,7 +6,7 @@ core = 7.x
 hidden = TRUE
 files[] = drupal_system_listing_compatible_test.test
 
-; Information added by Drupal.org packaging script on 2021-12-01
-version = "7.83"
+; Information added by Drupal.org packaging script on 2022-01-19
+version = "7.87"
 project = "drupal"
-datestamp = "1638368848"
+datestamp = "1642633901"
