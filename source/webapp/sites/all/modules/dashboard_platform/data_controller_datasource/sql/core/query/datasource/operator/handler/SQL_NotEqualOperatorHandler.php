@@ -35,8 +35,8 @@ class SQL_NotEqualOperatorHandler extends SQL_AbstractOperatorHandler {
             $formattedValue = ' NOT IN (' . implode(', ', $values) . ')';
         }
         else {
-            // if $value is '' make sure to set it to '' to check for not empty values applicable only to strings
-            $formattedValue = ($value == NULL && $columnDataType != 'integer') ? ' != \'\'' : ' != ' . $this->datasourceHandler->formatValue($columnDataType, $value);
+            // if $value is '' make sure to set it to '' to check for not empty values
+            $formattedValue = $value != NULL ? ' != ' . $this->datasourceHandler->formatValue($columnDataType, $value) : ' != \'\'' ;
         }
 
         return $formattedValue;
