@@ -2320,7 +2320,7 @@
         initializeAccordionAttributes('advanced_search_create_alerts');
 
         $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({
-          title: "<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alert</span></span>",
+          title: "",
           position: ['center', 'center'],
           width: 800,
           modal: true,
@@ -2342,6 +2342,10 @@
         });
         /* Correct min-height for IE9, causes hover event to add spaces */
         $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('min-height', '0%');
+        let title = "<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alert</span></span>";
+
+        $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({autoOpen: false}).dialog('widget').
+        find('.ui-dialog-title').html(title);
 
         $('.advanced-search-accordion').accordion({
           autoHeight: false,
