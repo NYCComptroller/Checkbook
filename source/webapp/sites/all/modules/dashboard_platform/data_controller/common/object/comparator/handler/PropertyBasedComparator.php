@@ -97,7 +97,7 @@ abstract class __PropertyBasedComparator_AbstractSortingConfiguration extends Ab
 
 
 
-        if ($directionalPropertyName{0} == self::$SORT_DIRECTION_DELIMITER__DESCENDING) {
+        if ($directionalPropertyName[0] == self::$SORT_DIRECTION_DELIMITER__DESCENDING) {
             $isSortAscending = FALSE;
             $propertyName = substr($propertyName, 1);
             if (isset($sortSourceByNull)) {
@@ -108,7 +108,7 @@ abstract class __PropertyBasedComparator_AbstractSortingConfiguration extends Ab
                 }
             }
         }
-        else if($directionalPropertyName{0} !== self::$SORT_DIRECTION_DELIMITER__DESCENDING) {
+        else if($directionalPropertyName[0] !== self::$SORT_DIRECTION_DELIMITER__DESCENDING) {
             if (isset($sortSourceByNull)) {
                 foreach ($sortSourceByNull as $value) {
                     if ($value == $propertyName) {
