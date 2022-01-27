@@ -100,6 +100,10 @@ function data_controller_dc_datasource_operator() {
         'description' => t('Not Empty'),
         'handler' => array(
             'classname' => 'NotEmptyOperatorHandler'));
+  $items[NotEmptyStringOperatorHandler::$OPERATOR__NAME] = array(
+        'description' => t('Not Empty'),
+        'handler' => array(
+        'classname' => 'NotEmptyStringOperatorHandler'));
 
     // value-based operators
     $items[EqualOperatorHandler::$OPERATOR__NAME] = array(
