@@ -23,8 +23,6 @@ dependencies[] = data_controller
 dependencies[] = custom_number_formatter
 dependencies[] = checkbook_services
 
-scripts[] = js/agencies-vendors.js
-scripts[] = js/year_select_redirection.js
 scripts[] = js/contracts.js
 scripts[] = js/transactions.js
 scripts[] = js/cookie_breadcrumbs.js

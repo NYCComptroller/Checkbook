@@ -1,13 +1,6 @@
 jQuery(document).ready(function ($) {
     //New Features Menu
     $('#nice-menu-1 li.menu-path-node-975 a').addClass('gridpopup');
-    $.ajax({
-        url: '/new-features/get_status',
-        success: function (data) {
-            if (data !== null)
-                setNewFeaturesMenuColor(data.toString());
-        }
-    });
     $("#new_features").click(function () {
         var status = '';
         if ($("#new_features").val() === 'Enable New Features Link')
