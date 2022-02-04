@@ -29,19 +29,6 @@ function checkbook_project_menu(){
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
-    $items['publish-new-features'] = array(
-        'page callback' => '_checkbook_publish_new_features',
-        'access callback' => true,
-        'page arguments' => array(),
-        'type'=>MENU_CALLBACK
-    );
-
-    $items['new-features/%'] = array(
-        'page callback' => '_checkbook_publish_new_features',
-        'access callback' => true,
-        'page arguments' => array(1),
-        'type'=>MENU_CALLBACK
-    );
     return $items;
 }
 
@@ -397,14 +384,12 @@ function checkbook_project_theme($existing, $type, $theme, $path){
           'arguments' => array('node' => NULL)
         ),
 
-
     	//Generic Grid views template.
 		// contracts
 	    	'chart_grid_view' => array(
 	    		'template' => 'gridview/chart_grid_view',
 	    		'arguments' => array('node' => NULL)
 	    	),
-
 
         // Contracts Templates
         'contracts_nyc_totals' => array(
@@ -584,38 +569,10 @@ function checkbook_project_theme($existing, $type, $theme, $path){
     );
 }
 
-function checkbook_project_block_info(){
-  $blocks = array();
-  $blocks['trends-date-filter'] = array(
-    'info'=>'Featured Trends Date Filter',
-    'cache'=>DRUPAL_CACHE_GLOBAL
-  );
-  $blocks['domain-navigation'] = array(
-    'info' => 'Domain Navigation',
-    'cache' => DRUPAL_CACHE_PER_PAGE
-  );
-  return $blocks;
-}
-
 function startsWith($haystack, $needle) {
   $length = strlen($needle);
   return (substr($haystack, 0, $length) === $needle);
 }
 
-function _checkbook_publish_new_features($status = null){
-    if(!isset($status)){
-        global $user;
-        if ($user->uid === "1") {
-            return theme('publish_new_features',array('access'=>TRUE));
-        }else{
-            return theme('publish_new_features',array('access'=>FALSE));
-        }
-    }else{
-        if($status != 'get_status'){
-            variable_set('new_features_status',$status);
-        }
-        drupal_json_output(variable_get('new_features_status'));
-    }
-}
 
 
