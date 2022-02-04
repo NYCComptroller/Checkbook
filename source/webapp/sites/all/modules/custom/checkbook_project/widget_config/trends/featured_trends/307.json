@@ -44,7 +44,7 @@
   "derivedColumns": {
     "fiscal_year_date": {"expression": "   $row['fiscal_year'] . '-1-1'" },
     "fiscal_year_utc": { "expression": "   strtotime($row['fiscal_year'] . '-1-1') * 1000"},
-    "capital_projects_color": {"expression": "checkbook_project_capital_project_color($row['amount'])"},
+    "capital_projects_color": {"expression":"($row['amount'] == 0) ? '#C4C4C4' : '#2C7C14'"},
     "mod_amount":{"expression":"$row['amount'] * 1000"}
   },
   "datasets": [
