@@ -47,6 +47,7 @@
     "fiscal_year_date": {"expression": "$row['fiscal_year'] . '-1-1'"},
     "fiscal_year_utc": { "expression": "strtotime($row['fiscal_year'] . '-1-1') * 1000"},
     "debt_color":{"expression": "checkbook_project_debt_color($row['total_primary_government'])"},
+    "debt_color":{"expression":"($row['total_primary_government'] == 0) ? '#C4C4C4' : '#0E76BD'"},
     "modified_govt":{"type":"expression2","expression":"$row['total_primary_government'] * 1000000"}
   },
   "datasets": [

@@ -18,9 +18,6 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-
-
 /**
  * Drupal Hook to alter menu items generated to add specific   ...
  * @param $path
@@ -36,8 +33,6 @@ function checkbook_project_url_outbound_alter(&$path, &$options, $original_path)
 	if(strpos($path, 'ctools') === 0) {
 		return true;
 	}
-
-
 	if(($path == 'spending_landing')  || ($path == 'spending/agencies')
         || ($path == 'spending/vendors') || ($path == 'mwbe_agency_grading')
         || ($path == 'mwbe_agency_grading/sub_vendor_data') || ($path == 'payroll')  || ($path == 'payroll/agency/%')){
@@ -108,30 +103,24 @@ function checkbook_project_menu(){
         'access callback' => true,
 	    'type'=>MENU_CALLBACK
   	);
-
     $items['gridview/popup/node/%node'] = array(
         'page callback' => '_checkbook_project_grid_view_popup',
         'page arguments' => array(3),
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
-
-
     $items['gridview/popup/widget/%widget'] = array(
     		'page callback' => '_checkbook_project_grid_view_widget_popup',
     		'page arguments' => array(3),
     		'access callback' => true,
     		'type'=>MENU_CALLBACK
     );
-
-
     $items['nodedisplay/node/%node'] = array(
         'page callback' => '_checkbook_project_node_display',
         'page arguments' => array(2),
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
-
     $items['publish-new-features'] = array(
         'page callback' => '_checkbook_publish_new_features',
         'access callback' => true,
@@ -145,12 +134,8 @@ function checkbook_project_menu(){
         'page arguments' => array(1),
         'type'=>MENU_CALLBACK
     );
-
-
     return $items;
 }
-
-
 
 /**
  * Hook to load custom project specific utility functions during bootstrap..
@@ -161,210 +146,6 @@ function checkbook_project_init(){
 	require_once(drupal_get_path("module","checkbook_project") . "/includes/checkbook_date.inc");
 	require_once(drupal_get_path("module","checkbook_project") . "/includes/checkbook_project.inc");
 	require_once(drupal_get_path("module","checkbook_project") . "/includes/checkbook_widget_process.inc");
-}
-
-function checkbook_project_block_info(){
-  $blocks = array();
-  $blocks['trends-date-filter'] = array(
-    'info'=>'Featured Trends Date Filter',
-    'cache'=>DRUPAL_CACHE_GLOBAL
-  );
-  $blocks['domain-navigation'] = array(
-    'info' => 'Domain Navigation',
-    'cache' => DRUPAL_CACHE_PER_PAGE
-  );
-  return $blocks;
-}
-
-function checkbook_project_block_configure($delta){
-  switch ($delta){
-    case 'domain-navigation':
-      $form['expense_node'] = array(
-        '#type'=>'textfield',
-        '#title'=>t('Expense NID'),
-        '#size'=>3,
-        '#default_value'=>variable_get('domain_nav_expense_nid','')
-      );
-      $form['expense_link'] = array(
-        '#type'=>'textfield',
-        '#title'=>t('Expense Link'),
-        '#default_value'=>variable_get('domain_nav_expense_link','')
-      );
-      $form['revenue_node'] = array(
-        '#type'=>'textfield',
-        '#title'=>t('Revenue NID'),
-        '#size'=>3,
-        '#default_value'=>variable_get('domain_nav_revenue_nid','')
-      );
-      $form['revenue_link'] = array(
-        '#type'=>'textfield',
-        '#title'=>t('Revenue Link'),
-        '#default_value'=>variable_get('domain_nav_revenue_link','')
-      );
-      $form['contracts_node'] = array(
-        '#type'=>'textfield',
-        '#title'=>t('Contracts NID'),
-        '#size'=>3,
-        '#default_value'=>variable_get('domain_nav_contracts_nid','')
-      );
-      $form['contracts_link'] = array(
-        '#type'=>'textfield',
-        '#title'=>t('Contracts Link'),
-        '#default_value'=>variable_get('domain_nav_contracts_link','')
-      );
-      $form['checks_node'] = array(
-        '#type'=>'textfield',
-        '#title'=>t('Checks NID'),
-        '#size'=>3,
-        '#default_value'=>variable_get('domain_nav_checks_nid','')
-      );
-      $form['checks_link'] = array(
-        '#type'=>'textfield',
-        '#title'=>t('Checks Link'),
-        '#default_value'=>variable_get('domain_nav_checks_link','')
-      );
-      $form['employees_node'] = array(
-        '#type'=>'textfield',
-        '#title'=>t('Employees NID'),
-        '#size'=>3,
-        '#default_value'=>variable_get('domain_nav_employees_nid','')
-      );
-      $form['employees_link'] = array(
-        '#type'=>'textfield',
-        '#title'=>t('Employees Link'),
-        '#default_value'=>variable_get('domain_nav_employees_link','')
-      );
-      $form['vendors_node'] = array(
-        '#type'=>'textfield',
-        '#title'=>t('Vendors NID'),
-        '#size'=>3,
-        '#default_value'=>variable_get('domain_nav_vendors_nid','')
-      );
-      $form['vendors_link'] = array(
-        '#type'=>'textfield',
-        '#title'=>t('Vendors Link'),
-        '#default_value'=>variable_get('domain_nav_vendors_link','')
-      );
-      break;
-  }
-  return $form;
-}
-
-function checkbook_project_block_save($delta = '', $edit = array()){
-  switch ($delta){
-    case 'domain-navigation':
-      variable_set('domain_nav_expense_nid',$edit['expense_node']);
-      variable_set('domain_nav_expense_link',$edit['expense_link']);
-      variable_set('domain_nav_revenue_nid',$edit['revenue_node']);
-      variable_set('domain_nav_revenue_link',$edit['revenue_link']);
-      variable_set('domain_nav_contracts_nid',$edit['contracts_node']);
-      variable_set('domain_nav_contracts_link',$edit['contracts_link']);
-      variable_set('domain_nav_checks_nid',$edit['checks_node']);
-      variable_set('domain_nav_checks_link',$edit['checks_link']);
-      variable_set('domain_nav_employees_nid',$edit['employees_nid']);
-      variable_set('domain_nav_employees_link',$edit['employees_link']);
-      variable_set('domain_nav_vendors_nid',$edit['vendors_node']);
-      variable_set('domain_nav_vendors_link',$edit['vendors_link']);
-      break;
-  }
-}
-
-function checkbook_project_block_view($delta){
-  switch ($delta){
-    case 'trends-date-filter':
-      $content['chartdatefrom'] = array(
-        '#type'=>'textfield',
-        '#size'=>4,
-        '#maxlength'=>4,
-        '#attributes'=>array('id'=>array('chartdatefrom'))
-      );
-      $content['chartdateto'] = array(
-        '#type'=>'textfield',
-        '#size'=>4,
-        '#maxlength'=>4,
-        '#attributes'=>array('id'=>array('chartdateto')),
-        '#title'=>t('to')
-      );
-      $content['button'] = array(
-        '#type'=>'button',
-        '#value'=>t('Filter'),
-        '#attributes'=>array('id'=>array('chartfilter'))
-      );
-      $content['#attached']['js'] = array(
-        drupal_get_path('module', 'checkbook_project') . '/js/featured-trends.js' => array('type'=>'file')
-      );
-      return array(
-        'subject'=>NULL,
-        'content'=>$content
-      );
-      break;
-    case 'domain-navigation':
-        return array(
-          'subject'=>NULL,
-          'content'=>_checkbook_project_domain_nav()
-        );
-      break;
-  }
-}
-
-function _checkbook_project_domain_nav(){
-  $expenserendered = _checkbook_project_output_node('expense');
-  $revenuerendered = _checkbook_project_output_node('revenue');
-  $contractsrendered = _checkbook_project_output_node('contracts');
-  $checksrendered = _checkbook_project_output_node('checks');
-  $employeesrendered = _checkbook_project_output_node('employees');
-  $vendorsrendered = _checkbook_project_output_node('vendors');
-  $block['links']['expense'] = array(
-    'title'=>$expenserendered,
-    'href'=>variable_get('domain_nav_expense_link'),
-    'html'=>TRUE
-  );
-  $block['links']['revenue'] = array(
-    'title'=>$revenuerendered,
-    'href'=>variable_get('domain_nav_revenue_link'),
-    'html'=>TRUE
-  );
-  $block['links']['contracts'] = array(
-    'title'=>$contractsrendered,
-    'href'=>variable_get('domain_nav_contracts_link'),
-    'html'=>TRUE
-  );
-  $block['links']['checks'] = array(
-    'title'=>$checksrendered,
-    'href'=>variable_get('domain_nav_checks_link'),
-    'html'=>TRUE
-  );
-  $block['links']['employees'] = array(
-    'title'=>$employeesrendered,
-    'href'=>variable_get('domain_nav_employees_link'),
-    'html'=>TRUE
-  );
-  $block['links']['vendors'] = array(
-    'title'=>$vendorsrendered,
-    'href'=>variable_get('domain_nav_vendors_link'),
-    'html'=>TRUE
-  );
-  return theme('links', $block);
-}
-
-function _checkbook_project_output_node($domain){
-  $nid = variable_get('domain_nav_'.$domain.'_nid','');
-  if ($nid){
-    $node = node_load($nid);
-    $built = node_view($node);
-    $rendered = drupal_render($built['body']);
-    return $rendered;
-  } else {
-    return 'blank';
-  }
-}
-
-function checkbook_project_debt_color($value){
-  if ($value == 0){
-    return '#C4C4C4';
-  } else {
-    return '#0E76BD';
-  }
 }
 
 function _checkbook_publish_new_features($status = null){
