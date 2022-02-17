@@ -103,19 +103,6 @@ function checkbook_project_menu(){
     		'access callback' => true,
     		'type'=>MENU_CALLBACK
     );
-    $items['publish-new-features'] = array(
-        'page callback' => '_checkbook_publish_new_features',
-        'access callback' => true,
-        'page arguments' => array(),
-        'type'=>MENU_CALLBACK
-    );
-
-    $items['new-features/%'] = array(
-        'page callback' => '_checkbook_publish_new_features',
-        'access callback' => true,
-        'page arguments' => array(1),
-        'type'=>MENU_CALLBACK
-    );
     return $items;
 }
 
@@ -130,20 +117,5 @@ function checkbook_project_init(){
 	require_once(drupal_get_path("module","checkbook_project") . "/includes/checkbook_widget_process.inc");
 }
 
-function _checkbook_publish_new_features($status = null){
-    if(!isset($status)){
-        global $user;
-        if ($user->uid === "1") {
-            return theme('publish_new_features',array('access'=>TRUE));
-        }else{
-            return theme('publish_new_features',array('access'=>FALSE));
-        }
-    }else{
-        if($status != 'get_status'){
-            variable_set('new_features_status',$status);
-        }
-        drupal_json_output(variable_get('new_features_status'));
-    }
-}
 
 
