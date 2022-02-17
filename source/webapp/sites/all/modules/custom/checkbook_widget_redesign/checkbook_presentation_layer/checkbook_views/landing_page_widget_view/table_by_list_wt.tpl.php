@@ -106,12 +106,8 @@ else {
   ?>
   </tbody>
 </table>
-<?php if (!$node->widgetConfig->disableViewAll) { ?>
-<a class="view-all popup"
-   href="/checkbook/view_all_popup/node/<?= $node->nid ?>?refURL=<?= drupal_get_path_alias($_GET['q']) ?>">View All</a>
 <?php
-}
-if ($node->widgetConfig->deferredRendering == TRUE) {
+if($node->widgetConfig->deferredRendering == TRUE) {
   widget_data_tables_add_js_setting($node);
 }
 else {

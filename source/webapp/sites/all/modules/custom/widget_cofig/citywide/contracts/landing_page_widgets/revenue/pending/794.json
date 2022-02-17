@@ -37,7 +37,7 @@ return $adjustedParameters;
 "expression": "!MappingUtil::isMWBECertified(array($row['minority_type_minority_type'])) ? $row['mwbe_category_name']  : ('<a href=' . ContractUtil::getMWBECategoryLinkUrl($row['minority_type_minority_type']) . '>'. $row['mwbe_category_name'] .'</a>') "
 }
 },
-"disableViewAll":true,
+
 "footer":"
 $url = '/panel_html/contract_details/contract/transactions/contcat/revenue/contstatus/P';
 $url .= _checkbook_project_get_url_param_string('agency');

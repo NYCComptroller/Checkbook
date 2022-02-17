@@ -36,7 +36,7 @@ if($node->is_mwbe) $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_
       "expression": " number_format($row['total_contracts'])"
     }
 },
-"disableViewAll":true,
+
 "footer":"
 $url = '/panel_html/contract_details/contract/transactions/contcat/revenue'. _checkbook_project_get_url_param_string('status','contstatus');
 $url .= _checkbook_project_get_url_param_string('agency');

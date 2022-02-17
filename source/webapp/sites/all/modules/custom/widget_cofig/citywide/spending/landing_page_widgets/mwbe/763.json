@@ -50,7 +50,7 @@
         "check_amount_sum"
     ],
     "enableExpand":true,
-    "disableViewAll":true,
+
     "header":"
         $node->widgetConfig->getData=false;
         load_widget_data($node);

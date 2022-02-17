@@ -54,7 +54,7 @@
       "expression": "_get_tooltip_markup($row['pending_contract_purpose_pending_contract_purpose'],32)"
     }
 },
-"disableViewAll":true,
+
 "footer":"
 $url = ContractUtil::expenseContractsFooterUrl();
 $url .= '/doctype/MMA1~MA1';

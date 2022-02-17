@@ -43,7 +43,7 @@
       "expression": "_get_tooltip_markup($row['pending_contract_purpose_pending_contract_purpose'],35)"
     }
 },
-"disableViewAll":true,
+
 "getTotalDataCount":true,
 "header":"
 $node->widgetConfig->getData=false;

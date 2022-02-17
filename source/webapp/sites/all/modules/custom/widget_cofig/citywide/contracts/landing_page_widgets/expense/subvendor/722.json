@@ -72,7 +72,7 @@
         "expression": "_get_tooltip_markup($row['contract_purpose_contract_purpose'],26)"
     }
 },
-"disableViewAll":true,
+
 "header":"
     $node->widgetConfig->getData=false;
     load_widget_data($node);

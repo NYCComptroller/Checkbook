@@ -63,7 +63,7 @@
     }
 
 },
-"disableViewAll":true,
+
 "getTotalDataCount":true,
 "header":"
 $node->widgetConfig->getData=false;

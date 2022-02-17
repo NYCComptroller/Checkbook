@@ -40,7 +40,7 @@
         "ytd_spending_sub_vendors"
     ],
     "enableExpand":true,
-    "disableViewAll":true,
+
     "adjustParameters":"
 
         if(!$node->is_mwbe) {

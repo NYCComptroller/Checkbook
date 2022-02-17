@@ -91,18 +91,6 @@ function checkbook_project_tokens($type, $tokens, array $data = array(), array $
  * @return multitype:string boolean multitype:number
  */
 function checkbook_project_menu(){
-    $items['checkbook/view_all_popup/node/%node'] = array(
-        'page callback' => '_checkbook_project_view_all_popup',
-        'page arguments' => array(3),
-        'access callback' => true,
-	    'type'=>MENU_CALLBACK
-  	);
-     $items['checkbook/view_all_popup_data/node/%node'] = array(
-        'page callback' => '_checkbook_project_view_all_popup_data',
-        'page arguments' => array(3),
-        'access callback' => true,
-	    'type'=>MENU_CALLBACK
-  	);
     $items['gridview/popup/node/%node'] = array(
         'page callback' => '_checkbook_project_grid_view_popup',
         'page arguments' => array(3),
@@ -114,12 +102,6 @@ function checkbook_project_menu(){
     		'page arguments' => array(3),
     		'access callback' => true,
     		'type'=>MENU_CALLBACK
-    );
-    $items['nodedisplay/node/%node'] = array(
-        'page callback' => '_checkbook_project_node_display',
-        'page arguments' => array(2),
-        'access callback' => true,
-        'type'=>MENU_CALLBACK
     );
     $items['publish-new-features'] = array(
         'page callback' => '_checkbook_publish_new_features',

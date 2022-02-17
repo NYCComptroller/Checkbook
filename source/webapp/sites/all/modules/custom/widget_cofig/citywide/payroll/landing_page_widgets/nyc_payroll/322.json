@@ -10,7 +10,7 @@
 "noDataInitialLoad":true,
 "columns": ["agency.agency.agency_short_name", "agency.agency", "total_gross_pay", "total_overtime_employees", "total_overtime_pay", "year_type.year_type", "year.year","agency.agency.agency_name"],
 "limit":5,
-"disableViewAll":true,
+
 "enableExpand":true,
 "getTotalDataCount":true,
 "header":"

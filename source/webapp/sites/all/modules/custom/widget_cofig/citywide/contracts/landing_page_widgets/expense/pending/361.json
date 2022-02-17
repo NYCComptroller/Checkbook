@@ -48,7 +48,7 @@ $parameters['minority_type_id'] = 1000;
     }
 },
 "getTotalDataCount":true,
-"disableViewAll":true,
+
 "header":"
 $node->widgetConfig->getData=false;
 load_widget_data($node);
