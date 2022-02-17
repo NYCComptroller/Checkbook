@@ -16,7 +16,7 @@
 "enableExpand":true,
 "getTotalDataCount":true,
 "totalDataColumnConfig":{"distinctColumn":"document_id.document_id","distinctColumnMap":"document_id"},
-"disableViewAll":true,
+
 "header":"
 $node->widgetConfig->getData=false;
 load_widget_data($node);

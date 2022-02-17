@@ -52,7 +52,7 @@ return $adjustedParameters;
 "expression": "ContractUtil::getMWBECategory($node,$row)"
 }
 },
-"disableViewAll":true,
+
 "getTotalDataCount":true,
 "totalDataColumnConfig":
 {

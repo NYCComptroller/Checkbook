@@ -11,7 +11,7 @@
     "columns": ["employee.employee","agency.agency.agency_name", "agency.agency", "agency.agency.agency_short_name","employee_number.employee_number", "civil_service_title.civil_service_title", "civil_service_title_code.civil_service_title_code", "max_annual_salary", "total_gross_pay", "total_base_salary", "total_other_payments", "total_overtime_amount", "year_type.year_type", "year.year", "employment_type.employment_type"],
     "limit":5,
     "orderby":"max_annual_salary",
-    "disableViewAll":true,
+
     "enableExpand":true,
     "getTotalDataCount":true,
     "totalDataColumnConfig":

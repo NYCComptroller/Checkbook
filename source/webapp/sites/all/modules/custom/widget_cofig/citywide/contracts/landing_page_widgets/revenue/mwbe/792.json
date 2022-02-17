@@ -52,7 +52,7 @@ return $adjustedParameters;
 "expression": "!MappingUtil::isMWBECertified(array($row['minority_type_minority_type'])) ? $row['mwbe_category_name']  : ('<a href=' . ContractUtil::getMWBECategoryLinkUrl($row['minority_type_minority_type']) . '>'. $row['mwbe_category_name'] .'</a>') "
 }
 },
-"disableViewAll":true,
+
 "getTotalDataCount":true,
 "header":"
 $node->widgetConfig->getData=false;

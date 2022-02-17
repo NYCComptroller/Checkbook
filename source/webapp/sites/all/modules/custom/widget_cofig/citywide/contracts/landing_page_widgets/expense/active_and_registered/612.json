@@ -41,7 +41,7 @@
       "expression": " number_format($row['total_contracts'])"
     }
 },
-"disableViewAll":true,
+
 "footer":"
 $url = '/panel_html/contract_details/contract/transactions/contcat/expense' . _checkbook_project_get_url_param_string('status','contstatus');
 $url .= _checkbook_append_url_params();

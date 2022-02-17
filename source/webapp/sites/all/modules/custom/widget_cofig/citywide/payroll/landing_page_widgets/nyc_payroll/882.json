@@ -12,7 +12,6 @@
 "limit":5,
     "useList":true,
 "orderby":"total_annual_salary",
-"disableViewAll":true,
 "enableExpand":true,
 "getTotalDataCount":true,
 "header":"

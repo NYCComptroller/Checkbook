@@ -1,7 +1,7 @@
 {
 "widgetType": "data_tables",
 "widgetSubType":"ajaxSimple",
-"disableViewAll":true,
+
 "enableExpand":true,
 "getTotalDataCount":true,
 "no_results_content":"No Results Found",

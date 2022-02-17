@@ -33,7 +33,7 @@
         "minority_type_id"
     ],
     "enableExpand":true,
-    "disableViewAll":true,
+
     "adjustParameters":"
 
         $yearType = $parameters['year_type'][0];

@@ -40,7 +40,7 @@ return $adjustedParameters;
 "expression": " number_format($row['total_contracts'])"
 }
 },
-"disableViewAll":true,
+
 "getTotalDataCount":true,
 "header":"
 $node->widgetConfig->getData=true;

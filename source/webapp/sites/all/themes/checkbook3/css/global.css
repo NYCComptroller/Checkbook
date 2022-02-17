@@ -3729,14 +3729,10 @@ p.pieCount {
 ********************************/
 
 /** Styles for 'New Features' in the main menu **/
-#nice-menu-1 li.menu-path-node-975 a.enabled{
+#nice-menu-1 li.menu-path-node-975 a{
     color:#389be2;
 }
 
-#nice-menu-1 li.menu-path-node-975 a.disabled{
-    /*color:#808080;*/
-    color:#389be2;
-}
 #nice-menu-1 li.menu-path-node-975 a:hover,
 #nice-menu-1 li.menu-path-node-975 a.active{
     color: #2A639A;

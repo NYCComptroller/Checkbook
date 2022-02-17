@@ -33,7 +33,7 @@ $parameters['minority_type_id'] = 1000;
       "expression": " '$' . custom_number_formatter_format($row['current_amount_sum'],2)"
     }
 },
-"disableViewAll":true,
+
 "footer":"
 $url = '/panel_html/contract_details/contract/transactions/contcat/expense/contstatus/P';
 $url .= _checkbook_project_get_url_param_string('agency');

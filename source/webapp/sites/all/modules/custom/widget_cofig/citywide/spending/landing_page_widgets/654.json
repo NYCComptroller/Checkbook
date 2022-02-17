@@ -20,7 +20,7 @@
     "limit":5,
     "enableExpand":true,
     "getTotalDataCount":true,
-    "disableViewAll":true,
+
     "header":"
         $node->widgetConfig->getData=false;
         load_widget_data($node);

@@ -71,7 +71,7 @@
         "expression": "_get_tooltip_markup($row['contract_purpose_contract_purpose'],23)"
     }
 },
-"disableViewAll":true,
+
 "header":"
     if(_checkbook_check_isEDCPage()){
         unset($node->widgetConfig->limit);

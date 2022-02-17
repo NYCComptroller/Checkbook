@@ -10,7 +10,7 @@
     "noDataInitialLoad":true,
     "columns": ["employee.employee","agency.agency","civil_service_title.civil_service_title","civil_service_title_code.civil_service_title_code","employee_number.employee_number", "max_annual_salary", "total_gross_pay", "total_base_salary", "total_other_payments", "total_overtime_amount", "year_type.year_type", "year.year"],
     "limit":5,
-    "disableViewAll":true,
+
     "enableExpand":true,
     "getTotalDataCount":true,
     "totalDataColumnConfig":
