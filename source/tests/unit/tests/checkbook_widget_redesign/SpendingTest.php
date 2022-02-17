@@ -11,7 +11,11 @@ include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastr
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/constants/Constants.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/RequestUtil.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/util/CheckbookDateUtil.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_database.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_datafeeds.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_date.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_widget_process.inc';
 include_once CUSTOM_MODULES_DIR . '/custom_number_formatter/custom_number_formatter.module';
 
 use PHPUnit\Framework\TestCase;

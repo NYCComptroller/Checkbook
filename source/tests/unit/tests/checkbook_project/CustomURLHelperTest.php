@@ -1,6 +1,10 @@
 <?php
 
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_database.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_datafeeds.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_date.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_widget_process.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/util/CustomURLHelper.php';
 
 use PHPUnit\Framework\TestCase;
@@ -43,7 +47,7 @@ class CustomURLHelperTest extends TestCase
         $params = array(
             "status" => "status",
             "vendor" => "vendor",
-            "agency" => "agency", 
+            "agency" => "agency",
             "awdmethod" => "awdmethod",
             "cindustry" => "cindustry",
             "csize" => "csize"

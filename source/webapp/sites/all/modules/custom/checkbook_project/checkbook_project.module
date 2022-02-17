@@ -156,7 +156,11 @@ function checkbook_project_menu(){
  * Hook to load custom project specific utility functions during bootstrap..
  */
 function checkbook_project_init(){
+	require_once(drupal_get_path("module","checkbook_project") . "/includes/checkbook_database.inc");
+	require_once(drupal_get_path("module","checkbook_project") . "/includes/checkbook_datafeeds.inc");
+	require_once(drupal_get_path("module","checkbook_project") . "/includes/checkbook_date.inc");
 	require_once(drupal_get_path("module","checkbook_project") . "/includes/checkbook_project.inc");
+	require_once(drupal_get_path("module","checkbook_project") . "/includes/checkbook_widget_process.inc");
 }
 
 
@@ -902,49 +906,12 @@ function _checkbook_project_output_node($domain){
   }
 }
 
-function checkbook_project_general_fund_revenue_color($value){
-  if($value == 0){return '#C4C4C4';} else {return '#EB8E27';}
-}
-
-function checkbook_project_general_fund_expenditure_color($value){
-  if($value == 0){return '#C4C4C4';} else {return '#7DB7E5';}
-}
-
-function checkbook_project_property_tax_color($key,$value){
-  if ($value == 0){
-    return '#C4C4C4';
-  } else {
-    return '#FFC03D';
-  }
-}
-
-function checkbook_project_income_tax_color($value){
-  if ($value == 0){
-    return '#C4C4C4';
-  } else {
-    return '#FFDE15';
-  }
-}
-
-function checkbook_project_capital_project_color($value){
-  if ($value == 0){
-    return '#C4C4C4';
-  } else {
-    return '#2C7C14';
-  }
-}
-
 function checkbook_project_debt_color($value){
   if ($value == 0){
     return '#C4C4C4';
   } else {
     return '#0E76BD';
   }
-}
-
-function startsWith($haystack, $needle) {
-  $length = strlen($needle);
-  return (substr($haystack, 0, $length) === $needle);
 }
 
 function _checkbook_publish_new_features($status = null){
