@@ -17,9 +17,6 @@
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-?>
-<div class="grid">
-  <?php if(!preg_match("/print/",$_GET['original_q'])){?>
-    <span class="grid_export" exportid="<?= $node->nid ?>">Export</span>
-  <?php }?>
-</div>
+
+$title = _get_spending_breadcrumb_title_drilldown();
+$domain = 'Spending';
