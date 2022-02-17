@@ -2,7 +2,11 @@
 
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/constants/CommonConstants.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/constants/Constants.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_database.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_datafeeds.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_date.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_widget_process.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/util/CheckbookDateUtil.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/RequestUtil.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/utilities/RequestUtilities.php';
@@ -15,7 +19,7 @@ use PHPUnit\Framework\TestCase;
  * Class VendorServiceTest
  */
 class VendorServiceTest extends TestCase
-{   
+{
 
     /**
      * Tests getSubVendorAmount() function
@@ -31,7 +35,7 @@ class VendorServiceTest extends TestCase
     public function test_getVendorIdByName(){
         $result = VendorService::getVendorIdByName("WHERE TO GET IT SERVICES LLC");
         $this->assertEquals(129113, $result[0]);
-    } 
+    }
 
     /**
      * Tests getAllVendorMinorityTypesByYear() function

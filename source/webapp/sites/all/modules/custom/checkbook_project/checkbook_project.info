@@ -29,6 +29,12 @@ scripts[] = js/contracts.js
 scripts[] = js/transactions.js
 scripts[] = js/cookie_breadcrumbs.js
 
+files[] = includes/checkbook_database.inc;
+files[] = includes/checkbook_datafeeds.inc;
+files[] = includes/checkbook_date.inc;
+files[] = includes/checkbook_project.inc;
+files[] = includes/checkbook_widget_process.inc;
+
 files[] = customclasses/constants/Constants.php
 files[] = customclasses/masterAgreementDetails.php
 files[] = customclasses/childAgreementDetails.php
@@ -55,3 +61,5 @@ files[] = customclasses/budget/NychaBudgetUtil.php
 files[] = customclasses/revenue/NychaRevenueUtil.php
 files[] = customclasses/revenue/RevenueUtil.php
 files[] = customclasses/AgencyList.php
+
+

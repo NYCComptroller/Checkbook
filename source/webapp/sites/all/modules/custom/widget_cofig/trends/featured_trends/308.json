@@ -31,7 +31,7 @@
   "derivedColumns": {
     "fiscal_year_date": {"expression": "$row['fiscal_year'] . '-1-1'"},
     "fiscal_year_utc": {"expression": "strtotime($row['fiscal_year_fiscal_year'] . '-1-1') * 1000"},
-    "income_color":{"expression":"checkbook_project_income_tax_color($row['income_or_population'])"},
+    "income_color":{"expression":"($row['income_or_population'] == 0) ? '#C4C4C4' : '#FFDE15'"},
     "mod_amount":{ "expression":"$row['income_or_population'] * 1000"}
   },
   "datasets": [

@@ -2,7 +2,11 @@
 
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/constants/CommonConstants.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/constants/Constants.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_database.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_datafeeds.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_date.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_widget_process.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/util/CheckbookDateUtil.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/RequestUtil.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/utilities/RequestUtilities.php';
@@ -16,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  * Class SubVendorServiceTest
  */
 class SubVendorServiceTest extends TestCase
-{   
+{
     /**
      * Tests getLatestMinorityType() function
      */
@@ -41,12 +45,12 @@ class SubVendorServiceTest extends TestCase
         $result = SubVendorService::getVendorCode(129113);
         $this->assertEquals("VC00153345", $result);
     }
-    
+
     /**
      * Tests getVendorCode() function
      */
     public function test_getVendorIdByName(){
         $result = SubVendorService::getVendorIdByName("WHERE TO GET IT SERVICES LLC");
         $this->assertEquals(129113, $result);
-    }    
+    }
 }

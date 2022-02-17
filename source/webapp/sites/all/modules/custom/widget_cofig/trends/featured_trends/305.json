@@ -43,8 +43,8 @@
   "derivedColumns": {
     "fiscal_year_date": {"expression": "$row['fiscal_year'] . '-1-1'"},
     "fiscal_year_utc": {"expression": "strtotime($row['fiscal_year'] . '-1-1') * 1000"},
-    "fiscal_year_color": {"expression": "checkbook_project_property_tax_color($row['fiscal_year'],$row['collected_amount']);"}
-  },
+    "fiscal_year_color":{"expression":"($row['collected_amount'] == 0) ? '#C4C4C4' : '#FFC03D'"}
+},
   "datasets": [
     {
       "name": "amount",

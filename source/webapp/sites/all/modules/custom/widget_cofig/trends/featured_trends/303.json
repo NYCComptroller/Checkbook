@@ -56,8 +56,8 @@
     "derivedColumns": {
         "fiscal_year_date": {"expression": "$row['fiscal_year'] . '-1-1'" },
         "fiscal_year_utc":{"expression":"strtotime($row['fiscal_year'] . '-1-1') * 1000" },
-        "revenue_color":{"expression":"checkbook_project_general_fund_revenue_color($row['revenue_amount'])"},
-        "expenditure_color":{"expression":"checkbook_project_general_fund_expenditure_color($row['expenditure_amount'])"},
+        "revenue_color":{"expression":"($row['revenue_amount'] == 0) ? '#C4C4C4':'#EB8E27'"},
+        "expenditure_color":{"expression":"($row['expenditure_amount'] == 0) ? '#C4C4C4' : '#7DB7E5'"},
         "modified_exp_amt":{ "expression":"$row['expenditure_amount'] * 1000"},
         "modified_rev_amt":{"expression":"$row['revenue_amount'] * 1000"}
     },
