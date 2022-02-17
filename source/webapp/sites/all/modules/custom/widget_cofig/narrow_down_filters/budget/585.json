@@ -1,0 +1,24 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":277,
+    "startWith":0,
+    "maxSelect":5,
+    "limit":100,
+    "columns":["dept_code.dept_code", "department_name.department_name", "txcount"],
+    "orderBy":"-txcount",    
+    "filterName":"Department",
+    "urlParameterName":"dept",
+    "autocompleteParamName":"dept_auto", 
+    "facetPager":true,
+    "autocompleteID":"fdept",
+    "autocompleteField":"department_name",
+    "adjustParameters":"
+        //$parameters = BudgetUtil::adjustBudgetCodeNameParameter($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        $adjustedParameters['dept_code.dept_code'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    ",   
+    "template":"individual_filter"
+}

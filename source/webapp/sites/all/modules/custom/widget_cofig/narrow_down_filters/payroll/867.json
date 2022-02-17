@@ -1,0 +1,36 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":317,
+    "startWith":0,
+    "maxSelect":5,
+    "autocomplete":false,
+    "filterName":"Overtime Payment",
+    "urlParameterName":"overtimepayment",
+    "urlParameterType":"rangeid3",
+    "showAllRecords":true,
+    "autocompleteID":"fovertimePayment",
+    "dataset": "checkbook:payroll_ranged_data",
+    "columns":["overtime_pay_g250k_count", "overtime_pay_g101k_le250k_count", "overtime_pay_g51k_le100k_count", "overtime_pay_ge20k_le50k_count", "overtime_pay_less20k_count"],
+    "urlParamMap":{
+        "title":"civil_service_title_code",
+        "grosspayytd":"gross_pay",
+        "annualsalary":"annual_salary",
+        "overtimepayment":"overtime_pay"
+    },
+    "orderBy":"",
+    "adjustParameters":"
+        $monthId = RequestUtilities::getRequestParamValue('month');
+        $datasource = RequestUtilities::getRequestParamValue('datasource');
+    if(isset($monthId) && $datasource=='checkbook_nycha' ){
+        $node->widgetConfig->dataset = 'checkbook_nycha:payroll_employee_agency_month_basis';
+    }
+    else if(isset($monthId)){
+        $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+    }
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

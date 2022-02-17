@@ -1,0 +1,42 @@
+{
+	"widgetType": "data_tables",
+	"widgetSubType":"template",
+        "template":"trends_personal_income_tax_revenues",
+"defaultParameters":{"display_yn":"Y"},
+        "useList":true,
+	"no_results_content":"No Results Found",
+	"dataset": "checkbook:trends_personal_income",
+	"columns": ["fips","area","income_or_population","fiscal_year","highlight_yn","indentation_level","display_order"],
+       "orderBy":"display_order",
+"derivedColumns": {
+	"amount": {
+	      "expression": "$row['income_or_population']"
+	}
+},
+	"table_title":"",
+
+	"dataTableOptions":{
+        "bFilter": false,
+        "bPaginate": false,
+        "bLengthChange": false,
+        "bInfo": false,
+         "bSort":false,
+       	 "sScrollX": "100%",
+ 	 "bScrollCollapse": false,
+         "sScrollXInner": "4325px",
+         "bScrollCollapse": true,
+         "bAutoWidth": false,
+        "fnPreDrawCallback":"##function( oSettings ) {
+            jQuery('.trendsShowOnLoad').show();
+            return true;
+        }##",
+        "aoColumnDefs": [
+                {"sWidth": "120px", "aTargets": ["_all"]},
+                {"sWidth": "25px", "aTargets": [-1]}
+        ]
+       },
+      "customJS":"new FixedColumns( oTable, {
+ 		\"iLeftColumns\": 2,
+		\"iLeftWidth\": 150
+ 	} );"
+}

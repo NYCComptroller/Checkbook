@@ -1,0 +1,35 @@
+{
+	"widgetType": "data_tables",
+	"widgetSubType":"template",
+        "template":"trends_no_of_city_employees",
+        "useList":true,
+"defaultParameters":{"display_yn":"Y"},
+	"no_results_content":"No Results Found",
+	"dataset": "checkbook:trends_numberofcityemployees",
+	"columns": ["category","amount", "amount_display_type", "fiscal_year","highlight_yn","indentation_level","display_order"],
+       "orderBy":"display_order",
+	"table_title":"",	
+	"dataTableOptions":{
+     
+        "bFilter": false,
+        "bPaginate": false,
+        "bLengthChange": false,        
+        "bInfo": false,
+         "bSort":false,
+         "bScrollCollapse": true,
+         "sScrollX": "100%",
+       "sScrollY": "380px",
+        "fnPreDrawCallback":"##function( oSettings ) {
+            jQuery('.trendsShowOnLoad').show();
+            return true;
+        }##",
+        "aoColumnDefs": [
+            {"sWidth": "55px", "aTargets": ["number"]},
+            {"sWidth": "30px", "aTargets": ["_all"]},
+            {"sWidth": "25px", "aTargets": [-1]}
+        ]
+       },
+      "customJS":"new FixedColumns( oTable, {
+ 		\"iLeftColumns\": 1,
+		\"iLeftWidth\": 225 	} );"
+}

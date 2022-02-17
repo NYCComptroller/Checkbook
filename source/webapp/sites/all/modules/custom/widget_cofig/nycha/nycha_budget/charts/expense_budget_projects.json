@@ -1,0 +1,147 @@
+{
+  "widgetType":"highcharts",
+  "widgetSubType":"ajaxSimple",
+  "header":"
+  $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+  $header .= ChartUtil::generateWidgetGridViewLink($node);
+  return $header;
+  ",
+  "gridConfig":{
+    "template":"highchart_nycha_budget_projects_grid_view",
+    "html_class":"chart-grid-view-table",
+    "table_columns": [
+      {
+        "labelAlias": "project",
+        "column": "gl_project_description_gl_project_description",
+        "sortColumn": "gl_project_description_gl_project_description"
+      },
+      {
+        "colLabel": "committed",
+        "column": "budget_committed",
+        "eval":true
+      },
+      {
+        "colLabel": "remaining",
+        "column": "budget_remaining",
+        "eval":true
+      }
+    ]
+  },
+  "dataset":"checkbook_nycha:budget",
+  "columns":[
+    "year_id.year_id",
+    "gl_project_id.gl_project_id",
+    "gl_project_description.gl_project_description",
+    "budget_committed",
+    "budget_remaining"
+  ],
+  "orderBy":"-budget_committed",
+  "limit": 10,
+  "defaultParameters":{
+    "year_id.year_id":119
+  },
+  "cleanURLParameters":[
+    "year",
+    "expcategory",
+    "program",
+    "respcenter",
+    "fundsrc"
+  ],
+  "urlParamMap":{
+    "year":"year_id.year_id",
+    "expcategory": "expenditure_type_id.expenditure_type_id",
+    "program": "program_phase_id.program_phase_id",
+    "respcenter" : "responsibility_center_id.responsibility_center_id",
+    "fundsrc": "funding_source_id.funding_source_id"
+  },
+  "adjustParameters":"
+  if(function_exists('_checkbook_project_applyParameterFilters')){
+  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+$adjustedParameters['gl_project_id.gl_project_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+$adjustedParameters['gl_project_description.gl_project_description'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotWildcardOperatorHandler::$OPERATOR__NAME, 'No Project Assigned',FALSE,TRUE);
+return $adjustedParameters;
+",
+  "transformationPHP":"
+  $landing_page =  '/' .  current_path()  ;
+  $allZero = TRUE;
+  foreach ($node->data as $row) {
+  if (abs($row['budget_committed']) > 0){$allZero = FALSE;}
+if (abs($row['budget_remaining']) > 0){$allZero = FALSE;}
+$exp = $node->widgetConfig->requestParams['expenditure_type_id.expenditure_type_id'];
+$prog = $node->widgetConfig->requestParams['program_phase_id.program_phase_id'];
+$fundsrc = $node->widgetConfig->requestParams['funding_source_id.funding_source_id'];
+$resp = $node->widgetConfig->requestParams['responsibility_center_id.responsibility_center_id'];
+if(($exp != null) && ($prog != null) && ($resp!= null) && ($fundsrc != null)){
+$url = null;
+}
+else{
+$url = $landing_page .  '/project/' . $row['gl_project_id_gl_project_id'];
+}
+$categories[] = html_entity_decode($row['gl_project_description_gl_project_description'],ENT_QUOTES);
+$committed_data[] = array('name' => html_entity_decode($row['gl_project_description_gl_project_description'],ENT_QUOTES), 'y' => $row['budget_committed'], 'url' => $url);
+$remaining_data[] = array('name' => html_entity_decode($row['gl_project_description_gl_project_description'],ENT_QUOTES), 'y' => $row['budget_remaining'], 'url' => $url);
+}
+if($allZero){$node->totalDataCount = 0;}
+$node->widgetConfig->chartTitle = 'Top Ten Projects by Expense Budget';
+$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+if($url){
+$cursor = 'pointer';
+} else {
+$cursor = null;
+}
+$node->widgetConfig->chartConfig->plotOptions->series->cursor = $cursor;
+$node->widgetConfig->chartConfig->series = array(array('name' => 'Committed', 'data' => $committed_data),array('name' => 'Remaining', 'data' => $remaining_data));
+return $node->data;
+",
+"chartConfig":{
+"chart":{
+"defaultSeriesType":"column"
+},
+"legend":{
+"align":"left",
+"verticalAlign":"bottom"
+},
+"xAxis":{
+"categories":[]
+},
+"yAxis":{
+"title":{
+"text":""
+},
+"labels":{
+"function":"yAxisFormatter"
+}
+},
+"tooltip":{
+"function":"budgetTooltip"
+},
+"plotOptions":{
+"column":{
+"minPointLength":3,
+"pointWidth":17
+},
+"series":{
+"cursor":"pointer",
+"point":{
+"events":{
+"function":"clickEvent"
+}
+}
+}
+},
+"series":[],
+"title":{
+"text":""
+}
+}
+}
+<function>
+yAxisFormatter^^"formatter" : function(){return yAxisLabelFormatter(this);}##
+budgetTooltip^^"formatter" : function() {return 'Project: '+this.point.name + '<br>Amount: ' + abbrNum(this.y, 2, '$')}##
+clickEvent^^"click": function(){
+if (this.options.url){
+location.href = this.options.url
+}
+}
+</function>

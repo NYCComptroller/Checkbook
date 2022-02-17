@@ -1,0 +1,40 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":707,
+    "columns":[ "deptnm.deptnm", "txcount"],
+    "orderBy":"-txcount",
+    "limit":100,
+    "maxSelect":5,
+	"facetPager":true,
+    "filterName":"Department",
+    "urlParameterName":"deptnm",
+    "urlParameterNameType":"eqtext",
+    "autocompleteParamName":"deptnm_auto",
+    "autocompleteID":"fdeptNm",
+    "autocompleteField":"disb_department_short_name",
+    "urlParamMap":{
+				"doctype":"document_code.document_code.document_code"
+			  }  ,
+    "adjustParameters":"
+    if(isset($parameters['disb_vendor_type'])){
+        $parameters['disb_vendor_type'] = MappingUtil::getVendorTypeValue($parameters['disb_vendor_type']);
+    }
+	checkbook_faceted_search_adjust_param($node);
+    $year = $parameters['disb_fiscal_year_id'];
+    if(isset($year)){
+        $parameters['fiscal_year_id'] = $year;
+    }
+    if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
+        $parameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
+    }
+    //Adjust Certification parameters
+    $parameters = ContractUtil::adjustCertificationFacetParameters($node,$parameters);
+    $adjustedParameters = $parameters;
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+    return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

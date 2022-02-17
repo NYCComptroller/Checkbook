@@ -1,0 +1,102 @@
+{
+    "widgetType": "phpparser",
+    "no_results_content": "No Results Found",
+    "cleanURLParameters":["mwbe","year","calyear","agency","yeartype","awdmethod","vendor","csize","cindustry","magid"],
+    "preProcessParameters1":"
+    $url = filter_xss($_GET['q']);
+if(preg_match('/^contracts_pending/',$url) ){
+foreach($node->widgetConfig->cleanURLParameters as $key=>$value){
+if($value == 'vendor'){
+unset($node->widgetConfig->model->series[0]->seriesURLParamMap->vendor );
+unset($node->widgetConfig->model->series[1]->seriesURLParamMap->vendor );
+unset($node->widgetConfig->model->series[2]->seriesURLParamMap->vendor );
+unset($node->widgetConfig->model->series[3]->seriesURLParamMap->vendor );
+}
+}
+}
+",
+"model": {
+"join": {
+"method": "Union"
+},
+"series": [
+{
+"dataset": "checkbook:mwbe_contracts_coa_aggregates",
+"columns": [
+"current_amount_sum","total_contracts"
+],
+"seriesURLParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
+"allowedParams":["minority_type_id","fiscal_year_id","agency_id","type_of_year","award_method_id","award_size.award_size","industry_type_id","vendor_id"],
+"seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~MA1","contract_status.contract_status":"A"}
+},
+{
+"dataset": "checkbook:mwbe_contracts_coa_aggregates",
+"columns": [
+"current_amount_sum","total_contracts"
+],
+"seriesURLParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
+"allowedParams":["minority_type_id","fiscal_year_id","agency_id","type_of_year","award_method_id","award_size.award_size","industry_type_id","vendor_id"],
+"seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~MA1","contract_status.contract_status":"R"}
+},
+{
+"dataset": "checkbook:mwbe_contracts_coa_aggregates",
+"columns": [
+"current_amount_sum","total_contracts"
+],
+"seriesURLParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
+"allowedParams":["minority_type_id","fiscal_year_id","agency_id","type_of_year","award_method_id","award_size.award_size","industry_type_id","vendor_id"],
+"seriesDefaultParameters":{"document_code.document_code.document_code":"RCT1","contract_status.contract_status":"A"}
+},
+{
+"dataset": "checkbook:mwbe_contracts_coa_aggregates",
+"columns": [
+"current_amount_sum","total_contracts"
+],
+"seriesURLParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
+"allowedParams":["minority_type_id","fiscal_year_id","agency_id","type_of_year","award_method_id","award_size.award_size","industry_type_id","vendor_id"],
+"seriesDefaultParameters":{"document_code.document_code.document_code":"RCT1","contract_status.contract_status":"R"}
+},
+{
+"dataset": "checkbook:pending_contracts",
+"columns": [
+"total_contract_amount","current_amount_sum","total_contracts"
+],
+"seriesURLParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","awdmethod":"award_method_id.award_method_id","csize":"award_size.award_size","cindustry":"industry.industry"},
+"allowedParams":["minority_type_id","document_agency_id.document_agency_id","vendor.vendor","award_method_id.award_method_id","award_size.award_size","industry.industry"],
+"allowedParams2":[],
+"seriesDefaultParameters":{"document_code.document_code.document_code":"MMA1~MA1~MAR~CTA1~CT1~CTR","latest_flag":"Y"}
+},
+{
+"dataset": "checkbook:pending_contracts",
+"columns": [
+"total_contract_amount","current_amount_sum","total_contracts"
+],
+"seriesURLParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","awdmethod":"award_method_id.award_method_id","csize":"award_size.award_size","cindustry":"industry.industry"},
+"allowedParams":["minority_type_id","document_agency_id.document_agency_id","vendor.vendor","award_method_id.award_method_id","award_size.award_size","industry.industry"],
+"allowedParams2":[],
+"seriesDefaultParameters":{"document_code.document_code.document_code":"MMA1~MA1~MAR~CTA1~CT1~CTR"}
+},
+{
+"dataset": "checkbook:pending_contracts",
+"columns": [
+"total_contract_amount","current_amount_sum","total_contracts"
+],
+"seriesURLParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","awdmethod":"award_method_id.award_method_id","csize":"award_size.award_size","cindustry":"industry.industry"},
+"allowedParams":["minority_type_id","document_agency_id.document_agency_id","vendor.vendor","award_method_id.award_method_id","award_size.award_size","industry.industry"],
+"allowedParams2":[],
+"seriesDefaultParameters":{"document_code.document_code.document_code":"RCT1","latest_flag":"Y"}
+},
+{
+"dataset": "checkbook:pending_contracts",
+"columns": [
+"total_contract_amount","current_amount_sum","total_contracts"
+],
+"seriesURLParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","awdmethod":"award_method_id.award_method_id","csize":"award_size.award_size","cindustry":"industry.industry"},
+"allowedParams":["minority_type_id","document_agency_id.document_agency_id","vendor.vendor","award_method_id.award_method_id","award_size.award_size","industry.industry"],
+"allowedParams2":[],
+"seriesDefaultParameters":{"document_code.document_code.document_code":"RCT1"}
+}
+]
+},
+"template": "contracts_nyc_totals"
+}

@@ -1,0 +1,26 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":1012,
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowZeroValue":true,
+  "allowFacetDeselect":true,
+  "columns":["expenditure_type_code.expenditure_type_code","expenditure_type_description.expenditure_type_description", "txcount"],
+  "orderBy":["-txcount", "expenditure_type_description.expenditure_type_description"],
+  "facetPager":true,
+  "filterName":"Expense Category",
+  "urlParameterName":"expcategorycode",
+  "autocompleteParamName":"expcategorycode_auto",
+  "autocompleteID":"fExpcategorycode",
+  "autocompleteField":"expenditure_type_description",
+  "adjustParameters":"
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+    $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    $adjustedParameters['expenditure_type_description.expenditure_type_description'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+    return $adjustedParameters;
+  ",
+  "template":"individual_filter"
+}

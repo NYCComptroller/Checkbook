@@ -1,0 +1,6 @@
+{
+"widgetType": "phpparser",
+"noDataInitialLoad":true,
+"customDataHandlerClass":"pendingContractDetails",
+"template":"pending_contract_details"
+}

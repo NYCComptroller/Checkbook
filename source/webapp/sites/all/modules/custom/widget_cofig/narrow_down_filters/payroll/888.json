@@ -1,0 +1,30 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":886,
+    "startWith":0,
+    "maxSelect":5,
+    "autocomplete":false,
+    "filterName":"Annual Salary",
+    "urlParameterName":"annualsalary",
+    "urlParameterType":"rangeid3",
+    "showAllRecords":true,
+    "autocompleteID":"fannualSalary",
+    "defaultParameters":{"employment_type.employment_type" : "Salaried"},
+    "columns":["annual_salary_g250k_count_title", "annual_salary_g101k_le250k_count_title", "annual_salary_g51k_le100k_count_title", "annual_salary_ge20k_le50k_count_title", "annual_salary_less20k_count_title"],
+    "orderBy":"",
+    "adjustParameters":"
+        $monthId = RequestUtilities::getRequestParamValue('month');
+        if(isset($monthId)){
+            $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+        }
+        $agencyId = RequestUtilities::getRequestParamValue('agency');
+        if( isset($agencyId)){
+             $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_title';
+        }
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

@@ -1,0 +1,9 @@
+{
+    "widgetType": "phpparser",
+    "template":"payroll_nyc_payroll_summary",
+    "customDataHandlerClass":"payrollDetails",
+    "noDataInitialLoad":true
+}
+
+
+

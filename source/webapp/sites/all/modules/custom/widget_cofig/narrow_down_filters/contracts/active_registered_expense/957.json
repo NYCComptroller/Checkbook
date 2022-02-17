@@ -1,0 +1,28 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":939,
+    "autocomplete":false,
+    "no_results_content":"No Results Found",
+    "limit":10,
+    "startWith":0,
+    "maxSelect":5,
+    "columns":["sub_minority_type_id.sub_minority_type_id", "sub_minority_type_name.sub_minority_type_name", "count_sub_mwbe"],
+    "orderBy":"-count_sub_mwbe",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"Sub M/WBE Category",
+    "urlParameterName":"smwbe",
+    "autocompleteParamName":"mwbe_auto",
+    "autocompleteID":"fSubMinorityTypeId",
+    "autocompleteField":"sub_minority_type_name",
+    "allowZeroValue":true,
+    "adjustParameters":"
+        $parameters = ContractUtil::adjustActiveContractCommonParams($node, $parameters);
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+            return $adjustedParameters;
+        }
+        return $parameters;
+    ",
+    "template":"individual_filter"
+}

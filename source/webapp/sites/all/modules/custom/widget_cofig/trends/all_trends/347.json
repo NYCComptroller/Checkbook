@@ -1,0 +1,36 @@
+{
+	"widgetType": "data_tables",
+	"widgetSubType":"template",
+        "template":"trends_general_fund_expend_other_fin_sources",
+        "useList":true,
+       "defaultParameters":{"display_yn":"Y"},
+	"no_results_content":"No Results Found",
+	"dataset": "checkbook:trends_gen_fund_expenditure",
+	"columns": ["category","amount","fiscal_year","highlight_yn","indentation_level","display_order","amount_display_type"],
+       "orderBy":"display_order",
+	"table_title":"",
+	"dataTableOptions":{
+        "bFilter": false,
+        "bPaginate": false,
+        "bInfo": false,
+       "bSort":false,
+       "sScrollX": "100%",
+      "sScrollY": "400px",
+         "sScrollXInner": "2100px",
+         "bScrollCollapse": false,
+        "fnPreDrawCallback":"##function( oSettings ) {
+            jQuery('.trendsShowOnLoad').show();
+            return true;
+        }##",
+         "bAutoWidth": false,
+          "aoColumnDefs": [
+            {"sWidth": "100px", "aTargets": ["number"]},
+            {"sWidth": "30px", "aTargets": ["_all"]},
+            {"sWidth": "25px", "aTargets": [-1]}
+          ]
+       },
+      "customJS":"new FixedColumns( oTable, {
+ 		\"iLeftColumns\": 1,
+		\"iLeftWidth\": 350
+ 	} );"
+}

@@ -1,0 +1,465 @@
+{
+    "widgetType": "data_tables",
+    "widgetSubType": "dataTableList",
+    "cleanURLParameters":[
+        "mwbe_vendor","mwbe","doctype","agency","curamtr","enddate","regdate","cindustry","csize",
+        "contdesc","agrmnttype","agencyh","contnum","contnum_exact","aptpin","pin","awdmethod","curamt","startdate",
+        "vendortype","vendor","vendornm","vendornm_exact","fvendor","subcontstatus","subvendorstatus"
+    ],
+    "urlParamMap":{
+        "mwbe":"minority_type_id","doctype":"document_code@checkbook:ref_document_code","agency":"agency_id",
+        "curamtr":"maximum_contract_amount","contdesc":"description","agrmnttype":"agreement_type_id","agencyh":"agency_history_id",
+        "contnum":"contract_number","contnum_exact":"contract_number","aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id",
+        "curamt":"maximum_contract_amount","startdate":"effective_begin_date","enddate":"effective_end_date",
+        "regdate":"registered_date","cindustry":"industry_type_id","csize":"award_size_id",
+        "vendortype":"vendor_type","vendornm":"vendor_name","vendor":"vendor_id","vendornm_exact":"vendor_name","fvendor":"vendor_name",
+        "subcontstatus":"scntrc_status","subvendorstatus":"aprv_sta"
+    },
+    "allowRequestParams":["contstatus"],
+    "paramTypeConfig":{
+        "vendornm":"like","vendornm_exact":"eqignorecase","contdesc":"contains","contnum":"like","contnum_exact":"eqignorecase","aptpin":"like",
+        "pin":"like","curamt":"range","startdate":"range","enddate":"range","regdate":"range","curamtr":"rangeid"
+    },
+    "defaultParameters":{"latest_flag":"Y"},
+    "header":"
+    $header = NULL;
+    $header .= widget_data_tables_export_link($node);
+    return $header;
+    ",
+    "useList":true,
+    "getTotalDataCount":true,
+    "limit":"35",
+    "stickyHeader":true,
+    "noDataInitialLoad":true,
+    "html_class": "initiative-table",
+    "no_results_content":"No Results Found",
+    "dataset": "checkbook:all_agreement_transactions",
+    "uniqueSortColumn":"agreement_id",
+    "export_columns":["agreement_id"],
+    "columns": [
+        "prime_vendor_name",
+        "sub_contract_id",
+        "is_prime_or_sub",
+        "minority_type_id",
+        "minority_type_name",
+        "master_contract_number",
+        "master_agreement_id",
+        "has_children",
+        "contract_number",
+        "contract_original_agreement_id",
+        "agreement_id",
+        "description",
+        "document_version",
+        "original_contract_amount",
+        "maximum_contract_amount",
+        "original_contract_amount@checkbook:not_null_agreement_values",
+        "maximum_contract_amount@checkbook:not_null_agreement_values",
+        "rfed_amount",
+        "vendor_name",
+        "agency_name",
+        "vendor_id","agency_id",
+        "agreement_type_name",
+        "award_method_name",
+        "expenditure_object_names",
+        "effective_begin_date",
+        "effective_end_date",
+        "registered_date",
+        "brd_awd_no","tracking_number",
+        "master_agreement_yn",
+        "document_code@checkbook:ref_document_code",
+        "industry_type_name",
+        "scntrc_status",
+        "scntrc_status_name",
+        "aprv_sta",
+        "aprv_sta_name",
+        "is_women_owned",
+        "is_emerging"
+    ],
+    "caption":"",
+    "derivedColumns": {
+        "child_contrats_link":{
+            "expression": " ($row['has_children'] == 'Y') ? '<span id=dtl_expand class=\"toggler collapsed\"  magid=\"' . $row['contract_original_agreement_id'] . '\" '
+            . ( RequestUtilities::getRequestParamValue('contstatus') != '' ?  ('contstatus=\"' . RequestUtilities::getRequestParamValue('contstatus') . '\"' ) : '')
+            . (' mastercode=\"' . $row['document_code@checkbook:ref_document_code'] . '\"' )
+            . '></span>' : '' "
+        },
+        "contract_link": {
+            "expression": " '<a href=/contracts_landing'
+            . _checkbook_project_get_url_param_string('contstatus','status')
+            . _checkbook_project_get_year_url_param_string()
+            . '?expandBottomContURL=/panel_html/contract_transactions/contract_details/' . ( ($row['master_agreement_yn'] == 'Y' ? 'magid' : 'agid') . '/' . $row['contract_original_agreement_id'] ) .  '/doctype/' . $row['document_code@checkbook:ref_document_code']
+            .  ' >'. $row['contract_number'] . '</a>' "
+        },
+        "parent_contract_link": {
+            "expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : ContractURLHelper::prepareExpenseContractLink($row, $node, true, $row['contract_original_agreement_id']))"
+        },
+        "parent_contract_export":{
+            "expression": "(($row['master_agreement_yn'] == 'Y') ? 'N/A' : $row['master_contract_number'])"
+        },
+        "formatted_original_amount": {
+            "expression": "custom_number_formatter_basic_format($row['original_contract_amount@checkbook:not_null_agreement_values'])"
+        },
+        "formatted_current_amount": {
+            "expression": "custom_number_formatter_basic_format($row['maximum_contract_amount@checkbook:not_null_agreement_values'])"
+        },
+        "formatted_spent_to_date_sub_vendor": {
+            "expression": "
+            '<a href=\"/spending/search/transactions'
+            .  (($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['agreement_id'])
+            .  _checkbook_project_get_year_url_param_string(true)
+            .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['rfed_amount']) . '</a>'
+            "
+        },
+        "formatted_spent_to_date_prime_vendor": {
+            "expression": "
+            '<a href=\"/spending/search/transactions'
+            .  (($row['master_agreement_yn'] == 'Y' ? '/magid/' : '/agid/') . $row['contract_original_agreement_id'])
+            .  _checkbook_project_get_year_url_param_string(true)
+            .  '/newwindow\" class=\"new_window\">'. custom_number_formatter_basic_format($row['rfed_amount']) . '</a>'
+            "
+        },
+        "formatted_spent_to_date": {
+            "expression": "($row['is_prime_or_sub'] == 'P') ? $row['formatted_spent_to_date_prime_vendor'] : $row['formatted_spent_to_date_sub_vendor']"
+        },
+        "vendor_formatted": {
+            "expression": "_get_tooltip_markup($row['vendor_name'],30)"
+        },
+        "vendor_name_link": {
+            "expression": " '<a href=\"/contracts_landing'
+            . ContractUtil::get_contract_vendor_minority_category($row['vendor_id'], null, null, null, $row['is_prime_or_sub'])
+            .  '?expandBottomCont=true\">'. $row['vendor_formatted'] . '</a>'  "
+        },
+        "agency_formatted": {
+            "expression": "_get_tooltip_markup($row['agency_name'],30)"
+        },
+        "agency_name_link": {
+            "expression": " '<a href=\"/contracts_landing'
+            .  _checkbook_project_get_year_url_param_string()
+            .  _checkbook_project_get_url_param_string(\"contstatus\",\"status\")
+            . '/agency/' . $row['agency_id']
+            .  '?expandBottomCont=true\">'. $row['agency_formatted'] . '</a>'  "
+        },
+        "purpose_formatted": {
+            "expression": "_get_tooltip_markup($row['description'],36)"
+        },
+        "expense_cat_formatted": {
+            "expression": "_get_tooltip_markup($row['expenditure_object_names'],36)"
+        },
+        "expense_cat": {
+            "expression":"($row['is_prime_or_sub'] == 'S') ? '' : $row['expense_cat_formatted']"
+        },
+        "expense_cat_export": {
+            "expression":"($row['is_prime_or_sub'] == 'S') ? '' : $row['expenditure_object_names']"
+        },
+            "award_method_formatted": {
+            "expression": "_get_tooltip_markup($row['award_method_name'],36)"
+        },
+            "contract_type_formatted": {
+            "expression": "_get_tooltip_markup($row['agreement_type_name'],36)"
+        },
+        "industry_name_formatted": {
+            "expression": "_get_tooltip_markup($row['industry_type_name'],36)"
+        },
+        "mwbe_category_name_formatted": {
+            "expression":"MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
+        },
+        "mwbe_category_name": {
+            "expression": "ContractUtil::get_mwbe_category_url($row['minority_type_id'], $row['is_prime_or_sub'], $row['document_code@checkbook:ref_document_code'])"
+        },
+        "is_sub_vendor": {
+            "expression": "($row['is_prime_or_sub'] == 'P')?'No':'Yes'"
+        },
+        "associated_prime_vendor_name":{
+            "expression":"($row['is_prime_or_sub'] == 'S') ? _get_tooltip_markup($row['prime_vendor_name'], 34) : 'N/A'"
+        },
+        "associated_prime_vendor_name_export":{
+            "expression":"($row['is_prime_or_sub'] == 'S') ? $row['prime_vendor_name'] : 'N/A'"
+        },
+        "subvendor_status":{
+            "expression": "($row['scntrc_status_name'] == 'N/A' || $row['scntrc_status_name'] == NULL) ? 'N/A' : $row['scntrc_status_name']"
+        },
+        "subvendor_status_pip":{
+            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : _get_tooltip_markup($row['aprv_sta_name'],36)"
+        },
+        "subvendor_status_pip_export":{
+            "expression": "($row['aprv_sta_name'] == 'N/A' || $row['aprv_sta_name'] == NULL) ? 'N/A' : $row['aprv_sta_name']"
+        },
+        "sub_contract_reference_id":{
+            "expression": "($row['sub_contract_id'] == '' || $row['sub_contract_id'] == NULL) ? 'N/A' : $row['sub_contract_id']"
+        }
+    },
+    "skipCustomPadding":true,
+    "table_columns": [
+    {"label": "<div></div>","colLabel": "","column": "child_contrats_link","export":false},
+    {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
+    {"labelAlias":"contract_includes_sub","column":"subvendor_status","sortSourceColumn":"scntrc_status_name","exportColumn":"subvendor_status"},
+    {"labelAlias":"sub_contract_reference_id","column":"sub_contract_reference_id","sortSourceColumn":"sub_contract_id","exportColumn":"sub_contract_reference_id"},
+    {"label":"","column":"","export":false},
+    {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
+    {"labelAlias": "version","column": "document_version"},
+    {"label":"","column":"","export":false},
+    {"labelAlias": "fms_doc_id","column":"parent_contract_link","export":false, "exportColumn":"parent_contract_export", "sortSourceColumn":"master_contract_number"},
+    {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount@checkbook:not_null_agreement_values"},
+    {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount@checkbook:not_null_agreement_values"},
+    {"labelAlias": "spent_to_date","column": "formatted_spent_to_date","sortSourceColumn":"rfed_amount"},
+    {"label":"","column":"","export":false},
+    {"labelAlias": "vendor_name","column": "vendor_name_link","sortSourceColumn":"vendor_name"},
+    {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"is_prime_or_sub","exportColumn":"is_sub_vendor"},
+    {"label":"","column":"","export":false},
+    {"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name","exportColumn":"subvendor_status_pip_export"},
+    {"label":"","column":"","export":false},
+    {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"prime_vendor_name","exportColumn":"associated_prime_vendor_name_export"},
+    {"labelAlias": "contract_agency","column": "agency_name_link","sortSourceColumn":"agency_name"},
+    {"labelAlias": "contract_type","column": "contract_type_formatted","sortSourceColumn":"agreement_type_name"},
+    {"labelAlias": "award_method","column": "award_method_formatted","sortSourceColumn":"award_method_name"},
+    {"labelAlias": "expense_category","column": "expense_cat","sortSourceColumn":"expenditure_object_names","exportColumn":"expense_cat_export"},
+    {"labelAlias": "contract_industry","column": "industry_name_formatted","sortSourceColumn":"industry_type_name"},
+    {"labelAlias": "start_date","column": "effective_begin_date"},
+    {"labelAlias": "end_date","column": "effective_end_date"},
+    {"labelAlias": "reg_date","column": "registered_date"},
+    {"label":"","column":"","export":false},
+    {"labelAlias": "pin","column": "tracking_number"},
+    {"labelAlias": "apt_pin","column": "brd_awd_no"},
+    {"labelAlias":"mwbe_category","column":"mwbe_category_name","sortSourceColumn":"minority_type_id","exportColumn":"mwbe_category_name_formatted"},
+    {"labelAlias": "woman_owned_business","column":"is_women_owned"},
+    {"labelAlias": "emerging_business","column":"is_emerging"}
+    ],
+    "exportColumnSqlOverride":[
+        {
+            "column":"mwbe_category_name",
+            "sourceColumn":"minority_type_id",
+            "sql":"
+            case
+            when minority_type_id = 2 then 'Black American'
+            when minority_type_id = 3 then 'Hispanic American'
+            when minority_type_id = 6 then 'Native American'
+            when minority_type_id = 7 then 'Non-M/WBE'
+            when minority_type_id = 9 then 'Women (Non-Minority)'
+            when minority_type_id = 11 then 'Individuals and Others'
+            when minority_type_id = 99 then 'Emerging (Non-Minority)'
+            else 'Asian American'
+            end as minority_type_name
+            "
+        },
+        {
+            "column":"is_sub_vendor",
+            "sourceColumn":"is_prime_or_sub",
+            "sql":"case when is_prime_or_sub = 'P' then 'No' else 'Yes' end as vendor_type"
+        },
+        {
+            "column":"associated_prime_vendor_name",
+            "sourceColumn":"prime_vendor_name",
+            "sql":"case when l1.is_prime_or_sub = 'P' then 'N/A' else prime_vendor_name end"
+        },
+        {
+            "column":"expense_cat",
+            "sourceColumn":"expenditure_object_names",
+            "sql":"case when l1.is_prime_or_sub = 'S' then '' else expenditure_object_names end"
+        },
+        {
+            "column":"sub_contract_reference_id",
+            "sourceColumn":"sub_contract_id",
+            "sql":"case when sub_contract_id IS NULL then 'N/A' else sub_contract_id end"
+        }
+    ],
+    "adjustParameters":"
+    if(isset($parameters['vendor_type'])){
+        $parameters['vendor_type'] = MappingUtil::getVendorTypeValue($parameters['vendor_type']);
+    }
+    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+        _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered_all');
+    }
+
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        return $adjustedParameters;
+    }
+
+    return $parameters;
+    ",
+    "dataTableOptions":{
+    "bRetrieve": true,
+    "bServerSide": true,
+    "bProcessing":true,
+    "bFilter": false,
+    "bPaginate": true,
+    "iDisplayLength":35,
+    "sPaginationType":"full_numbers",
+    "sDom":"<pr><t><ip>",
+    "oLanguage": {
+    "sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_",
+    "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+    },
+    "bInfo": true,
+    "aoColumns": [  {"sClass":"expander","bSortable": false,"sWidth":"30px"},
+    {"sClass":"text", "sWidth":"180px","asSorting": [ "asc","desc" ]},
+    {"sClass":"sub-cont-status", "sWidth":"161px","asSorting": [ "asc","desc" ]},
+    {"sClass":"number-center", "sWidth":"120px","asSorting": [ "asc","desc" ]},
+    {"bSortable":false,"sWidth":"50px"},
+    {"sClass":"text", "sWidth":"210px","asSorting": [ "asc","desc" ]},
+    {"sClass":"vers-num", "sWidth":"75px","asSorting": [ "desc","asc" ]},
+    {"bSortable":false,"sWidth":"50px"},
+    {"sClass":"text","bSortable": false, "sWidth":"155px","asSorting": [ "asc","desc" ]},
+    {"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
+    {"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
+    {"sClass":"number","sWidth":"125px","asSorting": [ "desc","asc" ]},
+    {"bSortable":false,"sWidth":"50px"},
+    {"sClass":"text","sWidth":"170px","asSorting": [ "asc","desc" ]},
+    {"sClass":"number-center","sWidth":"100px","asSorting": [ "asc","desc" ]},
+    {"bSortable":false,"sWidth":"50px"},
+    {"sClass":"text","sWidth":"140px","asSorting": [ "asc","desc" ]},
+    {"bSortable":false,"sWidth":"20px"},
+    {"sClass":"text","sWidth":"240px","asSorting": [ "asc","desc" ]},
+    {"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ]},
+    {"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ]},
+    {"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ]},
+    {"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ]},
+    {"sClass":"text","sWidth":"200px","asSorting": [ "asc","desc" ]},
+    {"sClass":"text","sWidth":"125px","asSorting": [ "asc","desc" ]},
+    {"sClass":"text","sWidth":"125px","asSorting": [ "asc","desc" ]},
+    {"sClass":"text","sWidth":"115px","asSorting": [ "asc","desc" ]},
+    {"bSortable":false,"sWidth":"30px"},
+    {"sClass":"text","sWidth":"170px","asSorting": [ "asc","desc" ]},
+    {"sClass":"text","sWidth":"170px","asSorting": [ "asc","desc" ]},
+    {"sClass":"text","sWidth":"170px","asSorting": [ "asc","desc" ]},
+    {"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]},
+    {"sClass":"text","sWidth":"100px","asSorting": [ "asc","desc" ]}
+    ],
+    "aaSorting":[[9,"desc"]],
+    "sScrollX": "100%",
+    "bScrollCollapse": true
+    }
+    ,"customJS":"jQuery('#dtl_expand').live( 'click',function () {
+    var nTr = this.parentNode.parentNode.parentNode;
+    if ( jQuery(this).attr('class').match('loader') ){
+    //ignore
+    return;
+    }
+
+    if ( jQuery(this).attr('class').match('expanded') ){
+    jQuery(this).removeClass('expanded').addClass('collapsed');
+    oTable.fnClose( nTr );
+    }else{
+    jQuery(this).removeClass('collapsed').addClass('loader');
+    fnLoadChildRecords(nTr, jQuery(this));
+    }
+    } );"
+    ,"customExternalJS":"function prepareTableListFilterUrl(){
+
+    var agencyIds = getNamedFilterCriteria('fagencyId');
+    if(agencyIds.length==0 && eval(document.getElementById('fHideAgencyId'))){
+    agencyIds = document.getElementById('fHideAgencyId').value;
+    }
+    var oVendorIds = getNamedFilterCriteria('fvendorId');
+    var oVendorNms = getNamedFilterCriteria('fvendorNm');
+    var oCurAmount = getNamedFilterCriteria('fCurAmount');
+    var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
+    var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
+    var oVendorType = getNamedFilterCriteria('fvendorType');
+    var oMinorityTypeId = getNamedFilterCriteria('fminorityTypeId');
+    var oContractNumber = getNamedFilterCriteria('fContractNumber');
+    var oSubContStatus = getNamedFilterCriteria('fSubContStatus');
+    var oSubVendorStatus = getNamedFilterCriteria('fSubVendorStatus');
+
+    var  cUrl = oTable.fnSettings().sAjaxSource;
+    cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
+    cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
+    cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
+    cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
+    cUrl = adjustUrlParameter(cUrl,'cindustry',oIndustryType);
+    cUrl = adjustUrlParameter(cUrl,'vendortype',oVendorType);
+    cUrl = adjustUrlParameter(cUrl,'mwbe',oMinorityTypeId);
+    cUrl = adjustUrlParameter(cUrl,'contnum_exact',oContractNumber);
+    cUrl = adjustUrlParameter(cUrl,'subcontstatus',oSubContStatus);
+    cUrl = adjustUrlParameter(cUrl,'subvendorstatus',oSubVendorStatus);
+
+    return cUrl;
+    }
+
+    function fnLoadChildRecords (nTr, oElement)
+    {
+    var magid = jQuery(oElement).attr('magid');
+    var mastercode = jQuery(oElement).attr('mastercode');
+    var mwbe = jQuery(oElement).attr('mwbe');
+    var dashboard = jQuery(oElement).attr('dashboard');
+    var subcontstatus = jQuery(oElement).attr('subcontstatus');
+    var subvendorstatus = jQuery(oElement).attr('subvendorstatus');
+
+    magid = (magid == null || magid.length == 0) ?  '0' : magid;
+
+    var sUrl = '/dashboard_platform/data_tables/ajax_data/node/'+ (mastercode == 'MA1' ? '666' : '665') +'/magid/'+magid;
+    sUrl = sUrl + ( (mwbe == null || mwbe.length == 0) ?  '' : '/mwbe/'+mwbe);
+    sUrl = sUrl + ( (dashboard == null || dashboard.length == 0) ?  '' : '/dashboard/'+dashboard);
+    sUrl = sUrl + ( (subcontstatus == null || subcontstatus.length == 0) ?  '' : '/subcontstatus/'+subcontstatus);
+    sUrl = sUrl + ( (subvendorstatus == null || subvendorstatus.length == 0) ?  '' : '/subvendorstatus/'+subvendorstatus);
+
+    jQuery.ajax({
+    url: sUrl,
+    dataType: 'json',
+    type: 'GET',
+    success: function(results) {
+    if(eval(results['aaData']) && results['aaData'].length > 0){
+    var data = results['aaData'];
+    var dataLen = results['aaData'].length;
+    var sOut = '<div class=\"sub-table-wrapper\"><table>';
+    for(i=0;i<dataLen;i++){
+    var row = data[i];
+
+    sOut += '<tr>';
+    sOut += '<td class=\"text\" style=\"width:180px\">'+ (row[1] == null ? '': row[1])+'</td>';
+    sOut += '<td class=\"sub-cont-status\"  style=\"width:161px\">'+ (row[2] == null ? '': row[2])+'</td>';
+    sOut += '<td class=\"number-center\" style=\"width:120px\">'+ (row[3] == null ? '': row[3])+'</td>';
+    sOut += '<td style=\"width:50px\"></td>';
+    sOut += '<td class=\"text\"  style=\"width:210px\">'+ (row[4] == null ? '': row[4])+'</td>';
+    sOut += '<td class=\"vers-num\"  style=\"width:75px\">'+ (row[5] == null ? '': row[5])+'</td>';
+    sOut += '<td style=\"width:50px\"></td>';
+    sOut += '<td class=\"text\"  style=\"width:155px\">'+ (row[6] == null ? '': row[6])+'</td>';
+    sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[7] == null ? '': row[7])+'</td>';
+    sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[8] == null ? '': row[8])+'</td>';
+    sOut += '<td class=\"number\"  style=\"width:125px\">'+ (row[9] == null ? '': row[9])+'</td>';
+    sOut += '<td style=\"width:50px\"></td>';
+    sOut += '<td class=\"text\"  style=\"width:170px\">'+ (row[12] == null ? '': row[12])+'</td>';
+    sOut += '<td class=\"number-center\"  style=\"width:100px\">'+ (row[13] == null ? '': row[13])+'</td>';
+    sOut += '<td style=\"width:50px\"></td>';
+    sOut += '<td class=\"text\"  style=\"width:140px\">'+ (row[14] == null ? '': row[14])+'</td>';
+    sOut += '<td style=\"width:20px\"></td>';
+    sOut += '<td class=\"text\"  style=\"width:240px\">'+ (row[15] == null ? '': row[15])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:200px\">'+ (row[16] == null ? '': row[16])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:200px\">'+ (row[17] == null ? '': row[17])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:200px\">'+ (row[18] == null ? '': row[18])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:200px\">'+ (row[19] == null ? '': row[19])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:200px\">'+ (row[20] == null ? '': row[20])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:125px\">'+ (row[21] == null ? '': row[21])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:125px\">'+ (row[22] == null ? '': row[22])+'</td>';
+    sOut += '<td class=\"text\"  style=\"width:115px\">'+ (row[23] == null ? '': row[23])+'</td>';
+    sOut += '<td style=\"width:30px\"></td>';
+    sOut += '<td class=\"text\"  style=\"width:170px\">'+ (row[24] == null ? '': row[24])+'</td>';
+    sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[25] == null ? '': row[25])+'</td>';
+    sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[26] == null ? '': row[26])+'</td>';
+    sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[27] == null ? '': row[27])+'</td>';
+    sOut += '<td class=\"text\" style=\"width:170px\">'+ (row[28] == null ? '': row[28])+'</td>';
+    sOut += '<td style=\"width:10px\"></td>';
+    sOut += '</tr>';
+
+    }
+    sOut += '</table></div>';
+    oTable.fnOpen( nTr, sOut, 'childcontracts' );
+    }
+    jQuery(oElement).removeClass('loader').addClass('expanded');
+    if(jQuery.browser.msie && jQuery.browser.version == '7.0'){
+    //do nothing
+    } else {
+    jQuery('td.childcontracts div.sub-table-wrapper').jScrollPane({
+    verticalDragMinHeight: 10,
+    verticalDragMaxHeight: 10,
+    showArrows: true,
+    verticalArrowPositions: 'split'
+    });
+    }
+    }
+    });
+
+    return '';
+    }
+    "
+}

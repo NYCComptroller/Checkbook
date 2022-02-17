@@ -1,0 +1,110 @@
+{
+  "widgetType":"highcharts",
+  "widgetSubType":"ajaxSimple",
+  "header":"$header = '<h2 class=\"chart-title\" style=\"display:none;\">Revenue by Funding Class</h2>';$header .= ChartUtil::generateGridViewLink($node); return $header;",
+  "gridConfig":{
+    "template":"highchart_revenue_fndcls_grid_view",
+    "html_class":"chart-grid-view-table",
+     "table_columns": [
+            {
+                  "labelAlias": "funding_class",
+              "column": "funding_funding_funding_class_name",
+                  "sortColumn":"sort_order"
+             },
+            {
+                  "colLabel": "recognized",
+              "column": "revenue_amount_sum",
+                   "eval":true
+            },
+            {
+                  "colLabel": "remaining",
+              "column": "remaining",
+                   "eval":true
+            }
+        ]
+  },
+  "no_results_content":"No Results Found",
+  "defaultParameters":{
+    "year.year":"114"
+  },
+  "cleanURLParameters":["year", "revcat", "fundsrc", "agency"],
+  "urlParamMap":{
+    "year":"year.year",
+    "revcat":"category.category",
+    "fundsrc":"funding.funding",
+    "agency":"agency.agency"
+  },
+  "dataset":"checkbook:aggregate_revenue",
+  "columns":["funding.funding","funding.funding.funding_class_code", "funding.funding.funding_class_name", "revenue_amount_sum", "current_modified_budget"],
+  "limit":10,
+  "orderBy":"-revenue_amount_sum",
+  "transformationPHP":"
+  $transactions_page = '/' . current_path()  . '?expandBottomContURL=/panel_html/revenue_transactions';
+  $year = _checkbook_project_get_url_param_string('year');
+  $agency = ($node->widgetConfig->requestParams['agency.agency']) ? '/agency/' . $node->widgetConfig->requestParams['agency.agency'] : '';
+  $transactions_page =  $transactions_page . $year . $agency  ;
+  foreach ($node->data as $key=>$row){
+    $remain = $remain = $row['current_modified_budget'] - $row['revenue_amount_sum'];
+    $node->data[$key]['remaining'] = $remain;
+    $url = $transactions_page . '/fundsrccode/' . $row['funding_funding_funding_class_code'] ;
+    $categories[] = html_entity_decode($row['funding_funding_funding_class_name'],ENT_QUOTES);
+    $recognized[] = array('y' => $row['revenue_amount_sum'], 'url' => $url);
+    $remaining[] = array('y' => $remain, 'url' => $url);
+  }
+  $node->widgetConfig->chartTitle = 'Revenue by Funding Class';
+  $node->widgetConfig->chartConfig->xAxis->categories = $categories;
+  $node->widgetConfig->chartConfig->series = array(array('name' => 'Recognized', 'data' => $recognized), array('name' => 'Remaining', 'data' => $remaining));
+  return $node->data;
+  ",
+  "chartConfig":{
+    "chart":{
+      "defaultSeriesType":"column"
+    },
+    "xAxis":{
+      "categories":[],
+      "title":{
+        "text":""
+      }
+    },
+    "plotOptions":{
+      "series":{
+        "cursor":"pointer",
+        "point":{
+          "events":{
+            "function":"clickEvent"
+          }
+        }
+      },
+      "column":{
+        "pointWidth":16,
+        "minPointLength":3
+      }
+    },
+    "series":[],
+    "title":{
+      "text":""
+    },
+    "yAxis":{
+      "startOnTick":true,
+      "title":{
+        "text":""
+      },
+      "labels":{
+        "rotation":0,
+        "function":"yAxisFormatter"
+      }
+    },
+    "legend":{
+      "align":"left",
+      "verticalAlign":"bottom"
+    },
+    "tooltip":{
+      "function":"tooltipformatter"
+    }
+  }
+}
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^'formatter' : function(){return 'Funding Class: ' + this.x + '<br>Amount: ' + abbrNum(this.y, 2, '$');}##
+clickEvent^^'click' : function(){location.href = this.url;}##
+</function>

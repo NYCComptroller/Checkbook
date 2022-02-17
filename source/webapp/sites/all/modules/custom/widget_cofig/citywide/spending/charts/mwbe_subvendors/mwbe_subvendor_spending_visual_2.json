@@ -1,0 +1,258 @@
+{
+"widgetType": "highcharts",
+"widgetDatahandler": "highcharts",
+"header":"
+       $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+       $header .= ChartUtil::generateWidgetGridViewLink($node);
+       return $header;
+    ",
+ "gridConfig":{
+        "template":"chart_grid_view",
+        "domain":"spending",
+        "html_class":"chart-grid-view-table three-columns",
+        "sortColumn":1,
+        "table_columns": [
+             {
+                  "labelAlias": "Prime Vendor",
+                  "columnType": "text"
+             },
+             {
+                  "labelAlias": "M/WBE Spending",
+                  "columnType": "number",
+                  "formatType": "amount"
+             }
+        ]
+},
+"no_results_content":"No Results Found",
+"defaultParameters":{"type_of_year":"B"},
+"cleanURLParameters":["yeartype","agency","vendor","subvendor","category","year","industry","mwbe"],
+"urlParamMap":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","subvendor":"vendor_id","category":"spending_category_id","industry":"industry_type_id","mwbe":"minority_type_id"},
+"chartTitle":"Top Ten Prime Vendors by M/WBE Sub Spending",
+"widgetDataLoader":"
+
+    $where_filters = array();
+    foreach($node->widgetConfig->requestParams as $param=>$value){
+        $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+    }
+
+    if(count($where_filters) > 0){
+        $where_filter = ' where ' . implode(' and ' , $where_filters);
+    }
+
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
+    $sort_column = 4;
+	switch($mwbe_filter){
+		case '2' :
+        case '3' :
+        case '4~5' :
+        case '6' :
+        case '7' :
+        case '9' :
+        case '11' :
+        case '99' :
+			$sort_column = 4;
+			break;
+	}
+
+$sql = '
+select legal_name, vendor_id, prime_minority_type_id, total_spending_amount \n
+from (\n
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 4 THEN total_spending_amount WHEN prime_minority_type_id = 5 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 2 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 9 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 3 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 11 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 2 THEN total_spending_amount WHEN prime_minority_type_id = 3 THEN total_spending_amount WHEN prime_minority_type_id = 4 THEN total_spending_amount WHEN prime_minority_type_id = 5 THEN total_spending_amount WHEN prime_minority_type_id = 6 THEN total_spending_amount WHEN prime_minority_type_id = 9 THEN total_spending_amount WHEN prime_minority_type_id = 99 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 6 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 99 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n \n
+
+    UNION \n \n
+
+    select legal_name, a1.prime_vendor_id vendor_id,prime_minority_type_id, \n
+    SUM( CASE WHEN prime_minority_type_id = 7 THEN total_spending_amount ELSE 0 END) total_spending_amount \n
+    from aggregateon_subven_spending_coa_entities a1 join vendor ra on ra.vendor_id = a1.prime_vendor_id \n
+    ' . $where_filter . ' \n
+    group by legal_name, a1.prime_vendor_id,a1.prime_minority_type_id \n
+) all_spending where all_spending.total_spending_amount > 0 \n
+order by all_spending.total_spending_amount desc limit 10 \n
+';
+//log_error('SQQQLLL: \n\n\n' . $sql);
+
+    $node->data  = _checkbook_project_execute_sql($sql);
+
+",
+"widgetUpdateJSONConfig":"
+	$series_new = array();
+
+    $mwbe_filter = '';
+    foreach($node->data as $row){
+        $pos = strpos($mwbe_filter,$row['prime_minority_type_id']);
+        if($pos === false) {
+            $mwbe_filter .= $mwbe_filter == '' ? $row['prime_minority_type_id'] : '~'.$row['prime_minority_type_id'];
+        }
+    }
+
+	$amount_column = 'total_mwbe';
+	switch($mwbe_filter){
+		case '4~5' :
+			$amount_column = 'aa_mwbe';
+			break;
+		case '2' :
+			$amount_column = 'ba_mwbe';
+			break;
+		case '3' :
+			$amount_column = 'ha_mwbe';
+			break;
+		case '9' :
+			$amount_column = 'w_mwbe';
+			break;
+		case '11' :
+			$amount_column = 'io_nonmwbe';
+			break;
+		case '7' :
+			$amount_column = 'total_non_mwbe';
+			break;
+        case '6' :
+			$amount_column = 'na_mwbe';
+			break;
+        case '99' :
+			$amount_column = 'em_mwbe';
+			break;
+	}
+
+    $amount_column = 'total_spending_amount';
+
+	$mwbe_filter = RequestUtilities::getRequestParamValue('mwbe');
+  $is_mwbe_certified = MappingUtil::isMWBECertified(array($mwbe_filter));
+  if($is_mwbe_certified){
+		$node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName()  . ' Top Ten Prime Vendors Sub Spending';
+	}else{
+		$node->widgetConfig->chartTitle = 'Top Ten Prime Vendors by ' . MappingUtil::getCurrenEthnicityName() .' Sub Spending';
+	}
+	$index = 0;
+	foreach($node->data as $row){
+
+        $tooltip_label =
+            'Prime Vendor: ' . $row['legal_name'].  '<br/>' .
+            MappingUtil::getMinorityCategoryById($row['prime_minority_type_id']) . ' Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$');
+        $node->widgetConfig->gridConfig->data[] = array(
+            $row['legal_name'],
+            $row[$amount_column]
+        );
+
+        $link = substr(SpendingUtil::getPrimeVendorNameLinkUrl($node, $row),1);
+        $series_new[$index]->url = $link;
+
+
+        $series_new[$index]->y = (float)$row[$amount_column];
+        $series_new[$index]->tooltip_label = $tooltip_label;
+        $index += 1;
+	}
+
+	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
+	$node->widgetConfig->chartConfig->series[0]->type = 'column';
+	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
+	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+
+",
+"chartConfig" : {
+	"colors":["#7DB7E5"],
+	"chart" : {"width":750},
+    "plotOptions": {
+            "series": {
+                "cursor": "pointer"   ,
+                "stacking": "normal",
+                "dataLabels": {
+                    "enabled": false
+                },
+                "point": {"events": {"function": "clickEvent"}}
+            }
+    },
+    "xAxis": {
+        "categories": [0,1,2,3,4,5,6,7,8,9],
+        "labels": {"enabled": false}
+    },
+    "series": [
+        {
+            "name": "FY",
+            "type": "column",
+            "pointWidth": 50,
+            "data": []
+        }
+    ],
+    "title": {"text": ""},
+    "yAxis": {
+     	"min":0,
+     	"minRange": 0.1,
+        "startOnTick":true,
+        "title": {"text": ""},
+        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+    } ,
+    "legend": {
+        "enabled": false
+    },
+    "tooltip":{"function":"tooltipformatter"}
+    }
+}
+
+
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^'formatter' :
+function() {return this.point.tooltip_label ;
+}
+##clickEvent^^"click": function(){ location.href = Drupal.settings.basePath+this.options.url;}
+</function>

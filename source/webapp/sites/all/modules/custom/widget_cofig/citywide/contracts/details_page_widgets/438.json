@@ -1,0 +1,6 @@
+{
+"widgetType": "phpparser",
+"template":"contracts_ca_details",
+"customDataHandlerClass":"childAgreementDetails",
+"noDataInitialLoad":true
+}

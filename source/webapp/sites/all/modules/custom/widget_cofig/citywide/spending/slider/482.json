@@ -1,0 +1,73 @@
+{
+    "widgetType": "phpparser",
+    "no_results_content": "No Results Found",
+    "cleanURLParameters":["year","calyear","agency","yeartype","mwbe","industry","vendor","subvendor","dashboard"],
+    "model": {
+        "join": {"method": "Union"},
+        "series": [
+            {
+                "dataset": "checkbook:spending_transactions_all",
+                "columns": ["check_amount_sum","category.category", "category.category.display_order"],
+                "orderBy": "category.category.display_order",
+                "seriesURLParamMap":{
+                    "agency":"agency_id",
+                    "mwbe":"minority_type_id",
+                    "industry":"industry_type_id",
+                    "category":"spending_category_id"
+                },
+                "allowedParams":["year","yeartype","agency_id","minority_type_id","industry_type_id","spending_category_id","vendor_type"],
+                "adjustSerieParameters":"
+
+                $yearType = $serieParameters['yeartype'][0];
+                $year = $serieParameters['year'][0];
+
+                if(isset($yearType)){
+                    if($yearType == 'B')
+                        $serieParameters['check_eft_issued_nyc_year_id'] = $year;
+                    else if($yearType == 'C')
+                        $serieParameters['calendar_fiscal_year_id'] = $year;
+                }
+
+                unset($serieParameters['yeartype']);
+                unset($serieParameters['year']);
+
+                $dashboard = RequestUtilities::getRequestParamValue('dashboard');
+                $vendor = RequestUtilities::getRequestParamValue('vendor');
+                $subvendor = RequestUtilities::getRequestParamValue('subvendor');
+
+                if(isset($dashboard)) {
+                    if($dashboard == 'mp') {
+                        $serieParameters['vendor_type'] = array('P','PM');
+                        $serieParameters['is_prime_or_sub'] = 'P';
+                    }
+                    else {
+                        $is_prime_or_sub = preg_match('\"s\"',$dashboard) ? 'S' : 'P';
+                        $vendor_type = $is_prime_or_sub == 'P' ? array('P','PM') : array('S','SM');
+                        $serieParameters['vendor_type'] = $vendor_type;
+                        $serieParameters['is_prime_or_sub'] = $is_prime_or_sub;
+                    }
+                }
+                else {
+                    $serieParameters['vendor_type'] = array('P','PM');
+                    $serieParameters['is_prime_or_sub'] = 'P';
+                }
+
+                if(isset($vendor)) {
+                    if($is_prime_or_sub == 'P') {
+                        $serieParameters['vendor_id'] = $vendor;
+                    }
+                    else {
+                        $serieParameters['prime_vendor_id'] = $vendor;
+                    }
+                }
+
+                if(isset($subvendor)) {
+                    $serieParameters['vendor_id'] = $subvendor;
+                }
+                return $serieParameters;
+                "
+            }
+        ]
+    },
+    "template": "spending_bottom_slider"
+}

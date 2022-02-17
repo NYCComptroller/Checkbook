@@ -1,0 +1,25 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":330,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "columns":["amount_basis_id.amount_basis_id","rate_type", "txcount"],
+  "urlParamMap":{
+    "ratetype":"amount_basis_id.amount_basis_id"
+  },
+  "orderBy":"-txcount",
+  "filterName":"Rate Type",
+  "autocomplete":false,
+  "urlParameterName":"ratetype",
+  "autocompleteID":"fratetype",
+  "adjustParameters":"
+  if(function_exists('_checkbook_project_applyParameterFilters')){
+  $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+}
+return $adjustedParameters;
+",
+"transformationPHP":"return PayrollUtil::updateRateTypeFacetData($node);",
+"template":"individual_filter"
+}

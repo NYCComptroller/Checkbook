@@ -1,0 +1,33 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":317,
+    "startWith":0,
+    "maxSelect":5,
+    "limit":100,
+    "columns":["civil_service_title_code.civil_service_title_code", "civil_service_title.civil_service_title", "txcount"],
+    "urlParamMap":{"title":"civil_service_title_code.civil_service_title_code"},
+    "orderBy":"-txcount",
+    "filterName":"Title",
+    "facetPager":true,
+    "urlParameterName":"title",
+    "autocompleteParamName":"ftitle_auto",
+    "autocompleteID":"ftitle",
+    "autocompleteField":"civil_service_title.civil_service_title",
+    "adjustParameters":"
+        $monthId = RequestUtilities::getRequestParamValue('month');
+    $datasource = RequestUtilities::getRequestParamValue('datasource');
+    if(isset($monthId) && $datasource=='checkbook_nycha' ){
+    $node->widgetConfig->dataset = 'checkbook_nycha:payroll_employee_agency_month_basis';
+    }
+    else if(isset($monthId)){
+        $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+    }
+
+if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        $adjustedParameters['civil_service_title.civil_service_title'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+    }

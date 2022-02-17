@@ -1,0 +1,25 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":330,
+    "startWith":0,
+    "maxSelect":5,
+    "autocomplete":false,
+    "filterName":"Gross Pay YTD",
+    "urlParameterName":"grosspayytd",
+    "urlParameterType":"rangeid3",
+    "showAllRecords":true,
+    "autocompleteID":"fgrossPayYtd",
+    "columns":["gross_pay_cytd_g250k_count", "gross_pay_cytd_g101k_le250k_count", "gross_pay_cytd_g51k_le100k_count", "gross_pay_cytd_ge20k_le50k_count", "gross_pay_cytd_less20k_count"],
+    "orderBy":"",
+    "adjustParameters":"
+        $monthId = RequestUtilities::getRequestParamValue('month');
+        if(isset($monthId)){
+            $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+        }
+        if(function_exists('_checkbook_project_applyParameterFilters')){
+            $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

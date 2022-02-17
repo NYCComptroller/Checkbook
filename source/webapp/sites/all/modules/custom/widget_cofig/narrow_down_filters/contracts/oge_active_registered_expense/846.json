@@ -1,0 +1,39 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":634,
+    "no_results_content":"No Results Found",
+    "limit":10,
+    "startWith":0,
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code",
+        "vendornm":"display_vendor.display_vendor.legal_name",
+        "vendornm_exact":"display_vendor.display_vendor.legal_name"
+    },
+    "defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B","if_for_all_years":"N"},
+    "columns":["g100m_count", "g50m_le100m_count", "g25m_le50m_count", "g10m_le25m_count", "ge1m_le10m_count", "less1m_count"],
+    "orderBy":"",
+    "autocomplete":false,
+    "filterName":"Amount",
+    "urlParameterName":"curamtr",
+    "urlParameterType":"rangeid",
+    "showAllRecords":true,
+    "autocompleteID":"fCurAmount",
+    "adjustParameters":"
+    if(function_exists('_checkbook_project_adjustContractParameterFilters')){
+        _checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
+    }
+    if(RequestUtilities::getRequestParamValue('vendor') || RequestUtilities::getRequestParamValue('vendornm')){
+        $parameters['is_vendor_flag'] = 'Y';
+    }
+    if(!(RequestUtilities::getRequestParamValue('year') || RequestUtilities::getRequestParamValue('calyear'))){
+        $parameters['latest_flag'] = 'Y';
+        $parameters['if_for_all_years'] = 'Y';
+    }
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+        $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        return $adjustedParameters;
+    }
+    return $parameters;
+    ",
+    "template":"individual_filter"
+}

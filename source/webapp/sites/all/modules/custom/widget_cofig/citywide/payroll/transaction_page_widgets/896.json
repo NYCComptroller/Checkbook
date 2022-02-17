@@ -1,0 +1,167 @@
+{
+    "stickyHeader":true,
+    "widgetType": "data_tables",
+    "widgetSubType": "dataTableList",
+    "cleanURLParameters":["agency","year","calyear","yeartype","month","title","grosspayytd","annualsalary","overtimepayment","emptype"],
+    "urlParamMap":{
+        "agency":"agency_id",
+        "year":"fiscal_year_id",
+        "calyear":"fiscal_year_id",
+        "yeartype":"type_of_year",
+        "month":"month_id",
+        "title":"civil_service_title.civil_service_title",
+        "grosspayytd":"total_gross_pay.total_gross_pay",
+        "annualsalary":"max_annual_salary.max_annual_salary",
+        "overtimepayment":"total_overtime_amount.total_overtime_amount",
+        "emptype":"employment_type.employment_type"
+    },
+    "paramTypeConfig":{
+        "title":"eqignorecase",
+        "grosspayytd":"rangeid3",
+        "annualsalary":"rangeid3",
+        "overtimepayment":"rangeid3"
+    },
+    "allowRequestParams":["dtsmnid","smnid"],
+    "defaultParameters":{"type_of_year":"B"},
+    "header":"
+        $header = NULL;
+        $header .= widget_data_tables_export_link($node);
+        return $header;
+    ",
+    "getTotalDataCount":true,
+    "limit":"35",
+    "stickyHeader":true,
+    "noDataInitialLoad":true,
+    "html_class": "initiative-table transaction-table",
+    "no_results_content":"No Results Found",
+    "dataset": "checkbook:payroll_employee_agency_employee",
+    "uniqueSortColumn":["employee_employee"],
+    "columns": ["employee.employee","civil_service_title.civil_service_title","agency.agency.agency_short_name","annual_salary_max","combined_total_gross_pay","combined_total_base_salary","combined_total_other_payments","combined_total_overtime_amount","year.year","year_type.year_type","agency.agency.agency_name","employment_type.employment_type"],
+    "derivedColumns": {
+        "employee_name_formatted": {
+              "expression": "_get_tooltip_markup($row['civil_service_title_civil_service_title'],30)"
+        },
+        "formatted_salary_amount": {
+            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? custom_number_formatter_basic_format($row['annual_salary_max'])  : '-'  "
+        },
+        "annual_salary_link": {
+            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? '<a href=/payroll' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '/salamttype/1/abc/' . $row['employee_employee'] . '>'. $row['formatted_salary_amount'] .'</a>' : '-'"
+        },
+        "formatted_non_salary_amount": {
+            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? '-' : custom_number_formatter_basic_format($row['total_non_salaried_amount'])"
+        },
+        "non_salary_link": {
+            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? '-' : '<a href=/payroll' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions' . _checkbook_project_get_year_url_param_string() . _checkbook_project_get_url_param_string('agency') . '/salamttype/2~3/abc/' . $row['employee_employee'] . '>'. $row['formatted_non_salary_amount'] .'</a>'"
+        },
+        "export_salary_amount": {
+            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? $row['annual_salary_max']  : NULL "
+        },
+        "export_non_salary_amount": {
+            "expression": " $row['employment_type_employment_type'] == 'Salaried' ? NULL : $row['total_non_salaried_amount']"
+        },
+        "formatted_gross_pay_amount": {
+              "expression": "custom_number_formatter_basic_format($row['combined_total_gross_pay'])"
+        },
+        "formatted_base_salary_amount": {
+              "expression": "custom_number_formatter_basic_format($row['combined_total_base_salary'])"
+        },
+        "formatted_other_payments_amount": {
+              "expression": "custom_number_formatter_basic_format($row['combined_total_other_payments'])"
+        },
+        "formatted_overtime_pay_amount": {
+              "expression": "custom_number_formatter_basic_format($row['combined_total_overtime_amount'])"
+        },
+        "agency_name_formatted": {
+              "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],30)"
+        },
+        "payroll_type_formatted": {
+            "expression": "_get_tooltip_markup($row['employment_type_employment_type'],15)"
+        }
+    },
+    "table_columns": [
+            {"labelAlias": "title","column": "employee_name_formatted","sortSourceColumn":"civil_service_title.civil_service_title"},
+            {"labelAlias": "agency_name","column":"agency_name_formatted","sortSourceColumn":"agency.agency.agency_name"},
+            {"labelAlias": "annual_salary","column": "annual_salary_link","sortSourceColumn": "annual_salary_max","exportColumn":"export_salary_amount"},
+            {"labelAlias": "hourly_rate","column": "non_salary_link","sortSourceColumn": "total_non_salaried_amount","exportColumn":"export_non_salary_amount"},
+            {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_amount","sortSourceColumn": "combined_total_gross_pay"},
+            {"labelAlias": "base_pay_ytd","column": "formatted_base_salary_amount","sortSourceColumn": "combined_total_base_salary"},
+            {"labelAlias": "other_pay_ytd","column": "formatted_other_payments_amount","sortSourceColumn": "combined_total_other_payments"},
+            {"labelAlias": "overtime_pay_ytd","column": "formatted_overtime_pay_amount","sortSourceColumn": "combined_total_overtime_amount"},
+            {"labelAlias": "payroll_type","column": "payroll_type_formatted","sortSourceColumn": "employment_type_employment_type"}
+          ],
+    "adjustParameters":"
+               $monthId = RequestUtilities::getRequestParamValue('month');
+                if( isset($monthId)){
+                   $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+                }
+
+                $adjustedParameters = $parameters;
+                if(function_exists('_checkbook_project_applyParameterFilters')){
+                      $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+                }
+                return $adjustedParameters;
+    ",
+"skipCustomPadding":true,
+    "dataTableOptions":{
+        "bRetrieve": true,
+        "bServerSide": true,
+        "bProcessing":true,
+        "bFilter": false,
+        "iDisplayLength":35,
+        "bPaginate": true,
+        "sPaginationType":"full_numbers",
+        "bLengthChange": false,
+        "sDom":"<pr><t><ip>",
+        "oLanguage": {
+        "sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_",
+        "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+        },
+        "bInfo": true,
+        "aaSorting":[[2,"desc"]],
+        "aoColumns": [
+            {"sClass":"text", "sWidth":"150px","asSorting": [ "asc","desc" ]},
+            {"sClass":"text pad-left","asSorting": [ "asc","desc" ]},
+            {"sClass":"number","asSorting": [ "desc","asc" ]},
+            {"sClass":"number pad-left endCol","asSorting": [ "desc","asc" ]},
+            {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
+            {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
+            {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
+            {"sClass":"number pad-left","asSorting": [ "desc","asc" ]},
+            {"sClass":"number endCol", "sWidth":"110px","asSorting": [ "asc","desc" ]}
+        ],
+        "sScrollX": "100%",
+        "bScrollCollapse": true,
+        "sScrollXInner":"970px",
+        "bScrollCollapse": true,
+        "fnInitComplete": "##function () { new FixedColumns( oTable, {
+        \"iLeftColumns\": 1,
+        \"iLeftWidth\": 150
+        } );}##"
+    },
+    "customExternalJS":"function prepareTableListFilterUrl(){
+        var oTitles = getNamedFilterCriteria('ftitle');
+        var oAgencyIds = getNamedFilterCriteria('fagencyId');
+        if(oAgencyIds.length==0 && eval(document.getElementById('fHideAgencyId'))){
+            oAgencyIds = document.getElementById('fHideAgencyId').value;
+        }
+        var oGrossPayYtd = getNamedFilterCriteria('fgrossPayYtd');
+        var oAnnualSalary = getNamedFilterCriteria('fannualSalary');
+        var oOvertimePayment = getNamedFilterCriteria('fovertimePayment');
+        var oPayFrequency = getNamedFilterCriteria('fpayFrequency');
+        var oEmpType = getNamedFilterCriteria('fempType');
+
+        var cUrl = oTable.fnSettings().sAjaxSource;
+        var cUrlArray = cUrl.split('/');
+        var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
+
+        cUrl = adjustUrlParameter(cUrl,'title',oTitles);
+        cUrl = adjustUrlParameter(cUrl,'agency',oAgencyIds);
+        cUrl = adjustUrlParameter(cUrl,'grosspayytd',oGrossPayYtd);
+        cUrl = adjustUrlParameter(cUrl,'annualsalary',oAnnualSalary);
+        cUrl = adjustUrlParameter(cUrl,'overtimepayment',oOvertimePayment);
+        cUrl = adjustUrlParameter(cUrl,'payfrequency',oPayFrequency);
+        cUrl = adjustUrlParameter(cUrl,'emptype',oEmpType);
+
+        return cUrl;
+    }"
+}

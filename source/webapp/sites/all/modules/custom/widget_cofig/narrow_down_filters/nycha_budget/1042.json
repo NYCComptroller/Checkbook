@@ -1,0 +1,24 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":1034,
+  "startWith":0,
+  "maxSelect":5,
+  "autocomplete":false,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "filterName":"Committed Expense Budget",
+  "urlParameterName":"comamtr",
+  "urlParameterType":"rangeid",
+  "showAllRecords":true,
+  "autocompleteID":"fComAmount",
+  "columns":["committed_g100m_count", "committed_g50m_le100m_count", "committed_g25m_le50m_count", "committed_g10m_le25m_count", "committed_ge1m_le10m_count", "committed_less1m_count"],
+  "orderBy":"",
+  "adjustParameters":"
+    //$parameters = BudgetUtil::adjustBudgetCodeNameParameter($node, $parameters);
+    if(function_exists('_checkbook_project_applyParameterFilters')){
+      $adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+    }
+    return $adjustedParameters;
+  ",
+  "template":"individual_filter"
+}

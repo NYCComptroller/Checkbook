@@ -1,0 +1,51 @@
+{
+  "widgetType": "highcharts",
+  "widgetDatahandler": "highcharts",
+  "no_results_content":"No Results Found",
+  "widgetDataLoader":"
+  $datasource = 'checkbook_nycha';
+   parse_str($_SERVER['QUERY_STRING'], $params);
+$start_year = isset($params['datefrom']) ? $params['datefrom'] : 2013;
+$end_year = isset($params['dateto']) ? $params['dateto'] : 2018;
+  $sql = 'SELECT release_approved_year as year,
+  count(contract_id) as total_contracts from all_agreement_transactions
+  where release_approved_year  between ' .  $start_year. ' AND ' . $end_year .'
+  group by release_approved_year
+  ORDER BY 1 ASC';
+  $node->data  = _checkbook_project_execute_sql($sql,'main',$datasource);
+  ",
+  "widgetUpdateJSONConfig":"
+  $series_new = array();
+  $index = 0;
+  foreach($node->data as $row){
+  $years[] = $row['year'];
+$tooltip_label = 'Year: ' . $row['year'] .  '<br/>' .
+'Number of Contracts: ' . custom_number_formatter_format($row['total_contracts'] ,2, '$').  '<br/>';
+$contracts_series[$index]->y = (float)$row['total_contracts'];
+$contracts_series[$index]->tooltip_label = $tooltip_label;
+
+$index += 1;
+}
+$node->widgetConfig->chartConfig->series[0]->name = 'Number of Contracts';
+$node->widgetConfig->chartConfig->series[0]->type = 'line';
+$node->widgetConfig->chartConfig->series[0]->data = $contracts_series;
+$node->widgetConfig->chartConfig->xAxis->categories = $years;
+",
+"chartConfig" : {
+"colors":["Black"],
+"plotOptions": {"label": {"connectorAllowed": false, "enabled": true}, "pointStart": 2010},
+"yAxis": {"startOnTick":true, "title": {"text": ""}, "labels":{"style": {"color": "black"},"rotation": 0,"function":"yAxisFormatter"}} ,
+"xAxis":{"labels":{"enabled":true, "style": {"color": "black", "fontSize": "13px"}}},
+"legend": {"align": "right",  "verticalAlign": "top", "layout": "vertical", "x": 0, "y": 100, "symbolWidth": 25,
+"padding": 3, "itemMarginTop": 3, "itemMarginBottom": 3},
+"chart": {"marginRight": 150},
+"tooltip":{"function":"tooltipformatter"},
+"title": {"text": ""}
+}
+}
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^'formatter' :
+function() {return this.point.tooltip_label ;
+}##
+</function>

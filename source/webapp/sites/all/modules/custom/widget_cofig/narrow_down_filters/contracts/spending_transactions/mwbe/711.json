@@ -1,0 +1,35 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":707,
+    "columns":["g100m_count", "g50m_le100m_count", "g25m_le50m_count", "g10m_le25m_count", "ge1m_le10m_count", "less1m_count"],
+    "orderBy":"",
+    "autocomplete":false,
+    "filterName":"Amount",
+    "urlParameterName":"checkamtr",
+    "urlParameterType":"rangeid",
+    "showAllRecords":true,
+    "autocompleteID":"fCheckAmount",
+    "urlParamMap":{
+				"doctype":"document_code.document_code.document_code"
+			  }  ,
+    "adjustParameters":"
+        if(isset($parameters['disb_vendor_type'])){
+            $parameters['disb_vendor_type'] = MappingUtil::getVendorTypeValue($parameters['disb_vendor_type']);
+        }
+   	 	$year = $parameters['disb_fiscal_year_id'];
+		if(isset($year)){
+		$parameters['fiscal_year_id'] = $year;
+		}
+        if(function_exists('_checkbook_project_adjust_mwbe_spending_parameter_filters')){
+            $parameters = _checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
+        }
+    //Adjust Certification parameters
+    $parameters = ContractUtil::adjustCertificationFacetParameters($node,$parameters);
+		$adjustedParameters = $parameters;
+		if(function_exists('_checkbook_project_applyParameterFilters')){
+		$adjustedParameters = _checkbook_project_applyParameterFilters($node,$parameters);
+        }
+		return $adjustedParameters;
+	",
+	"template":"individual_filter"
+}
