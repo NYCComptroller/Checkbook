@@ -3,7 +3,11 @@
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_business_layer/checkbook_services/budget/BudgetUrlService.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_widget_redesign/checkbook_infrastructure_layer/utilities/RequestUtilities.php';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/customclasses/util/CheckbookDateUtil.php';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_database.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_datafeeds.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_date.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_widget_process.inc';
 
 use PHPUnit\Framework\TestCase;
 
@@ -16,7 +20,7 @@ class BudgetUrlServiceTest extends TestCase
      * Tests getFooterUrl() function
      */
     public function test_getFooterUrl()
-    {   
+    {
         $result = BudgetUrlService::getFooterUrl(558);
         $this->assertEquals("/panel_html/budget_transactions/budget/transactions/dtsmnid/558", substr($result, 0, 63));
 

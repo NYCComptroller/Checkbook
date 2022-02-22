@@ -9,7 +9,7 @@
         {"labelAlias":"num_sub_vendors","column":"sub_vendor_count","format":"number"},
         {"label":"","column":""},
         {"labelAlias":"mwbe_category","column":"prime_minority_type_id","derivedColumn":"prime_mwbe_category_link"},
-        {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"prime_vendor_ytd_spending_link","format":"dollar"},
+        {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"sub_vendor_ytd_spending_link","format":"dollar"},
         {"label":"","column":""},
         {"labelAlias":"total_contract_amount","column":"total_contract_amount_sum","format":"dollar"},
         {"label":"","column":""}

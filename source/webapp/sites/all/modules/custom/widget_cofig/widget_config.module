@@ -1,0 +1,547 @@
+<?php
+
+/**
+ * Implementation of hook_theme() ...
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
+ */
+function widget_config_theme($existing, $type, $theme, $path){
+  return array(
+    //Vendors Landing Page
+    'vendors_sidebar1' => array(
+      'template' => 'templates/php_widgets/vendors_sidebar1',
+      'arguments' => array('node' => NULL)
+    ),
+    'vendors_sidebar2' => array(
+      'template' => 'templates/php_widgets/vendors_sidebar2',
+      'arguments' => array('node' => NULL)
+    ),
+    //Budget Pages
+    'budget_sidebar' => array(
+      'template' => 'templates/php_widgets/budget_sidebar',
+      'arguments' => array('node' => NULL)
+    ),
+    //Contract Transactions List
+    'pending_contract_transaction_total_amount' => array(
+      'template' => 'templates/php_widgets/contract/pending_transaction_total_amount',
+      'arguments' => array('node' => NULL)
+    ),
+    'active_registered_contract_transaction_total_amount' => array(
+      'template' => 'templates/php_widgets/contract/active_registered_transaction_total_amount',
+      'arguments' => array('node' => NULL)
+    ),
+    'active_registered_transaction_title' => array(
+      'template' => 'templates/php_widgets/contract/active_registered_transaction_title',
+      'arguments' => array('node' => NULL)
+    ),
+    'pending_transaction_title' => array(
+      'template' => 'templates/php_widgets/contract/pending_transaction_title',
+      'arguments' => array('node' => NULL)
+    ),
+    //Nycha Contract Transactions List
+    'nycha_contract_transaction_total_amount' => array(
+      'template' => 'templates/php_widgets/contract/nycha_contract_transaction_total_amount',
+      'arguments' => array('node' => NULL)
+    ),
+    //Spending Transactions List
+    'spending_transaction_total_amount' => array(
+      'template' => 'templates/php_widgets/spending/transaction_total_amount',
+      'arguments' => array('node' => NULL)
+    ),
+    'spending_contract_transaction_total_amount' => array(
+      'template' => 'templates/php_widgets/spending/contract_transaction_total_amount',
+      'arguments' => array('node' => NULL)
+    ),
+    'spending_bottom_slider' => array(
+      'template' => 'templates/php_widgets/spending/spending_bottom_slider',
+      'arguments' => array('node' => NULL)
+    ),
+    'nycha_spending_bottom_slider' => array(
+      'template' => 'templates/php_widgets/nycha_spending/nycha_spending_bottom_slider',
+      'arguments' => array('node' => NULL)
+    ),
+    //NYCHA Spending Transactions
+    'nycha_spending_transactions_summary' => array(
+      'template' => 'templates/php_widgets/nycha_spending/transactions_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    //Revenue
+    'revenue_summary' => array(
+      'template' => 'templates/php_widgets/revenue/revenue_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    //Revenue Transactions List
+    'revenue_transaction_total_amount' => array(
+      'template' => 'templates/php_widgets/revenue/transaction_total_amount',
+      'arguments' => array('node' => NULL)
+    ),
+    'revenue_transaction_cross_year_total_amount' => array(
+      'template' => 'templates/php_widgets/revenue/transaction_cross_year_total_amount',
+      'arguments' => array('node' => NULL)
+    ),
+    'revenue_recognized_cross_year_total_amount' => array(
+      'template' => 'templates/php_widgets/revenue/recognized_cross_year_total_amount',
+      'arguments' => array('node' => NULL)
+    ),
+    'revenue_transactions_summary' => array(
+      'template' => 'templates/php_widgets/revenue/transactions_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    //Budget Transactions List
+    'budget_expense_transaction_total_amount' => array(
+      'template' => 'templates/php_widgets/budget/expense_transaction_total_amount',
+      'arguments' => array('node' => NULL)
+    ),
+    'budget_revenue_transaction_total_amount' => array(
+      'template' => 'templates/php_widgets/budget/revenue_transaction_total_amount',
+      'arguments' => array('node' => NULL)
+    ),
+    'budget_expense_transactions_summary' => array(
+      'template' => 'templates/php_widgets/budget/expense_transactions_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    //NYCHA Budget Transactions
+    'nycha_budget_transactions_summary' => array(
+      'template' => 'templates/php_widgets/nycha_budget/transactions_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    //NYCHA Budget Transactions
+    'nycha_revenue_transactions_summary' => array(
+      'template' => 'templates/php_widgets/nycha_revenue/transactions_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    //payroll Transactions List
+    'payroll_nyc_payroll_summary' => array(
+      'template' => 'templates/php_widgets/payroll/nyc_payroll_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'payroll_nyc_title_payroll_summary' => array(
+      'template' => 'templates/php_widgets/payroll/nyc_title_payroll_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'payroll_employee_payroll_summary' => array(
+      'template' => 'templates/php_widgets/payroll/employee_payroll_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'payroll_title_payroll_summary' => array(
+      'template' => 'templates/php_widgets/payroll/title_payroll_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'payroll_nyc_payroll_summary_by_month' => array(
+      'template' => 'templates/php_widgets/payroll/nyc_payroll_summary_by_month',
+      'arguments' => array('node' => NULL)
+    ),
+    'payroll_employee_agency_payroll_summary' => array(
+      'template' => 'templates/php_widgets/payroll/employee_agency_payroll_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'payroll_title_agency_payroll_summary' => array(
+      'template' => 'templates/php_widgets/payroll/title_agency_payroll_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'payroll_agency_payroll_summary' => array(
+      'template' => 'templates/php_widgets/payroll/agency_payroll_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'payroll_agency_payroll_summary_by_month' => array(
+      'template' => 'templates/php_widgets/payroll/agency_payroll_summary_by_month',
+      'arguments' => array('node' => NULL)
+    ),
+    'payroll_dept_payroll_summary' => array(
+      'template' => 'templates/php_widgets/payroll/dept_payroll_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'payroll_transactions_summary' => array(
+      'template' => 'templates/php_widgets/payroll/payroll_transactions_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    //Agencies Landing Page - City Spending
+    'agencies_landing_city_spending' => array(
+      'template' => 'templates/php_widgets/spending/agencies_landing_city_spending',
+      'arguments' => array('node' => NULL)
+    ),
+    //Contract transactions
+    'contract_transactions_spending_fy' => array(
+      'template' => 'templates/php_widgets/contract/contract_transactions_spending_fy',
+      'arguments' => array('node' => NULL)
+    ),
+    'contract_transactions_summary' => array(
+      'template' => 'templates/php_widgets/contract/contract_transactions_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'contract_transactions_vendor_info' => array(
+      'template' => 'templates/php_widgets/contract/contract_transactions_vendor_info',
+      'arguments' => array('node' => NULL)
+    ),
+    'contract_transactions_spending' => array(
+      'template' => 'templates/php_widgets/contract/contract_transactions_spending',
+      'arguments' => array('node' => NULL)
+    ),
+    'contract_transactions_associated_contracts' => array(
+      'template' => 'templates/php_widgets/contract/contract_transactions_associated_contracts',
+      'arguments' => array('node' => NULL)
+    ),
+    'agencies_list' => array(
+      'template' => 'templates/php_widgets/agencies_list',
+      'arguments' => array('node' => NULL)
+    ),
+    'year_list' => array(
+      'template' => 'templates/php_widgets/year_list',
+      'arguments' => array('node' => NULL)
+    ),
+    'fiscal_year_list' => array(
+      'template' => 'templates/php_widgets/fiscal_year_list',
+      'arguments' => array('node' => NULL)
+    ),
+    //Contracts navigation
+    'contracts_navigation' => array(
+      'template' => 'templates/php_widgets/contracts_navigation',
+      'arguments' => array('node' => NULL)
+    ),
+    'nycha_top_navigation' => array(
+      'template' => 'templates/php_widgets/nycha_top_navigation',
+      'arguments' => array('node' => NULL)
+    ),
+    //GridView templates
+    'highchart_revenue_comparisons_grid_view' => array(
+      'template' => 'templates/gridview/revenue_year_comparisons',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_revenue_grid_view' => array(
+      'template' => 'templates/gridview/revenue_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_revenue_agency_grid_view' => array(
+      'template' => 'templates/gridview/revenue_agency_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_revenue_revcat_grid_view' => array(
+      'template' => 'templates/gridview/revenue_revcat_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_revenue_fndcls_grid_view' => array(
+      'template' => 'templates/gridview/revenue_fndcls_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_budget_grid_view' => array(
+      'template' => 'templates/gridview/budget_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_nycha_revenue_grid_view' => array(
+      'template' => 'templates/gridview/revenue_nycha_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_budget_expenditure_grid_view' => array(
+      'template' => 'templates/gridview/budget_expenditure_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_nycha_budget_respcenter_grid_view'=> array(
+      'template' => 'templates/gridview/nycha_budget_respcenter_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_nycha_budget_expcategory_grid_view'=> array(
+      'template' => 'templates/gridview/nycha_budget_expcategory_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_nycha_budget_programs_grid_view'=> array(
+      'template' => 'templates/gridview/nycha_budget_program_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_nycha_budget_fundsrc_grid_view'=> array(
+      'template' => 'templates/gridview/nycha_budget_fundsrc_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_nycha_budget_projects_grid_view'=> array(
+      'template' => 'templates/gridview/nycha_budget_project_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_nycha_revenue_respcenter_grid_view'=> array(
+      'template' => 'templates/gridview/nycha_revenue_respcenter_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_nycha_revenue_categories_grid_view'=> array(
+      'template' => 'templates/gridview/nycha_revenue_categories_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_nycha_revenue_expcategory_grid_view'=> array(
+      'template' => 'templates/gridview/nycha_revenue_expcategory_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_nycha_revenue_programs_grid_view'=> array(
+      'template' => 'templates/gridview/nycha_revenue_program_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_nycha_revenue_fundsrc_grid_view'=> array(
+      'template' => 'templates/gridview/nycha_revenue_fundsrc_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_nycha_revenue_projects_grid_view'=> array(
+      'template' => 'templates/gridview/nycha_revenue_project_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_budget_department_grid_view' => array(
+      'template' => 'templates/gridview/budget_department_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_budget_agency_grid_view' => array(
+      'template' => 'templates/gridview/budget_agency_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'payroll_by_gross_ot_pay' => array(
+      'template' => 'templates/gridview/payroll_by_gross_ot_pay',
+      'arguments' => array('node' => NULL)
+    ),
+    'payroll_by_agency_gross_ot_pay' => array(
+      'template' => 'templates/gridview/payroll_by_agency_gross_ot_pay',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_spending_fy_grid_view' => array(
+      'template' => 'templates/gridview/spending_highchart_fy',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_spending_cy_grid_view' => array(
+      'template' => 'templates/gridview/spending_highchart_cy',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_spending_agency_grid_view' => array(
+      'template' => 'templates/gridview/spending_highchart_agency',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_spending_vendor_grid_view' => array(
+      'template' => 'templates/gridview/spending_highchart_vendor',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_spending_subvendor_grid_view' => array(
+      'template' => 'templates/gridview/spending_highchart_subvendor',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_spending_prime_vendor_grid_view' => array(
+      'template' => 'templates/gridview/spending_highchart_prime_vendor',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_spending_contract_grid_view' => array(
+      'template' => 'templates/gridview/spending_highchart_contract',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_spending_contract_disbursement_grid_view' => array(
+      'template' => 'templates/gridview/spending_highchart_contract_disbursement',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_contract_grid_view' => array(
+      'template' => 'templates/gridview/contacts_nyc_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_contracts_topamount_grid_view' => array(
+      'template' => 'templates/gridview/contract_topamount_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_contracts_pending_topamount_grid_view' => array(
+      'template' => 'templates/gridview/contract_pending_topamount_highchart',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_contracts_active_agency_vendor' => array(
+      'template' => 'templates/gridview/contracts_highchart_active_agency_vendor',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_contracts_pending_agency_vendor' => array(
+      'template' => 'templates/gridview/contracts_highchart_pending_agency_vendor',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_nycha_contracts_vendor' => array(
+      'template' => 'templates/gridview/nychacontracts_highchart_vendor',
+      'arguments' => array('node' => NULL)
+    ),
+    'highchart_nycha_spending_by_month_grid_view' => array(
+      'template' => 'templates/gridview/nycha_spending_by_month',
+      'arguments' => array('node' => NULL)
+    ),
+
+
+    //Generic Grid views template.
+    // contracts
+    'chart_grid_view' => array(
+      'template' => 'templates/gridview/chart_grid_view',
+      'arguments' => array('node' => NULL)
+    ),
+
+
+    // Contracts Templates
+    'contracts_nyc_totals' => array(
+      'template' => 'templates/php_widgets/contract/contracts_nyc_totals',
+      'arguments' => array('node' => NULL)
+    ),
+    'contracts_subvendors_nyc_totals' => array(
+      'template' => 'templates/php_widgets/contract/contracts_subvendors_nyc_totals',
+      'arguments' => array('node' => NULL)
+    ),
+    'contracts_mma_details' => array(
+      'template' => 'templates/php_widgets/contract/contracts_mma_details',
+      'arguments' => array('node' => NULL)
+    ),
+    'contracts_ca_details' => array(
+      'template' => 'templates/php_widgets/contract/contracts_ca_details',
+      'arguments' => array('node' => NULL)
+    ),
+    'nycha_contract_details' => array(
+      'template' => 'templates/php_widgets/contract/nycha_contract_details',
+      'arguments' => array('node' => NULL)
+    ),
+    'nycha_contract_assoc_releases' => array(
+      'template' => 'templates/php_widgets/contract/nycha_contract_assoc_releases',
+      'arguments' => array('node' => NULL)
+    ),
+    'nycha_contracts_summary' => array(
+      'template' => 'templates/php_widgets/contract/nycha_contracts_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'contracts_ma_assoc_contracts' => array(
+      'template' => 'templates/php_widgets/contract/contracts_ma_assoc_contracts',
+      'arguments' => array('node' => NULL)
+    ),
+    'contracts_oge_ma_assoc_contracts' => array(
+      'template' => 'templates/php_widgets/contract/contracts_oge_ma_assoc_contracts',
+      'arguments' => array('node' => NULL)
+    ),
+    'contracts_oge_cta_spending_bottom' => array(
+      'template' => 'templates/php_widgets/contract/contracts_oge_cta_spending_bottom',
+      'arguments' => array('node' => NULL)
+    ),
+    'contracts_oge_cta_all_vendor_info' => array(
+      'template' => 'templates/php_widgets/contract/contracts_oge_cta_all_vendor_info',
+      'arguments' => array('node' => NULL)
+    ),
+    'contracts_cta_spending_bottom' => array(
+      'template' => 'templates/php_widgets/contract/contracts_cta_spending_bottom',
+      'arguments' => array('node' => NULL)
+    ),
+    'contracts_cta_spending_top' => array(
+      'template' => 'templates/php_widgets/contract/contracts_cta_spending_top',
+      'arguments' => array('node' => NULL)
+    ),
+    'contracts_ma_history' => array(
+      'template' => 'templates/php_widgets/contract/contracts_ma_history',
+      'arguments' => array('node' => NULL)
+    ),
+    'contracts_cta_history' => array(
+      'template' => 'templates/php_widgets/contract/contracts_cta_history',
+      'arguments' => array('node' => NULL)
+    ),
+    'contracts_cta_spending_history' => array(
+      'template' => 'templates/php_widgets/contract/contracts_cta_spending_history',
+      'arguments' => array('node' => NULL)
+    ),
+    'contract_vendor_info' => array(
+      'template' => 'templates/php_widgets/contract/contract_vendor_info',
+      'arguments' => array('node' => NULL)
+    ),
+    'contracts_cta_spending_by_exp_cat' => array(
+      'template' => 'templates/php_widgets/contract/contracts_cta_spending_by_exp_cat',
+      'arguments' => array('node' => NULL)
+    ),
+
+
+    //Pending Contracts Templates
+    'pending_contracts_total_amount' => array(
+      'template' => 'templates/php_widgets/pending_contracts/pending_contracts_total_amount',
+      'arguments' => array('node' => NULL)
+    ),
+    'pending_contracts_num_contracts_by_categories' => array(
+      'template' => 'templates/php_widgets/pending_contracts/pending_contracts_num_contracts_by_categories',
+      'arguments' => array('node' => NULL)
+    ),
+    'revenue_pending_contracts_num_contracts' => array(
+      'template' => 'templates/php_widgets/pending_contracts/revenue_pending_contracts_num_contracts',
+      'arguments' => array('node' => NULL)
+    ),
+    'pending_contract_details' => array(
+      'template' => 'templates/php_widgets/pending_contracts/pending_contract_details',
+      'arguments' => array('node' => NULL)
+    ),
+    'pending_contract_vendor_info' => array(
+      'template' => 'templates/php_widgets/pending_contracts/pending_contract_vendor_info',
+      'arguments' => array('node' => NULL)
+    ),
+    //++++++++++++++++++Contract Summary Templates++++++++++++++++++
+    'contract_summary_expense_contract' => array(
+      'template' => 'templates/php_widgets/contract/summary/expense/contract',
+      'arguments' => array('node' => NULL)
+    ),
+    'sub_contract_summary_expense_contract' => array(
+      'template' => 'templates/php_widgets/contract/summary/expense/sub_contract',
+      'arguments' => array('node' => NULL)
+    ),
+    'contract_summary_expense_contract_modification' => array(
+      'template' => 'templates/php_widgets/contract/summary/expense/contract_modification',
+      'arguments' => array('node' => NULL)
+    ),
+    'contract_summary_expense_expense' => array(
+      'template' => 'templates/php_widgets/contract/summary/expense/expense',
+      'arguments' => array('node' => NULL)
+    ),
+    'contract_date_summary' => array(
+      'template' => 'templates/php_widgets/contract/summary/date_summary',
+      'arguments' => array('node' => NULL)
+    ),
+
+    //---------------End Contract Summary Templates---------------
+
+    //++++++++++++++++++Spending Summary Templates++++++++++++++++++
+    'spending_agency_summary' => array(
+      'template' => 'templates/php_widgets/spending/summary/agency_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'spending_dept_summary' => array(
+      'template' => 'templates/php_widgets/spending/summary/dept_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'spending_exp_category_summary' => array(
+      'template' => 'templates/php_widgets/spending/summary/exp_category_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'spending_contract_summary' => array(
+      'template' => 'templates/php_widgets/spending/summary/contract_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'spending_sub_contract_summary' => array(
+      'template' => 'templates/php_widgets/spending/summary/sub_contract_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'spending_vendor_summary' => array(
+      'template' => 'templates/php_widgets/spending/summary/vendor_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'spending_sub_vendor_summary' => array(
+      'template' => 'templates/php_widgets/spending/summary/sub_vendor_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'spending_prime_vendor_summary' => array(
+      'template' => 'templates/php_widgets/spending/summary/prime_vendor_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'spending_industry_summary' => array(
+      'template' => 'templates/php_widgets/spending/summary/industry_summary',
+      'arguments' => array('node' => NULL)
+    ),
+    'spending_date_summary' => array(
+      'template' => 'templates/php_widgets/spending/summary/date_summary',
+      'arguments' => array('node' => NULL)
+    ),
+
+    //---------------End Spending Summary Templates---------------
+
+    'no_records_found' => array(
+      'template' => 'templates/php_widgets/no_records_found',
+      'arguments' => array('message' => NULL)
+    ),
+
+
+    //---------------Template for publishing New Features page----------------
+    'publish_new_features' => array(
+      'template' => 'templates/new_features/publish_new_features',
+      'arguments' => array('access' => NULL)
+    ),
+  );
+}

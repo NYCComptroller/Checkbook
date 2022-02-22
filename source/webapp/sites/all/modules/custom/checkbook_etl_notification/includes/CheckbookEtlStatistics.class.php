@@ -60,11 +60,11 @@ class CheckbookEtlStatistics
    */
   public function getEtlStatistics($environment){
 
-    $sql = "SELECT database_name, host_environment, 
-                  ((CURRENT_DATE-1)::text||' 21:00:00.0')::TIMESTAMP 	AS last_run_date, 
-                  CASE 
+    $sql = "SELECT database_name, host_environment,
+                  ((CURRENT_DATE-1)::text||' 21:00:00.0')::TIMESTAMP 	AS last_run_date,
+                  CASE
 		                   WHEN last_success_date > ((CURRENT_DATE-2)::text||' 21:00:00.0')::TIMESTAMP
-			                  THEN (CASE WHEN success_yn = 'N' THEN 'Fail' ELSE 'Success' END) 
+			                  THEN (CASE WHEN success_yn = 'N' THEN 'Fail' ELSE 'Success' END)
 			                  ELSE 'Fail'
 			            END as last_run_success,
 			            last_success_date,
@@ -192,7 +192,7 @@ class CheckbookEtlStatistics
         return false;
       }
 
-      if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['DEV2'])) {
+      if (empty($conf['CHECKBOOK_ENV']) || !in_array($conf['CHECKBOOK_ENV'], ['DEV'])) {
         // we run this cron only on DEV2 and PHPUNIT
         return false;
       }

@@ -1,0 +1,113 @@
+{
+"widgetType": "data_tables",
+"widgetSubType":"ajaxSimple",
+"no_results_content":"No Results Found",
+"defaultParameters":{"type_of_year":"B"},
+"cleanURLParameters":["year","agency","yeartype","calyear","category","vendor","mwbe","fvendor"],
+ "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","fvendor":"vendor_id","vendor":"vendor_id","mwbe":"minority_type_id"},
+"dataset": "checkbook:spending_data",
+"preProcessConfiguration":"
+    $mwbe = RequestUtilities::getRequestParamValue('mwbe');
+    $node->is_mwbe = ($mwbe != null ) ?  true: false;
+    if($node->is_mwbe){
+        $node->widgetConfig->dataset = 'checkbook:spending_mwbe_data';
+    }
+",
+"noDataInitialLoad":true,
+"totalAggregateColumns":["check_amount_sum"],
+"columns": ["yeartype.yeartype","check_amount_sum","agency.agency","agency.agency.agency_short_name","year.year","agency.agency.agency_name"],
+"limit":5,
+"enableExpand":true,
+"getTotalDataCount":true,
+
+"header":"
+$node->widgetConfig->getData=false;
+load_widget_data($node);
+if($node->totalDataCount > 4) $count = '<span class=\"hideOnExpand\">5 </span>';
+$header='<div class=\"tableHeader\"><h2>Top ' .  $count . 'Agencies</h2><span class=\"contCount\"> Number of Agencies:  ' . number_format($node->totalDataCount) . '</span></div>';
+return $header;
+",
+"footer":"
+$url = '/panel_html/spending_transactions/spending/transactions'. _checkbook_project_get_url_param_string(\"vendor\",\"fvendor\") ._checkbook_project_get_url_param_string(\"agency\") ._checkbook_project_get_url_param_string(\"category\") . '/dtsmnid/' . $node->nid . _checkbook_project_get_year_url_param_string(false,false,true);
+$footer = '';
+if($node->totalDataCount > 0)
+     $footer = \"<a class='show-details bottomContainerReload' href='$url'>Details >></a>\";
+else
+      $footer = \"<a class='show-details bottomContainerReload' href='$url' style='display:none;'>Details >></a>\";
+return $footer;
+",
+"derivedColumns": {
+    "agency_name_formatted": {
+        "expression": "_get_tooltip_markup($row['agency_agency_agency_name'],47)"
+    },
+    "agency_name_link": {
+        "expression": "'<a href=\"/spending_landing' .  _checkbook_project_get_url_param_string(\"vendor\") ._checkbook_project_get_url_param_string(\"category\") . _checkbook_project_get_year_url_param_string() . '/agency/'. $row['agency_agency'] .'\">' . $row['agency_name_formatted'] . '</a>'"
+    },
+    "formatted_check_amount_sum": {
+        "expression": "custom_number_formatter_format($row['check_amount_sum'],2,'$')"
+    },
+    "agency_amount_link":{
+        "expression": "'<a class=\"bottomContainerReload\" href=\"/panel_html/spending_transactions/spending/transactions' . _checkbook_project_get_year_url_param_string(false,false,true)  ._checkbook_project_get_url_param_string(\"vendor\",\"fvendor\") . '/smnid/' . $node->nid .  _checkbook_project_get_url_param_string(\"category\") . '/agency/'. $row['agency_agency'] . '\">' . $row['formatted_check_amount_sum'] . '</a>'"
+    },
+    "percent_spending":{
+        "expression": " number_format($row['check_amount_sum']/$node->totalAggregateColumns['check_amount_sum']*100 ,2) . '%'",
+        "visibility_flag": "is_mwbe"
+    }
+},
+"WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Agencies');",
+"summaryView":{
+    "template":"spending_agency_summary",
+    "templateTitleEval":"return SpendingUtil::getTransactionPageTitle('Agency');",
+    "templateLabel":"Agency",
+    "templateLabelEval":"return $node->data[0]['agency_agency_agency_name'];"
+},
+"table_title":"",
+  "table_columns": [
+ {
+      "labelAlias": "agency_name",
+      "column": "agency_name_link",
+      "header": "false",
+      "sortSourceColumn":"agency.agency.agency_name"
+    },
+ {
+      "labelAlias": "ytd_spending",
+      "column": "agency_amount_link",
+      "header": "false",
+      "sortSourceColumn":"check_amount_sum"
+    },
+     {
+      "labelAlias": "ytd_spending",
+      "column": "percent_spending",
+      "header": "false",
+      "sortSourceColumn":"check_amount_sum",
+      "visibility_flag": "is_mwbe"
+    },
+     {
+      "label": "",
+      "column": ""
+    }
+  ],
+"dataTableOptions":{
+"aoColumns": [
+    { "bSortable": false,"sClass":"text"},
+    {"sClass":"number","sWidth":"150px","asSorting": [ "desc","asc"  ],"visibility_flag": "-is_mwbe"},
+    {"sClass":"number","sWidth":"75px","asSorting": [ "desc","asc"  ],"visibility_flag": "is_mwbe"},
+    {"sClass":"number","sWidth":"75px","asSorting": [ "desc","asc"  ],"visibility_flag": "is_mwbe"},
+    { "bSortable": false,"sWidth":"15px" }
+] ,
+"bServerSide": true,
+"bFilter": false,
+"bPaginate": false,
+"bProcessing":true,
+"bLengthChange": false,
+"bInfo": false,
+"bAutoWidth": false,
+"aaSorting": [[ 1, "desc" ]],
+"fnServerParams": "##function ( aoData ) {
+           reloadExpandCollapseWidget(this,aoData);
+}##",
+"oLanguage":{
+"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+}
+}
+}

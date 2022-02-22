@@ -132,7 +132,7 @@ class CheckbookApiRef
         $startLimit = 100000;
         $offset = 0;
         $flag = 0;
-        $file = fopen($new_file, 'a+');
+        $file = fopen($new_file, 'w');
         while($total_records > 0 ) {
           $php_sql = str_replace('\\','',$ref_file->sql);
           $limit = ' LIMIT '.$startLimit .' OFFSET ' . $offset;
@@ -163,7 +163,7 @@ class CheckbookApiRef
             if ('No changes' == $this->successSubject) {
               $this->successSubject = 'Updated';
             }
-          } 
+          }
           else {
             $file_info['info'] = 'New file is same as old one, no changes needed';
             $file_info['updated'] = false;
@@ -171,7 +171,7 @@ class CheckbookApiRef
               rename($old_file, $new_file);
             }
           }
-        }   
+        }
         else {
           $file_info['warning'] = 'Newly generated file is zero byte size, keeping old file intact ';
           if(file_exists($old_file)){
