@@ -116,7 +116,6 @@ class MappingUtil {
    * @var array
    */
     private static $minority_type_category_map_multi = array(
-        'Total M/WBE' => array(2,3,4,5,6,9,99),
         'Asian American' => array(4,5),
         'Black American' => array(2),
         'Women (Non-Minority)' => array(9),
@@ -125,6 +124,7 @@ class MappingUtil {
         'Emerging (Non-Minority)' => array(99),
         'Non-M/WBE' => array(7),
         'Individuals and Others' => array(11),
+        'Total M/WBE' => array(2,3,4,5,6,9,99),
     );
 
   /**
@@ -206,17 +206,26 @@ class MappingUtil {
         return self::$minority_type_category_map_multi;
     }
 
-    /**
-     * @param null $minority_type_ids
-     * @return string
-     */
-    public static function getCurrenEthnicityName($minority_type_ids = null)
+  /**
+   * @param null $minority_type_ids
+   * @param bool $feed
+   * @return int|string
+   */
+    public static function getCurrenEthnicityName($minority_type_ids = null, $feed = false)
     {
         $mwbe_url_params = $minority_type_ids ?? explode('~', RequestUtilities::get('mwbe'));
-        foreach(self::$minority_type_category_map_multi_chart as $key=>$values){
-            if(count(array_diff($mwbe_url_params, $values)) == 0){
-                return $key;
+        if($feed){
+          foreach (self::$minority_type_category_map_multi as $key => $values) {
+            if (count(array_diff($mwbe_url_params, $values)) == 0) {
+              return $key;
             }
+          }
+        }else {
+          foreach (self::$minority_type_category_map_multi_chart as $key => $values) {
+            if (count(array_diff($mwbe_url_params, $values)) == 0) {
+              return $key;
+            }
+          }
         }
     }
 

@@ -119,6 +119,7 @@
         <param name="is_all_categories" type="string"/>
         <sql>
             SELECT
+            a.vendor_id as sub_vendor_id,
             a.type_of_year,
             a.year_id,
             a.prime_vendor_id,
@@ -162,7 +163,7 @@
                     <exp op="=" dbField="a.is_all_categories" paramName="is_all_categories" />
                 </exp>
             </where>
-            GROUP BY a.year_id, a.type_of_year, a.prime_vendor_id, a.prime_minority_type_id, b.legal_name
+            GROUP BY a.year_id, a.type_of_year, a.prime_vendor_id, a.prime_minority_type_id, b.legal_name,a.vendor_id
         </sql>
     </statement>
     <!--GetCountSubVendorPrimeVendors-->

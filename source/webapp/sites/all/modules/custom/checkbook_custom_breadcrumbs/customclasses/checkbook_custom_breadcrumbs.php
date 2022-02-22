@@ -96,7 +96,11 @@ class CustomBreadcrumbs
         }
         $title = $title . ' ' . RequestUtil::getDashboardTitle() . ' '.SpendingUtil::getSpendingCategoryName();
       }
-      $title = RequestUtil::getRequestKeyValueFromURL('mocs', $bottomURL) ? str_replace('Contracts', 'MOCS Registered COVID-19 Contract', $title) : $title;
+      if(strpos($title, 'Contracts')){
+        $title = RequestUtil::getRequestKeyValueFromURL('mocs', $bottomURL) ? str_replace('Contracts', 'MOCS Registered COVID-19 Contract', $title) : $title;
+      }else if(strpos($title, 'Contract')){
+        $title = RequestUtil::getRequestKeyValueFromURL('mocs', $bottomURL) ? str_replace('Contract', 'MOCS Registered COVID-19 Contract', $title) : $title;
+      }
     } else {
       $title = _get_spending_breadcrumb_title_drilldown(false) . ' ' . RequestUtil::getDashboardTitle() . ' '.SpendingUtil::getSpendingCategoryName();
     }

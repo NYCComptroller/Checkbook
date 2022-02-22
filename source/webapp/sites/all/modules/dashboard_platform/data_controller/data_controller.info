@@ -155,6 +155,7 @@ files[] = datasource/operator/handler/GreaterThanOperatorHandler.php
 files[] = datasource/operator/handler/LessOrEqualOperatorHandler.php
 files[] = datasource/operator/handler/LessThanOperatorHandler.php
 files[] = datasource/operator/handler/NotEmptyOperatorHandler.php
+files[] = datasource/operator/handler/NotEmptyStringOperatorHandler.php
 files[] = datasource/operator/handler/NotEqualOperatorHandler.php
 files[] = datasource/operator/handler/NotInRangeOperatorHandler.php
 files[] = datasource/operator/handler/NotWildcardOperatorHandler.php

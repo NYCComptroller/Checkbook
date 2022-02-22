@@ -962,6 +962,7 @@
           var data_source = $('input[name=contracts_advanced_search_domain_filter]:checked').val();
           var contract_status = div.ele('status').val();
           let contract_category = div.ele('category').val();
+          let yval = (div_checkbook_contracts.ele('year').find("option:selected").text()).split(' ')[1];
           if (contract_status === 'P') {
             if (data_source === 'checkbook') {
               div.ele('registration_date_from').val('').attr("disabled", "disabled");
@@ -976,20 +977,23 @@
             div.ele('received_date_from').removeAttr("disabled");
             div.ele('received_date_to').removeAttr("disabled");
           }
-          else if(contract_category == 'revenue') {
-            div.ele('catastrophic_events').val('').attr("disabled", "disabled");
-          }
           else {
             if (data_source === 'checkbook') {
               div.ele('registration_date_from').removeAttr("disabled");
               div.ele('registration_date_to').removeAttr("disabled");
               div.ele('catastrophic_events').removeAttr("disabled");
+              div.ele('year').removeAttr("disabled");
             }
             div.ele('year').removeAttr("disabled");
             div.ele('received_date_from').attr("disabled", "disabled");
             div.ele('received_date_to').attr("disabled", "disabled");
             div.ele('received_date_from').val("");
             div.ele('received_date_to').val("");
+          }
+
+          if (contract_category == 'revenue' || yval < 2020 ) {
+            div.ele('catastrophic_events').attr("disabled", "disabled");
+            div.ele('catastrophic_events').val("");
           }
           updateSubVendorFields(div);
         }
@@ -2316,7 +2320,7 @@
         initializeAccordionAttributes('advanced_search_create_alerts');
 
         $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({
-          title: "<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alert</span></span>",
+          title: "",
           position: ['center', 'center'],
           width: 800,
           modal: true,
@@ -2338,6 +2342,10 @@
         });
         /* Correct min-height for IE9, causes hover event to add spaces */
         $('#block-checkbook-advanced-search-checkbook-advanced-search-form').css('min-height', '0%');
+        let title = "<span class='create-alert-header'><span class='active'>1. Select Criteria</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>2. Customize Results</span><span class='inactive'>&nbsp;|&nbsp;</span><span class='inactive'>3. Schedule Alert</span></span>";
+
+        $('#block-checkbook-advanced-search-checkbook-advanced-search-form').dialog({autoOpen: false}).dialog('widget').
+        find('.ui-dialog-title').html(title);
 
         $('.advanced-search-accordion').accordion({
           autoHeight: false,

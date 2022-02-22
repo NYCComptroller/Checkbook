@@ -212,7 +212,7 @@ h4 {
 #nice-menu-1 > li > a, #nice-menu-1 > li > span {
     float: left;
     font-weight: bold;
-    padding: 13px 24px 10px;
+    padding: 13px 22px 10px;
     border-right:1px solid #cbcbcb;
 }
 #nice-menu-1 li ul {
@@ -3411,6 +3411,7 @@ body.page-mwbe-agency-grading .grid-3 .checkbook-grading-right .value {
     margin: 0 auto;
 }
 body.page-mwbe-agency-grading #grading_table{
+    width: 700px !important;
     border: 1px solid #cacaca;
 }
 body.page-mwbe-agency-grading #grading_table .number{
@@ -3728,14 +3729,10 @@ p.pieCount {
 ********************************/
 
 /** Styles for 'New Features' in the main menu **/
-#nice-menu-1 li.menu-path-node-975 a.enabled{
+#nice-menu-1 li.menu-path-node-975 a{
     color:#389be2;
 }
 
-#nice-menu-1 li.menu-path-node-975 a.disabled{
-    /*color:#808080;*/
-    color:#389be2;
-}
 #nice-menu-1 li.menu-path-node-975 a:hover,
 #nice-menu-1 li.menu-path-node-975 a.active{
     color: #2A639A;

@@ -282,4 +282,8 @@ function theme($a, $vars)
     return $vars;
 }
 
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_database.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_datafeeds.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_date.inc';
 include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_project.inc';
+include_once CUSTOM_MODULES_DIR . '/checkbook_project/includes/checkbook_widget_process.inc';
