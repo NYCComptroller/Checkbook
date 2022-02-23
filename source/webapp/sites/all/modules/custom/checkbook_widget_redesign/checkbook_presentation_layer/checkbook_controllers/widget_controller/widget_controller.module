@@ -36,58 +36,10 @@ require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/ob
 require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/AbstractJson2PHP.php');
 require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/Json2PHP.php');
 
-//
-//// Remove these
-//require_once(realpath(drupal_get_path('module', 'checkbook_infrastructure_layer')) .'/constants/SpendingConstants.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_infrastructure_layer')) .'/constants/ContractConstants.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_infrastructure_layer')) .'/constants/CommonConstants.php');
-//
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingUrlService.php');
-//
-//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/constants/SqlConfigPath.php');
-//
-//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/common/EntityFactory.php');
-//
-//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/sql/SqlDatasetFactory.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/sql/SqlRecordCountFactory.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/sql/ISqlEntityRepository.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/sql/SqlEntityRepository.php');
-//
-//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/widget/IWidgetRepository.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_domain')) .'/widget/WidgetRepository.php');
-//
-//// checkbook_services
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/common/VendorService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/common/PrimeVendorService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/common/SubVendorService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/common/MinorityTypeService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/common/data/IDataService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/common/data/DataService.php');
-//
-//
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/widget/IWidgetService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/widget/WidgetService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/widget/WidgetDataService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/widget/WidgetSqlService.php');
-//
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingWidgetService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingParameters.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingUrlService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/spending/SpendingWidgetVisibilityService.php');
-//
-//
 require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/budget/BudgetUrlService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/budget/BudgetWidgetVisibilityService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/contracts/ContractsParameters.php');
 require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/budget/BudgetWidgetService.php');
 require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/budget/data/IBudgetDataService.php');
 require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/budget/data/BudgetDataService.php');
-//
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/revenue/RevenueDataService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/revenue/RevenueUrlService.php');
-//require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/revenue/RevenueWidgetService.php');
-
-
 
 /***************************************/
 /* Implementation of Widget Node Type  */
@@ -122,47 +74,6 @@ function widget_controller_load($key){
 	return $node;
 }
 
-function widget_controller_node_info1() {
-	return array(
-    'widget' => array(
-      'name' => t('Widget Controller'),
-      'module' => 'widget controller',
-      'description' => t("This content type implementing widgets."),
-      'has_title' => TRUE,
-      'title_label' => t('Title'),
-      'has_body' => TRUE,
-      'body_label' => t('Body'),
-	)
-	);
-}
-
-function widget_controller_access($op, $node, $account) {
-	if ($op == 'create') {
-		return user_access('create widget', $account);
-	}
-
-	if ($op == 'update') {
-		if (user_access('edit any widget', $account) || (user_access('edit own widget', $account) && ($account->uid == $node->uid))) {
-			return TRUE;
-		}
-	}
-
-	if ($op == 'delete') {
-		if (user_access('delete any widget', $account) || (user_access('delete own widget', $account) && ($account->uid == $node->uid))) {
-			return TRUE;
-		}
-	}
-}
-
-function widget_controller_perm() {
-	return array(
-    'create widget',
-    'delete own widget',
-    'delete any widget',
-    'edit own widget',
-    'edit any widget',
-	);
-}
 
 function _widget_controller_node_load($key, $type='node'){
     return _widget_controller_node_load_file($key);
@@ -225,33 +136,6 @@ function _widget_controller_node_load_file($key){
     	$node->nid = $key;
     }
     return $node;
-}
-
-function widget_controller_form(&$node) {
-	// The site admin can decide if this node type has a title and body, and how
-	// the fields should be labeled. We need to load these settings so we can
-	// build the node form correctly.
-	$type = node_get_types('type', $node);
-
-	if ($type->has_title) {
-		$form['title'] = array(
-      '#type' => 'textfield',
-      '#title' => check_plain($type->title_label),
-      '#required' => TRUE,
-      '#default_value' => $node->title,
-      '#weight' => -5,
-		);
-	}
-
-	if ($type->has_body) {
-		// In Drupal 6, we can use node_body_field() to get the body and filter
-		// elements. This replaces the old textarea + filter_form() method of
-		// setting this up. It will also ensure the teaser splitter gets set up
-		// properly.
-		$form['body_field'] = node_body_field($node, $type->body_label, $type->min_word_count);
-	}
-
-	return $form;
 }
 
 function widget_controller_node_validate(&$node) {
@@ -320,7 +204,7 @@ function _widget_controller_ajax_wrapper($node){
         var callBackURL = "/widget_controller_ajax_data/node/' .$node->nid . '/' . $urlPath . '";
          jQuery.ajax({
       	   url: callBackURL,
-      	   success: function(data) {		            		   
+      	   success: function(data) {
       	     jQuery("#' . widget_controller_unique_identifier($node) . '").html(data);
       	   }
       	 });
@@ -923,22 +807,6 @@ function widget_controller_update_columns_by_datasource($node_columns, $datasour
     }
     return $columns;
 }
-
-
-function widget_controller_get_current_datasource(){
-	$datasource = Datasource::getCurrent();
-	if(isset($datasource)){
-		return $datasource;
-	}else{
-		return widget_controller_get_default_datasource();
-	}
-}
-
-
-function widget_controller_get_default_datasource(){
-	return "checkbook";
-}
-
 
 
 function _widget_controller_build_sql_condition($column, $value){
