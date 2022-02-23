@@ -194,32 +194,6 @@ function widget_controller_node_view($node, $nodata = true) {
 	return $node;
 }
 
-
-function _widget_controller_ajax_wrapper($node){
-  $urlPath = drupal_get_path_alias($_GET['q']);
-  return '<div id="' . widget_controller_unique_identifier($node) . '">Loading Data</div>
-  <script type="text/javascript">
-  jQuery(document).ready(function() {
-
-        var callBackURL = "/widget_controller_ajax_data/node/' .$node->nid . '/' . $urlPath . '";
-         jQuery.ajax({
-      	   url: callBackURL,
-      	   success: function(data) {
-      	     jQuery("#' . widget_controller_unique_identifier($node) . '").html(data);
-      	   }
-      	 });
-    });
-  </script>
-  ';
-}
-
-
-function widget_controller_ajax_get_node($node){
-  $node = widget_controller_node_view($node,false);
-  echo $node->content['body']['#markup'];
-
-}
-
 /***************************************/
 /* Introduction of Widget Hooks        */
 /***************************************/
