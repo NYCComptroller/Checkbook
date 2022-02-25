@@ -12,14 +12,14 @@ $q1 = 'SELECT og.vendor_id,
             (CASE WHEN a.city != \\'N/A\\' THEN \\', \\' || a.city  ELSE \\'\\' END )||
             (CASE WHEN a.state != \\'N/A\\' THEN \\', \\' || a.state ELSE \\'\\' END )||
             (CASE WHEN a.zip != \\'N/A\\' THEN \\', \\' || a.zip ELSE \\'\\' END ) address
-    FROM oge_contract_vendor_level og 
+    FROM oge_contract_vendor_level og
         LEFT JOIN disbursement_line_item_details dlid ON og.fms_contract_number = dlid.contract_number AND og.vendor_id = dlid.vendor_id
         LEFT JOIN {ref_date} rd1 ON rd1.date_id = check_eft_issued_date_id
         LEFT JOIN {vendor_history} vh ON vh.vendor_history_id = og.vendor_history_id
         LEFT JOIN {vendor_address} va ON vh.vendor_history_id = va.vendor_history_id
         LEFT JOIN {address} a ON va.address_id = a.address_id
     WHERE dlid.vendor_id IN (
-        SELECT og2.vendor_id FROM oge_contract og2 
+        SELECT og2.vendor_id FROM oge_contract og2
             JOIN history_agreement hm2 ON og2.fms_contract_number = hm2.contract_number
             WHERE hm2.agreement_id = ' . $ag_id . '
         )
@@ -29,18 +29,18 @@ $q1 = 'SELECT og.vendor_id,
             (CASE WHEN a.zip != \\'N/A\\' THEN \\', \\' || a.zip ELSE \\'\\' END );
     ';
 
-    $vendors_list = _checkbook_project_execute_sql_by_data_source($q1,'checkbook_oge');
+    $vendors_list = _checkbook_project_execute_sql_by_data_source($q1,Datasource::OGE);
     $node->vendors_list = $vendors_list;
 
 
-$q2 = 'SELECT vendor_id, agency_short_name, og.agency_id, 
-        COUNT(DISTINCT fms_contract_number) count 
+$q2 = 'SELECT vendor_id, agency_short_name, og.agency_id,
+        COUNT(DISTINCT fms_contract_number) count
     FROM oge_contract og
         JOIN ref_agency ra ON ra.agency_id = og.agency_id
-    WHERE og.agency_id =  ' .$vendors_list[0]['agency_id'] 
+    WHERE og.agency_id =  ' .$vendors_list[0]['agency_id']
                         . ' GROUP BY vendor_id, agency_short_name, og.agency_id ' ;
 
-    $vendor_contracts_count = _checkbook_project_execute_sql_by_data_source($q2,'checkbook_oge');
+    $vendor_contracts_count = _checkbook_project_execute_sql_by_data_source($q2,Datasource::OGE);
     $node->widget_count_label = 'Total Number of</br>' . $vendor_contracts_count[0]['agency_short_name'] . ' Contracts';
     $node->vendor_contracts_count = $vendor_contracts_count;
     $template = $node->widgetConfig->template;

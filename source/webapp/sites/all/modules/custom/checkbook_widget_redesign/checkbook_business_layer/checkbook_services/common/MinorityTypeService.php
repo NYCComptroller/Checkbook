@@ -73,7 +73,7 @@ class MinorityTypeService {
                               AND year_id = ".$year_id."
                               AND type_of_year = '".$type_of_year."'";
 
-                    $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+                    $results = _checkbook_project_execute_sql_by_data_source($query);
 
                     foreach($results as $row){
                         if(isset($row['agency_id'])) {
@@ -100,7 +100,7 @@ class MinorityTypeService {
                               WHERE minority_type_id IN (".MappingUtil::getTotalMinorityIds().")
                               AND is_prime_or_sub = 'P'";
 
-                        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+                        $results = _checkbook_project_execute_sql_by_data_source($query);
                         foreach($results as $row){
                             if(isset($row['agency_id'])) {
                                 $contract_pending_vendor_latest_mwbe_category[$row['vendor_id']][$row['agency_id']][$row['is_prime_or_sub']]['minority_type_id'] = $row['minority_type_id'];
@@ -119,7 +119,7 @@ class MinorityTypeService {
                               AND year_id = ".$year_id."
                               AND type_of_year = '".$type_of_year."'";
 
-                    $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+                    $results = _checkbook_project_execute_sql_by_data_source($query);
 
                     foreach($results as $row){
                         if(isset($row['agency_id'])) {

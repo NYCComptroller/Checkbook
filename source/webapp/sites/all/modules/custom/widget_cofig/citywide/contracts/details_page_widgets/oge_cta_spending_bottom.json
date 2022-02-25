@@ -31,7 +31,7 @@ $ag_id = RequestUtilities::getRequestParamValue('agid');
         order by og.vendor_id, hm.document_fiscal_year desc, og.fms_commodity_line desc
         ';
 
-        $results_contract_history = _checkbook_project_execute_sql_by_data_source($q1,'checkbook_oge');
+        $results_contract_history = _checkbook_project_execute_sql_by_data_source($q1,Datasource::OGE);
         $node->results_contract_history = $results_contract_history;
 
 
@@ -53,7 +53,7 @@ $q2 = 'select
         'order by og.vendor_id, dlid.fiscal_year desc , rd1.date desc , dlid.check_amount desc' ;
 
 
-        $results_spending = _checkbook_project_execute_sql_by_data_source($q2,'checkbook_oge');
+        $results_spending = _checkbook_project_execute_sql_by_data_source($q2,Datasource::OGE);
         $node->results_spending = $results_spending;
         $template = $node->widgetConfig->template;
         return theme($template, array('node'=> $node));

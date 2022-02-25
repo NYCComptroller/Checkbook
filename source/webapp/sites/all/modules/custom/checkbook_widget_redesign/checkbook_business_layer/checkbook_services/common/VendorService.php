@@ -48,7 +48,7 @@ abstract class VendorService {
                             AND type_of_year = '".$type_of_year."'
                             AND is_prime_or_sub = '".$vendor_type."' LIMIT 1";
 
-                $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+                $results = _checkbook_project_execute_sql_by_data_source($query);
                 break;
             default :
                 $query = "SELECT DISTINCT minority_type_id, latest_minority_flag, latest_mwbe_flag
@@ -59,7 +59,7 @@ abstract class VendorService {
                             AND type_of_year = 'B'
                             AND latest_minority_flag = 'Y'
                             AND is_prime_or_sub = '".$vendor_type."'";
-                $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+                $results = _checkbook_project_execute_sql_by_data_source($query);
         }
         $minority_type_id = $results[0]['minority_type_id'];
         return $minority_type_id != '' ? $minority_type_id : false;
@@ -107,7 +107,7 @@ abstract class VendorService {
                                     AND type_of_year = 'B'";
                 break;
         }
-        $minority_types = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        $minority_types = _checkbook_project_execute_sql_by_data_source($query);
         foreach($minority_types as $minority_type_id){
             $minority_type_ids[] = $minority_type_id['minority_type_id'];
         }
@@ -131,7 +131,7 @@ abstract class VendorService {
                    AND s0.type_of_year = 'B'
                    AND s0.status_flag = '" . $status . "'
                    AND s15.document_code IN ('CT1', 'CTA1', 'RCT1', 'MA1') ";
-        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        $results = _checkbook_project_execute_sql_by_data_source($query);
         return $results[0]['current_amount_sum'];
     }
     public static function getSubVendorAmount($vendor_id =null,$year_id=null,$status='A')
@@ -150,7 +150,7 @@ abstract class VendorService {
                          AND s0.status_flag = '" . $status . "'
                          AND s15.document_code IN ('CT1', 'CTA1', 'RCT1', 'MA1')
                           ";
-        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        $results = _checkbook_project_execute_sql_by_data_source($query);
         return $results[0]['current_amount_sum'];
 
     }

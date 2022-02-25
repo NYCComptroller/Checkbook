@@ -99,7 +99,7 @@ WHERE contract_number = '".$contract_number."'
 AND latest_flag = 'Y'
 LIMIT 1";
 
-$results4 = _checkbook_project_execute_sql_by_data_source($querySubVendorinfo,_get_current_datasource());
+$results4 = _checkbook_project_execute_sql_by_data_source($querySubVendorinfo,Datasource::getCurrent());
 $res->data = $results4;
 
 $total_current_amount = $res->data[0]['total_current_amt'];
@@ -137,7 +137,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
     if(RequestUtilities::get("doctype")=="CT1" || RequestUtilities::get("doctype")=="CTA1"){
 
         $querySubVendorStatusInPIP = "SELECT
-                                        c.aprv_sta_id, 
+                                        c.aprv_sta_id,
                                         c.aprv_sta_value AS sub_vendor_status_pip
                                     FROM sub_agreement_snapshot a
                                     LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(a.aprv_sta,6)
@@ -146,7 +146,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
                                     ."' AND a.vendor_id = ". $vendor_summary['sub_vendor_id']
                                     . " ORDER BY c.sort_order ASC LIMIT 1";
 
-        $results5 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatusInPIP,_get_current_datasource());
+        $results5 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatusInPIP,Datasource::getCurrent());
         $result->data = $results5;
         $subVendorStatusInPIP = ($result->data[0]['aprv_sta_id'] == 4 && $vendor_summary['check_amount'] == 0) ? "No Subcontract Payments Submitted" : $result->data[0]['sub_vendor_status_pip'];
 
@@ -189,7 +189,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
                                     ."  AND a.sub_contract_id ='".$reference_id
                                     . "' ORDER BY c.sort_order ASC LIMIT 1";
 
-        $results6 = _checkbook_project_execute_sql_by_data_source($querySubContractStatusInPIP,_get_current_datasource());
+        $results6 = _checkbook_project_execute_sql_by_data_source($querySubContractStatusInPIP,Datasource::getCurrent());
         $result->data = $results6;
         $subContractStatusInPIP = ($result->data[0]['aprv_sta_id'] == 4 && $vendor_summary['check_amount'] == 0) ? "No Subcontract Payments Submitted" : $result->data[0]['sub_contract_status_pip'];
 

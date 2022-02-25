@@ -102,7 +102,7 @@ class NychaContractDetails
             ORDER BY release_approved_date DESC
 SQL;
 
-        $contracts = _checkbook_project_execute_sql_by_data_source($po_query, 'checkbook_nycha');
+        $contracts = _checkbook_project_execute_sql_by_data_source($po_query, Datasource::NYCHA);
         if ($contracts && sizeof($contracts)) {
             $node->data = $contracts[0];
         }
@@ -193,7 +193,7 @@ SQL;
             LIMIT 1;
 SQL;
 
-        $contracts = _checkbook_project_execute_sql_by_data_source($bapa_query, 'checkbook_nycha');
+        $contracts = _checkbook_project_execute_sql_by_data_source($bapa_query, Datasource::NYCHA);
         if ($contracts && sizeof($contracts)) {
             $node->data = $contracts[0];
         }
@@ -205,7 +205,7 @@ SQL;
             where (contract_id = '{$contract_id}' )
             group by contract_id";
 
-        $assoc_releases_data = _checkbook_project_execute_sql_by_data_source($agreement_transactions_query, 'checkbook_nycha');
+        $assoc_releases_data = _checkbook_project_execute_sql_by_data_source($agreement_transactions_query, Datasource::NYCHA);
         $total_associated_releases = 0;
         foreach ($assoc_releases_data as $row) {
             $total_associated_releases += $row["associated_releases"];
@@ -232,7 +232,7 @@ SQL;
                   WHERE agreement_type_code = 'PO' AND vendor_id = '{$vendor_id}') a
 EOQ2;
 
-            $total_number_of_contracts = _checkbook_project_execute_sql_by_data_source($total_number_contracts_query, 'checkbook_nycha');
+            $total_number_of_contracts = _checkbook_project_execute_sql_by_data_source($total_number_contracts_query, Datasource::NYCHA);
             if ($total_number_of_contracts) {
                 $node->total_number_of_contracts = $total_number_of_contracts[0];
             }
@@ -271,7 +271,7 @@ EOQ2;
             FROM all_agreement_transactions
             WHERE contract_id = '{$contract_id}'
 SQL;
-        $total = _checkbook_project_execute_sql_by_data_source($releases_sql, 'checkbook_nycha');
+        $total = _checkbook_project_execute_sql_by_data_source($releases_sql, Datasource::NYCHA);
         $node->assoc_releases_count = $total[0]['count'];
         $node->assoc_releases_pages = ceil($total[0]['count']/10.0);
         return;
@@ -306,7 +306,7 @@ SQL;
             ORDER BY revision_number DESC;
 SQL;
 
-        $history = _checkbook_project_execute_sql_by_data_source($sql, 'checkbook_nycha');
+        $history = _checkbook_project_execute_sql_by_data_source($sql, Datasource::NYCHA);
         return $this->splitHistoryByYears($history);
 
     }
@@ -332,7 +332,7 @@ SQL;
             ORDER BY line_number, shipment_number, distribution_number;
 SQL;
 
-        $shipments = _checkbook_project_execute_sql_by_data_source($sd_sql, 'checkbook_nycha');
+        $shipments = _checkbook_project_execute_sql_by_data_source($sd_sql, Datasource::NYCHA);
         if ($node->contractPO) {
             $node->shipments = $shipments;
             return;

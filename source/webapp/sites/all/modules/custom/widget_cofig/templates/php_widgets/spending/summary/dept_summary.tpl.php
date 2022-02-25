@@ -50,10 +50,10 @@ if(is_array($records)){
                   LIMIT 1";
 
     if($datasource=='checkbook_oge'){
-        $result = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_oge');
+        $result = _checkbook_project_execute_sql_by_data_source($query, Datasource::OGE);
     }
     else {
-        $result = _checkbook_project_execute_sql_by_data_source($query, 'checkbook');
+        $result = _checkbook_project_execute_sql_by_data_source($query);
     }
 
 
