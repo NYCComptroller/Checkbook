@@ -20,7 +20,7 @@
                 }
             ]
         },
-        "sub_vendor2": {
+        /*"sub_vendor2": {
             "datasourceName": "main",
             "source": "subvendor",
             "columns": [
@@ -29,7 +29,7 @@
                     "key": true
                 }
             ]
-        },
+        },*/
         "sub_vendor_history": {
             "datasourceName": "main",
             "source": "subvendor_history",

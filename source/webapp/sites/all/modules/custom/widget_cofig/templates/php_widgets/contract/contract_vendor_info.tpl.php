@@ -31,11 +31,11 @@ if(RequestUtilities::get("magid") != ""){
   $ag_id = RequestUtilities::get("agid");
 }
 
-if(_get_current_datasource() != "checkbook_oge"){
-  $queryVendorDetails = "SELECT cvlmc.minority_type_id, fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id, 
+if(Datasource::getCurrent() != Datasource::OGE){
+  $queryVendorDetails = "SELECT cvlmc.minority_type_id, fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,
                                 fa.vendor_id, va.address_id, ve.legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
-                                (CASE WHEN cvlmc.minority_type_id IN (". implode(',', MappingUtil::$minority_type_category_map_multi_chart['M/WBE']) .") THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor, 
-                                (CASE WHEN cvlmc.minority_type_id IN (4,5) then 'Asian American' ELSE rm.minority_type_name END) AS ethnicity 
+                                (CASE WHEN cvlmc.minority_type_id IN (". implode(',', MappingUtil::$minority_type_category_map_multi_chart['M/WBE']) .") THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
+                                (CASE WHEN cvlmc.minority_type_id IN (4,5) then 'Asian American' ELSE rm.minority_type_name END) AS ethnicity
 	                        FROM agreement_snapshot fa
 	                            LEFT JOIN vendor_history vh ON fa.vendor_history_id = vh.vendor_history_id
 	                            LEFT JOIN vendor as ve ON ve.vendor_id = vh.vendor_id
@@ -46,7 +46,7 @@ if(_get_current_datasource() != "checkbook_oge"){
 	                            LEFT JOIN ref_business_type rb ON vb.business_type_id = rb.business_type_id
 	                            LEFT JOIN contract_vendor_latest_mwbe_category cvlmc ON cvlmc.vendor_id = fa.vendor_id
                                 LEFT JOIN ref_minority_type rm ON cvlmc.minority_type_id = rm.minority_type_id
-	                        WHERE ra.address_type_code = 'PR' AND fa.latest_flag = 'Y' AND cvlmc.latest_minority_flag ='Y' AND fa.original_agreement_id = " . $ag_id. " 
+	                        WHERE ra.address_type_code = 'PR' AND fa.latest_flag = 'Y' AND cvlmc.latest_minority_flag ='Y' AND fa.original_agreement_id = " . $ag_id. "
 	                        ORDER BY cvlmc.year_id DESC LIMIT 1";
 }else{
   $queryVendorDetails = "SELECT  fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,
@@ -70,11 +70,11 @@ $queryVendorCount = " select count(*) total_contracts_sum from {agreement_snapsh
 
 
 
-$results1 = _checkbook_project_execute_sql_by_data_source($queryVendorDetails,_get_current_datasource());
+$results1 = _checkbook_project_execute_sql_by_data_source($queryVendorDetails,Datasource::getCurrent());
 $node->data = $results1;
 
 $total_cont  = 0;
-$results2 = _checkbook_project_execute_sql_by_data_source($queryVendorCount,_get_current_datasource());
+$results2 = _checkbook_project_execute_sql_by_data_source($queryVendorCount,Datasource::getCurrent());
 if(RequestUtilities::get("status")){
     $status = '/status/'.RequestUtilities::get("status");
 }else{
@@ -91,7 +91,7 @@ $contract_number = $node->data[0]['contract_number'];
 
 ?>
   <ul class="left">
-  <?php if( _get_current_datasource() == "checkbook" && !preg_match('/newwindow/',$_GET['q'])){?>
+  <?php if( Datasource::getCurrent() == Datasource::CITYWIDE && !preg_match('/newwindow/',$_GET['q'])){?>
     <li><span class="gi-list-item">Prime Vendor:</span> <a href="<?php echo $vendor_link;?> " ><?php echo $node->data[0]['vendor_name'] ;?></a></li>
   <?php }else{ ?>
   	<li><span class="gi-list-item">Prime Vendor:</span> <?php echo $node->data[0]['vendor_name'] ;?></li>
@@ -121,7 +121,7 @@ $contract_number = $node->data[0]['contract_number'];
     <li><span class="gi-list-item">Address:</span> <?php echo $address;?></li>
     <li><span class="gi-list-item">Total Number of NYC Contracts:</span> <?php echo $total_cont;?></li>
 
-<?php if( _get_current_datasource() == "checkbook" ){?>
+<?php if( Datasource::getCurrent() == Datasource::CITYWIDE){?>
     <!-- Total Number of Sub Vendors -->
     <li><span class="gi-list-item">M/WBE Vendor:</span> <?php echo $node->data[0]['mwbe_vendor'] ;?></li>
 
@@ -144,7 +144,7 @@ if (RequestUtilities::get("datasource") != "checkbook_oge") {
     AND latest_flag = 'Y'
     LIMIT 1";
 
-    $results4 = _checkbook_project_execute_sql_by_data_source($querySubVendorinfo,_get_current_datasource());
+    $results4 = _checkbook_project_execute_sql_by_data_source($querySubVendorinfo,Datasource::getCurrent());
     if (!isset($res)) {
         $res = new stdClass();
     }
@@ -159,7 +159,7 @@ if (RequestUtilities::get("datasource") != "checkbook_oge") {
                             AND latest_flag = 'Y'
                             LIMIT 1";
 
-    $results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,_get_current_datasource());
+    $results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,Datasource::getCurrent());
     $res->data = $results3;
     $total_subvendor_count = $res->data[0]['sub_vendor_count'];
 
@@ -168,7 +168,7 @@ if (RequestUtilities::get("datasource") != "checkbook_oge") {
                             JOIN ref_subcontract_status ref_status on ref_status.scntrc_status = l1.scntrc_status
                             WHERE contract_number = '". $contract_number . "' AND latest_flag = 'Y' LIMIT 1";
 
-    $results6 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatus,_get_current_datasource());
+    $results6 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatus,Datasource::getCurrent());
     $res->data = $results6;
     $subVendorStatus = $res->data[0]['contract_subvendor_status'];
 

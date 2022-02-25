@@ -583,7 +583,7 @@ class MappingUtil {
                             ." AND is_prime_or_sub = '" . $is_prime_or_sub . "'"
                             ." ORDER BY year_id DESC "
                             ." LIMIT 1 ";
-                        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+                        $results = _checkbook_project_execute_sql_by_data_source($query);
                         if($results) {
                           $ethnicity_id = $results[0]['minority_type_id'];
                         }
@@ -626,7 +626,7 @@ class MappingUtil {
                         ." AND latest_mwbe_flag = 'Y'"
                         ." LIMIT 1 ";
 
-                    $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+                    $results = _checkbook_project_execute_sql_by_data_source($query);
                     if($results) {
                       $ethnicity_id = $results[0]['minority_type_id'];
                     }

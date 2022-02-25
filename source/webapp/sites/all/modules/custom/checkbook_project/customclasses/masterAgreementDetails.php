@@ -61,15 +61,15 @@ class masterAgreementDetails {
     AND l1.latest_flag = 'Y'
     ";
 
-    $results1 = _checkbook_project_execute_sql_by_data_source($query1,_get_default_datasource());
+    $results1 = _checkbook_project_execute_sql_by_data_source($query1);
     $node->data = $results1;
 
 
-    if(_get_current_datasource() ==_get_default_datasource() ){
+    if(Datasource::getCurrent() == Datasource::CITYWIDE){
     	$query2 = "select rfed_amount from {agreement_snapshot} where original_agreement_id = " .$mag_id . "
      		and master_agreement_yn = 'Y'  and latest_flag = 'Y'"  ;
 
-	    $results2 = _checkbook_project_execute_sql_by_data_source($query2,_get_default_datasource());
+	    $results2 = _checkbook_project_execute_sql_by_data_source($query2);
 	    $spent_amount = 0;
 	    foreach ($results2 as $row) {
 	      $spent_amount += $row["rfed_amount"];
@@ -83,14 +83,14 @@ class masterAgreementDetails {
 	    WHERE master_agreement_id = " . $mag_id . "
 	    AND latest_flag = 'Y'";
 
-	    $results3 = _checkbook_project_execute_sql_by_data_source($query3,_get_current_datasource());
+	    $results3 = _checkbook_project_execute_sql_by_data_source($query3,Datasource::getCurrent());
 	    $total_child_contracts = 0;
 	    foreach($results3 as $row){
 	    	$total_child_contracts +=$row["total_child_contracts"];
 	    }
 	    $node->total_child_contracts = $total_child_contracts;
     }else{
-    	$query2 = "select sum(original_amount) original_amount, sum(current_amount) current_amount, 
+    	$query2 = "select sum(original_amount) original_amount, sum(current_amount) current_amount,
     			count(distinct fms_contract_number) as num_associated_contracts, sum(check_amount) as spent_amount
 				FROM {oge_contract_vendor_level} a
 				JOIN (select distinct contract_number from {history_agreement} where master_agreement_id = " . $mag_id . ") b
@@ -98,7 +98,7 @@ class masterAgreementDetails {
 				LEFT JOIN (SELECT sum(check_amount) as check_amount, contract_number, vendor_id FROM {disbursement_line_item_details} group by 2,3) c
 				ON b.contract_number = c.contract_number AND a.vendor_id = c.vendor_id limit 1"  ;
 
-    	$results2 = _checkbook_project_execute_sql_by_data_source($query2,_get_current_datasource());
+    	$results2 = _checkbook_project_execute_sql_by_data_source($query2,Datasource::getCurrent());
     	foreach ($results2 as $row) {
     		$node->spent_amount = $row['spent_amount'] ;
     		$node->original_contract_amount = $row['original_amount'];
