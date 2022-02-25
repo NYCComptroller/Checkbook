@@ -45,12 +45,6 @@ function checkbook_advanced_search_autocomplete_menu()
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
-  /*$items['advanced-search/autocomplete/spending/year'] = array(
-    'page callback' => '_checkbook_advanced_search_autocomplete_spending_year',
-    'access callback' => TRUE,
-    'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-    'type' => MENU_CALLBACK
-  );*/
 
     // Budget autocomplete paths
     $items['advanced-search/autocomplete/budget/department'] = array(
@@ -73,24 +67,6 @@ function checkbook_advanced_search_autocomplete_menu()
     );
     $items['advanced-search/autocomplete/budget/budgetname'] = array(
         'page callback' => '_checkbook_advanced_search_autocomplete_budget_budgetname',
-        'access callback' => TRUE,
-        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-        'type' => MENU_CALLBACK
-    );
-    $items['advanced-search/autocomplete/budget/fundingsrc'] = array(
-        'page callback' => '_checkbook_advanced_search_autocomplete_budget_fundingsrc',
-        'access callback' => TRUE,
-        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-        'type' => MENU_CALLBACK
-    );
-    $items['advanced-search/autocomplete/budget/revcat'] = array(
-        'page callback' => '_checkbook_advanced_search_autocomplete_budget_revcat',
-        'access callback' => TRUE,
-        'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
-        'type' => MENU_CALLBACK
-    );
-    $items['advanced-search/autocomplete/budget/revsrc'] = array(
-        'page callback' => '_checkbook_advanced_search_autocomplete_budget_revsrc',
         'access callback' => TRUE,
         'file' => '/includes/checkbook_advanced_search_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
