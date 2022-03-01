@@ -9,22 +9,6 @@ abstract class Column
     const None = 'none';
 }
 
-abstract class DataSource
-{
-    const CitywideAgency = 'checkbook';
-    const OtherGovernmentEntities = 'checkbook_oge';
-    const NYCHA = 'checkbook_nycha';
-}
-
-abstract class Domain
-{
-    const Budget = 'budget';
-    const Revenue = 'revenue';
-    const Spending = 'spending';
-    const Contracts = 'contracts';
-    const Payroll = 'payroll';
-}
-
 abstract class FieldDef
 {
     const DataSourceFilter = 'domain_filter';

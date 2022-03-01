@@ -1072,7 +1072,7 @@ function _checkbook_autocomplete_budget_budgetcode($agency, $dept, $expense_cate
  * @param $revsrc
  * @param $type
  */
-function _checkbook_autocomplete_budget_fundingsrc($agency, $budget_code, $dept, $expense_category, $fiscal_year, $revcat, $revsrc, $type)
+/*function _checkbook_autocomplete_budget_fundingsrc($agency, $budget_code, $dept, $expense_category, $fiscal_year, $revcat, $revsrc, $type)
 {
   $search_term = _get_autocomplete_search_term();
   if (!empty($search_term)) {
@@ -1125,7 +1125,7 @@ function _checkbook_autocomplete_budget_fundingsrc($agency, $budget_code, $dept,
     }
   }
 }
-
+*/
 /**
  * @param $agency
  * @param $budget_code
@@ -1136,7 +1136,7 @@ function _checkbook_autocomplete_budget_fundingsrc($agency, $budget_code, $dept,
  * @param $revsrc
  * @param $type
  */
-function _checkbook_autocomplete_budget_revcat($agency, $budget_code, $dept, $expense_category, $fiscal_year, $funding_source, $revsrc, $type)
+/*function _checkbook_autocomplete_budget_revcat($agency, $budget_code, $dept, $expense_category, $fiscal_year, $funding_source, $revsrc, $type)
 {
   $search_term = _get_autocomplete_search_term();
   if (!empty($search_term)) {
@@ -1189,7 +1189,7 @@ function _checkbook_autocomplete_budget_revcat($agency, $budget_code, $dept, $ex
     }
   }
 }
-
+*/
 /**
  * @param $agency
  * @param $budget_code
@@ -1200,7 +1200,7 @@ function _checkbook_autocomplete_budget_revcat($agency, $budget_code, $dept, $ex
  * @param $revcat
  * @param $type
  */
-function _checkbook_autocomplete_budget_revsrc($agency, $budget_code, $dept, $expense_category, $fiscal_year, $funding_source, $revcat, $type)
+/*function _checkbook_autocomplete_budget_revsrc($agency, $budget_code, $dept, $expense_category, $fiscal_year, $funding_source, $revcat, $type)
 {
   $search_term = _get_autocomplete_search_term();
   if (!empty($search_term)) {
@@ -1253,7 +1253,7 @@ function _checkbook_autocomplete_budget_revsrc($agency, $budget_code, $dept, $ex
     }
   }
 }
-
+*/
 /**
  *
  * Revenue autocomplete menu callback functions
