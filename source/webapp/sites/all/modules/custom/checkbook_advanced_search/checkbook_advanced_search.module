@@ -31,8 +31,6 @@ module_load_include('inc', 'checkbook_advanced_search', 'includes/budget_advance
 module_load_include('inc', 'checkbook_advanced_search', 'includes/revenue_advanced_search');
 module_load_include('inc', 'checkbook_advanced_search_autocomplete', 'includes/checkbook_advanced_search_autocomplete_functions');
 
-use checkbook_advanced_search\DataSource as DataSource;
-use checkbook_advanced_search\Domain as Domain;
 use checkbook_advanced_search\Field as Field;
 use checkbook_advanced_search\Content as Content;
 use checkbook_advanced_search\Form as Form;
@@ -66,6 +64,36 @@ function checkbook_advanced_search_display_ajax(){
   exit;
 }
 
+/*
+* This block is designed to print the advanced search form which is then exposed to the users using a jQuery modal dialog box
+*/
+
+/**
+ * Implements hook_block_info().
+ * @return mixed
+ */
+function checkbook_advanced_search_block_info(){
+  $blocks['checkbook_advanced_search_form'] = array(
+    'info' => t('Checkbook Advanced Search Form Block'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ * @param string $delta
+ * @return array
+ */
+function checkbook_advanced_search_block_view($delta = ''){
+  $block = array();
+  switch ($delta) {
+    case 'checkbook_advanced_search_form':
+      $block['content'] = '<!-- ajax form goes here -->';
+      break;
+  }
+  return $block;
+}
 
 /**
  * Implements hook_form().
@@ -92,26 +120,26 @@ function checkbook_advanced_search_form($form, $form_state){
 
   //<editor-fold desc="Budget">
 
-  $form = _checkbook_advanced_search_get_form($form, Domain::Budget, $agencies, $agency_attributes, $year_range);
+  $form = _checkbook_advanced_search_get_form($form, Domain::$BUDGET, $agencies, $agency_attributes, $year_range);
 
   //</editor-fold>
 
   //<editor-fold desc="Revenue">
 
-  $form = _checkbook_advanced_search_get_form($form, Domain::Revenue, $agencies, $agency_attributes, $year_range);
+  $form = _checkbook_advanced_search_get_form($form, Domain::$REVENUE, $agencies, $agency_attributes, $year_range);
 
 
   //</editor-fold>
 
   //<editor-fold desc="Spending">
 
-  $form = _checkbook_advanced_search_get_form($form, Domain::Spending, $agencies, $agency_attributes, $year_range);
+  $form = _checkbook_advanced_search_get_form($form, Domain::$SPENDING, $agencies, $agency_attributes, $year_range);
 
   //</editor-fold>
 
   //<editor-fold desc="Contracts">
 
-  $form = _checkbook_advanced_search_get_form($form, Domain::Contracts, $agencies, $agency_attributes, $year_range);
+  $form = _checkbook_advanced_search_get_form($form, Domain::$CONTRACTS, $agencies, $agency_attributes, $year_range);
 
   //</editor-fold>
 
@@ -340,12 +368,12 @@ function _checkbook_advanced_search_get_form($form, $domain, $agencies, $agency_
 }
 
 function _checkbook_advanced_search_filter_field_definition($domain, $data_source, $agencies, $agency_attributes, $year_range){
-  if ($data_source == DataSource::NYCHA) {
+  if ($data_source == Datasource::NYCHA) {
     $responsibility_center_attributes = _checkbook_advanced_search_get_responsibility_centers($data_source);
     $contract_type_attribute = _checkbook_advanced_search_get_nycha_contract_types($data_source);
     $fundsrc_attributes = checkbook_advanced_search_get_nycha_funding_sources($data_source);
     $year_attribute = _checkbook_advanced_search_get_year($domain, NULL, $data_source);
-    if($domain == Domain::Budget || $domain == Domain::Revenue){
+    if($domain == CheckbookDomain::BUDGET || $domain == CheckbookDomain::REVENUE){
       $expense_category_attributes = _budget_expcat_options($domain, NULL, NULL, NULL, Datasource::NYCHA, false);
       $program_attributes = _budget_program_options(Datasource::NYCHA, false);
       $project_attributes = _budget_project_options(Datasource::NYCHA, false);
@@ -469,36 +497,4 @@ function _checkbook_advanced_search_filter_field_definition($domain, $data_sourc
   }
 
   return $field_definition_configs;
-}
-
-/*
-* This block is designed to print the advanced search form which is then exposed to the users using a jQuery modal dialog box
-*/
-
-/**
- * Implements hook_block_info().
- * @return mixed
- */
-function checkbook_advanced_search_block_info(){
-  $blocks['checkbook_advanced_search_form'] = array(
-    'info' => t('Checkbook Advanced Search Form Block'),
-    'cache' => DRUPAL_CACHE_GLOBAL,
-  );
-  return $blocks;
-}
-
-
-/**
- * Implements hook_block_view().
- * @param string $delta
- * @return array
- */
-function checkbook_advanced_search_block_view($delta = ''){
-  $block = array();
-  switch ($delta) {
-    case 'checkbook_advanced_search_form':
-      $block['content'] = '<!-- ajax form goes here -->';
-      break;
-  }
-  return $block;
 }

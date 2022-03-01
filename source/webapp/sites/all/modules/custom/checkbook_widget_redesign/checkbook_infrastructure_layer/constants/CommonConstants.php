@@ -136,7 +136,7 @@ abstract class Datasource {
    */
     public static function isOGE(): bool
     {
-        return self::getCurrent() == Datasource::OGE;
+        return self::getCurrent() == self::OGE;
     }
 
   /**
@@ -144,7 +144,7 @@ abstract class Datasource {
    */
     public static function isNYCHA(): bool
     {
-        return (self::getCurrent() == Datasource::NYCHA || self::smartSearchDataSource() == Datasource::NYCHA);
+        return (self::getCurrent() == self::NYCHA || self::smartSearchDataSource() == self::NYCHA);
     }
 
   /**
@@ -153,7 +153,7 @@ abstract class Datasource {
     public static function getNYCHAUrl(): string
     {
         $nychaId = _checkbook_project_querydataset('checkbook_nycha:agency', array('agency_id'), array('agency_short_name' => 'HOUSING AUTH'));
-        $path =  (self::getCurrent() == Datasource::NYCHA) ? '/agency/' . $nychaId[0]['agency_id'] : '';
+        $path =  (self::getCurrent() == self::NYCHA) ? '/agency/' . $nychaId[0]['agency_id'] : '';
         return $path;
     }
 
@@ -229,9 +229,9 @@ abstract class Dashboard {
                 case DashboardParameter::MWBE_SUB_VENDORS: return self::MWBE_SUB_VENDORS;
                 case DashboardParameter::MWBE: return self::MWBE;
                 default:
-                    if(Datasource::isOGE()) {
+                    if(self::isOGE()) {
                       return self::OGE;
-                    }else if(Datasource::isNYCHA()) {
+                    }else if(self::isNYCHA()) {
                       return self::NYCHA;
                     }else {
                       return self::CITYWIDE;
