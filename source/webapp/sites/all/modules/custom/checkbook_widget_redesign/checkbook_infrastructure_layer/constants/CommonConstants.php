@@ -229,9 +229,9 @@ abstract class Dashboard {
                 case DashboardParameter::MWBE_SUB_VENDORS: return self::MWBE_SUB_VENDORS;
                 case DashboardParameter::MWBE: return self::MWBE;
                 default:
-                    if(self::isOGE()) {
+                    if(Datasource::isOGE()) {
                       return self::OGE;
-                    }else if(self::isNYCHA()) {
+                    }else if(Datasource::isNYCHA()) {
                       return self::NYCHA;
                     }else {
                       return self::CITYWIDE;
