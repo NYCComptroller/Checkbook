@@ -18,10 +18,26 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+/*************************************************************************************/
+/* Widget Hooks                                                                      */
+/*************************************************************************************/
+
+function widget_highcharts_widget_metadata() {
+	return array(
+    'highcharts' => array(
+      'name' => t('Highcharts'),
+      'module' => 'widget_highcharts',
+      'description' => t("This widget type implements highcharts.")
+	)
+	);
+}
+
 function widget_highcharts_widget_validate(&$node) {
 	if (!isset($node->widgetConfig->chartConfig)) {
 		form_set_error('body', "Property 'chartConfig' is required for widget type highchart.");
 	}
+
 }
 
 function widget_highcharts_widget_data(&$node) {
@@ -145,19 +161,21 @@ function widget_highcharts_widget_data(&$node) {
     }
 
     $categories = $results[$node->widgetConfig->chartConfig->xAxis->categories->ds];
+    //$node->categories = $categories;
 
     if (isset($node->widgetConfig->chartConfig->xAxis->categories->ds)) {
-      if (!$isXAxisDate && isset($node->widgetConfig->chartConfig->xAxis->categories->ds)) {
-          $categories = $results[$node->widgetConfig->chartConfig->xAxis->categories->ds];
-          $node->widgetConfig->chartConfig->xAxis->categories = $categories;
-      }else {
-          unset($node->widgetConfig->chartConfig->xAxis->categories);
-      }
+    if (!$isXAxisDate && isset($node->widgetConfig->chartConfig->xAxis->categories->ds)) {
+        $categories = $results[$node->widgetConfig->chartConfig->xAxis->categories->ds];
+        $node->widgetConfig->chartConfig->xAxis->categories = $categories;
+    }else {
+        unset($node->widgetConfig->chartConfig->xAxis->categories);
+    }
     }
 
     if (isset($node->widgetConfig->chartConfig->xAxis->tickPositions->ds)) {
         $tickPositions = $results[$node->widgetConfig->chartConfig->xAxis->tickPositions->ds];
         $node->widgetConfig->chartConfig->xAxis->tickPositions = $tickPositions;
+
     }
 
     if (isset($node->widgetConfig->chartConfig->series)) {
@@ -202,6 +220,7 @@ function widget_highcharts_add_datatable_js($node){
 }
 
 function widget_highcharts_widget_view(&$node) {
+
 	switch ($node->widgetConfig->widgetSubType){
 		case "highstock":
 			drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highstock/9.3.2/code/highstock.src.js',array('group'=>JS_LIBRARY,'weight'=>-1));
