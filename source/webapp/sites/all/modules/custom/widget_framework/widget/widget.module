@@ -392,7 +392,7 @@ function prepare_dataset_parameters(&$requestParameters, $configuration,$widgetC
     }
 }
 
-function load_widget_data($node, $resultFormatter) {
+function load_widget_data($node, $resultFormatter=null) {
   $config = $node->widgetConfig;
 	if (isset($config->static_data)) {
     $node->data = $config->static_data;
