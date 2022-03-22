@@ -4,7 +4,7 @@
   "no_results_content":"No Results Found",
   "limit":100,
   "startWith":0,
-  "maxSelect":5,
+  "maxSelect":50,
   "columns":["budget_name_code.budget_name_code", "txcount"],
   "orderBy":"-txcount",
   "facetPager":true,
