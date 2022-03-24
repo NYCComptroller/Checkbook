@@ -2,58 +2,6 @@
 
 // Spending autocomplete menu callback functions
 /**
- * Construct query string and get results from Solr for spending domain.
- * @param string $facet
- *   Facet name for which auto suggestions needed
- * @param string $query
- *   Partially constructed query
- * @param string/null $year
- *   Year value
- * @param string/null $agency
- *   Selected agency id
- * @param string/null $expcategory
- *   Selected Expense Category Name
- * @param string/null $dept
- *   Selected Department Name
- * @param string/null $exptype
- *   Selected Spending Category Id
- * @param $mwbe_category
- *   Selected M/WBE Category
- * @param $industry
- *   Selected Industry
- * @param string $solr_datasource
- *   Data source to get data (i.e checkbook, checkbook_oge)
- *
- * @return array
- *   Results from Solr
- ***/
-function _get_spending_advanced_search_autocomplete_results($facet, $query, $year = null, $agency = null, $expcategory = null, $dept = null, $exptype = null, $mwbe_category = null, $industry = null, $solr_datasource = 'checkbook'){
-    if ($year) {
-        $query .= _checkbook_autocomplete_get_start_end_dates($year, 'spending');
-    }
-    if ($dept) {
-        $query .= '&fq=department_name:"'.CheckbookSolrQuery::escape(trim(str_replace('__','/',$dept))).'"';
-    }
-    if ($agency) {
-        $query .= '&fq=agency_id:' . $agency;
-    }
-    if ($expcategory) {
-        $query .= '&fq=expenditure_object_code:' . '"'.CheckbookSolrQuery::escape(trim($expcategory)).'"';
-    }
-    if($exptype){
-        $query .= '&fq=spending_category_id:'.$exptype;
-    }
-    if($mwbe_category){
-        $query .= '&fq=minority_type_id:'._checkbook_advanced_search_autocomplete_get_mwbe_category($mwbe_category);
-    }
-    if($industry){
-        $query .= '&fq=industry_type_id:'.$industry;
-    }
-    $matches = _checkbook_autocomplete_solr_results($solr_datasource, $query, $facet);
-    return $matches;
-}
-
-/**
  * Returns the options for Expense Category Dropdown based on the selected agency/department/year/spending category/mwbe category values.
  *
  * @param string $agency
@@ -237,100 +185,6 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
     drupal_json_output($matches);
 }
 
-
-//Contracts autocomplete menu callback functions
-/**
- * Construct query string and get results from Solr.
- *
- * @param string $facet
- *   Facet results needed
- * @param string $query
- *   Partially constructed query
- * @param null $status
- *   Contract status
- * @param string|null $category
- *   Contract category
- * @param string|null $contract_type
- *   Agreement type code
- * @param string|null $agency
- *   Agency code
- * @param string|null $award_method
- *   Award method code
- * @param string|null $year
- *   Year
- * @param $mwbe_category
- *   Selected M/WBE Category
- * @param $industry
- *   Selected Industry
- * @param $includes_sub_vendors
- *   Selected Contract Includes Sub Vendors
- * @param $sub_vendor_status
- *   Selected Sub Vendor Status in PIP
- * @param string $data_source
- *   Data source (checkbook, checkbook_oge)
- *
- * @return array
- *   Results from Solr
- */
-function _get_contracts_advanced_search_autocomplete_results($facet, $query, $status = null, $category = null, $contract_type = null, $agency = null, $award_method = null, $year = null, $mwbe_category = null, $industry = null, $includes_sub_vendors = null, $sub_vendor_status = null, $data_source = 'checkbook') {
-
-    if($category){
-        if($category == 'all'){
-            $query .= '&fq=contract_category_name:expense~revenue';
-        }
-        else{
-            $query .= '&fq=contract_category_name:'.$category;
-        }
-    }
-    if ($agency) {
-        $field = $data_source == 'checkbook_oge' ? 'oge_agency_id' : 'agency_id';
-        $query .= '&fq='.$field.':'.$agency;
-    }
-    if($award_method){
-        $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($award_method);
-        $query .= '&fq=award_method_id:'.$code_id_array['id'];
-    }
-    if(!in_array($contract_type, array('No Contract Type Selected', '0'))){
-        $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($contract_type);
-        if($status == 'P'){
-            $query .= '&fq=contract_type_code:'.$code_id_array['code'];
-        }else{
-            $query .= '&fq=contract_type_id:'.$code_id_array['id'];
-        }
-    }
-    if($status == 'P'){
-        $query .= '&fq=contract_status:pending';
-    }
-    if($status == 'A'){
-        if(isset($year))
-            $query .= _checkbook_autocomplete_get_start_end_dates($year, 'contracts', 'A');
-        $query .= '&fq=contract_status:registered';
-    }
-    if($status == 'R'){
-        $query .= '&fq=contract_status:registered';
-        if(isset($year)){
-            $query .= _checkbook_autocomplete_get_start_end_dates($year, 'contracts', 'R');
-        }
-    }
-    if ($mwbe_category) {
-        $query .= '&fq=minority_type_id:'._checkbook_advanced_search_autocomplete_get_mwbe_category($mwbe_category);
-    }
-    if ($industry) {
-        $query .= '&fq=industry_type_id:'.$industry;
-    }
-   /* if($status != 'P' && $category != 'revenue') {
-
-    }*/
-    if ($includes_sub_vendors) {
-        $query .= '&fq=scntrc_status:'.$includes_sub_vendors;
-    }
-    if ($sub_vendor_status) {
-        $query .= '&fq=aprv_sta:'.$sub_vendor_status;
-    }
-    $matches = _checkbook_autocomplete_solr_results('citywide', $query, $facet);
-    return $matches;
-}
-
 //Budget autocomplete menu callback functions
 
 /**
@@ -492,17 +346,4 @@ function _checkbook_advanced_search_autocomplete_get_code_id($code_id_string){
     $id = substr($code_id_array[0],4);
     $code = substr($code_id_array[1],6);
     return array('code' => $code, 'id' => $id);
-}
-
-/**
- * Used for the M/WBE Category dropdown in the advanced search this may have a list
- *
- * For example $minority_types = 1~2~3, return (1 OR 2 OR 3)
- * @param $minority_types
- * @return string
- *
- */
-
-function _checkbook_advanced_search_autocomplete_get_mwbe_category($minority_types){
-    return '('.implode('%20OR%20',explode('~',$minority_types)).')';
 }

@@ -26,11 +26,11 @@
  * @param string $data_source
  * @return string
  */
-function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_source = DataSource::CITYWIDE)
+function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_source = Datasource::CITYWIDE)
 {
   $filter_dimension = $data_source . '_spending';
   $spending_agencies = trim($form[$filter_dimension][$data_source . '_spending_agency']['#value']); //drop down
-  if($data_source == DataSource::NYCHA){
+  if($data_source == Datasource::NYCHA){
     return generateNYCHASpendingSearchUrl($form);
   }
   $spending_payee_name = trim($form[$filter_dimension][$data_source . '_spending_payee_name']['#value']);
@@ -79,7 +79,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
 
   $redirect_url = 'spending/search/transactions';
   //append data source if not default (checkbook)
-  $redirect_url .= ($data_source != DataSource::CITYWIDE) ? '/datasource/' . $data_source : "";
+  $redirect_url .= ($data_source != Datasource::CITYWIDE) ? '/datasource/' . $data_source : "";
   $redirect_url .= ($data_source == Datasource::OGE) ? '/agency/'. Datasource::getEDCId() : "";
 
   if (!empty($spending_mwbe_category)) {
@@ -177,7 +177,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
 
 function generateNYCHASpendingSearchUrl($form){
   $filterDimension = 'checkbook_nycha_spending';
-  $redirectUrl = 'nycha_spending/search/transactions/datasource/' . DataSource::NYCHA.'/agency/'.Datasource::getNYCHAId();
+  $redirectUrl = 'nycha_spending/search/transactions/datasource/' . Datasource::NYCHA.'/agency/'.Datasource::getNYCHAId();
   //Department
   $department = trim($form[$filterDimension][$filterDimension  . '_department']['#value']);
   $redirectUrl .= ($department != "Select Department" && !empty($department)) ?  _checkbook_advanced_search_generate_redirect_url($department, 'deptnm'): "";

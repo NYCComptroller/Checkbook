@@ -26,7 +26,7 @@
  * @param $data_source
  * @return string
  */
-function _checkbook_advanced_search_budget_submit($form, &$form_state, $data_source = DataSource::CITYWIDE){
+function _checkbook_advanced_search_budget_submit($form, &$form_state, $data_source = Datasource::CITYWIDE){
   $filter_dimension = $data_source . '_budget';
   if( $data_source == Datasource::NYCHA){
     $redirect_url =   _checkbook_advanced_search_nycha_budget_submit($form, $form_state, $filter_dimension);

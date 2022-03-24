@@ -48,24 +48,7 @@ function checkbook_autocomplete_menu()
         'file' => '/includes/checkbook_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
-    $items['autocomplete/budget/fundingsrc'] = array(
-        'page callback' => '_checkbook_autocomplete_budget_fundingsrc',
-        'access callback' => TRUE,
-        'file' => '/includes/checkbook_autocomplete_functions.inc',
-        'type' => MENU_CALLBACK
-    );
-    $items['autocomplete/budget/revcat'] = array(
-        'page callback' => '_checkbook_autocomplete_budget_revcat',
-        'access callback' => TRUE,
-        'file' => '/includes/checkbook_autocomplete_functions.inc',
-        'type' => MENU_CALLBACK
-    );
-    $items['autocomplete/budget/revsrc'] = array(
-        'page callback' => '_checkbook_autocomplete_budget_revsrc',
-        'access callback' => TRUE,
-        'file' => '/includes/checkbook_autocomplete_functions.inc',
-        'type' => MENU_CALLBACK
-    );
+
     //Contracts Autocomplete Paths
     $items['autocomplete/contracts/vendor'] = array(
         'page callback' => '_checkbook_autocomplete_contracts_vendor',
@@ -161,18 +144,6 @@ function checkbook_autocomplete_menu()
         'file' => '/includes/checkbook_autocomplete_functions.inc',
         'type' => MENU_CALLBACK
     );
-//    $items['autocomplete/spending/dept'] = array(
-//        'page callback' => '_checkbook_autocomplete_spending_dept',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
-//    $items['autocomplete/spending/expcategory'] = array(
-//        'page callback' => '_checkbook_autocomplete_spending_expcategory',
-//        'access callback' => TRUE,
-//        'file' => '/includes/checkbook_autocomplete_functions.inc',
-//        'type' => MENU_CALLBACK
-//    );
 
     //Payroll autocomplete paths
     $items['autocomplete/payroll/title'] = array(

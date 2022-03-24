@@ -1,6 +1,5 @@
 <?php
-
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -24,7 +23,6 @@ class BudgetUtil{
         return $parameters;
     }
 
-
     /**
      * Function to get Budget Code Id for the combination of Budget Code, Budget Code Name and Year
      * @param $budget_code_name
@@ -38,7 +36,7 @@ class BudgetUtil{
                 ." AND budget_code_name ILIKE '". addslashes(trim($budget_code_name)) . "'"
                 ." AND budget_fiscal_year_id = ".$year;
 
-        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        $results = _checkbook_project_execute_sql_by_data_source($query);
         return $results[0]['budget_code_id'];
     }
 
@@ -54,12 +52,12 @@ class BudgetUtil{
                   WHERE budget_code_id = ". $budget_code_id
                 ." AND agency_id = ". $agency_id
                 ." AND budget_fiscal_year_id = ". $year;
-        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook');
+        $results = _checkbook_project_execute_sql_by_data_source($query);
         if(count($results) > 0){
             return array('budget_code' => $results[0]['budget_code'], 'budget_code_name' => $results[0]['budget_code_name']);
         }else{
             return null;
         }
     }
-    
+
 }

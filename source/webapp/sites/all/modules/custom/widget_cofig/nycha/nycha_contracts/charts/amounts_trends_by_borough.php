@@ -8,7 +8,7 @@ WHERE agreement_type_id = 3 AND location_borough_name IS NOT NULL AND
 		release_approved_year BETWEEN 2014 AND 2018
 GROUP BY location_borough_name, release_approved_year
 ORDER BY 1 ASC, 2 ASC";
-$results = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_nycha');
+$results = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
 ?>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>

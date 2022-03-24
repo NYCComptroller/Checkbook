@@ -3,9 +3,9 @@
     "parentNid":277,
     "startWith":0,
     "limit":100,
-    "maxSelect":5,
+    "maxSelect":50,
     "columns":["budget_code_name.budget_code_name", "txcount"],
-    "orderBy":"-txcount",    
+    "orderBy":"-txcount",
     "filterName":"Budget Name",
     "urlParameterName":"bdgcodenm",
     "autocompleteParamName":"bdgname_auto",
@@ -18,6 +18,6 @@
         }
         $adjustedParameters['budget_code_name.budget_code_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         return $adjustedParameters;
-    ", 
+    ",
     "template":"individual_filter"
 }

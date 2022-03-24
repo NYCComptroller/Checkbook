@@ -3,7 +3,7 @@
   "parentNid":1034,
   "startWith":0,
   "limit":100,
-  "maxSelect":5,
+  "maxSelect":50,
   "showAllRecords":true,
   "allowFacetDeselect":true,
   "facetPager":true,

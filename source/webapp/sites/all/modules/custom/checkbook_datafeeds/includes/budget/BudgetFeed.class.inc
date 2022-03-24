@@ -19,7 +19,8 @@
  */
 
 namespace checkbook_datafeeds;
-use checkbook_advanced_search\Domain;
+
+use Domain;
 
 /**
  * Class BudgetFeed
@@ -100,7 +101,7 @@ abstract class BudgetFeed{
     $this->_process_criteria();
     $this->form_state['step_information']['confirmation']['stored_values']['criteria'] = $this->criteria;
     $this->form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $this->user_criteria;
-    $modified_form = checkbook_datafeeds_end_of_confirmation_form($this->form, $this->form_state, $this->criteria, $this->response_type, Domain::Budget);
+    $modified_form = checkbook_datafeeds_end_of_confirmation_form($this->form, $this->form_state, $this->criteria, $this->response_type, Domain::$BUDGET);
     $form_state = $this->form_state;
     return $modified_form;
   }

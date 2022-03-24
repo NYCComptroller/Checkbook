@@ -329,9 +329,9 @@ class PayrollUtil {
    */
     public static function getAmountUrl($row): string
     {
-      $landingPageUrl = '/payroll'.((RequestUtilities::getRequestParamValue(UrlParameter::AGENCY) || DataSource::isNYCHA()) ? '/agency_landing' : '')
+      $landingPageUrl = '/payroll'.((RequestUtilities::getRequestParamValue(UrlParameter::AGENCY) || Datasource::isNYCHA()) ? '/agency_landing' : '')
         . '/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . _checkbook_project_get_url_param_string('datasource')
-        . ((DataSource::isNYCHA()) ? '/agency/' . $row['agency_id'] : '');
+        . ((Datasource::isNYCHA()) ? '/agency/' . $row['agency_id'] : '');
       $bottomUrl = '?expandBottomContURL=/panel_html/payroll_employee_transactions/payroll/employee/transactions/agency/' . $row['agency_id']
         . '/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . _checkbook_project_get_url_param_string('datasource')
         . '/salamttype/' . $row['amount_basis_id'] . '/abc/' . $row['employee_id'] ;

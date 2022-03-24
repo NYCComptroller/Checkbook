@@ -64,7 +64,7 @@ class childAgreementDetails {
 
 
 
-    $results1 = _checkbook_project_execute_sql_by_data_source($query1,_get_current_datasource());
+    $results1 = _checkbook_project_execute_sql_by_data_source($query1,Datasource::getCurrent());
     $node->data = $results1;
     $magid = _get_master_agreement_id();
     if(!empty($magid)){
@@ -73,8 +73,8 @@ class childAgreementDetails {
     	$node->document_code = $magdetails['document_code@checkbook:ref_document_code'];
     	$node->contract_number = $magdetails['contract_number'];
     }
-    if(_get_current_datasource() ==_get_default_datasource() ){
-	    $results2 = _checkbook_project_execute_sql_by_data_source($query2,_get_current_datasource());
+    if(Datasource::getCurrent() == Datasource::CITYWIDE){
+	    $results2 = _checkbook_project_execute_sql_by_data_source($query2);
 	    $spent_amount = 0;
 	    foreach($results2 as $row){
 	      $spent_amount +=$row["rfed_amount"];
@@ -102,7 +102,7 @@ class childAgreementDetails {
 				LEFT JOIN (SELECT sum(check_amount) as check_amount, contract_number, vendor_id FROM {disbursement_line_item_details} group by 2,3) c
 				ON b.contract_number = c.contract_number AND a.vendor_id = c.vendor_id limit 1"  ;
 
-    	$results2 = _checkbook_project_execute_sql_by_data_source($query2,_get_current_datasource());
+    	$results2 = _checkbook_project_execute_sql_by_data_source($query2,Datasource::getCurrent());
     	foreach ($results2 as $row) {
     		$node->spent_amount = $row['spent_amount'] ;
     		$node->original_contract_amount = $row['original_amount'];
