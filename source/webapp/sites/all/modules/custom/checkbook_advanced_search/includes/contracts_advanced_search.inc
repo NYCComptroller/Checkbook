@@ -26,7 +26,7 @@
  * @param string $data_source
  * @return string
  */
-function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_source = DataSource::CITYWIDE){
+function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_source = Datasource::CITYWIDE){
   $filter_dimension = $data_source . '_contracts';
   if( $data_source == Datasource::NYCHA){
     $redirect_url =   _checkbook_advanced_search_nycha_contracts_submit($form, $form_state);
@@ -162,7 +162,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
   }
   if (!empty($type)) {
     switch ($data_source) {
-      case DataSource::OGE:
+      case Datasource::OGE:
         $code_id_array = _checkbook_advanced_search_autocomplete_get_code_id($type);
         $redirect_url .= _checkbook_advanced_search_generate_redirect_url($code_id_array['code'], 'agrmnttypecode');
         break;
@@ -216,7 +216,7 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
   $registration_date_range_array = array('from' => $registration_date_from, 'to' => $registration_date_to, 'type' => 'date');
 
   //append data source if not default (checkbook)
-  $redirect_url .= ($data_source != DataSource::CITYWIDE) ? '/datasource/' . $data_source : "";
+  $redirect_url .= ($data_source != Datasource::CITYWIDE) ? '/datasource/' . $data_source : "";
   $redirect_url .= ($data_source == Datasource::OGE) ? '/agency/'. Datasource::getEDCId() : "";
 
   $redirect_url .= _checkbook_advanced_search_generate_redirect_url($registration_date_range_array, 'regdate', TRUE);

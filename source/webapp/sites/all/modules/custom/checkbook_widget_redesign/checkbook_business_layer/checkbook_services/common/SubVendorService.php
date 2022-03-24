@@ -44,7 +44,7 @@ class SubVendorService extends VendorService
                 FROM subvendor_history GROUP BY 1) vh ON v.vendor_id = vh.vendor_id
                 WHERE v.vendor_id = " . $vendor_id;
 
-        $vendor = _checkbook_project_execute_sql_by_data_source($query, 'checkbook');
+        $vendor = _checkbook_project_execute_sql_by_data_source($query);
         return $vendor[0] ? $vendor[0]['vendor_customer_code'] : null;
     }
 
@@ -61,4 +61,4 @@ class SubVendorService extends VendorService
         $vendor = _checkbook_project_querydataset("checkbook:subvendor", "vendor_id", $parameters);
         return $vendor[0] ? $vendor[0]['vendor_id'] : null;
     }
-} 
+}

@@ -1341,7 +1341,7 @@ function _is_mwbe_vendor($agreement_id){
 	                 (CASE WHEN fa.minority_type_id in (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
               FROM {agreement_snapshot} fa
 	          WHERE fa.latest_flag = 'Y' and fa.original_agreement_id = " . $agreement_id . " limit 1";
-  $results1 = _checkbook_project_execute_sql_by_data_source($query1, _get_default_datasource());
+  $results1 = _checkbook_project_execute_sql_by_data_source($query1);
   $res = $results1;
   if ($res[0]['mwbe_vendor'] == 'Yes') {
     return true;
@@ -1367,7 +1367,7 @@ function _getAnnualSalariedEmployeeCount($node){
             FROM {aggregateon_payroll_employee_agency}
             " . $where_filter;
 
-  $result = _checkbook_project_execute_sql_by_data_source($sql, _get_default_datasource());
+  $result = _checkbook_project_execute_sql_by_data_source($sql);
   $node->PayrollTotalDataCount = (int)$result[0]['record_count'];
 }
 

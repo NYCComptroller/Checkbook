@@ -64,7 +64,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
     }
 
     // Donot display future year in the fiscal year facet
-    $current_year = CheckbookDateUtil::getMaxDatasourceFiscalYear(DataSource::smartSearchDataSource());;
+    $current_year = CheckbookDateUtil::getMaxDatasourceFiscalYear(Datasource::smartSearchDataSource());
     if(strtolower($facet_name) == 'facet_year_array'){
       foreach($facet->results as $fvalue => $fcount) {
         if ($fvalue > $current_year) {

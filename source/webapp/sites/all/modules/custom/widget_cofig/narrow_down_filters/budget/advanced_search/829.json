@@ -3,7 +3,7 @@
     "parentNid":277,
     "startWith":0,
     "limit":100,
-    "maxSelect":5,
+    "maxSelect":50,
     "showAllRecords":true,
     "allowFacetDeselect":true,
     "columns":["budget_code_code.budget_code_code", "txcount"],
@@ -20,6 +20,6 @@
         }
         $adjustedParameters['budget_code_code.budget_code_code'][] = data_controller_get_operator_factory_instance()->initiateHandler(NotEmptyOperatorHandler::$OPERATOR__NAME);
         return $adjustedParameters;
-    ", 
+    ",
     "template":"individual_filter"
 }

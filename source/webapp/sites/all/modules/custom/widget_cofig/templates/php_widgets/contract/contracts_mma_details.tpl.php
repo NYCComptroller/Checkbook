@@ -46,7 +46,7 @@ if (RequestUtilities::get("datasource") != "checkbook_oge") {
                             AND latest_flag = 'Y'
                             LIMIT 1";
 
-    $results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,_get_current_datasource());
+    $results3 = _checkbook_project_execute_sql_by_data_source($querySubVendorCount,Datasource::getCurrent());
     if (!isset($res))
         $res = new stdClass();
     $res->data = $results3;

@@ -66,8 +66,6 @@ function widget_highcharts_widget_data(&$node) {
                 break;
             }
         }
-    } else{
-
     }
     $results = array();
     if (is_array($node->data)) {
@@ -193,8 +191,6 @@ function widget_highcharts_widget_data(&$node) {
         } else if (isset($node->widgetConfig->chartConfig->series->data->ds)) {
         	if (!$node->widgetConfig->chartConfig->series->additionalData) {
             	$node->widgetConfig->chartConfig->series->data = $results[$node->widgetConfig->chartConfig->series->data->ds] == null ? array() : $results[$node->widgetConfig->chartConfig->series->data->ds];
-        	} else {
-
         	}
         }
     }
@@ -207,26 +203,11 @@ function widget_highcharts_widget_data(&$node) {
       $node->widgetConfig->chartConfig->credits = new stdClass();
     }
     $node->widgetConfig->chartConfig->credits->enabled = false;
-
     log_debug(json_encode($node->widgetConfig->chartConfig));
 }
 
-function replaceDatasourceWithValues(&$chartConfig, $result) {
-    foreach ($chartConfig as $key => $value) {
-        if (is_array($value)) {
-            replaceDatasourceWithValues($value, $result);
-        } else {
-            if ($key == 'ds') {
-                $chartConfig = $result[$value];
-            }
-        }
-    }
-}
-
 function widget_highcharts_add_datatable_js($node){
-
     $id  = widget_unique_identifier($node);
-
     $js = "
 		    var oTable" . $id  .  ";
 		    jQuery(document).ready(function() {
@@ -234,9 +215,7 @@ function widget_highcharts_add_datatable_js($node){
 		        " . $node->widgetConfig->gridConfig->dataTableOptions . "
 		        );
         } );"
-
     ;
-
     echo "<script type='text/javascript'>" . $js . "</script>";
 }
 
@@ -249,24 +228,20 @@ function widget_highcharts_widget_view(&$node) {
 			return theme('widget_highstocks_default_theme', array('node' => $node));
 		break;
 		default :
-            if(isset($node->widgetConfig->displayType) && $node->widgetConfig->displayType == 'gridview'){
-                return theme($node->widgetConfig->gridConfig->template, array('node'=> $node));
-            }else{
-                _widget_highcharts_include_plugin();
-                drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts-globals.js',array('group'=>JS_LIBRARY,'weight'=>0));
-                return theme('widget_highcharts_default_theme', array('node' => $node));
-            }
+      if(isset($node->widgetConfig->displayType) && $node->widgetConfig->displayType == 'gridview'){
+          return theme($node->widgetConfig->gridConfig->template, array('node'=> $node));
+      }else{
+          _widget_highcharts_include_plugin();
+          drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts-globals.js',array('group'=>JS_LIBRARY,'weight'=>0));
+          return theme('widget_highcharts_default_theme', array('node' => $node));
+      }
 		break;
-
 	}
 }
 
-
 function _widget_highcharts_include_plugin(){
-//	drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts/4.0.4/js/highcharts.src.js',array('group'=>JS_LIBRARY,'weight'=>-1));
 	drupal_add_js(drupal_get_path('module', 'widget_highcharts') .'/highcharts/9.3.2/code/highcharts.src.js',array('group'=>JS_LIBRARY,'weight'=>-1));
 }
-
 
 function widget_highcharts_add_js_setting($node){
   $id = widget_unique_identifier($node);
@@ -301,12 +276,4 @@ function widget_highcharts_theme($existing, $type, $theme, $path) {
       'arguments' => array('node' => NULL),
 	)
 	);
-}
-
-
-function widget_highcharts_get_color($key){
-
-    $colors = array('#2BB673', '#EF4C77', '#FFDE15', '#78D1F1', '#FEC10E');
-    return $colors[$key % 5];
-
 }

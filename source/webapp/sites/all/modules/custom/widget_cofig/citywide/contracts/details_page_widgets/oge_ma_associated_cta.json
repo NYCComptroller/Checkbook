@@ -16,7 +16,7 @@ order by sum(coalesce(check_amount,0)) desc
 ';
 
 
-        $results = _checkbook_project_execute_sql_by_data_source($query,'checkbook_oge');
+        $results = _checkbook_project_execute_sql_by_data_source($query,Datasource::OGE);
         $node->data = $results;
 
         foreach($node->data as $key => $data) {

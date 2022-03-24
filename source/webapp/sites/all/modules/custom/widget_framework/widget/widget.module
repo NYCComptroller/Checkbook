@@ -64,49 +64,6 @@ function widget_load($key){
   return $node;
 }
 
-function widget_node_info1() {
-	return array(
-    'widget' => array(
-      'name' => t('Widget'),
-      'module' => 'widget',
-      'description' => t("This content type implementing widgets."),
-      'has_title' => TRUE,
-      'title_label' => t('Title'),
-      'has_body' => TRUE,
-      'body_label' => t('Body'),
-	)
-	);
-}
-
-function widget_access($op, $node, $account) {
-	if ($op == 'create') {
-		return user_access('create widget', $account);
-	}
-
-	if ($op == 'update') {
-		if (user_access('edit any widget', $account) || (user_access('edit own widget', $account) && ($account->uid == $node->uid))) {
-			return TRUE;
-		}
-	}
-
-	if ($op == 'delete') {
-		if (user_access('delete any widget', $account) || (user_access('delete own widget', $account) && ($account->uid == $node->uid))) {
-			return TRUE;
-		}
-	}
-	return FALSE;
-}
-
-function widget_perm() {
-	return array(
-    'create widget',
-    'delete own widget',
-    'delete any widget',
-    'edit own widget',
-    'edit any widget',
-	);
-}
-
 function _widget_node_load($key, $type='node'){
 	if(preg_match("/^admin/",$_GET['q'])){
 		return "";
@@ -169,34 +126,6 @@ function widget_node_load($nodes,$types){
     }
   }
   return FALSE;
-}
-
-function widget_form(&$node) {
-	// The site admin can decide if this node type has a title and body, and how
-	// the fields should be labeled. We need to load these settings so we can
-	// build the node form correctly.
-	$type = node_get_types('type', $node);
-
-	if ($type->has_title) {
-		$form['title'] = array(
-      '#type' => 'textfield',
-      '#title' => check_plain($type->title_label),
-      '#required' => TRUE,
-      '#default_value' => $node->title,
-      '#weight' => -5,
-		);
-	}
-    $form=[];
-
-	if ($type->has_body) {
-		// In Drupal 6, we can use node_body_field() to get the body and filter
-		// elements. This replaces the old textarea + filter_form() method of
-		// setting this up. It will also ensure the teaser splitter gets set up
-		// properly.
-		$form['body_field'] = node_body_field($node, $type->body_label, $type->min_word_count);
-	}
-
-	return $form;
 }
 
 function widget_node_validate(&$node) {
@@ -267,30 +196,6 @@ function widget_node_view($node, $nodata = true) {
 		);
 	}
 	return $node;
-}
-
-
-function _widget_ajax_wrapper($node){
-  $urlPath = drupal_get_path_alias($_GET['q']);
-  return '<div id="' . widget_unique_identifier($node) . '">Loading Data</div>
-  <script type="text/javascript">
-  jQuery(document).ready(function() {
-      var callBackURL = "/widget_ajax_data/node/' .$node->nid . '/' . $urlPath . '";
-       jQuery.ajax({
-         url: callBackURL,
-         success: function(data) {
-           jQuery("#' . widget_unique_identifier($node) . '").html(data);
-         }
-       });
-    });
-  </script>
-  ';
-}
-
-function widget_ajax_get_node($node){
-  $node = widget_node_view($node,false);
-  echo $node->content['body']['#markup'];
-
 }
 
 /***************************************/
@@ -487,7 +392,7 @@ function prepare_dataset_parameters(&$requestParameters, $configuration,$widgetC
     }
 }
 
-function load_widget_data($node, $resultFormatter) {
+function load_widget_data($node, $resultFormatter=null) {
   $config = $node->widgetConfig;
 	if (isset($config->static_data)) {
     $node->data = $config->static_data;
@@ -615,9 +520,6 @@ function load_widget_data($node, $resultFormatter) {
         }
       }
 
-      // preparing dataset formatter which needs to be used to load data
-      $datasetFormatter = isset($joinController) ? NULL : $resultFormatter;
-
       $joinedRecords = NULL;
       foreach ($config->model->series as $serie) {
         // preparing serie data controller parameters
@@ -720,15 +622,6 @@ function load_widget_data($node, $resultFormatter) {
         }
         }
 
-            // formatting data if necessary
-            /*if (isset($joinedRecords) && !isset($datasetFormatter) && isset($resultFormatter)) {
-                $records = NULL;
-                foreach ($joinedRecords as $joinedRecord) {
-                    $resultFormatter->format($callcontext, $records, $joinedRecord);
-                }
-                $joinedRecords = $records;
-            }*/
-
             $node->data = $joinedRecords;
             //log_debug('Joined records:');
             //log_debug($joinedRecords);
@@ -739,7 +632,7 @@ function load_widget_data($node, $resultFormatter) {
                 $query = widget_get_db_query($isList, $datasetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
                 $alterFunction = $node->widgetConfig->queryAlterFunction;
                 $query = eval($alterFunction);
-                $node->data = _checkbook_project_execute_sql_by_data_source($query,_get_current_datasource());
+                $node->data = _checkbook_project_execute_sql_by_data_source($query,Datasource::getCurrent());
               }else {
                 $node->data = $isList
                   ? $dataQueryController->queryDataset(
@@ -794,7 +687,7 @@ function load_widget_data($node, $resultFormatter) {
                     $query = substr_replace($query, $replace_string . "DISTINCT ", strpos($query, $replace_string), strlen($replace_string));
                   }
 
-                  $results = _checkbook_project_execute_sql_by_data_source($query,_get_current_datasource());
+                  $results = _checkbook_project_execute_sql_by_data_source($query,Datasource::getCurrent());
                   $node->totalDataCount = $results[0]['record_count'];
               } else {
                   $node->totalDataCount = $isList
@@ -845,8 +738,6 @@ function load_widget_data($node, $resultFormatter) {
 
 
 function widget_get_count_db_query($isList, $dataSetName, $columns = NULL, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL){
-    $sqlQuery = NULL;
-
     //Since we are disabling execution mode below, need to make sure meta model is loaded.
     data_controller_get_metamodel();
     $executionMode = AbstractSQLDataSourceHandler::$STATEMENT_EXECUTION_MODE;
@@ -872,8 +763,6 @@ function widget_get_count_db_query($isList, $dataSetName, $columns = NULL, $para
 
 
 function widget_get_db_query($isList, $dataSetName, $columns = NULL, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL){
-    $sqlQuery = NULL;
-
     //Since we are disabling execution mode below, need to make sure meta model is loaded.
     data_controller_get_metamodel();
     $executionMode = AbstractSQLDataSourceHandler::$STATEMENT_EXECUTION_MODE;
@@ -942,7 +831,6 @@ function widget_data(&$node) {
 				foreach ($row as $innerRow) {
 					//calculate discriminator value
 					$discriminatorValue = $innerRow[$node->widgetConfig->flattenRows->discriminatorColumn];
-					//var_dump($innerRow);
 					//put all other columns into flattened array with discriminator value prepended
 					foreach ($innerRow as $colName => $colVal) {
 						if (($colName == $node->widgetConfig->flattenRows->groupByColumn) || ($colName == $node->widgetConfig->flattenRows->discriminatorColumn)) {
@@ -982,8 +870,6 @@ function widget_data(&$node) {
 			}
 		}
 	}
-	//var_dump($node->data);
-	//drupal_set_message('<pre>$$$node->data'. print_r($node->data, TRUE) . '</pre>');
 }
 
 
@@ -1017,15 +903,6 @@ function calculateDerivedCell($row, $fulldata, $derivedColumnDefinition,$node) {
       break;
 	}
 }
-
-function calculateTotalOfColumn($fulldata, $columnName) {
-	$total = 0;
-	foreach ($fulldata as $row) {
-		$total += $row[$columnName];
-	}
-	return $total;
-}
-
 
 function widget_config($node) {
 	//save
@@ -1165,7 +1042,6 @@ function widget_mergeJSFunctions($node, $phpArray) {
 			$json = str_replace($replace, $value, $json);
 		}
 	}
-	//dsm($json);
 	return $json;
 }
 /***************************************/
@@ -1197,10 +1073,6 @@ function widget_get_div_name($node) {
 	return "widgetdiv" . widget_unique_identifier($node);
 }
 
-function widget_get_widget_event_function_name($node) {
-	return "widget" . widget_unique_identifier($node) . "Event";
-}
-
 function widget_get_widget_callback_function_name($node) {
 	return "widget" . widget_unique_identifier($node) . "Callback";
 }
@@ -1213,43 +1085,9 @@ function widget_get_widget_exclude_params_name($node) {
 	return "widget" . widget_unique_identifier($node) . "ExcludeParams";
 }
 
-function widget_get_widget_additional_params_name($node) {
-	return "widget" . widget_unique_identifier($node) . "AdditionalParams";
-}
-
 /***************************************/
 /* Content building utility functions  */
 /***************************************/
-
-function widget_open_div($node) {
-	$output  = "<div ";
-	$output .= "id=\"" . widget_get_div_name($node) . "\" ";
-	$output .= "class=\"" . $node->widgetConfig->class . "\" ";
-	$output .= "style=\"" . $node->widgetConfig->style . "\" ";
-	if (isset($node->widgetConfig->title)) {
-		$output .= "title='" . $node->widgetConfig->title . "' ";
-	}
-	$titleColumn = $node->widgetConfig->titleColumn;
-	if (isset($node->widgetConfig->$titleColumn)) {
-		if (isset($node->widgetConfig->$titleColumn)) {
-			$output .= "title='" . $node->widgetConfig->$titleColumn . "' ";
-		}
-	}
-	$output .= ">\n";
-	return $output;
-}
-
-function widget_close_div($node) {
-	return "</div>\n";
-}
-
-function widget_event_function($node) {
-	$output  = "function " . widget_get_widget_event_function_name($node) . "(val) {\n";
-	$output .= "  widgetCoordinator.notify(new ParameterChangeEvent('" . $node->widgetConfig->clickParameterName . "', val));";
-	$output .= $node->widgetConfig->customEventJavascript . "\n";
-	$output .= "}\n";
-	return $output;
-}
 
 function widget_callback_function($node) {
 	$output  = "function " . widget_get_widget_callback_function_name($node) . "(event) {\n";
@@ -1278,27 +1116,6 @@ function widget_define_exclude_params($node) {
 	}
 	$output .= "];\n";
 	return $output;
-}
-
-function widget_define_additional_params($node) {
-	$output = "var " . widget_get_widget_additional_params_name($node) . ";\n";
-	if (isset($node->widgetConfig->additionalParameters)) {
-		$output .= widget_get_widget_additional_params_name($node) . " = jQuery.parseJSON('" . json_encode($node->widgetConfig->additionalParameters) . "');\n";
-	}
-	return $output;
-}
-
-function widget_cleanurlparams_as_string($node) {
-	$requestParams = '';
-	if ($node->widgetConfig->cleanURLParameters && $node->widgetConfig->requestParams) {
-		foreach ($node->widgetConfig->requestParams as $key => $value) {
-			if (in_array($key, $node->widgetConfig->cleanURLParameters)) {
-				$requestParams .= $key . "=" . $value . "&";
-			}
-		}
-		$requestParams = substr($requestParams, 0, -1);
-	}
-	return $requestParams;
 }
 
 function _replaceSpecialCharactersDecode($string){
@@ -1350,19 +1167,6 @@ function _update_columns_by_datasource($node_columns, $datasource_mapping = null
   return $columns;
 }
 
-function _get_current_datasource(){
-	$datasource = RequestUtilities::get('datasource');
-	if(isset($datasource)){
-		return $datasource;
-	}else{
-		return _get_default_datasource();
-	}
-}
-
-function _get_default_datasource(){
-	return Datasource::CITYWIDE;
-}
-
 function _widget_build_sql_condition($column, $value){
 	$values_array = explode('~',$value);
 	if(count($values_array) > 1){
@@ -1387,26 +1191,6 @@ function _widget_build_sql_add_null($column, $value){
   }else{
     return   '\'' . $value . '\''. ' AS '. $column;
   }
-}
-
-function _widget_join_merge_data($array1,$array2, $keys = array()){
-	foreach($array1 as $row1_key=>$row1){
-		foreach($array2 as $row2){
-			$merge = true;
-			foreach($keys as $key){
-				if($row1[$key] != $row2[$key]) $merge = false;
-			}
-			if($merge){
-				foreach($row2 as $row2_key=>$value){
-					if(!in_array($row2_key,$keys)){
-						$array1[$row1_key][$row2_key] += $value;
-					}
-				}
-			}
-
-		}
-	}
-	return $array1;
 }
 
 

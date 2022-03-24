@@ -101,7 +101,7 @@ class NychaRevenueUtil{
     {
       $where = "WHERE revenue_id = '" . $revenueId . "' AND budget_name IS NOT NULL";
       $query = "SELECT budget_name FROM revenue {$where} ";
-      $data = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_nycha');
+      $data = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
       $result = isset($data[0]['budget_name']) ? $data[0]['budget_name'] : null;
       return $result;
     }
@@ -113,7 +113,7 @@ class NychaRevenueUtil{
     {
       $where = "WHERE revenue_id = '" . $revenueId . "' AND budget_type IS NOT NULL";
       $query = "SELECT budget_type FROM revenue {$where} ";
-      $data = _checkbook_project_execute_sql_by_data_source($query, 'checkbook_nycha');
+      $data = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
       $result = isset($data[0]['budget_type']) ? $data[0]['budget_type'] : null;
       return $result;
     }
