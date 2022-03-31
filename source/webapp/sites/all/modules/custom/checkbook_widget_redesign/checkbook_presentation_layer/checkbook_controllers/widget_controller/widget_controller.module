@@ -46,14 +46,6 @@ require_once(realpath(drupal_get_path('module', 'checkbook_services')) .'/budget
 /***************************************/
 
 function widget_controller_menu(){
-  $items['widget_controller_ajax_data/node/%widget_controller/%'] = array(
-      'page callback' => 'widget_controller_ajax_get_node',
-      'page arguments' => array(2),
-      'access callback' => true,
-      'type'=>MENU_CALLBACK
-  );
-
-
   $items['widget_controller/%'] = array(
   		'page callback' => '_widget_controller_node_view_page',
   		'page arguments' => array(1),
