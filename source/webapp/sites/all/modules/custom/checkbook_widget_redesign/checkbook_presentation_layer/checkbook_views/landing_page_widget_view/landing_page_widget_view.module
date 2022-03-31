@@ -78,13 +78,6 @@ function landing_page_widget_view_menu(){
         'access callback' => true,
         'type'=>MENU_CALLBACK
     );
-    $items['checkbook_views/data_tables_list_wt/ajax_data/node/%widget_controller'] = array(
-        'page callback' => '_landing_page_widget_view_list_wt_ajaxdata',
-        'page arguments' => array(4),
-        'access callback' => true,
-        'type'=>MENU_CALLBACK
-    );
-
   	return $items;
 }
 
@@ -189,77 +182,6 @@ function _landing_page_widget_view_ajaxdata_json($node){
     return json_encode($response);
 }
 
-/**
- * supports ajax data callback for data table widget type..dataTableWidgets...
- * @param $node
- */
-function _landing_page_widget_view_list_wt_ajaxdata($node){
-    drupal_add_http_header('Content-Type', 'application/json; utf-8');
-	$node = landing_page_widget_view_get_data($node);
-    echo _landing_page_widget_view_list_wt_prepare_json($node);
-}
-
-/**
- * construct the json from data returned from data controller.This function is used for dataTableWidgets data table widget .
- * @param $node
- * @return false|string
- */
-function _landing_page_widget_view_list_wt_prepare_json($node){
-	global $conf;
-	$iTotalDisplayRecords =  (isset($conf['check_book']['datatables']['iTotalDisplayRecords']))?$conf['check_book']['datatables']['iTotalDisplayRecords']:$node->totalDataCount;
-	$response = array(
-        "sEcho"=> intval($_REQUEST['sEcho']),
-        "iTotalRecords"=> $node->totalDataCount,
-        "iTotalDisplayRecords"=>($node->totalDataCount > $iTotalDisplayRecords)? $iTotalDisplayRecords:$node->totalDataCount,
-        "iDisplayLength"=> (isset($node->widgetConfig->limit) ? $node->widgetConfig->limit : 10)
-    );
-	$response['aaData'] = array();
-    if($node->data){
-        $i=0;
-        $isGridView = ($node->widgetConfig->displayType == 'gridview');
-        foreach ($node->data as $datarow) {
-            $rowarray = array();
-            foreach ($node->widgetConfig->table_columns as $row){
-                if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))){
-                    if ($row->isWidget){
-                        $widgetnode = node_load($row->widgetNid);
-                        widget_set_uid($widgetnode,$i . '-' . uniqid());
-                        $additionalParams = array();
-                        foreach($row->columnParams as $paramColumn){
-                            $additionalParams[$paramColumn] = $datarow[str_replace(".", "_",$paramColumn)];
-                        }
-                        widget_add_additional_parameters($widgetnode,$additionalParams);
-                        $widgetChart = node_build_content($widgetnode);
-                        if(!$isGridView){
-                            $widgetChart = drupal_render($widgetnode->content);
-                            $rowarray[] = $widgetChart;
-                        }else{
-                            $tempDataSets = $widgetnode->data;
-                            if(is_array($tempDataSets)){
-                                foreach($row->gridViewColumns as $gridViewColumn){
-                                    $value = '';
-                                    foreach($tempDataSets as $tempDataSet){
-                                        if(isset($tempDataSet[$gridViewColumn->matchcolumn]) && $tempDataSet[$gridViewColumn->matchcolumn] == $gridViewColumn->matchvalue){
-                                            $value = $tempDataSet[$gridViewColumn->dataColumn];
-                                            break;
-                                        }
-                                    }
-                                    $rowarray[]= $value;
-                                }
-                            }
-                        }
-                        $i++;
-                    } else {
-                        $rowarray[] =  $datarow[$row->column];
-                    }
-                }
-            }
-            $response['aaData'][] = $rowarray;
-
-        }
-    }
-    return json_encode($response);
-}
 
 /**
  * supports ajax data callback for data table widget type..dataTableList...
@@ -465,30 +387,13 @@ function landing_page_widget_view_widget_controller_view(&$node) {
 		case "template":
 			return theme($node->widgetConfig->template, array('node'=> $node));
 		break;
-		case "ajaxCustomTemplate" :
-		  $sAjaxSource =  $node->widgetConfig->ajaxCallBack . '/node/' .$node->nid  ;
-		  if(is_array($node->widgetConfig->requestParams))  {
-		    if(isset($node->widgetConfig->urlParamMap))
-		    $urlParamMap = array_flip(get_object_vars($node->widgetConfig->urlParamMap));
-		    foreach($node->widgetConfig->requestParams as $key=>$value) {
-		      $key = isset($urlParamMap[$key]) ? $urlParamMap[$key] : $key;
-		      $sAjaxSource .= "/$key/$value" ;
-		    }
-		  }
-
-          $sAjaxSource = $sAjaxSource._checkbook_append_url_params();
-		  $node->widgetConfig->dataTableOptions->sAjaxSource =  _escape_special_characters(html_entity_decode($sAjaxSource,ENT_QUOTES));
-
-            return theme($node->widgetConfig->template, array('node'=> $node));
-		  break;
 		case "ajaxSimple" :
             $sAjaxSource = '/checkbook_views/data_tables/ajax_data/node/' .$node->nid;
             $sAjaxSource .= isset($node->legacy_node_id) ? '/legacy_node_id/'.$node->legacy_node_id : "";
             $sAjaxSource .= _get_url_parameter_string($node);
             $sAjaxSource = $sAjaxSource._checkbook_append_url_params();
 			$node->widgetConfig->dataTableOptions->sAjaxSource =  _escape_special_characters(html_entity_decode($sAjaxSource,ENT_QUOTES));
-
-			$node->widgetConfig->dataTableOptions->fnServerData= "##function ( sSource, aoData, fnCallback ) {			
+			$node->widgetConfig->dataTableOptions->fnServerData= "##function ( sSource, aoData, fnCallback ) {
 			aoData.push( {
 			  'name': 'data_type', 'value': 'json' } );
 			  jQuery.ajax( {
@@ -521,7 +426,6 @@ function landing_page_widget_view_widget_controller_view(&$node) {
 
 
             $node->widgetConfig->dataTableOptions->sAjaxSource =  _escape_special_characters(html_entity_decode($sAjaxSource,ENT_QUOTES));
-
             $node->widgetConfig->dataTableOptions->fnServerData= "##function ( sSource, aoData, fnCallback ) {
             aoData.push( {
             'name': 'data_type', 'value': 'json' } );
@@ -535,51 +439,12 @@ function landing_page_widget_view_widget_controller_view(&$node) {
             }##";
                 return theme('landing_page_widget_view_list_by_rows_theme', array('node'=> $node));
         break;
-        case "dataTableWidgets" :
-            $node->widgetConfig->dataTableOptions->sAjaxSource .= '/checkbook_views/data_tables_list_wt/ajax_data/node/' .$node->nid;
-			if(is_array($node->widgetConfig->requestParams))  {
-				if(isset($node->widgetConfig->urlParamMap))
-				$urlParamMap = array_flip(get_object_vars($node->widgetConfig->urlParamMap));
-		    	foreach($node->widgetConfig->requestParams as $key=>$value) {
-		    		 $key = isset($urlParamMap[$key]) ? $urlParamMap[$key] : $key;
-					    $node->widgetConfig->dataTableOptions->sAjaxSource .= "/$key/$value"._checkbook_append_url_params();
-	    		}
-			}
-
-
-            $isGridView = ($node->widgetConfig->displayType == 'gridview');
-            if($isGridView){
-
-                //adjust datatable aoColumns
-                $updatedaoColumns = array();
-                $tableColumns = $node->widgetConfig->table_columns;
-                $cls = new stdClass();
-                $cls->bSortable = false;
-                foreach ($tableColumns as $tableColumn){
-                    if(!isset($tableColumn->datasource) || (isset($tableColumn->datasource) && ($tableColumn->datasource == RequestUtilities::get('datasource')))){
-                        if(isset($tableColumn->isWidget) && $tableColumn->isWidget){
-                            foreach($tableColumn->gridViewColumns as $gridViewColumn){
-                                $updatedaoColumns[] = $cls;
-                            }
-                        }else{
-                            $updatedaoColumns[] = $cls;
-                        }
-                    }
-                }
-
-                $node->widgetConfig->dataTableOptions->aoColumns = $updatedaoColumns;
-
-                return theme('landing_page_widget_view_list_by_rows_wt_grid_theme', array('node'=> $node));
-            }
-                return theme('landing_page_widget_view_list_by_rows_wt_theme', array('node'=> $node));
-        break;
 		default :
 			return theme('landing_page_widget_view_default_theme', array('node'=> $node));
 		break;
 
 	}
 }
-
 
 function landing_page_widget_view_add_js($node){
 	require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/PHP2Json.php');
@@ -646,7 +511,7 @@ if(isset($node->widgetConfig->stickyHeader)){
     function fnCustomDrawCallback() {
         jQuery('.dataTables_scrollHead').width(jQuery('.dataTables_scroll').width());
     	jQuery('.dataTables_scrollHead').scrollLeft(0);
-    	jQuery('.dataTables_scrollBody').scrollLeft(0);	
+    	jQuery('.dataTables_scrollBody').scrollLeft(0);
     }
     function fnCustomInitComplete() {
         var topSpacing = ".(user_is_logged_in() ? 66 : 0).";
@@ -668,7 +533,7 @@ if(isset($node->widgetConfig->stickyHeader)){
     $dataTableOptions = json_encode((object)$oldDataTableOptions);
 
     $id  = "";
-    if($node->widgetConfig->widgetSubType == "ajaxSimple" || $node->widgetConfig->widgetSubType == "ajaxCustomTemplate" ){
+    if($node->widgetConfig->widgetSubType == "ajaxSimple"){
         $id = widget_controller_unique_identifier($node);
     }
     $js = "
@@ -730,24 +595,12 @@ function landing_page_widget_view_theme($existing, $type, $theme, $path) {
          'template' => 'table_by_list',
          'arguments' => array('node' => NULL),
       ),
-	  'landing_page_widget_view_no_results_theme' => array(
-	    'template' => 'no_results',
-	    'arguments' => array('node' => NULL),
-	  ),
-      'landing_page_widget_view_list_by_rows_wt_theme' => array(
-        'template' => 'table_by_list_wt',
-        'arguments' => array('node' => NULL),
-      ),
-      'landing_page_widget_view_list_by_rows_wt_grid_theme' => array(
-        'template' => 'table_by_list_wt_grid',
-        'arguments' => array('node' => NULL),
-      ),
 	);
 }
 
 function landing_page_widget_view_export_link($node) {
     $nid = widget_controller_unique_identifier($node);
-	return landing_page_widget_view_alerts_link($node)." <span class=export exportid={$nid}>Export</span>";
+	  return landing_page_widget_view_alerts_link($node)." <span class=export exportid={$nid}>Export</span>";
     //return "<span class=export exportid={$nid}>Export</span>";
 }
 
