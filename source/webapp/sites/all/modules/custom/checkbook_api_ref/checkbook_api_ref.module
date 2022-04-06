@@ -17,6 +17,8 @@ function checkbook_api_ref_menu()
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+
+  return $items;
 }
 /**
  * Implements hook_cron().
