@@ -1,6 +1,7 @@
 <?php
 
 include_once CUSTOM_MODULES_DIR . '/checkbook_api/checkbook_api.module';
+include_once CUSTOM_MODULES_DIR . '/checkbook_api/includes/spending.inc';
 
 /**
  * Class CheckbookApiModuleTest
