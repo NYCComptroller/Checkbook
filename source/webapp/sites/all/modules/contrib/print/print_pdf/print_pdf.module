@@ -192,7 +192,13 @@ function print_pdf_node_load($nodes, $types) {
   $size = 'print_' . $link['format'] . '_size';
   $orientation = 'print_' . $link['format'] . '_orientation';
 
-  $result = db_query('SELECT nid, size, orientation FROM {print_pdf_node_conf} WHERE nid IN (:nids)', array(':nids' => $ids))->fetchAllAssoc('nid');
+  try {
+    $result = db_query('SELECT nid, size, orientation FROM {print_pdf_node_conf} WHERE nid IN (:nids)', array(':nids' => $ids))->fetchAllAssoc('nid');
+  }
+  catch (PDOException $ex) {
+    // An exception may occur when a node is loaded before update 7203 runs.
+    $result = array();
+  }
 
   foreach ($nodes as $node) {
     $node->{$size} = (isset($result[$node->nid]) && !empty($result[$node->nid]->size)) ? $result[$node->nid]->size : variable_get($size . '_' . $node->type);
@@ -211,6 +217,10 @@ function print_pdf_node_insert($node) {
  * Implements hook_node_update().
  */
 function print_pdf_node_update($node) {
+  // If no global user object, the user_access call will fail.
+  if (!isset($GLOBALS['user']) || !is_object($GLOBALS['user'])) {
+    return;
+  }
   if (user_access('administer print') || user_access('node-specific print configuration')) {
     $link = print_pdf_print_link();
 
@@ -231,6 +241,12 @@ function print_pdf_node_update($node) {
         'orientation' => $node->{$orientation},
       ))
       ->execute();
+  }
+
+  //For a book page, not only delete the PDF file for the page but also delete the caching PDF file for the entire book.
+  if (isset($node->book) && isset($node->book['bid'])) {
+    //Delete the book PDF file.
+    print_pdf_cache_delete($node->book['bid']);
   }
 
   print_pdf_cache_delete($node->nid);

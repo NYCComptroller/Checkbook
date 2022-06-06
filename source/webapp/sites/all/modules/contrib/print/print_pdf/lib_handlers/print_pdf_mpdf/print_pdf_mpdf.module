@@ -13,6 +13,7 @@
 function print_pdf_mpdf_pdf_tool_info() {
   $info = array(
     'name' => 'mPDF',
+    'min_version' => '7.1.0',
     'url' => 'https://github.com/mpdf/mpdf/releases/latest',
     'expand_css' => FALSE,
     'public_dirs' => array(
@@ -22,7 +23,8 @@ function print_pdf_mpdf_pdf_tool_info() {
   );
 
   $pdf_tool = explode('|', variable_get('print_pdf_pdf_tool', PRINT_PDF_PDF_TOOL_DEFAULT));
-  if (!isset($pdf_tool[1]) || print_pdf_mpdf_pdf_tool_version($pdf_tool[1]) !== '>= 7.x') {
+  // Only for versions less than 7.0.0, without calling the version() function.
+  if (isset($pdf_tool[1]) && strpos($pdf_tool[1], 'mpdf.php')) {
     $info['tool_dirs'] = array(
       'graph_cache',
     );
@@ -38,21 +40,21 @@ function print_pdf_mpdf_pdf_tool_version($pdf_tool) {
     include_once DRUPAL_ROOT . '/' . $pdf_tool;
   }
 
+  // Version 5.x and 6.x
   if (defined('mPDF_VERSION')) {
     return mPDF_VERSION;
   }
+  // Version >= 7.0
   else {
-    // Version 7 of the mpdf library uses a composer autoloader.
-    // Also there no longer is a way to truly detect the library version, so
-    // this seems like the best alternative.
-    $mpdf_version_7_plus = strpos($pdf_tool, 'autoload.php') !== FALSE;
-    if ($mpdf_version_7_plus) {
-      return '>= 7.x';
-    }
-    else {
-      return 'unknown';
+    if (class_exists('\Mpdf\Mpdf')) {
+      $version = \Mpdf\Mpdf::VERSION;
+      if (!empty($version)) {
+        return $version;
+      }
     }
   }
+
+  return 'unknown';
 }
 
 /**

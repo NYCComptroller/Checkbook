@@ -68,7 +68,7 @@ function print_pdf_settings() {
 
     $form['settings']['print_pdf_cache_enabled'] = array(
       '#type' => 'checkbox',
-      '#title' => t('Enable caching of generated PDFs'),
+      '#title' => t('Enable caching of generated PDFs for anonymous users'),
       '#default_value' => variable_get('print_pdf_cache_enabled', PRINT_PDF_CACHE_ENABLED_DEFAULT),
     );
 

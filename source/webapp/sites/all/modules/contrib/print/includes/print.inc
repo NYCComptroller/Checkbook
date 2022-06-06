@@ -84,17 +84,55 @@ function _print_replace_spaces($matches) {
 function _print_access_images_via_file($html, $images_via_file) {
   global $base_url, $language;
 
-  $lang = (function_exists('language_negotiation_get_any') && language_negotiation_get_any('locale-url')) ? $language->language : '';
+  $dom = new DOMDocument();
+  // Suppress warnings for invalid HTML.
+  @$dom->loadHTML($html);
 
-  // Always convert private to local paths.
-  $pattern = "!(<img\s[^>]*?src\s*?=\s*?['\"]?)${base_url}/(?:(?:index.php)?\?q=)?(?:${lang}/)?system/files/([^>\?]*)(?:\?itok=[a-zA-Z0-9\-_]{8})?([^>]*?>)!is";
-  $replacement = '$1file://' . realpath(variable_get('file_private_path', '')) . '/$2$3';
-  $html = preg_replace($pattern, $replacement, $html);
-  if ($images_via_file) {
-    $pattern = "!(<img\s[^>]*?src\s*?=\s*?['\"]?)${base_url}/(?:(?:index.php)?\?q=)?(?:${lang}/)?([^>\?]*)(?:\?itok=[a-zA-Z0-9\-_]{8})?([^>]*?>)!is";
-    $replacement = '$1file://' . DRUPAL_ROOT . '/$2$3';
-    $html = preg_replace($pattern, $replacement, $html);
+  $image_tags = $dom->getElementsByTagName('img');
+  foreach ($image_tags as $image_tag) {
+    $image_relative_tag_src = str_replace($base_url, '', $image_tag->getAttribute('src'));
+    $file_private_path = variable_get('file_private_path', '');
+    $is_private_file = (strpos($image_relative_tag_src, '/system/files') === 0);
+
+    if ($is_private_file) {
+      // Reconstruct private file URI.
+      $image_uri = str_replace('/system/files/', 'private://', $image_relative_tag_src);
+
+      // The URI to check access against.
+      $check_uri = $image_uri;
+
+      if (strpos($image_uri, 'private://styles') === 0) {
+        // This is a private image derivative. Find the original image to check
+        // access.
+        $style_parts = explode('/', file_uri_target($image_uri));
+        // We strip the same args as image_style_deliver().
+        $style_parts = array_slice($style_parts, 3);
+        $original_target = implode('/', $style_parts);
+        // Update the URI to check access to the original image.
+        $check_uri = preg_replace('/\?itok=.*$/', '', 'private://' . $original_target);
+      }
+
+      if (file_download_headers($check_uri)) {
+        // Access granted to check URI. Find the real path of the file.
+        $image_src = drupal_realpath($image_uri);
+        $image_tag->setAttribute('src', 'file://' . $image_src);
+      }
+      else {
+        // Access to this private file is denied.
+        $image_tag->setAttribute('src', '');
+      }
+    }
+    elseif ($images_via_file) {
+      // Reconstruct public file URL.
+      $public_directory = variable_get('file_public_path', conf_path() . '/files');
+      if (strpos($image_relative_tag_src, '/' . $public_directory) === 0) {
+        $image_src = str_replace('/' . $public_directory, 'public://', $image_relative_tag_src);
+        // Prevent directory traversal.
+        $image_src = drupal_realpath($image_src);
+        $image_tag->setAttribute('src', 'file://' . $image_src);
+      }
+    }
   }
 
-  return $html;
+  return $dom->saveHTML();
 }

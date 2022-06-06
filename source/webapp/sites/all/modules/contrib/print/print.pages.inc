@@ -49,6 +49,9 @@ function print_controller_html() {
       ->expression('totalcount', 'totalcount + 1')
       ->execute();
   }
+  else {
+    drupal_exit();
+  }
 }
 
 /**
@@ -187,7 +190,7 @@ function print_preprocess_print(&$variables) {
     'query' => $variables['query'],
   ));
   $variables['cid'] = isset($node->cid) ? $node->cid : NULL;
-  $variables['print_title'] = check_plain($node->title);
+  $variables['print_title'] = html_entity_decode(check_plain($node->title));
   $variables['head'] = drupal_get_html_head();
   $variables['robots_meta'] = _print_robots_meta_generator();
   $variables['css'] = _print_css_generator($variables['expand_css']);
@@ -308,6 +311,7 @@ function theme_print_footer($vars) {
  * @ingroup print_themeable
  */
 function theme_print_sourceurl($vars) {
+  global $base_url;
   $sourceurl_date = variable_get('print_sourceurl_date', PRINT_SOURCEURL_DATE_DEFAULT);
   $url = is_int($vars['cid']) ? $vars['url'] . '#comment-' . $vars['cid'] : $vars['url'];
 
@@ -320,7 +324,8 @@ function theme_print_sourceurl($vars) {
 
     $output .= ')';
   }
-  $output .= ':</strong> ' . $url;
+  $new_url = explode($base_url, $url);
+  $output .= ':</strong>' ."<a href=".$new_url[1].">". $url . '</a>';
 
   return $output;
 }
@@ -339,6 +344,7 @@ function theme_print_sourceurl($vars) {
  */
 function theme_print_url_list($vars) {
   global $_print_urls;
+  global $base_url;
 
   // Display the collected links at the bottom of the page. Code once taken from
   // Kjartan Mannes' project.module.
@@ -347,7 +353,8 @@ function theme_print_url_list($vars) {
     $url_list = '';
     foreach ($urls as $key => $url) {
       drupal_alter('print_url_list', $url);
-      $url_list .= '[' . ($key + 1) . '] ' . check_plain($url) . "<br />\n";
+      $new_url = explode($base_url, $url);
+      $url_list .= "<a href=".$new_url[1]." target='_blank'>". '[' . ($key + 1) . '] ' . check_plain($url) . "</a>\n";
     }
     if (!empty($url_list)) {
       return "<p><strong>" . t('Links') . "</strong><br />$url_list</p>";
@@ -543,7 +550,7 @@ function _print_rewrite_urls($matches) {
  *   otherwise.
  */
 function _print_friendly_urls($url = 0) {
-  static $urls = array();
+  $urls = &drupal_static(__FUNCTION__, array());
   if ($url !== 0) {
     $url_idx = array_search($url, $urls);
     if ($url_idx !== FALSE) {

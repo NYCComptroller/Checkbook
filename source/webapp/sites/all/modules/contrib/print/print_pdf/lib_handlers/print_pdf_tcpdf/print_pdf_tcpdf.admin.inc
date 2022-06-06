@@ -42,7 +42,7 @@ function print_pdf_tcpdf_settings() {
     '#type' => 'checkbox',
     '#title' => t('Enable font subsetting'),
     '#default_value' => variable_get('print_pdf_font_subsetting', PRINT_PDF_TCPDF_FONT_SUBSETTING_DEFAULT),
-    '#description' => t('Only embed those font characters that are actually used.  This can generates smaller PDF files but may significantly slow down processing.'),
+    '#description' => t('Only embed those font characters that are actually used.  This can generate smaller PDF files but may significantly slow down processing.'),
   );
 
   $form['#validate'][] = '_print_pdf_tcpdf_settings_validate';

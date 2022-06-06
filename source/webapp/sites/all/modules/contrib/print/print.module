@@ -234,9 +234,51 @@ function print_help($path, $arg) {
   $ret = '';
   switch ($path) {
     case 'admin/help#print':
-      // Return a line-break version of the module README.
-      $ret = _filter_autop(file_get_contents(drupal_get_path('module', 'print') . '/README.txt'));
-  }
+      $ret = t("<p>This module allows you to generate printer-friendly versions of any node:</p>
+<ul>
+<li>Web page printer-friendly version at www.example.com/print/nid</li>
+<li>PDF version at www.example.com/printpdf/nid</li>
+<li>Send by-email at www.example.com/printmail/nid</li>
+</ul>
+<p>where nid is the node id of content to render.</p>
+<p>A link is inserted in each node (configurable in the content type settings), that opens a version of the page with no sidebars, search boxes, navigation pages, etc.</p>
+<h3>Configuration settings</h3>
+<p>There are several settings that can be configured in the following places:</p>
+<ul>
+<li>Administration &gt; Modules (admin/modules)<br>Enable or disable the module and submodules. (default: disabled)</li>
+<li>Administration &gt; People &gt; Permissions (admin/people/permissions)<br>
+Permissions to access print friendly content and administer print module.</li>
+<li>Administration &gt; Structure &gt; Content types (admin/structure/types)<br>
+For each content type enable or disable the PF link.<br>
+Also enable or disable the PF link for individual comments (default: disabled).</li>
+</ul>
+<h3>Module Specific Configuration settings</h3>
+<ul>
+<li>Administration &gt; Configuration &gt; User interface &gt; Printer, email and PDF versions (admin/config/user-interface/print)<br>
+For Web page options.</li>
+<li>Administration &gt; Configuration &gt; User interface &gt; Print &gt; Settings (admin/config/user-interface/print/common)<br>
+For Common settings.</li>
+</ul>
+<p>When the Printer-friendly pages UI (print_ui) module is enabled additional settings for printer friendly links will be available.</p>
+<ul>
+<li>Administration &gt; Configuration &gt; User interface &gt; Print &gt; Links (admin/config/user-interface/print/ui)<br>
+For Link options.<br>This includes options for link style and position.</li>
+</ul>
+<p>The link options also include an option to use the URL alias instead of node ID. It may be important to check this option to create printer friendly pages of panel layouts and other enhanced layouts instead of simply the node itself.</p>
+<h3>Custom template files</h3>
+<p>To modify the template of printer friendly pages, simply edit the print.tpl.php or the css/print.css files.</p>
+<p>It is possible to set per-content-type and/or theme-specific templates which are searched for in the following order:</p>
+<ol>
+<li>print--[format]--node--[type].tpl.php in the theme directory</li>
+<li>print--[format].tpl.php in the theme directory</li>
+<li>print--node--[type].tpl.php in the theme directory</li>
+<li>print.tpl.php in the theme directory</li>
+<li>print.tpl.php in the module directory (supplied by the module)</li>
+</ol>
+<p>format is either html, mail or pdf, and type is Drupal's node content type e.g. article, page etc.</p>
+<p>For more information, consult the !documentlink at www.drupal.org and see the README.txt and INSTALL.txt files.</p>",
+array('!documentlink' => l(t('Print module documentation'), 'http://drupal.org/node/190171')));
+    }
   return $ret;
 }
 

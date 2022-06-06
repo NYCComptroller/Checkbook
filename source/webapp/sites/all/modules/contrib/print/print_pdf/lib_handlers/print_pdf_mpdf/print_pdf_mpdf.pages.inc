@@ -86,6 +86,14 @@ function print_pdf_mpdf_print_pdf_generate($html, $meta, $paper_size = NULL, $pa
   $mpdf->SetProtection(array('copy', 'print'), '', 'MyPassword');
   $mpdf->SetProtection(array('copy', 'print', 'print-highres'), '', '');
    */
+  // Verify if footer is set and configured.
+  preg_match('!<div class="print-footer">(.*?)</div>!si', $html, $tpl_footer);
+  if (!empty($tpl_footer[1]) && variable_get('print_footer_options', PRINT_FOOTER_OPTIONS_DEFAULT)) {
+    $footer = trim(preg_replace('!</?div[^>]*?>!i', '', $tpl_footer[1]));
+    // Remove footer from html because it's not in footer region of the page.
+    $html = preg_replace('!<div class="print-footer">(.*?)</div>!si', '', $html);
+    $mpdf->setFooter($footer);
+  }
   drupal_alter('print_pdf_mpdf', $mpdf, $html, $meta);
 
   $mpdf->WriteHTML($html);
