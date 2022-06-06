@@ -1,0 +1,414 @@
+<?php
+
+/**
+ * @file
+ * Displays Printer-friendly versions of Drupal pages.
+ *
+ * This is the core module of the PF package, with the Drupal hooks
+ * and other administrative functions.
+ *
+ * @ingroup print
+ */
+
+define('PRINT_VIEW_MODE', 'print');
+
+define('PRINT_LOGO_OPTIONS_DEFAULT', 1);
+define('PRINT_LOGO_URL_DEFAULT', '');
+define('PRINT_FOOTER_OPTIONS_DEFAULT', 1);
+define('PRINT_FOOTER_USER_DEFAULT', '');
+define('PRINT_CSS_DEFAULT', '');
+define('PRINT_KEEP_THEME_CSS_DEFAULT', 0);
+define('PRINT_URLS_DEFAULT', 1);
+define('PRINT_URLS_ANCHORS_DEFAULT', 0);
+define('PRINT_COMMENTS_DEFAULT', 0);
+define('PRINT_NODE_ROUTER_DEFAULT', 0);
+define('PRINT_NEWWINDOW_DEFAULT', 1);
+
+define('PRINT_TYPE_URLLIST_DEFAULT', 1);
+define('PRINT_TYPE_SYS_URLLIST_DEFAULT', 0);
+define('PRINT_TYPE_LINK_TEXT_ENABLED_DEFAULT', 0);
+
+define('PRINT_HTML_NEW_WINDOW_DEFAULT', 0);
+define('PRINT_HTML_SENDTOPRINTER_DEFAULT', 0);
+define('PRINT_HTML_WINDOWCLOSE_DEFAULT', 1);
+
+define('PRINT_SOURCEURL_ENABLED_DEFAULT', 1);
+define('PRINT_SOURCEURL_DATE_DEFAULT', 0);
+define('PRINT_SOURCEURL_FORCENODE_DEFAULT', 0);
+
+define('PRINT_ROBOTS_NOINDEX_DEFAULT', 1);
+define('PRINT_ROBOTS_NOFOLLOW_DEFAULT', 1);
+define('PRINT_ROBOTS_NOARCHIVE_DEFAULT', 0);
+
+define('PRINT_LIB_PATH', 'sites/all/libraries');
+
+/**
+ * Implements hook_print_link().
+ */
+function print_print_link() {
+  return array(
+    'format' => 'html',
+    'text' => t('Printer-friendly version'),
+    'description' => t('Display a printer-friendly version of this page.'),
+    'path' => 'print',
+    'class' => 'print-page',
+    'icon' => 'print_icon.png',
+    'module' => 'print',
+  );
+}
+
+/**
+ * Implements hook_print_new_window_alter().
+ */
+function print_print_new_window_alter(&$new_window, $format) {
+  $new_window = variable_get('print_html_new_window', PRINT_HTML_NEW_WINDOW_DEFAULT);
+}
+
+/**
+ * Implements hook_permission().
+ */
+function print_permission() {
+  return array(
+    'administer print' => array(
+      'title' => t('Administer the module'),
+      'description' => t('Perform maintenance tasks for the print module.'),
+    ),
+    'access print' => array(
+      'title' => t('Access the printer-friendly page'),
+      'description' => t('View the printer-friendly pages and the links to them in the original pages.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_theme().
+ */
+function print_theme() {
+  return array(
+    'print' => array(
+      'variables' => array(
+        'node' => NULL,
+        'query' => NULL,
+        'format' => '',
+        'expand_css' => FALSE,
+        'message' => '',
+      ),
+      'template' => 'print',
+      'file' => 'print.pages.inc',
+    ),
+    'print_published' => array(
+      'variables' => array(),
+      'file' => 'print.pages.inc',
+    ),
+    'print_breadcrumb' => array(
+      'variables' => array('node' => NULL),
+      'file' => 'print.pages.inc',
+    ),
+    'print_footer' => array(
+      'variables' => array(),
+      'file' => 'print.pages.inc',
+    ),
+    'print_sourceurl' => array(
+      'variables' => array('url' => '', 'node' => NULL, 'cid' => NULL),
+      'file' => 'print.pages.inc',
+    ),
+    'print_url_list' => array(
+      'variables' => array(),
+      'file' => 'print.pages.inc',
+    ),
+  );
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function print_preprocess_node(&$variables) {
+  if (($variables['elements']['#view_mode'] == PRINT_VIEW_MODE) && isset($variables['elements']['#print_format'])) {
+    $type = $variables['elements']['#node']->type;
+    $format = $variables['elements']['#print_format'];
+    $nid = $variables['elements']['#node']->nid;
+
+    $variables['theme_hook_suggestions'][] = "node__print";
+    $variables['theme_hook_suggestions'][] = "node__print__{$format}";
+    $variables['theme_hook_suggestions'][] = "node__print__{$format}__node__{$type}";
+    $variables['theme_hook_suggestions'][] = "node__print__{$format}__node__{$nid}";
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function print_menu() {
+  $link = print_print_link();
+  $items = array();
+
+  $items[$link['path']] = array(
+    'title' => 'Printer-friendly',
+    'page callback' => 'print_controller_html',
+    'access arguments' => array('access print'),
+    'type' => MENU_CALLBACK,
+    'file' => 'print.pages.inc',
+  );
+  $items[$link['path'] . '/' . $link['path']] = array(
+    'access callback' => FALSE,
+  );
+  $items['admin/config/user-interface/print'] = array(
+    'title' => 'Printer, email and PDF versions',
+    'description' => 'Adds a printer-friendly version link to content and administrative pages.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('print_html_settings'),
+    'access arguments'  => array('administer print'),
+    'file' => 'print.admin.inc',
+  );
+  $items['admin/config/user-interface/print/html'] = array(
+    'title' => 'Web page',
+    'weight' => 1,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+  $items['admin/config/user-interface/print/common'] = array(
+    'title' => 'Settings',
+    'description' => 'Settings for the common functionalities for all the print sub-modules.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('print_main_settings'),
+    'access arguments'  => array('administer print'),
+    'weight' => 10,
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'print.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_variable_info().
+ */
+function print_variable_info($options) {
+  $link = print_print_link();
+
+  $variable['print_html_link_text'] = array(
+    'title' => t('Printer-friendly version'),
+    'description' => t('Text used in the link to the printer-friendly version.'),
+    'type' => 'string',
+    'default' => t($link['text']),
+  );
+
+  return $variable;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function print_block_info() {
+  $block['print-top']['info'] = t('Most printed');
+  $block['print-top']['cache'] = DRUPAL_CACHE_GLOBAL;
+  return $block;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function print_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'print-top':
+      $block['subject'] = t('Most printed');
+      $result = db_query_range("SELECT path FROM {print_page_counter} LEFT JOIN {node} n ON path = CONCAT('node/', n.nid) WHERE status <> 0 OR status IS NULL ORDER BY totalcount DESC", 0, 3)
+        ->fetchAll();
+      if (count($result)) {
+        $items = array();
+        foreach ($result as $obj) {
+          $items[] = l(_print_get_title($obj->path), $obj->path);
+        }
+        $block['content'] = theme('item_list', array('items' => $items, 'type' => 'ul'));
+      }
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_help().
+ */
+function print_help($path, $arg) {
+  $ret = '';
+  switch ($path) {
+    case 'admin/help#print':
+      $ret = t("<p>This module allows you to generate printer-friendly versions of any node:</p>
+<ul>
+<li>Web page printer-friendly version at www.example.com/print/nid</li>
+<li>PDF version at www.example.com/printpdf/nid</li>
+<li>Send by-email at www.example.com/printmail/nid</li>
+</ul>
+<p>where nid is the node id of content to render.</p>
+<p>A link is inserted in each node (configurable in the content type settings), that opens a version of the page with no sidebars, search boxes, navigation pages, etc.</p>
+<h3>Configuration settings</h3>
+<p>There are several settings that can be configured in the following places:</p>
+<ul>
+<li>Administration &gt; Modules (admin/modules)<br>Enable or disable the module and submodules. (default: disabled)</li>
+<li>Administration &gt; People &gt; Permissions (admin/people/permissions)<br>
+Permissions to access print friendly content and administer print module.</li>
+<li>Administration &gt; Structure &gt; Content types (admin/structure/types)<br>
+For each content type enable or disable the PF link.<br>
+Also enable or disable the PF link for individual comments (default: disabled).</li>
+</ul>
+<h3>Module Specific Configuration settings</h3>
+<ul>
+<li>Administration &gt; Configuration &gt; User interface &gt; Printer, email and PDF versions (admin/config/user-interface/print)<br>
+For Web page options.</li>
+<li>Administration &gt; Configuration &gt; User interface &gt; Print &gt; Settings (admin/config/user-interface/print/common)<br>
+For Common settings.</li>
+</ul>
+<p>When the Printer-friendly pages UI (print_ui) module is enabled additional settings for printer friendly links will be available.</p>
+<ul>
+<li>Administration &gt; Configuration &gt; User interface &gt; Print &gt; Links (admin/config/user-interface/print/ui)<br>
+For Link options.<br>This includes options for link style and position.</li>
+</ul>
+<p>The link options also include an option to use the URL alias instead of node ID. It may be important to check this option to create printer friendly pages of panel layouts and other enhanced layouts instead of simply the node itself.</p>
+<h3>Custom template files</h3>
+<p>To modify the template of printer friendly pages, simply edit the print.tpl.php or the css/print.css files.</p>
+<p>It is possible to set per-content-type and/or theme-specific templates which are searched for in the following order:</p>
+<ol>
+<li>print--[format]--node--[type].tpl.php in the theme directory</li>
+<li>print--[format].tpl.php in the theme directory</li>
+<li>print--node--[type].tpl.php in the theme directory</li>
+<li>print.tpl.php in the theme directory</li>
+<li>print.tpl.php in the module directory (supplied by the module)</li>
+</ol>
+<p>format is either html, mail or pdf, and type is Drupal's node content type e.g. article, page etc.</p>
+<p>For more information, consult the !documentlink at www.drupal.org and see the README.txt and INSTALL.txt files.</p>",
+array('!documentlink' => l(t('Print module documentation'), 'http://drupal.org/node/190171')));
+    }
+  return $ret;
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function print_node_delete($node) {
+  db_delete('print_page_counter')
+    ->condition('path', 'node/' . $node->nid)
+    ->execute();
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function print_entity_info_alter(&$info) {
+  // Add the 'Print' view mode for nodes.
+  $info['node']['view modes'] += array(
+    PRINT_VIEW_MODE => array(
+      'label' => t('Print'),
+      'custom settings' => FALSE,
+    ),
+  );
+  // Add the 'Print' view mode for field_collections.
+  if (module_exists('field_collection')) {
+    $info['field_collection_item']['view modes'] += array(
+      PRINT_VIEW_MODE => array(
+        'label' => t('Print'),
+        'custom settings' => FALSE,
+      ),
+    );
+  }
+}
+
+/**
+ * Auxiliary function to discover a given page's title.
+ *
+ * @param string $path
+ *   Path of the page being identified.
+ *
+ * @return string
+ *   string with the page's title
+ */
+function _print_get_title($path) {
+  $path = drupal_get_normal_path($path);
+  $nid = preg_replace('!^node/!', '', $path);
+  if (ctype_digit($nid)) {
+    return db_query("SELECT title FROM {node} WHERE nid = :nid", array(':nid' => $nid))
+      ->fetchField();
+  }
+  else {
+    // Not a node, try to get title from the menu system.
+    $menu_item = menu_get_item($path);
+    if (!empty($menu_item['title'])) {
+      return $menu_item['title'];
+    }
+    elseif (drupal_substr($menu_item['page_callback'], 0, 6) == 'views_') {
+      // It's a view, load the view to have access to the title.
+      $view = views_get_view($menu_item['page_arguments']['0']);
+      return $view->get_title();
+    }
+    else {
+      return NULL;
+    }
+  }
+}
+
+/**
+ * Auxiliary function to display a formatted Printer-friendly link.
+ *
+ * Function made available so that developers may call this function from
+ * their defined pages/blocks.
+ *
+ * @param string $path
+ *   path to be used in the link. If not specified, the current URL is used.
+ * @param object $node
+ *   node object, to be used in checking node access. If the path argument is
+ *   not provided, the path used will be node/nid.
+ * @param string $location
+ *   Where in the page where the link is being inserted ('link', 'corner',
+ *   'block', 'help').
+ *
+ * @return string
+ *   HTML link to the printer-friendly page
+ *
+ * @ingroup print_api
+ */
+function print_insert_link($path = NULL, $node = NULL, $location = '') {
+  if (function_exists('print_ui_insert_link')) {
+    return print_ui_insert_link(print_print_link(), array(
+      'path' => $path,
+      'node' => $node,
+      'location' => $location,
+    ));
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Check if the link to the PF version is allowed depending on the settings.
+ *
+ * @param array $args
+ *   Array containing the possible parameters:
+ *    view_mode, node, type, path.
+ *
+ * @return bool
+ *   FALSE if not allowed, TRUE otherwise
+ */
+function print_link_allowed($args) {
+  return (user_access('access print'));
+}
+
+/**
+ * Implements hook_contextual_links_view_alter().
+ */
+function print_contextual_links_view_alter(&$element, $items) {
+  // Hide all contextual links.
+  if (preg_match('!^print!', $_GET['q'])) {
+    unset($element['#links']);
+  }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function print_views_api() {
+  return array(
+    'api' => 2.0,
+    'path' => drupal_get_path('module', 'print'),
+  );
+}

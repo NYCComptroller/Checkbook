@@ -1,0 +1,18 @@
+mPDF support:
+
+  The recommended version of this tool is 7.1.0 or newer since it is fully
+  compatible with PHP 7.1, and security support has ended for all prior
+  versions of PHP as of December 31, 2018.
+
+  1. Download mPDF from https://github.com/mpdf/mpdf/releases.
+  2. Extract the contents of the downloaded package into one of the
+  supported paths.
+  3. If using mPDF 7.0 or later run 'composer install' in the mpdf directory.
+  4. To be sure your environment is set up correctly, check the Requirements
+  page at https://mpdf.github.io/about-mpdf/requirements-v7.html. The PHP
+  mbstring extension (including mbregex, which needs to be explicitly enabled
+  in some environments) and gd extension have to be loaded.
+  5. If upgrading from version 6 or older, visit the settings page on your
+  site at http://example.com/admin/config/user-interface/print/pdf and select
+  the new path for the "PDF generation tool" setting.
+  6. Check https://mpdf.github.io/ for further information.
