@@ -2,10 +2,10 @@ name = "PHPePub library handler"
 description = "EPUB generation library using PHPePub."
 core = 7.x
 package = "Printer, email and PDF versions"
-dependencies[] = print_epub
+dependencies[] = print:print_epub
 
-; Information added by Drupal.org packaging script on 2018-10-05
-version = "7.x-2.2"
+; Information added by Drupal.org packaging script on 2022-05-31
+version = "7.x-2.4"
 core = "7.x"
 project = "print"
-datestamp = "1538760185"
+datestamp = "1653980177"

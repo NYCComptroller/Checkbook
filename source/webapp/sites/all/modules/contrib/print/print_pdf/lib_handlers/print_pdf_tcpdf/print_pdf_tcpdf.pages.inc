@@ -64,7 +64,7 @@ function print_pdf_tcpdf_print_pdf_generate($html, $meta, $paper_size = NULL, $p
 
   // Decode HTML entities in image filenames.
   $pattern = "!<img\s[^>]*?src\s*?=\s*?['\"]?{$base_url}[^>]*?>!is";
-  $html = preg_replace_callback($pattern, create_function('$matches', 'return html_entity_decode($matches[0], ENT_QUOTES);'), $html);
+  $html = preg_replace_callback($pattern, function ($matches) { return html_entity_decode($matches[0], ENT_QUOTES); }, $html);
   // Remove queries from the image URL.
   $pattern = "!(<img\s[^>]*?src\s*?=\s*?['\"]?{$base_url}[^>]*?)(?:%3F|\?)[^\s'\"]+([^>]*?>)!is";
   $html = preg_replace($pattern, '$1$2', $html);

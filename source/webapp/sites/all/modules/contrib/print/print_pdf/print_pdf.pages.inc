@@ -113,7 +113,7 @@ function print_pdf_generate_path($path, $query = NULL, $cid = NULL, $pdf_filenam
   if ($node) {
     // Call the tool's hook_pdf_tool_info(), to see if CSS must be expanded.
     $pdf_tool = explode('|', variable_get('print_pdf_pdf_tool', PRINT_PDF_PDF_TOOL_DEFAULT));
-    $cache_enabled = variable_get('print_pdf_cache_enabled', PRINT_PDF_CACHE_ENABLED_DEFAULT);
+    $cache_enabled = user_is_anonymous() && variable_get('print_pdf_cache_enabled', PRINT_PDF_CACHE_ENABLED_DEFAULT);
 
     $function = $pdf_tool[0] . '_pdf_tool_info';
     $info = function_exists($function) ? $function() : array();

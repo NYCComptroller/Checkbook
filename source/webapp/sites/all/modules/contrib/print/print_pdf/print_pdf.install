@@ -179,10 +179,10 @@ function print_pdf_requirements($phase) {
               $requirements['print_pdf_tool_version'] = array(
                 'title' => $t('Printer, email and PDF versions - PDF generation library'),
                 'value' => $t('Unsupported %lib version', array('%lib' => $info['name'])),
-                'description' => $t('The currently selected version of %lib (@version) is not supported. Please update to a !url.', array(
+                'description' => $t('The currently selected version of %lib (@version) is not supported. Please update to !url.', array(
                   '%lib' => $info['name'],
                   '@version' => $version,
-                  '!url' => l($t('newer version'), $info['url']),
+                  '!url' => l($t('version @min or newer', array('@min' => $info['min_version'])), $info['url']),
                 )),
                 'severity' => REQUIREMENT_ERROR,
               );
@@ -332,4 +332,11 @@ function print_pdf_update_7205(&$sandbox) {
       'description' => 'Page path',
     ),
     array('primary key' => array('path')));
+}
+
+/**
+ * Flush the PDF cache to remove possibly existing private data.
+ */
+function print_pdf_update_7206(&$sandbox) {
+  print_pdf_cache_delete();
 }

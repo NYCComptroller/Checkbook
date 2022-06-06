@@ -17,7 +17,7 @@ define('PRINT_PDF_TCPDF_FONT_SUBSETTING_DEFAULT', FALSE);
 function print_pdf_tcpdf_pdf_tool_info() {
   return array(
     'name' => 'TCPDF',
-    'min_version' => '5.9.001',
+    'min_version' => '6.2.22',
     'url' => 'http://sourceforge.net/projects/tcpdf/files/latest',
     'expand_css' => TRUE,
     'public_dirs' => array(

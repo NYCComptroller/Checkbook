@@ -427,6 +427,7 @@ function print_mail_action_submit($from, $from_name, $to, $subject, $message, $n
     'txt_message' => $message,
     'chk_teaser' => FALSE,
   );
+  $form_state['input'] = $form_state['values'];
 
   print_mail_form_submit(NULL, $form_state);
 }

@@ -145,7 +145,7 @@ function _print_drush_download_extract($filename) {
   $arch_ret = FALSE;
 
   if (drush_op('is_file', $filename)) {
-    $mime_type = drush_op('mime_content_type', $filename);
+    $mime_type = drush_mime_content_type($filename);
     switch ($mime_type) {
       case 1:
         $arch_ret = TRUE;

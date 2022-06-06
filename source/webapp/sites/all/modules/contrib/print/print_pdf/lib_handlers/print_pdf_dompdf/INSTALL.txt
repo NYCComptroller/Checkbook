@@ -2,20 +2,29 @@ dompdf support:
   The dompdf tool produces results that are more faithful to the HTML
   printer-friendly page. Good support of CSS 2.1 and partially CSS3.
 
+  The recommended version of this tool is 0.8.2 or newer since it is fully
+  compatible with PHP 7.1, and security support has ended for all prior
+  versions of PHP as of December 31, 2018.
+
   1. Download dompdf from https://github.com/dompdf/dompdf/releases. Make
   sure to download the full release zipfile. If you download only a source
   code file, you will also need to download and install the php-font-lib.
   2. Extract the contents of the downloaded package into one of the
   supported paths.
-  3. If using dompdf 0.6 or 0.5, check if dompdf_config.inc.php fits your
+  3. If upgrading from version 0.6 or older, visit the settings page on your
+  site at http://example.com/admin/config/user-interface/print/pdf and select
+  the new path for the "PDF generation tool" setting.
+  4. If using dompdf 0.6 or 0.5, check if dompdf_config.inc.php fits your
   installation. In 99% of cases, no changes are necessary, so just try to use
   it and only edit anything if the PDF generation fails.
-  4. If  using dompdf 0.6 or 0.5, delete the dompdf.php file as it contains a
+  5. If  using dompdf 0.6 or 0.5, delete the dompdf.php file as it contains a
   security vulnerability. Delete also the index.php and www folder, as they are
   not needed.
-  5. Grant write access to the lib/fonts directory to your webserver user.
-  6. If you're using dompdf 0.6, you can try to enable the Unicode support, but
+  6. Grant write access to the lib/fonts directory for your webserver user.
+  7. If you're using dompdf 0.6, you can try to enable the Unicode support, but
   you'll need to add some Unicode fonts. See
   http://groups.google.com/group/dompdf/browse_thread/thread/9f7bc0162b04d5cf
   for further info on this.
-  7. Check https://dompdf.github.io/ for further information.
+  8. Review the recommendations for securing your dompdf installation at
+  https://github.com/dompdf/dompdf/wiki/Securing-dompdf
+  9. Check https://dompdf.github.io/ for further information.

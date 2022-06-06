@@ -332,6 +332,10 @@ function print_ui_node_insert($node) {
  * Implements hook_node_update().
  */
 function print_ui_node_update($node) {
+  // If no global user object, the user_access call will fail.
+  if (!isset($GLOBALS['user']) || !is_object($GLOBALS['user'])) {
+    return;
+  }
   if (user_access('administer print') || user_access('node-specific print configuration')) {
     foreach (module_implements('print_link') as $module) {
       $function = $module . '_print_link';

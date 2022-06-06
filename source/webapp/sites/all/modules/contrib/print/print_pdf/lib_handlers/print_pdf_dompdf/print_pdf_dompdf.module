@@ -16,6 +16,7 @@ define('PRINT_PDF_DOMPDF_FONT_SUBSETTING_DEFAULT', FALSE);
 function print_pdf_dompdf_pdf_tool_info() {
   return array(
     'name' => 'dompdf',
+    'min_version' => '0.8.2',
     'url' => 'https://github.com/dompdf/dompdf/releases/latest',
     'expand_css' => FALSE,
     'public_dirs' => array(
@@ -59,10 +60,6 @@ function print_pdf_dompdf_menu() {
  * Implements hook_pdf_tool_version().
  */
 function print_pdf_dompdf_pdf_tool_version($pdf_tool) {
-  if (file_exists(DRUPAL_ROOT . '/' . $pdf_tool)) {
-    include_once DRUPAL_ROOT . '/' . $pdf_tool;
-  }
-
   if (basename($pdf_tool) == 'Dompdf.php') {
     $dompdf_base = dirname(dirname($pdf_tool));
     $version_file = $dompdf_base . '/VERSION';
@@ -80,6 +77,10 @@ function print_pdf_dompdf_pdf_tool_version($pdf_tool) {
     }
   }
   else {
+    if (file_exists(DRUPAL_ROOT . '/' . $pdf_tool)) {
+      include_once DRUPAL_ROOT . '/' . $pdf_tool;
+    }
+
     // Poor man's way to find dompdf version pre 0.7.
     if (defined('DOMPDF_ENABLE_AUTOLOAD')) {
       // It is not possible to tell apart 0.6.0, 0.6.1 or 0.6.2.
