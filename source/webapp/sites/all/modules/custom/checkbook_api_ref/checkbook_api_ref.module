@@ -1,5 +1,25 @@
 <?php
 
+function checkbook_api_ref_menu()
+{
+  $items['ref_code_list/%'] = array(
+    'title' => 'Load Reference Data',
+    'page callback' => 'checkbook_api_load_ref_data',
+    'page arguments' => array(1),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['ref_code_list_excel/%'] = array(
+    'title' => 'Load Reference Data',
+    'page callback' => 'checkbook_api_load_ref_data_excel',
+    'page arguments' => array(1),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
 /**
  * Implements hook_cron().
  */
@@ -66,5 +86,53 @@ function checkbook_api_ref_theme($existing, $type, $theme, $path)
         'path' => drupal_get_path('module', 'checkbook_api_ref') . '/theme',
       ),
     );
+  }
+}
+
+/**
+ * @param $code_list_name
+ */
+function checkbook_api_load_ref_data($code_list_name) {
+  global $conf;
+
+  $file_name = $code_list_name . '_code_list.csv';
+  $file = variable_get('file_public_path', 'sites/default/files') . '/' . $conf['check_book']['data_feeds']['output_file_dir'] . '/' . $conf['check_book']['ref_data_dir'] . '/' . $file_name;
+
+  drupal_add_http_header("Content-Type", "text/csv");
+  drupal_add_http_header("Content-Disposition", "attachment; filename=$file_name");
+  drupal_add_http_header("Pragma", "cache");
+  drupal_add_http_header("Expires", "-1");
+
+  if (is_file($file)) {
+    $data = file_get_contents($file);
+    drupal_add_http_header("Content-Length", strlen($data));
+    echo $data;
+  }
+  else {
+    echo "Data is not generated.. Please contact support team.";
+  }
+}
+
+/**
+ * @param $code_list_name
+ */
+function checkbook_api_load_ref_data_excel($code_list_name) {
+  global $conf;
+
+  $file_name = $code_list_name . '_code_list.xlsx';
+  $file = variable_get('file_public_path', 'sites/default/files') . '/' . $conf['check_book']['data_feeds']['output_file_dir'] . '/' . $conf['check_book']['ref_data_dir'] . '/' . $file_name;
+
+  drupal_add_http_header("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+  drupal_add_http_header("Content-Disposition", "attachment; filename=$file_name");
+  drupal_add_http_header("Pragma", "cache");
+  drupal_add_http_header("Expires", "-1");
+
+  if (is_file($file)) {
+    $data = file_get_contents($file);
+    drupal_add_http_header("Content-Length", strlen($data));
+    echo $data;
+  }
+  else {
+    echo "Data is not generated.. Please contact support team.";
   }
 }

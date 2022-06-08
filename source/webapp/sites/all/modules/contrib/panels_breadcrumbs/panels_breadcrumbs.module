@@ -117,12 +117,6 @@ function panels_breadcrumbs_partial_configuration_form(array $conf, array $conte
     '#default_value' => isset($conf['panels_breadcrumbs_home']) ? $conf['panels_breadcrumbs_home'] : TRUE,
   );
 
-  $form['settings']['panels_breadcrumbs_menu_active_trail'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Activate panels breadcrumbs menu active trail.'),
-    '#default_value' => isset($conf['panels_breadcrumbs_menu_active_trail']) ? $conf['panels_breadcrumbs_menu_active_trail'] : FALSE,
-  );
-
   $rows = array();
   foreach ($contexts as $context) {
     foreach (ctools_context_get_converters('%' . check_plain($context->keyword) . ':', $context) as $keyword => $title) {
@@ -156,8 +150,6 @@ function panels_breadcrumbs_partial_configuration_form(array $conf, array $conte
  *      separated by a line break.
  *    - panels_breadcrumbs_home: A boolean that enables the display of an 'Home'
  *      root link on the breadcrumb.
- *    - panels_breadcrumbs_menu_active_trail: A boolean that enables menu active
- *      trail as prefix.
  * @param array $contexts
  *   A ctools contexts array.
  * @param bool $override
@@ -245,10 +237,6 @@ function panels_breadcrumbs_build_breadcrumb(array $conf, array $contexts, $over
 
   // Optionally override the global breadcrumb configuration.
   if ($override) {
-    if (!isset($conf['panels_breadcrumbs_menu_active_trail']) || $conf['panels_breadcrumbs_menu_active_trail'] == TRUE) {
-      $prefix = menu_get_active_breadcrumb();
-      $breadcrumbs = array_merge($prefix, $breadcrumbs);
-    }
     drupal_set_breadcrumb($breadcrumbs);
   }
 
@@ -272,7 +260,6 @@ function panels_breadcrumbs_ctools_plugin_pre_alter(&$plugin, $info) {
       'panels_breadcrumbs_titles' => '',
       'panels_breadcrumbs_paths' => '',
       'panels_breadcrumbs_home' => 0,
-      'panels_breadcrumbs_menu_active_trail' => 0,
     );
   }
 }
@@ -583,6 +570,5 @@ function _panels_breadcrumbs_config_keys() {
     'panels_breadcrumbs_titles',
     'panels_breadcrumbs_paths',
     'panels_breadcrumbs_home',
-    'panels_breadcrumbs_menu_active_trail',
   );
 }
