@@ -45,4 +45,4 @@
    	}
 ?>
 
-"*Amounts as of November 2020"
+"*Amounts as of December 2020"
