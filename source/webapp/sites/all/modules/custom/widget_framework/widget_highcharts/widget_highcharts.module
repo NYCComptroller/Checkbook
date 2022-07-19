@@ -40,6 +40,172 @@ function widget_highcharts_widget_validate(&$node) {
 
 }
 
+function widget_highcharts_widget_data(&$node) {
+    $datasets = $node->widgetConfig->datasets;
+    $isXAxisDate = false;
+    $xAxisColumn = null;
+    $chartTitle = null;
+
+    if (isset($node->widgetConfig->chartConfig->xAxis->categories->ds)) {
+        foreach ($datasets as $ds) {
+            if ($ds->name == $node->widgetConfig->chartConfig->xAxis->categories->ds) {
+                $xAxisColumn = $ds->column;
+                if ($ds->type == 'date') {
+                    $isXAxisDate = true;
+                }
+                break;
+            }
+        }
+    } else if (isset($node->widgetConfig->chartConfig->xAxisDataPoint->ds)) {
+        foreach ($datasets as $ds) {
+            if ($ds->name == $node->widgetConfig->chartConfig->xAxisDataPoint->ds) {
+                $xAxisColumn = $ds->column;
+                if ($ds->type == 'date') {
+                    $isXAxisDate = true;
+                }
+                break;
+            }
+        }
+    }
+    $results = array();
+    if (is_array($node->data)) {
+        foreach ($node->data as $row) {
+            $xAxisDataPoint = $row[$xAxisColumn];
+            if ($isXAxisDate) {
+                if (($xAxisUTC = strtotime($xAxisDataPoint) * 1000) === false) {
+                    continue;
+                }
+            } else {
+                $xAxisUTC = $xAxisDataPoint;
+            }
+          //  dsm($xAxisUTC);
+            if(is_array($datasets))
+            foreach ($datasets as $ds) {
+
+                if (isset($ds->column) && $ds->column == $xAxisColumn) {
+                    if (is_null($row[$ds->column])) {
+                        continue;
+                    }
+                	$results[$ds->name][] = $xAxisUTC;//$row[$ds->column];
+                	continue;
+                }
+                if ($ds->isArray == true) {
+
+                    $allowNullValues = false;
+                	if ($ds->columns) {
+                        $dataPoint=[];
+                		foreach ($ds->columns as $col) {
+						    if (isset($ds->allowNullValues)){
+						    	$allowNullValues = $ds->allowNullValues;
+						    }
+	                		if (($col->name == 'x' || $col->name =='y' || $col->name =='title') && is_null($row[$col->value]) && !$allowNullValues) {
+	                			unset($dataPoint);
+		                    	break;
+		                    }
+                			$dataPoint[$col->name] = $row[$col->value];
+
+                			foreach($col as $colKey=>$value){
+                			  if($colKey !='x' && $colKey != 'y' && $colKey != 'name' && $colKey != 'value'){
+                			    $dataPoint[$colKey] = $row[$col->$colKey];
+                			  }
+                			}
+                		}
+
+                		if (sizeof($dataPoint)) {
+                			$results[$ds->name][] = $dataPoint;
+                			unset($dataPoint);
+                		}
+                	} else {
+	                    //if allowNullValue is false or not set, then dont set the values.
+	                    if (is_null($row[$ds->column]) && !$allowNullValues) {
+	                    	continue;
+	                    }
+	                    //if allowNullValue flag is set, then set the Null values without casting.
+	                    if (is_null($row[$ds->column]) && $allowNullValues){
+	                    	$results[$ds->name][] = array($xAxisUTC,$row[$ds->column]);
+	                    	continue;
+	                    }
+	                    if ($ds->type == 'float') {
+	                            $results[$ds->name][] = array($xAxisUTC,(float)$row[$ds->column]);
+	                    } else if ($ds->type == 'int') {
+	                            $results[$ds->name][] = array($xAxisUTC,(int)$row[$ds->column]);
+	                    } else {
+	                        $results[$ds->name][] = array($xAxisUTC,$row[$ds->column]);
+	                    }
+                	}
+                } else if (!isset($results[$ds->name])){
+                    if ($ds->type == 'float') {
+                        $results[$ds->name] = (float)$row[$ds->column];
+                    } else if ($ds->type == 'int') {
+                        $results[$ds->name] = (int)$row[$ds->column];
+                    } else {
+                        $results[$ds->name] = $row[$ds->column];
+                    }
+                }
+            }
+        }
+    }
+
+
+    if (isset($node->widgetConfig->chartConfig->title->text->ds)) {
+    	$node->widgetConfig->chartConfig->title->text = $results[$node->widgetConfig->chartConfig->title->text->ds];
+    }
+
+    if (!isset($node->widgetConfig->chartConfig->chart)) {
+      $node->widgetConfig->chartConfig->chart = new stdClass();
+    }
+
+    //removed zoomtype
+    if (!isset($node->widgetConfig->chartConfig->chart->zoomType)) {
+        $node->widgetConfig->chartConfig->chart->zoomType = '';
+    }
+
+    $categories = $results[$node->widgetConfig->chartConfig->xAxis->categories->ds];
+    //$node->categories = $categories;
+
+    if (isset($node->widgetConfig->chartConfig->xAxis->categories->ds)) {
+    if (!$isXAxisDate && isset($node->widgetConfig->chartConfig->xAxis->categories->ds)) {
+        $categories = $results[$node->widgetConfig->chartConfig->xAxis->categories->ds];
+        $node->widgetConfig->chartConfig->xAxis->categories = $categories;
+    }else {
+        unset($node->widgetConfig->chartConfig->xAxis->categories);
+    }
+    }
+
+    if (isset($node->widgetConfig->chartConfig->xAxis->tickPositions->ds)) {
+        $tickPositions = $results[$node->widgetConfig->chartConfig->xAxis->tickPositions->ds];
+        $node->widgetConfig->chartConfig->xAxis->tickPositions = $tickPositions;
+
+    }
+
+    if (isset($node->widgetConfig->chartConfig->series)) {
+    	if (is_array($node->widgetConfig->chartConfig->series)) {
+            foreach ($node->widgetConfig->chartConfig->series as $series) {
+                if (isset($series->data->ds)) {
+                   $series->data = $results[$series->data->ds] == null ? array() : $results[$series->data->ds];
+                } elseif (isset($series->ds)){
+					$node->widgetConfig->chartConfig->series= $results[$series->ds];
+                }
+
+            }
+        } else if (isset($node->widgetConfig->chartConfig->series->data->ds)) {
+        	if (!$node->widgetConfig->chartConfig->series->additionalData) {
+            	$node->widgetConfig->chartConfig->series->data = $results[$node->widgetConfig->chartConfig->series->data->ds] == null ? array() : $results[$node->widgetConfig->chartConfig->series->data->ds];
+        	}
+        }
+    }
+    if (isset($node->widgetConfig->chartConfig->yAxis->title->text->ds)) {
+        $node->widgetConfig->chartConfig->yAxis->title->text = $results[$node->widgetConfig->chartConfig->yAxis->title->text->ds];
+    }
+//    dsm($results);
+    $node->widgetConfig->chartConfig->chart->renderTo = 'node-chart-' . widget_unique_identifier($node);
+    if (!isset($node->widgetConfig->chartConfig->credits)) {
+      $node->widgetConfig->chartConfig->credits = new stdClass();
+    }
+    $node->widgetConfig->chartConfig->credits->enabled = false;
+    log_debug(json_encode($node->widgetConfig->chartConfig));
+}
+
 function widget_highcharts_add_datatable_js($node){
     $id  = widget_unique_identifier($node);
     $js = "
