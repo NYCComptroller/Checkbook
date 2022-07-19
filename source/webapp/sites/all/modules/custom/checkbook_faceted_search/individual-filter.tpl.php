@@ -636,6 +636,3 @@ EOL;
   if(isset($js)){
     echo '<script type="text/javascript">' . $js . '</script>';
   }
-  if ($node->widgetConfig->addJS1) {
-    echo '<script type="text/javascript">' . $node->widgetConfig->addJS . '</script>';
-  }
