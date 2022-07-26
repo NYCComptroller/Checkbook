@@ -86,7 +86,7 @@ reset($node->data);
     </tbody>
   </table>
   <div class="footnote">
-    <p>*Amounts as of November 2019</p>
+    <p>*Amounts as of December 2020</p>
   </div>
 <?php
 widget_data_tables_add_js($node);
