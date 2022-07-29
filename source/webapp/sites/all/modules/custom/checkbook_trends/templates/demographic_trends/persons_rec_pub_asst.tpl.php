@@ -1,24 +1,24 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
-<?php  
+<?php
 echo eval($node->widgetConfig->header);
 
 $last_year = end($node->data)['fiscal_year'];
@@ -39,7 +39,7 @@ reset($node->data);
     ?>
     <thead>
     <tr class="first-row">
-        <th colspan="3" class="centrig bb"><div>2002-<?= $last_year ?><br>(Average Annual Recipients)</div></th>
+        <th colspan="3" class="centrig bb"><div>2002-<?= $last_year ?><br>(annual averages in thousands)</div></th>
     </tr>
 	<tr class="second-row">
         <th class="number" ><div class="trendCen">Year</div></th>
@@ -50,7 +50,7 @@ reset($node->data);
 
     <tbody>
 
-    <?php 
+    <?php
     		foreach( $node->data as $row){
 			    echo "<tr><td class='number'><div  class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
     			echo "<td class='number'><div  class='tdCen'>" . number_format($row['public_assistance']) . "</div></td>";
@@ -65,6 +65,6 @@ reset($node->data);
           <p>NA: Not Available.</p>
           <p>Sources: The City of New York, Human Resources Administration and the U.S. Social Security Administration.</p>
     </div>
-<?php 
+<?php
 	widget_data_tables_add_js($node);
 ?>
