@@ -1,25 +1,25 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
-<?php  
-echo eval($node->widgetConfig->header);  
+<?php
+echo eval($node->widgetConfig->header);
 ?>
 <h1 id="page-titleSpecial" class="title">Hudson Yards Infrastructure Corporation</h1>
 <a class="trends-export" href="/export/download/trends_hudson_yards_infra_corp_csv?dataUrl=/node/<?php echo $node->nid ?>">Export</a>
@@ -56,7 +56,7 @@ echo eval($node->widgetConfig->header);
         <th class="number"><div class="trendCen" >Interest</div></th>
         <th class="number"><div class="trendCen" >Principal</div></th>
         <th class="number"><div class="trendCen" >Total</div></th>
-    </tr>    
+    </tr>
     </thead>
     <tbody>
     <?php
@@ -65,20 +65,20 @@ echo eval($node->widgetConfig->header);
             $dollar_sign = ($count == 1 ? '<div class="dollarItem" >$</div>':'');
             echo "<tr>";
             echo "<td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</td>";
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['dib_revenue_1']>0)?number_format($row['dib_revenue_1']):'-') . "</td>";
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['tep_revenue_2']>0)?number_format($row['tep_revenue_2']):'-') . "</td>";
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['isp_revenue_3']>0)?number_format($row['isp_revenue_3']):'-') . "</td>";
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['pilomrt_payment']>0)?number_format($row['pilomrt_payment']):'-') . "</td>";
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['pilot']>0)?number_format($row['pilot']):'-') . "</td>";            //PILOT DATA
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['other_4']>0)?number_format($row['other_4']):'-') . ((in_array($row['fiscal_year'], ['2019', '2020']))? "<sup class='endItem'>(9)</sup>":"<sup class='endItem' style='visibility: hidden;'>(9)</sup>") . "</td>";
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['investment_earnings']>0)?number_format($row['investment_earnings']):'-') . "</td>";
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_revenue']>0)?number_format($row['total_revenue']):'-') . "</td>";
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['interest']>0)?number_format($row['interest']):'-') . "</td>";
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['principal']>0)?number_format($row['principal']):'-') . "</td>";
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total']>0)?number_format($row['total']):'-') . "</td>";
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['operating_expenses']>0)?number_format($row['operating_expenses']):'-') . ((  $row['fiscal_year'] == '2012')? "<sup class='endItem'>(9)</sup>":"<sup class='endItem' style='visibility: hidden;'>(9)</sup>"). "</td>";
-            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_to_be_covered']>0)?number_format($row['total_to_be_covered']):'-') . "</td>";
-            echo "<td class='number ' ><div class='tdCen'>" . $row['coverage_on_total_revenue_5'] . (in_array($row['fiscal_year'], ['2009','2010', '2011','2012'])? "<sup class='endItem'>(6)</sup>":"<sup class='endItem' style='visibility: hidden;'>(6)</sup>") . "</div></td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['dib_revenue_1']<>0)?FormattingUtilities::trendsNumberDisplay($row['dib_revenue_1']):'-') . "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['tep_revenue_2']<>0)?FormattingUtilities::trendsNumberDisplay($row['tep_revenue_2']):'-') . "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['isp_revenue_3']<>0)?FormattingUtilities::trendsNumberDisplay($row['isp_revenue_3']):'-') . "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['pilomrt_payment']<>0)?FormattingUtilities::trendsNumberDisplay($row['pilomrt_payment']):'-') . "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['pilot']<>0)?FormattingUtilities::trendsNumberDisplay($row['pilot']):'-') . "</td>";            //PILOT DATA
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['other_4']<>0)?FormattingUtilities::trendsNumberDisplay($row['other_4']):'-') . ((in_array($row['fiscal_year'], ['2019', '2020']))? "<sup class='endItem'>(9)</sup>":"<sup class='endItem' style='visibility: hidden;'>(9)</sup>") . "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['investment_earnings']<>0)?FormattingUtilities::trendsNumberDisplay($row['investment_earnings']):'-') . "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_revenue']):'-') . "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['interest']<>0)?FormattingUtilities::trendsNumberDisplay($row['interest']):'-') . "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['principal']<>0)?FormattingUtilities::trendsNumberDisplay($row['principal']):'-') . "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total']<>0)?FormattingUtilities::trendsNumberDisplay($row['total']):'-') . "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['operating_expenses']<>0)?FormattingUtilities::trendsNumberDisplay($row['operating_expenses']):'-') . ((  $row['fiscal_year'] == '2012')? "<sup class='endItem'>(9)</sup>":"<sup class='endItem' style='visibility: hidden;'>(9)</sup>"). "</td>";
+            echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_to_be_covered']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_to_be_covered']):'-') . "</td>";
+            echo "<td class='number ' ><div class='tdCen'>" . (($row['coverage_on_total_revenue_5'] > 0) ? $row['coverage_on_total_revenue_5'] : "(" . $row['coverage_on_total_revenue_5'] .")") . (in_array($row['fiscal_year'], ['2009','2010', '2011','2012'])? "<sup class='endItem'>(6)</sup>":"<sup class='endItem' style='visibility: hidden;'>(6)</sup>") . "</div></td>";
             echo "<td>&nbsp;</td>";
             echo "</tr>";
             $count++;

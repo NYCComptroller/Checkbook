@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -123,9 +123,9 @@ widget_data_tables_add_js($node);
     </tr>
   </table>
 
-  <p>Assesment Values are based on a percentage of the property's Market Value.</p>
-  <p>The Department of Finance assigns market values to all properties in New York City.</p>
-  <p>Market Value is the worth of a property's tax class and the New York State Law requirements for determining market value.</p>
+  <p>Assesment Values are based on a percentage of the property's Fair Value.</p>
+  <p>The Department of Finance assigns fair values to all properties in New York City.</p>
+  <p>Fair Value is the worth of a property's tax class and the New York State Law requirements for determining fair value.</p>
   <p><br></p>
-  <p>Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year 2020.</p>
+  <p>Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year 2021.</p>
 </div>

@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -41,18 +41,18 @@
         $dollar_sign = ($count == 1)? '$':'';
         $count++;
         $rowString = $row['fiscal_year'] ;
-        $rowString .=  ','.'"'. (($row['pit_revenue']>0)?number_format($row['pit_revenue']):'-').'"';
-        $rowString .= ','.'"'. (($row['sales_tax_revenue']>0)?number_format($row['sales_tax_revenue']):'-').'"';
-        $rowString .= ','.'"'. (($row['total_receipt']>0)?number_format($row['total_receipt']):'-').'"';
-        $rowString .= ','.'"'. (($row['other']>0)?number_format($row['other']):'-').'"';
-        $rowString .= ','.'"'. (($row['investment_earnings']>0)?number_format($row['investment_earnings']):'-').'"';
-        $rowString .= ','.'"' . (($row['total_revenue']>0)?number_format($row['total_revenue']):'-').'"';
-        $rowString .= ','.'"' . (($row['interest']>0)?number_format($row['interest']):'-').'"';
-        $rowString .= ','.'"' . (($row['pricipal']>0)?number_format($row['pricipal']):'-').'"';
-        $rowString .= ','.'"' . (($row['total']>0)?number_format($row['total']):'-').'"';
-        $rowString .= ','.'"' . (($row['operating_expenses']>0)?number_format($row['operating_expenses']):'-').'"';
-        $rowString .= ','.'"' . (($row['total_to_be_covered']>0)?number_format($row['total_to_be_covered']):'-').'"';
-    			        
+        $rowString .=  ','.'"'. (($row['pit_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['pit_revenue']):'-').'"';
+        $rowString .= ','.'"'. (($row['sales_tax_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['sales_tax_revenue']):'-').'"';
+        $rowString .= ','.'"'. (($row['total_receipt']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_receipt']):'-').'"';
+        $rowString .= ','.'"'. (($row['other']<>0)?FormattingUtilities::trendsNumberDisplay($row['other']):'-').'"';
+        $rowString .= ','.'"'. (($row['investment_earnings']<>0)?FormattingUtilities::trendsNumberDisplay($row['investment_earnings']):'-').'"';
+        $rowString .= ','.'"' . (($row['total_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_revenue']):'-').'"';
+        $rowString .= ','.'"' . (($row['interest']<>0)?FormattingUtilities::trendsNumberDisplay($row['interest']):'-').'"';
+        $rowString .= ','.'"' . (($row['pricipal']<>0)?FormattingUtilities::trendsNumberDisplay($row['pricipal']):'-').'"';
+        $rowString .= ','.'"' . (($row['total']<>0)?FormattingUtilities::trendsNumberDisplay($row['total']):'-').'"';
+        $rowString .= ','.'"' . (($row['operating_expenses']<>0)?FormattingUtilities::trendsNumberDisplay($row['operating_expenses']):'-').'"';
+        $rowString .= ','.'"' . (($row['total_to_be_covered']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_to_be_covered']):'-').'"';
+
         echo $rowString . "\n";
    	}
 
