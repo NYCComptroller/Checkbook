@@ -101,7 +101,7 @@ widget_data_tables_add_js($node);
     <tr>
       <td class="class-name">Class One -</td>
       <td class="description">One, two, and three family homes; single family homes on cooperatively owned land.
-        Condominiums with no more than three dwelling units, provided such property was previously classified as
+        Condominiums with no more than three dwelling units, provides such property was previously classified as
         Class One or no more than three stories in height and built as condominiums.
         Mixed-use property with three units or less, provided 50 percent or more of the space is used for residential
         purposes. Vacant land, primarily residentially zoned, except in Manhattan below 110th Street.
