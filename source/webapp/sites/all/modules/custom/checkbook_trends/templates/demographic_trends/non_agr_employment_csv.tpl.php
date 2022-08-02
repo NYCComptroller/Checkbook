@@ -80,8 +80,8 @@
    	}
 ?>
 
-"(a) Includes rounding  adjustments"
-"(b) Six month average"
+"(a) Includes rounding adjustment"
+"(b) Six months average"
 ""
 ""
 "NOTES: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information."

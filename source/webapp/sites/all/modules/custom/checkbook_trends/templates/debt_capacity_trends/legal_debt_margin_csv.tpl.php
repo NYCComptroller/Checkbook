@@ -72,7 +72,7 @@
 "based on the new assessed value in accordance with the new year’s enacted tax fixing resolution."
 "For fiscal year 2022, beginning July 1, 2021, the Legal Debt Margin and the Net Debt Applicable to the Debt Limit as a Percentage of the Debt Limit"
 "are $47,697,902 and 62.55%, respectively. "
-"(2) A five-year average of full valuations of taxable real estate from the Resolutions of the Council Fixing the Tax Rates for the fiscal year beginning on July 1, 2020 and ending on June 30, 2021."
+"(2) A five-year average of full valuations of taxable real estate from the Resolutions of the Council Fixing the Property Tax Rates for the fiscal year beginning on July 1, 2020 and ending on June 30, 2021."
 "(3) The Constitution of the State of New York limits the general debt-incurring power of The City of New York to ten percent of the five-year average of full valuations of"
 "taxable real estate."
 "(4) Includes adjustments for Business Improvement Districts, Original Issue Discount, and cash on hand for defeasance."

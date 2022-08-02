@@ -137,8 +137,8 @@ rsort($years);
     </tbody>
 </table>
     <div class="footnote">
-        <p>(a) Includes rounding  adjustments</p>
-        <p>(b) Six month average</p><br>
+        <p>(a) Includes rounding adjustment</p>
+        <p>(b) Six months average</p><br>
        <p>NOTES: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information. Other than the City of New York, no single
        employer employs more than 2 percent of total nonagricultural employees.</p>
        <p>Data are not seasonally adjusted.</p>
