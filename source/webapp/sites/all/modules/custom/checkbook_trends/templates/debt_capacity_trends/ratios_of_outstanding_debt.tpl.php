@@ -1,25 +1,25 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
-<?php  
-echo eval($node->widgetConfig->header);  
+<?php
+echo eval($node->widgetConfig->header);
 if(preg_match('/featuredtrends/',$_GET['q'])){
   $links = array(l(t('Home'), ''), l(t('Trends'), 'featured-trends'),
       '<a href="/featured-trends?slide=4">Ratios of Outstanding Debt by Type</a>',
@@ -94,8 +94,9 @@ if(preg_match('/featuredtrends/',$_GET['q'])){
     </tbody>
 </table>
 <div class="footnote">
-<p>Sources: Comprehensive Annual Financial Reports of the Comptroller</p>
-<p>Note: Gross Debt, Percentage of Personal Income and Per Capital Gross Debt columns had to be removed. The figures changed year by year and they would not match the figures shown when that years CAFR was released.</p></div>
-<?php 
+<p>Sources:  Annual Comprehensive Financial Reports of the Comptroller</p>
+<p>(1) Includes Direct Borrowings and Direct Placements. See Notes to Financial Statements (Note D.5), “Changes in Long Term Liabilities”</p>
+<p>Note: Gross Debt, Percentage of Personal Income and Per Capital Gross Debt columns had to be removed. The figures changed year by year and they would not match the figures shown when that years ACFR was released.</p></div>
+<?php
 	widget_data_tables_add_js($node);
 ?>
