@@ -53,7 +53,7 @@ function date_all_day_date_formatter_dates_alter(&$dates, $context) {
   $entity = $context['entity'];
   $date1 = $dates['value']['local']['object'];
   $date2 = $dates['value2']['local']['object'];
-  $is_all_day = date_all_day_field($field, $instance, $date1, $date2);
+  $is_all_day = date_all_day_field($field, $instance, $dates);
 
   $all_day1 = '';
   $all_day2 = '';
@@ -120,21 +120,12 @@ function theme_date_all_day($vars) {
   }
 
   $suffix = '';
-  if (!date_has_time($field['settings']['granularity'])) {
+  if (date_has_time($field['settings']['granularity'])) {
     $format = date_limit_format($format, array('year', 'month', 'day'));
   }
-  else {
-    $format_granularity = date_format_order($format);
-    $format_has_time = FALSE;
-    if (in_array('hour', $format_granularity)) {
-      $format_has_time = TRUE;
-    }
-    $all_day = date_all_day_field($field, $instance, $date1, $date2);
-    if ($all_day && $format_has_time) {
-      $format = date_limit_format($format, array('year', 'month', 'day'));
-      $suffix = ' ' . theme('date_all_day_label');
-    }
-  }
+
+  // Theme the all-day value.
+  $suffix = ' ' . theme('date_all_day_label');
 
   return trim(date_format_date($$which, 'custom', $format) . $suffix);
 }
@@ -147,58 +138,31 @@ function theme_date_all_day_label() {
 }
 
 /**
- * Determine if a Start/End date combination qualify as 'All day'.
+ * Determine if a field qualifies as 'All day'.
  *
  * @param array $field
  *   The field definition for this date field.
  * @param array $instance
  *   The field instance for this date field.
- * @param object $date1
- *   A date/time object for the 'Start' date.
- * @param object $date2
- *   A date/time object for the 'End' date.
+ * @param array $value
+ *   A date field value.
  *
  * @return bool
  *   TRUE or FALSE.
  */
-function date_all_day_field(array $field, array $instance, $date1, $date2 = NULL) {
-  if (empty($date1) || !is_object($date1)) {
+function date_all_day_field(array $field, array $instance, array $value) {
+  if (empty($value)) {
     return FALSE;
   }
-  elseif (!date_has_time($field['settings']['granularity'])) {
-    return FALSE;
-  }
+
   // The master setting for the 'all day' functionality.
   elseif (empty($instance['widget']['settings']['display_all_day'])) {
     return FALSE;
   }
 
-  if (empty($date2)) {
-    $date2 = $date1;
-  }
-
-  // Several scenarios result in the two date values being the same, e.g.
-  // date_formatter_process().
-  if ($date1 == $date2) {
-    // Clone the date object so that changes made to the object won't affect
-    // both variables.
-    $date1 = clone $date2;
-
-    // Set the time to midnight so that the two variables can be properly
-    // compared later in date_is_all_day().
-    $date1->setTime(0, 0, 0);
-  }
-
-  // Use central logic for determining the granularity.
-  $granularity = date_granularity_precision($field['settings']['granularity']);
-
-  // The increment is 1 by default, but it can be overridden.
-  $increment = 1;
-  if (isset($instance['widget']['settings']['increment'])) {
-    $increment = $instance['widget']['settings']['increment'];
-  }
-
-  return date_is_all_day(date_format($date1, DATE_FORMAT_DATETIME), date_format($date2, DATE_FORMAT_DATETIME), $granularity, $increment);
+  // As of 7.x-3.x the logic for whether a field counts as "all day" is based
+  // purely on this one value.
+  return !empty($value['value']['local']['all_day']);
 }
 
 /**
@@ -211,21 +175,16 @@ function date_all_day_date_combo_process_alter(&$element, &$form_state, $context
 
   // Add the all_day checkbox to the combo element.
   if (!empty($instance['widget']['settings']['display_all_day'])) {
-
     $parents = $element['#parents'];
     $first_parent = array_shift($parents);
-    $all_day_id = $first_parent . '[' . implode('][', $parents) . '][all_day]';;
+    $all_day_id = $first_parent . '[' . implode('][', $parents) . '][all_day]';
     foreach (array('value', 'value2') as $key) {
       if (array_key_exists($key, $element)) {
         $element[$key]['#date_all_day_id'] = $all_day_id;
       }
     }
 
-    $from = $element['#default_value']['value'];
-    $to = !empty($element['#default_value']['value2']) ? $element['#default_value']['value2'] : $element['#default_value']['value'];
-    $granularity = date_granularity_precision($context['field']['settings']['granularity']);
-    $increment = isset($context['instance']['widget']['settings']['increment']) ? $context['instance']['widget']['settings']['increment'] : 1;
-    $date_is_all_day = date_is_all_day($from, $to, $granularity, $increment);
+    $date_is_all_day = !empty($element['#default_value']['all_day']);
     $all_day = !empty($form_state['values']['all_day']) || $date_is_all_day;
     $element['all_day'] = array(
       '#title' => t('All Day'),
@@ -235,10 +194,14 @@ function date_all_day_date_combo_process_alter(&$element, &$form_state, $context
       '#prefix' => '<div class="date-float">',
       '#suffix' => '</div>',
     );
+    if (($instance['widget']['type'] == 'date_text')) {
+      $element['all_day']['#description'] = t('When this option is checked, the time portion of the date/time value will be ignored.');
+    }
   }
 
   // Set all_day to 0 for all other date fields.
   else {
+    // @todo This seems like unused code? There is no $form here.
     $form['all_day']['#type'] = 'hidden';
     $form['all_day']['#value'] = 0;
   }
@@ -300,7 +263,7 @@ function date_all_day_date_text_pre_validate_alter(&$element, &$form_state, &$in
   // the date_select validation gets fired. Let Date module massage the format
   // for all day values so they will pass validation. The All day flag, if
   // used, actually exists on the parent element.
-  date_all_day_value($element, $form_state);
+  return date_all_day_value($element, $form_state);
 }
 
 /**
@@ -311,7 +274,7 @@ function date_all_day_date_select_pre_validate_alter(&$element, &$form_state, &$
   // the date_select validation gets fired. Let Date module massage the format
   // for all day values so they will pass validation. The All day flag, if
   // used, actually exists on the parent element.
-  date_all_day_value($element, $form_state);
+  return date_all_day_value($element, $form_state);
 }
 
 /**
@@ -322,22 +285,31 @@ function date_all_day_date_popup_pre_validate_alter(&$element, &$form_state, &$i
   // the date_popup validation gets fired. Let Date module massage the format
   // for all day values so they will pass validation. The All day flag, if
   // used, actually exists on the parent element.
-  date_all_day_value($element, $form_state);
+  return date_all_day_value($element, $form_state);
 }
 
 /**
- * A helper function date_all_day_value().
+ * Ensure date fields have the all-day flag set.
+ *
+ * To check if the all day flag is set on the parent of an element, and adjust
+ * the date_format accordingly so the missing time will not cause validation
+ * errors.
+ *
+ * @return bool
+ *   Whether this field is configured to allow all-day values.
+ *
+ * @todo Is the return value used anywhere?
+ *
+ * @see date_all_day_date_popup_pre_validate_alter()
+ * @see date_all_day_date_select_pre_validate_alter()
+ * @see date_all_day_date_text_pre_validate_alter()
  */
 function date_all_day_value(&$element, $form_state) {
-  // To check if the all day flag is set on the parent of an element, and
-  // adjust the date_format accordingly so the missing time will not cause
-  // validation errors.
   if (!empty($element['#date_all_day_id'])) {
     $parents = $element['#parents'];
     array_pop($parents);
     $parent_element = drupal_array_get_nested_value($form_state['values'], $parents);
     if (!empty($parent_element) && !empty($parent_element['all_day'])) {
-      $element['#date_format'] = date_part_format('date', $element['#date_format']);
       return $parent_element['all_day'];
     }
   }
@@ -348,19 +320,14 @@ function date_all_day_value(&$element, $form_state) {
  * Implements hook_date_combo_pre_validate_alter().
  */
 function date_all_day_date_combo_pre_validate_alter(&$element, &$form_state, $context) {
-  // This hook lets us alter the element or the form_state before the rest of
+  // This hook lets the element or the form_state be altered before the rest of
   // the date_combo validation gets fired.
   if (!empty($context['item']['all_day'])) {
     $field = $context['field'];
 
-    // If we have an all day flag on this date and the time is empty,
-    // change the format to match the input value
-    // so we don't get validation errors.
+    // If there is an all day flag on this date and the time is empty, change
+    // the format to match the input value so it doesn't get validation errors.
     $element['#date_is_all_day'] = TRUE;
-    $element['value']['#date_format'] = date_part_format('date', $element['value']['#date_format']);
-    if (!empty($field['settings']['todate'])) {
-      $element['value2']['#date_format'] = date_part_format('date', $element['value2']['#date_format']);
-    }
   }
 }
 

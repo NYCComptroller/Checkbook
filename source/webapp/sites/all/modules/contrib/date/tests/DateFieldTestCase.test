@@ -11,13 +11,27 @@
 class DateFieldTestCase extends DateFieldTestBase {
 
   /**
+   * Date Field.
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Date Field',
+      'description' => 'Test date field settings and Start/End date interaction.',
+      'group' => 'date',
+    );
+  }
+
+  /**
    * Test relative default values.
    */
   public function testRelativeDefault() {
+    $this->drupalGet('admin/structure/types/add');
+    $this->assertResponse(200);
     $edit = array();
     $edit['name'] = 'Date Relative Default Test';
     $edit['type'] = 'date_relative_default_test';
-    $this->drupalPost('admin/structure/types/add', $edit, t('Save content type'));
+    $this->drupalPost(NULL, $edit, t('Save content type'));
+    $this->assertResponse(200);
     $this->assertText('The content type Date Relative Default Test has been added.', 'Content type added.');
 
     $options = array(
@@ -27,21 +41,12 @@ class DateFieldTestCase extends DateFieldTestBase {
     );
     $this->createDateField($options);
 
+    $this->drupalGet('node/add/date-relative-default-test');
+    $this->assertResponse(200);
     $edit = array();
     $edit['title'] = self::randomName(8);
-    $this->drupalPost('node/add/date-relative-default-test', $edit, t('Save'));
-
-  }
-
-  /**
-   * Date Field.
-   */
-  public static function getInfo() {
-    return array(
-      'name' => 'Date Field',
-      'description' => 'Test date field settings and Start/End date interaction.',
-      'group' => 'Date',
-    );
+    $this->drupalPost(NULL, $edit, t('Save'));
+    $this->assertResponse(200);
   }
 
   /**

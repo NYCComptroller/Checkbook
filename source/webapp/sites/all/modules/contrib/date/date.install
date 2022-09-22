@@ -94,6 +94,17 @@ function date_field_schema($field) {
       'views' => FALSE,
     );
   }
+
+  // A means to indicate this record represents the full day rather than a
+  // specific time or time period.
+  $db_columns['all_day'] = array(
+    'type' => 'int',
+    'size' => 'tiny',
+    'not null' => FALSE,
+    'sortable' => FALSE,
+    'views' => FALSE,
+  );
+
   return array('columns' => $db_columns, 'indexes' => $indexes);
 }
 
@@ -293,8 +304,10 @@ function date_update_7006() {
  */
 function date_update_7007() {
   $fields = field_read_fields(array('type' => 'datestamp'));
+  $value_names = drupal_map_assoc(array('value', 'value2'));
   foreach ($fields as $field_name => $field) {
-    foreach (array_intersect_key($field['columns'], drupal_map_assoc(array('value', 'value2'))) as $column_name => $schema) {
+    $columns = array_intersect_key($field['columns'], $value_names);
+    foreach ($columns as $column_name => $schema) {
       $schema['size'] = 'big';
       $column = $field_name . '_' . $column_name;
       if (db_table_exists('field_data_' . $field_name)) {
@@ -312,4 +325,58 @@ function date_update_7007() {
  */
 function date_update_7200() {
   db_delete('system')->condition('name', 'date_migrate_example')->execute();
+}
+
+/**
+ * Add the 'all_day' column to date fields.
+ */
+function date_update_7201() {
+  // Get all fields provided by the Data module.
+  $query = db_select('field_config', 'f')
+    ->fields('f', array('id', 'field_name', 'data'))
+    ->condition('f.type', array('datetime', 'date', 'datestamp'));
+
+  // Complete the query.
+  $fields = $query->execute()->fetchAllAssoc('id');
+
+  foreach ($fields as $id => $info) {
+    $field_info = field_info_field($info->field_name);
+
+    // Add indexes only for SQL storage fields.
+    if ($field_info['storage']['type'] != 'field_sql_storage') {
+      continue;
+    }
+
+    // The database tables that have these fields.
+    $tables = array(
+      key($field_info['storage']['details']['sql']['FIELD_LOAD_CURRENT']),
+      key($field_info['storage']['details']['sql']['FIELD_LOAD_REVISION']),
+    );
+
+    // Turns a field named "field_event_date" into a database column named
+    // "field_event_date_all_day".
+    $field_name = $info->field_name . '_all_day';
+
+    // The field specification taken from hook_field_schema().
+    $spec = array(
+      'type' => 'int',
+      'size' => 'tiny',
+      'not null' => FALSE,
+      'sortable' => FALSE,
+      'views' => FALSE,
+    );
+
+    // Add a column to the database in this table for the new "is_all_day"
+    // element. The first item is for the field_data table for this field, the
+    // second item is for the field_revision table.
+    foreach ($tables as $table_name) {
+      if (!db_field_exists($table_name, $field_name)) {
+        db_add_field($table_name, $field_name, $spec);
+        drupal_set_message(t("Added the new 'all_day' column to the @field_name field.", array('@field_name' => $info->field_name)));
+      }
+      else {
+        drupal_set_message(t("The 'all_day' column already existed on the @field_name field.", array('@field_name' => $info->field_name)));
+      }
+    }
+  }
 }

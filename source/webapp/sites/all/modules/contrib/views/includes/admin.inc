@@ -200,7 +200,7 @@ function views_ui_preview($view, $display_id, $args = array()) {
           // Only the SQL default class has a method getArguments.
           $quoted = array();
 
-          if (get_class($view->query) == 'views_plugin_query_default') {
+          if ($view->query instanceof views_plugin_query_default) {
             $quoted = $query->getArguments();
             $connection = Database::getConnection();
             foreach ($quoted as $key => $val) {
@@ -2926,6 +2926,9 @@ function views_ui_ajax_forms($key = NULL) {
       'args' => array(),
     ),
   );
+
+  // Allow other modules to add their own forms or modify existing ones.
+  drupal_alter('views_ui_ajax_forms', $forms);
 
   if ($key) {
     return !empty($forms[$key]) ? $forms[$key] : NULL;

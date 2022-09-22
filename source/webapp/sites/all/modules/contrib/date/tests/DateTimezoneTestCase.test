@@ -17,7 +17,7 @@ class DateTimezoneTestCase extends DateFieldTestBase {
     return array(
       'name' => 'Timezone & Granularity',
       'description' => 'Test combinations of date field timezone handling and granularity.',
-      'group' => 'Date',
+      'group' => 'date',
     );
   }
 
@@ -87,6 +87,462 @@ class DateTimezoneTestCase extends DateFieldTestBase {
     $this->drupalPost('admin/structure/types/manage/story/fields/field_' . strtolower($label), $edit, t('Save settings'));
     $this->assertText("Dates without hours granularity must not use any timezone handling.", "Dates without hours granularity required to use timezone handling of 'none.'");
     $this->deleteDateField($label);
+  }
+
+  /**
+   * Verify field timezones work properly when conversion is disabled.
+   */
+  public function testFieldConversionDisabled() {
+    // @todo Delete all nodes if any exist. Is this necessary?
+
+    // Add a date field to the Story content type.
+    $options = array(
+      // Just use the simple text field.
+      'widget_type' => 'date_text',
+
+      // Disable timezone handling.
+      'tz_handling' => 'none',
+    );
+    $this->createDateField($options);
+
+    // Enable system timezone conversion.
+    $this->drupalGet('admin/config/regional/settings');
+    $this->assertResponse(200);
+    $edit = array(
+      'configurable_timezones' => TRUE,
+    );
+    $this->drupalPost(NULL, $edit, 'Save configuration');
+    $this->assertText('The configuration options have been saved.');
+
+    // Set the user's timezone to something other than the site's.
+    $this->drupalGet('user/' . $this->loggedInUser->uid . '/edit');
+    $this->assertResponse(200);
+    $edit = array(
+      'timezone' => 'America/New_York',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+    $this->assertText('The changes have been saved.');
+
+    // Create a node with a date value.
+    $this->drupalGet('node/add/story');
+    $this->assertResponse(200);
+    $edit = array(
+      'title' => 'Testing how dates work with timezone conversion disabled',
+      'field_test[und][0][value][date]' => '12/31/2021 - 00:00',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+
+    // Confirm the node was saved correctly.
+    $this->assertResponse(200);
+    $this->assertNoText('The value input for field Test Start date is invalid');
+    $this->assertText('Story Testing how dates work with timezone conversion disabled has been created');
+
+    // Load the node data.
+    $node = node_load(1);
+    $this->verbose($node);
+
+    // Confirm the data is stored correctly.
+    $this->assertEqual($node->field_test[LANGUAGE_NONE][0]['value'], '2021-12-31 00:00:00');
+
+    // Load the node page.
+    $this->drupalGet('node/1');
+    $this->assertResponse(200);
+    $this->assertText('Testing how dates work with timezone conversion disabled');
+
+    // Confirm the date value displays correctly.
+    $this->assertText('Friday, December 31, 2021 - 00:00');
+
+    // Change the user's timezone to something else.
+    $this->drupalGet('user/' . $this->loggedInUser->uid . '/edit');
+    $this->assertResponse(200);
+    $edit = array(
+      'timezone' => 'Europe/Berlin',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+    $this->assertText('The changes have been saved.');
+
+    // Load the node page again.
+    $this->drupalGet('node/1');
+    $this->assertResponse(200);
+    $this->assertText('Testing how dates work with timezone conversion disabled');
+
+    // Confirm the date value still displays correctly.
+    $this->assertText('Friday, December 31, 2021 - 00:00');
+  }
+
+  /**
+   * Verify field timezones work properly when site-conversion is enabled.
+   */
+  public function testFieldConversionSite() {
+    // @todo Create a date format "l, jS F, Y, g:i:s a, e I" that would look
+    // like: Thursday, 21st April, 2022, 4:52:15 pm, UTC 0.
+    // Add a date field to the Story content type.
+    $options = array(
+      // Just use the simple text field.
+      'widget_type' => 'date_text',
+
+      // Disable timezone handling.
+      'tz_handling' => 'site',
+    );
+    $this->createDateField($options);
+
+    // Enable system timezone conversion.
+    $this->drupalGet('admin/config/regional/settings');
+    $this->assertResponse(200);
+    $edit = array(
+      'configurable_timezones' => TRUE,
+    );
+    $this->drupalPost(NULL, $edit, 'Save configuration');
+    $this->assertText('The configuration options have been saved.');
+
+    // Set the user's timezone to something other than the site's.
+    $this->drupalGet('user/' . $this->loggedInUser->uid . '/edit');
+    $this->assertResponse(200);
+    $edit = array(
+      'timezone' => 'America/New_York',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+    $this->assertText('The changes have been saved.');
+
+    // Create a node with a date value.
+    $this->drupalGet('node/add/story');
+    $this->assertResponse(200);
+    $edit = array(
+      'title' => 'Testing how dates work with timezone conversion enabled',
+      'field_test[und][0][value][date]' => '12/31/2021 - 10:00',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+
+    // Confirm the node was saved correctly.
+    $this->assertResponse(200);
+    $this->assertNoText('The value input for field Test Start date is invalid');
+    $this->assertText('Story Testing how dates work with timezone conversion enabled has been created');
+
+    // Load the node data.
+    $node = node_load(1);
+    $this->verbose($node);
+
+    // Confirm the data is stored correctly - the site has its timezone set to
+    // Australia/Sydney so an EST value will be stored with a very different
+    // value.
+    $this->assertEqual($node->field_test[LANGUAGE_NONE][0]['value'], '2021-12-30 23:00:00');
+    $this->assertEqual($node->field_test[LANGUAGE_NONE][0]['timezone_db'], 'UTC');
+
+    // Load the node page.
+    $this->drupalGet('node/1');
+    $this->assertResponse(200);
+    $this->assertText('Testing how dates work with timezone conversion enabled');
+
+    // Confirm the date value displays correctly.
+    $this->assertText('Friday, December 31, 2021 - 10:00');
+
+    // Change the user's timezone to something else.
+    $this->drupalGet('user/' . $this->loggedInUser->uid . '/edit');
+    $this->assertResponse(200);
+    $edit = array(
+      'timezone' => 'Europe/Berlin',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+    $this->assertText('The changes have been saved.');
+
+    // Load the node page again.
+    $this->drupalGet('node/1');
+    $this->assertResponse(200);
+    $this->assertText('Testing how dates work with timezone conversion enabled');
+
+    // @todo This takes daylights savings time into account so it might stop
+    // working when DST is no longer active.
+    // @todo Is this correct?
+    $this->assertText('Friday, December 31, 2021 - 10:00');
+
+    // Document how the date looks when logged out.
+    $this->drupalLogout();
+    $this->drupalGet('node/1');
+    $this->assertResponse(200);
+    $this->assertText('Testing how dates work with timezone conversion enabled');
+    // @todo Is this correct?
+    $this->assertText('Friday, December 31, 2021 - 10:00');
+  }
+
+  /**
+   * Verify field timezones work properly when date-conversion is enabled.
+   */
+  public function testFieldConversionDate() {
+    // @todo Create a date format "l, jS F, Y, g:i:s a, e I" that would look
+    // like: Thursday, 21st April, 2022, 4:52:15 pm, UTC 0.
+    // Add a date field to the Story content type.
+    $options = array(
+      // Just use the simple text field.
+      'widget_type' => 'date_text',
+
+      // Disable timezone handling.
+      'tz_handling' => 'date',
+    );
+    $this->createDateField($options);
+
+    // Enable system timezone conversion.
+    $this->drupalGet('admin/config/regional/settings');
+    $this->assertResponse(200);
+    $edit = array(
+      'configurable_timezones' => TRUE,
+    );
+    $this->drupalPost(NULL, $edit, 'Save configuration');
+    $this->assertText('The configuration options have been saved.');
+
+    // Set the user's timezone to something other than the site's.
+    $this->drupalGet('user/' . $this->loggedInUser->uid . '/edit');
+    $this->assertResponse(200);
+    $edit = array(
+      'timezone' => 'America/New_York',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+    $this->assertText('The changes have been saved.');
+
+    // Create a node with a date value.
+    $this->drupalGet('node/add/story');
+    $this->assertResponse(200);
+    $edit = array(
+      'title' => 'Testing how dates work with timezone conversion enabled',
+      'field_test[und][0][value][date]' => '12/31/2021 - 10:00',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+
+    // Confirm the node was saved correctly.
+    $this->assertResponse(200);
+    $this->assertNoText('The value input for field Test Start date is invalid');
+    $this->assertText('Story Testing how dates work with timezone conversion enabled has been created');
+
+    // Load the node data.
+    $node = node_load(1);
+    $this->verbose($node);
+
+    // Confirm the data is stored correctly.
+    $this->assertEqual($node->field_test[LANGUAGE_NONE][0]['value'], '2021-12-31 10:00:00');
+    $this->assertEqual($node->field_test[LANGUAGE_NONE][0]['timezone_db'], 'America/New_York');
+
+    // Load the node page.
+    $this->drupalGet('node/1');
+    $this->assertResponse(200);
+    $this->assertText('Testing how dates work with timezone conversion enabled');
+
+    // Confirm the date value displays correctly.
+    $this->assertText('Friday, December 31, 2021 - 10:00');
+
+    // Change the user's timezone to something else.
+    $this->drupalGet('user/' . $this->loggedInUser->uid . '/edit');
+    $this->assertResponse(200);
+    $edit = array(
+      'timezone' => 'Europe/Berlin',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+    $this->assertText('The changes have been saved.');
+
+    // Load the node page again.
+    $this->drupalGet('node/1');
+    $this->assertResponse(200);
+    $this->assertText('Testing how dates work with timezone conversion enabled');
+
+    // @todo This takes daylights savings time into account so it might stop
+    // working when DST is no longer active.
+    // @todo Is this correct?
+    $this->assertText('Friday, December 31, 2021 - 04:00');
+  }
+
+  /**
+   * Verify field timezones work properly when user-conversion is enabled.
+   */
+  public function testFieldConversionUser() {
+    // @todo Create a date format "l, jS F, Y, g:i:s a, e I" that would look
+    // like: Thursday, 21st April, 2022, 4:52:15 pm, UTC 0.
+    // Add a date field to the Story content type.
+    $options = array(
+      // Just use the simple text field.
+      'widget_type' => 'date_text',
+
+      // Disable timezone handling.
+      'tz_handling' => 'user',
+    );
+    $this->createDateField($options);
+
+    // Enable system timezone conversion.
+    $this->drupalGet('admin/config/regional/settings');
+    $this->assertResponse(200);
+    $edit = array(
+      'configurable_timezones' => TRUE,
+    );
+    $this->drupalPost(NULL, $edit, 'Save configuration');
+    $this->assertText('The configuration options have been saved.');
+
+    // Set the user's timezone to something other than the site's.
+    $this->drupalGet('user/' . $this->loggedInUser->uid . '/edit');
+    $this->assertResponse(200);
+    $edit = array(
+      'timezone' => 'America/New_York',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+    $this->assertText('The changes have been saved.');
+
+    // Create a node with a date value.
+    $this->drupalGet('node/add/story');
+    $this->assertResponse(200);
+    $edit = array(
+      'title' => 'Testing how dates work with timezone conversion enabled',
+      'field_test[und][0][value][date]' => '12/31/2021 - 10:00',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+
+    // Confirm the node was saved correctly.
+    $this->assertResponse(200);
+    $this->assertNoText('The value input for field Test Start date is invalid');
+    $this->assertText('Story Testing how dates work with timezone conversion enabled has been created');
+
+    // Load the node data.
+    $node = node_load(1);
+    $this->verbose($node);
+
+    // Confirm the data is stored correctly - it will be stored with respect to
+    // UTC, so 10am EST gets changed to 3pm UTC.
+    $this->assertEqual($node->field_test[LANGUAGE_NONE][0]['value'], '2021-12-31 15:00:00');
+    $this->assertEqual($node->field_test[LANGUAGE_NONE][0]['timezone_db'], 'UTC');
+
+    // Load the node page.
+    $this->drupalGet('node/1');
+    $this->assertResponse(200);
+    $this->assertText('Testing how dates work with timezone conversion enabled');
+
+    // Confirm the date value displays correctly.
+    $this->assertText('Friday, December 31, 2021 - 10:00');
+
+    // Change the user's timezone to something else.
+    $this->drupalGet('user/' . $this->loggedInUser->uid . '/edit');
+    $this->assertResponse(200);
+    $edit = array(
+      'timezone' => 'Europe/Berlin',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+    $this->assertText('The changes have been saved.');
+
+    // Load the node page again.
+    $this->drupalGet('node/1');
+    $this->assertResponse(200);
+    $this->assertText('Testing how dates work with timezone conversion enabled');
+
+    // Confirm the date value shows as 4pm Berlin time.
+    // @todo This takes daylights savings time into account so it might stop
+    // working when DST is no longer active.
+    $this->assertText('Friday, December 31, 2021 - 16:00');
+
+    // Document how the date looks when logged out.
+    $this->drupalLogout();
+    $this->drupalGet('node/1');
+    $this->assertResponse(200);
+    $this->assertText('Testing how dates work with timezone conversion enabled');
+    // @todo Is this correct?
+    $this->assertText('Saturday, January 1, 2022 - 02:00');
+  }
+
+  /**
+   * Verify field timezones work properly when UTC-conversion is enabled.
+   */
+  public function testFieldConversionUtc() {
+    // @todo Create a date format "l, jS F, Y, g:i:s a, e I" that would look
+    // like: Thursday, 21st April, 2022, 4:52:15 pm, UTC 0.
+    // Add a date field to the Story content type.
+    $options = array(
+      // Just use the simple text field.
+      'widget_type' => 'date_text',
+
+      // Disable timezone handling.
+      'tz_handling' => 'utc',
+    );
+    $this->createDateField($options);
+
+    // Enable system timezone conversion.
+    $this->drupalGet('admin/config/regional/settings');
+    $this->assertResponse(200);
+    $edit = array(
+      'configurable_timezones' => TRUE,
+    );
+    $this->drupalPost(NULL, $edit, 'Save configuration');
+    $this->assertText('The configuration options have been saved.');
+
+    // Set the user's timezone to something other than the site's.
+    $this->drupalGet('user/' . $this->loggedInUser->uid . '/edit');
+    $this->assertResponse(200);
+    $edit = array(
+      'timezone' => 'America/New_York',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+    $this->assertText('The changes have been saved.');
+
+    // Create a node with a date value.
+    $this->drupalGet('node/add/story');
+    $this->assertResponse(200);
+    $edit = array(
+      'title' => 'Testing how dates work with timezone conversion enabled',
+      'field_test[und][0][value][date]' => '12/31/2021 - 10:00',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+
+    // Confirm the node was saved correctly.
+    $this->assertResponse(200);
+    $this->assertNoText('The value input for field Test Start date is invalid');
+    $this->assertText('Story Testing how dates work with timezone conversion enabled has been created');
+
+    // Load the node data.
+    $node = node_load(1);
+    $this->verbose($node);
+
+    // Confirm the data is stored correctly - the value is stored as-is.
+    // @todo Is this correct?
+    $this->assertEqual($node->field_test[LANGUAGE_NONE][0]['value'], '2021-12-31 10:00:00');
+    $this->assertEqual($node->field_test[LANGUAGE_NONE][0]['timezone_db'], 'UTC');
+
+    // Load the node page.
+    $this->drupalGet('node/1');
+    $this->assertResponse(200);
+    $this->assertText('Testing how dates work with timezone conversion enabled');
+
+    // Confirm the date value displays correctly.
+    $this->assertText('Friday, December 31, 2021 - 05:00');
+
+    // Change the user's timezone to something else.
+    $this->drupalGet('user/' . $this->loggedInUser->uid . '/edit');
+    $this->assertResponse(200);
+    $edit = array(
+      'timezone' => 'Europe/Berlin',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+    $this->assertText('The changes have been saved.');
+
+    // Load the node page again.
+    $this->drupalGet('node/1');
+    $this->assertResponse(200);
+    $this->assertText('Testing how dates work with timezone conversion enabled');
+
+    // Confirm the date value shows as 4pm Berlin time.
+    // @todo This takes daylights savings time into account so it might stop
+    // working when DST is no longer active.
+    // @todo Is this correct?
+    $this->assertText('Friday, December 31, 2021 - 11:00');
+
+    // Document how the date looks when logged out.
+    $this->drupalLogout();
+    $this->drupalGet('node/1');
+    $this->assertResponse(200);
+    $this->assertText('Testing how dates work with timezone conversion enabled');
+    // @todo Is this correct?
+    $this->assertText('Friday, December 31, 2021 - 21:00');
   }
 
   /**

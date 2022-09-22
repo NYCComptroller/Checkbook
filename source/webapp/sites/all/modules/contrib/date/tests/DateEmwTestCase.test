@@ -17,7 +17,7 @@ class DateEmwTestCase extends DrupalWebTestCase {
     return array(
       'name' => 'Date Entity Metadata Wrappers',
       'description' => 'Ensure default timezone setting in metadata wrapper integration is working as expected.',
-      'group' => 'Date',
+      'group' => 'date',
       'dependencies' => array('entity'),
     );
   }
