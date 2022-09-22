@@ -17,7 +17,7 @@ class DateAllDayUiTestCase extends DateFieldTestBase {
     return array(
       'name' => t('Date All Day unit'),
       'description' => t('Test Date All Day functions.'),
-      'group' => t('Date'),
+      'group' => 'date',
     );
 
   }
@@ -39,58 +39,58 @@ class DateAllDayUiTestCase extends DateFieldTestBase {
   }
 
   /**
-   * Test the node form, confirm the "Date all day" field exists & works.
+   * Test the datetime field type with the select field widget.
    */
-  public function testAllDayField() {
+  public function testDateTimeSelectWidget() {
     // A first node, with the "all day" option disabled.
-    $this->drupalGet('node/add/date-all-day-test');
+    $this->drupalGet('node/add/test-datetime');
     $this->assertResponse(200);
 
     // Confirm the 'date all day' field exists.
-    $this->assertFieldByName('field_date_all_day[und][0][all_day]');
-    $this->assertFieldByName('field_date_all_day[und][0][value][month]');
-    $this->assertFieldByName('field_date_all_day[und][0][value][day]');
-    $this->assertFieldByName('field_date_all_day[und][0][value][year]');
-    $this->assertFieldByName('field_date_all_day[und][0][value][hour]');
-    $this->assertFieldByName('field_date_all_day[und][0][value][minute]');
+    $this->assertFieldByName('field_datetime[und][0][all_day]');
+    $this->assertFieldByName('field_datetime[und][0][value][month]');
+    $this->assertFieldByName('field_datetime[und][0][value][day]');
+    $this->assertFieldByName('field_datetime[und][0][value][year]');
+    $this->assertFieldByName('field_datetime[und][0][value][hour]');
+    $this->assertFieldByName('field_datetime[und][0][value][minute]');
 
     // Submit the node form.
     $edit = array(
-      'title' => 'Testing the All Day option',
-      'field_date_all_day[und][0][all_day]' => FALSE,
-      'field_date_all_day[und][0][value][month]' => 2,
-      'field_date_all_day[und][0][value][day]' => 11,
-      'field_date_all_day[und][0][value][year]' => 2021,
-      'field_date_all_day[und][0][value][hour]' => 18,
-      'field_date_all_day[und][0][value][minute]' => 15,
+      'title' => 'Testing the All Day select widget',
+      'field_datetime[und][0][all_day]' => FALSE,
+      'field_datetime[und][0][value][month]' => 2,
+      'field_datetime[und][0][value][day]' => 11,
+      'field_datetime[und][0][value][year]' => 2021,
+      'field_datetime[und][0][value][hour]' => 18,
+      'field_datetime[und][0][value][minute]' => 15,
     );
     $this->drupalPost(NULL, $edit, 'Save');
     $this->assertResponse(200);
 
     // Confirm the data is displayed correctly.
-    $this->assertText('Testing the All Day option');
+    $this->assertText('Testing the All Day select widget');
     $this->assertText('Date All Day');
     $this->assertText('Thu, 02/11/2021 - 18:15');
 
     // A second node, this time with the "all day" option enabled.
-    $this->drupalGet('node/add/date-all-day-test');
+    $this->drupalGet('node/add/test-datetime');
     $this->assertResponse(200);
 
     // Submit the node form.
     $edit = array(
-      'title' => 'Testing the All Day option again',
-      'field_date_all_day[und][0][all_day]' => TRUE,
-      'field_date_all_day[und][0][value][month]' => 2,
-      'field_date_all_day[und][0][value][day]' => 11,
-      'field_date_all_day[und][0][value][year]' => 2021,
-      'field_date_all_day[und][0][value][hour]' => 18,
-      'field_date_all_day[und][0][value][minute]' => 15,
+      'title' => 'Testing the All Day select widget again',
+      'field_datetime[und][0][all_day]' => TRUE,
+      'field_datetime[und][0][value][month]' => 2,
+      'field_datetime[und][0][value][day]' => 11,
+      'field_datetime[und][0][value][year]' => 2021,
+      'field_datetime[und][0][value][hour]' => 18,
+      'field_datetime[und][0][value][minute]' => 15,
     );
     $this->drupalPost(NULL, $edit, 'Save');
     $this->assertResponse(200);
 
     // Confirm the data is displayed correctly.
-    $this->assertText('Testing the All Day option again');
+    $this->assertText('Testing the All Day select widget again');
     $this->assertText('Date All Day');
     $this->assertText('Thu, 02/11/2021 (All day)');
 
@@ -98,8 +98,332 @@ class DateAllDayUiTestCase extends DateFieldTestBase {
     $node = node_load(2);
     $this->verbose($node);
     $this->assertEqual($node->title, $edit['title']);
-    $this->assertTrue(isset($node->field_date_all_day[LANGUAGE_NONE][0]['value']));
-    $this->assertEqual($node->field_date_all_day[LANGUAGE_NONE][0]['value'], '2021-02-11 23:45:59');
+    $this->assertTrue(isset($node->field_datetime[LANGUAGE_NONE][0]['value']));
+    $this->assertEqual($node->field_datetime[LANGUAGE_NONE][0]['value'], '2021-02-11 23:45:59');
+  }
+
+  /**
+   * Test the datetime field type with the text field widget.
+   */
+  public function testDateTimeTextFieldWidget() {
+    // Change the field defintion to use the "text field" widget.
+    $this->drupalGet('admin/structure/types/manage/test-datetime/fields/field_datetime/widget-type');
+    $this->assertResponse(200);
+    $edit = array(
+      'widget_type' => 'date_text',
+    );
+    $this->drupalPost(NULL, $edit, 'Continue');
+    $this->assertResponse(200);
+    $this->assertText('Changed the widget for field Date All Day.');
+
+    // A first node, with the "all day" option disabled.
+    $this->drupalGet('node/add/test-datetime');
+    $this->assertResponse(200);
+
+    // Confirm the 'date all day' field exists.
+    $this->assertFieldByName('field_datetime[und][0][all_day]');
+    $this->assertFieldByName('field_datetime[und][0][value][date]');
+
+    // Submit the node form.
+    $edit = array(
+      'title' => 'Testing the All Day text widget',
+      'field_datetime[und][0][all_day]' => FALSE,
+      'field_datetime[und][0][value][date]' => '02/11/2021 - 18:15',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+
+    // Confirm the data is displayed correctly.
+    $this->assertText('Testing the All Day text widget');
+    $this->assertText('Date All Day');
+    $this->assertText('Thu, 02/11/2021 - 18:15');
+
+    // A second node, this time with the "all day" option enabled.
+    $this->drupalGet('node/add/test-datetime');
+    $this->assertResponse(200);
+
+    // Submit the node form.
+    $edit = array(
+      'title' => 'Testing the All Day text widget again',
+      'field_datetime[und][0][all_day]' => TRUE,
+      'field_datetime[und][0][value][date]' => '02/11/2021 - 18:15',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+
+    // Confirm the data is displayed correctly.
+    $this->assertText('Testing the All Day text widget again');
+    $this->assertText('Date All Day');
+    $this->assertText('Thu, 02/11/2021 (All day)');
+
+    // Load the node and confirm the data is as expected.
+    $node = node_load(2);
+    $this->verbose($node);
+    $this->assertEqual($node->title, $edit['title']);
+    $this->assertTrue(isset($node->field_datetime[LANGUAGE_NONE][0]['value']));
+    $this->assertEqual($node->field_datetime[LANGUAGE_NONE][0]['value'], '2021-02-11 23:45:59');
+  }
+
+  /**
+   * Test the ISO date field type with the select field widget.
+   */
+  public function testIsoDateSelectWidget() {
+    // A first node, with the "all day" option disabled.
+    $this->drupalGet('node/add/test-iso-date');
+    $this->assertResponse(200);
+
+    // Confirm the 'date all day' field exists.
+    $this->assertFieldByName('field_iso_date[und][0][all_day]');
+    $this->assertFieldByName('field_iso_date[und][0][value][month]');
+    $this->assertFieldByName('field_iso_date[und][0][value][day]');
+    $this->assertFieldByName('field_iso_date[und][0][value][year]');
+    $this->assertFieldByName('field_iso_date[und][0][value][hour]');
+    $this->assertFieldByName('field_iso_date[und][0][value][minute]');
+
+    // Submit the node form.
+    $edit = array(
+      'title' => 'Testing the All Day select widget',
+      'field_iso_date[und][0][all_day]' => FALSE,
+      'field_iso_date[und][0][value][month]' => 2,
+      'field_iso_date[und][0][value][day]' => 11,
+      'field_iso_date[und][0][value][year]' => 2021,
+      'field_iso_date[und][0][value][hour]' => 18,
+      'field_iso_date[und][0][value][minute]' => 15,
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+
+    // Confirm the data is displayed correctly.
+    $this->assertText('Testing the All Day select widget');
+    $this->assertText('Date All Day');
+    $this->assertText('Thu, 02/11/2021 - 18:15');
+
+    // A second node, this time with the "all day" option enabled.
+    $this->drupalGet('node/add/test-iso-date');
+    $this->assertResponse(200);
+
+    // Submit the node form.
+    $edit = array(
+      'title' => 'Testing the All Day select widget again',
+      'field_iso_date[und][0][all_day]' => TRUE,
+      'field_iso_date[und][0][value][month]' => 2,
+      'field_iso_date[und][0][value][day]' => 11,
+      'field_iso_date[und][0][value][year]' => 2021,
+      'field_iso_date[und][0][value][hour]' => 18,
+      'field_iso_date[und][0][value][minute]' => 15,
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+
+    // Confirm the data is displayed correctly.
+    $this->assertText('Testing the All Day select widget again');
+    $this->assertText('Date All Day');
+    $this->assertText('Thu, 02/11/2021 (All day)');
+
+    // Load the node and confirm the data is as expected.
+    $node = node_load(2);
+    $this->verbose($node);
+    $this->assertEqual($node->title, $edit['title']);
+    $this->assertTrue(isset($node->field_iso_date[LANGUAGE_NONE][0]['value']));
+
+    // ISO formatted date strings include a "T" in the middle instead of a
+    // space.
+    $this->assertEqual($node->field_iso_date[LANGUAGE_NONE][0]['value'], '2021-02-11T23:45:59');
+  }
+
+  /**
+   * Test the ISO date field type with the text field widget.
+   */
+  public function testIsoDateTextFieldWidget() {
+    // Change the field defintion to use the "text field" widget.
+    $this->drupalGet('admin/structure/types/manage/test-iso-date/fields/field_iso_date/widget-type');
+    $this->assertResponse(200);
+    $edit = array(
+      'widget_type' => 'date_text',
+    );
+    $this->drupalPost(NULL, $edit, 'Continue');
+    $this->assertResponse(200);
+    $this->assertText('Changed the widget for field ISO Date.');
+
+    // A first node, with the "all day" option disabled.
+    $this->drupalGet('node/add/test-iso-date');
+    $this->assertResponse(200);
+
+    // Confirm the 'date all day' field exists.
+    $this->assertFieldByName('field_iso_date[und][0][all_day]');
+    $this->assertFieldByName('field_iso_date[und][0][value][date]');
+
+    // Submit the node form.
+    $edit = array(
+      'title' => 'Testing the All Day text widget',
+      'field_iso_date[und][0][all_day]' => FALSE,
+      'field_iso_date[und][0][value][date]' => '02/11/2021 - 18:15',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+
+    // Confirm the data is displayed correctly.
+    $this->assertText('Testing the All Day text widget');
+    $this->assertText('Date All Day');
+    $this->assertText('Thu, 02/11/2021 - 18:15');
+
+    // A second node, this time with the "all day" option enabled.
+    $this->drupalGet('node/add/test-iso-date');
+    $this->assertResponse(200);
+
+    // Submit the node form.
+    $edit = array(
+      'title' => 'Testing the All Day text widget again',
+      'field_iso_date[und][0][all_day]' => TRUE,
+      'field_iso_date[und][0][value][date]' => '02/11/2021 - 18:15',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+
+    // Confirm the data is displayed correctly.
+    $this->assertText('Testing the All Day text widget again');
+    $this->assertText('Date All Day');
+    $this->assertText('Thu, 02/11/2021 (All day)');
+
+    // Load the node and confirm the data is as expected.
+    $node = node_load(2);
+    $this->verbose($node);
+    $this->assertEqual($node->title, $edit['title']);
+    $this->assertTrue(isset($node->field_iso_date[LANGUAGE_NONE][0]['value']));
+
+    // ISO formatted date strings include a "T" in the middle instead of a
+    // space.
+    $this->assertEqual($node->field_iso_date[LANGUAGE_NONE][0]['value'], '2021-02-11T23:45:59');
+  }
+
+  /**
+   * Test the timestamp field type with the select field widget.
+   */
+  public function testTimestampSelectWidget() {
+    // A first node, with the "all day" option disabled.
+    $this->drupalGet('node/add/test-timestamp');
+    $this->assertResponse(200);
+
+    // Confirm the 'date all day' field exists.
+    $this->assertFieldByName('field_timestamp[und][0][all_day]');
+    $this->assertFieldByName('field_timestamp[und][0][value][month]');
+    $this->assertFieldByName('field_timestamp[und][0][value][day]');
+    $this->assertFieldByName('field_timestamp[und][0][value][year]');
+    $this->assertFieldByName('field_timestamp[und][0][value][hour]');
+    $this->assertFieldByName('field_timestamp[und][0][value][minute]');
+
+    // Submit the node form.
+    $edit = array(
+      'title' => 'Testing the All Day select widget',
+      'field_timestamp[und][0][all_day]' => FALSE,
+      'field_timestamp[und][0][value][month]' => 2,
+      'field_timestamp[und][0][value][day]' => 11,
+      'field_timestamp[und][0][value][year]' => 2021,
+      'field_timestamp[und][0][value][hour]' => 18,
+      'field_timestamp[und][0][value][minute]' => 15,
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+
+    // Confirm the data is displayed correctly.
+    $this->assertText('Testing the All Day select widget');
+    $this->assertText('Date All Day');
+    $this->assertText('Thu, 02/11/2021 - 18:15');
+
+    // A second node, this time with the "all day" option enabled.
+    $this->drupalGet('node/add/test-timestamp');
+    $this->assertResponse(200);
+
+    // Submit the node form.
+    $edit = array(
+      'title' => 'Testing the All Day select widget again',
+      'field_timestamp[und][0][all_day]' => TRUE,
+      'field_timestamp[und][0][value][month]' => 2,
+      'field_timestamp[und][0][value][day]' => 11,
+      'field_timestamp[und][0][value][year]' => 2021,
+      'field_timestamp[und][0][value][hour]' => 18,
+      'field_timestamp[und][0][value][minute]' => 15,
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+
+    // Confirm the data is displayed correctly.
+    $this->assertText('Testing the All Day select widget again');
+    $this->assertText('Date All Day');
+    $this->assertText('Thu, 02/11/2021 (All day)');
+
+    // Load the node and confirm the data is as expected.
+    $node = node_load(2);
+    $this->verbose($node);
+    $this->assertEqual($node->title, $edit['title']);
+    $this->assertTrue(isset($node->field_timestamp[LANGUAGE_NONE][0]['value']));
+
+    // The date & time converted to a timestamp.
+    $this->assertEqual($node->field_timestamp[LANGUAGE_NONE][0]['value'], 1613087159);
+  }
+
+  /**
+   * Test the timestamp field type with the text field widget.
+   */
+  public function testTimestampTextFieldWidget() {
+    // Change the field defintion to use the "text field" widget.
+    $this->drupalGet('admin/structure/types/manage/test-timestamp/fields/field_timestamp/widget-type');
+    $this->assertResponse(200);
+    $edit = array(
+      'widget_type' => 'date_text',
+    );
+    $this->drupalPost(NULL, $edit, 'Continue');
+    $this->assertResponse(200);
+    $this->assertText('Changed the widget for field Timestamp.');
+
+    // A first node, with the "all day" option disabled.
+    $this->drupalGet('node/add/test-timestamp');
+    $this->assertResponse(200);
+
+    // Confirm the 'date all day' field exists.
+    $this->assertFieldByName('field_timestamp[und][0][all_day]');
+    $this->assertFieldByName('field_timestamp[und][0][value][date]');
+
+    // Submit the node form.
+    $edit = array(
+      'title' => 'Testing the All Day text widget',
+      'field_timestamp[und][0][all_day]' => FALSE,
+      'field_timestamp[und][0][value][date]' => '02/11/2021 - 18:15',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+
+    // Confirm the data is displayed correctly.
+    $this->assertText('Testing the All Day text widget');
+    $this->assertText('Date All Day');
+    $this->assertText('Thu, 02/11/2021 - 18:15');
+
+    // A second node, this time with the "all day" option enabled.
+    $this->drupalGet('node/add/test-timestamp');
+    $this->assertResponse(200);
+
+    // Submit the node form.
+    $edit = array(
+      'title' => 'Testing the All Day text widget again',
+      'field_timestamp[und][0][all_day]' => TRUE,
+      'field_timestamp[und][0][value][date]' => '02/11/2021 - 18:15',
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertResponse(200);
+
+    // Confirm the data is displayed correctly.
+    $this->assertText('Testing the All Day text widget again');
+    $this->assertText('Date All Day');
+    $this->assertText('Thu, 02/11/2021 (All day)');
+
+    // Load the node and confirm the data is as expected.
+    $node = node_load(2);
+    $this->verbose($node);
+    $this->assertEqual($node->title, $edit['title']);
+    $this->assertTrue(isset($node->field_timestamp[LANGUAGE_NONE][0]['value']));
+
+    // The date & time converted to a timestamp.
+    $this->assertEqual($node->field_timestamp[LANGUAGE_NONE][0]['value'], 1613087159);
   }
 
 }

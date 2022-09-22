@@ -257,12 +257,20 @@ function date_formatter_process($formatter, $entity_type, $entity, array $field,
 
       $dates[$processed]['db']['object'] = $date;
       $dates[$processed]['db']['datetime'] = date_format($date, DATE_FORMAT_DATETIME);
+      $dates[$processed]['db']['all_day'] = FALSE;
 
       date_timezone_set($date, timezone_open($timezone));
       $dates[$processed]['local']['object'] = $date;
       $dates[$processed]['local']['datetime'] = date_format($date, DATE_FORMAT_DATETIME);
       $dates[$processed]['local']['timezone'] = $timezone;
       $dates[$processed]['local']['offset'] = date_offset_get($date);
+      $dates[$processed]['local']['all_day'] = FALSE;
+
+      // @todo Can this be moved into date_all_day?
+      if (!empty($instance['widget']['settings']['display_all_day'])) {
+        $dates[$processed]['db']['all_day'] = !empty($item['all_day']);
+        $dates[$processed]['local']['all_day'] = !empty($item['all_day']);
+      }
 
       // Format the date, special casing the 'interval' format which doesn't
       // need to be processed.
@@ -766,34 +774,21 @@ function date_entity_metadata_struct_setter(&$item, $name, $value, $langcode, $t
  *
  * Left here to avoid breaking other modules that use this function.
  *
- * DEPRECATED! Will be removed at some time in the future.
+ * @deprecated
  */
 function date_field_all_day($field, $instance, $date1, $date2 = NULL) {
-  if (empty($date1) || !is_object($date1)) {
+  if (empty($value)) {
     return FALSE;
   }
-  elseif (!date_has_time($field['settings']['granularity'])) {
-    return FALSE;
-  }
+
   // The master setting for the 'all day' functionality.
-  elseif (empty($instance['settings']['widget']['settings']['display_all_day'])) {
+  elseif (empty($instance['widget']['settings']['display_all_day'])) {
     return FALSE;
   }
 
-  if (empty($date2)) {
-    $date2 = $date1;
-  }
-
-  // Use central logic for determining the granularity.
-  $granularity = date_granularity_precision($field['settings']['granularity']);
-
-  // The increment is 1 by default, but it can be overridden.
-  $increment = 1;
-  if (isset($instance['widget']['settings']['increment'])) {
-    $increment = $instance['widget']['settings']['increment'];
-  }
-
-  return date_is_all_day(date_format($date1, DATE_FORMAT_DATETIME), date_format($date2, DATE_FORMAT_DATETIME), $granularity, $increment);
+  // As of 7.x-2.12 the logic for whether a field counts as "all day" is based
+  // purely on this one value.
+  return !empty($value['value']['local']['all_day']);
 }
 
 /**

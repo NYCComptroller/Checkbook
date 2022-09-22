@@ -914,9 +914,11 @@ class date_sql_handler {
     if ($value <= 0) {
       return FALSE;
     }
+
+    $date_min_year = intval(variable_get('date_min_year', 1));
     switch ($type) {
       case 'year':
-        if ($value < DATE_MIN_YEAR) {
+        if ($value < $date_min_year) {
           return FALSE;
         }
         break;

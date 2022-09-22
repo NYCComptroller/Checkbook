@@ -582,29 +582,6 @@ function _date_field_settings_form($field, $instance, $has_data) {
     '#value' => date_get_timezone_db($tz_handling),
   );
 
-  $form['cache_enabled'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Cache dates'),
-    '#description' => t('Date objects can be created and cached as date fields are loaded, rather than when they are displayed, to improve performance.'),
-    '#default_value' => !empty($settings['cache_enabled']),
-    '#weight' => 10,
-  );
-  $form['cache_count'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Maximum dates per field'),
-    '#default_value' => (isset($settings['cache_count'])) ? $settings['cache_count'] : 4,
-    '#description' => t("If set to '0', all date values on every entity will be cached. Note that caching every date on fields that may have a large number of multiple or repeating values may create a significant performance penalty when the cache is cleared. The suggested setting for multiple value and repeating fields is no more than 4 values per field."),
-    '#size' => 3,
-    '#weight' => 11,
-    '#states' => array(
-      'visible' => array(
-        'input[name="field[settings][cache_enabled]"]' => array(
-          'checked' => TRUE,
-        ),
-      ),
-    ),
-  );
-
   $context = array(
     'field' => $field,
     'instance' => $instance,
@@ -649,15 +626,6 @@ function _date_field_settings_validate(&$form, &$form_state) {
 
   // Don't save the pseudo values created in the UI.
   unset($field['settings']['enddate_get'], $field['settings']['enddate_required']);
-
-  if (!empty($field['settings']['cache_enabled'])) {
-    if (!is_numeric($field['settings']['cache_count'])) {
-      form_set_error('field[settings][cache_count]', t('The number of cache values must be a number.'));
-    }
-    elseif ($field['settings']['cache_count'] < 0) {
-      form_set_error('field[settings][cache_count]', t('The number of cache values must be a number 0 or greater.'));
-    }
-  }
 }
 
 /**

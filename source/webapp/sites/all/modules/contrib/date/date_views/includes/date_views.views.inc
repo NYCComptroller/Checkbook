@@ -96,7 +96,7 @@ function date_views_views_data() {
   foreach ($tables as $base_table => $entity) {
     // The flexible date argument.
     $data[$base_table]['date_argument'] = array(
-      'group' => t('Date'),
+      'group' => 'date',
       'title' => t('Date (!base_table)', array('!base_table' => $base_table)),
       'help' => t('Filter any Views !base_table date field by a date argument, using any common ISO date/period format (i.e. YYYY, YYYY-MM, YYYY-MM-DD, YYYY-W99, YYYY-MM-DD--P3M, P90D, etc).', array('!base_table' => $base_table)),
       'argument' => array(
@@ -108,7 +108,7 @@ function date_views_views_data() {
     );
     // The flexible date filter.
     $data[$base_table]['date_filter'] = array(
-      'group' => t('Date'),
+      'group' => 'date',
       'title' => t('Date (!base_table)', array('!base_table' => $base_table)),
       'help' => t('Filter any Views !base_table date field.', array('!base_table' => $base_table)),
       'filter' => array(
