@@ -1,0 +1,14 @@
+name = Metatag: Twitter Cards
+description = "Provides support for Twitter's Card meta tags."
+package = SEO
+core = 7.x
+dependencies[] = metatag:metatag
+
+; Tests.
+files[] = tests/MetatagTwitterCardsTagsTest.test
+
+; Information added by Drupal.org packaging script on 2020-02-10
+version = "7.x-1.27"
+core = "7.x"
+project = "metatag"
+datestamp = "1581369088"
