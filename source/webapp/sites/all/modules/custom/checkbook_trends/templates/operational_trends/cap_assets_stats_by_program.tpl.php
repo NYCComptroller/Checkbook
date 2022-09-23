@@ -127,7 +127,9 @@ rsort($years);
     </tbody>
 </table>
 <div class="footnote">
-    <p>(1) FY 2010 includes various other facilities with active enrollment relating to primary, intermediate and high school. This includes minischools, transportables and leased space. Also, multiple district schools may be operated in a single school building. </p>
+  <p>(1)The Fire Vehicles for FY 2018 were corrected from 2,616 to 2,641</p>
+  <p>(2) The Street Lights for FY 2017 were corrected from 396,572 to 321,807 and FY 2018 from 414,938 to 323,195 due to re-evaluation of items included in street lighting Inventory</p>
+  <p>(3)The Lane miles Resurfaced for FY 2018 were corrected from 1,300 to 1,321</p>
   <p>Sources: Various City Agencies</p>
 </div>
 <?php

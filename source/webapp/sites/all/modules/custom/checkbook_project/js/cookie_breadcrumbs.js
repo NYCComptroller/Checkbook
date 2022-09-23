@@ -55,6 +55,7 @@
                 HistoryTitle[MaximumNumberOfLinks - 1 ] = title ;
               }else{
                 HistoryLink.push(link);
+
                 HistoryTitle.push(title);
               }
             }

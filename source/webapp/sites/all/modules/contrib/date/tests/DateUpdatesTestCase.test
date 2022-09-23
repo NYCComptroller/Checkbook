@@ -1,0 +1,136 @@
+<?php
+
+/**
+ * @file
+ * Test updates for the Date module.
+ */
+
+/**
+ * Test updates for the Date module.
+ */
+class DateUpdatesTestCase extends DrupalWebTestCase {
+
+  /**
+   * Define this test class.
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('Date updates'),
+      'description' => t('Confirm update Date updates works as intended.'),
+      'group' => t('Date'),
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp(array $modules = array()) {
+    $modules[] = 'date_test_feature';
+    parent::setUp($modules);
+
+    // Error logging.
+    variable_set('error_level', 2);
+
+    // Log in as user 1, so that permissions are irrelevant.
+    $this->loginUser1();
+
+    // Clear the caches so that the field specs are properly loaded.
+    drupal_flush_all_caches();
+  }
+
+  /**
+   * Log in as user 1.
+   *
+   * The benefit of doing this is that it ignores permissions entirely, so the
+   * raw functionality can be tested.
+   */
+  protected function loginUser1() {
+    // Load user 1.
+    $account = user_load(1, TRUE);
+
+    // Reset the password.
+    $password = user_password();
+    $edit = array(
+      'pass' => $password,
+    );
+    user_save($account, $edit);
+    $account->pass_raw = $password;
+
+    // Login.
+    $this->drupalLogin($account);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function verbose($message, $title = NULL) {
+    // Handle arrays, objects, etc.
+    if (!is_string($message)) {
+      $message = "<pre>\n" . print_r($message, TRUE) . "\n</pre>\n";
+    }
+
+    // Optional title to go before the output.
+    if (!empty($title)) {
+      $title = '<h2>' . check_plain($title) . "</h2>\n";
+    }
+
+    parent::verbose($title . $message);
+  }
+
+  /**
+   * Test update 7200.
+   */
+  public function testUpdate7201() {
+    // The suffix that is used for the "all day" flag.
+    $all_day_suffix = '_all_day';
+
+    // Load the install file, so that the update script is available.
+    module_load_include('install', 'date');
+    $this->assertEqual(function_exists('date_update_7201'), TRUE, 'Update 7201 exists.');
+
+    // All of the "date" fields added by the Date Test Feature module.
+    $field_names = array(
+      'field_date',
+      'field_date_range',
+      'field_date_repeat',
+      'field_datestamp',
+      'field_datestamp_range',
+      'field_datetime',
+      'field_datetime_range',
+    );
+
+    // Delete the field so that it can be added again through the update script.
+    // Yes, this is convoluted, but I'm not sure here's an easier way of doing
+    // it?
+    foreach ($field_names as $field_name) {
+      db_drop_field('field_data_' . $field_name, $field_name . $all_day_suffix);
+    }
+
+    // Force the schema to be rebuilt so that it correctly reports that the
+    // table was removed.
+    drupal_get_complete_schema(TRUE);
+
+    // Confirm the fields doesn't exist anymore.
+    // @todo Directly query the database to make sure the fields were actually
+    // removed. MySQL supports the "DESCRIBE $tablename" command, while
+    // PostgreSQL supports the "\d $tablename" command.
+    foreach ($field_names as $field_name) {
+      $this->assertFalse(db_field_exists('field_data_' . $field_name, $field_name . $all_day_suffix), 'The "all_day" column was removed from the ' . $field_name . ' field.');
+    }
+
+    // Execute the update function.
+    date_update_7201();
+
+    // Rebuild the schema so that the field specs are properly loaded again.
+    drupal_get_complete_schema(TRUE);
+
+    // Confirm the fields now exist.
+    // @todo Directly query the database to make sure the fields were actually
+    // removed. DESCRIBE $tablename
+    foreach ($field_names as $field_name) {
+      // Check to see if the field now exists on the table.
+      $this->assertTrue(db_field_exists('field_data_' . $field_name, $field_name . $all_day_suffix), 'The "all_day" column now exists for the ' . $field_name . ' field.');
+    }
+  }
+
+}

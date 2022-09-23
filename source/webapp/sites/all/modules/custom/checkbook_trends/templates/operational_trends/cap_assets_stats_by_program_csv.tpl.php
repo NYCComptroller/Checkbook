@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -53,6 +53,7 @@
    	}
 ?>
 
-"(1) FY 2010 includes various other facilities with active enrollment relating to primary, intermediate and high school. This includes minischools, transportables and leased space. Also, multiple district schools may be operated in a single school building."
-
+"(1)The Fire Vehicles for FY 2018 were corrected from 2,616 to 2,641"
+"(2) The Street Lights for FY 2017 were corrected from 396,572 to 321,807 and FY 2018 from 414,938 to 323,195 due to re-evaluation of items included in street lighting Inventory"
+"(3)The Lane miles Resurfaced for FY 2018 were corrected from 1,300 to 1,321 "
 "Sources: Various City Agencies"

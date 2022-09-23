@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -34,7 +34,7 @@
     $header .= ',,,,,,(average annual employment in thousands),,,,,'."\n";
 
     foreach ($years as $year){
-        if($year == 2020)
+        if($year == 2021)
     	    $header = $header .  "," . $year .'(b)' ;
         else
     	    $header = $header .  "," . $year ;
@@ -71,7 +71,7 @@
                 }
 
             }
-            
+
             $rowString .= ',' . $amount;
         }
 
@@ -80,8 +80,8 @@
    	}
 ?>
 
-"(a) Includes rounding  adjustments"
-"(b) Six month average"
+"(a) Includes rounding adjustment"
+"(b) Six months average"
 ""
 ""
 "NOTES: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information."

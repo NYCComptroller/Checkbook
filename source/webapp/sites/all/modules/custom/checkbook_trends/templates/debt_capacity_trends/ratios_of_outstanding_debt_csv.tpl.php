@@ -1,24 +1,24 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
-<?php  
+<?php
     $header .= ",,,,".'"'.'(AMOUNTS IN MILLIONS)'.'"'.",,,,". "\n";
 	$header .= 'Fiscal year';
     $header .=  ",General Obligation Bonds"  ;
@@ -64,7 +64,8 @@
         $rowString .= ','  . '"'. (($row['total_primary_government']>0)?number_format($row['total_primary_government']):'-') . '"';
         echo $rowString . "\n";
    	}
-echo "\n"."\n".'"'."Sources: Comprehensive Annual Financial Reports of the Comptroller".'"';
-echo "\n"."\n".'"'."Note: Gross Debt, Percentage of Personal Income and Per Capital Gross Debt columns had to be removed. The figures changed year by year and they would not match the figures shown when that years CAFR was released.".'"';
+echo "\n"."\n".'"'."Sources:  Annual Comprehensive Financial Reports of the Comptroller".'"';
+echo "\n"."\n".'"'."(1) Includes Direct Borrowings and Direct Placements. See Notes to Financial Statements (Note D.5), “Changes in Long Term Liabilities”".'"';
+echo "\n"."\n".'"'."Note: Gross Debt, Percentage of Personal Income and Per Capital Gross Debt columns had to be removed. The figures changed year by year and they would not match the figures shown when that years ACFR was released.".'"';
 ?>
 

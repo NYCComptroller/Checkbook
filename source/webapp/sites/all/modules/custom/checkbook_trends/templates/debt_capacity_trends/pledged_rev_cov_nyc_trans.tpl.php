@@ -1,25 +1,25 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
-<?php  
-echo eval($node->widgetConfig->header);  
+<?php
+echo eval($node->widgetConfig->header);
 ?>
 
 <a class="trends-export" href="/export/download/trends_pledged_rev_cov_nyc_trans_csv?dataUrl=/node/<?php echo $node->nid ?>">Export</a>
@@ -66,17 +66,17 @@ echo eval($node->widgetConfig->header);
           $dollar_sign = ($count == 1)? '<div class="dollarItem" >$</div>':'';
           $count++;
           echo "<tr><td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
-          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['pit_revenue']>0)?number_format($row['pit_revenue']):'-') . "</div></td>";
-          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['sales_tax_revenue']>0)?number_format($row['sales_tax_revenue']):'-') . "</div></td>";
-          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total_receipt']>0)?number_format($row['total_receipt']):'-') . "</div></td>";
-          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['other']>0)?number_format($row['other']):'-') . "</div></td>";
-          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['investment_earnings']>0)?number_format($row['investment_earnings']):'-') . "</div></td>";
-          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total_revenue']>0)?number_format($row['total_revenue']):'-') . "</div></td>";
-          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['interest']>0)?number_format($row['interest']):'-') . "</div></td>";
-          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['pricipal']>0)?number_format($row['pricipal']):'-') . "</div></td>";
-          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total']>0)?number_format($row['total']):'-') . "</div></td>";
-          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['operating_expenses']>0)?number_format($row['operating_expenses']):'-') . "</div></td>";
-          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total_to_be_covered']>0)?number_format($row['total_to_be_covered']):'-') . "</div></td>";
+          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['pit_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['pit_revenue']):'-') . "</div></td>";
+          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['sales_tax_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['sales_tax_revenue']):'-') . "</div></td>";
+          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total_receipt']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_receipt']):'-') . "</div></td>";
+          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['other']<>0)?FormattingUtilities::trendsNumberDisplay($row['other']):'-') . "</div></td>";
+          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['investment_earnings']<>0)?FormattingUtilities::trendsNumberDisplay($row['investment_earnings']):'-') . "</div></td>";
+          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_revenue']):'-') . "</div></td>";
+          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['interest']<>0)?FormattingUtilities::trendsNumberDisplay($row['interest']):'-') . "</div></td>";
+          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['pricipal']<>0)?FormattingUtilities::trendsNumberDisplay($row['pricipal']):'-') . "</div></td>";
+          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total']<>0)?FormattingUtilities::trendsNumberDisplay($row['total']):'-') . "</div></td>";
+          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['operating_expenses']<>0)?FormattingUtilities::trendsNumberDisplay($row['operating_expenses']):'-') . "</div></td>";
+          echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total_to_be_covered']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_to_be_covered']):'-') . "</div></td>";
           echo "<td>&nbsp;</td>";
           echo "</tr>";
         }
@@ -90,5 +90,5 @@ echo eval($node->widgetConfig->header);
     <p>(3) Grant from City and Federal Subsidy.</p>
     <p>(4) Net of fair market value adjustment.</p>
 </div>
-<?php 
+<?php
   widget_data_tables_add_js($node);

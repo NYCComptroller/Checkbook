@@ -139,7 +139,7 @@ DrupalContextBlockForm = function(blockForm) {
           }
           select += '</select></div>';
           $(block).attr('id', $(this).attr('value')).addClass('draggable');
-          $(block).html("<td>"+ text + "</td><td>" + select + "</td><td><a href='' class='remove'>X</a></td>");
+          $(block).html("<td>"+ Drupal.checkPlain(text) + "</td><td>" + select + "</td><td><a href='' class='remove'>X</a></td>");
 
           // add block item to region
           //TODO : Fix it so long blocks don't get stuck when added to top regions and dragged towards bottom regions

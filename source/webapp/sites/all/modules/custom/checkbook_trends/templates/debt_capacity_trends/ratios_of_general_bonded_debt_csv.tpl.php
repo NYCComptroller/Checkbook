@@ -1,19 +1,19 @@
 <?php
 /**
 * This file is part of the Checkbook NYC financial transparency software.
-* 
+*
 * Copyright (C) 2012, 2013 New York City
-* 
+*
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU Affero General Public License as
 * published by the Free Software Foundation, either version 3 of the
 * License, or (at your option) any later version.
-* 
+*
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU Affero General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -43,13 +43,13 @@
 ?>
 
 
-"(1)		See Notes to Financial Statements (Note D.5), 'Changes in Long Term Liabilities' - Bonds and Notes Payable net of premium and discount."
-"(2)		Includes ECF, FSC, HYIC, IDA, STAR, TFA , NYCTLTs and TSASC."
-"(3)		See Exhibit 'Pledged-Revenue Coverage', Part III- Statistical Information, CAFR"
-"(4)		See Exhibit 'Assessed Value and Estimated Actual Value of Taxable Property - Ten Year Trend',  Part III- Statistical Information, CAFR"
-"(5)		See Exhibit 'Population - Ten Year Trend', Part III- Statistical Information, CAFR"
-
-"SOURCES: Comprehensive Annual Financial Reports of the Comptroller"
+"(1) See Notes to financial Statements (Note D.5), "Changes in Long Term Liabilities"___Bonds and Notes Payable net of premium and discount."
+"(2) Includes ECF,FSC,HYIC,IDA,STAR,TFA,NYCTLT, and TSASC."
+"(3) See Exhibit "Pledge -Revenue Coverage", Part III __ Statistical Information, ACFR. "
+"(4)See Exhibit "Assessed Value and Estimated Actual Value of Taxable Property_{}Ten Year Trend", Part III{}_ Statistical Information, ACFR."
+"(5) See Exhibit "Population___ Ten Year Trend", Part III___ Statistical Information, ACFR"
+""
+"SOURCES:  Annual Comprehensive Financial Reports of the Comptroller"
 
 
 

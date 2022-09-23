@@ -125,5 +125,5 @@ rsort($years);
 	widget_data_tables_add_js($node);
 ?>
 <div class="footnote">
-<p>Source: Comprehensive Annual Financial Reports of the Comptroller.</p>
+<p>Source: Annual Comprehensive Financial Reports of the Comptroller</p>
 </div>
