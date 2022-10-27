@@ -112,13 +112,12 @@ class CheckbookDateUtil{
       return $year;
     }
     $year = variable_get($key, FALSE);
-    isset($year) ? $year : null;
     if (FALSE === $year) {
       LogHelper::log_warn('Drush variable ' . $key . ' not found!');
       $year = self::$currentFiscalYear;
     }
     _checkbook_dmemcache_set($key, $year);
-    return isset($year) ? $year : null;
+    return $year ?? NULL;
   }
 
   /**
@@ -138,13 +137,12 @@ class CheckbookDateUtil{
       return $year;
     }
     $year = variable_get($key, FALSE);
-    isset($year) ? $year : null;
     if (FALSE === $year) {
       LogHelper::log_warn('Drush variable ' . $key . ' not found!');
       $year = self::$currentFiscalYear;
     }
     _checkbook_dmemcache_set($key, $year);
-    return isset($year) ? $year : null;
+    return $year ?? NULL;
   }
 
   /**
