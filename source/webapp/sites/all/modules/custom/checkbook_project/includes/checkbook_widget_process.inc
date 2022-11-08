@@ -11,11 +11,11 @@ function _checkbook_project_pre_process_aggregation($node, $aggregateColumn){
   $ds = _update_dataset_datasource($node->widgetConfig->dataset, $node->widgetConfig->keepOriginalDatasource);
   $column = $aggregateColumn;
   $orderBy = $node->widgetConfig->orderBy;
-  $startWith = isset($node->widgetConfig->startWith) ? $node->widgetConfig->startWith : 0;
+  $startWith = $node->widgetConfig->startWith ?? 0;
   $limit = $node->widgetConfig->limit;
   $resultFormatter = new SpecialCharacterResultFormatter(NULL, new ArrayResultFormatter());
   //Handle multiple cube joins
-  if (strpos($aggregateColumn, '@') !== false) {
+  if (str_contains($aggregateColumn, '@')) {
     $col_array = explode("@", $aggregateColumn);
     $column = $col_array[0];
     $ds = $col_array[1];
@@ -32,7 +32,7 @@ function _checkbook_project_pre_process_aggregation($node, $aggregateColumn){
  * @param $node
  */
 function _checkbook_project_adjust_vendor_facet_json(&$node){
-  if (preg_match('/fvendor/', $_GET['q'])) {
+  if (str_contains($_GET['q'], 'fvendor')) {
     //Vendor Facet
     if ($node->widgetConfig->filterName == 'Vendor') {
       if (isset($node->widgetConfig->urlParamMap->fvendor))
@@ -58,7 +58,7 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
   $adjustedParameters = $parameters;
 
   //Convert configuration to array for processing
-  $paramTypeConfig = isset($node->widgetConfig->paramTypeConfig) ? get_object_vars($node->widgetConfig->paramTypeConfig) : NULL;
+  $paramTypeConfig = $node->widgetConfig->paramTypeConfig ?? NULL;
   $defaultParamTypeConfig = isset($node->widgetConfig->defaultParamTypeConfig) ? get_object_vars($node->widgetConfig->defaultParamTypeConfig) : NULL;
   if ((empty($paramTypeConfig) && empty($defaultParamTypeConfig)) || empty($adjustedParameters)) {//Nothing to adjust
     return $adjustedParameters;

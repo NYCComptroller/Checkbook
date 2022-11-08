@@ -1275,14 +1275,13 @@ function _checkbook_is_oge_parent_contract($cont_num){
 
 /**
  * @param $vendor_id
- *
  * @return string
  */
 function _checkbook_get_oge_agency_id($vendor_id){
   $vendors = _checkbook_project_querydataset('checkbook:vendor', array('vendor_id', 'legal_name'), array('vendor_id' => $vendor_id));
   $vendor_name = $vendors[0]['legal_name'];
   $agencies = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id', 'agency_name'), array('agency_name' => $vendor_name, 'is_display' => 'Y', 'is_oge_agency' => 'Y'));
-  return htmlentities($agencies[0]['agency_id']);
+  return isset($agencies[0]['agency_id']) ? htmlentities($agencies[0]['agency_id']) : NULL;
 }
 
 /**
@@ -1294,8 +1293,7 @@ function _checkbook_get_toggle_vendor_id($agency_id){
   $agencies = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id', 'agency_name'), array('agency_id' => $agency_id, 'is_oge_agency' => 'Y'));
   $agency_name = $agencies[0]['agency_name'];
   $vendors = _checkbook_project_querydataset('checkbook:vendor', array('vendor_id', 'legal_name'), array('legal_name' => $agency_name));
-  $vendor_id = htmlentities($vendors[0]['vendor_id'] - 100000);
-  return $vendor_id;
+  return isset($vendors[0]['vendor_id']) ? htmlentities($vendors[0]['vendor_id'] - 100000) : NULL;
 }
 
 /**
@@ -1306,25 +1304,23 @@ function _get_toggle_view_links(){
   $array_q = explode('/', $q);
   $array_q[1] = ($array_q[1] == 'contracts_landing') ? $array_q[1] . '/status/A' : $array_q[1];
   $year_string = _checkbook_project_get_year_url_param_string();
-  $link = $oge_agency_id = $vendor_id = null;
+  $links = [];
+  $link = null;
 
   if (!_checkbook_check_isEDCPage() && RequestUtilities::get('vendor')) {
     $oge_agency_id = _checkbook_get_oge_agency_id(RequestUtilities::get('vendor'));
-    if ($oge_agency_id > 0)
+    if ($oge_agency_id > 0) {
       $link = '/' . $array_q[1] . $year_string . '/datasource/checkbook_oge/agency/' . $oge_agency_id;
-
-    if (strlen($link) > 0)
       return array('vendor', $link);
+    }
   } else if (_checkbook_check_isEDCPage()) {
     $vendor_id = _checkbook_get_toggle_vendor_id(RequestUtilities::get('agency'));
-    if ($vendor_id > 0)
+    if ($vendor_id > 0){
       $link = '/' . $array_q[1] . $year_string . '/vendor/' . $vendor_id;
-    if (strlen($link) > 0)
       return array('agency', $link);
-  } else {
-    return null;
+    }
   }
-  return null;
+  return $links;
 }
 
 
