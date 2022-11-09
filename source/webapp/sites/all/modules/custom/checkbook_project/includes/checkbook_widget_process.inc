@@ -78,10 +78,10 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
       $flippedParamTypeConfigKeys = array_flip(array_keys($urlParamMap, $param));
       $intersectKeys = array_intersect_key($flippedParamTypeConfigKeys, $originalRequestParams);
 
-      foreach ($intersectKeys as $intersectKey => $value) {
-        if (isset($paramTypeConfig[$intersectKey]) && $urlParamMap[$intersectKey] == $param) {
+      foreach ($intersectKeys as $intersectKey => $keyValue) {
+        if ($paramTypeConfig->$intersectKey && $urlParamMap[$intersectKey] == $param) {
           if ((!isset($logicalOrFacet) || !$logicalOrFacet) && (!isset($unionOrFacet) || !$unionOrFacet))
-            $configurationTypes[$param][$paramTypeConfig[$intersectKey]] = explode("~", $originalRequestParams[$intersectKey]);
+            $configurationTypes[$param][$paramTypeConfig->$intersectKey] = explode("~", $originalRequestParams[$intersectKey]);
         }
       }
     }
@@ -160,14 +160,14 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
           foreach ($paramValues as $value) {
             $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
           }
-          $conditions[] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns, "|"));
+          $conditions[] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode("|", $patterns));
           break;
         case "neqignorecase":
           $patterns = array();
           foreach ($paramValues as $value) {
             $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
           }
-          $conditions[] = $data_controller_instance->initiateHandler(NotRegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns, "|"));
+          $conditions[] = $data_controller_instance->initiateHandler(NotRegularExpressionOperatorHandler::$OPERATOR__NAME, implode("|", $patterns));
           break;
         case "ne":
           $conditions[] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, $paramValues);

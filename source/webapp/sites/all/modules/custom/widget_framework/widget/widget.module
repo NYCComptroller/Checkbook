@@ -176,7 +176,7 @@ function widget_node_view($node, $nodata = true) {
 
 			$node->widgetConfig->chartConfig->chart->renderTo = 'node-chart-' . widget_unique_identifier($node);
 			$node->widgetConfig->chartConfig->credits->enabled = false;
-		}
+		}log_error($node->nid);
 		@eval($node->widgetConfig->widgetUpdateJSONConfig);
 	}else{
 		widget_invoke($node, 'widget_data');
@@ -904,8 +904,7 @@ function calculateDerivedCell($row, $fulldata, $derivedColumnDefinition,$node) {
       $expression = $derivedColumnDefinition->expression;
       $result = eval("return $expression;");
       return $result;
-      break;
-	}
+  }
 }
 
 function widget_config($node) {
@@ -976,12 +975,12 @@ function widget_merge_config($parent_config, $child_config){
   }
   $autocompleteParamName = $child_config->autocompleteParamName;
   if(isset($autocompleteParamName)){
-    $child_config->paramTypeConfig[$autocompleteParamName] = "autocomplete";
+    $child_config->paramTypeConfig->$autocompleteParamName = "autocomplete";
   }
   $urlParameterName = $child_config->urlParameterName;
 
   $paramNameType = $child_config->urlParameterNameType ?? 'ne';
-  $child_config->paramTypeConfig[$urlParameterName] = match ($paramNameType) {
+  $child_config->paramTypeConfig->$urlParameterName = match ($paramNameType) {
     'eqtext' => "neqignorecase",
     'capitalize' => "necapitalize",
     default => "ne",
