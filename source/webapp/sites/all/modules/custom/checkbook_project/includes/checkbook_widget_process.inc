@@ -11,11 +11,11 @@ function _checkbook_project_pre_process_aggregation($node, $aggregateColumn){
   $ds = _update_dataset_datasource($node->widgetConfig->dataset, $node->widgetConfig->keepOriginalDatasource);
   $column = $aggregateColumn;
   $orderBy = $node->widgetConfig->orderBy;
-  $startWith = isset($node->widgetConfig->startWith) ? $node->widgetConfig->startWith : 0;
+  $startWith = $node->widgetConfig->startWith ?? 0;
   $limit = $node->widgetConfig->limit;
   $resultFormatter = new SpecialCharacterResultFormatter(NULL, new ArrayResultFormatter());
   //Handle multiple cube joins
-  if (strpos($aggregateColumn, '@') !== false) {
+  if (str_contains($aggregateColumn, '@')) {
     $col_array = explode("@", $aggregateColumn);
     $column = $col_array[0];
     $ds = $col_array[1];
@@ -32,7 +32,7 @@ function _checkbook_project_pre_process_aggregation($node, $aggregateColumn){
  * @param $node
  */
 function _checkbook_project_adjust_vendor_facet_json(&$node){
-  if (preg_match('/fvendor/', $_GET['q'])) {
+  if (str_contains($_GET['q'], 'fvendor')) {
     //Vendor Facet
     if ($node->widgetConfig->filterName == 'Vendor') {
       if (isset($node->widgetConfig->urlParamMap->fvendor))
@@ -58,7 +58,7 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
   $adjustedParameters = $parameters;
 
   //Convert configuration to array for processing
-  $paramTypeConfig = isset($node->widgetConfig->paramTypeConfig) ? get_object_vars($node->widgetConfig->paramTypeConfig) : NULL;
+  $paramTypeConfig = $node->widgetConfig->paramTypeConfig ?? NULL;
   $defaultParamTypeConfig = isset($node->widgetConfig->defaultParamTypeConfig) ? get_object_vars($node->widgetConfig->defaultParamTypeConfig) : NULL;
   if ((empty($paramTypeConfig) && empty($defaultParamTypeConfig)) || empty($adjustedParameters)) {//Nothing to adjust
     return $adjustedParameters;
@@ -78,10 +78,10 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
       $flippedParamTypeConfigKeys = array_flip(array_keys($urlParamMap, $param));
       $intersectKeys = array_intersect_key($flippedParamTypeConfigKeys, $originalRequestParams);
 
-      foreach ($intersectKeys as $intersectKey => $value) {
-        if (isset($paramTypeConfig[$intersectKey]) && $urlParamMap[$intersectKey] == $param) {
+      foreach ($intersectKeys as $intersectKey => $keyValue) {
+        if ($paramTypeConfig->$intersectKey && $urlParamMap[$intersectKey] == $param) {
           if ((!isset($logicalOrFacet) || !$logicalOrFacet) && (!isset($unionOrFacet) || !$unionOrFacet))
-            $configurationTypes[$param][$paramTypeConfig[$intersectKey]] = explode("~", $originalRequestParams[$intersectKey]);
+            $configurationTypes[$param][$paramTypeConfig->$intersectKey] = explode("~", $originalRequestParams[$intersectKey]);
         }
       }
     }
@@ -160,14 +160,14 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
           foreach ($paramValues as $value) {
             $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
           }
-          $conditions[] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns, "|"));
+          $conditions[] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode("|", $patterns));
           break;
         case "neqignorecase":
           $patterns = array();
           foreach ($paramValues as $value) {
             $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
           }
-          $conditions[] = $data_controller_instance->initiateHandler(NotRegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns, "|"));
+          $conditions[] = $data_controller_instance->initiateHandler(NotRegularExpressionOperatorHandler::$OPERATOR__NAME, implode("|", $patterns));
           break;
         case "ne":
           $conditions[] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, $paramValues);

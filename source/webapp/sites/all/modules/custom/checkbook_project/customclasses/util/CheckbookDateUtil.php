@@ -279,7 +279,7 @@ class CheckbookDateUtil{
    * @return array
    * @param $data_source
    */
-  function getCurrentYears($data_source = Datasource::CITYWIDE){
+  public static function getCurrentYears($data_source = Datasource::CITYWIDE){
     $maxYear = self::getMaxDatasourceFiscalYear($data_source);
     return [
       'year_value' => $maxYear,

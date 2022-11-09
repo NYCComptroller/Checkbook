@@ -176,7 +176,7 @@ function widget_node_view($node, $nodata = true) {
 
 			$node->widgetConfig->chartConfig->chart->renderTo = 'node-chart-' . widget_unique_identifier($node);
 			$node->widgetConfig->chartConfig->credits->enabled = false;
-		}
+		}log_error($node->nid);
 		@eval($node->widgetConfig->widgetUpdateJSONConfig);
 	}else{
 		widget_invoke($node, 'widget_data');
@@ -226,7 +226,7 @@ function widget_get_types($op = 'types', $node = NULL, $reset = FALSE) {
 	static $_widget_types, $_widget_names;
 
 	if ($reset || !isset($_widget_types)) {
-		list($_widget_types, $_widget_names) = _widget_types_build();
+		[$_widget_types, $_widget_names] = _widget_types_build();
 	}
 
   $type = null;
@@ -332,6 +332,7 @@ function widget_prepare(&$node) {
     }
   }
     prepare_dataset_parameters($node->widgetConfig->requestParams, $node->widgetConfig);
+
     if(isset($node->widgetConfig->preProcessConfiguration)){
     	$parameters =  eval($node->widgetConfig->preProcessConfiguration);
     }
@@ -795,14 +796,17 @@ function widget_data(&$node) {
       $requestParams[$key] = pg_escape_string(htmlspecialchars_decode($value));
     }
   }
-  $config->requestParams = $requestParams;
+
+  if(isset($requestParams)) {
+    $config->requestParams = $requestParams;
+  }
 
   if(isset($originalReqParams)) {
     foreach ($originalReqParams as $key => $value) {
       $originalReqParams[$key] = pg_escape_string(htmlspecialchars_decode($value));
     }
+    $config->originalRequestParams = $originalReqParams;
   }
-  $config->originalRequestParams = $originalReqParams;
 
   $resultFormatter = new SpecialCharacterResultFormatter(NULL,new ArrayResultFormatter());
   if($node->widgetConfig->exportData){
@@ -900,8 +904,7 @@ function calculateDerivedCell($row, $fulldata, $derivedColumnDefinition,$node) {
       $expression = $derivedColumnDefinition->expression;
       $result = eval("return $expression;");
       return $result;
-      break;
-	}
+  }
 }
 
 function widget_config($node) {
@@ -952,7 +955,7 @@ function widget_config($node) {
 }
 
 function widget_merge_parent_node_config($node){
-  $parent_nid = $node->widgetConfig->parentNid;
+  $parent_nid = isset($node->widgetConfig->parentNid) ? $node->widgetConfig->parentNid : null;
   if($parent_nid > 0){
     $parent_node = node_load($parent_nid);
     widget_config($parent_node);
@@ -977,16 +980,11 @@ function widget_merge_config($parent_config, $child_config){
   $urlParameterName = $child_config->urlParameterName;
 
   $paramNameType = $child_config->urlParameterNameType ?? 'ne';
-  switch ($paramNameType) {
-    case 'eqtext':
-      $child_config->paramTypeConfig->$urlParameterName = "neqignorecase";
-      break;
-    case 'capitalize':
-      $child_config->paramTypeConfig->$urlParameterName = "necapitalize";
-      break;
-    default:
-      $child_config->paramTypeConfig->$urlParameterName = "ne";
-  }
+  $child_config->paramTypeConfig->$urlParameterName = match ($paramNameType) {
+    'eqtext' => "neqignorecase",
+    'capitalize' => "necapitalize",
+    default => "ne",
+  };
 
   if (isset($child_config->urlParamMap) && $child_config->urlParamMap) {
     foreach ($child_config->urlParamMap as $key => $value) {

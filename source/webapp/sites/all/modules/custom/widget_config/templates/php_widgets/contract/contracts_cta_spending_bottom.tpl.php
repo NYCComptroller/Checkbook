@@ -100,11 +100,11 @@ AND latest_flag = 'Y'
 LIMIT 1";
 
 $results4 = _checkbook_project_execute_sql_by_data_source($querySubVendorinfo,Datasource::getCurrent());
-$res->data = $results4;
-
-$total_current_amount = $res->data[0]['total_current_amt'];
-$total_original_amount = $res->data[0]['total_original_amt'];
-$total_spent_todate = $res->data[0]['total_spent_todate'];
+if(count($results4) > 0) {
+  $total_current_amount = $results4[0]['total_current_amt'];
+  $total_original_amount = $results4[0]['total_original_amt'];
+  $total_spent_todate = $results4[0]['total_spent_todate'];
+}
 ?>
 <div class="dollar-amounts">
     <div class="spent-to-date"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?>
