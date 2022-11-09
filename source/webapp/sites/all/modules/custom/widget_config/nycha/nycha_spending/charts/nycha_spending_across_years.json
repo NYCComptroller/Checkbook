@@ -82,7 +82,7 @@ return $adjustedParameters;
         if ($row['category_name_category_name'] == 'Payroll') {$row['invoice_amount_sum'] = $row['check_amount_sum'];}
           $year_value= $row['issue_date_year_issue_date_year'];
           $year_id = $row['issue_date_year_id'];
-          $amount += $row['invoice_amount_sum'];
+          $amount += (float)$row['invoice_amount_sum'];
       }
     }
   if ($flag == 1){
