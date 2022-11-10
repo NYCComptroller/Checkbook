@@ -78,9 +78,9 @@
     $node->data  = $nodeData;
     if(count($data) == 0)
         $node->data = array();
-    $node->widgetConfig->chartConfig->series[0]->data = $data;
+    $node->widgetConfig->chartConfig->series[0]['data'] = $data;
     $node->widgetConfig->chartConfig->xAxis->categories = $categories;
-    $node->widgetConfig->chartConfig->series[0]->name = 'Contract Amount';
+    $node->widgetConfig->chartConfig->series[0]['name'] = 'Contract Amount';
     $node->widgetConfig->chartTitle = _checkbook_project_getChartTitle('contracts','Top Ten Agencies','by');
     return $node->data;
 ",
