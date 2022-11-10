@@ -179,7 +179,7 @@ function _checkbook_faceted_search_update_data($node)
                   $value = pg_escape_string(htmlspecialchars_decode($value));
                   $patterns[] = "(^" . _checkbook_regex_replace_pattern($value) . "$)";
                 }
-                $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode($patterns, "|")));
+                $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode("|", $patterns)));
                 break;
             }
           } else {
