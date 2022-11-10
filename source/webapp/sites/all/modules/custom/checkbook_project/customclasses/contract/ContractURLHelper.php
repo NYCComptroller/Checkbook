@@ -304,7 +304,7 @@ class ContractURLHelper
      * returns the year type and year values string to be appended to the URL for spending trans link.
      * @return string
      */
-    public function _checkbook_project_spending_get_year_url_param_string()
+    public static function _checkbook_project_spending_get_year_url_param_string()
     {
         $urlPath = drupal_get_path_alias($_GET['q']);
         $pathParams = explode('/', $urlPath);
