@@ -138,12 +138,12 @@
 	while($i <=11){
     $div = $total[$i]/100;
 
-	$series_ba[$i]['total'] =  $series_ba[$i]->y;
-    $series_ha[$i]['total'] =  $series_ha[$i]->y;
-    $series_aa[$i]['total'] =  $series_aa[$i]->y;
-    $series_w[$i]['total'] =  $series_w[$i]->y;
-    $series_na[$i]['total'] =  $series_na[$i]->y;
-    $series_em[$i]['total'] =  $series_em[$i]->y;
+	$series_ba[$i]['total'] =  $series_ba[$i]['y'];
+    $series_ha[$i]['total'] =  $series_ha[$i]['y'];
+    $series_aa[$i]['total'] =  $series_aa[$i]['y'];
+    $series_w[$i]['total'] =  $series_w[$i]['y'];
+    $series_na[$i]['total'] =  $series_na[$i]['y'];
+    $series_em[$i]['total'] =  $series_em[$i]['y'];
 
     if ($div) {
       $series_ba[$i]['y'] /= $div;
@@ -170,12 +170,12 @@
         $index = array_search($months[$i],$months_pos);
 		$node->widgetConfig->gridConfig->data[] = array(
 														$months[$i],
-														$series_aa[$i]['total'],
-														$series_ba[$i]['total'],
-														$series_w[$i]['total'],
-														$series_ha[$i]['total'],
-                                                        $series_na[$i]['total'],
-                                                        $series_em[$i]['total']
+														$series_aa[$i]->total,
+														$series_ba[$i]->total,
+														$series_w[$i]->total,
+														$series_ha[$i]->total,
+                                                        $series_na[$i]->total,
+                                                        $series_em[$i]->total
 														 );
 
 		$i +=1;
