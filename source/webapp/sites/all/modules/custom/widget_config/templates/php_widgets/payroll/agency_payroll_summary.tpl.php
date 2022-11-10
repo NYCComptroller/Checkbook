@@ -43,8 +43,8 @@ foreach($node->data as $data){
     $all_data[$employment_type][] = $record;
 }
 
-$salaried_count = count($all_data[PayrollType::$SALARIED]);
-$non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
+$salaried_count = is_array($all_data[PayrollType::$SALARIED]) ? count($all_data[PayrollType::$SALARIED]) : 0;
+$non_salaried_count = is_array($all_data[PayrollType::$NON_SALARIED]) ? count($all_data[PayrollType::$NON_SALARIED]) : 0;
 
 //Default view based on salamttype in url
 $default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;

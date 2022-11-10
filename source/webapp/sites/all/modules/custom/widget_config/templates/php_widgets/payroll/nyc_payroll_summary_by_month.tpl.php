@@ -158,7 +158,7 @@ if(is_array($node->data) && count($node->data) > 0){
     else{
         drupal_add_js($js,"inline");
     }
-    if (count($node->data) > 1) {
+    if (is_array($node->data) && count($node->data) > 1) {
         $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried toggleEmployee'>
                             <strong>Viewing Salaried Details</strong>&nbsp;|&nbsp;
                             <a>View Non-salaried Details</a>
