@@ -1301,7 +1301,7 @@ class SpendingUtil{
     /**
      * @return bool
      */
-    function _mwbe_spending_use_subvendor(): bool
+    public static function _mwbe_spending_use_subvendor(): bool
     {
     	if(RequestUtilities::get('vendor') > 0 || RequestUtilities::get('mwbe') == '7' || RequestUtilities::get('mwbe') == '11') {
     		return true;
