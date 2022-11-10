@@ -79,9 +79,9 @@
       'Amount: ' . custom_number_formatter_format($row['check_amount_sum'] ,2, '$').  '<br/>';
       $dynamic_parameter = '/vendor/' . $row['vendor_id'];
       $link =  strstr($_GET['q'],'\/',true).NychaSpendingUrlService::generateLandingPageUrl('vendor',$row['vendor_id']);
-      $series_new[$index]->url = 	$link;
-      $series_new[$index]->y = (float)$row['check_amount_sum'];
-      $series_new[$index]->tooltip_label = $tooltip_label;
+      $series_new[$index]['url'] = 	$link;
+      $series_new[$index]['y'] = (float)$row['check_amount_sum'];
+      $series_new[$index]['tooltip_label'] = $tooltip_label;
       $node->widgetConfig->gridConfig->data[] = array($row['vendor_name'],$row['check_amount_sum'] );
       $index += 1;
       }
