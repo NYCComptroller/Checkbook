@@ -155,12 +155,12 @@
     }
 	 	$tooltip_label = 	'Year: ' . $year. '<br/>' .
 	 						'Month: '. $months[$i] . '<br/>' .
-							'Asian American: ' . custom_number_formatter_format($series_aa[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]->y,1,null,'%') . ')' .  '<br/>'
-							. 'Black American: ' . custom_number_formatter_format($series_ba[$i]->total,2,'$')  . ' (' .custom_number_formatter_format($series_ba[$i]->y,1,null,'%') . ')' . '<br/>'
-							. 'Women (Non-Minority): ' . custom_number_formatter_format($series_w[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_w[$i]->y,1,null,'%') . ')' . '<br/>'
-							. 'Hispanic American: ' . custom_number_formatter_format($series_ha[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_ha[$i]->y,1,null,'%') . ')' . '<br/>'
-                            . 'Native American: ' . custom_number_formatter_format($series_na[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_na[$i]->y,1,null,'%') . ')' . '<br/>'
-                            . 'Emerging (Non-Minority): ' . custom_number_formatter_format($series_em[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_em[$i]->y,1,null,'%') . ')' . '<br/>';
+							'Asian American: ' . custom_number_formatter_format($series_aa[$i]['total'],2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]['y'],1,null,'%') . ')' .  '<br/>'
+							. 'Black American: ' . custom_number_formatter_format($series_ba[$i]['total'],2,'$')  . ' (' .custom_number_formatter_format($series_ba[$i]['y'],1,null,'%') . ')' . '<br/>'
+							. 'Women (Non-Minority): ' . custom_number_formatter_format($series_w[$i]['total'],2,'$')  . ' (' . custom_number_formatter_format($series_w[$i]['y'],1,null,'%') . ')' . '<br/>'
+							. 'Hispanic American: ' . custom_number_formatter_format($series_ha[$i]['total'],2,'$')  . ' (' . custom_number_formatter_format($series_ha[$i]['y'],1,null,'%') . ')' . '<br/>'
+                            . 'Native American: ' . custom_number_formatter_format($series_na[$i]['total'],2,'$')  . ' (' . custom_number_formatter_format($series_na[$i]['y'],1,null,'%') . ')' . '<br/>'
+                            . 'Emerging (Non-Minority): ' . custom_number_formatter_format($series_em[$i]['total'],2,'$')  . ' (' . custom_number_formatter_format($series_em[$i]['y'],1,null,'%') . ')' . '<br/>';
 		$series_ba[$i]['tooltip_label'] = $tooltip_label;
 		$series_ha[$i]['tooltip_label'] = $tooltip_label;
 		$series_aa[$i]['tooltip_label'] = $tooltip_label;
@@ -170,12 +170,12 @@
         $index = array_search($months[$i],$months_pos);
 		$node->widgetConfig->gridConfig->data[] = array(
 														$months[$i],
-														$series_aa[$i]->total,
-														$series_ba[$i]->total,
-														$series_w[$i]->total,
-														$series_ha[$i]->total,
-                                                        $series_na[$i]->total,
-                                                        $series_em[$i]->total
+														$series_aa[$i]['total'],
+														$series_ba[$i]['total'],
+														$series_w[$i]['total'],
+														$series_ha[$i]['total'],
+                                                        $series_na[$i]['total'],
+                                                        $series_em[$i]['total']
 														 );
 
 		$i +=1;
@@ -249,7 +249,38 @@
             "pointWidth": 30,
             "data": [
             		]
-        }
+        },
+        {
+        "name": "FY",
+        "type": "column",
+"pointWidth": 30,
+"data": [
+]
+},{
+"name": "FY",
+"type": "column",
+"pointWidth": 30,
+"data": [
+]
+},{
+"name": "FY",
+"type": "column",
+"pointWidth": 30,
+"data": [
+]
+},{
+"name": "FY",
+"type": "column",
+"pointWidth": 30,
+"data": [
+]
+},{
+"name": "FY",
+"type": "column",
+"pointWidth": 30,
+"data": [
+]
+}
     ],
     "title": {"text": ""},
     "yAxis": {
