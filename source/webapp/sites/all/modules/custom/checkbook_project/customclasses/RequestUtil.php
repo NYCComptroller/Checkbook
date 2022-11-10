@@ -319,7 +319,7 @@ class RequestUtil
             $vendor_minority_type_ids = VendorService::getAllVendorMinorityTypesByYear($domain, RequestUtilities::get("vendor"), $fiscalYearId);
             $vendor_non_minority_type_ids = array_intersect($non_minority_type_ids ,$vendor_minority_type_ids);
 
-            if(count($vendor_non_minority_type_ids) > 0){
+            if(is_countable($vendor_non_minority_type_ids) && count($vendor_non_minority_type_ids) > 0){
                 $path = preg_replace('/\/dashboard\/[^\/]*/','',$path);
                 $path = preg_replace('/\/mwbe\/[^\/]*/','',$path);
             }else{
@@ -426,7 +426,7 @@ class RequestUtil
                 $domain = "spending";
             }
             $applicable_filters = MappingUtil::getCurrentPrimeMWBEApplicableFilters($domain);
-            if (count($applicable_filters) == 0) {
+            if (is_countable($applicable_filters) && count($applicable_filters) == 0) {
                 return 'ms';
             }
         }

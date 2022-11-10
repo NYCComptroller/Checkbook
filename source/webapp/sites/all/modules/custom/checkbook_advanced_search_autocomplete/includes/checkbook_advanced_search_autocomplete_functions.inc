@@ -62,7 +62,7 @@ function _get_spending_expense_cat_options($agency, $dept, $spendingCat, $year, 
   }
 
   $results = _checkbook_project_execute_sql($query, "main",  $dataSource);
-  if(count($results) == 0){
+  if(is_countable($results) && count($results) == 0){
     $output = array('label' => 'No Matches Found','value' => '');
   }else{
     foreach ($results as $result) {
@@ -133,7 +133,7 @@ function _checkbook_advanced_search_autocomplete_spending_department($year, $age
   }
 
   $results = _checkbook_project_execute_sql($query, "main",  $dataSource);
-  if(count($results) == 0){
+  if(is_countable($results) && count($results) == 0){
       $options = array('label' => 'No Matches Found','value' => '');
   }else{
       foreach ($results as $result) {
@@ -195,7 +195,7 @@ function _checkbook_advanced_search_autocomplete_spending_expcategory($year, $ag
 function _checkbook_advanced_search_autocomplete_budget_department($fiscal_year, $agency) {
     $params =  array("agency_id"=>$agency,"budget_fiscal_year_id"=>$fiscal_year);
     $results = get_db_results(false, 'checkbook:budget', array("department_name.department_name"), $params,"department_name.department_name");
-    if (count($results ) > 0) {
+    if (is_countable($results) && count($results ) > 0) {
         $matches = array();
         foreach ($results as $key=>$value) {
             $matches[] = $value['department_name.department_name'];
@@ -219,7 +219,7 @@ function _checkbook_advanced_search_autocomplete_budget_expcategory($fiscal_year
         $params["department_name"] = str_replace('__','/',$dept);
     }
     $results = get_db_results(false, 'checkbook:budget', array("object_class_name.object_class_name"), $params,"object_class_name.object_class_name");
-    if (count($results ) > 0) {
+    if (is_countable($results) && count($results ) > 0) {
         $matches = array();
         foreach ($results as $key=>$value) {
             $matches[] = $value['object_class_name.object_class_name'];
@@ -258,11 +258,11 @@ function _checkbook_advanced_search_autocomplete_budget_budgetcode($fiscal_year,
     $params["event_id"] = $catastrophic_events;
     }
     $results = get_db_results(false, 'checkbook:budget', array("budget_code_code.budget_code_code"), $params,"budget_code_code.budget_code_code");
-    if(count($results) == 0 && $agency != '0'){
+    if(is_countable($results) && count($results) == 0 && $agency != '0'){
         unset($params["budget_code_name"]);
         $results = get_db_results(false, 'checkbook:budget', array("budget_code_code.budget_code_code"), $params,"budget_code_code.budget_code_code");
     }
-    if (count($results ) > 0) {
+    if (is_countable($results) && count($results ) > 0) {
         $matches = array();
         foreach ($results as $key=>$value) {
             $matches[] = $value['budget_code_code.budget_code_code'];
@@ -300,11 +300,11 @@ function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year,
        $params["event_id"] = $catastrophic_events;
     }
     $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name"), $params,"budget_code_name.budget_code_name");
-    if(count($results) == 0 && $agency != '0'){
+    if(is_countable($results) && count($results) == 0 && $agency != '0'){
         unset($params["budget_code"]);
         $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name"), $params,"budget_code_name.budget_code_name");
     }
-    if (count($results) > 0) {
+    if (is_countable($results) && count($results) > 0) {
         $matches = array();
         foreach ($results as $key=>$value) {
             $budget_name_value = $value['budget_code_name.budget_code_name'];
@@ -320,7 +320,7 @@ function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year,
 
 function _checkbook_advanced_search_get_payroll_years($dataSource, $form = null){
   $yearList = _checkbook_advanced_search_get_year(Domain::$PAYROLL, $form, $dataSource);
-  if(count($yearList) > 0){
+  if(is_countable($results) && count($yearList) > 0){
     $matches = array();
     foreach($yearList as $key => $value){
       $matches[] = array('label'=> $value,'value' => $key);

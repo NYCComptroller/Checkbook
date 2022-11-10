@@ -1405,7 +1405,7 @@ function _get_autocomplete_search_term()
     $autocomplete_terms = explode(' ', $autocomplete_text);
     $autocomplete_text = CheckbookSolrQuery::escape(trim(htmlspecialchars_decode($term), ENT_QUOTES));
 
-    if (count($autocomplete_terms) > 0) {
+    if (is_countable($autocomplete_terms) && count($autocomplete_terms) > 0) {
       $autocomplete_text = "";
       foreach ($autocomplete_terms as $key => $value) {
         if (strlen($value) > 0) {
@@ -1437,7 +1437,7 @@ function _get_autocomplete_search_term_facet_prefix()
     $autocomplete_terms = explode(' ', $autocomplete_text);
     $autocomplete_text = CheckbookSolrQuery::escape(trim(htmlspecialchars_decode($term), ENT_QUOTES));
 
-    if (count($autocomplete_terms) > 0) {
+    if (is_countable($autocomplete_terms) && count($autocomplete_terms) > 0) {
       $autocomplete_text = "";
       foreach ($autocomplete_terms as $key => $value) {
         if (strlen($value) > 0) {

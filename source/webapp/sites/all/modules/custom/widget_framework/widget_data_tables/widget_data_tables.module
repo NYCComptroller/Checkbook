@@ -461,7 +461,7 @@ function widget_data_tables_add_js($node){
             $newAolcols[] = $value;
         }
     }
-    if(count($newAolcols)){
+    if(is_countable($newAolcols) && count($newAolcols)){
         $oldDataTableOptions['aoColumns'] = $newAolcols;
     }
   }

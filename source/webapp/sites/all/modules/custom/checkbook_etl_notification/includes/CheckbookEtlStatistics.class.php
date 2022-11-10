@@ -75,7 +75,7 @@ class CheckbookEtlStatistics
                   process_error_count
             FROM latest_stats_vw WHERE host_environment = '{$environment}'";
     $results = _checkbook_project_execute_sql_by_data_source($sql, 'etl_statistics');
-    if(count($results) > 0) {
+    if(is_countable($results) && count($results) > 0) {
       $databases = array('checkbook' => 'Citywide', 'checkbook_ogent' => 'NYCEDC', 'checkbook_nycha' => 'NYCHA');
       $etlStatus = [];
       foreach ($results as $result) {
