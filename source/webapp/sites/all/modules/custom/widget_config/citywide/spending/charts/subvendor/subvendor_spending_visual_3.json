@@ -87,10 +87,10 @@
 			$link = 'contract_details'
                        . ( in_array($row['document_code'], array('MMA1','MA1')) ? '/magid/' : '/agid/' )
                        .  $row['agreement_id'] .  _checkbook_append_url_params() . '/doctype/' . $row['document_code'] . '/newwindow';
-	 		$series_new[$index]->url = $link;
+	 		$series_new[$index]['url'] = $link;
 
-			$series_new[$index]->y = (float)$row['total_spending_amount'];
-			$series_new[$index]->tooltip_label = $tooltip_label;
+			$series_new[$index]['y'] = (float)$row['total_spending_amount'];
+			$series_new[$index]['tooltip_label']= $tooltip_label;
 			$node->widgetConfig->gridConfig->data[] = array($row['document_id'],
 														$row['total_spending_amount'],
 														 $row['legal_name'] ,
