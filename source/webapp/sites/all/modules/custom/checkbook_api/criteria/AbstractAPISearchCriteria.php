@@ -553,7 +553,7 @@ abstract class AbstractAPISearchCriteria {
    * @return bool
    */
   public function hasMessages() {
-    return count($this->messages) > 0;
+    return (is_countable(($this->messages) && count($this->messages) > 0);
   }
 
   /**

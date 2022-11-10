@@ -41,7 +41,7 @@ class CSVDataHandler extends AbstractDataHandler {
     if ($this->requestSearchCriteria->hasErrors() || $this->requestSearchCriteria->hasMessages()) {
       // Errors:
       $errors = $this->requestSearchCriteria->getErrors();
-      if (count($errors) > 0) {
+      if (is_countable($errors) && count($errors) > 0) {
         // Errors:
         $status .= "Records could not be retreived due to following errors:" . PHP_EOL;
         $status .= '"Code","Description"' . PHP_EOL;
@@ -53,7 +53,7 @@ class CSVDataHandler extends AbstractDataHandler {
       }
 
       $messages = $this->requestSearchCriteria->getMessages();
-      if (count($messages) > 0) {
+      if (is_countable($messages) && count($messages) > 0) {
         // Messages:
         $status .= "No Results found:" . PHP_EOL;
         $status .= '"Code","Description"' . PHP_EOL;
