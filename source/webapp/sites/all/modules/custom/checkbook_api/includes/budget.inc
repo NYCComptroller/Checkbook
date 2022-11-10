@@ -17,7 +17,7 @@ function checkbook_api_adjustBudgetParameterFilters(&$data_set, &$parameters, $c
   }
   if (isset($logicalOrColumns) && count($logicalOrColumns) > 0) {
     $parameters['logicalOrColumns'] = $logicalOrColumns;
-  }log_error($parameters);
+  }
 }
 
 /***
