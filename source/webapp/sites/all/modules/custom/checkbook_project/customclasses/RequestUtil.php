@@ -167,17 +167,17 @@ class RequestUtil
       widget_invoke($node, 'widget_prepare');
       widget_data($node);
       $contracts_landing_path = NULL;
-      if ($node->data[0]['total_contracts'] > 0 || $node->data[0]['current_amount_sum'] > 0) {
+      if ((isset($node->data[0]['total_contracts']) &&  ($node->data[0]['total_contracts']> 0)) || (isset($node->data[0]['current_amount_sum']) &&  $node->data[0]['current_amount_sum']> 0)) {
         $contracts_landing_path = "contracts_landing/status/A";
-      } else if ($node->data[1]['total_contracts'] > 0 || $node->data[1]['current_amount_sum'] > 0) {
+      } else if ((isset($node->data[1]['total_contracts']) && $node->data[1]['total_contracts'] > 0) || (isset($node->data[1]['current_amount_sum']) && $node->data[1]['current_amount_sum']> 0)) {
         $contracts_landing_path = "contracts_landing/status/R";
-      } else if ($node->data[2]['total_contracts'] > 0 || $node->data[2]['current_amount_sum'] > 0) {
+      } else if ((isset($node->data[2]['total_contracts']) && $node->data[2]['total_contracts'] > 0) || (isset($node->data[2]['current_amount_sum']) && $node->data[2]['current_amount_sum']> 0)) {
         $contracts_landing_path = "contracts_revenue_landing/status/A";
-      } else if ($node->data[3]['total_contracts'] > 0 || $node->data[3]['current_amount_sum'] > 0) {
+      } else if ((isset($node->data[3]['total_contracts']) && $node->data[3]['total_contracts'] > 0) || (isset($node->data[3]['current_amount_sum']) && $node->data[3]['current_amount_sum']> 0)) {
         $contracts_landing_path = "contracts_revenue_landing/status/R";
-      } else if ($node->data[5]['total_contracts'] > 0 || $node->data[5]['current_amount_sum'] > 0) {
+      } else if ((isset($node->data[4]['total_contracts']) && $node->data[4]['total_contracts'] > 0) || (isset($node->data[4]['current_amount_sum']) && $node->data[4]['current_amount_sum']> 0)) {
         $contracts_landing_path = "contracts_pending_exp_landing";
-      } else if ($node->data[6]['total_contracts'] > 0 || $node->data[6]['current_amount_sum'] > 0) {
+      } else if ((isset($node->data[5]['total_contracts']) && $node->data[5]['total_contracts'] > 0) || (isset($node->data[5]['current_amount_sum']) && $node->data[5]['current_amount_sum']> 0)) {
         $contracts_landing_path = "contracts_pending_rev_landing";
       }
       return $contracts_landing_path;
