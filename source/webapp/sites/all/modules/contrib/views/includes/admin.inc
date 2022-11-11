@@ -1641,6 +1641,20 @@ function views_ui_get_display_tab_details($view, $display) {
     $item_element = 'li';
   }
 
+  // Display warning if argument handler has exception overriding validation.
+  foreach ($display->handler->get_handlers('argument') as $arg => $handler) {
+    if (!empty($handler->options['exception']['value']) && $handler->options['specify_validation'] && !empty($handler->options['validate_options'])) {
+      $build['message']['validation_warning'] = array(
+        '#theme_wrappers' => array('container'),
+        '#attributes' => array(
+          'class' => array('messages', 'warning'),
+        ),
+        '#markup' => t('The view display has a contextual filter exception that overrides the validation criterion.'),
+      );
+      break;
+    }
+  }
+
   if ($display->id != 'default') {
     $build['top']['#theme_wrappers'] = array('container');
     $build['top']['#attributes']['id'] = 'edit-display-settings-top';
