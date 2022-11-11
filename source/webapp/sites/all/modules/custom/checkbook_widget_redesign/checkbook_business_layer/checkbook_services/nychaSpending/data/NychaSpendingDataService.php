@@ -109,6 +109,6 @@ class NychaSpendingDataService extends DataService implements INychaSpendingData
    */
   private function configureNycha($dataFunction, $parameters, $limit = null, $orderBy = null): DataService
   {
-    return $this->configure($dataFunction,$parameters,$limit,$orderBy,SqlConfigPath::NychaSpending);
+    return $this->configure($dataFunction, SqlConfigPath::NychaSpending, $parameters,$limit,$orderBy);
   }
 }

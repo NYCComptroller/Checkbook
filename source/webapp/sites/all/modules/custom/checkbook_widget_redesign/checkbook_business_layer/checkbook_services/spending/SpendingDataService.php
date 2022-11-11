@@ -139,7 +139,7 @@ class SpendingDataService extends DataService implements ISpendingDataService {
      * @return DataService
      */
     private function configureCitywide($dataFunction, $parameters, $limit = null, $orderBy = null) {
-        return $this->configure($dataFunction,$parameters,$limit,$orderBy,SqlConfigPath::CitywideSpending);
+        return $this->configure($dataFunction, SqlConfigPath::CitywideSpending, $parameters,$limit,$orderBy);
     }
 
     /**
@@ -151,7 +151,7 @@ class SpendingDataService extends DataService implements ISpendingDataService {
      * @return DataService
      */
     private function configureOge($dataFunction, $parameters, $limit = null, $orderBy = null) {
-        return $this->configure($dataFunction,$parameters,$limit,$orderBy,SqlConfigPath::OgeSpending);
+        return $this->configure($dataFunction, SqlConfigPath::OgeSpending, $parameters,$limit,$orderBy);
     }
 
     /**
@@ -163,6 +163,6 @@ class SpendingDataService extends DataService implements ISpendingDataService {
      * @return DataService
      */
     private function configureSubVendor($dataFunction, $parameters, $limit = null, $orderBy = null) {
-        return $this->configure($dataFunction,$parameters,$limit,$orderBy,SqlConfigPath::SubVendorsSpending);
+        return $this->configure($dataFunction, SqlConfigPath::SubVendorsSpending, $parameters, $limit, $orderBy);
     }
 }
