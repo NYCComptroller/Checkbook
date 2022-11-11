@@ -52,9 +52,9 @@ $tooltip_label =
 'Title: ' . $row['civil_service_title'] .'<br/>' .
 'Amount: ' . custom_number_formatter_format($row['max_annual_salary'] ,2, '$').  '<br/>';
 $link= strstr($_GET['q'],'/',true) .PayrollUrlService::titleAgencyUrl('162', $row['civil_service_title_code']);
-$series_new[$index]->url = 	$link;
-$series_new[$index]->y = (float)$row['max_annual_salary'];
-$series_new[$index]->tooltip_label = $tooltip_label;
+$series_new[$index]['url'] = 	$link;
+$series_new[$index]['y'] = (float)$row['max_annual_salary'];
+$series_new[$index]['tooltip_label'] = $tooltip_label;
 $node->widgetConfig->gridConfig->data[] = array($row['civil_service_title'],$row['max_annual_salary'] );
 $index += 1;
 }
