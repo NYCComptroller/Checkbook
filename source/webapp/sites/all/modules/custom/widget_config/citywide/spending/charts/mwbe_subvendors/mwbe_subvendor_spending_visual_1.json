@@ -194,10 +194,10 @@
         (float)$row['total_non_mwbe']);
 
         $link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('agency'=>$row['agency_id']) );
-			$series_new[$index]->url = $link;
+			$series_new[$index]['url'] = $link;
 
-			$series_new[$index]->y = (float)$row[$amount_column];
-			$series_new[$index]->tooltip_label = $tooltip_label;
+			$series_new[$index]['y'] = (float)$row[$amount_column];
+			$series_new[$index]['tooltip_label'] = $tooltip_label;
 
 			$index += 1;
 			if($index == 10){
