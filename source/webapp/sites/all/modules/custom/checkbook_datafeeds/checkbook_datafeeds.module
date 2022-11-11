@@ -689,7 +689,7 @@ function _fund_class_options()
       'fund_class_code',
       'fund_class_name',
     ), NULL, 'fund_class_name');
-    //$results = array('All Fund Classes' => 'All Fund Classes');
+    $results = array();
     foreach ($data as $row) {
       if ($row['fund_class_name']) {
         if (strtolower($row['fund_class_name']) == 'general fund')

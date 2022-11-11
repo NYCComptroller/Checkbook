@@ -92,7 +92,7 @@ foreach ($facets_render??[] as $facet_name => $facet) {
 
       // Autocomplete's result(s) displays and allows to select options that are already selected
       // thereby counting an option twice. Hence, removing duplicates
-      $facet->selected  = array_unique($facet->selected? $facet->selected:[]);
+      $facet->selected  = array_unique($facet->selected?:[]);
 
       //NYCCHKBK-9957 : Disable autocomplete search box if 5 or more options are selected
       $no_of_selected_options = count($facet->selected ?: []);
