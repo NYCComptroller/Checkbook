@@ -59,8 +59,8 @@ $tooltip_label =
 'Year: CY ' . $row['year_year_year_value'] .'<br/>'.
 'Amount: ' . custom_number_formatter_format($row['total_overtime_pay'] ,2, '$') .'<br/>' ;
 $categories[] = $row['year_year'];
-$series_new[$index]->y = (float)$row['total_overtime_pay'];
-$series_new[$index]->tooltip_label = $tooltip_label;
+$series_new[$index]['y'] = (float)$row['total_overtime_pay'];
+$series_new[$index]['tooltip_label'] = $tooltip_label;
 $node->widgetConfig->gridConfig->data[] = array($row['year_year_year_value'],$row['total_overtime_pay'] );
 $index += 1;
 }
