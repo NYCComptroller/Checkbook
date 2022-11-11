@@ -29,6 +29,6 @@ class NychaRevenueDataService extends DataService implements INychaRevenueDataSe
      * @return DataService
      */
     private function configureNycha($dataFunction, $parameters, $limit = null, $orderBy = null) {
-        return $this->configure($dataFunction,$parameters,$limit,$orderBy,SqlConfigPath::NychaRevenue);
+        return $this->configure($dataFunction, SqlConfigPath::NychaRevenue, $parameters,$limit,$orderBy);
     }
 }

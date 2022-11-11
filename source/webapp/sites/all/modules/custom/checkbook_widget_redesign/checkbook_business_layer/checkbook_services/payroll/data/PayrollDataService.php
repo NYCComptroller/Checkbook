@@ -83,7 +83,7 @@ class PayrollDataService extends DataService implements IPayrollDataService {
      * @return DataService
      */
     private function configureCitywide($dataFunction, $parameters, $limit = null, $orderBy = null) {
-        return $this->configure($dataFunction, $parameters, $limit, $orderBy, SqlConfigPath::CitywidePayroll);
+        return $this->configure($dataFunction, SqlConfigPath::CitywidePayroll, $parameters, $limit, $orderBy);
     }
 
     /**
@@ -95,6 +95,6 @@ class PayrollDataService extends DataService implements IPayrollDataService {
      * @return DataService
      */
     private function configureNYCHA($dataFunction, $parameters, $limit = null, $orderBy = null) {
-        return $this->configure($dataFunction, $parameters, $limit, $orderBy, SqlConfigPath::NYCHAPayroll);
+        return $this->configure($dataFunction, SqlConfigPath::NYCHAPayroll, $parameters, $limit, $orderBy);
     }
 }

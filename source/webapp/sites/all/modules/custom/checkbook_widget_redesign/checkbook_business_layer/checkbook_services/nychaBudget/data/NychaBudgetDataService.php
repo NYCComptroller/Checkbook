@@ -177,6 +177,6 @@ class NychaBudgetDataService extends DataService implements INychaBudgetDataServ
      */
     private function configureNycha($dataFunction, $parameters, $limit = null, $orderBy = null): DataService
     {
-        return $this->configure($dataFunction,$parameters,$limit,$orderBy,SqlConfigPath::NychaBudget);
+        return $this->configure($dataFunction, SqlConfigPath::NychaBudget, $parameters,$limit,$orderBy);
     }
 }
