@@ -194,11 +194,11 @@ order by all_spending.total_spending_amount desc limit 10 \n
         );
 
         $link = substr(SpendingUtil::getPrimeVendorNameLinkUrl($node, $row),1);
-        $series_new[$index]->url = $link;
+        $series_new[$index]['url'] = $link;
 
 
-        $series_new[$index]->y = (float)$row[$amount_column];
-        $series_new[$index]->tooltip_label = $tooltip_label;
+        $series_new[$index]['y'] = (float)$row[$amount_column];
+        $series_new[$index]['tooltip_label'] = $tooltip_label;
         $index += 1;
 	}
 
