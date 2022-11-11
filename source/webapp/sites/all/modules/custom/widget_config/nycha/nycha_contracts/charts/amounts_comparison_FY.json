@@ -33,21 +33,21 @@
             $years[] = $row['year'];
             $tooltip_label = 'Year: ' . $row['year'] .  '<br/>' .
                               'Current Amount: ' . custom_number_formatter_format($row['total_amount'] ,2, '$').  '<br/>';
-            $total_amount_series[$index]->y = (float)$row['total_amount'];
-            $total_amount_series[$index]->tooltip_label = $tooltip_label;
-            $total_amount_series[$index]->url = $_SERVER['SERVER_NAME'].'/nycha_contracts/year/'.$row['year_id'].'/datasource/checkbook_nycha/agency/162?expandBottomContURL=/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions/year/'.$row['year_id'].'/agency/162/datasource/checkbook_nycha';
+            $total_amount_series[$index]['y'] = (float)$row['total_amount'];
+            $total_amount_series[$index]['tooltip_label'] = $tooltip_label;
+            $total_amount_series[$index]['url'] = $_SERVER['SERVER_NAME'].'/nycha_contracts/year/'.$row['year_id'].'/datasource/checkbook_nycha/agency/162?expandBottomContURL=/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions/year/'.$row['year_id'].'/agency/162/datasource/checkbook_nycha';
 
             $tooltip_label = 'Year: ' . $row['year'] .  '<br/>' .
             'Original Amount: ' . custom_number_formatter_format($row['original_amount'] ,2, '$').  '<br/>';
-            $original_amount_series[$index]->y = (float)$row['original_amount'];
-            $original_amount_series[$index]->tooltip_label = $tooltip_label;
-            $original_amount_series[$index]->url = $_SERVER['SERVER_NAME'].'/nycha_contracts/year/'.$row['year_id'].'/datasource/checkbook_nycha/agency/162?expandBottomContURL=/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions/year/'.$row['year_id'].'/agency/162/datasource/checkbook_nycha';
+            $original_amount_series[$index]['y'] = (float)$row['original_amount'];
+            $original_amount_series[$index]['tooltip_label'] = $tooltip_label;
+            $original_amount_series[$index]['url'] = $_SERVER['SERVER_NAME'].'/nycha_contracts/year/'.$row['year_id'].'/datasource/checkbook_nycha/agency/162?expandBottomContURL=/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions/year/'.$row['year_id'].'/agency/162/datasource/checkbook_nycha';
 
             $tooltip_label = 'Year: ' . $row['year'] .  '<br/>' .
             'Spent to Date: ' . custom_number_formatter_format($row['spent_to_date'] ,2, '$').  '<br/>';
-            $spent_amount_series[$index]->y = (float)$row['spent_to_date'];
-            $spent_amount_series[$index]->tooltip_label = $tooltip_label;
-            $spent_amount_series[$index]->url = $_SERVER['SERVER_NAME'].'/nycha_contracts/year/'.$row['year_id'].'/datasource/checkbook_nycha/agency/162?expandBottomContURL=/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions/year/'.$row['year_id'].'/agency/162/datasource/checkbook_nycha';
+            $spent_amount_series[$index]['y'] = (float)$row['spent_to_date'];
+            $spent_amount_series[$index]['tooltip_label'] = $tooltip_label;
+            $spent_amount_series[$index]['url'] = $_SERVER['SERVER_NAME'].'/nycha_contracts/year/'.$row['year_id'].'/datasource/checkbook_nycha/agency/162?expandBottomContURL=/panel_html/nycha_contracts_transactions_page/nycha_contracts/transactions/year/'.$row['year_id'].'/agency/162/datasource/checkbook_nycha';
 
             $index += 1;
         }
@@ -55,18 +55,18 @@
         parse_str($get_query_params, $params);
         $chart_type = isset($params['chart_type']) ? $params['chart_type'] : 'line';
 
-        $node->widgetConfig->chartConfig->series[0]->name = 'Current Amount';
-        $node->widgetConfig->chartConfig->series[0]->type = $chart_type;
-        $node->widgetConfig->chartConfig->series[0]->data = $total_amount_series;
-        $node->widgetConfig->chartConfig->series[0]->url = $total_amount_series;
+        $node->widgetConfig->chartConfig->series[0]['name'] = 'Current Amount';
+        $node->widgetConfig->chartConfig->series[0]['type'] = $chart_type;
+        $node->widgetConfig->chartConfig->series[0]['data'] = $total_amount_series;
+        $node->widgetConfig->chartConfig->series[0]['url'] = $total_amount_series;
 
-        $node->widgetConfig->chartConfig->series[1]->name = 'Original Amount';
-        $node->widgetConfig->chartConfig->series[1]->type = $chart_type;
-        $node->widgetConfig->chartConfig->series[1]->data = $original_amount_series;
+        $node->widgetConfig->chartConfig->series[1]['name'] = 'Original Amount';
+        $node->widgetConfig->chartConfig->series[1]['type'] = $chart_type;
+        $node->widgetConfig->chartConfig->series[1]['data'] = $original_amount_series;
 
-        $node->widgetConfig->chartConfig->series[2]->name = 'Spent to Date';
-        $node->widgetConfig->chartConfig->series[2]->type = $chart_type;
-        $node->widgetConfig->chartConfig->series[2]->data = $spent_amount_series;
+        $node->widgetConfig->chartConfig->series[2]['name'] = 'Spent to Date';
+        $node->widgetConfig->chartConfig->series[2]['type'] = $chart_type;
+        $node->widgetConfig->chartConfig->series[2]['data'] = $spent_amount_series;
         $node->widgetConfig->chartConfig->xAxis->categories = $years;
     ",
     "chartConfig" : {

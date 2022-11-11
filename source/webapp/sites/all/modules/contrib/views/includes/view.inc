@@ -1195,6 +1195,9 @@ class view extends views_db_object {
     if (!empty($this->live_preview)) {
       $cache = FALSE;
     }
+    elseif (views_view_has_form_elements($this) && isset($_POST['form_id']) && $_POST['form_id'] == views_form_id($this)) {
+      $cache = FALSE;
+    }
     else {
       $cache = $this->display_handler->get_plugin('cache');
     }
@@ -1261,6 +1264,9 @@ class view extends views_db_object {
 
     // Check for already-cached output.
     if (!empty($this->live_preview)) {
+      $cache = FALSE;
+    }
+    elseif (views_view_has_form_elements($this) && isset($_POST['form_id']) && $_POST['form_id'] == views_form_id($this)) {
       $cache = FALSE;
     }
     else {

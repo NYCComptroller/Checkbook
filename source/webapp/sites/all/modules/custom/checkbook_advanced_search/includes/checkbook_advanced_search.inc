@@ -471,7 +471,7 @@ function _checkbook_advanced_search_get_fund_class_and_id()
             'fund_class_id',
             'fund_class_name'
         ), NULL, 'fund_class_name');
-        //$results = array('' => 'All Fund Class');
+        $results = array();
         foreach ($data as $row) {
             if (strtolower($row['fund_class_name']) == 'general fund')
                 $results[$row['fund_class_id']] = $row['fund_class_name'];

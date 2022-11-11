@@ -26,9 +26,9 @@ $contracts_series[$index]->tooltip_label = $tooltip_label;
 
 $index += 1;
 }
-$node->widgetConfig->chartConfig->series[0]->name = 'Number of Contracts';
-$node->widgetConfig->chartConfig->series[0]->type = 'line';
-$node->widgetConfig->chartConfig->series[0]->data = $contracts_series;
+$node->widgetConfig->chartConfig->series[0]['name'] = 'Number of Contracts';
+$node->widgetConfig->chartConfig->series[0]['type'] = 'line';
+$node->widgetConfig->chartConfig->series[0]['data'] = $contracts_series;
 $node->widgetConfig->chartConfig->xAxis->categories = $years;
 ",
 "chartConfig" : {
