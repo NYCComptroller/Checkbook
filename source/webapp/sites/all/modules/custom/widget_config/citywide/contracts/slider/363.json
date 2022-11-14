@@ -58,6 +58,7 @@ if(!preg_match('/^contracts_pending/',$url) ){
                "seriesDefaultParameters":{"document_code.document_code.document_code":"RCT1","contract_status.contract_status":"R"}
             },
  {
+//@TODO: Unset pending Contracts for check_oge
                 "dataset": "checkbook:pending_contracts",
                                 "columns": [
                     "current_amount_sum","total_contracts","total_contract_amount"
@@ -68,6 +69,7 @@ if(!preg_match('/^contracts_pending/',$url) ){
                "seriesDefaultParameters":{"document_code.document_code.document_code":"MMA1~MA1~MAR~CTA1~ CT1~CTR","latest_flag":"Y"}
             },
 {
+//@TODO: Unset pending Contracts for check_oge
                 "dataset": "checkbook:pending_contracts",
                                 "columns": [
                     "current_amount_sum","total_contracts","total_contract_amount"
@@ -78,6 +80,7 @@ if(!preg_match('/^contracts_pending/',$url) ){
                "seriesDefaultParameters":{"document_code.document_code.document_code":"MMA1~MA1~MAR~CTA1~ CT1~CTR"}
             },
  {
+ //@TODO: Unset pending Contracts for check_oge
                 "dataset": "checkbook:pending_contracts",
                                 "columns": [
                     "current_amount_sum","total_contracts","total_contract_amount"
@@ -88,6 +91,7 @@ if(!preg_match('/^contracts_pending/',$url) ){
                "seriesDefaultParameters":{"document_code.document_code.document_code":"RCT1","latest_flag":"Y"}
             },
 {
+//@TODO: Unset pending Contracts for check_oge
                 "dataset": "checkbook:pending_contracts",
                                 "columns": [
                     "current_amount_sum","total_contracts","total_contract_amount"
