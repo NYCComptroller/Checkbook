@@ -44,11 +44,14 @@
             }
         }
 	$index = 0;
+        if (!isset($node->widgetConfig->chartConfig->series)) {
+          $node->widgetConfig->chartConfig->series[0] = new stdClass();
+        }
         $total_contracts = 0;
         if(count($series_data) > 0){
             foreach($series_data as $row){
-                $series_new[$index]->y = (int)$row['count'];
-                $series_new[$index]->name = $row['status'];
+                $series_new[$index]['y'] = (int)$row['count'];
+                $series_new[$index]['name'] = $row['status'];
                 $index += 1;
                 $total_contracts += (int)$row['count'];
             }
@@ -56,7 +59,9 @@
         }else{
            $node->data = null;
         }
-	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+
+    $node->widgetConfig->chartConfig->series[0]->data = $series_new;
+
     $dashboard= RequestUtilities::getRequestParamValue('dashboard');
     if($dashboard == 'sp' || $dashboard == 'ms'){
         $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Sub Vendor Contracts Status by Prime Contracts';
