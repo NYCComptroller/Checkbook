@@ -364,7 +364,7 @@ class ContractURLHelper
    * @param $node
    * @return string
    */
-    public function _prepare_oge_spent_to_date_url($row, $node){
+    public static function _prepare_oge_spent_to_date_url($row, $node){
       $oge_agency_name = isset($row['agency_name_checkbook_oge_agency']) ? $row['agency_name_checkbook_oge_agency'] : null;
       $oge_vendor_name = isset($row['legal_name_checkbook_oge_vendor']) ? $row['legal_name_checkbook_oge_vendor'] : null;
 

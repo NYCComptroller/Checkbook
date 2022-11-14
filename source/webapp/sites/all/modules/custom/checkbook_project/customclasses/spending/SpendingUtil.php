@@ -1063,10 +1063,10 @@ class SpendingUtil{
                 case '4':
                 case '5':
                 case '9':
-                    $mwbe_spending_prime += $row['total_spending'];
+                    $mwbe_spending_prime = (int)$mwbe_spending_prime + (int)$row['total_spending'];
     				break;
     			case '7':
-    				$non_mwbe_spending_prime += $row['total_spending'];
+    				$non_mwbe_spending_prime = (int)$non_mwbe_spending_prime + (int)$row['total_spending'];
     				break;
 
     		}

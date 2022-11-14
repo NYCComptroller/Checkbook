@@ -79,7 +79,12 @@ if ($contract_amount > 0) {
   $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format($contract_amount, 1, '$'), RequestUtil::getTopNavURL("contracts"), $options);
 }else{
   //Get URL if there are any contracts exists in Contracts bottom container from 363.json
-  $contracts_url = RequestUtil::getContractsBottomSliderPath();
+  if (preg_match('/datasource\/checkbook_oge/',$_GET['q'])) {
+    $contracts_url = null;
+  } else {
+    $contracts_url = RequestUtil::getContractsBottomSliderPath();
+  }
+
   if(isset($contracts_url)){
     $contracts_url = RequestUtil::getTopNavURL("contracts", $contracts_url);
     $contracts_link = l('<span class="nav-title">Contracts</span><br>' . custom_number_formatter_format(0, 1, '$'), $contracts_url, $options);

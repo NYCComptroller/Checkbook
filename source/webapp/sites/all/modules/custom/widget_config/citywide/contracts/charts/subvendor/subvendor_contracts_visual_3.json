@@ -87,9 +87,9 @@
                         . ( in_array($row['document_code'], array('MMA1','MA1')) ? '/magid/' : '/agid/' )
                         .  $row['original_agreement_id'] . '/doctype/' . $row['document_code']
                         . _checkbook_append_url_params()	 ;
-	 		$series_new[$index]->url = $link_url;
-			$series_new[$index]->y = (float)$row['maximum_contract_amount'];
-			$series_new[$index]->tooltip_label = $tooltip_label;
+	 		$series_new[$index]['url'] = $link_url;
+			$series_new[$index]['y'] = (float)$row['maximum_contract_amount'];
+			$series_new[$index]['tooltip_label'] = $tooltip_label;
 			$node->widgetConfig->gridConfig->data[] = array($row['contract_number'],$row['maximum_contract_amount'],$row['legal_name'], $row['agency_name']  );
 			$index += 1;
 	}
