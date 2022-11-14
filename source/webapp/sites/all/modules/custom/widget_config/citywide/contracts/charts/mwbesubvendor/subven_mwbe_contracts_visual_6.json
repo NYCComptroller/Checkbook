@@ -82,10 +82,10 @@
 			$link = strstr($_GET['q'],'/',true) .  ContractUtil::get_contracts_vendor_link_sub($row['vendor_id'],RequestUtilities::getRequestParamValue('year'),
 				RequestUtilities::getRequestParamValue('yeartype'), RequestUtilities::getRequestParamValue('agency')) .
 				'?expandBottomCont=true';
-			$series_new[$index]->url = 	$link;
+			$series_new[$index]['url'] = 	$link;
 
-			$series_new[$index]->y = (float)$row['current_amount_sum'];
-			$series_new[$index]->tooltip_label = $tooltip_label;
+			$series_new[$index]['y'] = (float)$row['current_amount_sum'];
+			$series_new[$index]['tooltip_label'] = $tooltip_label;
 			$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],$row['total_contracts'],$row['current_amount_sum'] );
 			$index += 1;
 	}
