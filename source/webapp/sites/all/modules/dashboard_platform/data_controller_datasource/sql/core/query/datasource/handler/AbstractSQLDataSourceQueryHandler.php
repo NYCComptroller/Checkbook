@@ -76,7 +76,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
     $datasourceA = $environment_metamodel->getDataSource($datasourceNameA);
     $datasourceB = $environment_metamodel->getDataSource($datasourceNameB);
 
-    list($isDataSourceCompatible, $isTypeCompatible, $isHostCompatible, $isDatabaseCompatible) =
+    [$isDataSourceCompatible, $isTypeCompatible, $isHostCompatible, $isDatabaseCompatible] =
       $this->getExtension('isJoinSupported')->check($datasourceA, $datasourceB);
 
     return $isDataSourceCompatible && $isTypeCompatible && $isHostCompatible && $isDatabaseCompatible;
@@ -170,7 +170,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
     $queryRequest->setPagination(0);
 
     $aggrStatement = $this->prepareCubeQueryStatement($callcontext, $queryRequest);
-    list($isSubqueryRequired, $assembledAggregationSections) = $aggrStatement->prepareSections(NULL);
+    [$isSubqueryRequired, $assembledAggregationSections] = $aggrStatement->prepareSections(NULL);
     $sql = Statement::assemble(
       $isSubqueryRequired,
       NULL, // assembling all columns
@@ -303,7 +303,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
 
     for ($i = 0, $count = count($statements); $i < $count; $i++) {
       $statement = $statements[$i];
-      list($isSubqueryRequired, $assembledSections) = $statement->prepareSections($columnNames);
+      [$isSubqueryRequired, $assembledSections] = $statement->prepareSections($columnNames);
 
       if ($i > 0) {
         $sql .= "\n UNION\n";
@@ -452,7 +452,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
 
     // preparing statement which aggregates data
     $aggrStatement = $this->prepareCubeQueryStatement($callcontext, $request);
-    list($isSubqueryRequired, $assembledAggregationSections) = $aggrStatement->prepareSections(NULL);
+    [$isSubqueryRequired, $assembledAggregationSections] = $aggrStatement->prepareSections(NULL);
 
     // assembling porting of SQL which is responsible for aggregation
     if (isset($request->referencedRequests)) {
@@ -482,8 +482,9 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
         $levelRootColumn = new ColumnSection($levelDatabaseColumnName);
         $levelRootColumn->requestColumnIndex = $requestDimension->requestColumnIndex;
         $levelRootColumn->visible = isset($requestDimension->requestColumnIndex);
-
-        $aggregationTableSection->columns[] = $levelRootColumn;
+        if(isset($aggregationTableSection)){
+          $aggregationTableSection->columns[] = $levelRootColumn;
+        }
 
         if (!isset($requestDimension->properties)) {
           continue;
@@ -578,11 +579,13 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
           $measureSection = new ColumnSection($databaseColumnName);
           $measureSection->requestColumnIndex = $requestMeasure->requestColumnIndex;
 
-          $aggregationTableSection->columns[] = $measureSection;
+          if(isset($aggregationTableSection)) {
+            $aggregationTableSection->columns[] = $measureSection;
+          }
         }
       }
 
-      list($isSubqueryRequired, $assembledJoinSections) = $joinStatement->prepareSections(NULL);
+      [$isSubqueryRequired, $assembledJoinSections] = $joinStatement->prepareSections(NULL);
       $sql = Statement::assemble($isSubqueryRequired, NULL, $assembledJoinSections);
     } else {
       $sql = Statement::assemble($isSubqueryRequired, NULL, $assembledAggregationSections);
@@ -650,7 +653,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
     $datasource = $environment_metamodel->getDataSource($cubeDataset->datasourceName);
 
     $statement = $this->prepareCubeQueryStatement($callcontext, $request);
-    list($isSubqueryRequired, $assembledSections) = $statement->prepareSections(NULL);
+    [$isSubqueryRequired, $assembledSections] = $statement->prepareSections(NULL);
 
     $statement = new Statement();
     $statement->tables[] = new SubquerySection(Statement::assemble($isSubqueryRequired, NULL, $assembledSections));
@@ -681,7 +684,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
     for ($i = 0; $i < $count; $i++) {
       $statement = $statements[$i];
 
-      list($isSubqueryRequired, $assembledSections) = $statement->prepareSections($requestedColumnNames);
+      [$isSubqueryRequired, $assembledSections] = $statement->prepareSections($requestedColumnNames);
 
       if ($i > 0) {
         $sql .= "\n UNION\n";
