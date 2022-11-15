@@ -67,7 +67,7 @@ function _checkbook_project_applyParameterFilters($node, $parameters){
   //Convert configuration to array for processing
   $urlParamMap = isset($node->widgetConfig->urlParamMap) ? get_object_vars($node->widgetConfig->urlParamMap) : array();
 
-  $originalRequestParams = $node->widgetConfig->originalRequestParams;
+  $originalRequestParams = isset($node->widgetConfig->originalRequestParams) ? $node->widgetConfig->originalRequestParams : array();
   $logicalOrFacet = $node->widgetConfig->logicalOrFacet;
   $unionOrFacet = $node->widgetConfig->unionOrFacet;
 
