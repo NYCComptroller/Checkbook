@@ -330,7 +330,7 @@ class ContractURLHelper
    * @param $node
    * @return string
    */
-    public function _prepare_oge_contracts_spending_url($row, $node){
+    public static function _prepare_oge_contracts_spending_url($row, $node){
       $agencies = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id', 'agency_name'), array('agency_id' => $row['agency_id'], 'is_oge_agency' => 'Y'));
       $oge_agency_name = $agencies[0]['agency_name'];
 
