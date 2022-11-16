@@ -35,29 +35,24 @@
                         3 => 'Reported Contracts without Sub Vendors'
                         );
 	$index = 0;
-        $total_contracts = 0;
+  $total_contracts = 0;
 
-        if(count($node->data) > 0){
-            foreach($node->data as $row){
-                $data[$row['scntrc_status']] = (int)$row['total_contracts'];
-            }
-            foreach($legend_order as $scntrc_status_id => $scntrc_status_name){
-                if($data[$scntrc_status_id] > 0){
-                    $series[$index]['y'] = $data[$scntrc_status_id];
-                    $series[$index]['name'] = $scntrc_status_name;
-                    $index += 1;
-                    $total_contracts += $data[$scntrc_status_id];
-                }
-            }
-            if (!isset($node->widgetConfig->chartConfig->series)) {
-              $node->widgetConfig->chartConfig->series[0] = new stdClass();
-            }
-            $node->widgetConfig->chartConfig->series[0]->data = $series;
-        }else{
-            $node->data = null;
-        }
-        $node->widgetConfig->chartTitle =  MappingUtil::getCurrenEthnicityName() . ' Sub Vendor Reporting by Prime Contracts';
-$node->widgetConfig->chartSubTitle =  'Total Number of Contracts: '.number_format($total_contracts);
+  if(count($node->data) > 0){
+      foreach($node->data as $row){
+          $data[$row['scntrc_status']] = (int)$row['total_contracts'];
+      }
+      foreach($legend_order as $scntrc_status_id => $scntrc_status_name){
+          if($data[$scntrc_status_id] > 0){
+              $series[$index]['y'] = $data[$scntrc_status_id];
+              $series[$index]['name'] = $scntrc_status_name;
+              $index += 1;
+              $total_contracts += $data[$scntrc_status_id];
+          }
+      }
+      $node->widgetConfig->chartConfig->series[0]['data'] = $series;
+  }
+  $node->widgetConfig->chartTitle =  MappingUtil::getCurrenEthnicityName() . ' Sub Vendor Reporting by Prime Contracts';
+  $node->widgetConfig->chartSubTitle =  'Total Number of Contracts: '.number_format($total_contracts);
 ",
 "chartConfig": {
 "chart": {
