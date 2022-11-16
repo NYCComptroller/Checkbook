@@ -56,7 +56,7 @@
             $index += 1;
             $total_contracts += (int)$row['count'];
           }
-          $node->widgetConfig->chartConfig->series[0]->data = $series_new;
+          $node->widgetConfig->chartConfig->series[0]['data'] = $series_new;
         }
     }
     $dashboard= RequestUtilities:: getRequestParamValue('dashboard');
