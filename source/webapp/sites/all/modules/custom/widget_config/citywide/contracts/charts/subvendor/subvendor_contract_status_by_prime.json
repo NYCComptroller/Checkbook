@@ -28,48 +28,44 @@
     $node->data  = $data;
 ",
 "widgetUpdateJSONConfig":"
-	$series_data = array();
+    $series_data = array();
+    if(count($node->data) > 0){
         foreach($node->data as $row){
-            if($row['acco_approved'] > 0){
-                $series_data[] = array('status' => 'ACCO Approved Sub Vendor', 'count' => $row['acco_approved']);
-            }
-            if($row['acco_reviewing'] > 0){
-                $series_data[] = array('status' => 'ACCO Reviewing Sub Vendor', 'count' => $row['acco_reviewing']);
-            }
-            if($row['acco_rejected'] > 0){
-                $series_data[] = array('status' => 'ACCO Rejected Sub Vendor', 'count' => $row['acco_rejected']);
-            }
-            if($row['acco_cancelled'] > 0){
-                $series_data[] = array('status' => 'ACCO Canceled Sub Vendor', 'count' => $row['acco_cancelled']);
-            }
+        if($row['acco_approved'] > 0){
+        $series_data[] = array('status' => 'ACCO Approved Sub Vendor', 'count' => $row['acco_approved']);
         }
-	$index = 0;
+        if($row['acco_reviewing'] > 0){
+        $series_data[] = array('status' => 'ACCO Reviewing Sub Vendor', 'count' => $row['acco_reviewing']);
+        }
+        if($row['acco_rejected'] > 0){
+        $series_data[] = array('status' => 'ACCO Rejected Sub Vendor', 'count' => $row['acco_rejected']);
+        }
+        if($row['acco_cancelled'] > 0){
+        $series_data[] = array('status' => 'ACCO Canceled Sub Vendor', 'count' => $row['acco_cancelled']);
+        }
+        }
+        $index = 0;
         if (!isset($node->widgetConfig->chartConfig->series)) {
-          $node->widgetConfig->chartConfig->series[0] = new stdClass();
+          $node->widgetConfig->chartConfig->series[0] = array();
         }
         $total_contracts = 0;
         if(count($series_data) > 0){
-            foreach($series_data as $row){
-                $series_new[$index]['y'] = (int)$row['count'];
-                $series_new[$index]['name'] = $row['status'];
-                $index += 1;
-                $total_contracts += (int)$row['count'];
-            }
-            $node->widgetConfig->chartConfig->series[0]->data = $series_new;
-        }else{
-           $node->data = null;
+          foreach($series_data as $row){
+            $series_new[$index]['y'] = (int)$row['count'];
+            $series_new[$index]['name'] = $row['status'];
+            $index += 1;
+            $total_contracts += (int)$row['count'];
+          }
+          $node->widgetConfig->chartConfig->series[0]->data = $series_new;
         }
-
-    $node->widgetConfig->chartConfig->series[0]->data = $series_new;
-
-    $dashboard= RequestUtilities::getRequestParamValue('dashboard');
-    if($dashboard == 'sp' || $dashboard == 'ms'){
-        $node->widgetConfig->chartTitle = MappingUtil::getCurrenEthnicityName() . ' Sub Vendor Contracts Status by Prime Contracts';
-    }else{
-        $node->widgetConfig->chartTitle =  'Sub Vendor Contracts Status by Prime Contracts';
     }
-
-        $node->widgetConfig->chartSubTitle =  'Total Number of Sub Vendor Contracts Submitted: '.number_format($total_contracts);
+    $dashboard= RequestUtilities:: getRequestParamValue('dashboard');
+    if($dashboard == 'sp' || $dashboard == 'ms'){
+      $node->widgetConfig->chartTitle = MappingUtil:: getCurrenEthnicityName() . ' Sub Vendor Contracts Status by Prime Contracts';
+    }else{
+      $node->widgetConfig->chartTitle =  'Sub Vendor Contracts Status by Prime Contracts';
+    }
+    $node->widgetConfig->chartSubTitle =  'Total Number of Sub Vendor Contracts Submitted: '.number_format($total_contracts);
 ",
 "chartConfig": {
 "chart": {
