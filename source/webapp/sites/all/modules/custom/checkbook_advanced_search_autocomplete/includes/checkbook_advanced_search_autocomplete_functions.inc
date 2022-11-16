@@ -320,7 +320,7 @@ function _checkbook_advanced_search_autocomplete_budget_budgetname($fiscal_year,
 
 function _checkbook_advanced_search_get_payroll_years($dataSource, $form = null){
   $yearList = _checkbook_advanced_search_get_year(Domain::$PAYROLL, $form, $dataSource);
-  if(is_countable($results) && count($yearList) > 0){
+  if(is_countable($yearList) && count($yearList) > 0){
     $matches = array();
     foreach($yearList as $key => $value){
       $matches[] = array('label'=> $value,'value' => $key);
