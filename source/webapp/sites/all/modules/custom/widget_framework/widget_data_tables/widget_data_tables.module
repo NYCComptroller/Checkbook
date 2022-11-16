@@ -93,10 +93,10 @@ function _widget_add_padding_data($node){
     if(check_node_flag_visibilty($row->visibility_flag, $node)){
        if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))){
           $colDataTableOptions = $node->widgetConfig->dataTableOptions->aoColumns[$index];
-          if(!isset($colDataTableOptions)){
+          if(!isset($colDataTableOptions) && isset($row->type)){
             $colDataTableOptions->sClass = $row->type;
           }
-          if(preg_match("/number/",$colDataTableOptions->sClass)){
+          if(str_contains($colDataTableOptions->sClass, "number")){
             $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
             $labelWords =  explode("<br/>",$label);
             $maxlength = 0;
@@ -109,7 +109,7 @@ function _widget_add_padding_data($node){
             }
             $paddings[$row->column] =  ( ($maxlength - $maxColumnDataLength )/2 > 0 ) ? ($maxlength - $maxColumnDataLength )/2 : 0;
           }
-          if(preg_match("/number-center/",$colDataTableOptions->sClass) || preg_match("/number-center-scroll/",$colDataTableOptions->sClass)){
+          if(str_contains($colDataTableOptions->sClass, "number-center") || str_contains($colDataTableOptions->sClass, "number-center-scroll")){
             $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
             $labelWords =  explode("<br/>",$label);
             $maxlength = 0;
@@ -367,7 +367,6 @@ function widget_data_tables_widget_view(&$node) {
  	switch ($node->widgetConfig->widgetSubType){
 		case "template":
 			return theme($node->widgetConfig->template, array('node'=> $node));
-		  break;
 		case "ajaxSimple" :
       $sAjaxSource = '/dashboard_platform/data_tables/ajax_data/node/' .$node->nid  ;
       if(is_array($node->widgetConfig->requestParams))  {
@@ -392,7 +391,6 @@ function widget_data_tables_widget_view(&$node) {
 			  } );
 			}##";
       return theme('widget_data_tables_by_rows_theme', array('node'=> $node));
-		  break;
     case "dataTableList" :
       $sAjaxSource = '/dashboard_platform/data_tables_list/ajax_data/node/' . $node->nid;
       $reqParams = array();
@@ -423,10 +421,8 @@ function widget_data_tables_widget_view(&$node) {
       } );
       }##";
       return theme('widget_data_tables_list_by_rows_theme', array('node'=> $node));
-      break;
 		default :
 			return theme('widget_data_tables_default_theme', array('node'=> $node));
-		  break;
 	}
 }
 
