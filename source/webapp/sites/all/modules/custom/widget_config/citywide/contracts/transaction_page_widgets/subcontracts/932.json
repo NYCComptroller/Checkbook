@@ -63,6 +63,9 @@
         "sub_contract_id",
         "sort_order"
     ],
+  "paramTypeConfig": {
+    "vendornm_exact": "eqignorecase"
+  },
     "logicalOrColumns":[
         ["prime_vendor_code","sub_vendor_code"],
         ["prime_vendor_type","sub_vendor_type"],
