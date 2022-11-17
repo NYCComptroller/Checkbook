@@ -100,7 +100,7 @@ class Form{
                 $form[$domain][$domain_field]['#prefix'] = $field->prefix . '<div class="datafield datefilter clearfix">';
                 $form[$domain][$domain_field]['#suffix'] = '</div>';
                 $form[$domain][$domain_field]['#attributes'] = array('class' => array('watch'));
-                $form[$domain][$domain_field]['#default_value'] = '';
+                $form[$domain][$domain_field]['#default_value'] = 0;
 
                 //year_filter_start
                 $domain_field = "{$data_source}_{$this->domain_name}_year_filter_start";
