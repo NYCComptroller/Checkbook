@@ -113,7 +113,7 @@ function _checkbook_faceted_search_node_autocomplete()
   widget_invoke($node, 'widget_prepare');
   $node->widgetConfig->limit = 10;
   widget_data($node);
-  $node->data = _checkbook_faceted_search_update_data($node);log_error($node->data);
+  $node->data = _checkbook_faceted_search_update_data($node);
   if (!isset($node->data['unchecked'])) {
     return drupal_json_output(array("No Matches Found"));
   }
