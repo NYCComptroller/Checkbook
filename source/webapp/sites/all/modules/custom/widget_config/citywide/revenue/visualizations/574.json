@@ -13,13 +13,11 @@
              },
             {
                 "colLabel": "recognized",
-                "column": "revenue_amount_sum",
-                "eval":true
+                "column": "revenue_amount_sum"
             },
             {
                 "colLabel": "remaining",
-                "column": "remaining_amount",
-                "eval":true
+                "column": "remaining_amount"
             }
         ]
   },
