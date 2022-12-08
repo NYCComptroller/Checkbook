@@ -30,6 +30,12 @@
       "Budget Code"
     ]
   },
+  "ref_budget_code_list": {
+    "sql": "SELECT DISTINCT bc.budget_code \"Budget Code\", bc.attribute_name \"Budget Code Name\" FROM ref_budget_code bc ORDER BY bc.attribute_name",
+    "force_quote": [
+      "Ref Budget Code"
+    ]
+  },
   "budget_expense_category_code_list": {
     "sql": "SELECT DISTINCT oc.object_class_code, oc.object_class_name FROM ref_object_class oc WHERE EXISTS ( select 1 from budget b where  oc.object_class_id = b.object_class_id ) ORDER BY oc.object_class_name",
     "force_quote": [

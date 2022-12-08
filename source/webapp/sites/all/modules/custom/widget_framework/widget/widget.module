@@ -481,10 +481,9 @@ function load_widget_data($node, $resultFormatter=null) {
     $config->columns_datasource = isset($config->columns_datasource) ? $config->columns_datasource : null;
     $columns = _update_columns_by_datasource($config->columns, $config->columns_datasource,$config->keepOriginalDatasource);
 
-    $orderBy = $config->orderBy;
+    $orderBy = $config->orderBy ?? null;
     $startWith = isset($config->startWith) ? $config->startWith : 0;
-    $limit = $config->limit;
-
+    $limit = $config->limit ?? null;
 
     //Currently this is for list type of dataSets. For cube's more changes are required
     if($config->generateDBQuery){
@@ -797,9 +796,6 @@ function widget_data(&$node) {
     foreach ($requestParams as $key => $value) {
       $requestParams[$key] = pg_escape_string(htmlspecialchars_decode($value));
     }
-  }
-
-  if(isset($requestParams)) {
     $config->requestParams = $requestParams;
   }
 
@@ -819,8 +815,7 @@ function widget_data(&$node) {
 
   if(isset($node->widgetConfig->widgetDataLoader)){
     eval($node->widgetConfig->widgetDataLoader);
-  }
-  elseif (isset($node->widgetConfig->dataset) || isset($node->widgetConfig->model)) {
+  }elseif (isset($node->widgetConfig->dataset) || isset($node->widgetConfig->model)) {
     LogHelper::log_notice("Loading widget node # ".$node->nid);
     load_widget_data($node, $resultFormatter);
   }
