@@ -77,8 +77,8 @@ foreach($all_data as $employment_type => $employment_data) {
     $all_data[$employment_type] = $ordered_data;
 }
 
-$salaried_count = count($all_data[PayrollType::$SALARIED]);
-$non_salaried_count = count($all_data[PayrollType::$NON_SALARIED]);
+$salaried_count = is_array($all_data[PayrollType::$SALARIED]) ? count($all_data[PayrollType::$SALARIED]) : 0;
+$non_salaried_count = is_array($all_data[PayrollType::$NON_SALARIED])? count($all_data[PayrollType::$NON_SALARIED]) : 0;
 
 
 //Default view based on salamttype in url

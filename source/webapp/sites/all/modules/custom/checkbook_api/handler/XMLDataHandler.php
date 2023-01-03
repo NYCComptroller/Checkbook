@@ -38,7 +38,7 @@ class XMLDataHandler extends AbstractDataHandler
         if($this->requestSearchCriteria->hasErrors() || $this->requestSearchCriteria->hasMessages()){
             $errors = $this->requestSearchCriteria->getErrors();
             $status .= '<messages>';
-            if(count($errors) > 0){//errors
+            if(is_countable($errors) && count($errors) > 0){//errors
                 foreach($errors as $errorCode => $codeErrors){
                     foreach($codeErrors as $error){
                         $status .= '<message>';
@@ -49,7 +49,7 @@ class XMLDataHandler extends AbstractDataHandler
             }
 
             $messages = $this->requestSearchCriteria->getMessages();
-            if(count($messages) > 0){//messages
+            if(is_countable($messages) && count($messages) > 0){//messages
                 foreach($messages as $msgCode => $codeMessages){
                     foreach($codeMessages as $message){
                         $status .= '<message>';

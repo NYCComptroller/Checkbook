@@ -12,7 +12,7 @@ class payrollDetails {
      * @param $node
      * @throws Exception
      */
-    public function getData(&$node){
+    public static function getData(&$node){
 
         list ($year_type, $year, $title) = RequestUtilities::get(['yeartype', 'year|calyear', 'title']);
         list ($agency, $month, $smnid,$payroll_type) = RequestUtilities::get(['agency', 'month', 'smnid','payroll_type']);
@@ -209,7 +209,7 @@ class payrollDetails {
      * @param null $employee_id
      * @return int
      */
-    public function getMaxAnnualSalary($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
+    public static function getMaxAnnualSalary($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
     {
         $data_source = Datasource::getCurrent();
         $dataset = 'aggregateon_payroll_employee_agency';
@@ -278,7 +278,7 @@ class payrollDetails {
      * @param null $employee_id
      * @return array
      */
-    public function getMaxAnnualSalaryByPayFrequency($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
+    public static function getMaxAnnualSalaryByPayFrequency($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
     {
         $data_source = Datasource::getCurrent();
         $select = $where = $group_by = $join = "";
@@ -344,7 +344,7 @@ class payrollDetails {
      * @param null $employee_id
      * @return array
      */
-    public function getMaxHourlyRateByPayFrequency($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
+    public static function getMaxHourlyRateByPayFrequency($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
     {
         $data_source = Datasource::getCurrent();
         $select = $where = $group_by = $join = "";
@@ -409,7 +409,7 @@ class payrollDetails {
      * @param null $employee_id
      * @return array
      */
-    public function getMaxDailyWageByPayFrequency($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
+    public static function getMaxDailyWageByPayFrequency($year, $year_type, $month = NULL, $agency = NULL, $title = NULL, $employee_id = NULL)
     {
         $data_source = Datasource::getCurrent();
         $select = $where = $group_by = $join = "";

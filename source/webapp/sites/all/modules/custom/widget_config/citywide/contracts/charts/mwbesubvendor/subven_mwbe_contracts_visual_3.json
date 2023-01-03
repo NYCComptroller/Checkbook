@@ -95,10 +95,10 @@
 
 			$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'),
 						array('agency'=>$row['agency_id']) );
-			$series_new[$index]->url = 	$link;
+			$series_new[$index]['url'] = 	$link;
 
-			$series_new[$index]->y = (float)$row['current_amount_sum'];
-			$series_new[$index]->tooltip_label = $tooltip_label;
+			$series_new[$index]['y'] = (float)$row['current_amount_sum'];
+			$series_new[$index]['tooltip_label'] = $tooltip_label;
 			$node->widgetConfig->gridConfig->data[] = array($row['agency_name'],$row['total_contracts'],$row['current_amount_sum'] );
 			$index += 1;
 	}

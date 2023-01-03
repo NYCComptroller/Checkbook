@@ -53,8 +53,8 @@
         $categories[]=html_entity_decode($row['vendor_vendor_legal_name'],ENT_QUOTES);
         $data[] = (object)array('totalcontracts'=>$row['total_contracts'],'year'=>$row['fiscal_year_id'],'y'=>$row['current_amount_sum'],'url'=>$link,'name'=>strtoupper(html_entity_decode($row['vendor_vendor_legal_name'],ENT_QUOTES)));
     }
-    $node->widgetConfig->chartConfig->series[0]->data = $data;$node->widgetConfig->chartConfig->xAxis->categories = $categories;
-    $node->widgetConfig->chartConfig->series[0]->name = 'Contract Amount';
+    $node->widgetConfig->chartConfig->series[0]['data'] = $data;$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+    $node->widgetConfig->chartConfig->series[0]['name'] = 'Contract Amount';
     $node->widgetConfig->chartTitle = _checkbook_project_getChartTitle('contracts','Top Ten Prime Vendors','by');
 
     return $node->data;",

@@ -48,7 +48,7 @@
               $where_filters[] = _widget_build_sql_condition( $parameter_mapping[$param], $value);
             }
           }
-          if(count($where_filters) > 0){
+          if(is_countable($where_filters) && count($where_filters) > 0){
             $where_filter = ' WHERE ' . implode(' AND ' , $where_filters);
           }
           $datasource = RequestUtilities::getRequestParamValue('datasource');

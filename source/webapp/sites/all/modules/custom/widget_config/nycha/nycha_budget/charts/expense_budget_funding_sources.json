@@ -17,13 +17,11 @@
       },
       {
         "colLabel": "committed",
-        "column": "budget_committed",
-        "eval":true
+        "column": "budget_committed"
       },
       {
         "colLabel": "remaining",
-        "column": "budget_remaining",
-        "eval":true
+        "column": "budget_remaining"
       }
     ]
   },

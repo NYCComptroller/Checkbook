@@ -13,15 +13,15 @@ class RevenueDataService extends DataService implements IRevenueDataService {
     function GetRevenueCategoriesByRevenue($parameters, $limit = null, $orderBy = null) {
         return $this->configureCitywide(__FUNCTION__,$parameters,$limit,$orderBy);
     }
-    
+
     function GetAgenciesCrossYearCollectionsByRevenue($parameters, $limit = null, $orderBy = null) {
         return $this->configureCitywide(__FUNCTION__,$parameters,$limit,$orderBy);
     }
-    
+
     function GetRevenueCategoriesCrossYearCollectionsByRevenue($parameters, $limit = null, $orderBy = null) {
         return $this->configureCitywide(__FUNCTION__,$parameters,$limit,$orderBy);
     }
-    
+
     function GetRevenueFundingClassesCrossYearCollectionsByRevenue($parameters, $limit = null, $orderBy = null) {
         return $this->configureCitywide(__FUNCTION__,$parameters,$limit,$orderBy);
     }
@@ -34,7 +34,7 @@ class RevenueDataService extends DataService implements IRevenueDataService {
      * @return DataService
      */
     private function configureCitywide($dataFunction, $parameters, $limit = null, $orderBy = null) {
-        return $this->configure($dataFunction,$parameters,$limit,$orderBy,SqlConfigPath::CitywideRevenue);
+        return $this->configure($dataFunction, SqlConfigPath::CitywideRevenue, $parameters,$limit,$orderBy);
     }
 }
 

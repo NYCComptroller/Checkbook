@@ -58,6 +58,8 @@ function _checkbook_export_grid_transactions($nodeId){
         $label = (isset($column->labelAlias))? (WidgetUtil::getLabel($column->labelAlias)) : $column->colLabel;
         if($column->eval) {
             $label = eval("return $label;");
+        }else{
+            $label = ucwords($label);
         }
         $label = str_replace('<br/>',' ', $label);
         if($i == 0)

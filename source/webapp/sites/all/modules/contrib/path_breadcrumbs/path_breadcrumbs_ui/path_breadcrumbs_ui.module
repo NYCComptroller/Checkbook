@@ -946,7 +946,7 @@ function _path_breadcrumbs_ui_form_apply_default_values(&$form, $machine_name) {
  * @param $form_name
  *   Name of form that addes buttons.
  */
-function _path_breadcrumbs_ui_form_attach_buttons(&$form, $buttons = array(), $form_name) {
+function _path_breadcrumbs_ui_form_attach_buttons(&$form, $buttons = array(), $form_name = null) {
 
   if ($form_name == 'path_breadcrumbs_ui_add_form' || $form_name == 'path_breadcrumbs_ui_edit_form') {
     $form_wrapper = 'path-breadcrumbs-ui-form';

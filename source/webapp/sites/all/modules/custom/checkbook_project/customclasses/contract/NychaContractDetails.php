@@ -363,6 +363,7 @@ SQL;
                     ORDER BY issue_date_year, issue_date DESC
 SQL;
       $results = _checkbook_project_execute_sql_by_data_source($sql, Datasource::NYCHA);
+      $years = array();
       foreach ($results as $result) {
         $years[] = $result['issue_date_year'];
         $spendingByVendor[$result['issue_date_year']][] = array('issue_date' => $result['issue_date'], 'document_id' => $result['document_id'],

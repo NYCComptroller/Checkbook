@@ -8,5 +8,11 @@
 
 class RevenueUtil{
 
+  /**
+   * @return bool
+   */
+  public static function crossYearCollectionsCheck(){
+    return (_getRequestParamValue('year') < CheckbookDateUtil::getCurrentFiscalYearId());
+  }
 }
 ?>

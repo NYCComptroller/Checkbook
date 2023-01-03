@@ -100,11 +100,11 @@ AND latest_flag = 'Y'
 LIMIT 1";
 
 $results4 = _checkbook_project_execute_sql_by_data_source($querySubVendorinfo,Datasource::getCurrent());
-$res->data = $results4;
-
-$total_current_amount = $res->data[0]['total_current_amt'];
-$total_original_amount = $res->data[0]['total_original_amt'];
-$total_spent_todate = $res->data[0]['total_spent_todate'];
+if(count($results4) > 0) {
+  $total_current_amount = $results4[0]['total_current_amt'];
+  $total_original_amount = $results4[0]['total_original_amt'];
+  $total_spent_todate = $results4[0]['total_spent_todate'];
+}
 ?>
 <div class="dollar-amounts">
     <div class="spent-to-date"><?php echo custom_number_formatter_format($total_spent_todate, 2, "$");?>
@@ -147,8 +147,8 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
                                     . " ORDER BY c.sort_order ASC LIMIT 1";
 
         $results5 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatusInPIP,Datasource::getCurrent());
-        $result->data = $results5;
-        $subVendorStatusInPIP = ($result->data[0]['aprv_sta_id'] == 4 && $vendor_summary['check_amount'] == 0) ? "No Subcontract Payments Submitted" : $result->data[0]['sub_vendor_status_pip'];
+        $result['data']= $results5;
+        $subVendorStatusInPIP = ($result['data'][0]['aprv_sta_id'] == 4 && $vendor_summary['check_amount'] == 0) ? "No Subcontract Payments Submitted" : $result['data'][0]['sub_vendor_status_pip'];
 
         if(count($sub_contract_reference[$vendor]) > 1 && $index_spending == 0){
             $viewAll = "<a class='subContractViewAll'>Hide All<<</a>";
@@ -190,8 +190,9 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
                                     . "' ORDER BY c.sort_order ASC LIMIT 1";
 
         $results6 = _checkbook_project_execute_sql_by_data_source($querySubContractStatusInPIP,Datasource::getCurrent());
-        $result->data = $results6;
-        $subContractStatusInPIP = ($result->data[0]['aprv_sta_id'] == 4 && $vendor_summary['check_amount'] == 0) ? "No Subcontract Payments Submitted" : $result->data[0]['sub_contract_status_pip'];
+
+        $result['data'] = $results6;
+        $subContractStatusInPIP = ($result['data'][0]['aprv_sta_id'] == 4 && $vendor_summary['check_amount'] == 0) ? "No Subcontract Payments Submitted" : $result['data'][0]['sub_contract_status_pip'];
 
         $ref_id = $reference_id;
         $open = $index_sub_contract_reference == 0 ? '' : 'open';
@@ -271,7 +272,7 @@ foreach ($vendor_contract_summary as $vendor => $vendor_summary) {
     );
 
     $index_spending_transaction = 0;
-    if (count($vendor_spending_yearly_summary[$ref_id]) > 0) {
+    if (is_countable($vendor_spending_yearly_summary[$ref_id]) && count($vendor_spending_yearly_summary[$ref_id]) > 0) {
         foreach ($vendor_spending_yearly_summary[$ref_id] as $year => $results_spending_history_fy) {
 
             $open = $index_spending_transaction == 0 ? '' : 'open';

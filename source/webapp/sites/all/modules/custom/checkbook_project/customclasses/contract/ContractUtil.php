@@ -480,7 +480,6 @@ namespace { //global
        */
         public static function get_mwbe_category_url($minority_type_category_id, $is_prime_or_sub = null, $doctype = null){
             $lower_doctype = strtolower($doctype);
-
             /* Begin update for NYCCHKBK-4676 */
             $minority_type_category_name = MappingUtil::getMinorityCategoryById($minority_type_category_id);
             $dtsmnid = RequestUtilities::get("dtsmnid");
@@ -502,7 +501,7 @@ namespace { //global
             /* End update for NYCCHKBK-4676 */
 
             $mwbe_cats = MappingUtil::getMinorityCategoryMappings();
-            $minority_type_category_string = implode('~', $mwbe_cats[$minority_type_category_name]);
+            $minority_type_category_string = isset($mwbe_cats[$minority_type_category_name]) ? implode('~', $mwbe_cats[$minority_type_category_name]) : null;
 
             $current_url = explode('/',$_SERVER['HTTP_REFERER']);
             $status_index = array_search('contstatus',$current_url);

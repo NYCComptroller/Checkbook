@@ -14,6 +14,11 @@ function _checkbook_project_querydataset($dataset, $columns, $parameters = null)
     }
     $dataController = data_controller_get_instance();
     $dataset = _update_dataset_datasource($dataset);
+    if(isset($parameters)) {
+      foreach ($parameters as $key => $value) {
+        $parameters[$key] = pg_escape_string(htmlspecialchars_decode($value));
+      }
+    }
     $data = $dataController->queryDataset($dataset, $columns, $parameters, NULL, 0, NULL, NULL);
   } catch (Exception $exception) {
     log_error("Error getting data from the controller: \n" . $exception->getMessage()/*, $e*/);
@@ -70,11 +75,10 @@ function get_db_query($isList, $datasetName, $columns = NULL, $parameters = NULL
  * @param int $startWith Offset
  * @param null $limit Limit
  * @param null|ResultFormatter $resultFormatter ResultFormatter
- * @return DB results
+ * @return void $records
  */
 function get_db_results($isList, $datasetName, $columns = NULL, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL){
   $controller = data_controller_get_instance();
-  $records = NULL;
   if ($isList) {
     $records = $controller->queryDataset($datasetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
   } else {

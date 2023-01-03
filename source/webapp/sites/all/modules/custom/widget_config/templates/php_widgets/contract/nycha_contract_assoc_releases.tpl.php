@@ -337,7 +337,7 @@ foreach ($node->assocReleases as $release):?>
                                                     $yearList = $spendingByRelease[$release['release_number']]['year_list'];
                                                     $spendingData =  $spendingByRelease[$release['release_number']]['spending_by_release'];
                                                     $year_cnt = 0;
-                                                    if(count($spendingData) > 0):
+                                                    if(is_countable($spendingData) && count($spendingData) > 0):
                                                     foreach ($yearList as $year): $yearSpending = $spendingData[$year];
                                                     ?>
                                                         <tr class="outer <?= ($year_cnt % 2 ? 'even' : 'odd') ?>">

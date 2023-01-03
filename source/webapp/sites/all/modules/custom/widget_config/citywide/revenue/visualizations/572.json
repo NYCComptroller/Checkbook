@@ -13,13 +13,11 @@
              },
             {
                   "colLabel": "recognized",
-              "column": "revenue_amount_sum",
-                   "eval":true
+              "column": "revenue_amount_sum"
             },
             {
                   "colLabel": "remaining",
-              "column": "remaining",
-                   "eval":true
+              "column": "remaining"
             }
         ]
   },
@@ -40,8 +38,8 @@
   "orderBy":"-revenue_amount_sum",
   "transformationPHP":"
 
-  $landing_page = '/' . current_path() ;  
-  
+  $landing_page = '/' . current_path() ;
+
   foreach ($node->data as $key=>$row){
     $remain = $remain = $row['current_modified_budget'] - $row['revenue_amount_sum'];
     $node->data[$key]['remaining'] = $remain;

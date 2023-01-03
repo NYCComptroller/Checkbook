@@ -55,9 +55,9 @@
        $categories[]=html_entity_decode($row['agency_agency_agency_short_name'],ENT_QUOTES);
        $data[] = (object)array('total_contracts'=>$row['total_contracts'],'year'=>$row['fiscal_year_id'],'agency_id'=>$row['agency_agency'],'y'=>$row['current_amount_sum'],'url'=>$link,'name'=>strtoupper(html_entity_decode($row['agency_agency_agency_name'],ENT_QUOTES)));
     }
-    $node->widgetConfig->chartConfig->series[0]->data = $data;
+    $node->widgetConfig->chartConfig->series[0]['data'] = $data;
     $node->widgetConfig->chartConfig->xAxis->categories = $categories;
-    $node->widgetConfig->chartConfig->series[0]->name = 'Contract Amount';
+    $node->widgetConfig->chartConfig->series[0]['name'] = 'Contract Amount';
     $node->widgetConfig->chartTitle = _checkbook_project_getChartTitle('contracts','Top Ten Agencies', 'by');
 
     return $node->data;

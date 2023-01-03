@@ -304,7 +304,7 @@ class ContractURLHelper
      * returns the year type and year values string to be appended to the URL for spending trans link.
      * @return string
      */
-    public function _checkbook_project_spending_get_year_url_param_string()
+    public static function _checkbook_project_spending_get_year_url_param_string()
     {
         $urlPath = drupal_get_path_alias($_GET['q']);
         $pathParams = explode('/', $urlPath);
@@ -330,7 +330,7 @@ class ContractURLHelper
    * @param $node
    * @return string
    */
-    public function _prepare_oge_contracts_spending_url($row, $node){
+    public static function _prepare_oge_contracts_spending_url($row, $node){
       $agencies = _checkbook_project_querydataset('checkbook_oge:agency', array('agency_id', 'agency_name'), array('agency_id' => $row['agency_id'], 'is_oge_agency' => 'Y'));
       $oge_agency_name = $agencies[0]['agency_name'];
 
@@ -364,7 +364,7 @@ class ContractURLHelper
    * @param $node
    * @return string
    */
-    public function _prepare_oge_spent_to_date_url($row, $node){
+    public static function _prepare_oge_spent_to_date_url($row, $node){
       $oge_agency_name = isset($row['agency_name_checkbook_oge_agency']) ? $row['agency_name_checkbook_oge_agency'] : null;
       $oge_vendor_name = isset($row['legal_name_checkbook_oge_vendor']) ? $row['legal_name_checkbook_oge_vendor'] : null;
 

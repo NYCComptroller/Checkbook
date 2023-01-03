@@ -17,13 +17,11 @@
       },
       {
         "colLabel": "recognized",
-        "column": "revenue_recognized_amount",
-        "eval":true
+        "column": "revenue_recognized_amount"
       },
       {
         "colLabel": "remaining",
-        "column": "revenue_funds_available",
-        "eval":true
+        "column": "revenue_funds_available"
       }
     ]
   },

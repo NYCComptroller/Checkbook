@@ -20,13 +20,14 @@
 
 /**
  * formats the number for display purposes, eg:1000000 will be displayed as 1M
- * @param int,float $number
+ * @param $number
  * @param int $decimal_digits
  * @param string $prefix
  * @param string $suffix
  * @return string formattedNumber
  */
 function custom_number_formatter_format($number, $decimal_digits = 0, $prefix = '', $suffix = '') {
+  $number = (float)$number;
 	$thousands = 1000;
 	$millions = $thousands * 1000;
 	$billions = $millions * 1000;

@@ -240,7 +240,7 @@ function _checkbook_alerts_unsubscribe() {
             ->addExpression('COUNT(checkbook_alerts_sysid)', 'num_alerts');
         $result = $query->execute()->fetchAssoc();
 
-        if($result && count($result) > 0) {
+        if(is_countable($result) && count($result) > 0) {
             $num_alerts = $result['num_alerts'];
             db_update('checkbook_alerts')
                 ->fields(array('un_subscribed_date' => date("Y-m-d H:i:s")))

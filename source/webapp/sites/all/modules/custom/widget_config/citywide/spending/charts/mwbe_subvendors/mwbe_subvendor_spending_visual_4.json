@@ -182,11 +182,11 @@
 
        // $link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('subvendor'=>$row['vendor_id']) );
 		$link = substr(SpendingUtil::getSubVendorNameLinkUrl($node, $row),1);
-        $series_new[$index]->url = $link;
+        $series_new[$index]['url'] = $link;
 
 
-        $series_new[$index]->y = (float)$row[$amount_column];
-        $series_new[$index]->tooltip_label = $tooltip_label;
+        $series_new[$index]['y'] = (float)$row[$amount_column];
+        $series_new[$index]['tooltip_label'] = $tooltip_label;
         $node->widgetConfig->gridConfig->data[] = array(
             $row['legal_name'],
             $row[$amount_column]

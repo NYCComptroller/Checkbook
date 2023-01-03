@@ -157,6 +157,6 @@ class NychaContractsDataService extends DataService implements INychaContractsDa
      */
     private function configureNycha($dataFunction, $parameters, $limit = null, $orderBy = null): DataService
     {
-        return $this->configure($dataFunction,$parameters,$limit,$orderBy,SqlConfigPath::NychaContracts);
+        return $this->configure($dataFunction, SqlConfigPath::NychaContracts, $parameters,$limit,$orderBy);
     }
 }

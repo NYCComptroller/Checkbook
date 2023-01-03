@@ -58,9 +58,9 @@
                                                'url'=>$link,
                                                'name'=>strtoupper(($row['agency_agency_agency_name'])));
     }
-    $node->widgetConfig->chartConfig->series[0]->data = $data;
+    $node->widgetConfig->chartConfig->series[0]['data'] = $data;
     $node->widgetConfig->chartConfig->xAxis->categories = $categories;
-    $node->widgetConfig->chartConfig->series[0]->name = 'Gross Pay';
+    $node->widgetConfig->chartConfig->series[0]['name'] = 'Gross Pay';
     $node->widgetConfig->chartTitle = 'Top Ten Agencies by Gross YTD';
 
     return $node->data;

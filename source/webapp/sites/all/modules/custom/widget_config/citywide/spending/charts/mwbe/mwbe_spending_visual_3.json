@@ -95,28 +95,28 @@
 
 	 	switch($row['minority_type_id']){
 	 		case '2':
-        $series_ba[$row['month_value'] - 1]->y += $row['total_spending'];
+        $series_ba[$row['month_value'] - 1]['y'] += $row['total_spending'];
         break;
 	 		case '3':
-        $series_ha[$row['month_value'] - 1]->y += $row['total_spending'];
+        $series_ha[$row['month_value'] - 1]['y'] += $row['total_spending'];
         break;
 	 		case '4':
-        $series_aa[$row['month_value'] - 1]->y += $row['total_spending'];
+        $series_aa[$row['month_value'] - 1]['y'] += $row['total_spending'];
         break;
 	 		case '5':
-        $series_aa[$row['month_value'] - 1]->y += $row['total_spending'];
+        $series_aa[$row['month_value'] - 1]['y'] += $row['total_spending'];
         break;
             case '6':
-        $series_na[$row['month_value'] - 1]->y += $row['total_spending'];
+        $series_na[$row['month_value'] - 1]['y'] += $row['total_spending'];
         break;
 	 		case '9':
-        $series_w[$row['month_value'] - 1]->y += $row['total_spending'];
+        $series_w[$row['month_value'] - 1]['y'] += $row['total_spending'];
         break;
 	 		case '7':
         $non_mwbe_data[$row['month_value'] - 1] = $row['total_spending'];
         break;
             case '99':
-        $series_em[$row['month_value'] - 1]->y += $row['total_spending'];
+        $series_em[$row['month_value'] - 1]['y'] += $row['total_spending'];
         break;
 	 	}
     $total[$row['month_value'] - 1] += $row['total_spending'];
@@ -138,44 +138,44 @@
 	while($i <=11){
     $div = $total[$i]/100;
 
-	$series_ba[$i]->total =  $series_ba[$i]->y;
-    $series_ha[$i]->total =  $series_ha[$i]->y;
-    $series_aa[$i]->total =  $series_aa[$i]->y;
-    $series_w[$i]->total =  $series_w[$i]->y;
-    $series_na[$i]->total =  $series_na[$i]->y;
-    $series_em[$i]->total =  $series_em[$i]->y;
+	$series_ba[$i]['total'] =  $series_ba[$i]['y'];
+    $series_ha[$i]['total'] =  $series_ha[$i]['y'];
+    $series_aa[$i]['total'] =  $series_aa[$i]['y'];
+    $series_w[$i]['total'] =  $series_w[$i]['y'];
+    $series_na[$i]['total'] =  $series_na[$i]['y'];
+    $series_em[$i]['total'] =  $series_em[$i]['y'];
 
     if ($div) {
-      $series_ba[$i]->y /= $div;
-      $series_ha[$i]->y /= $div;
-      $series_aa[$i]->y /= $div;
-      $series_w[$i]->y /= $div;
-      $series_na[$i]->y /= $div;
-      $series_em[$i]->y /= $div;
+      $series_ba[$i]['y'] /= $div;
+      $series_ha[$i]['y'] /= $div;
+      $series_aa[$i]['y'] /= $div;
+      $series_w[$i]['y'] /= $div;
+      $series_na[$i]['y'] /= $div;
+      $series_em[$i]['y'] /= $div;
     }
 	 	$tooltip_label = 	'Year: ' . $year. '<br/>' .
 	 						'Month: '. $months[$i] . '<br/>' .
-							'Asian American: ' . custom_number_formatter_format($series_aa[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]->y,1,null,'%') . ')' .  '<br/>'
-							. 'Black American: ' . custom_number_formatter_format($series_ba[$i]->total,2,'$')  . ' (' .custom_number_formatter_format($series_ba[$i]->y,1,null,'%') . ')' . '<br/>'
-							. 'Women (Non-Minority): ' . custom_number_formatter_format($series_w[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_w[$i]->y,1,null,'%') . ')' . '<br/>'
-							. 'Hispanic American: ' . custom_number_formatter_format($series_ha[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_ha[$i]->y,1,null,'%') . ')' . '<br/>'
-                            . 'Native American: ' . custom_number_formatter_format($series_na[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_na[$i]->y,1,null,'%') . ')' . '<br/>'
-                            . 'Emerging (Non-Minority): ' . custom_number_formatter_format($series_em[$i]->total,2,'$')  . ' (' . custom_number_formatter_format($series_em[$i]->y,1,null,'%') . ')' . '<br/>';
-		$series_ba[$i]->tooltip_label = $tooltip_label;
-		$series_ha[$i]->tooltip_label = $tooltip_label;
-		$series_aa[$i]->tooltip_label = $tooltip_label;
-		$series_w[$i]->tooltip_label = $tooltip_label;
-        $series_na[$i]->tooltip_label = $tooltip_label;
-		$series_em[$i]->tooltip_label = $tooltip_label;
-        $index = array_search($months[$i],$months_os);
+							'Asian American: ' . custom_number_formatter_format($series_aa[$i]['total'],2,'$')  . ' (' . custom_number_formatter_format($series_aa[$i]['y'],1,null,'%') . ')' .  '<br/>'
+							. 'Black American: ' . custom_number_formatter_format($series_ba[$i]['total'],2,'$')  . ' (' .custom_number_formatter_format($series_ba[$i]['y'],1,null,'%') . ')' . '<br/>'
+							. 'Women (Non-Minority): ' . custom_number_formatter_format($series_w[$i]['total'],2,'$')  . ' (' . custom_number_formatter_format($series_w[$i]['y'],1,null,'%') . ')' . '<br/>'
+							. 'Hispanic American: ' . custom_number_formatter_format($series_ha[$i]['total'],2,'$')  . ' (' . custom_number_formatter_format($series_ha[$i]['y'],1,null,'%') . ')' . '<br/>'
+                            . 'Native American: ' . custom_number_formatter_format($series_na[$i]['total'],2,'$')  . ' (' . custom_number_formatter_format($series_na[$i]['y'],1,null,'%') . ')' . '<br/>'
+                            . 'Emerging (Non-Minority): ' . custom_number_formatter_format($series_em[$i]['total'],2,'$')  . ' (' . custom_number_formatter_format($series_em[$i]['y'],1,null,'%') . ')' . '<br/>';
+		$series_ba[$i]['tooltip_label'] = $tooltip_label;
+		$series_ha[$i]['tooltip_label'] = $tooltip_label;
+		$series_aa[$i]['tooltip_label'] = $tooltip_label;
+		$series_w[$i]['tooltip_label'] = $tooltip_label;
+        $series_na[$i]['tooltip_label'] = $tooltip_label;
+		$series_em[$i]['tooltip_label'] = $tooltip_label;
+        $index = array_search($months[$i],$months_pos);
 		$node->widgetConfig->gridConfig->data[] = array(
 														$months[$i],
-														$series_aa[$i]->total,
-														$series_ba[$i]->total,
-														$series_w[$i]->total,
-														$series_ha[$i]->total,
-                                                        $series_na[$i]->total,
-                                                        $series_em[$i]->total
+														$series_aa[$i]['total'],
+														$series_ba[$i]['total'],
+														$series_w[$i]['total'],
+														$series_ha[$i]['total'],
+                                                        $series_na[$i]['total'],
+                                                        $series_em[$i]['total']
 														 );
 
 		$i +=1;
@@ -249,7 +249,38 @@
             "pointWidth": 30,
             "data": [
             		]
-        }
+        },
+        {
+        "name": "FY",
+        "type": "column",
+"pointWidth": 30,
+"data": [
+]
+},{
+"name": "FY",
+"type": "column",
+"pointWidth": 30,
+"data": [
+]
+},{
+"name": "FY",
+"type": "column",
+"pointWidth": 30,
+"data": [
+]
+},{
+"name": "FY",
+"type": "column",
+"pointWidth": 30,
+"data": [
+]
+},{
+"name": "FY",
+"type": "column",
+"pointWidth": 30,
+"data": [
+]
+}
     ],
     "title": {"text": ""},
     "yAxis": {

@@ -1077,11 +1077,18 @@ class views_many_to_one_helper {
     // should be added via an db_or()/db_and() (TRUE).
     $add_condition = TRUE;
     if ($operator == 'or' && empty($options['reduce_duplicates'])) {
-      if (is_array($value)) {
+      if (is_array($value) && count($value) > 1) {
         $operator = 'IN';
       }
       else {
-        $operator = '=';
+        $value = is_array($value) ? array_pop($value) : $value;
+        if (is_array($value) && count($value) > 1) {
+          $operator = 'IN';
+        }
+	else {
+          $value = is_array($value) ? array_pop($value) : $value;
+          $operator = '=';
+        }
       }
       $add_condition = FALSE;
     }

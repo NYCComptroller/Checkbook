@@ -216,22 +216,28 @@
 				$node->widgetConfig->gridConfig->sortColumn =  1;
 
 	 		}else{
+        $mwbe_plus_non_mwbe = $row['total_mwbe'] + $row['total_non_mwbe'] ;
+        if ($mwbe_plus_non_mwbe == 0) {
+          $MWBE_Share = custom_number_formatter_format(0 ,1,null, '%');
+        } else {
+          $MWBE_Share = custom_number_formatter_format($row[$amount_column]/($mwbe_plus_non_mwbe) *100 ,1,null, '%');
+        }
 	 			$tooltip_label =
 	 						'Agency: ' . $row['agency_name'].  '<br/>' .
-	 						 'M/WBE Share: ' . custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%').  '<br/>' .
+	 						 'M/WBE Share: ' . $MWBE_Share .  '<br/>' .
 	 						 'M/WBE Spending: ' . custom_number_formatter_format( $row[$amount_column],2,'$').  '<br/>' .
 	 						'Non-M/WBE: ' . custom_number_formatter_format( $row['total_non_mwbe'] - $row['total_subven_non_mwbe']  ,2,'$').  '<br/>'
 	 						;
 	 			$node->widgetConfig->gridConfig->data[] = array($row['agency_name'],
-									custom_number_formatter_format($row[$amount_column]/($row['total_mwbe'] + $row['total_non_mwbe'] ) *100 ,1,null, '%'),
+                  $MWBE_Share,
 									(float)$row[$amount_column] ,
 									(float)$row['total_non_mwbe']);
 	 		}
 			$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('agency'=>$row['agency_id']) );
-			$series_new[$index]->url = $link;
+			$series_new[$index]['url'] = $link;
 
-			$series_new[$index]->y = (float)$row[$amount_column];
-			$series_new[$index]->tooltip_label = $tooltip_label;
+			$series_new[$index]['y'] = (float)$row[$amount_column];
+			$series_new[$index]['tooltip_label'] = $tooltip_label;
 
 			$index += 1;
 			if($index == 10){

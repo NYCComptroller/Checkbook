@@ -697,7 +697,7 @@ function _fund_class_options()
       'fund_class_code',
       'fund_class_name',
     ), NULL, 'fund_class_name');
-    //$results = array('All Fund Classes' => 'All Fund Classes');
+    $results = array();
     foreach ($data as $row) {
       if ($row['fund_class_name']) {
         if (strtolower($row['fund_class_name']) == 'general fund')
@@ -997,7 +997,7 @@ function _budget_dept_options($year, $agency)
     $query = "SELECT DISTINCT department_name || ' [' || department_code || ']' department_name FROM budget WHERE"
       . $agencystring . $yearstring . "ORDER BY department_name ASC";
     $results = _checkbook_project_execute_sql($query);
-    if (count($results) > 0) {
+    if (is_countable($results) && count($results) > 0) {
       foreach ($results as $result) {
         $options[$result['department_name']] = $result['department_name'];
       }
@@ -1059,7 +1059,7 @@ function _budget_expcat_options($domain, $year, $agency, $dept, $dataSource = Da
           . $agencyString . $yearString . $deptString . "ORDER BY expenditure_object_code ASC";
         $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
         $options = array();
-        if (count($results) > 0) {
+        if (is_countable($results) && count($results) > 0) {
           foreach ($results as $result) {
             $options[$result['expenditure_object_code']] = $result['expenditure_object_code'];
           }

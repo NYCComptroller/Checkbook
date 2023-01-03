@@ -781,7 +781,7 @@ Drupal.behaviors.viewsFilterConfigSelectAll.attach = function(context) {
   // Uncheck the select all checkbox if any of the others are unchecked.
   $('#views-ui-config-item-form div.form-type-checkbox').not($('.form-item-options-value-all')).find('input[type=checkbox]').each(function() {
     $(this).click(function() {
-      if ($(this).is('checked') == 0) {
+      if ($(this).is('checked') == 0 && $('#edit-options-value-all').length) {
         $('#edit-options-value-all').get(0).checked = false;
       }
     });
