@@ -154,7 +154,7 @@
             //Display or hide fields based on data source selection
             showHideBudgetFields(dataSource);
 
-            // Reset covid field based on the form input year value
+            // Reset Catastrophic event field based on the form input year value
             let yearval = $('select[name="fiscal_year"]', context).val()
             if ( yearval < 2020){
               $("#edit-catastrophic-event").attr('disabled', 'disabled');
