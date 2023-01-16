@@ -376,7 +376,7 @@
                     "function": "SUM(CASE WHEN document_code IN ('MA1','MMA1','CT1','CTA1','MAR','CTR') THEN  1 ELSE 0 END)"
                 },
                 "total_num_rev_pending_contracts": {
-                    "function": "SUM(CASE WHEN document_code IN ('RCT1') THEN  1 ELSE 0 END)"
+                    "function": "SUM(CASE WHEN document_code_id IN (7) THEN  1 ELSE 0 END)"
                 },
                 "cert_women_count":{
                   "function": "SUM(CASE WHEN is_women_owned = 'Yes' THEN 1 ELSE 0 END)"
