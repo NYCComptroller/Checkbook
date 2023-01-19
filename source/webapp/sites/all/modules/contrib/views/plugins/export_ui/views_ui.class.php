@@ -10,6 +10,7 @@
 /**
  * CTools Export UI class handler for Views UI.
  */
+#[\AllowDynamicProperties]
 class views_ui extends ctools_export_ui {
 
   /**
