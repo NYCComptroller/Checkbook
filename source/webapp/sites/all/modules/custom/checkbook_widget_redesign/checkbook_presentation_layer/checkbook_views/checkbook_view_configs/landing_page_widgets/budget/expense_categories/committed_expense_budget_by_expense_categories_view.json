@@ -9,7 +9,7 @@
         {"labelAlias":"pre_encumbered","column":"pre_encumbered","format":"dollar"},
         {"labelAlias":"encumbered","column":"encumbered","format":"dollar"},
         {"labelAlias":"accrued_expense","column":"accrued_expense","format":"dollar"},
-        {"labelAlias":"cash_payments","column":"cash_payments_formatted","format":"dollar"},
+        {"labelAlias":"cash_payments","column":"cash_payments","format":"dollar"},
         {"labelAlias":"post_adjustments","column":"post_adjustments","format":"dollar"},
         {"label":"","column":""}
     ],
