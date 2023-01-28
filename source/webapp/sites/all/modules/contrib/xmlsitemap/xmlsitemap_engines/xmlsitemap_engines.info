@@ -1,0 +1,14 @@
+name = XML sitemap engines
+description = Submit the sitemap to search engines.
+package = XML sitemap
+core = 7.x
+dependencies[] = xmlsitemap
+files[] = tests/xmlsitemap_engines.test
+recommends[] = site_verify
+configure = admin/config/search/xmlsitemap/engines
+
+; Information added by Drupal.org packaging script on 2018-10-09
+version = "7.x-2.6"
+core = "7.x"
+project = "xmlsitemap"
+datestamp = "1539120486"
