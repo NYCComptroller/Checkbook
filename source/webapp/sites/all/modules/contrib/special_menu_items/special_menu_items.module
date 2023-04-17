@@ -20,12 +20,14 @@
  */
 function special_menu_items_menu() {
   $items['<nolink>'] = array(
+    'title' => '',
     'page callback' => 'special_menu_items_page_callback',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
 
   $items['<separator>'] = array(
+    'title' => '',
     'page callback' => 'special_menu_items_page_callback',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
@@ -69,7 +71,9 @@ function special_menu_items_link(array $variables) {
         $tag = variable_get('special_menu_items_nolink_tag', '<span>');
         $title = $variables['options']['html'] ? $variables['text'] : check_plain($variables['text']);
         $variables['options']['attributes']['class'][] = 'nolink';
-        $variables['options']['attributes']['tabindex'][] = '0';
+        if (empty($variables['options']['attributes']['tabindex'])) {
+          $variables['options']['attributes']['tabindex'] = '0';
+        }
         break;
 
       case '<separator>':
@@ -83,7 +87,7 @@ function special_menu_items_link(array $variables) {
 
     if ($tag != '<a>') {
       // <a> tags can have these but a <span> cannot, so we remove them.
-      foreach (array('accesskey', 'target', 'rel', 'name') as $attribute) {
+      foreach (array('target', 'rel', 'name') as $attribute) {
         $attributes = preg_replace("/ $attribute=\".*\"/i", "", $attributes);
       }
     }
@@ -180,23 +184,3 @@ function special_menu_items_admin_settings_form() {
 
   return system_settings_form($form);
 }
-
-/**
- * Implements hook_menu_link_update()
- */
-
-/*
-function special_menu_items_menu_link_update($link) {
-// do all links in db
-global $db_type;
-if ($db_type == 'pgsql') {
-db_query("UPDATE {menu_links} SET link_path=link_path||'/'||mlid
-WHERE (link_path='<nolink>' OR link_path='<separator>') AND hidden != -1");
-}
-else {
-db_query("UPDATE {menu_links} SET link_path=CONCAT(CONCAT(link_path,'/'),mlid)
-WHERE (link_path='<nolink>' OR link_path='<separator>') AND hidden!=-1");
-}
-}
- *
- */
