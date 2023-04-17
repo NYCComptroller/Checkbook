@@ -113,7 +113,10 @@ class views_plugin_style extends views_plugin {
    */
   public function uses_tokens() {
     if ($this->uses_row_class()) {
-      $class = $this->options['row_class'];
+      $class = '';
+      if (isset($this->options['row_class'])) {
+        $class = $this->options['row_class'];
+      }
       if (strpos($class, '[') !== FALSE || strpos($class, '!') !== FALSE || strpos($class, '%') !== FALSE) {
         return TRUE;
       }
@@ -152,6 +155,9 @@ class views_plugin_style extends views_plugin {
    * Take a value and apply token replacement logic to it.
    */
   public function tokenize_value($value, $row_index) {
+    if (!isset($value)) {
+      $value = '';
+    }
     if (strpos($value, '[') !== FALSE || strpos($value, '!') !== FALSE || strpos($value, '%') !== FALSE) {
       $fake_item = array(
         'alter_text' => TRUE,
