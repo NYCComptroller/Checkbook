@@ -1,0 +1,75 @@
+<?php
+
+/**
+ * @file
+ * Tests that each of the Metatag Pinterest tags work correctly.
+ */
+
+/**
+ * Tests that each of the Metatag Pinterest tags work correctly.
+ */
+class MetatagPinterestTagsTest extends MetatagTagsTestBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Metatag tags: Pinterest',
+      'description' => 'Test the Pinterest meta tags.',
+      'group' => 'Metatag',
+      'dependencies' => array('ctools', 'devel', 'token'),
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  function setUp(array $modules = array()) {
+    $modules[] = 'metatag_pinterest';
+    parent::setUp($modules);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public $tags = array(
+    'pin:id',
+    'pin:description',
+    'pin:media',
+    'pin:url',
+    'pinterest',
+  );
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTestTagName($tag_name) {
+    // Most Pinterest tags use colons to separate levels.
+    $tag_name = str_replace('_', ':', $tag_name);
+
+    return $tag_name;
+  }
+
+  /**
+   * Implements {meta_tag_name}_test_value() for 'pinterest'.
+   */
+  public function pinterest_test_key() {
+    return 'metatags[und][pinterest][value][nopin]';
+  }
+
+  /**
+   * Implements {meta_tag_name}_test_value() for 'pinterest'.
+   */
+  public function pinterest_test_value() {
+    return TRUE;
+  }
+
+  /**
+   * Implements {meta_tag_name}_test_field_xpath() for 'pinterest'.
+   */
+  public function pinterest_test_field_xpath() {
+    return "//input[@name='metatags[und][pinterest][value][nopin]' and @type='checkbox']";
+  }
+
+}
