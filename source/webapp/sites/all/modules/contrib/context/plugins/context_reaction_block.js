@@ -425,7 +425,7 @@ DrupalContextBlockEditor.prototype = {
     $('a.context_ui_dialog-stop').hide();
 
     $('.editing-context-label').remove();
-    var label = $('#context-editable-trigger-'+context+' .label').text();
+    var label = $('#context-editable-trigger-'+context+' .label.top').text();
     label = Drupal.t('Now editing: @label', {'@label': label});
     editor.parent().parent().prepend('<div class="editing-context-label">' + label + '</div>');
 
