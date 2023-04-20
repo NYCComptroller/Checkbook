@@ -454,7 +454,7 @@ function googleanalytics_form_user_profile_form_alter(&$form, &$form_state) {
 
       // Drupalism: When empty, $account->data is a boolean, not an array.
       if (!is_array($account->data)) {
-          $account->data = [];
+          $account->data = array();
       }
       // Override settings value.
       $account->data['googleanalytics']['custom'] = FALSE;
