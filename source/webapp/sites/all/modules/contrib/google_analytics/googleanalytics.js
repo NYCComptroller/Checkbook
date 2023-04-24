@@ -31,7 +31,7 @@ $(document).ready(function() {
           // Keep the internal URL for Google Analytics website overlay intact.
           // @todo: May require tracking ID
           var target = this;
-          $.each(drupalSettings.google_analytics.account, function () {
+          $.each(Drupal.settings.googleanalytics.account, function () {
             gtag('config', this, {
               page_path: Drupal.googleanalytics.getPageUrl(target.href),
               transport_type: 'beacon'
@@ -65,7 +65,7 @@ $(document).ready(function() {
   // Track hash changes as unique pageviews, if this option has been enabled.
   if (Drupal.settings.googleanalytics.trackUrlFragments) {
     window.onhashchange = function() {
-      $.each(drupalSettings.google_analytics.account, function () {
+      $.each(Drupal.settings.googleanalytics.account, function () {
         gtag('config', this, {
           page_path: location.pathname + location.search + location.hash
         });
@@ -79,7 +79,7 @@ $(document).ready(function() {
     $(document).bind("cbox_complete", function () {
       var href = $.colorbox.element().attr("href");
       if (href) {
-        $.each(drupalSettings.google_analytics.account, function () {
+        $.each(Drupal.settings.googleanalytics.account, function () {
           gtag('config', this, {
             page_path: Drupal.googleanalytics.getPageUrl(href)
           });
