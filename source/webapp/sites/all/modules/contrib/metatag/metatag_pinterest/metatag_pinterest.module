@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Primary hook implementations for Metatag:Pinterest.
+ */
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function metatag_pinterest_ctools_plugin_api($owner, $api) {
+  if ($owner == 'metatag' && $api == 'metatag') {
+    return array('version' => 1);
+  }
+}

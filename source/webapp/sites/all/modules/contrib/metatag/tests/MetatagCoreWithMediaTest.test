@@ -1,0 +1,240 @@
+<?php
+
+/**
+ * @file
+ * Tests for the Metatag module for Media integration.
+ */
+
+/**
+ * Tests for the Metatag module for Media integration.
+ */
+class MetatagCoreWithMediaTest extends MetatagTestBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Metatag core tests with Media',
+      'description' => 'Test Metatag integration with the Media module.',
+      'group' => 'Metatag',
+      'dependencies' => array('ctools', 'devel', 'token', 'file_entity', 'media'),
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  function setUp(array $modules = array()) {
+    $modules[] = 'file_entity';
+    $modules[] = 'media';
+    // The filter is in the WYSIWYG submodule.
+    $modules[] = 'media_wysiwyg';
+
+    parent::setUp($modules);
+  }
+
+  /**
+   * Make sure the media filter is enabled.
+   */
+  public function testMediaFilter() {
+    $desc = 'The description.';
+
+    // Create a node and check how the meta tag is displayed.
+    $node = $this->drupalCreateNode(array(
+      'body' => array(
+        LANGUAGE_NONE => array(
+          array(
+            'value' => $desc . '[['
+              . json_encode(array(
+                 'fid' => 1,
+                 'view_mode' => 'default',
+                 'type' => 'media',
+                 'attributes' =>  array(
+                   'height' => '100',
+                   'width' => '100',
+                   'class' => 'media-element file-default',
+                 ),
+               ))
+              . ']]',
+            'format' => filter_default_format(),
+          ),
+        ),
+      ),
+    ));
+
+    // Load the node page.
+    $this->drupalGet('node/' . $node->nid);
+    $this->assertResponse(200);
+
+    // Check the 'description' tag to make sure the Media string was filtered.
+    $xpath = $this->xpath("//meta[@name='description']");
+    $this->assertEqual($xpath[0]['content'], $desc);
+  }
+
+  /**
+   * Make sure extremely long media tags are properly handled.
+   */
+  public function testMediaFilterLongToken() {
+    $desc = 'The description with long token.';
+
+    $node = $this->drupalCreateNode(array(
+      'body' => array(
+        LANGUAGE_NONE => array(
+          array(
+            'value' => $desc . '[['
+              . json_encode(array(
+                'fid' => 1,
+                'view_mode' => 'default',
+                'fields' => array(
+                  'alt' => 'alt text field value',
+                  'style' => 'height: auto;',
+                  'class' => 'media-element file-default cke_widget_element',
+                  'data-delta' => 25,
+                  'format' => 'default',
+                  'alignment' => 'center',
+                  'field_image_width[und][0][value]' => '',
+                  'field_file_image_alt_text[und][0][value]' => 'alt text field value',
+                  'field_caption[und][0][value]' => '',
+                  'field_file_image_title_text[und][0][value]' => FALSE,
+                ),
+                'type' => 'media',
+                'field_deltas' => array(
+                  25 => array(
+                    'alt' => 'alt text field value',
+                    'style' => 'height: auto;',
+                    'class' => 'media-element file-default cke_widget_element',
+                    'data-delta' => 25,
+                    'format' => 'default',
+                    'alignment' => 'center',
+                    'field_image_width[und][0][value]' => '',
+                    'field_file_image_alt_text[und][0][value]' => 'alt text field value',
+                    'field_caption[und][0][value]' => '',
+                    'field_file_image_title_text[und][0][value]' => FALSE,
+                  ),
+                ),
+                'attributes' => array(
+                  'alt' => 'alt text field value',
+                  'style' => 'height:auto',
+                  'class' => 'file-default media-element media-wysiwyg-align-center',
+                  'data-delta' => '25',
+                ),
+              ))
+              .']]',
+            'format' => filter_default_format(),
+          ),
+        ),
+      ),
+    ));
+
+    // Load the node page.
+    $this->drupalGet('node/' . $node->nid);
+    $this->assertResponse(200);
+
+    // Check the 'description' tag to make sure the Media string was filtered.
+    $xpath = $this->xpath("//meta[@name='description']");
+    $this->assertEqual($xpath[0]['content'], $desc);
+  }
+
+  /**
+   * Make sure body text starting with a media token is properly handled.
+   */
+  public function testMediaFilterTokenAtBeginning() {
+    $desc = 'The description with token at beginning.';
+
+    $node = $this->drupalCreateNode(array(
+      'body' => array(
+        LANGUAGE_NONE => array(
+          array(
+            'value' => '[['
+              . json_encode(array(
+                'fid' => '1',
+                'view_mode' => 'default',
+                'type' => 'media',
+                'attributes' => array(
+                  'height' => '100',
+                  'width' => '100',
+                  'class' => 'media-element file-default',
+                ),
+              ))
+              . ']]' . $desc,
+            'format' => filter_default_format(),
+          ),
+        ),
+      ),
+    ));
+
+    // Load the node page.
+    $this->drupalGet('node/' . $node->nid);
+    $this->assertResponse(200);
+
+    // Check the 'description' tag to make sure the Media string was filtered.
+    $xpath = $this->xpath("//meta[@name='description']");
+    $this->assertEqual($xpath[0]['content'], $desc);
+  }
+
+  /**
+   * Make sure body text starting with an extremely long media token is handled.
+   */
+  public function testMediaFilterTokenAtBeginningLongToken() {
+    $desc = 'The description with long token at beginning.';
+
+    $node = $this->drupalCreateNode(array(
+      'body' => array(
+        LANGUAGE_NONE => array(
+          array(
+            'value' => '[['
+              . json_encode(array(
+                'fid' => '1',
+                'view_mode' => 'default',
+                'fields' => array(
+                  'alt' => 'alt text field value',
+                  'style' => 'height: auto;',
+                  'class' => 'media-element file-default cke_widget_element',
+                  'data-delta' => 25,
+                  'format' => 'default',
+                  'alignment' => 'center',
+                  'field_image_width[und][0][value]' => '',
+                  'field_file_image_alt_text[und][0][value]' => 'alt text field value',
+                  'field_caption[und][0][value]' => '',
+                  'field_file_image_title_text[und][0][value]' => FALSE,
+                ),
+                'type' => 'media',
+                'field_deltas' => array(
+                  25 => array(
+                    'alt' => 'alt text field value',
+                    'style' => 'height: auto;',
+                    'class' => 'media-element file-default cke_widget_element',
+                    'data-delta' => 25,
+                    'format' => 'default',
+                    'alignment' => 'center',
+                    'field_image_width[und][0][value]' => '',
+                    'field_file_image_alt_text[und][0][value]' => 'alt text field value',
+                    'field_caption[und][0][value]' => '',
+                    'field_file_image_title_text[und][0][value]' => FALSE,
+                  ),
+                ),
+                'attributes' => array(
+                  'alt' => 'alt text field value',
+                  'style' => 'height:auto',
+                  'class' => 'file-default media-element media-wysiwyg-align-center',
+                  'data-delta' => 25,
+                ),
+              ))
+              . ']]' . $desc,
+            'format' => filter_default_format(),
+          ),
+        ),
+      ),
+    ));
+
+    // Load the node page.
+    $this->drupalGet('node/' . $node->nid);
+    $this->assertResponse(200);
+
+    // Check the 'description' tag to make sure the Media string was filtered.
+    $xpath = $this->xpath("//meta[@name='description']");
+    $this->assertEqual($xpath[0]['content'], $desc);
+  }
+
+}
