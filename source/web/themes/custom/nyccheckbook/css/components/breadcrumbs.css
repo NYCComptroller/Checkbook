@@ -1,0 +1,32 @@
+/* Breadcrumbs */
+
+.block-system-breadcrumb-block {
+  font-size: 11px;
+  color: #000;
+}
+
+.block-system-breadcrumb-block ol,
+.breadcrumb-inner {
+  display: block;
+  padding: 5px 10px 7px 10px;
+  margin: 0;
+  list-style: none;
+}
+
+.block-system-breadcrumb-block ol li {
+  display: inline-block;
+  padding-right: 10px;
+  position: relative;
+}
+
+.block-system-breadcrumb-block ol li::after {
+  content: "»";
+  display: block;
+  position: absolute;
+  top: -1px;
+  right: 0;
+}
+
+.block-system-breadcrumb-block ol li:last-child::after {
+  display: none;
+}

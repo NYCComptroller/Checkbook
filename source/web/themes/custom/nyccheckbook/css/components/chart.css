@@ -1,0 +1,229 @@
+h2.chart-title {
+  font-size: 18px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.slider-pane {
+  background-color: white;
+}
+
+.highcharts-container {
+    margin: 4px auto 0 auto;
+}
+
+.chart-left{
+  float:left;
+  width:50%;
+}
+.chart-right{
+  position:relative;
+  float:left;
+  width:50%;
+}
+.chart-left .highcharts-container{
+  float:left;
+}
+
+.chart-right{
+  height:319px;
+  background: url("../../images/visualization_divider.png") no-repeat left center;
+}
+.chart-right .wrap{
+  border: 1px solid #82b6df;
+  background-color: #f0f0f0;
+  color: #3e5d7e;
+  position: absolute;
+  top: 93px;
+  left: 54px;
+  text-align: center;
+  padding:20px 20px 15px 20px;
+}
+
+.chart-right .wrap .number{font-size: 55px;}
+.chart-right .wrap .text{font-size: 18px;}
+.top-chart {
+  margin-bottom: 31px;
+}
+.bottomContainer .top-chart{
+  margin-bottom:0px;
+}
+
+/*==========================================
+           NO RESULTS MESSAGE
+========================================== */
+#no-records {
+  color: #3C5E7C;
+  font-size: 20px;
+  font-weight: bold;
+  height: 110px;
+  padding-top: 52px;
+  display: block;
+  width: 100%;
+  float: left;
+  clear: both;
+  text-align: center;
+}
+
+#no-records span {
+  float: left;
+  clear: both;
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  color: #3C5E7C;
+}
+
+/*==========================================
+        GRID VIEW ICON
+========================================== */
+a.chart-grid-view {
+  background: url("../../images/grid-icon.png") no-repeat scroll 0 0 transparent;
+  height: 19px;
+  padding: 3px 0 2px 25px;
+  position: absolute;
+  top: 0;
+  right: 70px;
+  z-index: 10;
+}
+
+.chart-grid-view.no-data {
+  color: #696969;
+  background: url(../../images/gridview-gray.png) no-repeat scroll 0 0 transparent;
+  height: 19px;
+  padding: 3px 0 2px 25px;
+  position: absolute;
+  top: 0;
+  right: 70px;
+  z-index: 10;
+  text-decoration: none;
+  cursor: default;
+}
+
+/*==========================================
+        SLIDER
+========================================== */
+.slider-pager {
+  position: absolute;
+  text-align: center;
+  width: 248px;
+  z-index: 25;
+  bottom: 35px;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+article[about="/nycha_revenue"] .slider-pager,
+article[about="/budget"] .slider-pager{
+  width: 256px;
+}
+
+
+.slider-pager a {
+  background: url("../../images/pager_off.png") repeat scroll 0 0 transparent;
+  display: inline-block;
+  height: 22px;
+  margin-left: 9px;
+  text-indent: -9999px !important;
+  text-transform: capitalize;
+  width: 22px;
+}
+
+.slider-pager a.activeSlide {
+  background: url("../../images/pager_on.png") no-repeat scroll 0 0 transparent;
+  color: #ffffff;
+}
+
+/*==========================================
+        GRID VIEW PAGE
+========================================== */
+.layout-container:has(.chart-grid-view-table) {
+  height: 800px;
+}
+
+h3.grid_title {
+  font-size: 18px;
+  color: #2d4c68;
+  margin-bottom: 7px;
+  /* Override browser h3 settings */
+  margin-block-start: 3px;
+}
+h3.grid_chart_title {
+  font-size: 18px;
+  color: #2d4c68;
+  text-transform: none;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+h3.grid_year_title {
+  color: #353535;
+  font-size: 13px;
+  line-height: 20px;
+  text-transform: none;
+  margin-top: 5px;
+  margin-bottom: 28px;
+}
+
+span.grid_export,
+span.grid_print{
+  position: relative;
+  display: inline-block;
+  color: #209AD6;
+  cursor: pointer;
+  line-height:17px;
+  float: right;
+}
+
+span.grid_export{
+  background: url("../../images/export.png") no-repeat scroll right 0 transparent;
+  width: 70px;
+  margin-top: 55px;
+  margin-right: -160px;
+  font-weight: bold;
+}
+
+span.grid_print{
+  background: url("../../images/printer-friendly.png") no-repeat scroll right 0 transparent;
+  width:150px;
+  margin-right: 10px;
+}
+
+.pieCount {
+  padding-top: 8px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.pieChartSlide .highcharts-container {
+  height: 313px !important;
+  margin: 0 auto 0 !important;
+}
+
+#node-chart-subvendor_contract_status_by_prime .highcharts-container,
+#node-chart-prime_contract_subven_report_visual .highcharts-container,
+#node-chart-prime_contract_subven_report_visual .highcharts-container > svg,
+#node-chart-subvendor_contract_status_by_prime .highcharts-container > svg {
+  width: 870px !important;
+}
+
+/* Visulaization legend Styles */
+.chart-nyc-legend {
+  float: right;
+  position: relative;
+  top: 135px;
+  padding-right: 2px;
+}
+
+.chart-nyc-legend .legend-title {
+  text-decoration: underline;
+  font-weight: bold;
+  color: #3c5e7c;
+  margin-bottom: 20px;
+}
+
+.chart-nyc-legend .legend-item {
+  color: #3c5e7c;
+  margin-bottom: 3px;
+}

@@ -1,0 +1,23 @@
+{
+  "widgetType":"phpparser",
+	"cleanURLParameters":["vendor","year","yeartype","calyear","category","vendor","expcategory","expcategorycode","agency","mwbe","industry"],
+	"urlParamMap":{"year":"year.year","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id","expcategory":"expenditure_object.expenditure_object","expcategorycode":"expenditure_object.expenditure_object","agency":"agency_id","mwbe":"minority_type_id","industry":"industry_type_id"},
+	"defaultParameters":{"year.year":22,"type_of_year":"B"},
+	"dataset": "checkbook:spending_mwbe_data",
+  "totalAggregateColumns":["check_amount_sum"],
+  "adjustTotalAggregateColumnsParameters":"
+        if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('smnid') == 761) {
+            unset($parameters['expenditure_object.expenditure_object']);
+        }
+        return $parameters;
+    ",
+	 "columns": ["yeartype.yeartype","check_amount_sum","expenditure_object.expenditure_object","expenditure_object.expenditure_object.original_expenditure_object_name","year.year"],
+   "template":"spending_exp_category_summary",
+   "templateTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Expense Category');",
+   "templateLabel":"Expense Category",
+"WidgetTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Expense Categories');",
+  "templateId":"
+    $sumnid = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('smnid');
+    return $sumnid;
+  "
+}

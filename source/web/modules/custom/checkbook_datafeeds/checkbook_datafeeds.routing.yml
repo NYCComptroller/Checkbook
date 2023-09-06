@@ -1,0 +1,110 @@
+# This routing.yml file makes both the fapi example description page and the
+# included sample forms available at specific URL's on your site. A route
+# maps a URL path to a controller. For page controllers it defines the
+# function or method that will be called when the page is accessed.  For form
+# controllers the content is determined by the buildForm method defined by the
+# form controller implementation.
+
+# Access to these paths is restricted to users with the permission
+# 'access content'. This is notated as _permission: 'access content'.
+
+# Menu items corresponding to these URLs are defined separately in the
+# form_api_example.links.menu.yml file.
+
+checkbook_datafeeds.multistep_form:
+  path: '/base-form'
+  defaults:
+    _form: '\Drupal\checkbook_datafeeds\Form\MultistepForm'
+    _title: 'Data Feeds'
+  requirements:
+    _permission: 'access content'
+
+checkbook_datafeeds:
+  path: '/data-feeds'
+  defaults:
+    _controller: '\Drupal\checkbook_datafeeds\Controller\DefaultController::checkbook_datafeeds_data_feeds_page'
+    _title: 'Data Feeds'
+  requirements:
+    _permission: 'access content'
+
+checkbook_datafeeds.api:
+  path: '/data-feeds/api'
+  defaults:
+    _controller: '\Drupal\checkbook_datafeeds\Controller\DefaultController::checkbook_datafeeds_api_page'
+    _title: 'Data Feeds'
+  requirements:
+    _permission: 'access content'
+
+checkbook_datafeeds.track-data-feed:
+  path: '/track-data-feed'
+  defaults:
+    _controller: '\Drupal\checkbook_datafeeds\Controller\DefaultController::checkbook_datafeeds_tracking_results_page'
+    _title: 'Track Data Feed'
+  requirements:
+    _permission: 'access content'
+  options:
+    no_cache: 'TRUE'
+
+checkbook_datafeeds.download:
+  path: '/data-feeds/download/{token}'
+  defaults:
+    _controller: '\Drupal\checkbook_datafeeds\Controller\DefaultController::checkbook_datafeeds_download_zip_ajax'
+    _title: 'Checkbook Alerts'
+  requirements:
+    _permission: 'access content'
+
+budget.dept.options:
+  path: '/datafeeds/budget/department/{year}/{agency}/{feeds}'
+  defaults:
+    _controller: '\Drupal\checkbook_datafeeds\Budget\BudgetFormUtil::getBudgetDeptOptions'
+    _title: 'Budget Department Options'
+  requirements:
+    _permission: 'access content'
+
+budget.dept.expense:
+  path: '/datafeeds/expcat/{domain}/{year}/{agency}/{dept}'
+  defaults:
+    _controller: '\Drupal\checkbook_datafeeds\Budget\BudgetFormUtil::getBudgetExpCatOptions'
+    _title: 'Budget Expense Category'
+  requirements:
+    _permission: 'access content'
+
+contract.agency:
+  path: '/datafeeds/spending/agency/{data_source}/{json_output}'
+  defaults:
+    _controller: '\Drupal\checkbook_datafeeds\Utilities\FormUtil::getAgencies'
+    _title: 'Contract Agencies'
+  requirements:
+    _permission: 'access content'
+
+spending.dept:
+  path: '/datafeeds/spending/department/{year}/{agency}/{spending_cat}/{data_source}/{feeds}'
+  defaults:
+    _controller: '\Drupal\checkbook_datafeeds\Utilities\FormUtil::getSpendingDepartment'
+    _title: 'Spending Department'
+  requirements:
+    _permission: 'access content'
+
+spending.expcategory:
+  path: '/datafeeds/spending/expcategory/{year}/{agency}/{dept}/{spending_cat}/{data_source}/{feeds}'
+  defaults:
+    _controller: '\Drupal\checkbook_datafeeds\Utilities\FormUtil::getSpendingExpenseCategory'
+    _title: 'Spending Expense Category'
+  requirements:
+    _permission: 'access content'
+
+nycha_budget.budget_type:
+  path: '/data-feeds/budget_type/{domain}/{dataSource}/{budgetName}/{json}'
+  defaults:
+    _controller: '\Drupal\checkbook_datafeeds\Budget\BudgetFormUtil::getBudgetType'
+    _title: 'Budget Type Options'
+  requirements:
+    _permission: 'access content'
+
+nycha_budget.budget_name:
+  path: '/data-feeds/budget_name/{domain}/{dataSource}/{budgetType}/{json}'
+  defaults:
+    _controller: '\Drupal\checkbook_datafeeds\Budget\BudgetFormUtil::getBudgetName'
+    _title: 'Budget Name Options'
+  requirements:
+    _permission: 'access content'

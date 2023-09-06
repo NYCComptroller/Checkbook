@@ -1,0 +1,43 @@
+body {
+  background: none !important;
+  color: #000 !important;
+}
+
+.region:not(.region--content),
+span.grid_print,
+span.grid_export {
+  display: none !important;
+}
+
+#gridprint {
+  border-top: 1px solid #9E9E9E;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.layout-container {
+  box-shadow: none !important;
+}
+
+h3 {
+  font-size: 16px !important;
+  font-family: sans-serif !important;
+  margin: 16px 0 !important;
+  color: #000 !important;
+}
+
+table.dataTable tr.odd {
+  background-color: #ddd !important;
+  border-right: 1px solid #CACACA !important;
+  border-left: 1px solid #CACACA !important;
+}
+
+table.dataTable tr.even {
+  background-color: #fff !important;
+  border-right: 1px solid #CACACA !important;
+  border-left: 1px solid #CACACA !important;
+}
+
+table.dataTable td.text div {
+  margin: 10px !important;
+}

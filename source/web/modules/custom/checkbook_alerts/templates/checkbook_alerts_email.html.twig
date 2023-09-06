@@ -1,0 +1,27 @@
+
+Below are the results of the triggered alert(s) from checkbooknyc.com:
+
+{% for alert in alerts %}
+  {% set description = alert.label %}
+  {% set frequency = (ability.id in company_abilities) ? 'Every Day' : 'Every ' ~ alert.minimum_days ~ ' days' %}
+  {% set number_records = alert.new_count %}
+  {% set results_link = alert.user_url %}
+  {% set unsubscribe_link = checkbook_alerts_get_unsubscribe_link(alert) %}
+  Alert description: {{ description }}
+
+  Alert frequency: {{ frequency }}
+
+  Number of new records that match alert criteria: {{ number_records }}
+
+
+  Link to Checkbook NYC alert results: {{ results_link }}
+
+
+  To unsubscribe from this alert click here: {{ unsubscribe_link }}
+{% endfor %}
+
+To unsubscribe from all alerts sent to this email address click here:
+{{ checkbook_alerts_get_unsubscribe_all_link(alerts) }}.
+
+Office of the Comptroller - City of New York
+

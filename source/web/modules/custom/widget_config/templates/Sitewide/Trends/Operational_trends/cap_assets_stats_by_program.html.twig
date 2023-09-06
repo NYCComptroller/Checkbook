@@ -1,0 +1,62 @@
+{#
+/**
+* This file is part of the Checkbook NYC financial transparency software.
+*
+* Copyright (C) 2012, 2013 New York City
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/#}
+
+{{ attach_library('widget_highcharts/grid-view') }}
+{{ node.widgetConfig.header |raw }}
+
+{% set data = capAssetsStatsProgramTop(node) %}
+
+<a class="trends-export" href="/export/trends/download/{{node.nid}}">Export</a>
+<table class="fy-ait">
+  <tbody>
+  <tr>
+    <td width="250">&nbsp;</td>
+    <td class="bb">Fiscal Year</td>
+  </tr>
+  </tbody>
+</table>
+
+<table id="table_{{ node.nid }}" style='display:none' class="trendsShowOnLoad {{node.widgetConfig.html_class}}">
+    {{addCaption(node) |raw}}
+    <thead>
+        <tr class="second-row">
+            <th><br/></th>
+            {% for year in data.years %}
+              <th><div>&nbsp;</div></th><th class='number'><div>{{ year }}</div></th>
+            {% endfor %}
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {{ capAssetsStatsProgram(data.table_rows, data.years) }}
+
+    </tbody>
+</table>
+<div class="footnote">
+  <p>(1)The Fire Vehicles for FY 2018 were corrected from 2,616 to 2,641</p>
+  <p>(2) The Street Lights for FY 2017 were corrected from 396,572 to 321,807 and FY 2018 from 414,938 to 323,195 due to re-evaluation of items included in street lighting Inventory</p>
+  <p>(3)The Lane miles Resurfaced for FY 2018 were corrected from 1,300 to 1,321</p>
+  <p>Sources: Various City Agencies</p>
+</div>
+<script type="text/javascript">
+    {{ addJs(node)|raw }}
+</script>

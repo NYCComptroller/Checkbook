@@ -1,0 +1,5 @@
+name: 'AJAX Node'
+description: 'Module to render nodes without additional page/node theming'
+package: 'REI Dashboard Platform Core'
+core_version_requirement: ^9 || ^10
+type: module

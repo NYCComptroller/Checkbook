@@ -1,0 +1,45 @@
+{{ attach_library('landing_page_widget_view/landing_page_data_table') }}
+
+<div about="/node/{{ node.nid }}" typeof="sioc:Item foaf:Document"
+     class="node node-widget node-teaser node-published node-not-promoted node-not-sticky self-posted author-admin odd clearfix" id="node-widget-{{ node.nid }}">
+  <div class="content clearfix">
+
+  {{ node.widgetConfig.head_title | raw}}
+  </div>
+<div>
+  <table id="table_{{ node.nid }}" >
+    <thead>
+    <tr>
+     {{ node.widgetConfig.table_header|raw }}
+    </tr>
+    </thead>
+    <tbody>
+    {% if node.data %}
+      {% for datarow in node.data %}
+        <tr>
+          {% for row in node.widgetConfig.table_columns %}
+            {# if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))) #}
+            <td class=" {{ datarow[row.classColumn] | raw }} ">{{ datarow[row.column] | raw }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    {% endif %}
+    </tbody>
+  </table>
+
+</div>
+<div class="tableFooter">
+  {{ node.widgetConfig.collapseButton|raw }}
+  {{ node.widgetConfig.detailsLink|raw }}
+</div>
+</div>
+
+
+<div class="clearfix">
+  <div class="links node-links clearfix"></div>
+</div>
+
+<script type="text/javascript">
+  {{  landing_page_widget_view_add_js_twig(node) | raw }}
+</script>
+

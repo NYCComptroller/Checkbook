@@ -1,0 +1,25 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":979,
+  "no_results_content":"No Results Found",
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "columns":["funding_source_id.funding_source_id","display_funding_source_descr.display_funding_source_descr","txcount"],
+  "orderBy":"-txcount",
+  "facetPager":true,
+  "filterName":"Funding source ",
+  "urlParameterName":"fundingnm_exact",
+  "autocompleteParamName":"fundingnm_exact_auto",
+  "autocompleteID":"fFundingId",
+  "autocompleteField":"display_funding_source_descr",
+  "adjustParameters":"
+  $parameters = \\Drupal\\checkbook_project\\NychaContractUtilities\\NYCHAContractUtil::adjustYearParams($node, $parameters);
+  $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+$adjustedParameters['funding_source_id.funding_source_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+return $adjustedParameters;
+",
+"template":"individual_filter"
+}

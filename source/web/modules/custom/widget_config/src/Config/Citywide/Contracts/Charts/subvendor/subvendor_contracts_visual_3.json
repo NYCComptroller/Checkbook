@@ -1,0 +1,157 @@
+{
+"widgetType": "highcharts",
+"widgetDatahandler": "highcharts",
+"html_class":"",
+"header":"
+       $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+       $header .= \\Drupal\\checkbook_project\\WidgetUtilities\\ChartUtil::generateWidgetGridViewLink($node);
+       return $header;
+    ",
+ "gridConfig":{
+        "template":"chart_grid_view",
+        "domain":"contracts",
+        "html_class":"chart-grid-view-table three-columns",
+        "sortColumn":1,
+        "table_columns": [
+            {
+                  "labelAlias": "Contract ID",
+                  "columnType": "text"
+             },
+             {
+                  "labelAlias": "Amount",
+                  "columnType": "number",
+                  "formatType": "amount"
+             },
+             {
+                  "labelAlias": "Sub Vendor",
+                  "columnType": "text number-left"
+             },
+             {
+                  "labelAlias": "Contracting Agency",
+                  "columnType": "text"
+             }
+        ]
+},
+"no_results_content":"No Results Found",
+"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year","subvendor"],
+"urlParamMap":{"subvendor":"vendor_id","year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id",
+	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
+"chartTitle":"Top Ten M/WBE Active Expense Contracts by Sub Vendors Current Amount",
+"widgetDataLoader":"
+    $where_filters = array();
+    foreach($node->widgetConfig->requestParams as $param=>$value){
+        $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+    }
+
+    if(count($where_filters) > 0){
+        $where_filter = ' where ' . implode(' and ' , $where_filters);
+    }
+ 	$where_filter .= ' and rd.document_code in (' . \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::getCurrentPageDocumentIds() . ') ';
+
+    	$sql = ' select
+			maximum_contract_amount,
+			agency_name,
+			a1.contract_number,
+			v.legal_name,
+			document_code,
+			sco.original_agreement_id
+		from aggregateon_subven_contracts_cumulative_spending a1
+    	join subvendor v on v.vendor_id =  a1.vendor_id
+    	join vendor pv on pv.vendor_id =  a1.prime_vendor_id
+    	join ref_agency ra on ra.agency_id =  a1.agency_id
+    	join ref_document_code rd on a1.document_code_id = rd.document_code_id
+    	join (SELECT distinct original_agreement_id, contract_number FROM agreement_snapshot WHERE latest_flag = \\'Y\\') sco on sco.contract_number = a1.contract_number
+   		' . $where_filter . '
+    	order by 1 desc limit 10';
+    $node->data  = _checkbook_project_execute_sql($sql);
+",
+"widgetUpdateJSONConfig":"
+  $refURL = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRefUrl();
+  $url = isset($refURL) ? $refURL: \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getCurrentPageUrl();
+	$series_new = array();
+	$index = 0;
+	foreach($node->data as $row){
+	 		$tooltip_label =
+	 						'Contract ID: ' . $row['contract_number'].  '<br/>' .
+	 						'Amount: ' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($row['maximum_contract_amount'] ,2, '$').  '<br/>' .
+	 						'Sub Vendor: ' . $row['legal_name'] .  '<br/>' .
+	 						'Contracting Agency: ' . $row['agency_name'] .  '<br/>'
+	 						;
+
+			$link_url = '/contracts_landing' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string('status')  .  \\Drupal\\checkbook_project\\CommonUtilities\\CustomURLHelper::_checkbook_project_get_year_url_param_string() . \\Drupal\\checkbook_project\\CommonUtilities\\CustomURLHelper::_checkbook_append_url_params() .
+								 '?expandBottomContURL=/contract_details'
+                        . ( in_array($row['document_code'], array('MMA1','MA1')) ? '/magid/' : '/agid/' )
+                        .  $row['original_agreement_id'] . '/doctype/' . $row['document_code']
+                        . \\Drupal\\checkbook_project\\CommonUtilities\\CustomURLHelper::_checkbook_append_url_params()	 ;
+	 		$series_new[$index]['url'] = $link_url;
+			$series_new[$index]['y'] = (float)$row['maximum_contract_amount'];
+			$series_new[$index]['tooltip_label'] = $tooltip_label;
+			$node->widgetConfig->gridConfig->data[] = array($row['contract_number'],$row['maximum_contract_amount'],$row['legal_name'], $row['agency_name']  );
+			$index += 1;
+	}
+
+	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
+	$node->widgetConfig->chartConfig->series[0]->type = 'column';
+	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
+	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+
+	$last_param = \\Drupal\\checkbook_project\\CommonUtilities\\RequestUtil::_getLastRequestParamValue();
+	if($last_param =='vendor'){
+		$node->widgetConfig->chartTitle =  'Prime Vendor Top Ten '  .  \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::getCurrentContractStatusandType() .  ' Sub Vendors Contracts  by Current Amount';
+	}elseif($last_param =='subvendor'){
+		$node->widgetConfig->chartTitle =  'Sub Vendor Top Ten '  .  \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::getCurrentContractStatusandType() .  ' Sub Vendors Contracts  by Current Amount';
+	}else{
+        if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('status',['q'=>$url]) == 'A'){
+		    $node->widgetConfig->chartTitle =  \\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::getCurrenEthnicityName() . ' Top Ten Active Sub Vendor Contracts by Current Amount';
+        }else{
+            $node->widgetConfig->chartTitle =  \\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::getCurrenEthnicityName() . ' Top Ten Active New Sub Vendor Contracts by Current Amount';
+        }
+	}
+",
+"chartConfig" : {
+	"colors":["#7DB7E5"],
+    "plotOptions": {
+            "series": {
+                "cursor": "pointer"   ,
+                "stacking": "normal",
+                "dataLabels": {
+                    "enabled": false
+                }  ,
+                "point": {"events": {"function": "clickEvent"}}
+            }
+    },
+    "xAxis": {
+        "categories": [0,1,2,3,4,5,6,7,8,9],
+        "labels": {"enabled": false}
+    },
+    "series": [
+        {
+            "name": "FY",
+            "type": "column",
+            "pointWidth": 50,
+            "data": []
+        }
+    ],
+    "title": {"text": ""},
+    "yAxis": {
+     	"min":0,
+     	"minRange": 0.1,
+        "startOnTick":true,
+        "title": {"text": ""},
+        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+    } ,
+    "legend": {
+        "enabled": false
+    },
+    "tooltip":{"function":"tooltipformatter"}
+    }
+}
+
+
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^'formatter' :
+function() {return this.point.tooltip_label ;
+}
+##clickEvent^^"click": function(){location.href = this.url; }
+</function>

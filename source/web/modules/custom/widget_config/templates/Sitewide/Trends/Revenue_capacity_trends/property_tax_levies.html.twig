@@ -1,0 +1,60 @@
+{#
+/**
+* This file is part of the Checkbook NYC financial transparency software.
+* 
+* Copyright (C) 2012, 2013 New York City
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/#}
+
+{{ attach_library('widget_highcharts/grid-view') }}
+{{ node.widgetConfig.header |raw }}
+
+<a class="trends-export" href="/export/trends/download/{{node.nid}}">Export</a>
+
+<table id="table_{{ node.nid }}" style='display:none' class="trendsShowOnLoad {{node.widgetConfig.html_class}}">
+    {{addCaption(node) |raw}}
+    <thead>
+    <tr>
+        <th class="number rowspan2Top"><div class="trendCen" >Fiscal</div></th>
+        <th rowspan="2" class="number"><div class="trendCen" >Taxes Levied<br>for the<br>Fiscal Year</div></th>
+        <th colspan="3" class="centrig bb"><div class="trendCen" >Collected Within the<br>Fiscal Year of the Levy</div></th>
+        <th rowspan="2" class="number"><div class="trendCen" >Non-Cash<br>Liquidations<br>and Adjustments<br>to Levy<sup>(1)</sup></div></th>
+        <th colspan="2" class="centrig bb"><div>Total Collections<br>and Adjustments to Date</div></th>
+        <th rowspan="2" class="number"><div class="trendCen" >Remaining<br>Uncollected<br>JUNE 30, <?= $last_year ?></div></th>
+        <th rowspan="2">&nbsp;</th>
+    </tr>
+    <tr>
+	  <th class="number rowspan2Bot"><div class="trendCen" >Year</div></th>
+      <th class="number"><div class="trendCen" >Amount</div></th>
+      <th class="number"><div class="trendCen" >Percentage<br>of the Levy</div></th>
+      <th class="number"><div class="trendCen" >Collected<br>in Subsequent<br>Years</div></th>
+      <th class="number"><div class="trendCen" >Amount</div></th>
+      <th class="number"><div class="trendCen" >Percentage<br>of the Levy</div></th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    {{ propertyTaxLevies(node) }}
+
+    </tbody>
+</table>
+<div class="footnote">
+<p>(1) Adjustments to Tax Levy are Non-Cash Liquidations and Cancellations of Real Property Tax and include School Tax Relief payments which are not included in the City Council Resolutions.</p>
+<p>SOURCES: Resolutions of the City Council and other Department of Finance reports.</p>
+</div>
+<script type="text/javascript">
+    {{ addJs(node)|raw }}
+</script>

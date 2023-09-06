@@ -1,0 +1,49 @@
+# highcharts.js
+highcharts:
+  header: true
+  js:
+    Highcharts-Stock-10.0.0/code/highcharts.js: {}
+    Highcharts-Stock-10.0.0/code/modules/accessibility.js: {}
+# highstock.js
+highstocks:
+  header: true
+  js:
+    Highcharts-Stock-10.0.0/code/highstock.js: {}
+    js/featured-trends.js: {}
+
+highcharts-globals:
+  header: true
+  js:
+    js/highcharts-globals.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
+# jQuery is used, but not required, so set the dependency
+chart:
+  header: true
+  js:
+    js/chart.js: {}
+grid-view:
+  header: true
+  css:
+    theme:
+      css/print.css: { media: print }
+  js:
+    /modules/custom/jquery_plugins/data_tables/1.13.4/js/jquery.dataTables1.13.4.min.js: {}
+    /modules/custom/jquery_plugins/data_tables/1.13.4/extensions/full_numbers_no_ellipses/full_numbers_no_ellipses.js: {}
+    /modules/custom/jquery_plugins/js/chosen.jquery.js: {}
+    /modules/custom/widget_framework/widget_data_tables/js/transactions.js: {}
+    js/grid-view.js: {}
+  dependencies:
+    - core/jquery
+    - core/once
+    - core/drupal
+# printjs.js
+#printjs:
+#  remote: https://github.com/crabbly/Print.js
+#  version: 1.6.0
+#  license:
+#    name: MIT
+#    url: https://github.com/crabbly/Print.js/blob/master/LICENSE
+#  js:
+#    https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.js: { type: external, minified: true }

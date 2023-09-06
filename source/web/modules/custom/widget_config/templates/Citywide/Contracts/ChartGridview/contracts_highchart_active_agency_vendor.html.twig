@@ -1,0 +1,105 @@
+{{ attach_library('widget_highcharts/grid-view') }}
+
+{{ gridPrintExport(node) |raw }}
+
+{% set isAgencyPage = node.nid == 452 or node.nid == 455 %}
+{% if isAgencyPage == true %}
+  {% set rowname = 'agency_agency_agency_name' %}
+{% else %}
+  {% set rowname = 'vendor_vendor_legal_name' %}
+{% endif %}
+<div id="gridprint">
+  <h3 class="grid_title">{{ contractTitle()|raw }}</h3>
+  <h3 class="grid_chart_title">{{ node.widgetConfig.chartTitle |raw}}</h3>
+  {{ pageGridTitle('Contracts')|raw }}
+  <div>
+    <table id="table_{{ node.nid }}" class=" {{node.widgetConfig.gridConfig.html_class}} ">
+      <thead>
+      <tr>
+        {% if isAgencyPage == true %}
+          <th>{{ widget_get_table_header("contract_agency") | raw}} </th>
+        {% else %}
+          <th>{{ widget_get_table_header("prime_vendor") | raw}} </th>
+        {% endif %}
+        <th>{{ widget_get_table_header("no_of_contracts") | raw}}</th>
+        <th>{{ widget_get_table_header("current_amount") | raw}}</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+        {% if node.data %}
+          {% for datarow in node.data %}
+            <tr>
+              <td><div>{{ attribute(datarow, rowname) }}</div></td>
+              <td>{{ datarow.total_contracts }}</td>
+              <td>{{ datarow.current_amount_sum }}</td>
+              <td>&nbsp;</td>
+            </tr>
+          {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+    {% set wurl = widget_url() %}
+    {% set dataTableOptions = '
+                    {
+                        "bFilter":false,
+                        "bInfo":false,
+                        "bLengthChange":false,
+                        "iDisplayLength":10,
+                        "aaSorting":[[2,"desc"]],
+                        "bPaginate": false,
+                        "sAltAjaxSource":"' ~ wurl ~ '",
+            			"fnDrawCallback"  :  function( oSettings ) {
+            			addPaddingToDataCells(this);
+            			},
+                        "aoColumnDefs": [
+                            {
+                                "aTargets": [0],
+                                "sClass":"text",
+                                "asSorting": [ "asc","desc" ]
+                            },
+                            {
+                                "aTargets": [1],
+                                "aExportFn":"function",
+                                "mDataProp": function ( source, type, val ) {
+                                    if (type == "set") {
+                                        source.total_contracts = val;
+                                        source.total_contracts_display =  "<div>" + addCommas(val) + "</div>";
+                                        return;
+                                    }else if (type == "display") {
+                                        return source.total_contracts_display;
+                                    }
+                                    return source.total_contracts;
+                                },
+                                "sClass":"number",
+                                "asSorting": [ "desc", "asc" ]
+                            },
+                            {
+                                "aTargets": [2],
+                                "aExportFn":"function",
+                                "mDataProp": function ( source, type, val ) {
+                                    if (type == "set") {
+                                        source.budget_ytd = val;
+                                        source.budget_ytd_display =  "<div>" + custom_number_format(val) + "</div>";
+                                        return;
+                                    }else if (type == "display") {
+                                        return source.budget_ytd_display;
+                                    }
+                                    return source.budget_ytd;
+                                },
+                                "sClass":"number",
+                                "asSorting": [ "desc", "asc" ]
+                            },
+                            {
+                              "aTargets": [3],
+                              "sWidth":"15px"
+                            }
+
+                        ]
+                    }
+                    ' %}
+    <script type="text/javascript">
+      {{ widget_highcharts_add_datatable_js(dataTableOptions,node) |raw}}
+    </script>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":667,
+    "no_results_content":"No Results Found",
+    "defaultParameters":{
+        "cum_spend.cum_spend.status_flag":"A"
+    },
+    "allowRequestParams":["contstatus"],
+    "limit":10,
+    "startWith":0,
+    "maxSelect":5,
+    "allowFacetDeselect":true,
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code",
+        "contstatus":"cum_spend.cum_spend.status_flag",
+        "calyear":"cum_spend.cum_spend.fiscal_year_id",
+        "year":"cum_spend.cum_spend.fiscal_year_id",
+        "yeartype":"cum_spend.cum_spend.type_of_year",
+        "mwbe_vendor":"cum_spend.cum_spend.vendor_id",
+        "mwbe":"cum_spend.cum_spend.minority_type_id"
+    }  ,
+    "columns":["vendor_name.vendor_name", "txcount"],
+    "orderBy":["-txcount","vendor_name.vendor_name"],
+    "facetPager":true,
+    "filterName":"Vendor",
+    "autocompleteParamName":"vendor_auto",
+    "autocompleteField":"vendor_name",
+    "urlParameterName":"vendornm_exact",
+    "urlParameterNameType":"eqtext",
+    "autocompleteID":"fvendorNm",
+    "adjustParameters":"
+        if(isset($parameters['vendor_type'])){
+            $parameters['vendor_type'] = \\Drupal\\checkbook_project\\MwbeUtilities\\VendorType::getVendorTypeValue($parameters['vendor_type']);
+        }
+        checkbook_faceted_search_adjust_param($node);
+        \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::_checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
+        $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+        $adjustedParameters['vendor_name.vendor_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

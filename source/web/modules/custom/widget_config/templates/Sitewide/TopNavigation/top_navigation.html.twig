@@ -1,0 +1,75 @@
+{{ attach_library('widget_config/top-navigation') }}
+
+{% macro item(name, dollar_amount, link, active, indicator, menu) %}
+  {% set is_active = active == true ? true : isTopNavigationItemActive(name|lower) %}
+  {% set indicator = indicator is null? is_active : indicator %}
+  <div class="top-navigation--item {{ name|lower|replace({' ':'', '/':'', '(':'', ')':''})  }} {{ is_active ? 'active' : ''}}">
+    {% if link == false %}
+      <div class="top-navigation--item-label">
+        {{ name }}
+        <div class="top-navigation--item-dollar_amount">
+          {{ dollar_amount }}
+        </div>
+      </div>
+    {% else %}
+      <a class="top-navigation--item-label display-block text-no-underline" href="{{ link }}">
+        {{ name }}
+        <div class="top-navigation--item-dollar_amount">
+          {{ dollar_amount }}
+        </div>
+      </a>
+      {% if menu %}
+        <div class="indicator-menu">
+          <div class="top-navigation-item--menu position-absolute text-left z-top display-none">
+            {{ menu | raw }}
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {# Show indicator if item is active or by force (indicator == true in array) #}
+    {% if indicator == true and is_active == true %}
+      <div class="indicator-active"></div>
+    {% endif %}
+  </div>
+{% endmacro item %}
+
+{% set sections = generateTopNavigation(node) | raw %}
+{% set page_type = sections['page_type'] %}
+{% set first_section = sections['first'] %}
+{% set second_section = sections['second'] %}
+
+<div class="top-navigation">
+
+  <!-- Tooltip -->
+  <div class="display-flex flex-column margin-bottom-2px">
+    <div class="top-navigation--tooltip flex-align-self-end position-relative text-center">
+      <div class="top-navigation--tooltip-content text-left position-absolute display-none">
+        The amounts represented in the featured dashboards are subset amounts of
+        either the Spending or Contract Domains
+        <div class="top-navigation--tooltip-content-bottom position-absolute"></div>
+      </div>
+      <a class="top-navigation--tooltip-trigger text-no-underline">
+        {{ page_type }} Featured Dashboard
+      </a>
+    </div>
+  </div>
+
+  <!-- Items -->
+  <div class="display-flex flex-justify">
+    <div class="display-flex top-navigation--section-first">
+      {% for item in first_section %}
+        {{ _self.item(item.label, item.dollar_amount, item.link, item.active, item.indicator) }}
+      {% endfor %}
+    </div>
+
+    <div class="display-flex top-navigation--section-second">
+      {% for item in second_section %}
+        <div>
+          {{ _self.item(item.label, item.dollar_amount, item.link, item.active, item.indicator, item.menu) }}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>

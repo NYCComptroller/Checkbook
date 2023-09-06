@@ -1,0 +1,27 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":979,
+  "no_results_content":"No Results Found",
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "columns":["item_description.item_description","txcount"],
+  "orderBy":"-txcount",
+  "facetPager":true,
+  "filterName":"Item Description",
+  "urlParameterName":"item_descr",
+  "autocompleteParamName":"item_descr_auto",
+  "autocompleteID":"fItemDescr",
+  "autocompleteField":"item_description",
+  "adjustParameters":"
+  $parameters = \\Drupal\\checkbook_project\\NychaContractUtilities\\NYCHAContractUtil::adjustYearParams($node, $parameters);
+  $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+$adjustedParameters['item_description.item_description'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+$adjustedParameters['item_description.item_description'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEqualOperatorHandler::$OPERATOR__NAME, '-');
+$adjustedParameters['item_description.item_description'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEqualOperatorHandler::$OPERATOR__NAME, '');
+return $adjustedParameters;
+",
+"template":"individual_filter"
+}

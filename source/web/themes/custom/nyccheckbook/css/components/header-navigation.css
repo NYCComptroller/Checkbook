@@ -1,0 +1,72 @@
+/* Superfish Main Menu Overrides */
+
+/* Parent */
+#superfish-main > li > a,
+#superfish-main > li > span {
+  font-weight: bold;
+  font-size: 14px;
+  padding: 13px 22px 10px;
+  border-right: 1px solid #cbcbcb;
+  color: #4d4d4d;
+  height: 40px;
+  cursor: pointer;
+}
+
+#superfish-main > li > a > .sf-sub-indicator,
+#superfish-main > li > span > .sf-sub-indicator {
+  display: none;
+}
+
+#superfish-main > li > a:hover {
+  color: #2a639a;
+  text-decoration: none;
+}
+
+#superfish-main > li:last-child a {
+  color: #389be2;
+}
+
+/* Child */
+
+#superfish-main > li > ul {
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+#superfish-main li ul li {
+  background-color: #eee;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+#superfish-main li ul li a,
+#superfish-main li ul li span {
+  font-size: 14px;
+  color: #4d4d4d;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+#superfish-main li ul li a:hover,
+#superfish-main li ul li span:hover {
+  background: #2d4c68;
+  color: #fff;
+  text-decoration: none;
+}
+
+#superfish-main li ul li a:hover .sf-sub-indicator,
+#superfish-main li ul li span:hover .sf-sub-indicator {
+  display: none;
+}
+
+#superfish-main > li ul li .sf-sub-indicator {
+  opacity: 1;
+  right: -0.6em;
+  top: 60%;
+}
+
+#superfish-main > li ul li .sf-sub-indicator:after {
+  font-size: 9px;
+  color: #696969;
+}

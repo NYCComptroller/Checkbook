@@ -1,0 +1,210 @@
+{
+    "spending":{
+        "searchCriteriaMap":{
+            "fiscal_year":"fiscal_year",
+            "payee_code":"vendor_customer_code",
+            "document_id":"disbursement_number",
+            "agency_code":"agency_code",
+            "industry":"industry_type_id",
+            "issue_date":"check_eft_issued_date",
+            "department_code":"department_code",
+            "check_amount":"check_amount",
+            "expense_category":"expenditure_object_code",
+            "catastrophic_event":"event_id",
+            "contract_id":"reference_document_number",
+            "contract_purpose":"purpose",
+            "capital_project_code":"reporting_code",
+            "spending_category":"spending_category_code@checkbook:spending_category_subven",
+            "mwbe_category":"minority_type_id",
+            "associated_prime_vendor":"associated_prime_vendor",
+            "sub_contract_reference_id":"sub_contract_id",
+            "sub_vendor":"sub_vendor",
+            "payee_name":"vendor_name"
+        },
+        "dataset":{
+            "sortColumn":["-check_amount", "-disbursement_line_item_id"],
+            "name":"checkbook:spending_transactions_all",
+            "columnTypes":{
+                "reference_document_number":"like",
+                "reporting_code":"like",
+                "disbursement_number":"like",
+                "minority_type_id":"in",
+                "industry_type_id":"in",
+                "vendor_name":"contains"
+            },
+            "displayConfiguration":{
+                "xml":{
+                    "rootElement":"spending_transactions",
+                    "rowParentElement":"transaction",
+                    "elementsColumn":{
+                        "agency":"agency_name",
+                        "associated_prime_vendor":"prime_vendor_name",
+                        "budget_code":"budget_name_code",
+                        "capital_project":"reporting_code",
+                        "check_amount":"check_amount",
+                        "contract_id":"reference_document_number",
+                        "mocs_registered":"is_mocs_registered",
+                        "contract_purpose":"purpose",
+                        "expense_category":"expenditure_object_name",
+                        "department":"department_name",
+                        "document_id":"disbursement_number",
+                        "fiscal_year":"fiscal_year",
+                        "industry":"industry_type_name",
+                        "issue_date":"check_eft_issued_date",
+                        "mwbe_category":"mwbe_category_ui",
+                        "woman_owned_business": "is_women_owned",
+                        "emerging_business": "is_emerging",
+                        "payee_name":"vendor_name",
+                        "spending_category":"spending_category_name",
+                        "sub_contract_reference_id":"sub_contract_id",
+                        "sub_vendor":"vendor_type"
+                    },
+                    "rowElements":[
+                        "agency",
+                        "associated_prime_vendor",
+                        "budget_code",
+                        "capital_project",
+                        "contract_id",
+                        "mocs_registered",
+                        "contract_purpose",
+                        "check_amount",
+                        "department",
+                        "document_id",
+                        "expense_category",
+                        "fiscal_year",
+                        "industry",
+                        "issue_date",
+                        "mwbe_category",
+                        "woman_owned_business",
+                        "emerging_business",
+                        "payee_name",
+                        "spending_category",
+                        "sub_contract_reference_id",
+                        "sub_vendor",
+                        "vendor_type"
+                    ],
+                    "required_non_display_columns":["vendor_type"]
+                },
+                "csv":{
+                    "elementsColumn":{
+                        "Fiscal year":"fiscal_year",
+                        "Document ID":"disbursement_number",
+                        "Payee Name":"vendor_name",
+                        "Industry":"industry_type_name",
+                        "Issue Date":"check_eft_issued_date",
+                        "Agency":"agency_name",
+                        "Department":"department_name",
+                        "Check Amount":"check_amount",
+                        "Expense Category":"expenditure_object_name",
+                        "Contract ID":"reference_document_number",
+                        "MOCS Registered":"is_mocs_registered",
+                        "Contract Purpose":"purpose",
+                        "Capital Project":"reporting_code",
+                        "Spending Category":"spending_category_name",
+                        "Sub Contract Reference ID":"sub_contract_id",
+                        "Sub Vendor":"vendor_type",
+                        "Associated Prime Vendor":"prime_vendor_name",
+                        "M/WBE Category":"mwbe_category_ui",
+                        "Woman Owned Business": "is_women_owned",
+                        "Emerging Business": "is_emerging",
+                        "Budget Code":"budget_name_code"
+                    },
+                    "required_non_display_columns":["vendor_type"]
+                }
+            },
+            "adjustParameters":"if(method_exists('\\Drupal\\checkbook_api\\Utilities\\SpendingUtil', 'checkbook_api_adjustSpendingParameterFilters')){\\Drupal\\checkbook_api\\Utilities\\SpendingUtil::checkbook_api_adjustSpendingParameterFilters($data_set,$parameters,$criteria);}",
+            "adjustDataSetResults":"if(method_exists('\\Drupal\\checkbook_api\\Utilities\\SpendingUtil', 'checkbook_api_adjustSpendingDataSetResults')){\\Drupal\\checkbook_api\\Utilities\\SpendingUtil::checkbook_api_adjustSpendingDataSetResults($data_records);}",
+            "adjustSql":"if(method_exists('\\Drupal\\checkbook_api\\Utilities\\SpendingUtil', 'checkbook_api_adjustSpendingSql')){\\Drupal\\checkbook_api\\Utilities\\SpendingUtil::checkbook_api_adjustSpendingSql($sql_query);}"
+        },
+        "requestParameters":{
+            "fiscal_year":{
+                "valueType":"value",
+                "dataType":"year",
+                "maxLength":"4"
+            },
+            "payee_code":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"20"
+            },
+            "payee_name":{
+              "valueType":"value",
+              "dataType":"text",
+              "maxLength":"100"
+            },
+            "document_id":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"30"
+            },
+            "agency_code":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"3"
+            },
+            "issue_date":{
+                "valueType":"range",
+                "dataType":"date",
+                "format":"YYYY-MM-DD"
+            },
+            "catastrophic_event":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"2"
+            },
+            "department_code":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"9"
+            },
+            "check_amount":{
+                "valueType":"range",
+                "dataType":"amount",
+                "maxLength":"22"
+            },
+            "expense_category":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"4"
+            },
+            "contract_id":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"32"
+            },
+            "capital_project_code":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"15"
+            },
+            "spending_category":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"2"
+            },
+            "mwbe_category":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"18"
+            },
+            "industry":{
+                "valueType":"value",
+                "dataType":"text",
+                "maxLength":"2"
+            }
+        }
+    },
+    "validators":[
+        {
+            "name":"optionalSingleFilter",
+            "configKey":["spending"],
+            "config":{
+                "criteriaLevel":["value", "range"],
+                "validatorType":"filterName",
+                "validatorTypeConfig":{
+                    "filterNames":["fiscal_year", "issue_date"]
+                }
+            }
+        }
+    ]
+}

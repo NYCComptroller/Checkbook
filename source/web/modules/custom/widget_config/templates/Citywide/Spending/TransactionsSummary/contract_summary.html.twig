@@ -1,0 +1,39 @@
+
+{% set ytdspending = customWidgetLabel("ytd_spending") %}
+{% set  oamnt = customWidgetLabel("original_amount") %}
+{% set  camnt = customWidgetLabel("current_amount") %}
+{% set puprose = customWidgetLabel("contract_purpose") %}
+{% set vendor= customWidgetLabel("prime_vendor") %}
+{% set agency= customWidgetLabel("contract_agency") %}
+
+<div class="contract-details-heading">
+  <div class="contract-id">
+    <h2 class="contract-title">{{customFunctionEvaluate(node.widgetConfig.templateTitleEval)}}</h2>
+  </div>
+  <div class="dollar-amounts">
+    <div class="total-spending-contract-amount">
+      {{customAmount(node.data[0]['total_contract_amount_sum'],2,'$')}}
+      <div class="amount-title">Total Contract<div align="center">Amount</div></div>
+    </div>
+    <div class="ytd-spending-amount">
+      {{customAmount(node.data[0]['check_amount_sum'],2,'$')}}
+      <div class="amount-title">{{ytdspending |raw}}</div>
+    </div>
+  </div>
+</div>
+<div class="contract-information contract-summary-block">
+  <ul>
+    <li class="spendingtxsubtitle">
+      <span class="gi-list-item">{{node.widgetConfig.templateLabel}}:</span> {{node.data[0]['document_id_document_id']}}
+    </li>
+    <li class="contract-purpose">
+      <span class="gi-list-item">{{puprose |raw }}:</span> {{node.data[0]['contract_purpose_contract_purpose'] | upper}}
+    </li>
+    <li class="agency">
+      <span class="gi-list-item">{{agency | raw}}:</span> {{node.data[0]['agency_agency_agency_name'] | raw}}
+    </li>
+    <li class="vendor">
+      <span class="gi-list-item">{{vendor |raw}}:</span> {{node.data[0]['vendor_vendor_legal_name']}}
+    </li>
+  </ul>
+</div>

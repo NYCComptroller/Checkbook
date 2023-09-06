@@ -1,0 +1,278 @@
+/* Dialog */
+
+.ui-widget {
+  font-family: Verdana,Arial,sans-serif;
+  font-size: 1.1em;
+}
+
+.ui-dialog .ui-widget-header {
+  font-weight: bold;
+  border: 1px solid #aaaaaa;
+  background: #cccccc url(/themes/custom/nyccheckbook/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;
+  color: #222222;
+  font-weight: bold;
+  padding: 0.6em 1em !important;
+}
+
+.ui-dialog .ui-dialog-content {
+  overflow: visible;
+}
+
+#dialog .bold {
+  font-weight: bold;
+  margin: 0px 0px 5px 5px;
+  float: left;
+}
+
+.ckbk-export-dialog {
+  font-size: 1.1em;
+}
+
+.ckbk-export-dialog label {
+  font-weight: initial;
+  display: initial;
+}
+
+label[for=export-frmt-csv] {
+  float: left;
+}
+
+#dialog.ckbk-export-dialog td {
+  padding: 5px 30px;
+}
+
+#export-message {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.ui-dialog .ui-dialog-buttonset > button {
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background: rgba(0,0,0,0) -moz-linear-gradient(center top,#fff 0%,#ddd 100%) repeat scroll 0 0;
+  border-color: #ddd #bbb #999;
+  border-image: none;
+  border-radius: 11px;
+  border-style: solid;
+  border-width: 1px;
+  color: #333;
+  cursor: pointer;
+  font: bold 12px/1.2 Arial,sans-serif;
+  outline: 0 none;
+  overflow: visible;
+  text-shadow: 0 1px 1px #fff;
+  width: auto;
+  padding: 0.4em 1em;
+}
+
+.ui-dialog p {
+  margin: 0;
+}
+
+.ui-dialog td {
+  padding: 10px 5px;
+}
+
+.ui-dialog .ui-widget-content {
+  border: none;
+}
+
+.ui-widget.noTitleDialog .ui-widget-header,
+.ui-widget.dialog-schedule-confirm .ui-widget-header {
+  background: none;
+  border: none;
+}
+
+#dialog_schedule_confirm {
+  position: relative;
+  top: -26px;
+  width: 80% !important;
+  margin: 0 auto;
+}
+
+span.create-alert-instructions {
+  display: block;
+  clear: both;
+  margin-left: 20px;
+  margin-right: 20px;
+  font-size: 12px;
+  line-height: 25px;
+  padding-top: 0.5em;
+}
+
+span.create-alert-instructions ul {
+  list-style: disc;
+  margin: 0 0 0 15px;
+  padding-left: 0;
+}
+
+span.create-alert-instructions ul li {
+  padding-left: 7px;
+}
+
+.create-alert-header span.inactive {
+  opacity: 0.3;
+}
+
+#dialog {
+  height: auto !important;
+  line-height: 18px;
+}
+
+#dialog tr {
+  width: 100%;
+}
+
+#dialog td {
+  padding: 10px 5px;
+}
+
+#errorMessages .error-message {
+  color: red;
+  margin-bottom:15px;
+}
+
+#errorMessages .error-message ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#dialog .bold {
+  font-weight:bold;
+  margin:0px 0px 5px 5px;
+  float:left;
+}
+
+#export-message {
+  font-size: 12px;
+  font-style: italic;
+}
+
+#dialog div.description,
+.js-form-type-date div.description {
+  font-size: 8px;
+}
+
+.js-form-type-date div.description {
+  text-align: right;
+  padding-top: 1px;
+}
+
+.alert-required-field {
+  color: red;
+}
+
+input[type="date"] {
+  text-indent: -500px;
+  padding-left: 73px;
+  padding-right: 0;
+}
+
+.date-item-relative {
+  position: relative;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+.date-item-relative.form-item-alert-end {
+  display: inline-block;
+}
+
+.date-item-relative .date-item-label {
+  pointer-events: none;
+  text-align: center;
+  position: absolute;
+  width: 76px;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+  font-weight: normal;
+  font-size: 12px;
+  z-index: 1;
+}
+
+.date-item-relative.form-item-alert-end .date-item-label {
+  width: 115px;
+}
+
+form[action*="alert"] .form-submit {
+  margin-left: 5px;
+  float: right !important;
+}
+
+.create-alert-results-loading {
+  margin: 0 auto;
+  position: relative;
+}
+
+.create-alert-results-loading #loading-icon {
+  position: absolute;
+  z-index: 1000;
+  top: 20%;
+  left: 50%;
+}
+
+.create-alert-submit {
+  margin-right: 20px;
+}
+
+.create-alert-submit input {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.createalert .dataTable tbody a {
+  color: #606060 !important;
+  cursor: default !important;
+  text-decoration: none !important;
+}
+
+.create-alert-schedule-form {
+  margin-top: 10px;
+  margin-left: 40px;
+}
+
+.create-alert-schedule-form #alert_instructions,
+.createalert span.alerts {
+  display: none;
+}
+
+.dialog-schedule-confirm {
+  z-index: 1000;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+  background-color: transparent;
+  border: none;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover {
+  background-color: #e1e1e1;
+  border: 1px solid #999999;
+}
+
+.ui-dialog .ui-dialog-titlebar-close .ui-icon {
+  background-image: url(/core/assets/vendor/jquery.ui/themes/base/images/ui-icons_444444_256x240.png);
+}
+
+.ui-dialog {
+  z-index: 1000 !important;
+}
+
+.ui-dialog:not(.dialog-schedule-confirm):not(.ui-dialog-position-side){
+  outline: 0px;
+  height: auto !important;
+  max-width: 805px;
+}
+
+.ui-dialog.with-iframe {
+  width: 985px !important;
+  max-width: 985px !important;
+}

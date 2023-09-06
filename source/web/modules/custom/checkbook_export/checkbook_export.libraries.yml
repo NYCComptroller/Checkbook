@@ -1,0 +1,8 @@
+export.transactions:
+  version: 1.0.0
+  js:
+    js/checkbookexport.js: {}
+  dependencies:
+    - core/drupalSettings
+    - jquery_ui_dialog/dialog
+    - jquery_ui/position

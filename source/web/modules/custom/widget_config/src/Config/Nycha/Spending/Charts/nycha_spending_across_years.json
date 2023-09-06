@@ -1,0 +1,142 @@
+{
+  "widgetType": "highcharts",
+  "header":"
+  $header = '<h2 class=\"chart-title\" style=\"display:none;\">' . $node->widgetConfig->chartTitle . '</h2>';
+  $header .= \\Drupal\\checkbook_project\\WidgetUtilities\\ChartUtil::generateWidgetGridViewLink($node);
+  return $header;
+  ",
+  "gridConfig":{
+    "template":"chart_grid_view",
+    "domain":"spending",
+    "html_class":"chart-grid-view-table two-columns",
+    "sortColumn":0,
+    "sortOrder": "desc",
+    "table_columns": [
+      {
+        "labelAlias": "Year",
+        "columnType": "text"
+      },
+      {
+        "labelAlias": "Amount",
+        "columnType": "number",
+        "formatType": "amount"
+      }
+    ]
+  },
+  "dataset": "checkbook_nycha:all_disbursement_transactions",
+  "columns": [
+    "issue_date_year_id.issue_date_year_id",
+    "issue_date_year.issue_date_year",
+    "check_amount_sum",
+    "invoice_amount_sum",
+    "category.category",
+    "category_name.category_name"
+  ],
+  "orderBy": "issue_date_year.issue_date_year",
+  "cleanURLParameters": [
+    "agency",
+    "vendor",
+    "category"
+  ],
+
+  "adjustParameters": "
+  $year_id=\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('year');
+  //if(isset($year_id)){
+  $data_controller_instance=data_controller_get_operator_factory_instance();
+  $parameters['issue_date_year_id'] = $data_controller_instance->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\LessOrEqualOperatorHandler::$OPERATOR__NAME, $year_id);
+  //}
+  $adjustedParameters = $parameters;
+  $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+return $adjustedParameters;
+",
+"defaultParameters":{"check_amount_sum":"0"},
+"defaultParamTypeConfig":{"check_amount_sum":"ne"},
+"urlParamMap":{"agency":"agency_id","vendor":"vendor_id","category":"spending_category_id"},
+"transformationPHP": "
+  $data = array();
+  $categories = array();
+  $url = \\Drupal::service('path.current')->getPath();
+
+
+  $year_id = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('year');
+  $datasource = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('year');
+  $sql = 'select year_value from ref_year where year_id between 111 and '.$year_id.' order by year_value asc';
+
+  $year_list = _checkbook_project_execute_sql($sql,'main','checkbook_nycha');
+  $cat = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('category');
+
+  $cat_name = 'Total';
+  if ($cat != null){
+  foreach ($node->data as $row){
+    $cat_name = $row['category_name_category_name'];
+    if ($cat == '2'){
+      $row['invoice_amount_sum'] = $row['check_amount_sum'];}
+      $categories[]=$row['issue_date_year_issue_date_year'];
+      $data[] = (object)array('year'=>$row['issue_date_year_id'], 'y'=>$row['invoice_amount_sum'], 'name'=>$row['issue_date_year_issue_date_year']);
+      $node->widgetConfig->gridConfig->data[] = array($row['issue_date_year_issue_date_year'], $row['invoice_amount_sum']);
+    }
+  }
+  else{
+  foreach ($year_list as $list) {
+    $amount = 0;
+    foreach ($node->data as $row){
+      if ($row['issue_date_year_issue_date_year'] == $list['year_value']) {
+        $flag = 1;
+        if ($row['category_name_category_name'] == 'Payroll') {$row['invoice_amount_sum'] = $row['check_amount_sum'];}
+          $year_value= $row['issue_date_year_issue_date_year'];
+          $year_id = $row['issue_date_year_id'];
+          $amount += (float)$row['invoice_amount_sum'];
+      }
+    }
+  if ($flag == 1){
+  $categories[]=$year_value;
+  $data[] = (object)array('year'=>$year_id, 'y'=>$amount, 'name'=>$year_value);
+  $node->widgetConfig->gridConfig->data[] = array($year_value, $amount);}
+  $amount = '';
+    $flag = 0;
+  }
+  }
+  $node->widgetConfig->chartConfig->series[0]['data'] = $data;
+  $node->widgetConfig->chartConfig->xAxis->categories = $categories;
+  $node->widgetConfig->chartConfig->series[0]['name'] = 'Spending Amount';
+  $node->widgetConfig->chartTitle = $cat_name.' Spending Across Years';
+  return $node->data;
+",
+"chartConfig": {
+"chart": {"defaultSeriesType": "column"},
+"colors":["#7DB7E5"],
+"legend": {
+"enabled": false,
+"align": "left",
+"verticalAlign": "bottom",
+"floating": "true",
+"layout": "horizontal"
+},
+"xAxis": {
+"labels":{"enabled":false},
+"title": {"text": ""},
+"minPadding":0.1,
+"maxPadding":0.1
+},
+"yAxis": {
+"title": {"text": ""},
+"labels":{"rotation": 0,"function":"yAxisFormatter"}
+},
+"tooltip": {
+"function": "tooltipformatter"
+},
+"title": {
+"text": ""
+},
+"plotOptions": {
+"column": {"pointWidth": 30}
+},
+"series":[],
+"title":{"text":""}
+}
+}
+<function>yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^"formatter": function(){return 'Year: FY '+ this.point.name+ '<br/>' +'Amount: '+abbrNum(this.y,2,'$')}##
+clickEvent^^"click": function(){location.href = this.url; }
+</function>
+

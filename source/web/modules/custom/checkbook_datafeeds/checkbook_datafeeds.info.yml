@@ -1,0 +1,8 @@
+name: 'Checkbook Data Feeds'
+description: 'Data Feeds functionality for Checkbook 2.0'
+core_version_requirement: ^9 || ^10
+package: 'NYC Checkbook'
+#dependencies:
+#  checkbook_autocomplete: 'drupal:checkbook_autocomplete'
+#  checkbook_api: 'drupal:checkbook_api'
+type: module

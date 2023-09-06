@@ -1,0 +1,6 @@
+name: 'Checkbook MWBE Agency Grading'
+type: module
+description: 'Checkbook MWBE Agency Grading'
+core_version_requirement: ^9 || ^10
+package: 'NYC Checkbook'
+dependencies:

@@ -1,0 +1,576 @@
+<?php
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (c) 2012 – 2023 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
+use Drupal\checkbook_project\SpendingUtilities\MwbeSpendingUtil;
+use Drupal\Core\Form\FormStateInterface;
+
+/*************************************************************************************/
+/* Widget Hooks                                                                      */
+/*************************************************************************************/
+
+function widget_highcharts_widget_metadata()
+{
+  return array(
+    'highcharts' => array(
+      'name' => t('Highcharts'),
+      'module' => 'widget_highcharts',
+      'description' => t("This widget type implements highcharts.")
+    )
+  );
+}
+
+function widget_highcharts_widget_validate(&$node, FormStateInterface $form_state)
+{
+  if (!isset($node->widgetConfig->chartConfig)) {
+    $form_state->setErrorByName('body', "Property 'chartConfig' is required for widget type highchart.");
+  }
+}
+
+function widget_highcharts_widget_data(&$node)
+{
+  $datasets = $node->widgetConfig->datasets ?? [];
+  $isXAxisDate = false;
+  $xAxisColumn = null;
+  $chartTitle = null;
+
+  if (isset($node->widgetConfig->chartConfig->xAxis->categories->ds)) {
+    foreach ($datasets as $ds) {
+      if ($ds->name == $node->widgetConfig->chartConfig->xAxis->categories->ds) {
+        $xAxisColumn = $ds->column;
+        if ($ds->type == 'date') {
+          $isXAxisDate = true;
+        }
+        break;
+      }
+    }
+  } else if (isset($node->widgetConfig->chartConfig->xAxisDataPoint->ds)) {
+    foreach ($datasets as $ds) {
+      if ($ds->name == $node->widgetConfig->chartConfig->xAxisDataPoint->ds) {
+        $xAxisColumn = $ds->column;
+        if ($ds->type == 'date') {
+          $isXAxisDate = true;
+        }
+        break;
+      }
+    }
+  }
+  $results = array();
+  if (is_array($node->data)) {
+    foreach ($node->data as $row) {
+      $xAxisDataPoint = null;
+      if ($isXAxisDate) {
+        if (($xAxisUTC = strtotime($xAxisDataPoint) * 1000) === false) {
+          continue;
+        }
+      } else {
+        $xAxisUTC = $xAxisDataPoint;
+      }
+      //  dsm($xAxisUTC);
+      if (is_array($datasets))
+        foreach ($datasets as $ds) {
+
+          if (isset($ds->column) && $ds->column == $xAxisColumn) {
+            if (is_null($row[$ds->column])) {
+              continue;
+            }
+            $results[$ds->name][] = $xAxisUTC;//$row[$ds->column];
+            continue;
+          }
+          if ($ds->isArray == true) {
+            $allowNullValues = false;
+            if (isset($ds->columns)) {
+              $dataPoint = [];
+              foreach ($ds->columns as $col) {
+                if (isset($ds->allowNullValues)) {
+                  $allowNullValues = $ds->allowNullValues;
+                }
+                if (($col->name == 'x' || $col->name == 'y' || $col->name == 'title') && is_null($row[$col->value]) && !$allowNullValues) {
+                  unset($dataPoint);
+                  break;
+                }
+                $dataPoint[$col->name] = $row[$col->value];
+
+                foreach ($col as $colKey => $value) {
+                  if ($colKey != 'x' && $colKey != 'y' && $colKey != 'name' && $colKey != 'value') {
+                    $dataPoint[$colKey] = $row[$col->$colKey];
+                  }
+                }
+              }
+
+              if (sizeof($dataPoint)) {
+                $results[$ds->name][] = $dataPoint;
+                unset($dataPoint);
+              }
+            } else {
+              //if allowNullValue is false or not set, then dont set the values.
+              if (is_null($row[$ds->column]) && !$allowNullValues) {
+                continue;
+              }
+              //if allowNullValue flag is set, then set the Null values without casting.
+              if (is_null($row[$ds->column]) && $allowNullValues) {
+                $results[$ds->name][] = array($xAxisUTC, $row[$ds->column]);
+                continue;
+              }
+              if ($ds->type == 'float') {
+                $results[$ds->name][] = array($xAxisUTC, (float)$row[$ds->column]);
+              } else if ($ds->type == 'int') {
+                $results[$ds->name][] = array($xAxisUTC, (int)$row[$ds->column]);
+              } else {
+                $results[$ds->name][] = array($xAxisUTC, $row[$ds->column]);
+              }
+            }
+          } else if (!isset($results[$ds->name])) {
+            if ($ds->type == 'float') {
+              $results[$ds->name] = (float)$row[$ds->column];
+            } else if ($ds->type == 'int') {
+              $results[$ds->name] = (int)$row[$ds->column];
+            } else {
+              $results[$ds->name] = $row[$ds->column];
+            }
+          }
+        }
+    }
+  }
+
+
+  if (isset($node->widgetConfig->chartConfig->title->text->ds)) {
+    $node->widgetConfig->chartConfig->title->text = $results[$node->widgetConfig->chartConfig->title->text->ds];
+  }
+
+  if (!isset($node->widgetConfig->chartConfig->chart)) {
+    $node->widgetConfig->chartConfig->chart = new stdClass();
+  }
+
+  //removed zoomtype
+  if (!isset($node->widgetConfig->chartConfig->chart->zoomType)) {
+    $node->widgetConfig->chartConfig->chart->zoomType = '';
+  }
+
+  if (isset($node->widgetConfig->chartConfig->xAxis->categories->ds)) {
+    if (!$isXAxisDate && isset($node->widgetConfig->chartConfig->xAxis->categories->ds)) {
+      $categories = $results[$node->widgetConfig->chartConfig->xAxis->categories->ds];
+      $node->widgetConfig->chartConfig->xAxis->categories = $categories;
+    } else {
+      unset($node->widgetConfig->chartConfig->xAxis->categories);
+    }
+  }
+
+  if (isset($node->widgetConfig->chartConfig->xAxis->tickPositions->ds)) {
+    $tickPositions = $results[$node->widgetConfig->chartConfig->xAxis->tickPositions->ds];
+    $node->widgetConfig->chartConfig->xAxis->tickPositions = $tickPositions;
+
+  }
+
+  if (isset($node->widgetConfig->chartConfig->series)) {
+    if (is_array($node->widgetConfig->chartConfig->series)) {
+      foreach ($node->widgetConfig->chartConfig->series as $series) {
+        if (isset($series->data->ds)) {
+          $series->data = $results[$series->data->ds] == null ? array() : $results[$series->data->ds];
+        } elseif (isset($series->ds)) {
+          $node->widgetConfig->chartConfig->series = $results[$series->ds];
+        }
+
+      }
+    } else if (isset($node->widgetConfig->chartConfig->series->data->ds)) {
+      if (!$node->widgetConfig->chartConfig->series->additionalData) {
+        $node->widgetConfig->chartConfig->series->data = $results[$node->widgetConfig->chartConfig->series->data->ds] == null ? array() : $results[$node->widgetConfig->chartConfig->series->data->ds];
+      }
+    }
+  }
+  if (isset($node->widgetConfig->chartConfig->yAxis->title->text->ds)) {
+    $node->widgetConfig->chartConfig->yAxis->title->text = $results[$node->widgetConfig->chartConfig->yAxis->title->text->ds];
+  }
+//    dsm($results);
+  $node->widgetConfig->chartConfig->chart->renderTo = 'node-chart-' . widget_unique_identifier($node);
+  if (!isset($node->widgetConfig->chartConfig->credits)) {
+    $node->widgetConfig->chartConfig->credits = new stdClass();
+  }
+  $node->widgetConfig->chartConfig->credits->enabled = false;
+
+  //LogHelper::log_debug(json_encode($node->widgetConfig->chartConfig));// use for debugging
+}
+
+function widget_highcharts_widget_footer(&$node)
+{
+  $dashboard = RequestUtilities::get('dashboard');
+  if(isset($node->mwbe_share_percent)){
+
+    if(MwbeSpendingUtil::_show_mwbe_custom_legend()){
+      $nyc_legend_html = $dashboard == 'mp' ? MwbeSpendingUtil::getMWBENYCLegend(RequestUtilities::get('year'), RequestUtilities::get('yeartype')) :
+        MwbeSpendingUtil::getSubMWBENYCLegend(RequestUtilities::get('year'), RequestUtilities::get('yeartype'));
+    }
+    $output= "<div class=\"chart-right\">
+        <div class=\"wrap\">
+    		<div class=\"number\"><span>" . $node->mwbe_share_percent . "</span></div>
+    		<div class=\"text\"><span>M/WBE Share</span></div>
+        </div>"
+  . $nyc_legend_html .
+  "</div>";
+    $node->widgetConfig->mwbePercentfooter = $output;
+  }
+
+}
+
+function widget_highcharts_widget_view(&$node)
+{
+  $widgetType = $node->widgetConfig->widgetSubType ?? "";
+  switch ($widgetType) {
+    case "highstock":
+      $twigFilePath = \Drupal::service('extension.list.module')->getPath('widget_highcharts') . '/templates/highstocks.html.twig';
+      $twigService = \Drupal::service('twig');
+      $template = $twigService->loadTemplate($twigFilePath);
+      $markup = [
+        '#markup' => $template->render(['node' => $node]),
+        '#allowed_tags' => ['script', 'div', 'h2', 'input', 'label', 'a'],
+      ];
+      return \Drupal::service('renderer')->render($markup);
+    default:
+      if (isset($node->widgetConfig->displayType) && $node->widgetConfig->displayType == 'gridview') {
+        $twigFilePath = Drupal\widget_services\Common\CommonService::getTemplatePath($node->widgetConfig->gridConfig->template);
+        $twigService = \Drupal::service('twig');
+        $template = $twigService->loadTemplate($twigFilePath);
+        $markup = [
+          '#markup' => $template->render(['node' => $node]),
+          '#allowed_tags' => ['script', 'div', 'table', 'tr', 'td', 'tbody', 'thead', 'th', 'span', 'h3','br'],
+        ];
+      } else {
+        // Grid View link display
+        $gridViewLink = eval($node->widgetConfig->header);
+        //Check if there is data in chart datasets
+        if(isset($node->totalDataCount) && ($node->totalDataCount == 0) || (is_countable($node->data) && count($node->data) == 0) ){
+          $node->dataCount = 0;
+        }
+        $node->widgetConfig->gridViewLink = $gridViewLink;
+        widget_highcharts_widget_footer($node);
+        $twigFilePath = \Drupal::service('extension.list.module')->getPath('widget_highcharts') . '/templates/highcharts.html.twig';
+        $twigService = \Drupal::service('twig');
+        $template = $twigService->loadTemplate($twigFilePath);
+        $markup = [
+          '#markup' => $template->render(['node' => $node]),
+          '#allowed_tags' => ['script', 'div', 'span', 'br', 'h2', 'a'],
+        ];
+      }
+      return \Drupal::service('renderer')->render($markup);
+  }
+}
+
+
+function widget_highcharts_add_js_setting($node)
+{
+  $id = widget_unique_identifier($node);
+  if ($node->widgetConfig->widgetSubType == 'highstock') {
+    $type = 'highstock';
+  } else {
+    $type = 'highchart';
+  }
+  $chartConfig = widget_mergeJSFunctions($node, $node->widgetConfig->chartConfig);
+  $build['#attached']['library'][] = 'widget_highcharts/chart';
+  $options = array();
+  $options['deferredRender'][] = array(
+    'type' => $type,
+    'id' => $id,
+    'chartConfig' => $chartConfig,
+    'callback' => $node->widgetConfig->callback
+  );
+
+  $build['#attached']['library'][] = 'widget_highcharts/chart';
+  $build['#attached']['drupalSettings']['widget_highcharts']['chart'] = $options;
+}
+
+/*************************************************************************************/
+/* Theme Hooks                                                                       */
+/*************************************************************************************/
+
+function widget_highcharts_theme($existing, $type, $theme, $path)
+{
+  return [
+    'widget_highcharts_default_theme' => [
+      'template' => 'highcharts',
+      'variables' => [
+        'node' => []
+      ],
+    ],
+    'widget_highstocks_default_theme' => [
+      'template' => 'highstocks',
+      'variables' => [
+        'node' => []
+      ],
+    ],
+    'highchart_spending_vendor_grid_view' => [
+      'template' => 'spending_highchart_vendor',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/ChartGridview'
+    ],
+    'highchart_revenue_grid_view' => [
+      'template' => 'revenue_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Revenue/ChartGridview'
+    ],
+    'highchart_revenue_agency_grid_view' => [
+      'template' => 'revenue_agency_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Revenue/ChartGridview'
+    ],
+    'highchart_revenue_revcat_grid_view' => [
+      'template' => 'revenue_revcat_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Revenue/ChartGridview'
+    ],
+    'highchart_revenue_comparisons_grid_view' => [
+      'template' => 'revenue_year_comparisons',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Revenue/ChartGridview'
+    ],
+    'highchart_revenue_fndcls_grid_view' => [
+      'template' => 'revenue_fndcls_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Revenue/ChartGridview'
+    ],
+    'highchart_nycha_revenue_grid_view' => [
+      'template' => 'revenue_nycha_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Revenue/ChartGridview'
+    ],
+    'highchart_nycha_revenue_respcenter_grid_view' => [
+      'template' => 'nycha_revenue_respcenter_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Revenue/ChartGridview'
+    ],
+    'highchart_nycha_revenue_categories_grid_view' => [
+      'template' => 'nycha_revenue_categories_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Revenue/ChartGridview'
+    ],
+    'highchart_nycha_revenue_expcategory_grid_view' => [
+      'template' => 'nycha_revenue_expcategory_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Revenue/ChartGridview'
+    ],
+    'highchart_nycha_revenue_fundsrc_grid_view' => [
+      'template' => 'nycha_revenue_fundsrc_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Revenue/ChartGridview'
+    ],
+    'highchart_nycha_revenue_programs_grid_view' => [
+      'template' => 'nycha_revenue_program_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Revenue/ChartGridview'
+    ],
+    'highchart_budget_grid_view' => [
+      'template' => 'budget_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Budget/ChartGridview'
+    ],
+    'highchart_budget_agency_grid_view' => [
+      'template' => 'budget_agency_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Budget/ChartGridview'
+    ],
+    'highchart_budget_department_grid_view' => [
+      'template' => 'budget_agency_department',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Budget/ChartGridview'
+    ],
+    'highchart_budget_expenditure_grid_view' => [
+      'template' => 'budget_agency_expenditure',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Budget/ChartGridview'
+    ],
+    'highchart_nycha_budget_expcategory_grid_view' => [
+      'template' => 'nycha_budget_expcategory_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Budget/ChartGridview'
+    ],
+    'highchart_nycha_budget_fundsrc_grid_view' => [
+      'template' => 'nycha_budget_fundsrc_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Budget/ChartGridview'
+    ],
+    'highchart_nycha_budget_programs_grid_view' => [
+      'template' => 'nycha_budget_program_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Budget/ChartGridview'
+    ],
+    'highchart_nycha_budget_projects_grid_view' => [
+      'template' => 'nycha_budget_project_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Budget/ChartGridview'
+    ],
+    'highchart_nycha_budget_respcenter_grid_view' => [
+      'template' => 'nycha_budget_respcenter_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Budget/ChartGridview'
+    ],
+    'payroll_by_agency_gross_ot_pay' => [
+      'template' => 'payroll_by_agency_gross_ot_pay',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Payroll/ChartGridview'
+    ],
+    'payroll_by_gross_ot_pay' => [
+      'template' => 'payroll_by_gross_ot_pay',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Payroll/ChartGridview'
+    ],
+    'chart_grid_view' => [
+      'template' => 'chart_grid_view',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Payroll/ChartGridview'
+    ],
+    'highchart_spending_contract_grid_view' => [
+      'template' => 'spending_highchart_contract',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/ChartGridview'
+    ],
+    'highchart_spending_fy_grid_view' => [
+      'template' => 'spending_highchart_fy',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/ChartGridview'
+    ],
+    'highchart_spending_agency_grid_view' => [
+      'template' => 'spending_highchart_agency',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/ChartGridview'
+    ],
+    'highchart_spending_contract_disbursement_grid_view' => [
+      'template' => 'spending_highchart_contract_disbursement',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/ChartGridview'
+    ],
+    'highchart_spending_prime_vendor_grid_view' => [
+      'template' => 'spending_highchart_prime_vendor',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/ChartGridview'
+    ],
+    'highchart_spending_subvendor_grid_view' => [
+      'template' => 'spending_highchart_subvendor',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Payroll/ChartGridview'
+    ],
+    'highchart_nycha_spending_by_month_grid_view' => [
+      'template' => 'nycha_spending_by_month',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Spending/ChartGridview'
+    ],
+    'highchart_contracts_pending_topamount_grid_view' => [
+      'template' => 'contract_pending_topamount_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ChartGridview'
+    ],
+    'highchart_contracts_pending_agency_vendor' => [
+      'template' => 'contracts_highchart_pending_agency_vendor',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ChartGridview'
+    ],
+    'highchart_contracts_topamount_grid_view' => [
+      'template' => 'contract_topamount_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ChartGridview'
+    ],
+    'highchart_contract_grid_view' => [
+      'template' => 'contacts_nyc_highchart',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ChartGridview'
+    ],
+    'highchart_contracts_active_agency_vendor' => [
+      'template' => 'contracts_highchart_active_agency_vendor',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ChartGridview'
+    ],
+  ];
+}
+
+function widget_highcharts_get_color($key)
+{
+  $colors = array('#2BB673', '#EF4C77', '#FFDE15', '#78D1F1', '#FEC10E');
+  return $colors[$key % 5];
+}

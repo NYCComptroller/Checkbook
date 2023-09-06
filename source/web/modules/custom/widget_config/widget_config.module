@@ -1,0 +1,187 @@
+<?php
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (c) 2012 – 2023 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
+use Drupal\checkbook_project\CommonUtilities\CheckbookDateUtil;
+use Drupal\checkbook_project\ContractsUtilities\ContractURLHelper;
+use Drupal\checkbook_project\MwbeUtilities\MappingUtil;
+use Drupal\checkbook_project\MwbeUtilities\VendorType;
+use Drupal\widget_config\Utilities\ContractDetailsUtil;
+
+/**
+ * Preprocess function for contracts_mma_details.html.twig
+ *
+ * @param $variables
+ */
+function widget_config_preprocess_contracts_mma_details(&$variables) {
+  if ( RequestUtilities::get("datasource") == "checkbook_oge") {
+    $variables['datasource'] = "/datasource/checkbook_oge";
+    $variables['oge_class'] = "oge-ma-details";
+  }else{
+    $variables['oge_class'] = "cb-ma-details";
+  }
+  $status = RequestUtilities::getTransactionsParams('status');
+  if($status){
+    $variables['status'] = '/status/'.$status;
+  }else{
+    $variables['status'] = '/status/A';
+  }
+
+  $variables['vendor_link'] = ContractURLHelper::_checkbook_vendor_link($variables['node']->data[0]['vendor_id_checkbook_vendor_history'],TRUE);
+  $variables['agency_link'] = ContractURLHelper::_checkbook_agency_link($variables['node']->data[0]['agency_id_checkbook_agency'],TRUE);
+
+  $magid = RequestUtilities::getTransactionsParams('magid');
+  $variables['spending_link'] = "/spending/transactions/magid/" . $magid . $variables['datasource'] . "/newwindow";
+  if(!preg_match("/newwindow/",\Drupal::service('path.current')->getPath())){
+    $variables['newwindowclass'] = 'class="new_window"';
+  }
+
+  if (RequestUtilities::get("datasource") != "checkbook_oge") {
+    $contract_number = $variables['node']->data[0]['contract_number'];
+    $variables['total_subvendor_count'] = ContractDetailsUtil::getSubVendorCount($contract_number);
+  }
+}
+
+/**
+ * Preprocess function for contract_vendor_info.html.twig
+ *
+ * @param $variables
+ */
+function widget_config_preprocess_contract_vendor_info(&$variables) {
+  /*if(RequestUtilities::get("magid") != ""){
+    $ag_id = RequestUtilities::get("magid");
+  }else{
+    $ag_id = RequestUtilities::get("agid");
+  }*/
+  $mag_id = RequestUtilities::_getRequestParamValueBottomURL('magid');
+  $mag_id = $mag_id ?? RequestUtilities::get('magid');
+  if($mag_id != ""){
+    $ag_id = $mag_id;
+  }else{
+    $ag_id = RequestUtilities::_getRequestParamValueBottomURL('agid');
+    $ag_id = $ag_id ?? RequestUtilities::get('agid');
+  }
+
+  $results1 = ContractDetailsUtil::getVendorDetailsQueryResults($ag_id);
+  $variables['node']->data = $results1;
+
+  $variables['total_cont']  = 0;
+  $results2 = ContractDetailsUtil::getVendorCountQueryResult($ag_id);
+
+  $status = RequestUtilities::_getRequestParamValueBottomURL('status');
+  $status = $status ?? RequestUtilities::get('status');
+  if($status){
+    $variables['status'] = '/status/'.$status;
+  }else{
+    $variables['status'] = '/status/A';
+  }
+
+  foreach($results2 as $row){
+    $variables['total_cont'] +=$row['total_contracts_sum'];
+  }
+
+  $variables['vendor_link'] = ContractURLHelper::_checkbook_vendor_link($variables['node']->data[0]['vendor_id'], TRUE);
+
+  $variables['contract_number'] = $variables['node']->data[0]['contract_number'];
+
+  $variables['minority_type_id'] = $variables['node']->data[0]['minority_type_id'];
+
+  $variables['address'] = $variables['node']->data[0]['address_line_1'] ;
+  $variables['address'] .= " "  .  $variables['node']->data[0]['address_line_2'];
+  $variables['address'] .= " "  .  $variables['node']->data[0]['city'];
+  $variables['address'] .= " "  .  $variables['node']->data[0]['state'];
+  $variables['address'] .= " "  .  $variables['node']->data[0]['zip'];
+  $variables['address'] .= " "  .  $variables['node']->data[0]['country'];
+
+  $ethnicities = array();
+  foreach($variables['node']->data as $row){
+    if($row['ethnicity'] != null and trim($row['ethnicity']) != '' ){
+      $ethnicities[] = MappingUtil::getMinorityCategoryById($variables['minority_type_id']);
+    }
+  }
+  $variables['ethnicity'] = implode(',',$ethnicities);
+  if($variables['minority_type_id'] == "4" || $variables['minority_type_id'] == "5"){
+    $variables['minority_type_id'] = "4~5";
+  }
+
+  $datasource = RequestUtilities::_getRequestParamValueBottomURL('datasource');
+  $datasource = $datasource ?? RequestUtilities::get('datasource');
+  if ($datasource != "checkbook_oge") {
+    $results4 = ContractDetailsUtil::getSubVendorInfoQueryResult($variables['contract_number']);
+    if (!isset($res)) {
+      $res = new stdClass();
+    }
+    $res->data = $results4;
+
+    $variables['total_current_amount'] = $res->data[0]['total_current_amt'];
+    $variables['total_original_amount'] = $res->data[0]['total_original_amt'];
+    $variables['total_spent_todate'] = $res->data[0]['total_spent_todate'];
+
+    $variables['total_subvendor_count'] = ContractDetailsUtil::getSubVendorCount($variables['contract_number']);
+    $variables['subVendorStatus'] = ContractDetailsUtil::getSubVendorStatus($variables['contract_number']);
+  }
+}
+
+/**
+ * Preprocess function for pending_contract_details.html.twig
+ *
+ * @param $variables
+ */
+function widget_config_preprocess_pending_contract_details(&$variables) {
+  if (empty(RequestUtilities::getBottomContUrl())) {
+    $variables['url'] = RequestUtilities::getCurrentPageUrl();
+  } else {
+    $variables['url'] = RequestUtilities::getBottomContUrl();
+  }
+  $current_year_id = CheckbookDateUtil::getCurrentFiscalYearId();
+  if ($variables['node']->data[0]['document_code_checkbook_ref_document_code']  == 'RCT1') {
+    $variables['agency_link'] = '/contracts_pending_rev_landing/year/' . $current_year_id . '/yeartype/B/agency/'. $variables['node']->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
+    $variables['vendor_link'] = '/contracts_pending_rev_landing/year/' . $current_year_id . '/yeartype/B/vendor/'.$variables['node']->data[0]['vendor_vendor'] .'?expandBottomCont=true';
+  } else {
+    if (VendorType::_is_mwbe_vendor(RequestUtilities::get("agid")) || VendorType::_is_mwbe_vendor(RequestUtilities::get("magid")) || stripos($variables['url'],'/dashboard/mp')) {
+      $variables['mwbe'] = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams().'/dashboard/mp';
+    }
+    else{
+      $variables['mwbe']='';
+    }
+    $variables['agency_link'] = '/contracts_pending_exp_landing/year/' . $current_year_id . '/yeartype/B/agency/'. $variables['node']->data[0]['agency_id_checkbook_agency'] .$variables['mwbe']. '?expandBottomCont=true';
+    $variables['vendor_link'] = '/contracts_pending_exp_landing/year/' . $current_year_id . '/yeartype/B/vendor/'.$variables['node']->data[0]['vendor_vendor'] .$variables['mwbe'].'?expandBottomCont=true';
+  }
+  $datasource = RequestUtilities::get('datasource');
+  if(isset($variables['node']->original_master_agreement_id)){
+    if(!preg_match("/newwindow/",RequestUtilities::getCurrentPageUrl())){
+      $variables['master_link_html'] = '<span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href=/panel_html/contract_transactions/contract_details/magid/' .  $variables['node']->original_master_agreement_id . '/doctype/' . $variables['node']->document_code. $datasource . ' class=\"bottomContainerReload\">' .  $variables['node']->contract_number . '</a></span>';
+    }
+    else
+    {
+      $variables['master_link_html'] = '<span class="master-contract-link">Parent Contract: '.  $variables['node']->contract_number . '</span>';
+    }
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function widget_config_page_attachments(&$variables) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  if (\Drupal::service('path_alias.manager')->getAliasByPath($current_path) == '/featured-trends') {
+    $variables['#attached']['library'][] = 'widget_config/featured-trends';
+  }
+}

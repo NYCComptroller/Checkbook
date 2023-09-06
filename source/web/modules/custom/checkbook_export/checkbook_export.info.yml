@@ -1,0 +1,10 @@
+name: 'Checkbook Export'
+description: 'Checkbook Export'
+core_version_requirement: ^9 || ^10
+package: 'NYC Checkbook'
+type: module
+dependencies: {  }
+libraries:
+  - checkbook_export/export.transactions
+  - jquery_ui_dialog/dialog
+  - jquery_ui/position

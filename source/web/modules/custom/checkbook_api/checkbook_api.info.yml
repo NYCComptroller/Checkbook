@@ -1,0 +1,7 @@
+name: 'Checkbook API'
+description: 'Checkbook API.'
+core_version_requirement: ^9 || ^10
+package: 'Custom'
+dependencies:
+  #checkbook_project: 'drupal:checkbook_project'
+type: module

@@ -1,0 +1,14 @@
+.secondary-nav-filter-section {
+  float: right;
+  color: #C5E4FB;
+  margin: 7px 10px 0px 0px;
+}
+
+.secondary-nav-filter-section .filter {
+  margin-top: 7px;
+  display: inline-block;
+}
+
+.secondary-nav-filter-section span.filter {
+  margin-right: 5px;
+}

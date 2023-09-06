@@ -1,0 +1,25 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":1034,
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "allowZeroValue":true,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "columns":["responsibility_center_id.responsibility_center_id","responsibility_center_description.responsibility_center_description","txcount"],
+  "orderBy":"-txcount",
+  "facetPager":true,
+  "filterName":"Responsibility Center",
+  "urlParameterName":"respcenter",
+  "autocompleteParamName":"responsibility_center_description_auto",
+  "autocompleteID":"fRespCenter",
+  "autocompleteField":"responsibility_center_description",
+  "adjustParameters":"
+    $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+    $adjustedParameters['responsibility_center_id.responsibility_center_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+    return $adjustedParameters;
+  ",
+  "template":"individual_filter"
+}
+

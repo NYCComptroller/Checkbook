@@ -1,0 +1,98 @@
+{#
+/**
+* This file is part of the Checkbook NYC financial transparency software.
+*
+* Copyright (C) 2012, 2013 New York City
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/#}
+
+{{ attach_library('widget_highcharts/grid-view') }}
+{{ node.widgetConfig.header |raw }}
+
+<a class="trends-export" href="/export/trends/download/{{node.nid}}">Export</a>
+<table class="fy-ait">
+  <tbody>
+  <tr>
+    <td style="width:100px;padding:0;">&nbsp;</td>
+    <td class="bb">(Amounts in Millions)</td>
+  </tr>
+  </tbody>
+</table>
+<table id="table_{{ node.nid }}" style='display:none' class="trendsShowOnLoad {{node.widgetConfig.html_class}}">
+  {{addCaption(node) |raw}}
+  <thead>
+  <tr>
+    <th class="number"><div class="trendCen" >Fiscal<br>Year</div></th>
+    <th class="number"><div class="trendCen" >Class<br>One</div></th>
+    <th class="number"><div class="trendCen" >Class<br>Two</div></th>
+    <th class="number"><div class="trendCen" >Class<br>Three</div></th>
+    <th class="number"><div class="trendCen" >Class<br>Four</div></th>
+    <th class="number"><div class="trendCen" >Less<br>Tax Exempt<br>Property</div></th>
+    <th class="number"><div class="trendCen" >Total Taxable<br>Assessed<br>Value</div></th>
+    <th class="number"><div class="trendCen" >Total<br>Direct<br>Tax<br>Rate<sup>(1)</sup></div></th>
+    <th class="number"><div class="trendCen" >Estimated<br>Actual<br>Taxable<br>Value</div></th>
+    <th class="number"><div class="trendCen" >Assessed<br>Value as a<br>Percentage of<br>Actual Value</div></th>
+    <th>&nbsp;</th>
+  </tr>
+  </thead>
+
+  <tbody>
+
+  {{ assesedValEstdAct(node) }}
+
+  </tbody>
+</table>
+<script type="text/javascript">
+{{ addJs(node)|raw }}
+</script>
+<div class="footnote">
+  <br>
+  <p>(1) Property tax rate based on every $100 of assessed valuation.</p>
+
+  <p>Notes:</p>
+
+  <p style="margin:0;">The definitions of the four classes are as follows:</p>
+  <table>
+    <tr>
+      <td class="class-name">Class One -</td>
+      <td class="description">One, two, and three family homes; single family homes on cooperatively owned land.
+        Condominiums with no more than three dwelling units, provides such property was previously classified as
+        Class One or no more than three stories in height and built as condominiums.
+        Mixed-use property with three units or less, provided 50 percent or more of the space is used for residential
+        purposes. Vacant land, primarily residentially zoned, except in Manhattan below 110th Street.
+      </td>
+    </tr>
+    <tr>
+      <td class="class-name">Class Two -</td>
+      <td class="description">All other residential property not in Class One, except hotels and motels. Mixed-use
+        property with four or more units, provided 50 percent or more of the space is used for residential purposes.
+      </td>
+    </tr>
+    <tr>
+      <td class="class-name">Class Three -</td>
+      <td class="description">Utility real property owned by utility corporations, except land and buildings.</td>
+    </tr>
+    <tr>
+      <td class="class-name">Class Four -</td>
+      <td class="description">All other real property.</td>
+    </tr>
+  </table>
+
+  <p>Assesment Values are based on a percentage of the property's Fair Value.</p>
+  <p>The Department of Finance assigns fair values to all properties in New York City.</p>
+  <p>Fair Value is the worth of a property's tax class and the New York State Law requirements for determining fair value.</p>
+  <p><br></p>
+  <p>Sources: Resolutions of the City Council and The Annual Report of The New York City Property Tax Fiscal Year 2021.</p>
+</div>

@@ -1,0 +1,22 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":932,
+  "no_results_content":"No Results Found",
+  "limit":10,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "autocomplete":false,
+  "filterName":"Prime Certification",
+  "urlParameterName":"pcert",
+  "urlParameterType":"cert",
+  "autocompleteID":"fPrimeCert",
+  "columns":["prime_cert_women_count", "prime_cert_emerging_count"],
+  "adjustParameters":"
+    $parameters =\\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::adjustSubContractTransactionsCommonParams($node, $parameters);
+    $parameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+    return $parameters;
+  ",
+  "template":"individual_filter"
+}

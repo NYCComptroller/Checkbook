@@ -1,0 +1,31 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":652,
+    "limit":100,
+    "maxSelect":5,
+    "columns":["dept.dept", "deptname.deptname", "txcount"],
+    "orderBy":["-txcount" , "department_name"],
+	"facetPager":true,
+    "filterName":"Department",
+    "urlParameterName":"dept",
+    "autocompleteParamName":"dept_auto",
+    "autocompleteID":"fdeptId",
+    "autocompleteField":"deptname_deptname",
+    "adjustParameters":"
+	  checkbook_faceted_search_adjust_param($node);
+    $parameters = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::_checkbook_project_adjust_spending_parameter_filters($node, $parameters);
+    $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+    $adjustedParameters['department_code'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+    //Using child_contract_agency_id column in OGE domainO
+    if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_check_isEDCPage()){
+        foreach($adjustedParameters as $key=>$value){
+            if($key == 'master_child_contract_agency_id'){
+               $adjustedParameters['contract_agency_id'] = $value;
+               unset($adjustedParameters[$key]);
+            }
+        }
+    }
+    return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

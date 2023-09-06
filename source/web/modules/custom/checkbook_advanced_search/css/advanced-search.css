@@ -1,0 +1,310 @@
+.new-checkbook-advanced-search-form .accordion-item {
+  margin-top: 1px;
+}
+
+.new-checkbook-advanced-search-form .accordion-header,
+.new-checkbook-advanced-search-form .accordion-collapse {
+  border: 1px solid #d3d3d3;
+  overflow: hidden;
+}
+
+.new-checkbook-advanced-search-form .accordion-header {
+  position: relative;
+  font-family: 'RobotoCondensed';
+  background: #e6e6e6 url(/themes/custom/nyccheckbook/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
+  margin: 0;
+  padding: 0.6em 0.5em 0.6em 2.2em;
+  font-size: 100%;
+  color: #555555;
+  font-weight: normal;
+}
+
+.new-checkbook-advanced-search-form .accordion-header:not(.active) {
+  cursor: pointer;
+}
+
+.new-checkbook-advanced-search-form .accordion-header:hover,
+.new-checkbook-advanced-search-form .accordion-header.active,
+.new-checkbook-advanced-search-form .accordion-collapse.active {
+  border-color: #999999;
+  color: #222222;
+}
+
+.new-checkbook-advanced-search-form .accordion-header:hover {
+  background-image: url(/themes/custom/nyccheckbook/images/ui-bg_glass_75_dadada_1x400.png);
+}
+
+.new-checkbook-advanced-search-form .accordion-header.active {
+  background-image: none;
+  background-color: #ffffff;
+  border-bottom: none;
+  -moz-border-radius-topright: 4px;
+  -webkit-border-top-right-radius: 4px;
+  -khtml-border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
+  -moz-border-radius-topleft: 4px;
+  -webkit-border-top-left-radius: 4px;
+  -khtml-border-top-left-radius: 4px;
+  border-top-left-radius: 4px;
+}
+
+.new-checkbook-advanced-search-form .accordion-header.collapsed {
+  border-radius: 4px;
+}
+
+.new-checkbook-advanced-search-form .accordion-header .ui-icon {
+  position: absolute;
+  left: 0.5em;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  background-image: url(/themes/custom/nyccheckbook/images/ui-icons_888888_256x240.png);
+}
+
+.new-checkbook-advanced-search-form .accordion-header:hover .ui-icon,
+.new-checkbook-advanced-search-form .accordion-header.active .ui-icon {
+  background-image: url(/themes/custom/nyccheckbook/images/ui-icons_454545_256x240.png);
+}
+
+.new-checkbook-advanced-search-form .ui-icon-triangle-1-e {
+  background-position: -32px -16px;
+}
+
+.new-checkbook-advanced-search-form .accordion-collapse {
+  display: none;
+  padding: 1em 2em;
+  overflow: visible;
+}
+
+.new-checkbook-advanced-search-form .accordion-collapse::after {
+  display: table;
+  clear: both;
+  content: "";
+}
+
+.new-checkbook-advanced-search-form .accordion-collapse.active {
+  border-top: none;
+  -moz-border-radius-bottomright: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  -khtml-border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+  -khtml-border-bottom-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+[id*="advanced-search-domain-filter"],
+[id*="advanced-search-domain-filter"] fieldset {
+  border: 1px solid #CCCCCC;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 12px;
+}
+
+[id*="advanced-search-domain-filter"]::after {
+  display: table;
+  clear: both;
+  content: '';
+}
+
+[id*="advanced-search-domain-filter"] > .form-item {
+  float: left;
+  width: auto;
+  clear: none;
+  margin-right: 45px;
+  margin-top: 12px;
+}
+
+[id*="advanced-search-domain-filter"] fieldset {
+  width: 69%;
+  float: right;
+  margin-top: 18px;
+}
+
+[id*="advanced-search-domain-filter"] fieldset > div {
+  margin-bottom: 6px;
+}
+
+.new-checkbook-advanced-search-form .column {
+  display: block;
+  vertical-align: top;
+  float: left;
+  width: 340px;
+}
+
+#spending-advanced-search .column-right {
+  margin-bottom: 20px;
+}
+
+.new-checkbook-advanced-search-form .column > .form-item {
+  height: 50px;
+}
+
+.new-checkbook-advanced-search-form .column label,
+.new-checkbook-advanced-search-form .column legend,
+.new-checkbook-advanced-search-form .data_source-label {
+  font-weight: bold;
+}
+
+.new-checkbook-advanced-search-form .column select,
+.new-checkbook-advanced-search-form .column input,
+.new-checkbook-advanced-search-form .ranges,
+.new-checkbook-advanced-search-form [id*="edit-payroll-amount-type"] {
+  position: relative;
+  float: right;
+  width: 195px;
+}
+
+.new-checkbook-advanced-search-form select,
+.new-checkbook-advanced-search-form input[type="text"] {
+  height: 25px;
+}
+
+.new-checkbook-advanced-search-form .ranges .form-item {
+  display: block;
+  float: left;
+  height: auto;
+  margin: 0px;
+  vertical-align: top;
+  width: auto;
+}
+
+.new-checkbook-advanced-search-form .ranges input {
+  float: none;
+  width: 82px;
+}
+
+.new-checkbook-advanced-search-form .ranges label {
+  text-transform: uppercase;
+  margin: 0 5px;
+}
+
+.new-checkbook-advanced-search-form .column-right {
+  margin-left: 20px;
+}
+
+.new-checkbook-advanced-search-form #contracts-advanced-search .column-right {
+  margin-left: 22px;
+}
+
+.new-checkbook-advanced-search-form .budget-submit,
+.new-checkbook-advanced-search-form .revenue-submit,
+.new-checkbook-advanced-search-form .spending-submit,
+.new-checkbook-advanced-search-form .contracts-submit,
+.new-checkbook-advanced-search-form .payroll-submit {
+  float: right;
+  clear: both;
+}
+
+.new-checkbook-advanced-search-form .datafield fieldset {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.new-checkbook-advanced-search-form .datafield legend {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.new-checkbook-advanced-search-form .datafield input[type="radio"] {
+  float: left;
+  width: auto;
+  margin: 5px 5px 5px 0;
+}
+
+.new-checkbook-advanced-search-form input[type="radio"] ~ label {
+  font-weight: normal;
+  margin-top: 3px;
+}
+
+div[id*="edit-checkbook-spending-date-filter"] > div,
+div[id*="edit-checkbook-oge-spending-date-filter"] > div,
+div[id*="edit-checkbook-nycha-spending-date-filter"] > div {
+  float: left;
+  margin-right: 100px;
+}
+
+.new-checkbook-advanced-search-form .year-filters {
+  padding-top: 5px;
+}
+
+.new-checkbook-advanced-search-form .datafield.year,
+.new-checkbook-advanced-search-form .column label {
+  float: left;
+}
+
+.new-checkbook-advanced-search-form .datafield.year select {
+  width: 90px;
+}
+
+.new-checkbook-advanced-search-form .prime-and-sub,
+.new-checkbook-advanced-search-form .prime-and-sub-note img {
+  height: 22px;
+  vertical-align: middle;
+}
+
+.new-checkbook-advanced-search-form .prime-and-sub {
+  float: left;
+  padding-right: 4px;
+  margin-top: -2px;
+  white-space: nowrap;
+}
+
+.new-checkbook-advanced-search-form .column > .form-item > label {
+  margin-left: -15px;
+  padding-left: 17px;
+  width: 156px;
+}
+
+.new-checkbook-advanced-search-form .column .asterisk-style > label {
+  padding-left: 2px;
+}
+
+.new-checkbook-advanced-search-form .ranges .prime-and-sub {
+  display: none;
+}
+
+.new-checkbook-advanced-search-form [id*="edit-payroll-amount-type"] input[type="radio"] {
+  float: none;
+  width: auto;
+  margin: 3px 3px 3px 0;
+}
+
+.new-checkbook-advanced-search-form [id*="edit-payroll-amount-type"] label {
+  float: none;
+}
+
+.new-checkbook-advanced-search-disabled {
+  pointer-events:none;
+  opacity: .60;
+}
+
+.loading_bigger_gif {
+  left: 50%;
+  top: 35%;
+  display: none;
+  z-index: 1000;
+  height: 60px;
+  width: 60px;
+  position: fixed;
+}
+
+.prime-and-sub-note,
+.prime-and-sub-note-datafeeds p{
+  font-family: Verdana,Geneva,sans-serif;
+  font-size: 11px;
+  font-style: italic;
+  position: relative;
+  text-align: right;
+}
+.prime-and-sub-note{
+  margin-bottom: 20px;
+  margin-top: -15px;
+}
+.prime-and-sub-note > img,
+.prime-and-sub-note-datafeeds p >img{
+  height: 20px;
+  position: relative;
+}

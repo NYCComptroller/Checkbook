@@ -1,0 +1,62 @@
+
+{% set datasource_getcurrent = customFunctionEvaluate("return \\Drupal\\checkbook_infrastructure_layer\\Constants\\Common\\Datasource::getCurrent();") %}
+{% set datasource_citywide_value = customFunctionEvaluate("return \\Drupal\\checkbook_infrastructure_layer\\Constants\\Common\\Datasource::CITYWIDE;") %}
+{# {% set request_util_datasource = customFunctionEvaluate("return \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('datasource');") %} #}
+{% set request_util_datasource = RequestGet("datasource") %}
+{# {% set request_util_doctype = customFunctionEvaluate("return \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('doctype');") %}  #}
+{% set request_util_doctype = RequestGet("doctype") %}
+{% set not_preg_match_newwindow = customFunctionEvaluate("return !preg_match('/newwindow/',\Drupal::request()->query->get('q'));") %}
+{% set fiscal_yearid = customFunctionEvaluate("return \\Drupal\\checkbook_project\\CommonUtilities\\CheckbookDateUtil::_getFiscalYearID();") %}
+{% set current_fiscal_yearid = customFunctionEvaluate("return \\Drupal\\checkbook_project\\CommonUtilities\\CheckbookDateUtil::getCurrentFiscalYearId();") %}
+
+<h4>
+  Prime Vendor Information
+</h4>
+<ul class="left">
+  {% if datasource_getcurrent == datasource_citywide_value and not_preg_match_newwindow %}
+    <li><span class="gi-list-item">Prime Vendor:</span> <a href="{{ vendor_link }}" >{{ node.data[0]['vendor_name'] }}</a></li>
+  {% else %}
+    <li><span class="gi-list-item">Prime Vendor:</span> {{ node.data[0]['vendor_name'] }}</li>
+  {% endif %}
+  <li><span class="gi-list-item">Address:</span> {{ address }}</li>
+  <li><span class="gi-list-item">Total Number of NYC Contracts:</span> {{ total_cont }}</li>
+  {% if datasource_getcurrent == datasource_citywide_value %}
+    <li><span class="gi-list-item">M/WBE Vendor:</span> {{ node.data[0]['mwbe_vendor'] }}</li>
+    {% if node.data[0]['mwbe_vendor'] == 'Yes' and request_util_doctype == "RCT1" and not_preg_match_newwindow %}
+      <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_revenue_landing{{ status }}/yeartype/B/year/{{ fiscal_yearid }}/mwbe/{{ minority_type_id }}/dashboard/mp">{{ ethnicity }}</a></li>
+    {% elseif node.data[0]['mwbe_vendor'] == 'Yes' and not_preg_match_newwindow %}
+      <li><span class="gi-list-item">M/WBE Category:</span> <a href="/contracts_landing{{ status }}/yeartype/B/year/{{ fiscal_yearid }}/mwbe/{{ minority_type_id }}/dashboard/mp">{{ ethnicity }}</a></li>
+    {% else %}
+      <li><span class="gi-list-item">M/WBE Category: </span>{{ ethnicity }}</li>
+    {% endif %}
+  {% endif %}
+</ul>
+{% if not request_util_datasource == "checkbook_oge" %}
+  <div class="dollar-amounts">
+    <h4>
+      Sub Vendor Information
+    </h4>
+    {% if request_util_doctype == "CTA1" or request_util_doctype == "CT1" %}
+      <ul class="left">
+        <li><span class="gi-list-item">Contract Includes Sub Vendors: </span>{{ subVendorStatus|render|upper }}</li>
+        <li><span class="gi-list-item">Total Number of Sub Vendors: </span>{{ total_subvendor_count }}</li>
+      </ul>
+    {% endif %}
+    <div class="spent-to-date">
+      {% if not_preg_match_newwindow %}
+        <a class="new_window" href="/contract/spending/transactions/contnum/{{ contract_number }}{{ status }}/dashboard/ss/yeartype/B/year/{{ current_fiscal_yearid }}/syear/{{ current_fiscal_yearid }}/smnid/721/newwindow">
+          {{ customAmount(total_spent_todate ,2,'$') }}
+        </a>
+      {% else %}
+        {{ customAmount(total_spent_todate ,2,'$') }}
+      {% endif %}
+      <div class="amount-title">Total Spent to Date</div>
+    </div>
+    <div class="original-amount">{{ customAmount(total_original_amount ,2,'$') }}
+      <div class="amount-title">Total Original Amount</div>
+    </div>
+    <div class="current-amount">{{ customAmount(total_current_amount ,2,'$') }}
+      <div class="amount-title">Total Current Amount</div>
+    </div>
+  </div>
+{% endif %}

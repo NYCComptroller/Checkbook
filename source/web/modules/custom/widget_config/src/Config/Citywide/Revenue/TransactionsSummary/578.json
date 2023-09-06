@@ -1,0 +1,16 @@
+{
+"widgetType": "phpparser",
+"no_results_content":"No Results Found",
+"cleanURLParameters":["year","agency","revcat","fundsrc"],
+"urlParamMap":{"year":"year.year","agency":"agency_id","revcat":"revenue_category_id","fundsrccode":"funding_class_code"},
+"defaultParameters":{"year.year":113},
+"noDataInitialLoad":true,
+"dataset": "checkbook:aggregate_revenue",
+"columns": ["agency.agency.agency_name","agency.agency",
+            "adopted_budget","current_modified_budget","revenue_amount_sum","remaining_amount"],
+  "widgetTitle":"Agencies Revenue Transactions",
+    "template":"revenue_transactions_summary",
+    "templateTitle":"Agency Revenue Transactions",
+    "templateLabel":"Agency",
+    "templateLabelEval":"return $node->data[0]['agency_agency_agency_name'];"
+}

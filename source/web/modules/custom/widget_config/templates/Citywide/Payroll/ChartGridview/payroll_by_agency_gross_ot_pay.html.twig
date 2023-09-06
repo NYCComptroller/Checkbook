@@ -1,0 +1,84 @@
+{{ attach_library('widget_highcharts/grid-view') }}
+{{ attach_library('widget_highcharts/printjs') }}
+
+{{ gridPrintExport(node) |raw }}
+<div id="gridprint">
+  <h3 class="grid_title">{{ payrollGridTitle()|raw }}</h3>
+  <h3 class="grid_chart_title">{{ node.widgetConfig.chartTitle |raw}}</h3>
+  {{ pageGridTitle('Payroll')|raw }}
+  <div>
+
+    <table id="table_{{ node.nid }}" class=" {{node.widgetConfig.gridConfig.html_class}} ">
+      <thead>
+      <tr>
+        <th>{{ widget_get_table_header("agency_name") | raw}} </th>
+        <th>{{ widget_get_table_header("amount") | raw}} </th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      {% if node.data %}
+        {% for datarow in node.data %}
+          {% if node.nid == 494 %}
+          {% set amount =  datarow.total_gross_pay %}
+          {% else %}
+          {% set amount =   datarow.total_overtime_pay %}
+            {% endif %}
+          <tr>
+            <td><div>{{ datarow.agency_agency_agency_name | raw }}</div></td>
+            <td>{{ amount}}</td>
+            <td></td>
+          </tr>
+        {% endfor %}
+      {% endif %}
+      </tbody>
+    </table>
+    {% set wurl = widget_url() %}
+    {% set dataTableOptions = '
+
+                    {
+                        "bFilter":false,
+                        "bInfo":false,
+                        "bLengthChange":false,
+                        "iDisplayLength":10,
+                        "aaSorting":[[1,"desc"]],
+                        "bPaginate": false,
+                        "sAltAjaxSource":"' ~ wurl ~ '",
+                        "fnDrawCallback"  :  function( oSettings ) {
+            			    addPaddingToDataCells(this);
+            			},
+                        "aoColumnDefs": [
+                            {
+                                "aTargets": [0],
+                                "sClass":"text",
+                                "asSorting": [ "asc","desc" ]
+                            },
+                            {
+                                "aTargets": [1],
+                                "aExportFn":"function",
+                                "mDataProp": function ( source, type, val ) {
+                                    if (type == "set") {
+                                        source.pay_amount = val;
+                                        source.pay_amount_display = "<div>" + custom_number_format(val) + "</div>";
+                                        return;
+                                    }else if (type == "display") {
+                                        return source.pay_amount_display;
+                                    }
+                                    return source.pay_amount;
+                                },
+                                "sClass":"number",
+                                "asSorting": [ "desc", "asc" ]
+                            },
+                            {
+                              "aTargets": [2],
+                              "sWidth":"15px"
+                            }
+                        ]
+                    }'
+    %}
+    <script type="text/javascript">
+      {{ widget_highcharts_add_datatable_js(dataTableOptions,node) |raw}}
+    </script>
+  </div>
+</div>
+</div>

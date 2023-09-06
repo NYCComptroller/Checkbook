@@ -1,0 +1,65 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":707,
+    "no_results_content":"No Results Found",
+    "limit":10,
+    "startWith":0,
+    "autocomplete":false,
+    "columns":["minority_type.minority_type", "minority_type.minority_type.minority_type_name", "txcount"],
+    "orderBy":"-txcount",
+    "facetPager":true,
+    "filterName":"M/WBE Category",
+    "urlParameterName":"mwbe",
+    "autocompleteParamName":"mwbe_auto",
+    "autocompleteID":"fminorityTypeId",
+    "autocompleteField":"minority_type_name",
+    "maxSelect":5,
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code",
+        "mwbe":"minority_type.minority_type"
+    },
+    "adjustParameters":"
+        checkbook_faceted_search_adjust_param($node);
+        if(isset($parameters['disb_vendor_type'])){
+            $parameters['disb_vendor_type'] = \\Drupal\\checkbook_project\\MwbeUtilities\\VendorType::getVendorTypeValue($parameters['disb_vendor_type']);
+        }
+        $year = $parameters['disb_fiscal_year_id'];
+        if(isset($year)){
+            $parameters['fiscal_year_id'] = $year;
+        }
+
+        $parameters =  \\Drupal\\checkbook_project\\SpendingUtilities\\MwbeSpendingUtil::_checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
+        //Adjust Certification parameters
+        $parameters = \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::adjustCertificationFacetParameters($node,$parameters);
+        $adjustedParameters = $parameters;
+        $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+        $adjustedParameters['disb_minority_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    ",
+    "transformationPHP":"
+        $data = array();
+        $count = 0;$ids='';
+        foreach($node->data as $row){
+            if(\\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']) != 'Asian American'){
+                $new_row = array('minority_type_minority_type' => $row['minority_type_minority_type'],
+                'minority_type_minority_type_minority_type_name' => \\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']),
+                'txcount' => $row['txcount']
+                );
+                array_push($data, $new_row);
+            }
+            else if(\\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::getMinorityCategoryById($row['minority_type_minority_type']) == 'Asian American'){
+                $count = $count+$row['txcount'];
+                $ids .= $row['minority_type_minority_type'].'~';
+            }
+        }
+        $ids = isset($ids)?trim($ids,'~'):'';
+        if($count > 0){
+            array_push($data, array('minority_type_minority_type' => $ids,
+            'minority_type_minority_type_minority_type_name' => 'Asian American',
+            'txcount' => $count
+            ));
+        }
+        return $data;
+    ",
+    "template":"individual_filter"
+}

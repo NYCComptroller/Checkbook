@@ -1,0 +1,68 @@
+{{ attach_library('widget_config/toggel-pay') }}
+{% set alldata = payrollDataProcess(node,'title') %}
+{% set salaried_count = alldata['Salaried']|length  %}
+{% set non_salaried_count  = alldata['Non-Salaried']|length %}
+
+<div class="payroll-emp-wrapper">
+
+  {{payrolljs(alldata)|raw}}
+  {% for key, value in alldata %}
+  {% if node.templateId == 322 %}
+  {% set total_overtime_employees_label = customWidgetLabel('total_no_of_ot_employees')  %}
+  {% set total_overtime_employees  = customNumber(value.0.total_no_of_ot_employees,2) %}
+{% endif %}
+
+    <div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table' class='center-align'>
+        {% if key == 'Salaried' %}
+
+          <tr>
+            <td width='60%'><strong>{{customWidgetLabel('combined_annual_salary') |raw}} </strong>: {{ customAmount(value.0.total_annual_salary,2,'$')}}</td>
+            <td><strong>{{customWidgetLabel('payroll_type') |raw }}</strong>: {{ key | upper}}</td>
+          </tr>
+          <tr>
+            <td><strong>{{customWidgetLabel('combined_gross_pay_ytd') |raw}}</strong>: {{ customAmount(value.0.total_gross_pay,2,'$')}}</td>
+            <td><strong>{{customWidgetLabel('total_no_of_employees') |raw}}</strong>: {{ customNumber(node.total_employees,2)}}</td>
+          </tr>
+          <tr>
+            <td><strong>{{customWidgetLabel('combined_base_pay_ytd') |raw}}</strong>: {{ customAmount(value.0.total_base_pay,2,'$')}}</td>
+            <td><strong>{{customWidgetLabel('total_no_of_sal_employees')|raw}} </strong>: {{ customNumber(value.0.number_employees,2)}}</td>
+          </tr>
+          <tr>
+          <td><strong>{{customWidgetLabel('combined_other_pay_ytd')|raw}}</strong>: {{ customAmount(value.0.total_other_payments,2,'$')}}</td>
+
+          {% if customNumber(node.total_employees,2) > 0 %}
+            <td><strong>{{ total_overtime_employees_label}} </strong> {{ total_overtime_employees}}</td></tr>
+          {% else %}
+            <td></td></tr>
+          {% endif %}
+          <tr>
+            <td><strong>{{customWidgetLabel('combined_overtime_pay_ytd') |raw }}</strong>: {{ customAmount(value.0.total_overtime_pay,2,'$')}}</td>
+            <td></td></tr>
+        {% else %}
+          <tr>
+            <td width='60%'><strong>{{customWidgetLabel('combined_gross_pay_ytd') |raw }} </strong>: {{ customAmount(value.0.total_gross_pay,2,'$')}}</td>
+            <td><strong>{{customWidgetLabel('payroll_type')|raw }}</strong>: {{ key | upper}}</td>
+          </tr>
+          <tr>
+            <td><strong>{{customWidgetLabel('combined_base_pay_ytd') |raw}}</strong>: {{ customAmount(value.0.total_base_pay,2,'$')}}</td>
+            <td><strong>{{customWidgetLabel('total_no_of_employees') |raw}}</strong>: {{ customNumber(node.total_employees,2,'$')}}</td>
+          </tr>
+          <tr>
+            <td><strong>{{customWidgetLabel('combined_other_pay_ytd') |raw }}</strong>: {{ customAmount(value.0.total_other_payments,2,'$')}}</td>
+            <td><strong>{{customWidgetLabel('total_no_of_non_sal_employees') |raw}} </strong>: {{ customNumber(value.0.number_employees,2,'$')}}</td>
+          </tr>
+          <tr>
+          <td><strong>{{customWidgetLabel('combined_other_pay_ytd') |raw}}</strong>: {{ customAmount(value.0.total_overtime_pay,2,'$')}}</td>
+
+          {% if customNumber(node.total_employees,2) > 0 %}
+            <td><strong>{{ total_overtime_employees_label}} </strong> {{ total_overtime_employees}}</td></tr>
+          {% else %}
+            <td></td></tr>
+          {% endif %}
+        {% endif %}
+      </table></div>
+  {% endfor %}
+
+  {{ payrollToggle(alldata) |raw}}
+</div>
+

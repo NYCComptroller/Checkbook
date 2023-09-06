@@ -1,0 +1,6 @@
+name: 'Data Controller'
+description: 'Generic functionality to retrieve data from various data sources'
+package: 'REI Dashboard Platform (Core)'
+core_version_requirement: ^9 || ^10
+dependencies: {}
+type: module

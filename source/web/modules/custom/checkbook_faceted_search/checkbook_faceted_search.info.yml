@@ -1,0 +1,6 @@
+name: 'Checkbook Facet Search'
+type: module
+description: 'Module to support Narrow down filter'
+core_version_requirement: ^9 || ^10
+package: 'REI Dashboard Platform Transactions'
+dependencies:

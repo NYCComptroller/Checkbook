@@ -1,0 +1,7 @@
+name: 'Data Tables widget'
+description: 'Widget to integrate data tables with highcharts'
+core_version_requirement: ^9 || ^10
+package: 'REI Dashboard Platform (Visualization)'
+dependencies:
+  data_controller: 'drupal:data_controller'
+type: module

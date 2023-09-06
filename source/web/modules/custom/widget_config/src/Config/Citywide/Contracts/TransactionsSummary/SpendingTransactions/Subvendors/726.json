@@ -1,0 +1,25 @@
+{
+    "widgetType": "phpparser",
+    "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MA1~CTA1~CT1","status_flag":"A","minority_type_id":"2~3~4~5~6~9~99"},
+    "cleanURLParameters":["subvendor","mwbe","year","calyear","agency","yeartype","vendor","status","cagency","cvendor","csize","cindustry","awdmethod"],
+    "urlParamMap":{"subvendor":"vendor_id","mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year",
+                   "vendor":"prime_vendor_id","status":"status_flag","cagency":"agency_id","cvendor":"prime_vendor_id","csize":"award_size_id",
+                   "cindustry":"industry_type_id","awdmethod":"award_method_id"},
+ "dataset": "checkbook:subven_contracts_coa_aggregates",
+"noDataInitialLoad":true,
+"columns": ["total_contracts","award_method.award_method","award_method.award_method.award_method_name","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum"],
+"adjustParameters":"
+if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('dashboard') == 'ss'){
+    unset($parameters['minority_type_id']);
+}
+$adjustedParameters = $parameters;
+$adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+return $adjustedParameters;
+",
+"widgetTitle":"Award Methods",
+    "template":"contract_summary_expense_expense",
+    "entityColumnName":"award_method_award_method_award_method_name",
+    "entityColumnLabel":"Award Method",
+    "templateTitle":"Award Method Spending Transactions",
+    "preprocess_data":"$node->widgetConfig->templateTitle = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getSpentToDateTitle('Award Method Spending');"
+}

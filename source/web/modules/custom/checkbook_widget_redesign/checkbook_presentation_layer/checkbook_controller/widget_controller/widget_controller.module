@@ -1,0 +1,640 @@
+<?php
+/**
+* This file is part of the Checkbook NYC financial transparency software.
+*
+* Copyright (C) 2012, 2013 New York City
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Common/Pattern/AbstractObject.php');
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Common/Object/Comparator/Comparator.php');
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Common/Object/Comparator/Handler/AbstractComparator.php');
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Common/Object/Comparator/Handler/AbstractValueComparator.php');
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Common/Object/Comparator/Handler/PropertyBasedComparator_DefaultSortingConfiguration.php');
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Common/Object/Comparator/Handler/DefaultPropertyBasedComparator.php');
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Common/Object/Exception/UnsupportedOperationException.php');
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Datasource/Formatter/ResultFormatter.php');
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Datasource/Formatter/Handler/SpecialCharacterResultFormatter.php');
+
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) .'/src/Common/Object/Converter/DataConverter.php');
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) .'/src/Common/Object/Converter/Handler/AbstractDataConverter.php');
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) .'/src/Common/Object/Converter/Handler/AbstractJson2PHP.php');
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) .'/src/Common/Object/Converter/Handler/PHP2Json.php');
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) .'/src/Common/Object/Converter/Handler/AbstractJson2PHP.php');
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) .'/src/Common/Object/Converter/Handler/Json2PHPArray.php');
+require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) .'/src/Common/Object/Converter/Handler/Json2PHPObject.php');
+
+
+use Drupal\checkbook_infrastructure_layer\Utilities\FormattingUtilities;
+use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
+use Drupal\checkbook_log\LogHelper;
+use Drupal\Component\Utility\NestedArray;
+use Drupal\data_controller\Common\Object\Converter\Handler\Json2PHPObject;
+use Drupal\widget_controller\WidgetController;
+
+function widget_controller_load($key){
+	//if($node == null){
+		$node = _widget_controller_node_load_file($key);
+	//}
+
+	return $node;
+}
+
+
+function _widget_controller_node_load($key, $type='node'){
+    return _widget_controller_node_load_file($key);
+}
+
+/*
+ * Custom hook for new widget controller
+ */
+function _widget_controller_node_view($key){
+    $viewName = WidgetController::getInstance()->getWidgetViewConfigName($key);
+    if(!isset($viewName)) return;
+    $legacy_node_id = WidgetController::getInstance()->getWidgetLegacyNodeId($key);
+    $param_config = WidgetController::getInstance()->getWidgetParamConfig($key);
+    $node = _widget_controller_node_load_file($viewName);
+    $node = widget_merge_default_settings($node);
+    $node->legacy_node_id = $legacy_node_id;
+    $node->param_config = $param_config;
+    $node = widget_controller_node_view($node);
+    return $node->content['body']['#markup'];
+}
+
+function widget_merge_default_settings($node){
+    $widgetConfig = widget_merge_default_settings_recursively($node,'default_settings');
+    $node->widget_json = $widgetConfig->widget_json;
+    return $node;
+}
+
+function widget_merge_settings($widgetConfig,$defaultConfigKey){
+  $defaultWidgetConfig = _widget_controller_node_load_file($defaultConfigKey);
+  $converter = new Json2PHPObject();
+  $widgetJson =  $converter->convert($widgetConfig->widget_json);
+  $defaultWidgetJson = $converter->convert($defaultWidgetConfig->widget_json);
+  return NestedArray::mergeDeep($defaultWidgetJson, $widgetJson);
+}
+
+
+
+function widget_merge_default_settings_recursively($widgetConfig,$defaultConfigKey){
+
+    if(isset($defaultConfigKey)) {
+      $mergedWidgetJson = widget_merge_settings($widgetConfig,$defaultConfigKey);
+      $widgetConfig->widget_json = json_encode($mergedWidgetJson);
+      if(isset($mergedWidgetJson['defaultConfigKey'])){
+        $mergedDefaultWidgetJson = widget_merge_settings($widgetConfig,$mergedWidgetJson['defaultConfigKey']);
+        $widgetConfig->widget_json = json_encode($mergedDefaultWidgetJson);
+      }
+    }
+  return $widgetConfig;
+}
+
+function _widget_controller_node_load_file($key){
+	$node =  new stdClass();
+	$node->type = "widget_controller";
+  $dir = \Drupal::service('extension.path.resolver')->getPath('module','checkbook_view_configs');
+  if (is_dir($dir)) {
+    $files = \Drupal::service('file_system')->scanDirectory($dir.'/','/^'.$key.'\.json$/');
+  }
+      if(count($files) > 0){
+        $file_names = array_keys($files);
+        $json = file_get_contents($file_names[0]);
+        $node->widget_json =  $json;
+      }
+      $node->nid = $key;
+    return $node;
+}
+
+function widget_controller_node_validate(&$node) {
+  if (isset($node->type)) {
+    if ($node->type != 'widget_controller')
+      return;
+  }
+
+	widget_controller_config($node);
+}
+
+function widget_controller_node_view($node, $nodata = true) {
+  if (isset($node->type)) {
+    if ($node->type != 'widget_controller')
+      return;
+  }
+
+	//make sure configuration is loaded
+	widget_controller_config($node);
+
+	//prepare anything we'll need before loading
+	widget_controller_prepare($node);
+
+	//invoke widget specific prepare
+	widget_controller_invoke($node, 'widget_controller_prepare');
+
+	//load data
+	if(!isset($node->widgetConfig->noDataInitialLoad) || !$nodata ){
+	    widget_controller_data($node);
+	}
+
+	if (isset($node->error)) {
+		//dont call the specific module. Display generic error message and return
+		//message needs to be set on the widget configuration. not hardcoded.
+		$errorMsg = 'There was an error processing your request. Please try again in a few minutes.';
+		$node->content['body'] = array(
+                  '#value' => $errorMsg,
+                  '#weight' => 0,
+		);
+		return $node;
+	}
+
+	//invoke widget specific post-load function
+    widget_controller_invoke($node, 'widget_controller_data');
+
+	if (isset($node->widgetConfig->dataOnly) && $node->widgetConfig->dataOnly) {
+		$node->content['body'] = array(
+			'#value' => $node->data,
+			'#weight' => 0,
+		);
+	} else {
+		$val = widget_controller_invoke($node, 'widget_controller_view');
+    if($val != false){
+      $node->content['body'] = array(
+        '#markup' => $val,
+        '#weight' => 0,
+      );
+    }
+	}
+	return $node;
+}
+
+/***************************************/
+/* Introduction of Widget Hooks        */
+/***************************************/
+
+function widget_controller_hook(&$node, $hook) {
+	$module = widget_controller_get_types('module', $node);
+	if ($module == 'widget_controller') {
+		$module = 'widget_controller_content'; // Avoid function name collisions.
+	}
+	return \Drupal::moduleHandler()->hasImplementations($hook,$module);
+}
+
+function widget_controller_invoke(&$node, $hook, $a2 = NULL, $a3 = NULL, $a4 = NULL) {
+	if (widget_controller_hook($node, $hook)) {
+		$module = widget_controller_get_types('module', $node);
+		if ($module == 'widget controller') {
+			$module = 'widget_controller_content'; // Avoid function name collisions.
+		}
+		$function = $module .'_'. $hook;
+		return ($function($node, $a2, $a3, $a4));
+	}
+}
+
+function widget_controller_get_types($op = 'types', $node = NULL, $reset = FALSE) {
+	static $_widget_types, $_widget_names;
+
+	if ($reset || (empty($_widget_types))) {
+		[$_widget_types, $_widget_names] = _widget_controller_types_build();
+	}
+
+	if ($node) {
+    $type = null;
+		if (is_object($node)) {
+			$type = $node->widgetConfig->widgetType;
+		}
+		if (!isset($_widget_types[$type])) {
+			return FALSE;
+		}
+	}
+	switch ($op) {
+		case 'types':
+			return $_widget_types;
+		case 'type':
+			return $_widget_types[$type] ?? FALSE;
+		case 'module':
+			return $_widget_types[$type]->module ?? FALSE;
+		case 'names':
+			return $_widget_names;
+		case 'name':
+			return $_widget_names[$type] ?? FALSE;
+	}
+}
+
+function _widget_controller_types_build() {
+	$_widget_types = array();
+	$_widget_names = array();
+
+	$info_array = \Drupal::moduleHandler()->invokeAll('widget_controller_metadata');
+	foreach ($info_array as $type => $info) {
+		$info['type'] = $type;
+		$_widget_types[$type] = (object) _widget_controller_type_set_defaults($info);
+		$_widget_names[$type] = $info['name'];
+	}
+
+	asort($_widget_names);
+
+	return array($_widget_types, $_widget_names);
+}
+
+function _widget_controller_type_set_defaults($info) {
+	//currently we have no default values to set
+	return $info;
+}
+
+/***************************************/
+/* Default Implementation of Core      */
+/***************************************/
+
+function widget_controller_prepare(&$node) {
+}
+
+/**
+ * Function will get the count used in the header text of the widget as well
+ * as the total row count for the footer rendering.  By if no separate sql
+ * specified for the header, the default total row count is used
+ * @param $node
+ */
+function load_widget_controller_data_count($node) {
+
+    //Prepare service
+    $service = _widget_controller_load_data_service($node);
+
+    //Prepare sql parameters
+    $parameters = _prepare_input_parameters($node);
+
+    //Adjust sql parameters
+    $urlPath = RequestUtilities::getCurrentPageUrl();
+    $parameters = $service->adjustParameters($parameters, $urlPath);
+
+
+    //Load widget total row count
+    try {
+        $node->totalDataCount = _load_widget_controller_row_count($service, $parameters);
+    }
+    catch(Exception $e) {
+        LogHelper::log_error("Error getting total row count: \n" . $e->getMessage()/*, $e*/);
+        $node->error = $e;
+        return;
+    }
+
+    //Load widget header count
+    try {
+        $node->headerCount = _load_widget_controller_header_count($service, $parameters);
+        if(!isset($node->headerCount))
+            $node->headerCount = $node->totalDataCount;
+    }
+    catch(Exception $e) {
+        LogHelper::log_error("Error getting header count: \n" . $e->getMessage()/*, $e*/);
+        $node->error = $e;
+        return;
+    }
+}
+
+/**
+ * Function to load the widget data
+ * @param $node
+ */
+function widget_controller_data(&$node) {
+
+    //Prepare service
+    $service = _widget_controller_load_data_service($node);
+
+    //Load widget data
+    _load_widget_controller_data($node, $service);
+
+    //Format widget data
+  if(isset($node->data)) {
+    $node->data = _widget_controller_format_widget_data($node, $service);
+  }
+
+}
+
+
+/**
+ * Returns the service used to fetch widget data
+ *
+ * @param $node
+ * @return null
+ */
+function _widget_controller_load_data_service($node) {
+
+    $service = null;
+    if(isset($node->widgetConfig)) {
+      $serviceName = $node->widgetConfig->serviceName;
+      $serviceName = !isset($serviceName) ? "ContractsWidgetService" : $serviceName;
+
+      switch ($serviceName) {
+        case 'SpendingWidgetService':
+          $service = new \Drupal\checkbook_services\Spending\SpendingWidgetService($node->widgetConfig);
+          break;
+        case 'NychaSpendingWidgetService':
+          $service = new \Drupal\checkbook_services\NychaSpending\NychaSpendingWidgetService($node->widgetConfig);
+          break;
+        case 'ContractsWidgetService':
+          $service = new \Drupal\checkbook_services\Contracts\ContractsWidgetService($node->widgetConfig);
+          break;
+        case 'NychaContractsWidgetService':
+          $service = new \Drupal\checkbook_services\NychaContracts\NychaContractsWidgetService($node->widgetConfig);
+          break;
+        case 'BudgetWidgetService':
+          $service = new \Drupal\checkbook_services\Budget\BudgetWidgetService($node->widgetConfig);
+          break;
+        case 'NychaBudgetWidgetService':
+          $service = new \Drupal\checkbook_services\NychaBudget\NychaBudgetWidgetService($node->widgetConfig);
+          break;
+        case 'RevenueWidgetService':
+          $service = new \Drupal\checkbook_services\Revenue\RevenueWidgetService($node->widgetConfig);
+          break;
+        case 'NychaRevenueWidgetService':
+          $service = new \Drupal\checkbook_services\NychaRevenue\NychaRevenueWidgetService($node->widgetConfig);
+          break;
+        case 'PayrollWidgetService':
+          $service = new \Drupal\checkbook_services\Payroll\PayrollWidgetService($node->widgetConfig);
+          break;
+      }
+    }
+    return $service;
+}
+
+/**
+ * Function loads the widget data
+ * @param $node
+ * @param $service
+ */
+function _load_widget_controller_data($node, $service) {
+
+    $results = null;
+    $orderBy = _prepare_order_by($node);
+    $limit = $node->widgetConfig->limit ?? null;
+    $parameters = _prepare_input_parameters($node);
+
+    //Adjust sql parameters
+    //$urlPath = $_SERVER['HTTP_REFERER'];
+    //$urlPath = \Drupal::request()->query->get('q');
+    $urlPath = RequestUtilities::getCurrentPageUrl();
+    if (isset($service)) {
+      $parameters = $service->adjustParameters($parameters, $urlPath);
+    }
+    //var_dump($service);
+
+    try {
+      if (isset($service)) {
+        $results = $service->getWidgetData($parameters, $limit, $orderBy);
+      }
+    }
+    catch(Exception $e) {
+        LogHelper::log_error("Error getting data from the controller: \n" . $e->getMessage()/*, $e*/);
+        $node->error = $e;
+        return;
+    }
+    if(isset($results)) {
+      $node->data = $results;
+    }
+
+  if(isset($results)) {
+    $node->nodeAdjustedParamaterConfig = $parameters;
+  }
+
+
+}
+
+/**
+ * Function set the the count for the widget header text
+ * @param $service
+ * @param $parameters
+ * @return mixed
+ */
+function _load_widget_controller_header_count($service, $parameters) {
+  return $service->getWidgetHeaderCount($parameters);
+}
+
+/**
+ * Function gets actual widget data row count
+ * @param $service
+ * @param $parameters
+ * @return mixed
+ */
+function _load_widget_controller_row_count($service, $parameters) {
+  return $service->getWidgetDataCount($parameters);
+}
+
+/**
+ * Loads the footer Url
+ * @param $node
+ * @return mixed
+ */
+function _widget_controller_footer_url($node) {
+    $parameters = _prepare_input_parameters($node);
+    $service = _widget_controller_load_data_service($node);
+    return $service->getWidgetFooterUrl($parameters);
+}
+
+/**
+ * Function will go through all columns in the table_columns config and apply all formatting to the data
+ * @param $node
+ * @param $service
+ * @return mixed
+ * @throws Exception
+ */
+function _widget_controller_format_widget_data($node, $service){
+
+  $formatColumns = $tooltipColumns = $derivedColumns = [];
+    if (isset($node->widgetConfig->table_columns)) {
+      $formatColumns = array_filter($node->widgetConfig->table_columns,
+        function ($value) {
+          return isset($value->format);
+        });
+      $tooltipColumns = array_filter($node->widgetConfig->table_columns,
+        function ($value) {
+          return isset($value->tooltip);
+        });
+      $derivedColumns = array_filter($node->widgetConfig->table_columns,
+        function ($value) {
+          return isset($value->derivedColumn);
+        });
+    }
+
+    if((is_countable($formatColumns) && count($formatColumns) > 0) || (is_countable($tooltipColumns) && count($tooltipColumns) > 0) || (is_countable($derivedColumns) && count($derivedColumns) > 0)) {
+        foreach($node->data as $key=>&$columnArray) {
+
+            //Handle special characters
+            array_walk($columnArray, function (&$value) {
+                $value = htmlentities($value);
+            });
+            //formatting
+            foreach($formatColumns as $column) {
+                switch($column->format) {
+                    case "dollar":
+                        $node->data[$key][$column->column] = FormattingUtilities::custom_number_formatter_format($node->data[$key][$column->column],2,'$');
+                        break;
+                    case "date":
+                        $node->data[$key][$column->column] = FormattingUtilities::custom_date_format($node->data[$key][$column->column]);
+                        break;
+                    case "number":
+                        $node->data[$key][$column->column] = number_format((float)$node->data[$key][$column->column]);
+                        break;
+                    case "percent":
+                        $node->data[$key][$column->column] = number_format((float)$node->data[$key][$column->column],2) . '%';
+                        break;
+                }
+            }
+            //tooltip
+            foreach($tooltipColumns as $column) {
+                $node->data[$key][$column->column] = FormattingUtilities::_get_tooltip_markup($node->data[$key][$column->column], $column->tooltip);
+            }
+            //derived
+            $original_row = $node->data[$key];
+            foreach($derivedColumns as $column) {
+                $node->data[$key][$column->column] = $service->implementDerivedColumn($column->derivedColumn,$original_row);
+            }
+        }
+    }
+    return $node->data;
+}
+
+/**
+ * Function will convert the order by to a SQL clause
+ * @param $node
+ * @return string
+ */
+function _prepare_order_by($node) {
+    $orderBy = "";
+
+    if (isset($node->widgetConfig->orderBy)) {
+        foreach ($node->widgetConfig->orderBy as $value) {
+            if(str_starts_with($value, "-")) {
+                $value = ltrim($value, "-");
+                $orderBy .= $orderBy == "" ? "{$value} DESC" : ",{$value} DESC";
+            }
+            else {
+                $orderBy .= $orderBy == "" ? $value : ",{$value}";
+            }
+        }
+    }
+    return $orderBy;
+}
+
+/**
+ * Function will populate the parameter array with values that
+ * exist in both the list of validUrlParameters and the query string
+ * @param $node
+ * @return array
+ */
+function _prepare_input_parameters($node): array
+{
+    $parameters = array();
+
+    if (isset($node->widgetConfig->defaultParameters)) {
+        foreach ($node->widgetConfig->defaultParameters as $key => $value) {
+            $values_array = explode('~',$value);
+            $value = count($values_array) > 1 ? "(".implode(",", $values_array).")" : $value;
+            $parameters[$key] = htmlspecialchars_decode(_replace_special_characters_decode($value));
+        }
+    }
+    if (isset($node->widgetConfig->validUrlParameters)) {
+        $urlParams = $node->widgetConfig->validUrlParameters;
+        //$urlPath =  \Drupal::request()->query->get('q');
+        $urlPath =  RequestUtilities::getCurrentPageUrl();
+
+        //'q' is not set correctly while loading checks_view
+        /*if (!isset($urlPath)) {
+            RequestUtilities::resetUrl();
+            $urlPath = \Drupal::service('path.current')->getPath();
+         }*/
+
+        $pathParams = explode('/', $urlPath);
+        for($i = 0; $i < count($pathParams); $i = $i + 1) {
+            $key = $pathParams[$i];
+            $value = $pathParams[$i+1] ?? null;
+            if(in_array($key,$urlParams)) {
+                $values_array = explode('~',$value);
+                $value = count($values_array) > 1 ? "(".implode(",", $values_array).")" : $value;
+                $parameters[$key] = htmlspecialchars_decode(_replace_special_characters_decode($value));
+            }
+        }
+    }
+    return $parameters;
+}
+
+function widget_controller_config($node) {
+	//save
+	if (isset($node->widgetConfig->uid)) {
+		$savedUid = $node->widgetConfig->uid;
+	}
+	$FUNCTION_START = '<function>';
+	$FUNCTION_END = '</function>';
+	$PLACEHOLDER_START = '"function":"';
+	$PLACEHOLDER_END = '"';
+	$FUNCTION_DELIMITER = '##';
+	$FUNCTIONNAME_DELIMITER = '^^';
+ if(isset($node->widget_json)) {
+   $functionStart = strpos($node->widget_json, $FUNCTION_START);
+   if ($functionStart != false) {
+     $functionEnd = strpos($node->widget_json, $FUNCTION_END);
+     $functions = substr($node->widget_json, $functionStart + mb_strlen($FUNCTION_START), $functionEnd - $functionStart - mb_strlen($FUNCTION_START));
+     $funcList = explode($FUNCTION_DELIMITER, $functions);
+     $functionMap = array();
+     foreach ($funcList as $jsFunction) {
+       $keyVal = explode($FUNCTIONNAME_DELIMITER, $jsFunction);
+       $functionMap[str_replace("\r\n", "", $keyVal[0])] = $keyVal[1];
+     }
+     unset($jsFunction);
+     $node->jsFunctions = $functionMap;
+     $json = str_replace($FUNCTION_START . $functions . $FUNCTION_END, '', $node->widget_json);
+
+   } else {
+     $json = $node->widget_json;
+   }
+ }
+
+  if(isset($json)) {
+    $node->widgetConfig = json_decode($json);
+  }
+	//restore
+	if (isset($savedUid)) {
+		$node->widgetConfig->uid = $savedUid;
+	}
+
+  if(isset($node->legacy_node_id)) {
+    $node->widgetConfig->legacy_node_id = $node->legacy_node_id ?? null;
+  }
+  if(isset($node->param_config)) {
+    $node->widgetConfig->param_config = $node->param_config ?? null;
+  }
+	return $node->widgetConfig ?? null;
+}
+
+/***************************************/
+/* Common naming functions             */
+/***************************************/
+
+function widget_controller_unique_identifier($node) {
+	$uid = $node->nid;
+	if (isset($node->widgetConfig->uid)) {
+		$uid .= "_" . $node->widgetConfig->uid;
+	}
+	return $uid;
+}
+
+/***************************************/
+/* Content building utility functions  */
+/***************************************/
+
+function _replace_special_characters_decode($string){
+	$string = str_replace('__','/',$string);
+    return str_replace('^^','.',$string);
+}
+
+

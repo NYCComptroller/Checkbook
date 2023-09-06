@@ -1,0 +1,51 @@
+
+{% set agency_name = customWidgetLabel("agency_name") %}
+{% set ytdspending = customWidgetLabel("ytd_spending") |raw %}
+{% set snmid = RequestGet("smnid") %}
+{% set ytdspendingamount = customAmount(node.data[0]['check_amount_sum'],2,'$') %}
+{% if snmid == 759 or snmid == 746 or snmid == 780 %}
+    {% set percent_spending_value = spendingSummaryTitle(node.widgetConfig.totalAggregateColumns['check_amount_sum'] ,node.data[0]['check_amount_sum'] )%}
+    {% set percent_spending = customWidgetLabel("percent_spending")  %}
+{% endif %}
+
+{% if  snmid == 716 %}
+  {% set percent_spending_value = ''  %}
+  {% set percent_spending = '' %}
+  {% set ytdspending = customWidgetLabel("ytd_spending_sub_vendors") %}
+  {% set ytdspendingamount = customAmount(node.data[0]['ytd_spending_sub_vendors'],2,'$') %}
+  {% set percent_paid_value = node.data['sub_vendors_percent_paid'] %}
+  {% set percent_paid = customWidgetLabel("sub_vendors_percent_paid")%}
+  {% set no_of_subvendors_value = node.data[0]['sub_vendor_count']%}
+  {% set no_of_subvendors = customWidgetLabel("num_sub_vendors") %}
+  {% set ytd_spending_agency_value = customAmount(node.data[0]['check_amount_sum_checkbook_spending_data'],2,'$') %}
+  {% set ytd_spending_agency = customWidgetLabel("ytd_spending_agency")%}
+{% endif %}
+
+  <div class="contract-details-heading">
+  <div class="contract-id">
+    <h2 class="contract-title">{{customFunctionEvaluate(node.widgetConfig.templateTitleEval)}}</h2>
+    <div class="spending-tx-subtitle"><b>{{node.widgetConfig.templateLabel}}</b>: {{node.data[0]['agency_agency_agency_name']}}</div>
+  </div>
+  <div class="dollar-amounts">
+    <div class="ytd-spending-amount">
+      {{ytdspendingamount |raw }}
+      <div class="amount-title">{{ ytdspending |raw}}</div>
+    </div>
+    <div class="number-of-subvendors">
+      {{no_of_subvendors_value |raw }}
+      <div class="amount-title">{{no_of_subvendors |raw }}</div>
+    </div>
+    <div class="percent-paid-amount">
+      {{percent_paid_value |raw  }}
+      <div class="amount-title">{{ percent_paid |raw }}</div>
+    </div>
+    <div class="ytd-spending-agency">
+      {{  ytd_spending_agency_value |raw }}
+      <div class="amount-title">{{ytd_spending_agency |raw }}</div>
+    </div>
+    <div class="percent-spending-amount">
+       {{  percent_spending_value  }}
+      <div class="amount-title">{{percent_spending |raw }}</div>
+    </div>
+  </div>
+</div>

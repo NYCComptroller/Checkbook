@@ -1,0 +1,140 @@
+{{ attach_library('widget_config/checkbook_project.contracts') }}
+
+{% if RequestGet("datasource") == "checkbook_oge" %}
+  {% set oge_class = "oge-ca-details" %}
+  {% set datasource = "/datasource/checkbook_oge" %}
+  {% set original_contract_amount = node.original_contract_amount %}
+  {% set maximum_contract_amount = node.maximum_contract_amount %}
+{% else %}
+  {% set oge_class = "cb-ca-details" %}
+  {% set datasource = '' %}
+  {% set original_contract_amount = node.data[0]['original_contract_amount'] %}
+  {% set maximum_contract_amount = node.data[0]['maximum_contract_amount'] %}
+{% endif %}
+
+{% set vendor_link = checkbook_vendor_link(node.data[0]['vendor_id_checkbook_vendor_history']) %}
+{% set agency_link = checkbook_agency_link(node.data[0]['agency_id_checkbook_agency']) %}
+{% set spending_link = "/spending/transactions/agid/" ~ RequestGet("agid") ~ datasource ~ "/newwindow" %}
+
+{% set not_preg_match_newwindow = customFunctionEvaluate("return !preg_match('/newwindow/',\Drupal::request()->query->get('q'));") %}
+{% if node.data[0]['contract_number'] is defined %}
+  {% set is_oge_contract = customFunctionEvaluate("return \\Drupal\\checkbook_project\\EdcUtilities\\EdcUtilities::_checkbook_is_oge_contract('" ~ node.data[0]['contract_number'] ~ "');") %}
+{% else %}
+  {% set is_oge_contract = false %}
+{% endif %}
+
+<div class="contract-details-heading {{ oge_class }}">
+  <div class="contract-id">
+    <h2 class="contract-title">
+      Contract ID: <span class="contract-number">{{ node.data[0]['contract_number'] }}</span>
+    </h2>
+    {% if RequestGet("datasource") == "checkbook_oge" and not_preg_match_newwindow and node.data_source_amounts_differ %}
+      {% set alt_txt = "This contract agreement has addtional information as a prime vendor. <br><br> Click this icon to view this contract as a prime vendor. " %}
+      {% set url="/contract_details/agid/" ~ RequestGet("agid") ~ "/doctype/CTA1/newwindow" %}
+      <div class='contractLinkNote contractIcon'><a class='new_window' href='{{ url }}' alt='{{ alt_txt }}'>View as Vendor</a></div>
+    {% elseif not_preg_match_newwindow and node.data_source_amounts_differ and is_oge_contract %}
+      {% set alt_txt = "This contract agreement has addtional information as agency <br><br> Click this icon to view this contract as an agency. " %}
+      {% set url="/contract_details/agid/" ~ RequestGet("agid") ~ "/doctype/CTA1/datasource/checkbook_oge/newwindow" %}
+      <div class='contractLinkNote contractIcon'><a class='new_window' href='{{ url }}' alt='{{ alt_txt }}'>View as Vendor</a></div>
+    {% endif %}
+
+    {% if node.magid is defined %}
+      {% if not pregMatch("/newwindow/", render_var(url('<current>'))) %}
+        {% set master_contract_link_href = "/contract_details/magid/" ~ node.magid ~ "/doctype/" ~ node.document_code ~ datasource  %}
+        <span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href="{{ master_contract_link_href }}">{{ node.contract_number | raw}} </a></span>
+      {% else %}
+        <span class="master-contract-link">Parent Contract: {{ node.contract_number | raw }} </span>
+      {% endif %}
+    {% endif %}
+
+    {% if not pregMatch("/newwindow/", render_var(url('<current>'))) %}
+      {% set newwindowclass= 'class="new_window"' %}
+    {% endif %}
+  </div>
+  <div class="dollar-amounts">
+    <div class="spent-to-date">
+      {% if not_preg_match_newwindow %}
+        <a {{ newwindowclass | raw }} href="{{ spending_link }}">{{ customAmount(node.spent_amount ,2,'$') }}</a>
+      {% else %}
+        {{ customAmount(node.spent_amount ,2,'$') }}
+      {% endif %}
+      <div class="amount-title">Spent to Date</div>
+    </div>
+    <div class="original-amount">
+      {{ customAmount(original_contract_amount ,2,'$') }}
+      <div class="amount-title">Original Amount</div>
+    </div>
+    <div class="current-amount">
+      {{ customAmount(maximum_contract_amount ,2,'$') }}
+      <div class="amount-title">Current Amount</div>
+    </div>
+  </div>
+  <div class="contract-information {{ oge_class }}">
+    <div class="contract-details {% if RequestGet("datasource") == "checkbook_oge" %}oge-cta-contract{% endif %}">
+      <h4>General Information</h4>
+      <ul class="left">
+        {% if RequestGet("datasource") == "checkbook_oge" %}
+          <li>
+            <span class="gi-list-item">Contracting Agency:</span>
+            {{ node.data[0]['agency_name_checkbook_agency'] }}
+          </li>
+        {% else %}
+          <li>
+            <span class="gi-list-item">Prime Vendor:</span>
+            {% if not_preg_match_newwindow %}
+              <a href="{{ vendor_link }}">{{ node.data[0]['legal_name_checkbook_vendor'] }}</a>
+            {% else %}
+              {{ node.data[0]['legal_name_checkbook_vendor'] }}
+            {% endif %}
+          </li>
+        {% endif %}
+        <li><span class="gi-list-item">Purpose:</span> {{ node.data[0]['description'] }}</li>
+        <li><span class="gi-list-item">Contract Type:</span> {{ node.data[0]['agreement_type_name'] }}</li>
+        {% if RequestGet("datasource") != "checkbook_oge" %}
+          <li>
+            <span class="gi-list-item">Contracting Agency:</span>
+            {% if not_preg_match_newwindow %}
+              <a href="{{ agency_link }}">{{ node.data[0]['agency_name_checkbook_agency'] }}</a>
+            {% else %}
+              {{ node.data[0]['agency_name_checkbook_agency'] }}
+            {% endif %}
+          </li>
+        {% endif %}
+        <li><span class="gi-list-item">Award Method:</span> {{ node.data[0]['award_method_name_checkbook_award_method'] }}</li>
+        {% if RequestGet("datasource") != "checkbook_oge" %}
+          <li><span class="gi-list-item">Version Number:</span> {{ node.data[0]['document_version'] }}</li>
+        {% endif %}
+        <li><span class="gi-list-item">FMS Document:</span> {{ node.data[0]['document_code_checkbook_ref_document_code'] }}</li>
+      </ul>
+      <ul class="right">
+        <li><span class="gi-list-item">Number of Solicitations per Contract:</span> {{ node.data[0]['number_solicitation'] }}</li>
+        <li><span class="gi-list-item">Number of Responses per Solicitation:</span> {{ node.data[0]['number_responses'] }}</li>
+        <li>
+          <span class="gi-list-item">Start Date:</span>
+          {{ customStringToDate(node.data[0]['date_chckbk_date_id_effctv_begin_date_id_chckbk_histor_agrmnt_0']) }}
+        </li>
+        <li>
+          <span class="gi-list-item">End Date:</span>
+          {{ customStringToDate(node.data[0]['date_checkbk_date_id_effctv_end_date_id_chckbk_history_agrmnt_1']) }}
+        </li>
+        {% if RequestGet("datasource") != "checkbook_oge" %}
+          <li>
+            <span class="gi-list-item">Registration Date:</span>
+            {{ customStringToDate(node.data[0]['date_chckbk_date_id_rgstrd_date_id_checkbook_history_agreemnt_2']) }}
+          </li>
+        {% endif %}
+        <li><span class="gi-list-item">APT PIN:</span> {{ node.data[0]["brd_awd_no"] }}</li>
+        <li><span class="gi-list-item">PIN:</span> {{ node.data[0]['tracking_number'] }}</li>
+      </ul>
+    </div>
+    {% if RequestGet("datasource") != "checkbook_oge" %}
+      <div class="contract-vendor-details">
+        {{ getWidgetNodeView(439) }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script type="text/javascript">
+  contractsAddPadding(jQuery('.oge-cta-details'));
+</script>

@@ -1,0 +1,37 @@
+{{ attach_library('widget_highcharts/grid-view') }}
+{{ node.widgetConfig.header |raw }}
+<a class="trends-export" href="/export/trends/download/{{node.nid}}">Export</a>
+<h5>(AMOUNTS IN MILLIONS)</h5>
+<table id="table_{{ node.nid }}" style='display:none' class="trendsShowOnLoad {{node.widgetConfig.html_class}}">
+  {{addCaption(node) |raw}}
+  <thead>
+  <tr>
+    <th class="number"><div class="trendCen" >Fiscal<br>year</div></th>
+    <th class="number"><div class="trendCen" >General<br>Obligation<br>Bonds</div></th>
+    <th class="number"><div class="trendCen" >Revenue<br>Bonds</div></th>
+    <th class="number"><div class="trendCen" >ECF</div></th>
+    <th class="number"><div class="trendCen" >MAC<br>Debt</div></th>
+    <th class="number"><div class="trendCen" >TFA<br>Bonds</div></th>
+    <th class="number"><div class="trendCen" >TSASC<br>Debt</div></th>
+    <th class="number"><div class="trendCen" >STAR</div></th>
+    <th class="number"><div class="trendCen" >FSC</div></th>
+    <th class="number"><div class="trendCen" >SFC<br>Debt</div></th>
+    <th class="number"><div class="trendCen" >HYIC<br>Bonds and<br>Notes</div></th>
+    <th class="number"><div class="trendCen" >Capital<br>Leases<br>Obligations</div></th>
+    <th class="number"><div class="trendCen" >IDA<br>Bonds</div></th>
+    <th class="number"><div class="trendCen" >Treasury<br>Obligations</div></th>
+    <th class="number"><div class="trendCen" >Total<br>Primary<br>Government</div></th>
+    <th>&nbsp;</th>
+  </tr>
+  </thead>
+  <tbody>
+  {{ ratiosOutstandingDebt(node) }}
+  </tbody>
+</table>
+<div class="footnote">
+  <p>Sources:  Annual Comprehensive Financial Reports of the Comptroller</p>
+  <p>(1) Includes Direct Borrowings and Direct Placements. See Notes to Financial Statements (Note D.5), “Changes in Long Term Liabilities”</p>
+  <p>Note: Gross Debt, Percentage of Personal Income and Per Capital Gross Debt columns had to be removed. The figures changed year by year and they would not match the figures shown when that years ACFR was released.</p></div>
+<script type="text/javascript">
+{{ addJs(node)|raw }}
+</script>

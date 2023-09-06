@@ -1,0 +1,73 @@
+{#
+/**
+* This file is part of the Checkbook NYC financial transparency software.
+* 
+* Copyright (C) 2012, 2013 New York City
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/#}
+
+{{ attach_library('widget_highcharts/grid-view') }}
+{{ node.widgetConfig.header |raw }}
+
+<a class="trends-export" href="/export/trends/download/{{node.nid}}">Export</a>
+<h5>(AMOUNTS IN THOUSANDS)</h5>
+<table id="table_{{ node.nid }}" style='display:none' class="trendsShowOnLoad {{node.widgetConfig.html_class}}">
+    {{addCaption(node) |raw}}
+    <thead>
+    <tr class="first-row">
+        <th rowspan="2" class="number"><div class="trendCen" >Fiscal<br>year</div></th>
+
+        <th rowspan="2" class="number"><div class="trendCen" >Rental<br>Revenue</div></th>
+
+        <th rowspan="2" class="number"><div class="trendCen" >Interest<br>Revenue</div></th>
+
+        <th rowspan="2" class="number"><div class="trendCen" >Other<br>Income</div></th>
+
+        <th rowspan="2" class="number"><div class="trendCen" >Total<br>Revenue</div></th>
+        <th colspan="3" class="centrig bb"><div>Debt Service</div></th>
+
+        <th rowspan="2" class="number"><div class="trendCen" >Operating<br>Expenses</div></th>
+
+        <th rowspan="2"class="number"><div class="trendCen" >Total to<br>be Covered</div></th>
+        <th rowspan="2"class="number"><div class="trendCen" >Coverage<br>Ratio</div></th>
+    </tr>
+    <tr class="second-row">
+
+        <th class="number"><div class="trendCen" >Interest</div></th>
+
+        <th class="number"><div class="trendCen" >Principal</div></th>
+
+        <th class="number"><div class="trendCen" >Total</div></th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    {{ nycEduConstFund(node) }}
+
+    </tbody>
+</table>
+<div class="footnote "><p>(*) Interest of 8,919,000 was capitalized during Fiscal Year 2013 construction for year 2011 and 2010 bonds.</p>
+    <p>In Fiscal Year 2014 ECF received $7 million in income for option for E. 57th development to extend lease beyond 99 years.</p>
+    <p>Operating Expenses exclude Post Employment Benefits accrual.</p>
+    <p>Principal in Fiscal Year 2016 does not include the redemption amount  of the 2005 bonds on October 1, 2015.</p>
+    <p>In FY 2017 and FY 2018, ECF received participation payments from E. 57th Street condo sales by the developer of $10 million and $18.7 million, respectively.</p>
+    <p>Principal in FY 2019 does not include redemption amount of the 2007 bonds in october 2018.</p>
+    <br/>
+    <p>Source: New York City Educational Construction Fund</p>
+</div>
+<script type="text/javascript">
+    {{ addJs(node)|raw }}
+</script>

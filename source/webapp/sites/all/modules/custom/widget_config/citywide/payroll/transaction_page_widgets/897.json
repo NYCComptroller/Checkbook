@@ -1,6 +1,0 @@
-{
-    "widgetType": "phpparser",
-    "template":"payroll_employee_payroll_summary",
-    "customDataHandlerClass":"payrollDetails",
-    "noDataInitialLoad":true
-}

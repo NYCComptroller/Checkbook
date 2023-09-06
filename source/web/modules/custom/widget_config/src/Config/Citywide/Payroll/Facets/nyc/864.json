@@ -1,0 +1,29 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":317,
+    "startWith":0,
+    "maxSelect":5,
+    "limit":100,
+    "facetPager":true,
+    "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
+	"orderBy":"-txcount",
+    "filterName":"Citywide Agency",
+    "urlParameterName":"agency",
+    "autocompleteParamName":"agency_auto",
+    "autocompleteID":"fagencyId",
+    "autocompleteField":"agency.agency.agency_name",
+    "adjustParameters":"
+        $monthId = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('month');
+       $datasource = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('datasource');
+       if(isset($monthId) && $datasource=='checkbook_nycha' ){
+      $node->widgetConfig->dataset = 'checkbook_nycha:payroll_employee_agency_month_basis';
+        }
+        else if(isset($monthId)){
+            $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+        }
+        $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+        $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

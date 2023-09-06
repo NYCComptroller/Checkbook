@@ -1,0 +1,327 @@
+{
+  "widgetType":"data_tables",
+  "widgetSubType":"dataTableList",
+  "stickyHeader":true,
+  "cleanURLParameters":["pin","csize","releaseyear","industry","year","curamtr","pcontdesc","appdate","startdate","enddate","vendornm_exact","vendor",
+      "vendornm","responsibilitynm_exact","fundingnm_exact","industrynm_exact","agreement_type", "po_num", "po_num_exact", "award_method","awdmethod",
+      "contract_type","modamt","curamt", "record_type","release_no","item_category","item_descr", "agency"],
+  "urlParamMap":{"year":"release_year_id","releaseyear":"release_approved_year_id", "curamtr":"agreement_total_amount","industrynm_exact":"industry_type_id","fundingnm_exact":"funding_source_id","vendornm_exact":"vendor_name","agreement_type":"agreement_type_code",
+                 "po_num":"contract_id","responsibilitynm_exact":"responsibility_center_id","po_num_exact":"contract_id", "agency":"agency_id", "award_method":"award_method_id", "awdmethod":"award_method_id","contract_type": "contract_type_code",
+                  "pcontdesc":"purpose","appdate": "release_approved_date","startdate": "agreement_start_date","enddate": "agreement_end_date","vendornm": "vendor_name","vendor": "vendor_id","modamt": "agreement_amount_difference",
+                  "csize":"award_size_id","industry":"industry_type_id", "pin":"po_header_id","curamt": "agreement_total_amount","record_type":"record_type","release_no":"release_number",
+  "item_category":"item_category_descr","item_descr":"item_description"},
+  "allowRequestParams": [
+    "tCode"
+  ],
+   "paramTypeConfig": {
+    "po_num": "capitalize",
+    "po_num_exact": "capitalize",
+    "vendornm": "like",
+    "vendornm_exact": "eqignorecase",
+    "curamtr": "rangeid",
+    "curamt": "range",
+    "pcontdesc": "contains",
+    "startdate": "range",
+    "enddate": "range",
+    "appdate": "range",
+    "modamt": "ne",
+     "po_num": "contains"
+   },
+  "header":"
+      $header = NULL;
+      $header .= widget_data_tables_export_link($node);
+      return $header;
+  ",
+  "useList":true,
+  "exportConfigNid":997,
+  "getTotalDataCount":true,
+  "limit":"35",
+  "sortSourceByNull":["number_of_releases", "release_number","display_release_line_number","item_qty_ordered","shipment_number",
+                      "release_line_total_amount","release_line_original_amount", "release_line_spend_to_date",
+                      "release_total_amount", "release_original_amount", "release_spend_to_date",
+                      "agreement_total_amount", "agreement_original_amount", "agreement_spend_to_date",
+                      "po_header_id"],
+  "noDataInitialLoad":true,
+  "html_class":"initiative-table",
+  "no_results_content":"No Results Found",
+  "dataset":"checkbook_nycha:all_agreement_transactions_hrcy",
+  "columns": ["number_of_releases", "item_description","contract_id", "agreement_type_name", "agreement_type_code", "release_number", "shipment_number", "display_release_line_number",
+    "agreement_start_date", "agreement_end_date", "release_approved_date",
+    "release_total_amount", "release_original_amount", "release_spend_to_date", "agreement_total_amount", "agreement_original_amount", "agreement_spend_to_date",
+    "po_header_id", "purpose", "vendor_name", "location_descr", "contract_type_descr", "award_method_name", "grant_name","item_qty_ordered",
+    "expenditure_type_descr", "display_industry_type_name", "display_funding_source_descr", "responsibility_center_descr", "program_phase_descr",
+    "gl_project_descr", "item_category_descr","vendor_id","release_line_total_amount","release_line_original_amount","release_line_spend_to_date",
+    "agreement_amount_difference","agreement_percent_difference", "record_type" ],
+  "uniqueSortColumn":["-sort_sequence"],
+  "preProcessConfiguration":"
+      $contract_type = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('tCode');
+      $node->show_difference = ($contract_type == 'BAM'||$contract_type == 'PAM');
+  ",
+  "caption":"",
+  "derivedColumns": {
+    "contract_link":{
+      "expression": " '<a href=\"'.\\Drupal\\checkbook_services\\NychaContracts\\NychaContractsUrlService::contractDetailsUrl($row['contract_id']).  '\">'. $row['contract_id']. '</a>'"
+    },
+    "number_of_releases_formatted": {
+      "expression":"($row['number_of_releases'] == null) ? '-' : $row['number_of_releases']"
+    },
+    "release_number_formatted": {
+      "expression":"($row['release_number'] == null) ? '-' : $row['release_number']"
+    },
+    "item_category_descr_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['item_category_descr'],36)"
+    },
+    "item_description_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['item_description'],36)"
+    },
+    "item_qty_ordered_formatted":{
+      "expression": "($row['item_qty_ordered'] == null) ? '-' : $row['item_qty_ordered']"
+    },
+    "shipment_number_formatted": {
+      "expression": "($row['shipment_number'] == null) ? '-' : $row['shipment_number']"
+    },
+    "responsibility_center_descr_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['responsibility_center_descr'],28)"
+    },
+    "agreement_start_date_formatted":{
+      "expression": "(strtoupper($row['agreement_type_name']) == 'PURCHASE ORDER') ? '-' : $row['agreement_start_date']"
+    },
+    "agreement_end_date_formatted":{
+      "expression": "(strtoupper($row['agreement_type_name']) == 'PURCHASE ORDER') ? '-' : $row['agreement_end_date']"
+    },
+    "release_approved_date_formatted":{
+      "expression": "($row['release_approved_date'] == null) ? '-' : $row['release_approved_date']"
+    },
+    "line_current_amount_formatted":{
+      "expression": "($row['release_line_total_amount'] == null) ? '-' : \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['release_line_total_amount'])"
+    },
+    "line_original_amount_formatted":{
+      "expression": "($row['release_line_original_amount'] == null) ? '-' : \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['release_line_original_amount'])"
+    },
+    "line_spent_to_date_formatted": {
+      "expression": "($row['release_line_spend_to_date'] == null) ? '-' : \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['release_line_spend_to_date'])"
+    },
+    "release_current_amount_formatted":{
+      "expression": "($row['release_total_amount'] == null) ? '-' : \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['release_total_amount'])"
+    },
+    "release_original_amount_formatted":{
+      "expression": "($row['release_original_amount'] == null) ? '-' : \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['release_original_amount'])"
+    },
+    "release_spent_to_date_formatted": {
+      "expression": "($row['release_spend_to_date'] == null) ? '-' : \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['release_spend_to_date'])"
+    },
+    "agreement_current_amount_formatted":{
+      "expression": "($row['agreement_total_amount'] == null) ? '-' : \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['agreement_total_amount'])"
+    },
+    "agreement_original_amount_formatted":{
+      "expression": "($row['agreement_original_amount'] == null) ? '-' : \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['agreement_original_amount'])"
+    },
+    "agreement_spent_to_date_formatted": {
+      "expression": "($row['agreement_spend_to_date'] == null) ? '-' : \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['agreement_spend_to_date'])"
+    },
+    "formatted_dollar_diff": {
+      "expression":"\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['agreement_amount_difference'])"
+    },
+    "formatted_percent_diff": {
+      "expression":"round($row['agreement_percent_difference'],2). '%'"
+    },
+    "contract_purpose_formatted": {
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['purpose'],36)"
+    },
+    "vendor_name_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['vendor_name'],36)"
+    },
+    "prime_vendor_name_link": {
+      "expression": " '<a href=\"'.\\Drupal\\checkbook_services\\NychaContracts\\NychaContractsUrlService::vendorUrl($row['vendor_id']).'\">'.$row['vendor_name_formatted'].'</a>'"
+    },
+    "contract_type_formatted": {
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['contract_type_descr'],36)"
+    },
+    "award_method_name_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['award_method_name'],36)"
+    },
+    "display_industry_type_name_formatted": {
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['display_industry_type_name'],36)"
+    },
+    "po_header_id_formatted":{
+      "expression": " ($row['po_header_id'] == null) ? '-' : $row['po_header_id']"
+    },
+    "location_descr_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['location_descr'],36)"
+    },
+    "grant_name_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['grant_name'],36)"
+    },
+    "expenditure_type_descr_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['expenditure_type_descr'],36)"
+    },
+    "funding_source_descr_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['display_funding_source_descr'],36)"
+    },
+    "program_phase_descr_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['program_phase_descr'],36)"
+    },
+    "gl_project_descr_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['gl_project_descr'],36)"
+    }
+},
+  "skipCustomPadding":true,
+  "table_columns": [
+    {"labelAlias":"contract_id","column":"contract_link","sortSourceColumn":"contract_id"},
+    {"label":"","column":"", "export":false},
+    {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
+    {"labelAlias":"record_type","column":"record_type"},
+    {"label":"","column":"", "export":false},
+    {"labelAlias":"number_of_releases", "column":"number_of_releases_formatted", "sortSourceColumn":"number_of_releases"},
+    {"labelAlias":"release_number","column":"release_number_formatted","sortSourceColumn":"release_number"},
+    {"labelAlias":"item_category","column":"item_category_descr_formatted","sortSourceColumn":"item_category_descr"},
+    {"labelAlias":"item_description","column":"item_description_formatted","sortSourceColumn":"item_description"},
+    {"labelAlias":"quantity_ordered","column":"item_qty_ordered_formatted", "sortSourceColumn":"item_qty_ordered"},
+    {"labelAlias":"shipment_number","column":"shipment_number_formatted","sortSourceColumn":"shipment_number"},
+    {"labelAlias":"responsibility_center","column":"responsibility_center_descr_formatted","sortSourceColumn":"responsibility_center_descr"},
+    {"labelAlias":"start_date","column":"agreement_start_date_formatted", "sortSourceColumn":"agreement_start_date"},
+    {"labelAlias":"end_date","column":"agreement_end_date_formatted", "sortSourceColumn":"agreement_end_date"},
+    {"labelAlias":"release_approved_date","column":"release_approved_date_formatted","sortSourceColumn":"release_approved_date"},
+    {"labelAlias":"line_current_amount","column":"line_current_amount_formatted","sortSourceColumn":"release_line_total_amount"},
+    {"labelAlias":"line_original_amount","column":"line_original_amount_formatted","sortSourceColumn":"release_line_original_amount"},
+    {"labelAlias":"line_spend_to_date","column":"line_spent_to_date_formatted","sortSourceColumn":"release_line_spend_to_date"},
+    {"labelAlias":"release_current_amount","column":"release_current_amount_formatted","sortSourceColumn":"release_total_amount"},
+    {"labelAlias":"release_original_amount","column":"release_original_amount_formatted","sortSourceColumn":"release_original_amount"},
+    {"labelAlias":"release_spend_to_date","column":"release_spent_to_date_formatted","sortSourceColumn":"release_spend_to_date"},
+    {"labelAlias":"contract_current_amount","column":"agreement_current_amount_formatted","sortSourceColumn":"agreement_total_amount"},
+    {"labelAlias":"contract_original_amount","column":"agreement_original_amount_formatted","sortSourceColumn":"agreement_original_amount"},
+    {"labelAlias":"contract_spend_to_date","column":"agreement_spent_to_date_formatted","sortSourceColumn":"agreement_spend_to_date"},
+    {"labelAlias":"dollar_diff","column":"formatted_dollar_diff","sortSourceColumn":"agreement_amount_difference","visibility_flag":"show_difference"},
+    {"labelAlias":"percent_diff","column":"formatted_percent_diff","sortSourceColumn":"agreement_percent_difference","visibility_flag":"show_difference"},
+    {"label":"","column":"", "export":false},
+    {"labelAlias":"contract_purpose","column":"contract_purpose_formatted","sortSourceColumn":"purpose"},
+    {"labelAlias":"vendor_name","column":"prime_vendor_name_link","sortSourceColumn":"vendor_name"},
+    {"labelAlias":"contract_type","column":"contract_type_formatted","sortSourceColumn":"contract_type_descr"},
+    {"labelAlias":"award_method","column":"award_method_name_formatted","sortSourceColumn":"award_method_name"},
+    {"labelAlias":"contract_industry","column":"display_industry_type_name_formatted","sortSourceColumn":"display_industry_type_name"},
+    {"labelAlias":"pin","column":"po_header_id"},
+    {"labelAlias":"location","column":"location_descr_formatted","sortSourceColumn":"location_descr"},
+    {"labelAlias":"grant","column":"grant_name_formatted","sortSourceColumn":"grant_name"},
+    {"labelAlias":"expenditure_type","column":"expenditure_type_descr_formatted","sortSourceColumn":"expenditure_type_descr"},
+    {"labelAlias":"funding_source","column":"funding_source_descr_formatted","sortSourceColumn":"display_funding_source_descr"},
+    {"labelAlias":"program","column":"program_phase_descr_formatted","sortSourceColumn":"program_phase_descr"},
+    {"labelAlias":"project","column":"gl_project_descr_formatted","sortSourceColumn":"gl_project_descr"},
+    {"label":"","column":"", "export":false}
+    ],
+    "adjustParameters":"
+      $parameters = \\Drupal\\checkbook_project\\NychaContractUtilities\\NYCHAContractUtil::adjustYearParams($node, $parameters);
+      $parameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+      return $parameters;
+    ",
+  "adjustDataTableOptions":"
+      $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
+      $adjustDataTableOptions->fnInitComplete = '##function () { new $j.fn.dataTable.FixedColumns( oTable, {\"iLeftColumns\": 1,\"iLeftWidth\": 125} );}##';
+    ",
+  "dataTableOptions":{
+    "bRetrieve":true,
+    "bServerSide":true,
+    "bProcessing":true,
+    "bFilter":false,
+    "bPaginate":true,
+    "iDisplayLength":35,
+    "sPaginationType":"full_numbers_no_ellipses",
+    "sDom":"<pr><t><ip>",
+    "oLanguage": {
+    "sInfo":"Displaying transactions _START_ - _END_ of _TOTAL_",
+    "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+    },
+    "bInfo":true,
+    "aoColumns": [
+      {"sClass":"text", "sWidth":"120px","asSorting":["asc","desc"]},
+      {"sClass":"expander","bSortable":false,"sWidth":"30px"},
+      {"sClass":"text", "sWidth":"150px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"80px","asSorting":["asc","desc"]},
+      {"bSortable":false,"sWidth":"10px"},
+      {"sClass":"number-center", "sWidth":"110px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"110px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"175px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"175px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
+      {"sClass":"number-center", "sWidth":"75px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"200px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"100px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"130px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"150px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"150px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"150px","asSorting":["asc","desc"]},
+      {"sClass":"number", "sWidth":"110px","asSorting":["asc","desc"],"visibility_flag":"show_difference"},
+      {"sClass":"number", "sWidth":"110px","asSorting":["asc","desc"],"visibility_flag":"show_difference"},
+      {"bSortable":false,"sWidth":"50px"},
+      {"sClass":"text", "sWidth":"200px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"180px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"210px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
+      {"sClass":"text", "sWidth":"220px","asSorting":["asc","desc"]},
+      {"bSortable":false,"sWidth":"2px"}
+    ],
+    "aaSorting":[[2,"asc"]],
+    "sScrollX":"100%",
+    "bScrollCollapse": true
+  },
+  //"customJS":"
+    // Enable THEAD scroll bars
+    //jQuery('.dataTables_scrollHead').css('overflow', 'auto');
+    // Sync THEAD scrolling with TBODY
+    //jQuery('.dataTables_scrollHead').scroll(function () {
+    //  jQuery('.dataTables_scrollBody').scrollLeft(jQuery(this).scrollLeft());
+    //});
+  //",
+    "customExternalJS":"
+    function prepareTableListFilterUrl() {
+          var oVendorNms = getNamedFilterCriteria('fvendorNm');
+          var oVendorIds = getNamedFilterCriteria('fvendorId');
+          var oPOnums = getNamedFilterCriteria('fPONumber');
+          var oAgencys = getNamedFilterCriteria('fagencyId');
+          var oAgreementTypes = getNamedFilterCriteria('fagreementType');
+          var oAwdMethod = getNamedFilterCriteria('fAwdMethodId');
+          var oIndustryNms = getNamedFilterCriteria('fIndustryId');
+          var oResCenterNms = getNamedFilterCriteria('fResCenterId');
+          var oReleaseYearIds = getNamedFilterCriteria('freleaseId');
+          var oFundingNms = getNamedFilterCriteria('fFundingId');
+          var oCurAmount = getNamedFilterCriteria('fCurAmount');
+          var oRecordType = getNamedFilterCriteria('fRecordType');
+          var oReleaseNo = getNamedFilterCriteria('fReleaseNo');
+          var oItemCategory = getNamedFilterCriteria('fItemCategory');
+          var oItemDescr = getNamedFilterCriteria('fItemDescr');
+
+          var cUrl = oTable.fnSettings().sAjaxSource;
+          var cUrlArray = cUrl.split('/');
+
+          cUrl = adjustUrlParameter(cUrl,'vendor',oVendorIds);
+          cUrl = adjustUrlParameter(cUrl,'releaseyear',oReleaseYearIds);
+          cUrl = adjustUrlParameter(cUrl,'vendornm_exact',oVendorNms);
+          cUrl = adjustUrlParameter(cUrl,'fundingnm_exact',oFundingNms);
+          cUrl = adjustUrlParameter(cUrl,'curamtr',oCurAmount);
+          cUrl = adjustUrlParameter(cUrl,'responsibilitynm_exact',oResCenterNms);
+          cUrl = adjustUrlParameter(cUrl,'industry',oIndustryNms);
+          cUrl = adjustUrlParameter(cUrl,'po_num_exact',oPOnums);
+          cUrl = adjustUrlParameter(cUrl,'agency',oAgencys);
+          cUrl = adjustUrlParameter(cUrl,'agreement_type',oAgreementTypes);
+          cUrl = adjustUrlParameter(cUrl,'awdmethod',oAwdMethod);
+          cUrl = adjustUrlParameter(cUrl,'record_type',oRecordType);
+          cUrl = adjustUrlParameter(cUrl,'release_no',oReleaseNo);
+          cUrl = adjustUrlParameter(cUrl,'item_descr',oItemDescr);
+          cUrl = adjustUrlParameter(cUrl,'item_category',oItemCategory);
+
+          return cUrl;
+    }"
+}

@@ -1,0 +1,618 @@
+/*****************************
+***   DATA TABLE STYLING   ***
+*****************************/
+
+.layout__region-filter1 {
+  border-bottom: 1px solid #CACACA;
+  border-left: 1px solid #CACACA;
+  border-right: 1px solid #CACACA;
+  padding-bottom: 5px;
+  margin-right: 15px;
+}
+
+.block-widget-filter-block .dataTables_wrapper {
+  border: none!important;
+}
+
+.block-widget-filter-block .dataTables_wrapper .dataTables_processing {
+  top: -30px;
+}
+
+.block-widget-filter-block .dataTables_wrapper > div:nth-child(2) {
+  border: 1px solid #cacaca;
+}
+
+.layout--onecol .block {
+  position: relative;
+}
+
+.layout--onecol .block::after {
+  display: table;
+  clear: both;
+  content: "";
+}
+
+.bottomContainer .panel-display.omega-grid.omega-12-onecol,
+#budget-transactions.panel-display.omega-grid.omega-12-onecol,
+#mini-panel-revenue_landing_page.panel-display.omega-grid.omega-12-onecol,
+#revenue-transactions.panel-display.omega-grid.omega-12-onecol{
+  margin:0px;
+}
+.tableHeader{margin-top:20px;}
+.tableHeader .contentCount{
+  color: #5c5c5c;
+  font-size:13px;
+  font-style: italic;
+  font-weight: bold;
+  padding-top:6px;
+  margin-left:15px;
+  font-family: 'Roboto';
+}
+.dataTables_processing {
+  height: 24px;
+  width: 24px;
+  position: absolute;
+  top: 0px;
+}
+.page-contract-details.spending_transactions .dataTables_processing,
+.page-contract-details.payroll_agencytransactions .dataTables_processing{
+  top: -20px;
+}
+.dataTables_wrapper{
+  float:left;
+  clear:both;
+  width:100%;
+  margin:12px 0px 8px 0px;
+  border:1px solid #cacaca;
+}
+.dataTables_wrapper table, .outerTable {
+  width: 100%;
+}
+.dataTables_wrapper .dataTables_scroll{
+
+}
+.dataTables_wrapper .dataTables_scroll table{
+  border: none;
+}
+.dataTables_wrapper th, .outerTable th{
+  background-color: #48759d; /* Old browsers */
+  background-image: -moz-linear-gradient(top, #48759d 0%, #3f668f 100%); /* FF3.6+ */
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #48759d), color-stop(100%, #3f668f)); /* Chrome,Safari4+ */
+  background-image: -webkit-linear-gradient(top, #48759d 0%, #3f668f 100%); /* Chrome10+,Safari5.1+ */
+  background-image: -o-linear-gradient(top, #48759d 0%, #3f668f 100%); /* Opera 11.10+ */
+  background-image: -ms-linear-gradient(top, #48759d 0%, #3f668f 100%); /* IE10+ */
+  background-image: linear-gradient(to bottom, #48759d 0%, #3f668f 100%); /* W3C */
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#48759d', endColorstr = '#3f668f', GradientType = 0)"; /* IE6-9 */
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+table.fy-ait {
+  background-color: #48759D;
+  background: linear-gradient(to bottom,#48759D 0%,#3F668F 100%) repeat scroll 0 0 transparent;
+  border: 1px solid #CACACA;
+  border-bottom: none;
+  color: #FFFFFF;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+  margin-top: 10px;
+}
+table.fy-ait td {
+  padding: 10px 5px;
+}
+
+table.fy-ait tr.first-row td,
+table.fy-ait td.bb {
+  border-bottom: 1px solid #5D96C8;
+}
+
+table.fy-ait + .dataTables_wrapper {
+  margin-top: 0;
+  border-top: 0;
+}
+
+h5 + .dataTables_wrapper {
+  margin-top: 0;
+}
+
+.dataTables_wrapper th.number, .outerTable th.number{
+  text-align: right;
+}
+.dataTables_wrapper th.text, .outerTable th.text{
+  text-align: left;
+}
+table.dataTable.outerTable h3 {
+  margin:0 0 5px;
+}
+table.dataTable th.sorting span, table.dataTable th.sorting_asc span, table.dataTable th.sorting_desc span {
+  padding-left:15px;
+  display:block;
+  cursor: pointer;
+  float:left;
+}
+table.dataTable th.sorting span:hover, table.dataTable th.sorting_asc span:hover, table.dataTable th.sorting_desc span:hover {
+  text-decoration:underline;
+}
+table.dataTable th.sorting_desc span {
+  background: url("../images/arrow-asc.png") no-repeat scroll left center transparent;
+}
+table.dataTable th.sorting_asc span {
+  background: url("../images/arrow-desc.png") no-repeat scroll left center transparent;
+}
+.dataTable th:first-child div {
+  margin: 8px 0 8px 15px;
+}
+.dataTable td.text:first-child div {
+  margin: 13px 0 13px 15px;
+}
+.dataTable th.text-left-padding{
+  text-align:center;
+}
+.dataTable td.text-left-padding div{
+  margin: 13px 0px 13px 20px;
+}
+th.pad-left div,
+td.pad-left div{
+  margin-left: 20px !important;
+}
+
+/* Begin - Overriding data table css for 634.json,653.json */
+.dataTable th.text-left,
+.dataTable th.text-left-no-padding {
+  text-align:left !important;
+  vertical-align:middle !important;
+}
+.dataTable th.text-left span,
+.dataTable th.text-left-no-padding span {
+  padding-left: 15px !important;
+  display: block !important;
+}
+.dataTable th.text-left div,
+.dataTable th.text-left-no-padding div {
+  margin: 0px 0px 0px 20px !important;
+  text-align:center !important;
+}
+.dataTable td.text-left div,
+.dataTable td.text-left-no-padding div {
+  margin: 13px 0 13px 20px !important;
+  padding-left: 15px !important;
+}
+.dataTable td.text-left span,
+.dataTable td.text-left-no-padding span {
+  display: block !important;
+}
+.dataTable th.text-left:first-child div {
+  margin: 0px 0px 0px 5px !important;
+}
+.dataTable td.text-left:first-child div {
+  margin: 13px 0px 13px 5px !important;
+}
+.dataTable th.text-left-no-padding div {
+  padding-left: 0px !important;
+}
+.dataTable td.text-left-no-padding div {
+  margin: 13px 0px 13px 0px !important;
+  padding-left: 0px !important;
+}
+.dataTable td.expander-right div {
+  margin: 13px 0px 13px 0px !important;
+}
+.dataTable td.expander-right {
+  text-align:right !important;
+}
+/* End - Overriding data table css for 634.json,653.json */
+
+.dataTables_wrapper td, .sub-table td{
+  vertical-align: middle;
+  text-transform: uppercase;
+}
+.dataTables_wrapper td.dataTables_empty{
+  padding:10px;
+}
+#gridprint .dataTable thead tr {
+  height: 28px;
+}
+.dataTable th div {
+  margin: 8px 0 8px 5px;
+}
+
+.dataTables_scrollBody .dataTable th div {
+  margin: 0;
+}
+
+.dataTable th.text div {
+  display:block;
+  float:left;
+  text-align:center;
+}
+.dataTable th.number div {
+  display:block;
+  float:right;
+  text-align:center;
+}
+
+.dataTable th.number-center div {
+  display:block;
+  text-align:center;
+  float:right;
+  padding-right: 10px;
+}
+
+.dataTable td div {
+  margin: 13px 1px 13px 0px;
+}
+
+.contracts-oge-spending-bottom {
+  margin: 30px 0 !important;
+}
+
+td.text div {
+  float: left;
+  text-align: left;
+}
+td.text{
+  padding :0px 1px 1px 0px;
+}
+
+td.number div {
+  float: right;
+  text-align: right;
+}
+#table_766_wrapper td.number div,
+#table_317_wrapper td.number div{
+  float: right;
+  text-align: right;
+  width: 90px;
+}
+td.number-center {
+  text-align: center;
+}
+table.dataTable tr.even,
+table.dataTable tr.even td,
+table.outerTable.ma-history tr.even,
+table.outerTable.ma-history tr.even td {
+  background-color: #f8f8f8;
+  border:none;
+}
+table.dataTable tr.odd,
+table.dataTable tr.odd td,
+table.outerTable.ma-history tr.odd,
+table.outerTable.ma-history tr.odd td {
+  background-color: #fff;
+  border:none;
+}
+table.outerTable.ma-history th:first-child div,
+table.outerTable.ma-history td:first-child div{margin-left:10px;}
+.tableFooter {
+  float:right;
+  clear:both;
+  padding-right:5px;
+}
+.plus-or{margin:0px 12px;}
+
+th.recdate div{
+  margin-left: 0;
+}
+td.recdate div{
+  float:right;
+}
+th.number-left div,
+td.number-left div{
+  margin-left: 15px;
+}
+th.endCol div,
+td.endCol div,
+.outerTable th.endCol div,
+.outerTable td.endCol div{
+  margin-right: 15px;
+}
+td.pad div{margin-left:5px;margin-right:5px;}
+
+/*class sub-cont-status*/
+td.sub-cont-status {
+  text-align: center;
+}
+.dataTable th.sub-cont-status div {
+  display:block;
+  text-align:center;
+  float:right;
+  padding-right: 10px;
+}
+td.sub-cont-status div {
+  margin-left:25px !important;
+  margin-right:15px !important;
+}
+
+.dataTables_scrollBody{position:relative;}
+
+.dataTables_scrollBody thead {visibility: hidden;}
+/* expandable nested child table styles */
+.dataTable td.childcontracts div {
+  margin: 0px;
+}
+.dataTable td.childcontracts .jspPane table td div {
+  margin: 13px 0 13px 0px;
+}
+.dataTable td.childcontracts .jspPane table td.number-left div {
+  margin: 13px 0 13px 15px;
+}
+.dataTable td.childcontracts .jspPane table td.number-scroll div {
+  margin: 13px 0 13px 0px;
+  text-align: center;
+}
+.dataTable td.childcontracts .jspPane table td.text-left-padding-scroll div {
+  margin: 13px 0 13px 20px;
+}
+td.vers-num div{margin-left:40px;}
+.dataTable td.childcontracts .jspPane table td.vers-num div {
+  margin: 13px 0px 13px 40px;
+}
+td.expander span.collapsed, td.expander span.expanded, td.expander span.loader, a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collapsed ,.assoc_item span.loader{
+  display:block;
+  height: 16px;
+  width: 16px;
+  margin:0px 10px 0px 4px;
+  cursor: pointer;
+  background: url("../../images/open.png") no-repeat scroll right center transparent;
+}
+td.expander span.expanded, a.showHide, .assoc_item span.expanded {
+  background: url("../../images/close.png") no-repeat scroll right center transparent;
+}
+a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collapsed ,.assoc_item span.loader {
+  height:14px;
+  width:14px;
+  float:left;
+  margin:0px 5px 0px 0px;
+}
+.assoc_item .contract-title.clearfix div{
+  margin:0px;
+}
+.assoc_item span.loader, td.expander span.loader {
+  background: url("../../images/ajax-loader.gif") no-repeat scroll right center transparent;
+}
+
+.jspPane{margin-left:25px !important;}
+
+.dataTable td.childcontracts .jspPane {
+  margin-left:30px !important;
+  padding: 0px 14px 0px 0px;
+}
+.jspVerticalBar{
+  background: none repeat scroll 0 0 red;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left:0px;
+  width: 16px;
+}
+.jspTrack {
+  background: none repeat scroll 0 0 #EDEDED !important;
+}
+.jspDrag {
+  background: linear-gradient(to right, #F3F3F3 0%, #BCBDC0 100%) repeat scroll 0 0 transparent;
+  border: 1px solid #9E9E9E;
+  position: relative;
+}
+.jspArrow, .jspArrow.jspDisabled {
+  background-color: #EDEDED;
+}
+.jspArrow.jspDisabled.jspActive, .jspArrow.jspActive {
+  background-color: #6FCAF0;
+  border: 1px solid #18598A;
+}
+.jspArrowUp, .jspArrowUp.jspDisabled {
+  background-image: url("/themes/custom/nyccheckbook/images/arrow-up.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.jspArrowDown, .jspArrowDown.jspDisabled {
+  background-image: url("/themes/custom/nyccheckbook/images/arrow-down.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+table.dataTable td.childcontracts {
+  padding: 0;
+  position: relative;
+}
+td.childcontracts div.sub-table-wrapper {
+  height: 100px;
+  position: relative;
+}
+.jspScrollable .jspContainer {
+  overflow: hidden;
+  position: relative;
+}
+.jspScrollable .jspPane{position: absolute;}
+
+/* Associated Contracts Tables*/
+#assoc_contracts_list_wrapper{
+  border:none;
+}
+
+#assoc_contracts_list_wrapper{
+  margin-top:-10px;
+}
+#assoc_contracts_list_wrapper .panel-pane.pane-custom.pane-1 + .panel-separator{
+  display:none;
+}
+#assoc_contracts_list_wrapper .panel-pane.pane-custom.pane-1{
+  margin-bottom:0px;
+}
+
+#assoc_contracts_list_wrapper .panel-pane.pane-node,
+#assoc_contracts_list_wrapper .panel-pane.pane-node .pane-content,
+#assoc_contracts_list_wrapper .panel-pane.pane-node .content.clearfix{
+  margin:0px;
+}
+
+
+#assoc_contracts_list_wrapper .panel-pane.pane-node .content.clearfix + .clearfix{
+  display:none;
+}
+
+table#assoc_contracts_list {
+  border: none;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  width:100%;
+}
+table#assoc_contracts_list > thead{
+  display:none;
+}
+table#assoc_contracts_list .assoc_item{
+  border:1px solid #cacaca;
+  padding: 0px 21px 0px 13px;
+}
+#assoc_contracts_list .dollar-amounts{
+  margin-bottom:0px;
+}
+table#assoc_contracts_list .assoc_item .dataTable.outerTable{
+  border:1px solid #cacaca;
+}
+table#assoc_contracts_list .assoc_item .contract-title-text{
+  font-size:14px;
+  color: #1F82C9;
+  float:left;
+}
+table#assoc_contracts_list .assoc_item .contract-title-text a {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+table#assoc_contracts_list .assoc_item > div > div, table#assoc_contracts_list .assoc_item > div + div {
+  margin: 0px;
+  line-height:12px;
+}
+table#assoc_contracts_list .assoc_item > div + div{line-height:0px;}
+table#assoc_contracts_list .assoc_item > div + div > div > div div{margin-left:0px;}
+table#assoc_contracts_list .assoc_item > div + div > div > div div .dataTable th:first-child div,
+table#assoc_contracts_list .assoc_item > div + div > div > div div .dataTable td:first-child div{margin-left:10px;}
+table#assoc_contracts_list .assoc_item .rfed-amount {
+  color: #5C5C5C;
+  float: right;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* no data case */
+#no-records-datatable {
+  color: #3C5E7C;
+  font-size: 20px;
+  font-weight: bold;
+  height: 35px;
+  padding-top: 10px;
+  display:block;
+  width:100%;
+  text-align:center;
+  text-transform: none;
+}
+.no-transactions {
+  background: url("../images/notrans.png") no-repeat scroll 0 0 transparent;
+  display: block;
+  float:left;
+  margin-left:250px;
+  margin-right: 20px;
+  height: 62px;
+  width: 62px;
+}
+#assoc_contracts_list td.dataTables_empty{
+  color: #3C5E7C;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: none;
+  padding: 13px 21px 13px 13px;
+  border: 1px solid #CACACA;
+}
+span.export {
+  z-index: 100;
+}
+
+.amount-S,
+.amount-L {
+  border-bottom: 1px solid #676767 !important;
+}
+
+.amount-G {
+  border-bottom: 4px double #676767 !important;
+}
+
+/****************************
+***   API TABLE STYLING   ***
+*****************************/
+
+.api-table {
+  margin-bottom: 10px;
+}
+
+.api-response-columns-table {
+  margin-bottom: 10px;
+  width: 303px;
+}
+.agency-code-list-table {
+  margin-top: 10px;
+}
+.api-table + p a.float-right,
+.api-response-columns-table + p a.float-right,
+.api-center + .divider + p a.float-right,
+.api-response-columns-center + .divider + p a.float-right,
+pre.prettyprint + p a.float-right,
+a.float-right {
+  float: right;
+}
+
+.api-table th,
+.api-response-columns-table th{
+  color: #FFFFFF;
+  padding: 10px 5px;
+  background: #48759d; /* Old browsers */
+  background: -moz-linear-gradient(top,  #48759d 0%, #3f668f 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#48759d), color-stop(100%,#3f668f)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #48759d 0%,#3f668f 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #48759d 0%,#3f668f 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #48759d 0%,#3f668f 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #48759d 0%,#3f668f 100%); /* W3C */
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#48759d', endColorstr='#3f668f',GradientType=0 )"; /* IE6-9 */
+}
+
+.api-table td,
+.api-response-columns-table td{
+  border-bottom: 1px solid #CCCCCC;
+  border-left: 1px solid #CCCCCC;
+  border-right: 1px solid #CCCCCC;
+  padding: 10px 5px 11px;
+}
+
+.api-center {
+  margin: 0 auto 10px auto;
+  width: 565px;
+}
+
+.api-response-columns-center {
+  margin: 0 auto 10px auto;
+  width: auto;
+}
+
+.api-center table th,
+.api-center table td,
+.api-response-columns-center table th,
+.api-response-columns-center table td {
+  padding: 10px 5px;
+}
+
+pre.prettyprint {
+  border: 1px solid #888888;
+  padding: 2px;
+  margin-bottom: 10px;
+}
+
+pre.prettyprint .tag {
+  color: #008;
+}
+
+article[data-history-node-id="599"] table {
+  text-align: left;
+}

@@ -1,0 +1,37 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":634,
+    "no_results_content":"No Results Found",
+    "startWith":0,
+    "limit":100,
+    "maxSelect":5,
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code",
+        "vendornm":"display_vendor.display_vendor.legal_name",
+        "vendornm_exact":"display_vendor.display_vendor.legal_name"
+    },
+    "defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B","if_for_all_years":"N"},
+    "columns":["agency.agency","agency.agency.agency_name", "txcount"],
+    "orderBy":"-txcount",
+	"facetPager":true,
+    "filterName":"Agency",
+    "urlParameterName":"agency",
+    "autocompleteParamName":"agency_auto",
+    "autocompleteID":"fagencyId",
+    "autocompleteField":"agency.agency.agency_name",
+    "adjustParameters":"
+    \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::_checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
+
+    if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('vendor') || \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('vendornm')){
+        $parameters['is_vendor_flag'] = 'Y';
+    }
+    if(!(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('year') || \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('calyear'))){
+        $parameters['latest_flag'] = 'Y';
+        $parameters['if_for_all_years'] = 'Y';
+    }
+        $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+        $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

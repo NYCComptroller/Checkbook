@@ -1,0 +1,70 @@
+{#
+/**
+* This file is part of the Checkbook NYC financial transparency software.
+* 
+* Copyright (C) 2012, 2013 New York City
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/#}
+
+{{ attach_library('widget_highcharts/grid-view') }}
+{{ node.widgetConfig.header |raw }}
+
+{% set first_year = node.data[0].fiscal_year %}
+{% set last_data = node.data|last %}
+{% set last_year = last_data.fiscal_year %}
+
+<a class="trends-export" href="/export/trends/download/{{node.nid}}">Export</a>
+
+<table id="table_{{ node.nid }}" style='display:none' class="trendsShowOnLoad {{node.widgetConfig.html_class}}">
+    {{addCaption(node) |raw}}
+    <thead>
+    <tr>
+    	<th rowspan="3" class="number"><div class="trendCen">Year</div></th>
+    	<th class="centrig bb" colspan="5"><div>{{ first_year }}-{{ last_year }}</div></th>
+    </tr>
+    <tr>
+
+        <th colspan="2" class="centrig bb"><div>Civilian Labor Force<br>(in thousands)</div></th>
+        <th rowspan="2"><div class="">&nbsp;</div></th>
+        <th colspan="2" class="centrig bb"><div>Unemployment Rate</div></th>
+    </tr>
+	<tr>
+		
+        <th class="number" ><div class="trendCen">New York City<br>Employed</div></th>
+        <th class="number" ><div class="trendCen">New York City<br>Unemployed<sup style="text-transform: lowercase;">(a)</sup></div></th>
+        <th class="number" ><div class="trendCen">New York<br>City</div></th>
+        <th class="number" ><div class="trendCen">United<br>States</div></th>
+    </tr>    
+    </thead>
+
+    <tbody>
+
+    {{ empStatusResidentPopulation(node) }}
+
+    </tbody>
+</table>
+<div class="footnote">
+    <p>(a) Unemployed persons are all civilians who had no employment during the survey week, were available for work,
+        except for temporary illness, and had made efforts to find employment some time during the prior four weeks.
+        This includes persons who were waiting to be recalled to a job from which they were laid off or were
+        waiting to report to a new job within 30 days.</p>
+    <br />
+<p>Note: Employment and unemployment information is not seasonally adjusted.</p>
+    <br />
+<p>Sources: U.S. Department of Labor, Bureau of Labor Statistics, and Office of the Comptroller, Fiscal and Budget Studies.</p>
+</div>
+<script type="text/javascript">
+    {{ addJs(node)|raw }}
+</script>

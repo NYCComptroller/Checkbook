@@ -1,0 +1,25 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":979,
+  "no_results_content":"No Results Found",
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "autocomplete":false,
+  "rangeColumnNameVariant":"prime_",
+  "filterName":"Contract Current Amount",
+  "urlParameterName":"curamtr",
+  "urlParameterType":"rangeid",
+  "autocompleteID":"fCurAmount",
+  "columns":["g100m_prime_count", "g50m_le100m_prime_count", "g25m_le50m_prime_count", "g10m_le25m_prime_count", "ge1m_le10m_prime_count", "less1m_prime_count"],
+  "orderBy":"",
+  "adjustParameters":"
+    $parameters = \\Drupal\\checkbook_project\\NychaContractUtilities\\NYCHAContractUtil::adjustYearParams($node, $parameters);
+    $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+    $adjustedParameters['agreement_total_amount'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+    return $adjustedParameters;
+  ",
+"template":"individual_filter"
+}

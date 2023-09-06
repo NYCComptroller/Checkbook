@@ -1,0 +1,60 @@
+checkbook3_two_columns_3-9_stacked:
+  label: 'Checkbook 3: Two Columns 3-9 stacked'
+  path: layouts
+  class: '\Drupal\checkbook_transactions\Layout\TransactionsTowColumns39StackedLayoutClass'
+  template: checkbook3_two_columns_39_stacked
+  category: 'Checkbook'
+  default_region: 'thirdright'
+  icon_map:
+    - [first]
+    - [second]
+    - [thirdleft1, thirdright, thirdright, thirdright]
+  regions:
+    first:
+      label: First
+    second:
+      label: Second
+    thirdleft1:
+      label: Filter 1
+    thirdright:
+      label: Tabbed Page
+checkbook3_two_columns_6-6_bricks:
+  label: 'Checkbook 3: Two Columns 6-6 bricks'
+  path: layouts
+  class: '\Drupal\checkbook_transactions\Layout\TransactionsTowColumns66BricksLayoutClass'
+  template: checkbook3_two_columns_66_bricks
+  category: 'Checkbook'
+  default_region: 'middle'
+  icon_map:
+    - [top]
+    - [leftabove, rightabove]
+    - [middle]
+    - [leftbelow,rightbelow]
+    - [bottom]
+  regions:
+    top:
+      label: Top
+    leftabove:
+      label: Left Above
+    rightabove:
+      label: Right Above
+    middle:
+      label: Middle
+    leftbelow:
+      label: Left Below
+    rightbelow:
+      label: Right Below
+    bottom:
+      label: Bottom
+checkbook3_charts_slider:
+  label: 'Checkbook 3: Charts Slider'
+  path: layouts
+  class: '\Drupal\checkbook_landing_page\Layout\CheckbookChartsSliderLayoutClass'
+  template: checkbook3_charts_slider
+  category: 'Checkbook'
+  default_region: 'charts'
+  icon_map:
+    - [charts]
+  regions:
+    charts:
+      label: Charts

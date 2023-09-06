@@ -1,0 +1,89 @@
+{{ attach_library('widget_config/grid-view-with-input') }}
+{{ attach_library('widget_config/checkbook_project.contracts') }}
+
+{% set not_preg_match_newwindow = customFunctionEvaluate("return !preg_match('/newwindow/',\Drupal::request()->query->get('q'));") %}
+
+<h3>Associated Contracts</h3>
+<table id="assoc_contracts_list" class="oge-assoc-contracts-list">
+  <thead>
+    <tr>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% set count = 0 %}
+    {% set clickClass = "clickOnLoad" %}
+    {% if RequestGet("datasource") == "checkbook_oge" %}
+      {% set datasource ="/datasource/checkbook_oge" %}
+    {% endif %}
+
+    {% for contract in node.data %}
+      {% set class = (count % 2 == 0) ? "odd" : "even" %}
+      <tr>
+        <td class="assoc_item">
+          <div class="contract-title clearfix">
+            <span agurl="/widget/mini_panel_contracts_cta_history/agid/{{ contract['original_agreement_id'] }}{{ datasource }}"
+                  class="toggler collapsed {{ clickClass }} {{ class }}"
+                  id="master_assoc_cta_expand{{ count }}"></span>
+            <div class='contract-title-text'>
+              Contract Spending for
+              <a href="/contract_details/agid/{{ contract['original_agreement_id'] }}{{ datasource }}/doctype/CTA1"
+                 class="bottomContainerReload">
+                {{ contract['contract_number'] }}
+              </a>
+            </div>
+            {% if RequestGet("datasource") == "checkbook_oge" and not_preg_match_newwindow and contract['data_source_amounts_differ'] %}
+              {% set alt_txt = "This contract agreement has information as a prime vendor.<br><br> Click this icon to view this contract as a prime vendor. " %}
+              {% set url="/contract_details/agid/" ~ contract['original_agreement_id'] ~ "/doctype/CTA1/newwindow" %}
+              <div class='contractLinkNote'>
+                <a class='new_window' href=' {{ url }} ' alt=' {{ alt_txt }} ' target='_blank' >Open in New Window</a>
+              </div>
+            {% endif %}
+            <div class="assoc_amounts">
+              <div class="rfed-amount contract-details-assoc"><span class="amount">{{ customAmount(contract['spent_amount'] ,2,'$') }}</span><span class="label">Spent to Date</span></div>
+              <div class="rfed-amount contract-details-assoc"><span class="amount">{{ customAmount(contract['original_amount'] ,2,'$') }}</span><span class="label">Orignal Amount</span></div>
+              <div class="rfed-amount contract-details-assoc"><span class="amount">{{ customAmount(contract['current_amount'] ,2,'$') }}</span><span class="label">Current Amount</span></div>
+            </div>
+          </div>
+          <div class="resultsContainer{{ count }}">&nbsp;</div>
+        </td>
+      </tr>
+
+      {% set count = count + 1 %}
+      {% set clickClass = "" %}
+    {% endfor %}
+
+  </tbody>
+</table>
+
+{% set theme_path = customFunctionEvaluate("return \Drupal::service('extension.list.theme')->getPath(\Drupal::theme()->getActiveTheme()->getName());") %}
+
+<script type="text/javascript">
+  (function ($) {
+    $(document).ready(function () {
+      oTable = $('#assoc_contracts_list').dataTable(
+        {
+          "paging": true,
+          "retrieve": true,
+          "searching": false,
+          "pageLength": 10,
+          "pagingType": "input",
+          "language": {
+            "paginate": {
+              "first":    "<img src='/{{ theme_path }}/images/first_blue.png'>",
+              "last":     "<img src='/{{ theme_path }}/images/last_blue.png'>",
+              "next":     "<img src='/{{ theme_path }}/images/next_blue.png'>",
+              "previous": "<img src='/{{ theme_path }}/images/previous_blue.png'>"
+            },
+          },
+          "lengthChange": false,
+          "dom": '<r><t><ip>',
+          "ordering": false,
+          "stripeClasses": []
+        }
+      );
+
+      jQuery(" .clickOnLoad").click();
+    });
+  }(jQuery));
+</script>

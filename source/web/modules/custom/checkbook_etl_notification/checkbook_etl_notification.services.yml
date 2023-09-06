@@ -1,0 +1,5 @@
+services:
+  checkbook_etl_notification.Twig.CheckbookEtlNotificationExtension:
+    class: Drupal\checkbook_etl_notification\Twig\CheckbookEtlNotificationExtension
+    tags:
+      - { name: twig.extension }

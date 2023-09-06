@@ -1,0 +1,123 @@
+
+/* Roboto Regular */
+
+@font-face {
+  font-family: Roboto;
+  src: url('../../fonts/roboto/Roboto-Regular-webfont.woff') format('woff'), 
+    url('../../fonts/roboto/Roboto-Regular-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url('../../fonts/roboto/Roboto-Bold-webfont.woff') format('woff'), 
+    url('../../fonts/roboto/Roboto-Bold-webfont.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url('../../fonts/roboto/Roboto-Italic-webfont.woff') format('woff'), 
+    url('../../fonts/roboto/Roboto-Italic-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url('../../fonts/roboto/Roboto-BoldItalic-webfont.woff') format('woff'), 
+    url('../../fonts/roboto/Roboto-BoldItalic-webfont.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Roboto Condensed */
+
+@font-face {
+  font-family: RobotoCondensed;
+  src: url('../../fonts/roboto/Roboto-Condensed-webfont.woff') format('woff'), 
+    url('../../fonts/roboto/Roboto-Condensed-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: RobotoCondensed;
+  src: url('../../fonts/roboto/Roboto-BoldCondensed-webfont.woff') format('woff'), 
+    url('../../fonts/roboto/Roboto-BoldCondensed-webfont.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Roboto Thin */
+
+@font-face {
+  font-family: RobotoThin;
+  src: url('../../fonts/roboto/Roboto-Thin-webfont.woff') format('woff'), 
+    url('../../fonts/roboto/Roboto-Thin-webfont.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Roboto Light */
+
+@font-face {
+  font-family: RobotoLight;
+  src: url('../../fonts/roboto/Roboto-LightItalic-webfont.woff') format('woff'), 
+    url('../../fonts/roboto/Roboto-LightItalic-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Novecento Regular */
+
+@font-face {
+  font-family: Novecento;
+  src: url('../../fonts/novecento/23DA07_1_0.woff') format('woff'), 
+    url('../../fonts/novecento/23DA07_1_0.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Novecento;
+  src: url('../../fonts/novecento/23DA07_0_0.woff') format('woff'), 
+    url('../../fonts/novecento/23DA07_0_0.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Novecento Light */
+
+@font-face {
+  font-family: Novecentowide-Light;
+  src: url('../../fonts/novecento/23DA13_0_0.woff') format('woff'), 
+    url('../../fonts/novecento/23DA13_0_0.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Novecento Wide Regular (Similar to Novecento Normal Regular)*/ 
+
+@font-face {
+  font-family: NovecentowideNormalRegular;
+  src: url('../../fonts/novecento/Novecentowide-Normal-webfont.woff') format('woff'),
+       url('../../fonts/novecento/Novecentowide-Normal-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+

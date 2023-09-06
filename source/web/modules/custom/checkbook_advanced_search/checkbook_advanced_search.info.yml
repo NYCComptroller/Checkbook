@@ -1,0 +1,7 @@
+name: 'Checkbook Advanced Search'
+description: 'Module to display the advanced search form in a dialog box with accordion to identify different buckets.'
+core_version_requirement: ^9 || ^10
+package: 'NYC Checkbook - Advanced Search'
+type: module
+dependencies:
+  checkbook_project: 'drupal:checkbook_project'

@@ -1,0 +1,7 @@
+name: 'Landing Page Widget View'
+description: 'Widget view to display the landing page widgets'
+core_version_requirement: ^9 || ^10
+package: 'REI Checkbook Widget Redesign'
+#dependencies:
+ # data_controller: 'data_controller:data_controller'
+type: module

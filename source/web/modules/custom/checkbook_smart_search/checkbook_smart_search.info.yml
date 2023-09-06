@@ -1,0 +1,7 @@
+name: 'Checkbook Smart Search'
+description: 'Smart search functionality.'
+package: 'Custom'
+core_version_requirement: ^9 || ^10
+type: module
+dependencies:
+  - checkbook_solr

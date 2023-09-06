@@ -1,0 +1,137 @@
+{
+  "widgetType":"highcharts",
+  "widgetSubType":"ajaxSimple",
+  "header":"
+  $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+  $header .= \\Drupal\\checkbook_project\\WidgetUtilities\\ChartUtil::generateWidgetGridViewLink($node);
+  return $header;
+  ",
+  "gridConfig":{
+    "template":"highchart_nycha_budget_expcategory_grid_view",
+    "html_class":"chart-grid-view-table",
+    "table_columns": [
+      {
+        "labelAlias": "expense_category",
+        "column": "expenditure_type_description_expenditure_type_description",
+        "sortColumn": "expenditure_type_description_expenditure_type_description"
+      },
+      {
+        "colLabel": "committed",
+        "column": "budget_committed"
+      },
+      {
+        "colLabel": "remaining",
+        "column": "budget_remaining"
+      }
+    ]
+  },
+  "dataset":"checkbook_nycha:budget",
+  "columns":[
+    "year_id.year_id",
+    "expenditure_type_id.expenditure_type_id",
+    "expenditure_type_description.expenditure_type_description",
+    "budget_committed",
+    "budget_remaining"
+  ],
+  "orderBy":"-budget_committed",
+  "limit": 10,
+  "defaultParameters":{
+    "year_id.year_id":119
+  },
+  "cleanURLParameters":[
+    "year",
+    "project",
+    "program",
+    "respcenter",
+    "fundsrc"
+  ],
+  "urlParamMap":{
+    "year":"year_id.year_id",
+    "project": "gl_project_id.gl_project_id",
+    "program": "program_phase_id.program_phase_id",
+    "respcenter" : "responsibility_center_id.responsibility_center_id",
+    "fundsrc": "funding_source_id.funding_source_id"
+  },
+  "transformationPHP":"
+  $landing_page =   \\Drupal::service('path.current')->getPath();
+  $allZero = TRUE;
+  foreach ($node->data as $row) {
+  if (abs($row['budget_committed']) > 0){$allZero = FALSE;}
+if (abs($row['budget_remaining']) > 0){$allZero = FALSE;}
+$resp = $node->widgetConfig->requestParams['responsibility_center_id.responsibility_center_id'];
+$prog = $node->widgetConfig->requestParams['program_phase_id.program_phase_id'];
+$fundsrc = $node->widgetConfig->requestParams['funding_source_id.funding_source_id'];
+$proj = $node->widgetConfig->requestParams['gl_project_id.gl_project_id'];
+if(($resp != null) && ($prog != null) && ($proj!= null) && ($fundsrc != null)){
+$url = null;
+}
+else{
+$url = $landing_page .  '/expcategory/' . $row['expenditure_type_id_expenditure_type_id'];
+}
+$categories[] = html_entity_decode($row['expenditure_type_description_expenditure_type_description'],ENT_QUOTES);
+$committed_data[] = array('name' => html_entity_decode($row['expenditure_type_description_expenditure_type_description'],ENT_QUOTES), 'y' => $row['budget_committed'], 'url' => $url);
+$remaining_data[] = array('name' => html_entity_decode($row['expenditure_type_description_expenditure_type_description'],ENT_QUOTES), 'y' => $row['budget_remaining'], 'url' => $url);
+}
+if($allZero){$node->totalDataCount = 0;}
+$node->widgetConfig->chartTitle = 'Top Ten Expense Categories by Expense Budget';
+$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+if($url){
+$cursor = 'pointer';
+} else {
+$cursor = null;
+}
+$node->widgetConfig->chartConfig->plotOptions->series->cursor = $cursor;
+$node->widgetConfig->chartConfig->series = array(array('name' => 'Committed', 'data' => $committed_data),array('name' => 'Remaining', 'data' => $remaining_data));
+return $node->data;
+",
+"chartConfig":{
+"chart":{
+"defaultSeriesType":"column"
+},
+"legend":{
+"align":"left",
+"verticalAlign":"bottom"
+},
+"xAxis":{
+"categories":[]
+},
+"yAxis":{
+"title":{
+"text":""
+},
+"labels":{
+"function":"yAxisFormatter"
+}
+},
+"tooltip":{
+"function":"budgetTooltip"
+},
+"plotOptions":{
+"column":{
+"minPointLength":3,
+"pointWidth":17
+},
+"series":{
+"cursor":"pointer",
+"point":{
+"events":{
+"function":"clickEvent"
+}
+}
+}
+},
+"series":[],
+"title":{
+"text":""
+}
+}
+}
+<function>
+yAxisFormatter^^"formatter" : function(){return yAxisLabelFormatter(this);}##
+budgetTooltip^^"formatter" : function() {return 'Expense Category: '+this.point.name + '<br>Amount: ' + abbrNum(this.y, 2, '$')}##
+clickEvent^^"click": function(){
+if (this.options.url){
+location.href = this.options.url
+}
+}
+</function>

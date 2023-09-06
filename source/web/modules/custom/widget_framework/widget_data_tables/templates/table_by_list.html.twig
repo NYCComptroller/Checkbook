@@ -1,0 +1,25 @@
+{{ attach_library('widget_config/datatables_dataTableList') }}
+{{ node.widgetConfig.header |raw }}
+<div>
+  <table id="table_{{ node.nid }}" >
+  <thead>
+  <tr>{{ node.widgetConfig.tableHeader |raw }}
+  </tr>
+  </thead>
+  <tbody>
+  {% if node.data %} {
+    {% for datarow in node.data %}
+      <tr>
+        {% for row in node.widgetConfig.table_columns %}
+          {# if(!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))) #}
+          <td class=" {{ datarow[row.classColumn] }} ">{{ datarow[row.column] }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  {% endif %}
+  </tbody>
+</table>
+  <script type="text/javascript">
+    {{  addJs(node) |raw}}
+  </script>
+</div>

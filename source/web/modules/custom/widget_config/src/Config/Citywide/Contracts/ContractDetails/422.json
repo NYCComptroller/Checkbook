@@ -1,0 +1,7 @@
+{
+  "widgetType": "phpparser",
+  "noDataInitialLoad":true,
+  "customDataHandlerClass":"\\Drupal\\checkbook_project\\ContractsUtilities\\MasterAgreementDetails",
+  "template":"contracts_mma_details",
+  "requestUtilitiesDatasource": "return \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('datasource');"
+}

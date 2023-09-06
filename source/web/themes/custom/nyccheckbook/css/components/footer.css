@@ -1,0 +1,23 @@
+#section-footer {
+  background: url("../../images/footer-top-bg.png") no-repeat scroll 0 0
+    transparent;
+  margin-top: 23px;
+}
+
+#zone-footer {
+    width: 96%;
+    padding: 73px 2% 0px 2%;
+}
+
+#zone-footer .content div.copyright {
+    width: 100%;
+    text-align: center;
+    clear: both;
+    margin: 0 auto;
+}
+
+#zone-footer .content div.copyright p {
+    margin: 0;
+    line-height: 19px;
+    color: #666;
+}

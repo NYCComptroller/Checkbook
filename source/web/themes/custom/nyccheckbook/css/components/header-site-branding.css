@@ -1,0 +1,28 @@
+/* TODO: Simplify markup (Markup is in a drupal block) */
+
+#zone-branding-wrapper {
+  background: url('../../images/header-bg.png') repeat-x scroll 0 0 transparent;
+  height: 48px;
+}
+
+.newwindow .zone-branding-wrapper a {
+  cursor: default;
+}
+
+#zone-branding-wrapper .branding-data {
+  display: flex;
+  justify-content: space-between;
+}
+
+#zone-branding-wrapper .branding-data:after {
+  content: none;
+}
+
+#zone-branding-wrapper .logo-img {
+  margin-left: 10px;
+}
+
+#zone-branding-wrapper .comptroller {
+  margin: 5px 10px 0 0;
+}
+

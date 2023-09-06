@@ -1,0 +1,8 @@
+{{ revenueNychaTitle()|raw }}
+
+  <div class="dollar-amounts">
+    <div class="total-spending-amount">{{ customAmount(node.data[0]['revenue_recognized_amount'],2,'$')}}<div class='amount-title'>Total Revenue<br />Recognized</div></div>
+    <div class="total-spending-amount">{{ customAmount(node.data[0]['revenue_modified'],2,'$')}}<div class='amount-title'>Total Modified<br />Budget</div></div>
+    <div class="total-spending-amount">{{ customAmount(node.data[0]['revenue_adopted_amount'],2,'$')}}<div class='amount-title'>Total Adopted<br />Budget</div></div>
+    <div class="total-spending-amount">{{ customAmount(node.data[0]['revenue_funds_available'],2,'$')}}<div class='amount-title'>Total Remaining<br />Budget</div></div>
+    </div></div>

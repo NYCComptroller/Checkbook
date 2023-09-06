@@ -1,0 +1,14 @@
+smart_search_autocomplete:
+  version: 1.0.0
+  js:
+    /modules/custom/jquery_plugins/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.concat.min.js: {}
+    js/smart_search.js: {}
+  dependencies:
+    - core/drupalSettings
+    - core/drupal.ajax
+    - jquery_ui_autocomplete/autocomplete
+    - jquery_ui_dialog/dialog
+smart_search_results:
+  css:
+    theme:
+      /modules/custom/checkbook_faceted_search/css/narrow-down-filter.css: {}

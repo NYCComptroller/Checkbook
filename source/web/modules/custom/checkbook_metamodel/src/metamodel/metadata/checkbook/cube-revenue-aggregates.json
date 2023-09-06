@@ -1,0 +1,79 @@
+{
+  "datasets":{
+    "aggregate_revenue":{
+      "datasourceName":"main",
+      "source":"aggregateon_revenue_category_funding_class"
+    }
+  },
+  "cubes":{
+    "aggregate_revenue":{
+      "sourceDatasetName":"aggregate_revenue",
+      "dimensions":[
+        {
+          "name":"year",
+          "levels":[
+            {
+              "name":"year",
+              "datasetName":"year",
+              "sourceColumnName":"budget_fiscal_year_id"
+            }
+          ]
+        },
+        {
+          "name":"category",
+          "levels":[
+            {
+              "name":"category",
+              "datasetName":"revenue_category",
+              "sourceColumnName":"revenue_category_id"
+            }
+          ]
+        },
+        {
+          "name":"funding",
+          "levels":[
+            {
+              "name":"funding",
+              "datasetName":"ref_funding_class",
+              "sourceColumnName":"funding_class_id"
+            }
+          ]
+        },
+        {
+              "name": "fundingcode",
+              "levels": [
+                  {
+                      "name": "fundingcode",
+                      "datasetName": "funding_class",
+                      "sourceColumnName": "funding_class_code"
+                  }
+              ]
+        },
+        {
+          "name":"agency",
+          "levels":[
+            {
+              "name":"agency",
+              "datasetName":"agency",
+              "sourceColumnName":"agency_id"
+            }
+          ]
+        }
+      ],
+      "measures":{
+        "adopted_budget":{
+          "function":"SUM(adopted_amount)"
+        },
+        "current_modified_budget":{
+          "function":"SUM(COALESCE(current_modified_amount,0))"
+        },
+        "revenue_amount_sum":{
+          "function":"SUM(COALESCE(posting_amount,0))"
+        },
+        "remaining_amount":{
+            "function":"SUM(COALESCE(current_modified_amount,0)) - SUM(COALESCE(posting_amount,0))"
+        }
+      }
+    }
+  }
+}

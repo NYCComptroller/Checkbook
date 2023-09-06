@@ -1,0 +1,92 @@
+/* =======================================
+             BOTTOM SLIDER
+========================================== */
+
+.bottom-navigation .bottom-navigation--item {
+  width: 156px;
+  text-align: center;
+  vertical-align: baseline;
+  position: relative;
+  background-color: #f4f4f4;
+  font-style: italic;
+  line-height: 2em;
+}
+
+/** Contracts Slider **/
+.contracts.bottom-navigation .bottom-navigation--item {
+  line-height: 1.7em;
+}
+
+/** Contracts Slider - Pending tab **/
+.contracts.subvendors.bottom-navigation .bottom-navigation--item {
+  width: 313px;
+}
+
+/** NYCHA Spending Slider **/
+.nycha.bottom-navigation .bottom-navigation--item{
+  width: 187px;
+}
+
+/** NYCHA Spending Slider **/
+.nycha.bottom-navigation .bottom-navigation--item{
+  width: 187px;
+}
+
+.bottom-navigation .bottom-navigation--item.active {
+  background: url("../../images/active-tile2.png") repeat-x 0 0 #25a9dc;
+}
+
+
+/* ITEM INDICATORS
+============================= */
+.bottom-navigation .bottom-navigation--item .indicator-active {
+  background:url("../../images/blue-carrot.png") no-repeat center 0;
+  height: 10px;
+  margin-bottom: -10px;
+  top: 0;
+}
+
+.bottom-navigation .bottom-navigation--item.disable_me .indicator-active {
+  display: none;
+}
+
+.bottom-navigation .bottom-navigation--item.active .bottom-navigation--item-label {
+  border-bottom: none;
+}
+
+/* ITEM LABEL & DOLLAR AMOUNT
+============================= */
+.bottom-navigation .bottom-navigation--item .bottom-navigation--item-label {
+  border: 1px solid #bfbfbf;
+  border-left: none;
+  color: #596c7d;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  display: block;
+  padding: 4px;
+}
+
+.bottom-navigation .bottom-navigation--item div.bottom-navigation--item-label {
+  cursor: default;
+}
+
+.bottom-navigation--section .bottom-navigation--item:first-child .bottom-navigation--item-label {
+  border-left: 1px solid #bfbfbf;
+}
+
+.bottom-navigation .bottom-navigation--item.active .bottom-navigation--item-label {
+  color: white;
+}
+
+.bottom-navigation--item-label .bottom-navigation--item-dollar_amount,
+.bottom-navigation--item-label .bottom-navigation--item-count {
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.bottom-navigation--item-label .bottom-navigation--item-dollar_amount {
+  font-family: NovecentowideNormalRegular;
+}

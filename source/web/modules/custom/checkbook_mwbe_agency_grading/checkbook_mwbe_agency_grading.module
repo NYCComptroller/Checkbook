@@ -1,0 +1,320 @@
+<?php
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (c) 2012 – 2023 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+use Drupal\checkbook_infrastructure_layer\Utilities\FormattingUtilities;
+use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
+
+/**
+ * Implements hook_theme()
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
+ */
+
+function checkbook_mwbe_agency_grading_theme($existing, $type, $theme, $path) {
+  return [
+    'mwbe_agency_grading_main' => [
+      'template' => 'mwbe_agency_grading_main',
+      'variables' => [
+        'left_content' => [],
+        'nyc_data' => [],
+        'params' => []
+      ],
+    ],
+  ];
+}
+
+function _checkbook_mwbe_agency_grading_param_update(){
+  $current_path = \Drupal::service('path.current')->getPath();
+  $data_type = RequestUtilities::get('mwbe_agency_grading',['q' => $current_path]);
+  $update_path = str_replace(":", "/", $current_path);
+  \Drupal::request()->query->set('q', $update_path);
+  RequestUtilities::resetUrl();
+  return $data_type;
+}
+
+
+function _checkbook_mwbe_agency_grading_left($agencies_data){
+
+	$left_content_agencies = array();
+	$mwbe_cats = _mwbe_agency_grading_current_cats();
+	foreach($agencies_data as $row){
+		$data_row = array();
+		$spending_amount =  0;
+		foreach($mwbe_cats as $mwbe_cat){
+			$spending_amount += $row[$mwbe_cat];
+			$data_row[$mwbe_cat] = $row[$mwbe_cat];
+		}
+		$left_content_agencies[] = array('spending_amount'=>$spending_amount,'agency_id'=>$row['agency_id'],'agency_name'=>$row['agency_name'],'data_row'=>$data_row);
+	}
+	usort($left_content_agencies,'_checkbook_agency_grading_comp');
+  return $left_content_agencies;
+
+}
+
+
+function _checkbook_agency_grading_comp($a, $b){
+	if ($a['spending_amount'] == $b['spending_amount']) {
+		return 0;
+	}
+	return ($a['spending_amount'] > $b['spending_amount']) ? -1 : 1;
+
+}
+
+function _checkbook_mwbe_agency_grading_right($agencies_data){
+
+	$nyc_data = array();
+	$nyc_data['agencies'] = is_countable($agencies_data) ? count($agencies_data) : null;
+	$mwbe_cats = _mwbe_agency_grading_current_cats();
+	foreach($agencies_data as $row){
+		$nyc_data['total_mwbe'] += $row['total_mwbe'] ?? null;
+		foreach($mwbe_cats as $cat){
+			$nyc_data['total_spending_chart'] += $row[$cat] ?? null;
+		}
+		$nyc_data['total_non_mwbe'] += $row['n_mwbe'] ?? null;
+		$nyc_data['total_io'] += $row['io_nonmwbe'] ?? null;
+		$nyc_data['total'] += $row['total_mwbe'] + $row['n_mwbe'] ;
+	}
+  //$nyc_data['mwbe_share'] =
+	$nyc_data['mwbe_share'] = ($nyc_data['total_mwbe'] + $nyc_data['total_non_mwbe'] <> 0) ? FormattingUtilities::custom_number_formatter_format($nyc_data['total_mwbe']/($nyc_data['total_mwbe'] + $nyc_data['total_non_mwbe'] ) * 100,1,'','%') : null;
+	$nyc_data['total_mwbe']	 = FormattingUtilities::custom_number_formatter_format($nyc_data['total_mwbe'],1,'$')	;
+	$nyc_data['total_non_mwbe']	 = FormattingUtilities::custom_number_formatter_format($nyc_data['total_non_mwbe'],1,'$')	;
+	$nyc_data['total_io']	 = FormattingUtilities::custom_number_formatter_format($nyc_data['total_io'],1,'$')	;
+	$nyc_data['total']	 = FormattingUtilities::custom_number_formatter_format($nyc_data['total'],1,'$')	;
+
+	return $nyc_data;
+}
+
+function _checkbook_mwbe_agency_grading_getdata(){
+    $current_path = \Drupal::service('path.current')->getPath();
+    $is_prime = RequestUtilities::get('mwbe_agency_grading',['q' => $current_path]);
+    $is_prime_csv = RequestUtilities::get('mwbe_agency_grading_csv',['q' => $current_path]);
+    if($is_prime == 'sub_vendor_data' || $is_prime_csv == 'sub_vendor_data' ){
+        $sql1 = _checkbook_mwbe_agency_grading_generate_sql("aggregateon_subven_spending_coa_entities");
+    }else{
+       $sql1 = _checkbook_mwbe_agency_grading_generate_sql("aggregateon_mwbe_spending_coa_entities");
+    }
+
+    $order='';
+    $sortcol='';
+
+    if(!empty(RequestUtilities::getCurrentPageUrl())){
+        if(isset($_GET['iSortCol_0'])){
+            if($_GET['iSortCol_0'] == 0){
+                $sortcol = 'order by a1.agency_name';
+            }
+            else{
+                $sortcol = 'order by a1.ytd_spending';
+            }
+        }
+        else{
+            $sortcol = 'order by a1.ytd_spending';
+        }
+
+        if(isset($_GET['sSortDir_0'])){
+            if($_GET['sSortDir_0'] == 'desc'){
+                $order = 'desc';
+            }
+            else{
+                $order = 'asc';
+            }
+        }
+        else{
+            $order = 'desc';
+        }
+    }
+    else{
+        $sortcol = 'order by a1.ytd_spending';
+        $order = 'desc';
+    }
+
+	$sql = 'select  a1.agency_name , a1.agency_id,
+	coalesce(a1.aa_mwbe,0) aa_mwbe,
+	coalesce(a1.ba_mwbe,0)  ba_mwbe,
+	coalesce(a1.w_mwbe,0)  w_mwbe,
+	coalesce(a1.ha_mwbe,0)  ha_mwbe,
+  coalesce(a1.na_mwbe,0)  na_mwbe,
+  coalesce(a1.em_mwbe,0)  em_mwbe,
+	coalesce(a1.total_mwbe,0)  total_mwbe,
+	coalesce(a1.n_mwbe,0)  n_mwbe
+	from ( ' . $sql1 . ' ) a1 '
+    . $sortcol .' '.$order;
+	return  _checkbook_project_execute_sql($sql);
+
+}
+
+function _checkbook_mwbe_agency_grading_generate_sql($table){
+  //Add Type of year param by default
+	$where_filters[] = _widget_build_sql_condition(' a.' . 'type_of_year', 'B');
+	$urlParamMap = array("year_id"=>"year");
+  $mwbe_cats = _mwbe_agency_grading_current_cats();
+  $cpath = \Drupal::service('path.current')->getPath();
+	foreach($urlParamMap as $column=>$path_param){
+    $param = RequestUtilities::get($path_param,['q' => $cpath]);
+		$where_filters[] = _widget_build_sql_condition(' a.' . $column, $param);
+	}
+	if(count($where_filters) > 0){
+		$where_filter = ' where ' . implode(' and ' , $where_filters);
+	}
+
+
+	$sql = 'select  ra.agency_name , a.agency_id,
+    SUM(
+       CASE
+            WHEN minority_type_id = 4 THEN total_spending_amount
+            WHEN minority_type_id = 5 THEN total_spending_amount
+            ELSE 0
+	END) aa_mwbe,
+	SUM(
+       CASE
+            WHEN minority_type_id = 2 THEN total_spending_amount
+            ELSE 0
+	END) ba_mwbe,
+	SUM(
+       CASE
+            WHEN minority_type_id = 6 THEN total_spending_amount
+            ELSE 0
+	END) na_mwbe,
+	SUM(
+       CASE
+            WHEN minority_type_id = 9 THEN total_spending_amount
+            ELSE 0
+	END) w_mwbe,
+	SUM(
+       CASE
+            WHEN minority_type_id = 3 THEN total_spending_amount
+            ELSE 0
+	END) ha_mwbe,
+	SUM(
+       CASE
+            WHEN minority_type_id = 11 THEN total_spending_amount
+            ELSE 0
+	END) io_mwbe,
+	SUM(
+       CASE
+            WHEN minority_type_id = 99 THEN total_spending_amount
+            ELSE 0
+	END) em_mwbe,
+	SUM(
+       CASE WHEN minority_type_id = 2 THEN total_spending_amount
+            WHEN minority_type_id = 3 THEN total_spending_amount
+            WHEN minority_type_id = 4 THEN total_spending_amount
+            WHEN minority_type_id = 5 THEN total_spending_amount
+            WHEN minority_type_id = 6 THEN total_spending_amount
+            WHEN minority_type_id = 9 THEN total_spending_amount
+            WHEN minority_type_id = 99 THEN total_spending_amount
+            ELSE 0
+	END) total_mwbe,
+		SUM(
+       CASE
+             WHEN minority_type_id = 7 THEN total_spending_amount
+            ELSE 0
+	END) n_mwbe,';
+
+    $sql .= ' SUM(
+    CASE ';
+        if(in_array("ba_mwbe", $mwbe_cats)){
+            $sql .= ' WHEN minority_type_id = 2 THEN total_spending_amount';
+        }
+        if(in_array("ha_mwbe", $mwbe_cats)){
+            $sql .= ' WHEN minority_type_id = 3 THEN total_spending_amount';
+        }
+        if(in_array("aa_mwbe", $mwbe_cats)){
+            $sql .= ' WHEN minority_type_id = 4 THEN total_spending_amount
+                      WHEN minority_type_id = 5 THEN total_spending_amount';
+        }
+        if(in_array("w_mwbe", $mwbe_cats)){
+            $sql .= ' WHEN minority_type_id = 9 THEN total_spending_amount';
+        }
+        if(in_array("n_mwbe", $mwbe_cats)){
+            $sql .= ' WHEN minority_type_id = 7 THEN total_spending_amount';
+        }
+        if(in_array("na_mwbe", $mwbe_cats)){
+            $sql .= ' WHEN minority_type_id = 6 THEN total_spending_amount';
+        }
+        if(in_array("em_mwbe", $mwbe_cats)){
+            $sql .= ' WHEN minority_type_id = 99 THEN total_spending_amount';
+        }
+        if(in_array("io_mwbe", $mwbe_cats)){
+            $sql .= ' WHEN minority_type_id = 11 THEN total_spending_amount';
+        }
+    $sql .= ' ELSE 0
+	END) ytd_spending';
+    $sql .= '
+        from {' . $table . '} a
+    join {ref_agency} ra on ra.agency_id =  a.agency_id
+   ' . $where_filter . '
+        group by  ra.agency_name,a.agency_id
+   ';
+
+    return $sql;
+}
+
+
+
+function _mwbe_agency_grading_current_cats(){
+
+	if(RequestUtilities::get('mwbe_filter') != null){
+		$url_cats = explode('~',RequestUtilities::get('mwbe_filter'));
+		return $url_cats;
+	}else{
+		return array('aa_mwbe','ba_mwbe','ha_mwbe','w_mwbe','na_mwbe','em_mwbe');
+	}
+
+}
+
+/**
+ * Function to map the csv header with the filter paramerts
+ */
+function _mwbe_agency_grading_current_csv_header()
+{
+  $mwbe_cats = _mwbe_agency_grading_current_cats();
+  $csv_header ='';
+  $title = array(
+    "aa_mwbe" => "Asian American",
+    "w_mwbe" => "Women (Non-Minority)",
+    "ba_mwbe" => "Black American",
+    "ha_mwbe" => "Hispanic American",
+    "na_mwbe" => "Native American",
+    "em_mwbe" => "Emerging (Non-Minority)",
+    "n_mwbe" => "Non M/WBE",
+  );
+
+  foreach($mwbe_cats as $mwbe_cat){
+    $csv_header .= $title[$mwbe_cat] .",";
+  }
+  $csv_header = "Agency," . $csv_header ."M/WBE Spending\n";
+  return $csv_header;
+}
+
+/**
+ * Implements hook_page_title_alter().
+ */
+function checkbook_mwbe_agency_grading_page_title_alter(&$title) {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  switch ($route_name) {
+    case 'checkbook_mwbe_agency_grading._checkbook_mwbe_agency_grading':
+    case 'checkbook_mwbe_agency_grading._checkbook_mwbe_agency_grading0':
+      $title = 'M/WBE Agency Summary';
+      break;
+  }
+}

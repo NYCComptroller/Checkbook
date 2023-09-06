@@ -1,0 +1,14 @@
+widget_data_tables.ajaxdata:
+  path: '/dashboard_platform/data_tables/ajax_data/node/{node}'
+  defaults:
+    _controller: '\Drupal\widget_data_tables\Controller\DefaultController::_widget_data_tables_ajaxdata'
+  requirements:
+    key: '^[^\?]*$'
+    _permission: 'access content'
+widget_data_tables.list_ajaxdata:
+  path: '/dashboard_platform/data_tables_list/ajax_data/node/{node}'
+  defaults:
+    _controller: '\Drupal\widget_data_tables\Controller\DefaultController::_widget_data_tables_list_ajaxdata'
+  requirements:
+    key: '^[^\?]*$'
+    _permission: 'access content'

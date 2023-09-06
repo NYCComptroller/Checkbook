@@ -1,0 +1,39 @@
+{% macro item(label, dollar_amount, link, domain, indicator) %}
+  {% set is_active = isNychaTopNavigationItemActive(domain|raw) %}
+  <div class="top-navigation--item {{ label|lower|replace({' ':'', '/':'', '(':'', ')':''})  }} {{ is_active ? 'active' : ''}}">
+    {% if link == false %}
+      <div class="top-navigation--item-label">
+        {{ label }}
+        <div class="top-navigation--item-dollar_amount">
+          {{ dollar_amount }}
+        </div>
+      </div>
+    {% else %}
+      <a class="top-navigation--item-label display-block text-no-underline" href="{{ link }}">
+        {{ label }}
+        <div class="top-navigation--item-dollar_amount">
+          {{ dollar_amount }}
+        </div>
+      </a>
+    {% endif %}
+
+    {# Show indicator if item is active or by force (indicator == true in array) #}
+    {% if indicator == true or is_active == true %}
+      <div class="indicator-active"></div>
+    {% endif %}
+  </div>
+{% endmacro item %}
+
+{% set sections = generateNychaTopNavigation(node) | raw %}
+{% set first_section = sections['first'] %}
+
+<div class="nycha top-navigation">
+  <!-- Items -->
+  <div class="display-flex flex-justify">
+    <div class="display-flex top-navigation--section-first">
+      {% for item in first_section %}
+        {{ _self.item(item.label, item.dollar_amount, item.link, item.domain) }}
+      {% endfor %}
+    </div>
+  </div>
+</div>

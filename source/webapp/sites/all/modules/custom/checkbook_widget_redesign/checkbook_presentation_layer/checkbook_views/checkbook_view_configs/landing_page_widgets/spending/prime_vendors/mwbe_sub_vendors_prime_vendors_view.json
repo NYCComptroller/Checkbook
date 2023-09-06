@@ -1,6 +1,0 @@
-{
-    "defaultConfigKey":"mwbe_prime_vendors_view",
-    "serviceName":"SpendingWidgetService",
-    "dataFunc":"GetSubVendorSpendingByPrimeVendors",
-    "countFunc":"GetCountSubVendorPrimeVendors"
-}

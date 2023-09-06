@@ -1,0 +1,83 @@
+{{ attach_library('widget_config/datatables_dataTableList') }}
+{{ attach_library('checkbook_faceted_search/narrow-search') }}
+<div class="page-contract-details budget_transactions">
+  <div class="panel-panel grid-3">
+    <div about="/node/{{ node.nid }}" typeof="sioc:Item foaf:Document"
+         class="node node-widget node-teaser node-published node-not-promoted node-not-sticky self-posted author-admin odd clearfix" id="node-widget-{{ node.nid }}">
+      <div class="content clearfix">
+        {# Set the Display facet tooltip #}
+        {% if node.widgetConfig.maxSelect != 0 and not disableFacet %}
+        {% set tooltip = "title=\"Select upto " ~ node.widgetConfig.maxSelect ~ "\"" %}
+        {% else %}
+          {% set tooltip = "" %}
+        {% endif %}
+        {# Set the Display facet and span parameter #}
+        {% if checked  is not null and checked is not empty %}
+          {% set display_facet ="block" %}
+          {% set span = "open" %}
+        {% else %}
+          {% set display_facet ="none" %}
+          {% set span = "" %}
+        {% endif %}
+        {# Set the checked and unchecked count #}
+        {% set checkedCount = checked|length %}
+        {% set uncheckedCount = unchecked|length %}
+        <div name="{{ urlParameter }}" id="{{ autocomplete_id }}" class="filter-content {% if hide_filter != '' %}disabled{% endif %}">
+          <div{{ hide_filter }}>
+            <div class="filter-title" {{ tooltip |raw }} ><span class="{{ span }}">By {{ filter_name }}</span></div>
+            <div class="facet-content" style="display: {{ display_facet }}">
+              <div class="progress"></div>
+              {# Set the pages parameter #}
+              {% set limit = node.widgetConfig.limit ? node.widgetConfig.limit : "50" %}
+              {% set pages = (node.totalDataCount//limit) | round(0, 'ceil') %}
+
+              {% if checked and node.widgetConfig.maxSelect == checkedCount or checkedCount + uncheckedCount == 0 or disableFacet %}
+                {% set disabled = " DISABLED='true' " %}
+              {% else %}
+                {% set disabled = "" %}
+              {% endif %}
+
+              {% if checked and checkedCount + uncheckedCount == 0 or disableFacet %}
+                {% set checkeddisabled = " DISABLED='true' " %}
+              {% elseif checked and is_advanced_search_page == false and is_ajax_call == false %}
+                {% set checkeddisabled = " DISABLED='true' " %}
+              {% else %}
+                {% set checkeddisabled = "" %}
+              {% endif %}
+              {# Print autocomplte div #}
+              {{ checkbook_faceted_search_auto(disabled,pages,node)|raw }}
+              {# Print Checked Items #}
+              <div class="checked-items">
+                {{ checkbook_faceted_search_check(checked,checkeddisabled,autocomplete_id,filter_name) |raw }}
+              </div>
+              {# Print Unchecked Items #}
+              <div class="options">
+                <div class="rows">
+                  {{ checkbook_faceted_search_uncheck(unchecked,disabled,autocomplete_id,filter_name) |raw }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    {{  checkbook_faceted_search_js(node) |raw}}
+  </script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

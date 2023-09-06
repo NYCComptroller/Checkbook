@@ -1,0 +1,39 @@
+name: checkbooknyc
+recipe: drupal9
+config:
+  webroot: ./web
+  php: '8.2'
+  xdebug: 'develop,debug'
+services:
+  appserver:
+    overrides:
+      environment:
+        # Support debugging CLI with XDEBUG.
+        PHP_IDE_CONFIG: "serverName=checkbooknyc"
+        XDEBUG_SESSION_START: lando
+    build_as_root:
+      - docker-php-ext-install pgsql
+      - rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && /etc/init.d/apache2 reload
+  memcache:
+    type: memcached
+  pma:
+    type: phpmyadmin
+proxy:
+  pma:
+    - pma-checkbooknyc.lndo.site
+tooling:
+  xdebug-on:
+    service: appserver
+    description: Enable Xdebug.
+    user: root
+    cmd:
+      - docker-php-ext-enable xdebug && kill -USR2 $(pgrep -o php-fpm) > /dev/null || /etc/init.d/apache2 reload
+      - tput setaf 2 && echo "Xdebug On" && tput sgr 0 && echo
+
+  xdebug-off:
+    service: appserver
+    description: Disable Xdebug.
+    user: root
+    cmd:
+      - rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && kill -USR2 $(pgrep -o php-fpm) > /dev/null || /etc/init.d/apache2 reload
+      - tput setaf 1 && echo "Xdebug Off" && tput sgr 0 && echo

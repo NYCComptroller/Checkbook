@@ -1,0 +1,32 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":766,
+    "limit":100,
+    "startWith":0,
+    "columns":["expobjectcode.expobjectcode", "expobjectname.expobjectname", "txcount"],
+    "orderBy":["-txcount", "expobjectname.expobjectname"],
+    "facetPager":true,
+    "filterName":"Expense Category",
+    "urlParameterName":"expcategorycode",
+    "urlParameterNameType":"eqtext",
+    "autocompleteParamName":"expcategorynm_auto",
+    "autocompleteID":"fCategoryNm",
+    "autocompleteField":"expenditure_object_name",
+    "maxSelect":5,
+    "widgetPreprocessJSON":"\\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_adjust_vendor_facet_json($node);",
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
+    "adjustParameters":"
+      //Adjust Certification parameters
+      $parameters = \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::adjustCertificationFacetParameters($node,$parameters);
+      if(isset($parameters['vendor_type'])){
+        $parameters['vendor_type'] = \\Drupal\\checkbook_project\\MwbeUtilities\\VendorType::getVendorTypeValue($parameters['vendor_type']);
+      }
+      $parameters = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::_checkbook_project_adjust_spending_parameter_filters($node, $parameters);
+      $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+      $adjustedParameters['expobjectcode.expobjectcode'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+
+      return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

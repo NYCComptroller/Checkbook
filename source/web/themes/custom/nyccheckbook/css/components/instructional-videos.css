@@ -1,0 +1,78 @@
+/* Instructional Video Toggles */
+.instructional-videos * {
+  box-sizing: content-box;
+}
+.instructional-videos h1.title {
+  margin-left: 0;
+  margin-right: 0;
+}
+.instructional-video-container {
+  padding-bottom: 10px;
+}
+.instructional-video-content div:nth-child(odd) {
+  width: 460px;
+  float: left;
+  padding-right: 18px;
+}
+.instructional-video-nav-dropdowns {
+  display: block;
+  float: left;
+  padding-bottom: 10px;
+}
+.instructional-video-filter-highlight {
+  font-weight: 800;
+  font-size: 14px;
+  color: #5c5c5c;
+  text-transform: uppercase;
+}
+.instructional-video-horizontal-rule {
+  background-color: #3c5e7c;
+  height: 2px;
+  border: 0;
+  clear: both;
+}
+.instructional-video-open {
+  color: #d8eefc;
+  width: 940px;
+  padding: 14px 0px 14px 0px;
+  height: 12px;
+}
+.instructional-video-open span {
+  cursor: pointer;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+  line-height: 12px;
+  display: block;
+  float: left;
+  padding-right: 5px;
+}
+.instructional-video-toggle {
+  background-image: url("../../images/arrow-down-medium.png");
+  background-repeat: no-repeat;
+  height: 20px;
+  width: 20px;
+}
+.instructional-video-open span.open {
+  background-image: url("../../images/arrow-up-medium.png");
+  background-repeat: no-repeat;
+  height: 20px;
+  width: 20px;
+}
+.instructional-video-content {
+  height: 100%;
+  width: 940px;
+  display: none;
+  float: right;
+  padding: 14px 0px 14px 0px;
+}
+.instructional-video-title {
+  display: block;
+  padding-bottom: 10px;
+  font-weight: 600;
+  font-size: 13px;
+}
+.instructional-video-text {
+  padding-top: 20px;
+  padding-bottom: 10px;
+}

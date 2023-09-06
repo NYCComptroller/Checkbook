@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+    <style type="text/css">
+      body {
+        font-family: Roboto;
+        font-size: 12px;
+      }
+
+      table {
+        border: #ccc 1px dotted;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      table.title{
+        font-size: 13px;
+        font-weight: bolder;
+        border: none;
+        color:#3c5e7c;
+      }
+
+      .no-stats{
+        font-size: 12px;
+        color:darkred;
+      }
+
+      table.status tr:nth-child(even){background-color: #f2f2f2;}
+
+      table.status tr:hover {background-color: #ddd;}
+
+      table.status th {
+        text-align: right;
+        background: #3c6e95;
+        color: #fff;
+        padding: 4px;
+      }
+
+      table.status td{
+        padding-left: 2px;
+        text-align: center;
+      }
+
+      footer {
+        border-top: 1px #2d5879 solid;
+        text-align: center;
+      }
+
+      a:link, footer a:visited {
+        color: #5b5b5b;
+        text-decoration: none;
+      }
+
+      footer table {
+        border: 0;
+      }
+    </style>
+
+  </head>
+  <body text="#5b5b5b">
+    <header>
+      <table bgcolor="2d5879" width="100%">
+        <tr align="center">
+          <td width="50%"></td>
+          <td width="400">
+            <a href="https://www.checkbooknyc.com/">
+              <img alt="CheckbookNYC logo" title="CheckbookNYC"
+                   src="https://www.checkbooknyc.com/themes/custom/nyccheckbook/images/logo.png"/><br/>
+            </a>
+          </td>
+          <td width="50%"></td>
+        </tr>
+      </table>
+    </header>
+    <main>
+      <br/>
+      <br/>
+      {# main status start #}
+        <table cellspacing="7" class="title">
+          <tbody>
+          <tr><th>Production ETL Summary</th></tr>
+          {% if message.prod_stats is not defined %}
+            <tr>
+              <td class="no-stats">{{ message.prod_status }}</td>
+            </tr>
+          {% endif %}
+          </tbody>
+        </table>
+        <br>
+        {% if message.prod_stats is defined %}
+          <table class="status">
+            <tbody>
+            <tr>
+              <th>Database</th>
+              <th>Last Run Date</th>
+              <th>Last Run Success?</th>
+              <th>Last Success Date</th>
+              <th>Last File Load Date</th>
+              <th>All Files Processed?</th>
+              <th>Shards Refreshed?</th>
+              <th>Solr Refreshed?</th>
+              {% if message.prod_process_errors %}
+                <th>All Processes Successful?</th>
+              {% endif %}
+            </tr>
+            {% for prod_stat in message.prod_stats %}
+              <tr>
+                <td>{{ prod_stat.Database }}</td>
+                <td>{{ attribute(prod_stat, 'Last Run Date') |date("m-d-Y") }}</td>
+                <td class = 'flag'>{% if attribute(prod_stat, 'Last Run Success?') == 'Success' %}✅{% else %}❌{% endif %}</td>
+                <td>{{ attribute(prod_stat, 'Last Success Date') |date("m-d-Y") }}</td>
+                <td>{{ attribute(prod_stat, 'Last File Load Date') |date("m-d-Y") }}</td>
+                <td class = 'flag'>{% if attribute(prod_stat, 'All Files Processed?') == 'N' %}✅{% else %}❌{% endif %}</td>
+                <td class = 'flag'>{% if attribute(prod_stat, 'Shards Refreshed?') == 'Y' %}✅{% else %}❌{% endif %}</td>
+                <td class = 'flag'>{% if attribute(prod_stat, 'Solr Refreshed?') == 'Y' %}✅{% else %}❌{% endif %}</td>
+                {% if message.prod_process_errors %}
+                  <td class = 'flag'>{% if attribute(prod_stat, 'Process Errors?') %}❌{% else %}✅{% endif %}</td>
+                {% endif %}
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+        <br>
+        <br>
+        <table cellspacing="7" class="title">
+          <tbody>
+            <tr><th>UAT ETL Summary</th></tr>
+            {% if message.uat_stats is not defined %}
+              <tr>
+                <td class="no-stats">{{ message.uat_status }}</td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+        <br>
+        {% if message.prod_stats is defined %}
+          <table class="status">
+            <tbody>
+              <tr>
+                <th>Database</th>
+                <th>Last Run Date</th>
+                <th>Last Run Success?</th>
+                <th>Last Success Date</th>
+                <th>Last File Load Date</th>
+                <th>All Files Processed?</th>
+                <th>Shards Refreshed?</th>
+                <th>Solr Refreshed?</th>
+                {% if message.uat_process_errors %}
+                  <th>All Processes Successful?</th>
+                {% endif %}
+              </tr>
+              {% for uat_stat in message.uat_stats %}
+                <tr>
+                  <td>{{ uat_stat.Database }}</td>
+                  <td>{{ attribute(uat_stat, 'Last Run Date') |date("m-d-Y") }}</td>
+                  <td class = 'flag'>{% if attribute(uat_stat, 'Last Run Success?') == 'Success' %}✅{% else %}❌{% endif %}</td>
+                  <td>{{ attribute(uat_stat, 'Last Success Date') |date("m-d-Y") }}</td>
+                  <td>{{ attribute(uat_stat, 'Last File Load Date') |date("m-d-Y") }}</td>
+                  <td class = 'flag'>{% if attribute(uat_stat, 'All Files Processed?') == 'N' %}✅{% else %}❌{% endif %}</td>
+                  <td class = 'flag'>{% if attribute(uat_stat, 'Shards Refreshed?') == 'Y' %}✅{% else %}❌{% endif %}</td>
+                  <td class = 'flag'>{% if attribute(uat_stat, 'Solr Refreshed?') == 'Y' %}✅{% else %}❌{% endif %}</td>
+                  {% if message.uat_process_errors %}
+                    <td class = 'flag'>{% if attribute(uat_stat, 'Process Errors?') %}❌{% else %}✅{% endif %}</td>
+                  {% endif %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+      {# main status end #}
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+    </main>
+
+    <footer>
+      {# footer start #}
+        {{ CheckbookEtlNotficationFooter() | raw }}
+      {# footer end #}
+    </footer>
+  </body>
+</html>

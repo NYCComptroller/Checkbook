@@ -1,0 +1,39 @@
+/**
+ * Base Layout.
+ */
+
+.container {
+  width: 100%;
+  max-width: 84.375rem;
+  padding-right: 1.125rem;
+  padding-left: 1.125rem;
+}
+
+.layout-container {
+  width: 960px;
+  margin: 0px auto 50px auto;
+  padding-bottom: 50px;
+  background-color: #fff;
+  box-shadow: 0 0 10px -4px #1c2b3a;
+}
+
+.layout__region-leftabove {
+  margin-right: 10px;
+}
+
+.layout__region-rightabove {
+  margin-left: 10px;
+}
+
+.ui-widget-overlay {
+  background: none repeat scroll 0 0 #000000 !important;
+  opacity: 0.3;
+}
+
+div.newwindow .region--secondary-menu {
+  display: none;
+}
+
+.region--content {
+  position: relative;
+}

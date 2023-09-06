@@ -1,0 +1,27 @@
+table-view:
+  header: true
+  css:
+    theme:
+      css/mwbe.css: { }
+checkbook_mwbe_agency_grading_jquery:
+  header: true
+  js:
+    /modules/custom/jquery_plugins/data_tables/1.13.4/js/jquery.dataTables1.13.4.min.js: {}
+    /modules/custom/jquery_plugins/data_tables/1.13.4/extensions/full_numbers_no_ellipses/full_numbers_no_ellipses.js: {}
+    /modules/custom/widget_framework/widget_highcharts/Highcharts-Stock-10.0.0/code/highcharts.js: {}
+    /modules/custom/jquery_plugins/js/chosen.jquery.js: {}
+    /modules/custom/jquery_plugins/js/jquery.sticky.js: {}
+    /modules/custom/widget_framework/widget_data_tables/js/transactions.js: {}
+    /modules/custom/checkbook_mwbe_agency_grading/js/mwbe_agency_grading.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once
+    - jquery_ui/widget
+    - jquery_ui_dialog/dialog
+    - jquery_ui/position
+    - jquery_ui/widget
+    - jquery_ui_dialog/dialog
+    - jquery_ui/position
+    - jquery_ui_autocomplete/autocomplete
+    - jquery_ui_dialog/dialog
