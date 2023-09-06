@@ -24,7 +24,7 @@ standardize deployment, and we are conducting that work in the open,
 with participation from all interested parties.  The code's authors,
 who are intimately familiar with every step of the process, naturally
 can and do regularly deploy production instances to
-<http://checkbooknyc.com/> -- but various improvements need to be made
+<https://www.checkbooknyc.com/> -- but various improvements need to be made
 to these instructions before that process is equally easy for
 newcomers.
 
@@ -45,26 +45,25 @@ Requirements
 Please note that unlike most Drupal-based applications, Checkbook uses
 two separate databases simultaneously:
 
- * MySQL for the application itself (essentially Drupal + some modules)
+ * MySQL/MariaDB for the application itself (essentially Drupal + some modules)
  * PostgreSQL for the financial data (usually much larger than the app)
 
 The full list of dependencies is:
 
  * GNU/Linux or similar operating system
- * Drupal 7.x  _(Note: Checkbook includes Drupal, so don't download Drupal separately.)_
- * PHP 5.3 or higher
- * MySQL 5.0.15 or higher (<http://www.mysql.com/> -- we have not tested
-   with a drop-in replacement such as MariaDB <https://mariadb.org/>
-   but would be interested to know if it works)
- * PostgreSQL 8.3 or higher (<http://www.postgresql.org/> -- any
-   database that supports PostgresSQL is compatible for storing
-   Checkbook data (e.g., PostgreSQL, Greenplum)
+ * Drupal 9.5  _(Note: Checkbook includes Drupal, so you don't need to download Drupal separately.)_
+ * PHP 8.1.6 or higher with the following extensions enabled:
+   - PHP Intl extension (<https://www.php.net/manual/en/intl.setup.php>)
+   - PHP PostgreSQL extension (<https://www.php.net/manual/en/pgsql.setup.php>)
+ * MySQL 5.7.8 or higher (<https://www.mysql.com/>) or
+   MariaDB 10.3.7 or higher (<https://mariadb.org/>)
+ * PostgreSQL 9.2 or higher (<https://www.postgresql.org/>) -- other
+   data warehouse products derived from PostgreSQL (e.g. Greenplum Database,
+   Amazon Redshift) are also compatible for storing Checkbook data
  * psql client (PostgreSQL command line interface)
- * Apache HTTPD with following PHP extensions
-   - PHP Intl extension (<http://php.net/manual/en/intl.setup.php>)
-   - PHP PostgreSQL extension (<http://www.php.net/manual/en/pgsql.setup.php>)
- * Solr 4.* search platform (<http://lucene.apache.org/solr/>)
- * Drush version 5.0 (Drupal command-line scripting tool)
+ * Apache HTTPD 2.4.7 or higher with mod_rewrite enabled
+ * Solr 7.4.x search platform (<https://solr.apache.org/>)
+ * Drush 11.x (Drupal command-line scripting tool)
 
 The Checkbook distribution includes the Drupal source tree, along with
 additional (non-core) custom and contributed Drupal modules used by
@@ -76,16 +75,15 @@ Optional configuration for scalability and performance
 ------------------------------------------------------
 
 These instructions assume you're deploying Checkbook on a single
-server, that is, where httpd, the databases, and Tomcat+Solr are all
-running on one machine.
+server, that is, where httpd, the databases, and Solr are all running
+on a single instance.
 
 While this is okay for test deployments, in production you might want
-to divide services among multiple machines, and (for example) use:
+to divide services among multiple instances, and (for example) use:
 
  * A load balancer for distributing requests across multiple instances.
  * Varnish or any other reverse proxy cache for caching last access pages.
- * PGPool for distributing load across multiple PostgreSQL or
-   Greenplum databases.
+ * PGPool for distributing load across multiple PostgreSQL databases.
 
 If you are configuring for scalability and performance in this way,
 then parts of the instructions below will need adjustment, of course.
@@ -93,11 +91,11 @@ then parts of the instructions below will need adjustment, of course.
 Installation
 ------------
 
-We assume that a GNU/Linux server with LAMP stack is installed.
+We assume that a GNU/Linux server with basic system utilities is installed.
 The following assumptions are also made about the installation:
 
- * The webroot is `/var/www/html`.
-   (It could be somewhere else; `/var/www/html` is just the location
+ * The webroot is `/var/www/html`
+   (It could be somewhere else; `/var/www/html` is just the standard location
    we use in these instructions.)
 
 The initial installation of the GNU/Linux server with LAMP stack takes on average 20 minutes.
@@ -116,21 +114,16 @@ Steps to install:
 
 2.  Ensure you have the necessary dependencies installed.
 
-    On Ubuntu 12.04 Server, that looks like this (Debian GNU/Linux
-    should be pretty similar):
+    On Ubuntu 22.04, you can install the necessary packages like this
+    (Debian GNU/Linux should be pretty similar):
 
         $ sudo apt-get update
-        $ sudo apt-get install php5
-        $ sudo apt-get install php5-gd
-        $ sudo apt-get install php5-intl
-        $ sudo apt-get install php5-mysql
-        $ sudo apt-get install php5-pgsql
+        $ sudo apt-get install apache2 php8.1 php8.1-gd php8.1-intl php8.1-mysql php8.1-pgsql
         $ sudo apt-get install mysql-server
         $ sudo apt-get install postgresql
         $ sudo apt-get install postgresql-client
         $ sudo apt-get install postgresql-contrib
         $ sudo apt-get install git
-        $ sudo apt-get install drush
         $ sudo apt-get install apache2
         $ sudo apt-get install openjdk-6-jre-headless
         $ sudo apt-get install zip
