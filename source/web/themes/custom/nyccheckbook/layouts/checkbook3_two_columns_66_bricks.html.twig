@@ -1,0 +1,77 @@
+{#
+/**
+* @file
+* This template provides 6-6 bricks layout for checkbooks
+*
+* Available variables:
+* - content: The content for this layout.
+* - attributes: HTML attributes for the layout <div>.
+*
+* @ingroup themeable
+*/
+#}
+{%
+  set classes = [
+  'layout',
+  'layout--two_columns_66_bricks',
+]
+%}
+{% if content|render|trim %}
+  <div{{ attributes.addClass(classes) }}>
+
+    <div class="grid-row clearfix">
+      <div {{ region_attributes.top.addClass('layout__region', 'layout__region--top', 'layout__region-top', 'grid-col') }} {% if not region_attributes.top %} class="layout__region layout__region--top layout__region-top" {% endif %}>
+        {% if content.top %}
+          {{ content.top }}
+        {% endif %}
+      </div>
+    </div>
+
+    {% if settings.php.value is not empty and show_no_results_message == 'Yes' %}
+      <div id="no-records" class="clearfix">There are no transactions.</div>
+    {% else %}
+
+      <div class="grid-row clearfix">
+        <div {{ region_attributes.leftabove.addClass('grid-col', 'flex-6', 'layout__region', 'layout__region--leftabove', 'layout__region-leftabove') }} {% if not region_attributes.leftabove %} class="layout__region layout__region--leftabove layout__region-leftabove" {% endif %}>
+          {% if content.leftabove %}
+            {{ content.leftabove }}
+          {% endif %}
+        </div>
+        <div {{ region_attributes.rightabove.addClass('grid-col', 'flex-6', 'layout__region', 'layout__region--rightabove', 'layout__region-rightabove') }} {% if not region_attributes.rightabove %} class="layout__region layout__region--rightabove layout__region-rightabove" {% endif %}>
+          {% if content.rightabove %}
+            {{ content.rightabove }}
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="grid-row clearfix">
+        <div {{ region_attributes.middle.addClass('grid-col', 'layout__region', 'layout__region--middle', 'layout__region-middle') }} {% if not region_attributes.middle %} class="layout__region layout__region--middle layout__region-middle" {% endif %}>
+          {% if content.middle %}
+            {{ content.middle }}
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="grid-row clearfix">
+        <div {{ region_attributes.leftbelow.addClass('grid-col', 'flex-6', 'layout__region', 'layout__region--leftbelow', 'layout__region-leftbelow') }} {% if not region_attributes.leftbelow %} class="layout__region layout__region--leftbelow layout__region-leftbelow" {% endif %}>
+          {% if content.leftbelow %}
+            {{ content.leftbelow }}
+          {% endif %}
+        </div>
+        <div {{ region_attributes.rightbelow.addClass('grid-col', 'flex-6', 'layout__region', 'layout__region--rightbelow', 'layout__region-rightbelow') }} {% if not region_attributes.rightbelow %} class="layout__region layout__region--rightbelow layout__region-rightbelow" {% endif %}>
+          {% if content.rightbelow %}
+            {{ content.rightbelow }}
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="grid-row clearfix">
+        <div {{ region_attributes.bottom.addClass('grid-col', 'layout__region', 'layout__region--bottom', 'layout__region-bottom') }} {% if not region_attributes.bottom %} class="layout__region layout__region--bottom layout__region-bottom" {% endif %}>
+          {% if content.bottom %}
+            {{ content.bottom }}
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endif %}

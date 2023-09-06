@@ -1,0 +1,66 @@
+{{ attach_library('widget_config/checkbook_project.contracts') }}
+
+{% set header_columns = [] %}
+{% set header_columns = header_columns|merge([{ value: customWidgetLabelNoDiv("prime_vendor_name"), type:'text' }]) %}
+{% set header_columns = header_columns|merge([{ value: customWidgetLabelNoDiv("current_amount"), type:'number' }]) %}
+{% set header_columns = header_columns|merge([{ value: customWidgetLabelNoDiv("original_amount"), type:'number' }]) %}
+{% set header_columns = header_columns|merge([{ value: customWidgetLabelNoDiv("spent_to_date"), type:'number' }]) %}
+
+<div class='contracts-spending-top'>
+  <h3>SPENDING BY PRIME VENDOR</h3>
+  <table class='dataTable outerTable' style='border: 1px solid #CACACA;'>
+    <thead>
+      <tr>
+        {{ customHeaderColumns(header_columns) | raw }}
+      </tr>
+    </thead>
+    <tbody>
+      {% set index_spending = 0 %}
+      {% set alternating_row_count = 0 %}
+      {% set outer_table_count = 0 %}
+      {% for vendor, vendor_summary in node.results_prime_vendor_info %}
+        {% set open = (index_spending == 0) ? '' : 'open' %}
+
+        {% set row_columns = [] %}
+        {% set row_columns = row_columns|merge([{ value: "<a class='showHide " ~ open ~ " expandTwo'></a>" ~ vendor_summary['vendor_name'], type:'text' }]) %}
+        {% set row_columns = row_columns|merge([{ value: customAmount(vendor_summary['current_amount'] ,2,'$'), type:'number' }]) %}
+        {% set row_columns = row_columns|merge([{ value: customAmount(vendor_summary['original_amount'] ,2,'$'), type:'number' }]) %}
+        {% set row_columns = row_columns|merge([{ value: customAmount(vendor_summary['spent_to_date'] ,2,'$'), type:'number' }]) %}
+
+        {% set class = (alternating_row_count % 2 == 0) ? "even outer" : "odd outer" %}
+        {% set alternating_row_count = alternating_row_count + 1 %}
+
+        <tr class='{{ class }}' >
+          {{ customColumns(row_columns) | raw }}
+        </tr>
+        {% if RequestGet("datasource") != "checkbook_oge" %}
+          {% set display_main = outer_table_count > 0 ? "display: none;" : "" %}
+          {% set outer_table_count = outer_table_count + 1 %}
+          <tr class='showHide' style='{{ display_main }}'>
+            <td colspan='4'>
+              <div>
+                <div id = "contract_history">
+                  {{ getWidgetNodeView(426) | raw }}
+                </div>
+                <div id = "spending_transactions">
+                  {{ getWidgetNodeView(427) | raw }}
+                </div>
+              </div>
+            </td>
+          </tr>
+        {% endif %}
+
+        {% set index_spending = index_spending + 1 %}
+      {% endfor %}
+      {% if alternating_row_count == 0 %}
+        <tr class='odd'>
+          <td class='dataTables_empty' valign='top' colspan='4'>
+            <div id='no-records-datatable' class='clearfix'>
+              <span>No Matching Records Found</span>
+            </div>
+          </td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>

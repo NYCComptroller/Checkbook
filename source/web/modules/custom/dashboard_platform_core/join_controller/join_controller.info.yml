@@ -1,0 +1,7 @@
+name: 'Join Controller'
+description: 'Adds support for data join'
+package: 'REI Dashboard Platform (Core)'
+core_version_requirement: ^9 || ^10
+dependencies:
+  - data_controller
+type: module

@@ -1,0 +1,44 @@
+{
+  "widgetType": "phpparser",
+  "cleanURLParameters": [
+    "year",
+    "expcategory",
+    "expcategorynm",
+    "respcenter",
+    "fundsrc",
+    "program",
+    "project",
+    "bdgtyp",
+    "bdgnm",
+    "modamtr",
+    "comamtr"
+  ],
+  "urlParamMap":{
+    "year": "budget_fiscal_year_id",
+    "expcategory": "expenditure_type_id",
+    "expcategorynm": "expenditure_type_description",
+    "respcenter": "responsibility_center_id",
+    "fundsrc":"funding_source_id",
+    "program": "program_phase_id",
+    "project": "gl_project_id",
+    "bdgtyp": "budget_type",
+    "bdgcode": "budget_code_id",
+    "bdgnm": "budget_name",
+    "modamtr": "modified_budget",
+    "comamtr": "committed"
+  },
+  "paramTypeConfig": {
+    "comamtr": "rangeid",
+    "modamtr": "rangeid",
+    "bdgnm": "eqignorecase",
+    "expcategorynm": "eqignorecase",
+    "bdgnm_exact": "eqignorecase"
+  },
+  "dataset":"checkbook_nycha:budget",
+  "adjustParameters":"
+  $parameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+  return $parameters;
+",
+"columns": ["budget_modified","budget_remaining","budget_committed","budget_actual_amount","budget_adopted_amount"],
+"template":"nycha_budget_transactions_summary"
+}

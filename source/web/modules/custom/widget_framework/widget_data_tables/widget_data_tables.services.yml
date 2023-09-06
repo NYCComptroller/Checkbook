@@ -1,0 +1,10 @@
+services:
+  init_subscriber:
+    class: Drupal\widget_data_tables\EventSubscriber\InitSubscriber
+    tags:
+      -
+        name: event_subscriber
+  widget_data_tables.path_processor:
+    class: Drupal\widget_controller\PathProcessor\WidgetControllerPathProcessor
+    tags:
+      - { name: path_processor_inbound, priority: 350 }

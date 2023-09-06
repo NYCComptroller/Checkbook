@@ -1,0 +1,33 @@
+{
+"widgetType": "phpparser",
+"defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MA1~CTA1~CT1","status_flag":"A","minority_type_id":"2~3~4~5~6~9~99"},
+"cleanURLParameters":["subvendor","mwbe","year","calyear","agency","yeartype","vendor","status","cvendor","cagency","cvendor",
+                      "csize","cindustry","awdmethod"],
+"urlParamMap":{"subvendor":"vendor_id","mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id",
+               "agency":"agency_id","yeartype":"type_of_year","vendor":"prime_vendor_id","status":"status_flag",
+               "cvendor":"prime_vendor_id","cagency":"agency_id","cvendor":"prime_vendor_id","csize":"award_size_id",
+               "cindustry":"industry_type_id","awdmethod":"award_method_id"},
+"dataset": "checkbook:subven_contracts_coa_aggregates",
+"noDataInitialLoad":true,
+"columns": ["prime_minority_type.prime_minority_type","vendor.vendor","total_contracts","vendor.vendor.legal_name","original_amount_sum","current_amount_sum",
+            "yeartype.yeartype","spending_amount_sum","prime_minority_type.prime_minority_type"],
+"adjustParameters":"
+    if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('dashboard') == 'ss'){
+         unset($parameters['minority_type_id']);
+    }
+    $adjustedParameters = $parameters;
+    $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+    return $adjustedParameters;
+",
+"totalDataColumnConfig":
+{
+    "distinctColumn":"vendor.vendor",
+    "distinctColumnMap":"prime_vendor_id"
+},
+"widgetTitle":"Prime Vendors",
+    "template":"contract_summary_expense_expense",
+    "entityColumnName":"vendor_vendor_legal_name",
+    "entityColumnLabel":"Associated Prime Vendor",
+    "templateTitle":"Prime Vendor Spending Transactions",
+    "preprocess_data":"$node->widgetConfig->templateTitle = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getSpentToDateTitle('Prime Vendor Spending');"
+}

@@ -1,0 +1,44 @@
+{{ attach_library('widget_highcharts/highcharts-globals') }}
+{{ attach_library('widget_highcharts/highcharts') }}
+
+{% if (node.dataCount is defined and node.dataCount == 0)  %}
+  <div class="content clearfix">
+    <div id="node-chart-{{node.nid}}" class="highcharts-wrapper {{ node.widgetConfig.html_class }}">
+      {% if node.widgetConfig.gridViewLink %}
+        {{node.widgetConfig.gridViewLink | raw}}
+      {% elseif node.widgetConfig.chartTitle %}
+        <h2 class="chart-title" style="display:none;">{{node.widgetConfig.chartTitle}}</h2>
+      {% else %}
+        <h2 class="text-center">{{node.widgetConfig.chartConfig.title.text}}</h2>
+      {% endif %}
+      <div class="clearfix" id="no-records"><span>There is no data for this visualization.</span></div>
+    </div>
+  </div>
+{% else %}
+<div class="content clearfix">
+  {{node.widgetConfig.gridViewLink |raw}}
+
+  <div class="content clearfix highcharts-border">
+    <div id="node-chart-{{node.nid}}" class="highcharts-wrapper {{ node.widgetConfig.html_class }}">
+
+    </div>
+    {% if node.mwbe_share_percent %}
+      {{ node.widgetConfig.mwbePercentfooter | raw }}
+    {% else %}
+      {{customFunctionEvaluate(node.widgetConfig.footer)|raw}}
+    {% endif %}
+
+  </div>
+</div>
+<script type="text/javascript">
+  {{ widget_highcharts_add_js(node) |raw}}
+</script>
+
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    jQuery('.chart-grid-view').show();
+  });
+</script>
+{% endif %}
+
+

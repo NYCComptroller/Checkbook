@@ -1,0 +1,7 @@
+name: 'Memcached integration'
+description: 'Integrates Data Controller with Memcached'
+package: 'REI Dashboard Platform (Adapter)'
+core_version_requirement: ^9 || ^10
+dependencies:
+  - data_controller
+type: module

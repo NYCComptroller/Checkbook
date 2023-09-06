@@ -1,0 +1,41 @@
+{
+    "widgetType": "phpparser",
+    "defaultParameters":{"type_of_year":"B"},
+    "cleanURLParameters":["year","agency","yeartype","calyear","vendor","subvendor","category","agid","magid","mwbe","industry"],
+    "urlParamMap":{
+        "year":"year_id",
+        "agency":"agency_id",
+        "yeartype":"type_of_year",
+        "calyear":"year_id",
+        "vendor":"prime_vendor.prime_vendor",
+        "subvendor":"sub_vendor.sub_vendor",
+        "category":"spending_category_id",
+        "mwbe":"minority_type_id",
+        "industry":"industry_type_id",
+        "agid":"agreement_id"
+    },
+    "dataset": "checkbook:contracts_subven_spending",
+    "noDataInitialLoad":true,
+    "columns": [
+        "sub_contract_purpose.sub_contract_purpose",
+        "document_id.document_id",
+        "agreement_id.agreement_id",
+        "sub_vendor.sub_vendor",
+        "sub_vendor.sub_vendor.legal_name",
+        "prime_vendor.prime_vendor",
+        "prime_vendor.prime_vendor.legal_name",
+        "check_amount_sum",
+        "sub_contract_number.sub_contract_number",
+        "sub_contract_number.sub_contract_number.original_agreement_id"
+    ],
+    "totalDataColumnConfig": [
+        {"distinctColumn":"agreement_id.agreement_id","distinctColumnMap":"agreement_id"},
+        {"distinctColumn":"document_id.document_id","distinctColumnMap":"document_id"}
+    ],
+   "template":"spending_sub_contract_summary",
+   "WidgetTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Sub Contracts');",
+   "templateTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Sub Contract');",
+   "templateLabel":"Associated Prime Vendor",
+   "templateLabelEval":"return $node->data[0]['prime_vendor_prime_vendor_legal_name'];",
+  "templateId":"return \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('smnid');"
+}

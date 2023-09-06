@@ -1,0 +1,13 @@
+services:
+  checkbook_alerts.Twig.CheckbookAlertsExtension:
+    class: Drupal\checkbook_alerts\Twig\CheckbookAlertsExtension
+    tags:
+      - { name: twig.extension }
+  checkbook-alerts.helper:
+    class: Drupal\checkbook_alerts\Services\CheckbookAlertsHelper
+    arguments: []
+  checkbook_alerts.commands:
+    class: Drupal\checkbook_alerts\Commands\CheckbookAlertsCommands
+    tags:
+      - { name: drush.command}
+    arguments: ['@entity_type.manager', '@logger.factory']

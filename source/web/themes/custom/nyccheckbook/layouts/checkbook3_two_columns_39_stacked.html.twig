@@ -1,0 +1,62 @@
+{#
+/**
+* @file
+* This template provides 3 rows layout, with last row 10-1 filters and datatable
+*
+* Available variables:
+* - content: The content for this layout.
+* - attributes: HTML attributes for the layout <div>.
+*
+* @ingroup themeable
+*/
+#}
+{%
+  set classes = [
+  'layout',
+  'layout--two_columns_39_stacked',
+]
+%}
+{% if content|render|trim %}
+  <div {{ attributes.addClass(classes) }}>
+
+    <div class="grid-row clearfix">
+      <div {{ region_attributes.first.addClass('layout__region', 'layout__region--first', 'layout__region-title', 'grid-col') }} {% if not region_attributes.first %} class="layout__region layout__region--first layout__region-title" {% endif %}>
+        {% if content.first %}
+          {{ content.first }}
+        {% endif %}
+      </div>
+    </div>
+
+    {% if settings.php.value is not empty and show_no_results_message == 'Yes' and current_route != 'layout_builder.overrides.node.view' %}
+      <div id="no-records">
+        There are no transactions.
+      </div>
+    {% else %}
+
+      <div class="grid-row clearfix">
+        <div {{ region_attributes.second.addClass('layout__region', 'layout__region--second', 'layout__region-title2', 'grid-col') }} {% if not region_attributes.second %} class="layout__region layout__region--second layout__region-title2" {% endif %}>
+          {% if content.second %}
+            {{ content.second }}
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="grid-row clearfix clearboth">
+        <div class="grid-col flex-3">
+          {% if content.thirdleft1 %}
+            <div {{ region_attributes.thirdleft1.addClass('layout__region', 'layout__region--third-left1', 'layout__region-filter1') }} {% if not region_attributes.thirdleft1 %} class="layout__region layout__region--third-left1 layout__region-filter1" {% endif %}>
+              {{ content.thirdleft1 }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="grid-col flex-9">
+          <div {{ region_attributes.thirdright.addClass('layout__region', 'layout__region--third-right', 'layout__region-datatable') }} {% if not region_attributes.thirdright %} class="layout__region layout__region--third-right layout__region-datatable" {% endif %}>
+            {% if content.thirdright %}
+              {{ content.thirdright }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endif %}

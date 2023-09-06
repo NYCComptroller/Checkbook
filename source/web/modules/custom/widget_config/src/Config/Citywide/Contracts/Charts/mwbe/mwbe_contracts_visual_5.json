@@ -1,0 +1,190 @@
+{
+"widgetType": "highcharts",
+"widgetDatahandler": "highcharts",
+"html_class":"",
+"header":"
+       $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+       $header .= \\Drupal\\checkbook_project\\WidgetUtilities\\ChartUtil::generateGridViewLink($node);
+       return $header;
+    ",
+ "gridConfig":{
+        "template":"chart_grid_view",
+        "domain":"contracts",
+        "html_class":"chart-grid-view-table three-columns",
+        "sortColumn":2,
+        "table_columns": [
+            {
+                  "labelAlias": "Prime Vendor",
+                  "columnType": "text"
+             },
+             {
+                  "labelAlias": "Number of M/WBE Contracts",
+                  "columnType": "number",
+                  "formatType": "number"
+             },
+             {
+                  "labelAlias": "Amount",
+                  "columnType": "number",
+                  "formatType": "amount"
+             }
+        ]
+},
+"no_results_content":"No Results Found",
+
+"cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year"],
+"cleanURLParametersPending":["agency","awdmethod","vendor","status","csize","cindustry","mwbe"],
+"urlParamMap":{"year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id",
+	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
+"urlParamMapPending":{"mwbe":"minority_type_id","agency":"document_agency_id","vendor":"vendor_id",
+			"awdmethod":"award_method_id",
+			"csize":"award_size_id","cindustry":"industry_type_id"},
+"widgetPreprocessJSON":"
+  if(preg_match('/pending/',\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getCurrentPageUrl()) ||
+  preg_match('/pending/',\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRefUrl())){
+		$node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
+		$node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
+		$node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
+	}
+
+",
+"chartTitle":"Top Ten Prime Vendors by Active Expense Contracts",
+"widgetDataLoader":"
+
+    $where_filters = array();
+    foreach($node->widgetConfig->requestParams as $param=>$value){
+        $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+    }
+
+    if(count($where_filters) > 0){
+        $where_filter = ' where ' . implode(' and ' , $where_filters);
+    }
+
+ 	$where_filter .= ' and rd.document_code in (' . \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::getCurrentPageDocumentIds() . ') ';
+
+if(preg_match('/pending/',\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getCurrentPageUrl()) ||
+preg_match('/pending/',\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRefUrl())){
+    	$sql = ' select
+			v.legal_name,a1.vendor_id
+			, sum(revised_maximum_amount) current_amount_sum
+			, count(fms_contract_number) total_contracts
+		from {pending_contracts} a1
+	    join {vendor} v on v.vendor_id =  a1.vendor_id
+	    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+   		' . $where_filter . '
+        and revised_maximum_amount != 0
+   		group by v.legal_name  ,a1.vendor_id
+    	order by 3 desc limit 10';
+    }else{
+    	$sql = ' select
+			v.legal_name ,a1.vendor_id
+			, sum(maximum_contract_amount) current_amount_sum
+			, count(contract_number) total_contracts
+		from {aggregateon_mwbe_contracts_cumulative_spending} a1
+	    join {vendor} v on v.vendor_id =  a1.vendor_id
+	    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+   		' . $where_filter . '
+        and maximum_contract_amount != 0
+   		group by v.legal_name  ,a1.vendor_id
+    	order by 3 desc limit 10';
+    }
+    $node->data  = _checkbook_project_execute_sql($sql);
+
+",
+"widgetUpdateJSONConfig":"
+  $refURL = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRefUrl();
+  $url = isset($refURL) ? $refURL: \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getCurrentPageUrl();
+	$series_new = array();
+	$index = 0;
+	foreach($node->data as $row){
+	 		$tooltip_label =
+	 						'Prime Vendor: ' . $row['legal_name'] .  '<br/>' .
+	 						'Number of M/WBE Contracts: ' . $row['total_contracts'].  '<br/>' .
+	 						'Amount: ' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($row['current_amount_sum'] ,2, '$').  '<br/>'
+	 						;
+      $currentPage = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getCurrentPageUrl();
+      $path = explode('/',$currentPage);
+			$link = '/'.$path[1] .  \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::get_contracts_vendor_link($row['vendor_id'],\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('year'),
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('yeartype'), \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('agency'));
+			$series_new[$index]['url'] = 	$link;
+			$series_new[$index]['y'] = (float)$row['current_amount_sum'];
+			$series_new[$index]['tooltip_label'] = $tooltip_label;
+			$node->widgetConfig->gridConfig->data[] = array($row['legal_name'],$row['total_contracts'],$row['current_amount_sum'] );
+			$index += 1;
+	}
+
+	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
+	$node->widgetConfig->chartConfig->series[0]->type = 'column';
+	$node->widgetConfig->chartConfig->series[0]->pointWidth = 30;
+	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+
+	if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('status',['q'=>$url]) == 'A'){
+		$status = 'Active';
+	}else if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('status',['q'=>$url]) == 'R'){
+		$status = 'Registered';
+	}
+	$contract_type = 'Expense';
+	if(preg_match('/revenue/',$url)){
+		$contract_type = 'Revenue';
+	}
+	if(preg_match('/pending_exp/',$url)){
+		$contract_type = 'Pending Expense';
+	}
+	if(preg_match('/pending_rev/',$url)){
+		$contract_type = 'Pending Revenue';
+	}
+	$mwbe_filter = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('mwbe',['q'=>$url]);
+  $is_mwbe_certified = \\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::isMWBECertified(array($mwbe_filter));
+  if($is_mwbe_certified){
+		$node->widgetConfig->chartTitle = \\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::getCurrenEthnicityName() . ' Top Ten Prime Vendors by ' . $status . ' ' . $contract_type .  ' Contracts';
+	}else{
+		$node->widgetConfig->chartTitle =  'Top Ten ' .  \\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::getCurrenEthnicityName() . ' Prime Vendors by '  .$status . ' ' . $contract_type .  ' Contracts';
+	}
+
+",
+"chartConfig" : {
+	"colors":["#7DB7E5"],
+    "plotOptions": {
+            "series": {
+                "cursor": "pointer"   ,
+                "stacking": "normal",
+                "dataLabels": {
+                    "enabled": false
+                }  ,
+                "point": {"events": {"function": "clickEvent"}}
+            }
+    },
+    "xAxis": {
+        "categories": [0,1,2,3,4,5,6,7,8,9],
+        "labels": {"enabled": false}
+    },
+    "series": [
+        {
+            "name": "FY",
+            "type": "column",
+            "pointWidth": 50,
+            "data": []
+        }
+    ],
+    "title": {"text": ""},
+    "yAxis": {
+     	"min":0,
+     	"minRange": 0.1,
+        "startOnTick":true,
+        "title": {"text": ""},
+        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+    } ,
+    "legend": {
+        "enabled": false
+    },
+    "tooltip":{"function":"tooltipformatter"}
+    }
+}
+
+
+<function>
+yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
+tooltipformatter^^'formatter' :
+function() {return this.point.tooltip_label ;
+}##
+clickEvent^^"click": function(){location.href = this.url; }
+</function>

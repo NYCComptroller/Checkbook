@@ -1,0 +1,52 @@
+<div class="contract-details-heading" style="margin-bottom: 10px;">
+  <div class="contract-id" >
+    <h2 class='contract-title' style="margin-bottom: 10px;">Contract ID: <span
+        class="contract-number">{{ node.data[0]['contract_number'] }}</span></h2>
+    {% if node.data[0]['parent_contract_number'] %}
+      {{ master_link_html | raw }}
+    {% endif %}
+  </div>
+  <div class="dollar-amounts">
+    <div class="original-amount">
+      {{ customAmount(node.data[0]['original_contract_amount'] ,2,'$') }}
+      <div class="amount-title">Original Amount</div>
+    </div>
+    <div class="current-amount">
+      {{ customAmount(node.data[0]['maximum_spending_limit'] ,2,'$') }}
+      <div class="amount-title">Current Amount</div>
+    </div>
+  </div>
+</div>
+<div class="contract-information">
+  <div class="contract-details">
+    <h4>General Information</h4>
+    <ul class="left">
+      <li><span class="gi-list-item">Prime Vendor:</span> <a
+          href="{{ vendor_link }}">{{ node.data[0]['legal_name_checkbook_vendor'] }}</a></li>
+      <li><span class="gi-list-item">Purpose:</span> {{ node.data[0]['description'] }}</li>
+      <li><span class="gi-list-item">Contracting Agency:</span> <a
+          href="{{ agency_link }}">{{ node.data[0]['agency_name_checkbook_agency'] }}</a>
+      </li>
+      <li><span
+          class="gi-list-item">Award Method:</span> {{ node.data[0]['award_method_name_checkbook_award_method'] }}
+      </li>
+      <li><span class="gi-list-item">Version Number:</span> {{ node.data[0]['document_version'] }}</li>
+      <li><span
+          class="gi-list-item">FMS Document:</span> {{ node.data[0]['document_code_checkbook_ref_document_code'] }}
+      </li>
+    </ul>
+    <ul class="right">
+      <li><span
+          class="gi-list-item">Start Date:</span> {{ customStringToDate(node.data[0]['date_chckbk_dat_id_effctv_bgn_date_id_chckbk_hstr_mstr_agrmnt_0']) }}
+      </li>
+      <li><span
+          class="gi-list-item">End Date:</span> {{ customStringToDate(node.data[0]['date_chckbk_date_id_effctv_end_dat_id_chckbk_hstr_mstr_agrmnt_1']) }}
+      </li>
+      <li><span class="gi-list-item">APT PIN:</span> {{ node.data[0]['board_approved_award_no'] }}</li>
+      <li><span class="gi-list-item">PIN:</span> {{ node.data[0]['tracking_number'] }}</li>
+    </ul>
+  </div>
+  <div class="contract-vendor-details">
+    {{ getWidgetNodeView(546) | raw }}
+  </div>
+</div>

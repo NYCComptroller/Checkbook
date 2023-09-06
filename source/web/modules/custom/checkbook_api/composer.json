@@ -1,0 +1,11 @@
+{
+    "name": "org/checkbook_api",
+    "type": "drupal-drush",
+    "extra": {
+        "drush": {
+            "services": {
+                "drush.services.yml": "^11"
+            }
+        }
+    }
+}

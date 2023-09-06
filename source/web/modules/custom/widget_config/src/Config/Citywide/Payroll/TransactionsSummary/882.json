@@ -1,0 +1,10 @@
+{
+  "widgetType": "phpparser",
+  "defaultParameters":{"fiscal_year_id":"22", "type_of_year":"B", "type_of_employment" : "Salaried"},
+  "cleanURLParameters":["year","yeartype","calyear","agency"],
+  "urlParamMap":{"year":"fiscal_year_id","calyear":"fiscal_year_id","yeartype":"type_of_year", "agency":"agency_id"},
+  "dataset": "checkbook:payroll_employee_agency_title",
+  "columns": ["employee_count","agency_id", "civil_service_title", "civil_service_title_code",  "total_annual_salary", "total_gross_pay", "total_base_salary", "total_other_payments", "total_overtime_amount", "type_of_year", "fiscal_year_id", "type_of_employment"],
+  "limit":5,
+  "widgetTitle":"Payroll Summary by Number of Salaried Employees"
+}

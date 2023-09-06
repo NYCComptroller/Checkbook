@@ -1,0 +1,5 @@
+services:
+  init_subscriber:
+    class: Drupal\checkbook_domain\EventSubscriber\InitSubscriber
+    tags:
+      - name: event_subscriber

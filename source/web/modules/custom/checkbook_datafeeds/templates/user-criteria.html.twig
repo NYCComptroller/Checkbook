@@ -1,0 +1,7 @@
+{% if usercriteria %}
+  {% for key, item in usercriteria %}
+    {% if (key != 'Columns') and (key != 'Record Count') %}
+      <div><strong>{{ key }}</strong>: {{ item }}</div>
+    {% endif %}
+  {% endfor %}
+{% endif %}

@@ -1,0 +1,14 @@
+{
+    "datasets": {
+        "sub_vendor_contracts": {
+            "datasourceName": "main",
+            "source":"SELECT contract_number,vendor_name,aprv_sta_name, b.sort_order FROM all_agreement_transactions a JOIN subcontract_approval_status b on b.aprv_sta_id = a.aprv_sta WHERE latest_flag = 'Y' AND is_prime_or_sub = 'S' AND scntrc_status = 0",
+            "columns":[
+                {
+                    "name":"contract_number",
+                    "key": true
+                }
+            ]
+        }
+    }
+}

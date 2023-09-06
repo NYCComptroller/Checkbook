@@ -1,0 +1,37 @@
+{
+	"widgetType": "data_tables",
+	"widgetSubType":"template",
+        "template":"trends_non_agr_employment",
+        "useList":true,
+"defaultParameters":{"display_yn":"Y"},
+	"no_results_content":"No Results Found",
+	"dataset": "checkbook:trends_non_agricultural_wage_salary_employement",
+	"columns": ["category","amount", "amount_display_type", "fiscal_year","highlight_yn","indentation_level","display_order"],
+       "orderBy":"display_order",
+	"table_title":"",
+	"dataTableOptions":{
+        "bFilter": false,
+        "bPaginate": false,
+        "bLengthChange": false,
+        "bInfo": false,
+         "bSort":false,
+         "sScrollX": "100%",
+         "sScrollY": "420px",
+         "sScrollXInner": "1425px",
+         "bScrollCollapse": false,
+         "bAutoWidth": false,
+        "fnPreDrawCallback":"##function( oSettings ) {
+            jQuery('.trendsShowOnLoad').show();
+            return true;
+        }##",
+        "aoColumnDefs": [
+            {"sWidth": "55px", "aTargets": ["number"]},
+            {"sWidth": "30px", "aTargets": ["_all"]},
+            {"sWidth": "25px", "aTargets": [-1]}
+        ]
+       },
+      "customJS":"new $j.fn.dataTable.FixedColumns( oTable, {
+ 		\"iLeftColumns\": 1,
+		\"iLeftWidth\": 250
+ 	} );"
+}

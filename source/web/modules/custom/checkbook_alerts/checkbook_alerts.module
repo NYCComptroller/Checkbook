@@ -1,0 +1,531 @@
+<?php
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (c) 2012 – 2023 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
+use Drupal\checkbook_log\LogHelper;
+use Drupal\Component\Utility\Xss;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\InvokeCommand;
+use Drupal\Core\Ajax\ReplaceCommand;
+
+//@ToDo: (remove) replaced with checkbook_alerts_create_alert_results_ajax
+/*function checkbook_alerts_search_next_ajax($form, &$form_state) {
+  if ($form_state->has('alert_form_state') && $form_state->get('alert_form_state') == 'customize_results') {
+    $form_state->set('alert_form_state', 'schedule_alert');
+    $form_state->setRebuild();
+  }
+  else if ($form_state->has('alert_form_state') && $form_state->get('alert_form_state') == 'schedule_alert') {
+    //var_dump($form_state->getValues());die();
+    $alert_label = $form_state->getValue('alert_label') ?? '';
+    $alert_email = $form_state->getValue('alert_email') ?? '';
+    $alert_minimum_results = $form_state->getValue('alert_minimum_results') ?? '10';
+    $alert_minimum_days = $form_state->getValue('alert_minimum_days') ?? '';
+    $alert_end = $form_state->getValue('alert_end') ?? '';
+    if (trim($alert_end) == '') {
+      $alert_end = date('Y-m-d', strtotime('+1 year'));
+    }
+    $alert_end = date('Y-m-d H:i:s',strtotime($alert_end));
+    $alert_url = $form_state->get('alert_form_redirect_url');
+
+    $alert=array(
+      'recipient'=>$alert_email,
+      'label'=>$alert_label,
+      'recipient_type'=>'EMAIL',
+      'ref_url'=>RequestUtilities::getCurrentPageUrl(),
+      'user_url'=>$alert_url,
+      'number_of_results'=>100,//\Drupal::service('checkbook-alerts.helper')->checkbook_alerts_get_data_count(),
+      'minimum_results'=>$alert_minimum_results,
+      'minimum_days'=>$alert_minimum_days,
+      'date_end'=>$alert_end,
+      'date_last_new_results'=>date("Y-m-d H:i:s"),
+      'domain'=>\Drupal::service('checkbook-alerts.helper')->checkbook_alerts_get_domain(),
+      'created_date'=>date("Y-m-d H:i:s"),
+      'un_subscribed_date'=>null
+    );
+
+    $connection = \Drupal::service('database');
+
+    //check if checkbook alerts already has the same record
+    $alerts = $connection->query(\Drupal::service('checkbook-alerts.helper')->checkbook_alerts_getQuery().
+      " WHERE recipient=:recipient AND ".
+      "recipient_type='EMAIL' AND ".
+      "UPPER(ref_url)=UPPER(:ref_url)",
+      array(
+        ":recipient"=>$alert_email,
+        ":ref_url"=>RequestUtilities::getCurrentPageUrl()
+      ));
+    $records = $alerts->fetchAll();
+
+    //if record exists
+    if(($a=$records[0])!=null) {
+      $alert['checkbook_alerts_sysid']=$a->checkbook_alerts_sysid;
+      $alert['active']=$a->active;
+      $alert['active_date']=$a->active_date;
+      $alert['un_subscribed_date']=$a->null;
+      $updated_id = $connection->update('checkbook_alerts')
+        ->fields($alert)
+        ->where('checkbook_alerts_sysid = ' . $a->checkbook_alerts_sysid)
+        ->execute();
+    } else {
+      //insert the data into checkbook_alerts table
+      $inserted_id = $connection->insert('checkbook_alerts')
+        ->fields($alert)
+        ->execute();
+      if ($inserted_id) {
+        $alert['checkbook_alerts_sysid']=$inserted_id;
+      }
+    }
+
+    $form_state->set('alert_form_state', 'confirmation');
+
+    $alertFrequency=\Drupal::service('checkbook-alerts.helper')->checkbook_alerts_alertFrequency($alert_minimum_days);
+    $link_expire_date = date("Y-m-d H:i:s",strtotime("+7 day", strtotime(date("Y-m-d H:i:s"))));
+
+    $module="checkbook_alerts";
+    $to = $alert_email;
+
+    $renderable = [
+      '#theme' => 'checkbook_alerts_activate_theme',
+      '#alertFrequency' => $alertFrequency,
+      '#label' => $alert_label,
+      '#alert2' => $alert,
+      '#link_expire_date' => date("m-d-Y", strtotime($link_expire_date)),
+    ];
+
+    $msg = \Drupal::service('renderer')->renderPlain($renderable);
+
+    $params['message'] = $msg;
+    $params['title'] = "Checkbook NYC Alert Activation";
+
+    $langcode = \Drupal::currentUser()->getPreferredLangcode();
+    $send = true;
+
+    $result = \Drupal::service('plugin.manager.mail')->mail($module, 'checkbook_alerts_activate', $to, null, $params,);
+//var_dump($result);die();
+    if(!$result['result']) {
+      $msg = "Error sending email in class CheckBookAPI, function sendConfirmationEmail()";
+      LogHelper::log_error($msg);
+      throw new Exception($msg);
+    }
+    $form_state->setRebuild();
+  }
+
+}*/
+
+function checkbook_alert_schedule_alert() {
+
+}
+
+/**
+ * hook_mail
+ *
+ * @param $key
+ * @param $message
+ * @param $params
+ *
+ * @return void
+ */
+function checkbook_alerts_mail($key, &$message, $params)
+{
+  switch ($key) {
+    case "checkbook_alerts_activate":
+      checkbook_alerts_activate_mail($key, $message, $params);
+      break;
+    case "checkbook_alerts_email":
+      checkbook_alerts_send_email($key, $message, $params);
+      break;
+  }
+}
+
+function checkbook_alerts_activate_mail($key, &$message, $params) {
+  $message['from'] = \Drupal::config('system.site')->get('mail');
+  $message['subject'] = $params['title'];
+  $message['body'][] = $params['message'];
+}
+
+function checkbook_alerts_send_email($key, &$message, $params) {
+  $message['from'] = \Drupal::config('system.site')->get('mail');
+  $message['subject'] = $params['title'];
+  $message['body'][] = $params['message'];
+}
+
+function checkbook_alerts_insert_row() {
+
+}
+
+//@ToDo: remove, relaced with checkbook_alerts_create_alert_results_ajax_back_button
+function checkbook_alerts_search_back_ajax($form, &$form_state) {
+  if ($form_state->has('alert_form_state') && $form_state->get('alert_form_state') == 'customize_results') {
+    $form_state->set('alert_form_state', 'select_criteria');
+    $form_state->setRebuild();
+  }
+  else if ($form_state->has('alert_form_state') && $form_state->get('alert_form_state') == 'schedule_alert') {
+    $form_state->set('alert_form_state', 'customize_results');
+    $form_state->setRebuild();
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function checkbook_alerts_theme($existing, $type, $theme, $path) {
+  return [
+    'checkbook_alerts_default_theme'=>[
+      'template'=>'checkbook_alerts',
+      'variables' => [],
+      'path' => '/modules/custom/checkbook_alerts/templates'
+    ],
+    'checkbook_alerts_subscribe_theme'=>[
+      'template'=>'checkbook-alerts-subscribe',
+      'variables' => [],
+      'path' => '/modules/custom/checkbook_alerts/templates'
+    ],
+    'checkbook_alerts_activate_theme' => [
+      'template' => 'checkbook_alerts_activate',
+      'variables' => [
+        'alertFrequency' => 1,
+        'label' => '',
+        'alert2' => NULL,
+        'link_expire_date' => NULL,
+      ],
+      'path' => '/modules/custom/checkbook_alerts/templates'
+    ],
+    'checkbook_alerts_email_theme' => [
+      'template' => 'checkbook_alerts_email',
+      'variables' => [
+        'alerts' => array(),
+        'unsubscribe' => NULL,
+      ],
+      'path' => '/modules/custom/checkbook_alerts/templates'
+    ],
+    'checkbook_alerts_activated_theme' => [
+      'template' => 'checkbook_alerts_activated',
+      'variables' => [
+        'message' => NULL,
+      ],
+      'path' => '/modules/custom/checkbook_alerts/templates'
+    ],
+    'checkbook_alerts_unsubscribe_theme' => [
+      'template' => 'checkbook_alerts_unsubscribe',
+      'variables' => [
+        'numAlerts' => NULL,
+      ],
+      'path' => '/modules/custom/checkbook_alerts/templates'
+    ],
+    'checkbook_alerts_advanced_search_theme'=>[
+      'template'=>'checkbook_alerts_advanced_search',
+      'variables' => [],
+      'path' => '/modules/custom/checkbook_alerts/templates'
+    ],
+    'checkbook_alerts_advanced_search_confirm' => [
+      'variables' => [],
+    ],
+    'checkbook_alerts_email' => [
+      'variables' => [
+        'alerts' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * @throws \Exception
+ */
+function checkbook_alerts_create_alert_results_ajax($form, &$form_state)
+{
+  $input = $form_state->getUserInput();
+  $current_step = $input['step'];
+  // Sanitize input.
+  $current_step = Xss::filter($current_step);
+
+  if ($current_step == 'select_criteria') {
+    $next_step = 'customize_results';
+
+    $gotten_url = checkbook_advanced_search_form_submit($form, $form_state);
+    if ($gotten_url[0] != "/") {
+      $gotten_url = '/' . $gotten_url;
+    }
+    $redirect_url = $gotten_url . '/createalert';
+    $redirect_url = _checkbook_advanced_search_encode_url($redirect_url);
+
+    $results_html = '<div class="create-alert-customize-results">';
+    $results_html .= '<iframe visibility="hidden" src="'.$redirect_url.'" id="checkbook_advanced_search_result_iframe" frameBorder="0" style="overflow-x:hidden; overflow-y:scroll;height:100%;width:960px;"></iframe>';
+    $results_html .= '</div>';
+
+    $form_state->set('alert_form_step_num', 2);
+    $form_state->set('alert_form_state', 'customize_results');
+    //$form_state->set('alert_form_redirect_url', $redirect_url);
+
+    $ajax_response = new AjaxResponse();
+
+    //update header and instructions
+    $alert_header = \Drupal::service('checkbook-alerts.helper')->checkbook_alerts_form_header($next_step);
+    $alert_instructions = \Drupal::service('checkbook-alerts.helper')->checkbook_alerts_create_alert_instructions($next_step);
+    $ajax_response->addCommand(new ReplaceCommand('.ui-dialog-title', $alert_header));
+    $ajax_response->addCommand(new ReplaceCommand('.create-alert-instructions', $alert_instructions));
+
+    //update step
+    $ajax_response->addCommand(new ReplaceCommand('[name="step"]', checkbook_alert_get_hidden_input_html('step',$next_step)));
+    //add refUrl
+    //$ajax_response->addCommand(new ReplaceCommand('[name="ajax_referral_url"]', checkbook_alert_get_hidden_input_html('ajax_referral_url',$redirect_url)));
+    $ajax_response->addCommand(new ReplaceCommand('[name="user_redirect_url"]', checkbook_alert_get_hidden_input_html('user_redirect_url',$redirect_url)));
+
+    //$ajax_response->addCommand(new InvokeCommand('[name="ajax_referral_url"]', 'val'));
+
+
+    //show the
+    $ajax_response->addCommand(new InvokeCommand('[id^="edit-back-submit"]', 'show'));
+    $ajax_response->addCommand(new InvokeCommand('[id^="edit-next-submit"]', 'show'));
+    //adding the customize button again as Form API kept rendering it as type="submit" .. need type="button"
+    //$customize_button = '<input style="" type="button" id="edit-next-customize-results-submit" name="next_customize_results_submit" value="Next" class="button">';
+    //$ajax_response->addCommand(new ReplaceCommand('[data-drupal-selector="edit-next-customize-results-submit"]', $customize_button));
+    $ajax_response->addCommand(new InvokeCommand('#accordionAdvancedSearch', 'hide'));
+    $ajax_response->addCommand(new ReplaceCommand('.create-alert-customize-results', $results_html));
+    $ajax_response->addCommand(new InvokeCommand('#advanced-search-rotator', 'hide'));
+    $ajax_response->addCommand(new InvokeCommand(NULL, 'formUnFreezeAdvancedSearch'));
+    $ajax_response->addCommand(new InvokeCommand('.ui-dialog', 'addClass', ['with-iframe']));
+    $ajax_response->addCommand(new InvokeCommand('.create-alert-results-loading', 'show'));
+
+    //Return the AjaxResponse Object.
+    return $ajax_response;
+
+  }
+  else if ($current_step == 'customize_results') {
+    $next_step = 'schedule_alert';
+
+    $ajax_response = new AjaxResponse();
+
+    //update header and instructions
+    $alert_header = \Drupal::service('checkbook-alerts.helper')->checkbook_alerts_form_header($next_step);
+    $alert_instructions = \Drupal::service('checkbook-alerts.helper')->checkbook_alerts_create_alert_instructions($next_step);
+    $ajax_response->addCommand(new ReplaceCommand('.ui-dialog-title', $alert_header));
+    $ajax_response->addCommand(new ReplaceCommand('.create-alert-instructions', $alert_instructions));
+
+    $ajax_response->addCommand(new InvokeCommand('[data-drupal-selector="edit-next-submit"]', 'show'));
+    $ajax_response->addCommand(new InvokeCommand('[data-drupal-selector="edit-next-customize-results-submit"]', 'hide'));
+
+    $schedule_alert_form = \Drupal::service('checkbook-alerts.helper')->checkbook_alerts_get_create_alert_form();
+    $a = \Drupal::service('renderer')->renderRoot($schedule_alert_form);
+    $ajax_response->addCommand(new ReplaceCommand('.create-alert-schedule-form', "<div class='create-alert-schedule-form'>$a</div>"));
+
+
+    //update step
+    $ajax_response->addCommand(new ReplaceCommand('[name="step"]', checkbook_alert_get_hidden_input_html('step',$next_step)));
+
+    //hide the preview page
+    $ajax_response->addCommand(new InvokeCommand('.create-alert-customize-results', 'hide'));
+    //Return the AjaxResponse Object.
+    return $ajax_response;
+
+  }
+  else if ($current_step == 'schedule_alert') {
+    $next_step = 'confirmation';
+
+    $alert_label = Xss::filter($input['alert_label']);
+    $alert_email = Xss::filter($input['alert_email']);
+    $error_messages = [];
+    $error_html = '';
+    if (empty($alert_label)) {
+      $error_messages[] = 'No Description has been set.';
+    }
+    if (empty($alert_email)) {
+      $error_messages[] = 'No email is entered.';
+    } else if (!filter_var($alert_email, FILTER_VALIDATE_EMAIL)) {
+      $error_messages[] = 'Email is invalid.';
+    }
+    if (empty($alert_label) || empty($alert_email)) {
+      $error_html = "<div class='alert-error-messages'>Below errors must be corrected:<ul style='color:red;'>";
+      foreach ($error_messages as $error_message) {
+        $error_html .= "<li>$error_message</li>";
+      }
+      $error_html .= "</ul></div>";
+      $ajax_response = new AjaxResponse();
+      $ajax_response->addCommand(new ReplaceCommand('.alert-error-messages', $error_html));
+      return $ajax_response;
+    }
+
+    checkbook_alert_process_schedule_alert_form($form,$form_state);
+
+    $ajax_response = new AjaxResponse();
+    //update instructions
+    $alert_instructions = \Drupal::service('checkbook-alerts.helper')->checkbook_alerts_create_alert_instructions($next_step);
+    $ajax_response->addCommand(new ReplaceCommand('.create-alert-instructions', $alert_instructions));
+
+
+    $ajax_response->addCommand(new InvokeCommand('.ui-dialog-title', 'html', ['']));
+    $ajax_response->addCommand(new InvokeCommand('.create-alert-schedule-form', 'hide'));
+    $ajax_response->addCommand(new InvokeCommand('[data-drupal-selector="edit-back-submit"]', 'hide'));
+    $ajax_response->addCommand(new InvokeCommand('[data-drupal-selector="edit-next-submit"]', 'hide'));
+    return $ajax_response;
+  }
+
+}
+function checkbook_alerts_create_alert_results_ajax_back_button($form, &$form_state)
+{
+  $input = $form_state->getUserInput();
+  $current_step = $input['step'];
+  // Sanitize input.
+  $current_step = Xss::filter($current_step);
+  if ($current_step == 'customize_results') {
+    $previous_step = 'select_criteria';
+
+    $ajax_response = new AjaxResponse();
+
+    //update header and instructions
+    $alert_header = \Drupal::service('checkbook-alerts.helper')->checkbook_alerts_form_header($previous_step);
+    $alert_instructions = \Drupal::service('checkbook-alerts.helper')->checkbook_alerts_create_alert_instructions($previous_step);
+    $ajax_response->addCommand(new ReplaceCommand('.ui-dialog-title', $alert_header));
+    $ajax_response->addCommand(new ReplaceCommand('.create-alert-instructions', $alert_instructions));
+
+    $ajax_response->addCommand(new InvokeCommand('[data-drupal-selector="edit-back-submit"]', 'hide'));
+    $ajax_response->addCommand(new InvokeCommand('#edit-next-customize-results-submit', 'hide'));
+    $ajax_response->addCommand(new InvokeCommand('#accordionAdvancedSearch', 'show'));
+
+    //update step
+    $ajax_response->addCommand(new ReplaceCommand('[name="step"]', checkbook_alert_get_hidden_input_html('step',$previous_step)));
+
+    $ajax_response->addCommand(new InvokeCommand('.create-alert-customize-results', 'hide'));
+
+    return $ajax_response;
+  } else if ($current_step == 'schedule_alert') {
+    $previous_step = 'customize_results';
+    $ajax_response = new AjaxResponse();
+
+    //update header and instructions
+    $alert_header = \Drupal::service('checkbook-alerts.helper')->checkbook_alerts_form_header($previous_step);
+    $alert_instructions = \Drupal::service('checkbook-alerts.helper')->checkbook_alerts_create_alert_instructions($previous_step);
+    $ajax_response->addCommand(new ReplaceCommand('.ui-dialog-title', $alert_header));
+    $ajax_response->addCommand(new ReplaceCommand('.create-alert-instructions', $alert_instructions));
+
+    //update step
+    $ajax_response->addCommand(new ReplaceCommand('[name="step"]', checkbook_alert_get_hidden_input_html('step',$previous_step)));
+
+    $ajax_response->addCommand(new InvokeCommand('#edit-next-customize-results-submit', 'show'));
+    $ajax_response->addCommand(new InvokeCommand('[id^=edit-next-submit]', 'hide'));
+
+    $ajax_response->addCommand(new InvokeCommand('.create-alert-schedule-form', 'hide'));
+    $ajax_response->addCommand(new InvokeCommand('.create-alert-customize-results', 'show'));
+
+    return $ajax_response;
+  }
+}
+
+/**
+ * @throws \Exception
+ */
+/*function checkbook_alert_process_schedule_alert_form($form, &$form_state): void {
+  $input = $form_state->getUserInput();
+  $alert_url = Xss::filter($input['ajax_referral_url']);
+  $user_url = Xss::filter($input['user_redirect_url']);
+  $alert_label = Xss::filter($input['alert_label']);
+  $alert_email = Xss::filter($input['alert_email']);
+  $alert_minimum_results = Xss::filter($input['alert_minimum_results']);
+  $alert_end = Xss::filter($input['alert_end']);
+  $alert_minimum_days = Xss::filter($input['alert_minimum_days']);
+
+  if (trim($alert_end) == '') {
+    $alert_end = date('Y-m-d', strtotime('+1 year'));
+  }
+  $alert_end = date('Y-m-d H:i:s',strtotime($alert_end));
+
+  $alert=array(
+    'recipient'=>$alert_email,
+    'label'=>$alert_label,
+    'recipient_type'=>'EMAIL',
+    'ref_url'=>$alert_url,
+    'user_url'=>$user_url,
+    'number_of_results'=>100,//\Drupal::service('checkbook-alerts.helper')->checkbook_alerts_get_data_count(),
+    'minimum_results'=>empty($alert_minimum_results) ? 10 : $alert_minimum_results,
+    'minimum_days'=>empty($alert_minimum_days) ? 1 : $alert_minimum_days,
+    'date_end'=>$alert_end,
+    'date_last_new_results'=>date("Y-m-d H:i:s"),
+    'domain'=>\Drupal::service('checkbook-alerts.helper')->checkbook_alerts_get_domain(),
+    'created_date'=>date("Y-m-d H:i:s"),
+    'un_subscribed_date'=>null
+  );
+
+  $connection = \Drupal::service('database');
+
+  //check if checkbook alerts already has the same record
+  $alerts = $connection->query(\Drupal::service('checkbook-alerts.helper')->checkbook_alerts_getQuery().
+    " WHERE recipient=:recipient AND ".
+    "recipient_type='EMAIL' AND ".
+    "UPPER(ref_url)=UPPER(:ref_url)",
+    array(
+      ":recipient"=>$alert_email,
+      ":ref_url"=>RequestUtilities::getCurrentPageUrl()
+    ));
+  $records = $alerts->fetchAll();
+
+  //if record exists
+  if(($a=$records[0])!=null) {
+    $alert['checkbook_alerts_sysid']=$a->checkbook_alerts_sysid;
+    $alert['active']=$a->active;
+    $alert['active_date']=$a->active_date;
+    $alert['un_subscribed_date']=$a->null;
+    $updated_id = $connection->update('checkbook_alerts')
+      ->fields($alert)
+      ->where('checkbook_alerts_sysid = ' . $a->checkbook_alerts_sysid)
+      ->execute();
+  } else {
+    //insert the data into checkbook_alerts table
+    $inserted_id = $connection->insert('checkbook_alerts')
+      ->fields($alert)
+      ->execute();
+    if ($inserted_id) {
+      $alert['checkbook_alerts_sysid']=$inserted_id;
+    }
+  }
+
+  $alertFrequency=\Drupal::service('checkbook-alerts.helper')->checkbook_alerts_alertFrequency($alert_minimum_days);
+  $link_expire_date = date("Y-m-d H:i:s",strtotime("+7 day", strtotime(date("Y-m-d H:i:s"))));
+
+  $module="checkbook_alerts";
+  $to = $alert_email;
+
+  $renderable = [
+    '#theme' => 'checkbook_alerts_activate_theme',
+    '#alertFrequency' => $alertFrequency,
+    '#label' => $alert_label,
+    '#alert2' => $alert,
+    '#link_expire_date' => date("m-d-Y", strtotime($link_expire_date)),
+  ];
+
+  $msg = \Drupal::service('renderer')->renderPlain($renderable);
+
+  $params['message'] = $msg;
+  $params['title'] = "Checkbook NYC Alert Activation";
+
+  $langcode = \Drupal::currentUser()->getPreferredLangcode();
+  $send = true;
+
+  $result = \Drupal::service('plugin.manager.mail')->mail($module, 'checkbook_alerts_activate', $to, null, $params,);
+  //var_dump($result);die();
+  if(!$result['result']) {
+    $msg = "Error sending email in class CheckBookAPI, function sendConfirmationEmail()";
+    LogHelper::log_error($msg);
+    throw new Exception($msg);
+  }
+}*/
+
+function checkbook_alert_get_hidden_input_html($input_name, $value) {
+  return "<input data-drupal-selector='edit-".str_replace('_','-',$input_name)."' type='hidden' name='$input_name' value='$value'>";
+}
+

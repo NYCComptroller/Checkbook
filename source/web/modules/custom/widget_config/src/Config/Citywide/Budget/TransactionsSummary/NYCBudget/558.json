@@ -1,0 +1,15 @@
+{
+"widgetType": "phpparser",
+"no_results_content":"No Results Found",
+    "cleanURLParameters":["year","expcategory","agency","dept"],
+    "urlParamMap":{"year":"year_id.year_id","expcategory":"object_class_id","agency":"agency_id","dept":"department_code"},
+"defaultParameters":{"year_id.year_id":113},
+"noDataInitialLoad":true,
+"dataset": "checkbook:budget",
+"columns": ["year_id.year_id","agency_name.agency_name","agency_id.agency_id","budget_committed",
+            "pre_encumbered","encumbered","accrued_expense","cash_payments","post_adjustments"],
+  "widgetTitle":"Agencies by Committed Expense Budget Transactions",
+    "template":"budget_expense_transactions_summary",
+    "templateTitle":"Agency by Committed Expense Budget Transactions",
+    "templateLabel":"Agency"
+}

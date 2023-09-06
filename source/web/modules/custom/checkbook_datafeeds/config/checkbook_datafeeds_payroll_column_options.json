@@ -1,0 +1,75 @@
+{
+  "data_source": {
+    "checkbook": {
+      "data_type": {
+        "csv": {
+          "Agency": "Agency",
+          "Annual Salary": "Annual Salary",
+          "Base Pay": "Base Pay",
+          "Calendar Year": "Calendar Year",
+          "Fiscal year": "Fiscal year",
+          "Gross Pay": "Gross Pay",
+          "Gross Pay YTD": "Gross Pay YTD",
+          "Hourly Rate": "Hourly Rate",
+          "Other Payments": "Other Payments",
+          "Overtime Payments": "Overtime Payments",
+          "Pay Date": "Pay Date",
+          "Pay Frequency": "Pay Frequency",
+          "Payroll Type": "Payroll Type",
+          "Title": "Title"
+        },
+        "xml": {
+          "agency": "agency",
+          "annual_salary": "annual_salary",
+          "base_pay": "base_pay",
+          "calendar_year": "calendar_year",
+          "fiscal_year": "fiscal_year",
+          "gross_pay": "gross_pay",
+          "gross_pay_ytd": "gross_pay_ytd",
+          "hourly_rate": "hourly_rate",
+          "other_payments": "other_payments",
+          "overtime_payments": "overtime_payments",
+          "pay_date": "pay_date",
+          "pay_frequency": "pay_frequency",
+          "payroll_type": "payroll_type",
+          "title": "title"
+        }
+      }
+    },
+    "checkbook_nycha": {
+      "data_type": {
+        "csv": {
+          "Annual Salary": "Annual Salary",
+          "Base Pay": "Base Pay",
+          "Calendar Year":"Calendar Year",
+          "Daily Wage" : "Daily Wage",
+          "Gross Pay": "Gross Pay",
+          "Gross Pay YTD": "Gross Pay YTD",
+          "Hourly Rate": "Hourly Rate",
+          "Other Payments": "Other Payments",
+          "Overtime Payments": "Overtime Payments",
+          "Pay Date": "Pay Date",
+          "Pay Frequency": "Pay Frequency",
+          "Payroll Type": "Payroll Type",
+          "Title": "Title"
+      },
+        "xml": {
+          "annual_salary": "annual_salary",
+          "base_pay": "base_pay",
+          "calendar_year": "calendar_year",
+          "daily_wage": "daily_wage",
+          "gross_pay": "gross_pay",
+          "gross_pay_ytd": "gross_pay_ytd",
+          "hourly_rate": "hourly_rate",
+          "other_payments": "other_payments",
+          "overtime_payments": "overtime_payments",
+          "pay_date": "pay_date",
+          "pay_frequency": "pay_frequency",
+          "payroll_type": "payroll_type",
+          "title": "title"
+
+        }
+      }
+    }
+  }
+}

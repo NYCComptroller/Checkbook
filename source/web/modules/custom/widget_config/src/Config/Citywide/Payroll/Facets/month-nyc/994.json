@@ -1,0 +1,26 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":317,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "columns":["amount_basis_name.amount_basis_name","txcount"],
+  "urlParamMap":{
+    "ratetype":"amount_basis_name.amount_basis_name"
+  },
+  "orderBy":"-txcount",
+  "filterName":"Rate Type",
+  "autocomplete":false,
+  "urlParameterName":"ratetype",
+  "autocompleteID":"frateType",
+  "adjustParameters":"
+  $monthId = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('month');
+  if(isset($monthId)){
+  $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month_basis';
+   }
+  $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+return $adjustedParameters;
+",
+"template":"individual_filter"
+}

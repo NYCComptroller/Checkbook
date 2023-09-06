@@ -1,0 +1,113 @@
+{{ attach_library('widget_highcharts/grid-view') }}
+{{ attach_library('widget_highcharts/printjs') }}
+
+{{ gridPrintExport(node) |raw }}
+<div id="gridprint">
+  <h3 class="grid_title">{{revenueNychaGridTitle()|raw }}</h3>
+  <h3 class="grid_chart_title">{{ node.widgetConfig.chartTitle |raw}}</h3>
+  {{ pageGridTitle('Revenue')|raw }}
+
+  <div>
+
+  <table id="table_{{ node.nid }}" class=" {{node.widgetConfig.gridConfig.html_class}} ">
+    <thead>
+    <tr>
+      <th>{{ widget_get_table_header("program") | raw}} </th>
+      <th>{{ widget_get_table_header("recognized") | raw}} </th>
+      <th>{{ widget_get_table_header("remaining") | raw}}</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if node.data %}
+      {% for datarow in node.data %}
+        <tr>
+          <td>{{ datarow.program_phase_description_program_phase_description }}</td>
+          <td>{{ datarow.revenue_recognized_amount }}</td>
+          <td>{{ datarow.revenue_funds_available }}</td>
+          <td></td>
+        </tr>
+      {% endfor %}
+    {% endif %}
+    </tbody>
+  </table>
+  {% set wurl = widget_url() %}
+  {% set dataTableOptions = '
+  {
+                        "bFilter":false,
+                        "bInfo":false,
+                        "bLengthChange":false,
+                        "iDisplayLength":10,
+                        "aaSorting":[[1,"desc"]],
+                        "bPaginate": false,
+                        "sAltAjaxSource":"' ~ wurl ~ '",
+            			"fnDrawCallback"  :  function( oSettings ) {
+            			addPaddingToDataCells(this);
+            			},
+                        "aoColumnDefs": [
+                            {
+                                "aTargets": [0],
+                                "mDataProp": function ( source, type, val ) {
+                                    if (type == "set") {
+                                        source.program_phase_description_program_phase_description = val;
+                                        source.program_phase_description_program_phase_description = "<div>" + val + "</div>";
+                                        return;
+                                    }else if (type == "display") {
+                                        return source.program_phase_description_program_phase_description;
+                                    }else if (type == "sort") {
+                                        return source.program_phase_description_program_phase_description;
+                                    }
+                                    return source.program_phase_description_program_phase_description;
+                                },
+                                "asSorting": [ "desc","asc" ],
+                                "sClass":"text"
+                            },
+                            {
+                                "aTargets": [1],
+                                "aExportFn":"function",
+                                "mDataProp": function ( source, type, val ) {
+                                    if (type == "set") {
+                                        source.budget_committed = val;
+                                        source.budget_committed_display = "<div>" + custom_number_format(val) + "</div>";
+                                        return;
+                                    }else if (type == "display") {
+                                        return source.budget_committed_display;
+                                    }else if (type == "sort") {
+                                        return source.budget_committed;
+                                    }
+                                    return source.budget_committed;
+                                },
+                                "asSorting": [ "desc","asc" ],
+                                "sClass":"number"
+                            },
+                            {
+                                "aTargets": [2],
+                                "aExportFn":"function",
+                                "mDataProp": function ( source, type, val ) {
+                                    if (type == "set") {
+                                        source.budget_remaining = val;
+                                        source.budget_remaining_display =  "<div>" + custom_number_format(val) + "</div>";
+                                        return;
+                                    }else if (type == "display") {
+                                        return source.budget_remaining_display;
+                                    }else if (type == "sort") {
+                                        return source.budget_remaining;
+                                    }
+                                    return source.budget_remaining;
+                                },
+                                "asSorting": [ "desc","asc" ],
+                                "sClass":"number"
+                            },
+                            {
+                              "aTargets": [3],
+                              "sWidth":"15px"
+                            }
+
+                        ]
+                    }'
+  %}
+  <script type="text/javascript">
+    {{ widget_highcharts_add_datatable_js(dataTableOptions,node) |raw}}
+  </script>
+</div>
+</div>

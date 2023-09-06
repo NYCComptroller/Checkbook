@@ -1,0 +1,27 @@
+{% if node.widgetConfig.templateLabel == 'Expense Category' %}
+  {% set templateValue = node.data[0]['object_class_name_object_class_name'] %}
+{% elseif node.widgetConfig.templateLabel == 'Agency' %}
+  {% set templateValue = node.data[0]['agency_name_agency_name'] %}
+{% elseif node.widgetConfig.templateLabel == 'Expense Budget Category' %}
+  {% set templateValue = node.data[0]['budget_code_name_budget_code_name'] %}
+{% elseif node.widgetConfig.templateLabel == 'Department' %}
+  {% set templateValue = node.data[0]['department_name_department_name'] %}
+{% elseif node.widgetConfig.summaryView.templateLabel == 'Year' %}
+  {% set templateValue = customFunctionEvaluate(node.widgetConfig.summaryView.templateLabelEval) %}
+{% else %}
+  {% set templateValue = node.data[0]['object_class_name_object_class_name'] %}
+{% endif %}
+
+{% if node.widgetConfig.summaryView.templateLabel == 'Year' %}
+  {%  set title = node.widgetConfig.summaryView.templateTitle %}
+  {% set label = node.widgetConfig.summaryView.templateLabel %}
+{% else %}
+  {% set  title = node.widgetConfig.templateTitle %}
+  {% set label = node.widgetConfig.templateLabel %}
+{% endif %}
+
+
+
+
+<h2 class="contract-title">{{title}}</h2>
+<div class="spending-tx-subtitle"><b>{{ label }}</b>: {{templateValue|upper}}</div>

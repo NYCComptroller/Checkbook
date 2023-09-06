@@ -1,0 +1,87 @@
+checkbook_smart_search.display:
+  path: '/smart_search_form'
+  defaults:
+    _title: 'Smart Search Form'
+    _form: 'Drupal\checkbook_smart_search\Form\CheckbookSmartSearchForm'
+  requirements:
+    _permission: 'access content'
+
+checkbook_smart_search.get_results:
+  path: '/smart_search/{solr_datasource}'
+  defaults:
+    _title: ''
+    _controller: '\Drupal\checkbook_smart_search\Controller\DefaultController::_checkbook_smart_search_get_results'
+  requirements:
+    _permission: 'access content'
+
+checkbook_smart_search.autocomplete_main_input:
+  path: '/smart_search/autocomplete/{solr_datasource}' # NOT /{datasource}
+  defaults:
+    _controller: '\Drupal\checkbook_smart_search\Controller\DefaultController::_checkbook_smart_search_autocomplete_main_input'
+  requirements:
+    _permission: 'access content'
+
+checkbook_smart_search.autocomplete:
+  path: '/solr_autocomplete/{solr_datasource}/{facet}'
+  defaults:
+    _controller: '\Drupal\checkbook_smart_search\Controller\DefaultController::_checkbook_smart_search_autocomplete'
+  requirements:
+    _permission: 'access content'
+
+checkbook_smart_search._checkbook_advanced_search_autocomplete:
+  path: '/advanced_autocomplete/{solr_datasource}/{facet}'
+  defaults:
+    _controller: '\Drupal\checkbook_smart_search\Controller\DefaultController::_checkbook_advanced_search_autocomplete'
+  requirements:
+    _permission: 'access content'
+
+checkbook_smart_search.vendor_facet:
+  path: '/smart_search/facet/vendor'
+  defaults: {  }
+  requirements:
+    _permission: 'access content'
+
+checkbook_smart_search.expensecategory_autocomplete:
+  path: '/smart_search/autocomplete/expensecategory'
+  defaults: {  }
+  requirements:
+     _permission: 'access content'
+
+checkbook_smart_search.fiscalyear_autocomplete:
+  path: '/smart_search/autocomplete/fiscalyear'
+  defaults: {  }
+  requirements:
+     _permission: 'access content'
+
+checkbook_smart_search.regfiscalyear_autocomplete:
+  path: '/smart_search/autocomplete/regfiscalyear'
+  defaults: {  }
+  requirements:
+     _permission: 'access content'
+
+checkbook_smart_search.export_form:
+  path: '/exportSmartSearch/form'
+  defaults:
+    _controller: '\Drupal\checkbook_smart_search\Controller\DefaultController::_checkbook_smart_search_export_form'
+  requirements:
+     _permission: 'access content'
+
+checkbook_smart_search.export_download:
+  path: '/exportSmartSearch/download/{solr_datasource}'
+  defaults:
+    _controller: '\Drupal\checkbook_smart_search\Controller\DefaultController::_checkbook_smart_search_export_download'
+  requirements:
+     _permission: 'access content'
+
+checkbook_smart_search.industrytype_autocomplete:
+  path: '/smart_search/autocomplete/industrytype'
+  defaults: {  }
+  requirements:
+     _permission: 'access content'
+
+checkbook_smart_search.ajax_results:
+  path: '/smart_search/ajax/results/{solr_datasource}'
+  defaults:
+    _controller: '\Drupal\checkbook_smart_search\Controller\DefaultController::_checkbook_smart_search_ajax_results'
+  requirements:
+     _permission: 'access content'

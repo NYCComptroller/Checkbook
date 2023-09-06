@@ -1,0 +1,875 @@
+<?php
+
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (c) 2012 – 2023 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+use Drupal\checkbook_api\API\CheckBookAPI;
+use Drupal\checkbook_api\Criteria\QueueCriteria;
+use Drupal\checkbook_api\Criteria\SearchCriteria;
+use Drupal\checkbook_api\Queue\QueueUtil;
+use Drupal\checkbook_infrastructure_layer\Constants\Common\CheckbookDomain;
+use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
+use Drupal\checkbook_log\LogHelper;
+use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\HttpFoundation\Response;
+
+spl_autoload_register(function ($class) {
+
+  if (FALSE !== strpos($class, 'checkbook_datafeeds')) {
+    [, $class] = explode('\\', $class);
+    $domain = substr($class, 0, strpos($class, 'Feed'));
+    if (strlen($domain) > 0) {
+      include_once 'includes/' . strtolower($domain) . '/' . $class . '.class.inc';
+    } else {
+      $inc_filename = 'includes/' . $class . '.class.inc';
+      if (file_exists($inc_filename)) {
+        include_once($inc_filename);
+      }
+    }
+  }
+});
+
+/**
+ * Implements hook_theme().
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
+ */
+function checkbook_datafeeds_theme($existing, $type, $theme, $path) {
+  $hooks = array();
+  $hooks['user_criteria'] = array(
+    'variables' => array('usercriteria' => NULL),
+  );
+  return $hooks;
+}
+
+/**
+ * Function to figure out where to pre-populate data from.
+ * This is in the case where the data source is switching from/to
+ * checkbook or checkbook_oge.  In this case, the pre-population
+ * should not come from the form_state, instead, it should be treated
+ * as if it were the first time.  The form state will contain the values
+ * of the data from the previous form data source should not be used.
+ *
+ * The $form_state["triggering_element"]["#value"] holds the value of the
+ * data_source if the radio button for switching was clicked.
+ *
+ * There are 3 scenarios based on the triggering element value:
+ *
+ * 1. There is no triggering element value,
+ *    this is a first load
+ * 2. The triggering element is populated but the data_source has not changed,
+ *    this is not a first load
+ * 3. The triggering element is populated AND the data_source has changed,
+ *    this is considered a first load
+ *
+ * @param array $form_state
+ *   Data Feeds wizard form_state array
+ *
+ * @param string $data_source
+ *   Current data source (checkbook, checkbook_oge)
+ *
+ * @return bool
+ *   Value describing if data should be loaded from the $form_state or
+ *   treated like first time
+ */
+
+function checkbook_datafeeds_is_first_load($form_state, $data_source)
+{
+  $triggering_element_value = $form_state->getValue('triggering_element');
+  $data_source_changed = $form_state->get(['triggering_element', '#ajax', 'parameters', 'data_source_changed']);
+  $first_load = true;
+
+  // First time load == true if: The triggering element is empty OR The data_source has changed
+  if (!$triggering_element_value || $data_source_changed) return $first_load;
+
+  // The data_source has not changed, this not a first load
+  return !$first_load;
+}
+
+/**
+ * @param $form_state
+ * @param $field_name
+ * @param $first_time_load
+ * @param string $default_val
+ * @return mixed|string
+ */
+function checkbook_datafeeds_filter_get_default_value($form_state, $field_name, $first_time_load, $default_val = '')
+{
+  if ($first_time_load) {
+    return $default_val;
+  }
+  return ($form_state->hasValue($field_name) || $form_state->getValue($field_name) === "0") ? $form_state->getValue($field_name) : $default_val;
+}
+
+/**
+ * Submit handler for Download Data button.
+ *
+ * @param array $form
+ *   Data Feeds wizard form array
+ * @param array $form_state
+ *   Data Feeds wizard form_state array
+ */
+function checkbook_datafeeds_confirmation_download_submit($form, &$form_state)
+{
+  $data = $form_state->get(['step_information', 'confirmation', 'response']);
+
+  $query_records_limit = \Drupal::config('check_book')->get('data_feeds')['query_record_limit'] ?? 10000;
+  //Store request in db
+  $criteria = $form_state->get(['step_information', 'confirmation', 'stored_values', 'criteria']);
+  unset($criteria['global']['max_records']);
+  $responsetype = $form_state->get('page_values')['format'];
+  $searchCriteria = new QueueCriteria($criteria, $responsetype);
+  $user_criteria = $form_state->get(['step_information', 'confirmation', 'stored_values', 'user_criteria']);
+
+  if (isset($user_criteria)) {
+    $searchCriteria->setUserCriteria($user_criteria);
+  }
+  try {
+    $checkBookApi = new CheckBookAPI($searchCriteria);
+  } catch (Exception $e) {
+    \Drupal::messenger()->addError('An error occurred processing your request. Please try again later.');
+    LogHelper::log_error($e->getMessage());
+  }
+
+  $record_count = $checkBookApi->getRecordCount();
+  if ($record_count <= $query_records_limit) {
+    LogHelper::log_notice("DataFeeds :: <=" . $query_records_limit);
+    if (isset($checkBookApi)) {
+      if ($checkBookApi->validateRequest()) {
+        try {
+          //Make sure e-mail address is passed to the call.
+          $details = $checkBookApi->queueImmediateRequest();
+        } catch (Exception $e) {
+          LogHelper::log_error($e->getMessage());
+        }
+      } else {
+        LogHelper::log_error($checkBookApi->getErrorResponse());
+      }
+    }
+
+    $response = new Response();
+    if ($form_state->get('page_values')['format'] == 'xml') {
+      $response->headers->set('Content-Type', 'text/xml; utf-8');
+      $response->headers->set('Content-Disposition', 'attachment; filename="nyc-data-feed.xml"');
+    } elseif ($form_state->get('page_values')['format'] == 'csv') {
+      $response->headers->set('Content-Type', 'text/csv; utf-8');
+      $response->headers->set('Content-Disposition', 'attachment; filename="nyc-data-feed.csv"');
+    }
+    $response->setContent($data);
+    $response->send();
+  } else {
+    LogHelper::log_notice("DataFeeds :: >" . $query_records_limit);
+    if (isset($checkBookApi)) {
+      if ($checkBookApi->validateRequest()) {
+        try {
+          // Output file
+          $filename = $form_state->get(['step_information', 'confirmation', 'filename']);
+          if ($filename) {
+            $checkBookApi->outputFile($filename);
+          }
+        } catch (Exception $e) {
+          LogHelper::log_error($e->getMessage());
+        }
+      } else {
+        LogHelper::log_error($checkBookApi->getErrorResponse());
+      }
+    } else {
+      LogHelper::log_notice("DataFeeds :: >" . $query_records_limit . " :: \$checkBookApi not set");
+    }
+  }
+  \Drupal::moduleHandler()->invokeAll('exit');
+  exit;
+}
+
+/**
+ * Submit handler for Confirm button; queues a data request.
+ *
+ * @param array $form
+ *   Data Feeds wizard form array
+ * @param array $form_state
+ *   Data Feeds wizard form_state array
+ */
+function checkbook_datafeeds_confirmation_queue_submit($form, &$form_state)
+{
+  $response_type = $form_state->get(['step_information', 'type', 'stored_values', 'format']);
+  $email = $form_state->getValue('email_address');
+  $criteria = $form_state->get(['step_information', 'confirmation', 'stored_values', 'criteria']);
+
+  //Update Criteria with overridden column order on export only
+  $domain = strtolower($criteria['global']['type_of_data']);
+
+  //Contracts Only
+  if ($domain == 'contracts') {
+    $data_source = Datasource::CITYWIDE;
+    $category = $criteria['value']['category'];
+    $status = $criteria['value']['status'];
+    $year = $criteria['value']['fiscal_year'];
+    $intended_order = _checkbook_datafeeds_contracts_override_column_options($response_type, $data_source, $status, $category, $year);
+    $criteria['responseColumns'] = checkbook_datafeeds_override_column_order($criteria['responseColumns'], $intended_order);
+  }
+
+  unset($criteria['global']['max_records']);
+  $searchCriteria = new QueueCriteria($criteria, $response_type);
+  $user_criteria = $form_state->get(['step_information', 'confirmation', 'stored_values', 'user_criteria']);
+  if ($user_criteria) {
+    $searchCriteria->setUserCriteria($user_criteria);
+  }
+
+  try {
+    $checkBookApi = new CheckBookAPI($searchCriteria);
+  } catch (Exception $e) {
+    LogHelper::log_error($e->getMessage());
+  }
+  if (isset($checkBookApi)) {
+    if ($checkBookApi->validateRequest()) {
+      try {
+        //Make sure e-mail address is passed to the call.
+        $details = $checkBookApi->queueRequest($email);
+      } catch (Exception $e) {
+        LogHelper::log_error($e->getMessage());
+      }
+    } else {
+      LogHelper::log_error($checkBookApi->getErrorResponse());
+    }
+  }
+  $current_step = &$form_state->get('step');
+
+  $form_state->set(['step_information', 'queue', 'stored_values'], $form_state->getValues());
+  if ($details) {
+    $form_state->set(['step_information', 'queue', 'stored_values', 'details'], $details);
+  }
+  $current_step = 'queue_final';
+  if (!empty($form_state->get(['step_information', $current_step, 'stored_values']))) {
+    $form_state->setValues($form_state->get(['step_information', $current_step, 'stored_values']));
+  } else {
+    $form_state->setValues(array());
+  }
+  $form_state
+    ->set('page_num', 4)
+    ->setRebuild();
+}
+
+/**
+ * Sorts selected columns to match intended order for export
+ * @param array $selectedColumns
+ * @param array $intendedOrder
+ * @return array
+ */
+function checkbook_datafeeds_override_column_order(array $selectedColumns, array $intendedOrder)
+{
+  $ordered = [];
+  foreach ($intendedOrder as $key) {
+    if (in_array($key, $selectedColumns)) {
+      $ordered[$key] = $selectedColumns[$key];
+    }
+  }
+  return $ordered;
+}
+
+/**
+ * Final confirmation page after queueing a request.
+ *
+ * @param array $form
+ *   Data Feeds wizard form array
+ * @param array $form_state
+ *   Data Feeds wizard form_state array
+ *
+ * @return array
+ *   Renderable array confirming request has been queued
+ */
+function checkbook_datafeeds_queue_final($form, &$form_state)
+{
+  $email = $form_state->get(['step_information', 'queue', 'stored_values', 'email_address']);
+  $token = $form_state->get(['step_information', 'queue', 'stored_values', 'details', 'token']);
+  $status = $form_state->get(['step_information', 'queue', 'stored_values', 'details', 'status']);
+  if ($email) {
+    if ($status == '2') {
+      $request = QueueUtil::getPendingEmailInfo($token);
+      $dir = \Drupal::state()->get('file_public_path','sites/default/files')
+        . '/' . \Drupal::config('check_book')->get('data_feeds')['output_file_dir'] ;
+
+      $file = $dir . '/' . $request[0]['filename'];
+      $params = array(
+        "download_url" => $file,
+        "download_url_compressed" => $file . '.zip',
+        "expiration_date" => date('d-M-Y', $request[0]['end_time'] + 3600 * 24 * 7),
+        "contact_email" => $request[0]['contact_email'],
+        "tracking_num" => $request[0]['token'],
+      );
+      //moving the form 'text' part here to use tracking number variable used by email, as form was not displaying this number before in prod (lower environments were working fine)
+      //earlier this below 4 lines were above ($status == '2')
+      $email_message = '<strong>Thank You</strong><br /><br />Your request has been received.<br /><br />You will receive a confirmation email for the request created at ' . $email . ' with the tracking number.  You will also receive another email with the link to download the data feed once the request is completed.<br /><br />Please note that due to a possible high number of requests, there may be a delay in notification.<br /><br />You can track the status of your request by entering your tracking number: <strong>' . $request[0]['token'] . '</strong>&nbsp;in the "Track Status of Data Feed" box on this page.<br /><br />You will have 7 days to use this tracking number to return to your results.<br /><br />';
+      $form['text'] = array(
+        '#markup' => $email_message . checkbook_datafeeds_get_confirmation_search_criteria_message($form_state),
+      );
+      LogHelper::log_debug($params);
+      $response = \Drupal::service('plugin.manager.mail')->mail('checkbook_datafeeds', "download_notification", $request[0]['contact_email'], NULL, $params);
+      LogHelper::log_debug($response);
+      if ($response['result']) {
+        QueueUtil::updateJobRequestEmailStatus($request[0]['rid']);
+      }
+    } else {
+      //moving the form 'text' part here to use tracking number variable used by email, as form was not displaying this number before in prod (lower environments were working fine)
+      //this one is if status for email is not 2 -- earlier this below 4 lines were above ($status == '2')
+      $email_message = '<strong>Thank You</strong><br /><br />Your request has been received.<br /><br />You will receive a confirmation email for the request created at ' . $email . ' with the tracking number.  You will also receive another email with the link to download the data feed once the request is completed.<br /><br />Please note that due to a possible high number of requests, there may be a delay in notification.<br /><br />You can track the status of your request by entering your tracking number: <strong>' . $token . '</strong>&nbsp;in the "Track Status of Data Feed" box on this page.<br /><br />You will have 7 days to use this tracking number to return to your results.<br /><br />';
+      $form['text'] = array(
+        '#markup' => $email_message . checkbook_datafeeds_get_confirmation_search_criteria_message($form_state),
+      );
+    }
+  } else {
+    $email_message = '<strong>Thank You</strong><br /><br />Your request has been received.<br /><br />You can track the status of your request by entering your tracking number <strong>' . $token . '</strong>&nbsp;in the "Track Status of Data Feed" box on this page.<br /><br />Please note that due to a possible high number of requests, there may be delay in notification.<br /><br />You will have 7 days to use this tracking number to return to your results.<br /><br />';
+    $form['text'] = array(
+      '#markup' => $email_message . checkbook_datafeeds_get_confirmation_search_criteria_message($form_state),
+    );
+  }
+  return $form;
+}
+
+/**
+ * Function will parse the form the get the search criteria text to show in the confirmation screens/email
+ *
+ * @param $form_state
+ * @return string
+ */
+function checkbook_datafeeds_get_confirmation_search_criteria_message($form_state)
+{
+
+  //    $formatted_search_criteria = $form_state['step_information']['confirmation']['stored_values']['user_criteria']['Formatted'];
+  $formatted_search_criteria = $form_state->get(['step_information', 'confirmation', 'stored_values', 'user_criteria', 'Formatted']);
+
+  $message = 'Below is the search criteria of your request for your reference:<br />';
+  foreach ($formatted_search_criteria as $key => $value) {
+    $message .= "<strong>{$key}</strong>:&nbsp;{$value}<br />";
+  }
+  return $message;
+}
+
+
+/**
+ * A function used in range parameters to replace empty values with NULL.
+ *
+ * @param string $value
+ *
+ * @return null
+ */
+function checknull($value)
+{
+  if ($value === '') {
+    $value = NULL;
+  }
+  return $value;
+}
+
+/**
+ * Submit handler for Previous button on second step of wizard; returns the user to first page of wizard.
+ *
+ * @param array $form
+ *   Data Feeds wizard form array
+ * @param array $form_state
+ *   Data Feeds wizard form_state array
+ */
+function previous_submit($form, &$form_state)
+{
+//  $current_step = &$form_state['step'];
+  $current_step = &$form_state->get('step');
+//  $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
+  $form_state->set(['step_information', $current_step, 'stored_values'], $form_state->getValues());
+//  $current_step = 'type';
+  $current_step = &$form_state->getValue('type');
+//  $form_state['values'] = $form_state['step_information'][$current_step]['stored_values'];
+  $form_state->setValues($form_state->getValue(['step_information', $current_step, 'stored_values']));
+//  $form_state['rebuild'] = TRUE;
+  $form_state->setRebuild();
+}
+
+/**
+ * Generates the end of a confirmation page based on number of results returned by API.
+ *
+ * @param $form
+ *   Data Feeds wizard form array
+ * @param $form_state
+ *   Data Feeds wizard form_state array
+ * @param $criteria
+ *   Search criteria
+ * @param $responsetype
+ *   Response type (csv or xml)
+ * @param $domain
+ *   Domain
+ *
+ * @return array
+ *   Renderable array of results from Data Controller request
+ */
+
+function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $criteria, $responsetype, $domain)
+{
+  $searchCriteria = new SearchCriteria($criteria, $responsetype);
+
+  $query_records_limit = Drupal::config('check_book')->get('data_feeds')['query_record_limit'] ?? 10000;
+  $max_record_limit = Drupal::config('check_book')->get('data_feeds')['max_record_limit'] ?? 200000;
+  try {
+    $checkBookApi = new CheckBookAPI($searchCriteria);
+  } catch (Exception $e) {
+    Drupal::messenger()->addMessage('An error occurred processing your request. Please try again later.', 'error');
+    LogHelper::log_error($e->getMessage());
+  }
+  if (isset($checkBookApi)) {
+    if ($checkBookApi->validateRequest()) {
+      $recordcount = $checkBookApi->getRecordCount();
+    } else {
+      Drupal::messenger()->addMessage('An error occurred.', 'error');
+      LogHelper::log_error($checkBookApi->getErrorResponse());
+    }
+  }
+
+  if ($recordcount == 0) {
+    $form['count'] = array(
+      '#type' => 'fieldset',
+    );
+    $form['count']['no_records'] = array(
+      '#markup' => 'There are no records for the search criteria.',
+    );
+    $form['start_over'] = array(
+      '#type' => 'submit',
+      '#value' => t('Cancel'),
+    );
+  } elseif ($recordcount > 0 && $recordcount < $max_record_limit) {
+    /**
+     * see docs
+     * http://wiki.reisys.com:8080/display/USASv2/Data+Feeds+Documentation
+     */
+    if (isset($checkBookApi)) {
+      if ($checkBookApi->validateRequest()) {
+        if ($recordcount <= $query_records_limit) {
+          LogHelper::log_notice("DataFeeds :: <=" . $query_records_limit . " :: generatingData()");
+          $form_state->set(['step_information', 'confirmation', 'response'], $checkBookApi->getData());
+        } else {
+          LogHelper::log_notice("DataFeeds :: >" . $query_records_limit . " :: generatingFile()");
+          $filename = $checkBookApi->generateFile();
+          $form_state->set(['step_information', 'confirmation', 'filename'], $filename);
+        }
+      } else {  // invalid request
+        $form_state->set(['step_information', 'confirmation', 'response'], $checkBookApi->getErrorResponse());
+      }
+    }
+    $form['count'] = array(
+      '#markup' => '<div class="records-result">There are ' . number_format($recordcount) . ' records for the selected filter criteria.</div>',
+    );
+    $form['prev'] = array(
+      '#type' => 'submit',
+      '#value' => t('Previous'),
+      '#name' => 'prev',
+      '#submit' => array('checkbook_datafeeds_' . $domain . '_confirmation_previous_submit'),
+      '#limit_validation_errors' => array(),
+      '#attributes' => array("onclick" => "
+             jQuery('#checkbook-datafeeds-form').addClass('disable_me');
+             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+        ")
+    );
+    $form['download'] = array(
+      '#type' => 'submit',
+      '#value' => t('Download Data'),
+      '#submit' => array('checkbook_datafeeds_confirmation_download_submit'),
+    );
+    $form['cancel'] = array(
+      '#type' => 'submit',
+      '#value' => t('Cancel'),
+      '#attributes' => array("onclick" => "
+             jQuery('#checkbook-datafeeds-form').addClass('disable_me');
+             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+        ")
+    );
+  } else {  // > 200,000
+    $form_state->set(['step_information', 'confirmation', 'stored_values', 'user_criteria', 'Record Count'], $recordcount);
+    $form['count'] = array(
+      '#type' => 'fieldset',
+    );
+    $form['count']['count_message'] = array(
+      '#markup' => '<div><p>Please note this request has <strong>' . number_format($recordcount) . ' transactions</strong>.  It will be queued to be generated in the background.</p><p>If you decide to proceed, please confirm the transaction below.  Upon confirmation, a tracking number will be generated for the user to track the status of the request.</p></div>',
+    );
+    $form['email'] = array(
+      '#type' => 'fieldset',
+    );
+    $form['email']['email_text'] = array(
+      '#markup' => '<div><p>You can also provide your e-mail address for notification when the data is ready to be downloaded.  Please note, providing email address is optional.</p></div>',
+    );
+    $form['email']['email_address'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Enter E-mail:',
+    );
+    $form['prev'] = array(
+      '#type' => 'submit',
+      '#value' => t('Previous'),
+      '#name' => 'prev',
+      '#submit' => array('checkbook_datafeeds_' . $domain . '_confirmation_previous_submit'),
+      '#limit_validation_errors' => array(),
+      '#attributes' => array("onclick" => "
+             jQuery('#checkbook-datafeeds-form').addClass('disable_me');
+             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+        ")
+    );
+    $form['confirm'] = array(
+      '#type' => 'submit',
+      '#value' => t('Confirm'),
+      '#validate' => array('checkbook_datafeeds_validate_queue'),
+      '#submit' => array('checkbook_datafeeds_confirmation_queue_submit'),
+      '#attributes' => array("onclick" => "
+             jQuery('#checkbook-datafeeds-form').addClass('disable_me');
+             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+        ")
+    );
+    $form['cancel'] = array(
+      '#type' => 'submit',
+      '#value' => t('Cancel'),
+      '#attributes' => array("onclick" => "
+             jQuery('#checkbook-datafeeds-form').addClass('disable_me');
+             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+        ")
+    );
+  }
+  return $form;
+}
+
+/**
+ * Validates an email before adding to a queue request.
+ *
+ * @param array $form
+ *   Data Feeds wizard form array
+ * @param array $form_state
+ *   Data Feeds wizard form_state array
+ */
+function checkbook_datafeeds_validate_queue($form, &$form_state)
+{
+  if ($form_state->hasValue('email_address')) {
+    $email = $form_state->getValue('email_address');
+    $valid = (bool)filter_var($email, FILTER_VALIDATE_EMAIL);
+    if (!empty($email) && !$valid) {
+      $form_state->setErrorByName('email_address', 'E-mail address is not valid. Please enter a valid email address');
+    }
+  }
+}
+
+/**
+ * Convert bytes to human-readable amounts.
+ *
+ * @param int $bytes
+ *   Number of bytes
+ *
+ * @return string
+ *   Formatted human readable number of bytes
+ */
+function format_bytes($bytes)
+{
+  if ($bytes == 0) {
+    return '0 B';
+  } elseif ($bytes < 1024) {
+    return $bytes . ' B';
+  } elseif ($bytes < 1048576) {
+    return round($bytes / 1024, 2) . ' kB';
+  } elseif ($bytes < 1073741824) {
+    return round($bytes / 1048576, 2) . ' MB';
+  } elseif ($bytes < 1099511627776) {
+    return round($bytes / 1073741824, 2) . ' GB';
+  } else {
+    return round($bytes / 1099511627776, 2) . ' TB';
+  }
+}
+
+/**
+ * Check whether a date is valid using RegEx
+ *
+ * @param string $date
+ *   Date string
+ *
+ * @return bool
+ *   TRUE if valid, FALSE if not
+ */
+function checkDateFormat($date)
+{
+  // Match the format of the date:
+  if (preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $date, $parts)) {
+    // Check whether the date is valid:
+    if (checkdate($parts[2], $parts[3], $parts[1])) {
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+  } else {
+    return FALSE;
+  }
+}
+
+/**
+ * Check whether a start and end dates are valid and also if range given is valid
+ *
+ * @param FormStateInterface $form_state
+ *    Form State to get values and set error messages to
+ * @param string $start_field_name
+ *    Name of starting date field
+ * @param string $end_field_name
+ *    Name of ending date field
+ * @param string $visual_field_name
+ *    Name for the field to display in error message
+ *
+ * @return void
+ *   This sets the error message in $form_state
+ */
+function checkbook_datafeeds_check_ranged_date(&$form_state, $start_field_name, $end_field_name, $visual_field_name, $visual_field_name_from = null, $visual_field_name_to = null) {
+  $date_invalid_message = ' must be a valid date (YYYY-MM-DD).';
+
+  $from_date_field_name = $visual_field_name_from ?? $visual_field_name;
+  $to_date_field_name = $visual_field_name_to ?? $visual_field_name;
+  $date_invalid_message_from = $from_date_field_name . $date_invalid_message;
+  $date_invalid_message_to = $to_date_field_name . $date_invalid_message;
+
+  $range_invalid_message = 'Invalid date range for ' . $visual_field_name . '.';
+
+  $start_value = $form_state->getValue($start_field_name);
+  $end_value = $form_state->getValue($end_field_name);
+
+  if (strlen($start_value) > 0 && !checkDateFormat($start_value)) {
+    $form_state->setErrorByName($start_field_name, t($date_invalid_message_from));
+  }
+  if (strlen($end_value) > 0 && !checkDateFormat($end_value)) {
+    $form_state->setErrorByName($end_field_name, t($date_invalid_message_to));
+  }
+  if (strlen($start_value) > 0 && $end_value && strtotime($end_value) < strtotime($start_value)) {
+    $form_state->setErrorByName($end_field_name, t($range_invalid_message));
+  }
+}
+
+/**
+ * Check whether a start and end amounts are valid and also if range given is valid
+ *
+ * @param FormStateInterface $form_state
+ *    Form State to get values and set error messages to
+ * @param string $start_field_name
+ *    Name of starting amount field
+ * @param string $end_field_name
+ *    Name of ending amount field
+ * @param string $visual_field_name
+ *    Name for the field to display in error message
+ *
+ * @return void
+ *   This sets the error message in $form_state
+ */
+function checkbook_datafeeds_check_ranged_amounts(&$form_state, $start_field_name, $end_field_name, $visual_field_name, $visual_field_name_from = null, $visual_field_name_to = null) {
+  $from_field_name = $visual_field_name_from ?? $visual_field_name;
+  $to_field_name = $visual_field_name_to ?? $visual_field_name;
+  $amount_invalid_message_from = $from_field_name . ' must be a number.';
+  $amount_invalid_message_to = $to_field_name . ' must be a number.';
+
+  $range_invalid_message = 'Invalid range for ' . $visual_field_name . '.';
+
+  $start_value = $form_state->getValue($start_field_name);
+  $end_value = $form_state->getValue($end_field_name);
+
+  if ($start_value && !is_numeric($start_value)) {
+    $form_state->setErrorByName($start_field_name, t($amount_invalid_message_from));
+  }
+  if ($end_value && !is_numeric($end_value)) {
+    $form_state->setErrorByName($end_field_name, t($amount_invalid_message_to));
+  }
+  if (is_numeric($start_value) && is_numeric($end_value) && $end_value < $start_value) {
+    $form_state->setErrorByName($end_field_name, t($range_invalid_message));
+  }
+}
+
+/**
+ * Maintains the selected column order
+ *
+ * @param null $domain
+ * @param null $data_source
+ * @return array
+ *   re-ordered columns
+ */
+function checkbook_datafeeds_format_columns($domain = null, $data_source = null)
+{
+  //Used to maintain the order of the columns
+  $hidden_selected_values = $_POST['hidden_multiple_value']; //get the values from the hidden field
+  if ($domain == CheckbookDomain::$CONTRACTS && $data_source == Datasource::NYCHA) {
+    $year = \Drupal::request()->query->get('nycha_year');
+  } else {
+    $year = \Drupal::request()->query->get('year');
+  }
+  if ($year == 'ALL') {
+    if (strpos($hidden_selected_values, "|year|")) {
+      $hidden_selected_values = str_replace("|year|", "", $hidden_selected_values);
+    }
+    if (strpos($hidden_selected_values, "|Year|")) {
+      $hidden_selected_values = str_replace("|Year|", "", $hidden_selected_values);
+    }
+  }
+  $array_selected_values = explode("|", $hidden_selected_values); //convert the values into array
+  $filter_array = array_filter($array_selected_values); //remove empty index
+
+  $selected_columns = array();
+  foreach ($filter_array as $column) {
+    $selected_columns[$column] = $column;
+  }
+  return $selected_columns;
+}
+
+/**
+ * Output download links and expiration date message.
+ *
+ * @param array $results
+ *   Result from tracking page request
+ *
+ * @return array
+ *   Renderable array that outputs file paths and expiration dates
+ */
+function checkbook_datafeeds_file_download_page($results)
+{
+  $datestamp = strtotime($results['file_generated_time'] . ' + 1 week');
+  $expiration = date('F j, Y g:ia', $datestamp);
+  $output = array();
+  $output['status-fieldset'] = array(
+    '#type' => 'fieldset',
+  );
+  $filesize = filesize($results['file_path']);
+  $file_name = \Drupal::config('check_book')->get('data_feeds')['site_url'] . '/' . $results['file_path'];
+  $output['status-fieldset']['uncompressed'] = array(
+    '#markup' => '<strong>Status:</strong><br>The file is ready for download: <a href="/' . $results['file_path'] . '" class="link-download-datafeeds-zip" oncontextmenu="return false;">' . $file_name . '</a> (' . format_bytes($filesize) . ')',
+    '#prefix' => '<p>',
+    '#suffix' => '</p>',
+  );
+  $output['status-fieldset']['available_date'] = array(
+    '#markup' => 'Your files will be available until ' . $expiration,
+    '#prefix' => '<p>',
+    '#suffix' => '</p>',
+  );
+  return $output;
+}
+
+/**
+ * Implementation of hook_mail().
+ * @param $key
+ * @param $message
+ * @param $params
+ */
+function checkbook_datafeeds_mail($key, &$message, $params)
+{
+  switch ($key) {
+    case "download_notification":
+      checkbook_datafeeds_download_notification($key, $message, $params);
+      break;
+    case "confirmation_notification":
+      checkbook_datafeeds_confirmation_notification($key, $message, $params);
+      break;
+  }
+}
+
+/**
+ * Function to implement the hook_mail function for data feeds download email notification
+ * @param $key
+ * @param $message
+ * @param $params
+ */
+function checkbook_datafeeds_download_notification($key, &$message, $params)
+{
+  $user_criteria = $params['user_criteria'];
+  $search_criteria = "";
+  foreach ($user_criteria['Formatted'] as $key => $value) {
+    $search_criteria .= "{$key}: {$value} \t\r\n";
+  }
+  $variables['@tracking_num'] = $params['tracking_num'];
+  $variables['@expiration_date'] = $params['expiration_date'];
+  $variables['@download_link'] = \Drupal::config('check_book')->get('data_feeds')['site_url'] . "/" . "track-data-feed?code=" . $params['tracking_num'];
+
+  $variables['@search_criteria'] = $search_criteria;
+
+  $message['subject'] = "Your requested file is ready for download";
+  $message['body'][] = t("
+Your data feed is ready to download.  Please click the following link to download the results: \n
+@download_link \n
+The file is available to download until @expiration_date \n
+You had provided your email address at Checkbook NYC for notification when the data feed with the tracking number @tracking_num was ready to be downloaded. \n
+Below is the search criteria of the request for your reference:
+@search_criteria", $variables);
+
+}
+
+/**
+ * Function to implement the hook_mail function for data feeds confirmation email notification
+ * @param $key
+ * @param $message
+ * @param $params
+ */
+function checkbook_datafeeds_confirmation_notification($key, &$message, $params)
+{
+  $user_criteria = $params['user_criteria'];
+  $search_criteria = "";
+  foreach ($user_criteria['Formatted'] as $key => $value) {
+    $search_criteria .= "{$key}: {$value} \t\r\n";
+  }
+  $email = $params['email'];
+  if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
+    $tracking_number = $params['tracking_number'];
+
+    $body = "Thank You \n\nYour request has been received. \n\n";
+    $body .= "Here is the tracking number: {$tracking_number} for the request. You can track the status of your request by entering your tracking number in the \"Track Status of Data Feed\" box on Data feeds page. \n\n";
+
+    if (!empty(\Drupal::config('check_book')->get('data_feeds')['site_url'])) {
+      $download_link = \Drupal::config('check_book')->get('data_feeds')['site_url'] . "/" . "track-data-feed?code=" . $tracking_number;
+      $body .= "Or just use this direct url: \n{$download_link}  \n\n";
+    }
+    $body .= "You will have 7 days to use this tracking number to return to your results. \n\n";
+    $body .= "You will receive another email at {$email} when requested data feed is ready. \n\n";
+    $body .= "Please note that due to a possible high number of requests, there may be a delay in notification. \n\n";
+    $body .= "Below is the search criteria of the request for your reference: \n{$search_criteria} \n";
+
+    $message['subject'] = "Your data feeds request is submitted";
+    $message['body'][] = $body;
+  }
+}
+
+
+function initial_previous_submit($form, &$form_state)
+{
+  $form_state->setValues($form_state->get('page_values'))
+    ->set('page_num', 1)
+    ->setRebuild();
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function checkbook_datafeeds_page_attachments(&$variables) {
+  if (preg_match('/^\/(data-feeds|track-data-feed|[a-z]+-api)/', \Drupal::request()->getRequestUri())) {
+    $variables['#attached']['library'][] = 'checkbook_datafeeds/datafeeds.page';
+  }
+}
+
+/**
+ * Implements hook_page_title_alter().
+ */
+function checkbook_datafeeds_page_title_alter(&$title) {
+  switch (\Drupal::request()->getRequestUri()) {
+    case '/data-feeds':
+    case '/data-feeds/api':
+      $request = \Drupal::request();
+      $route = \Drupal::routeMatch()->getRouteObject();
+      $title = \Drupal::service('title_resolver')->getTitle($request, $route);
+      break;
+  }
+}

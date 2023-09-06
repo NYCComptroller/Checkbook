@@ -1,0 +1,17 @@
+{
+"widgetType": "data_tables",
+"widgetSubType":"ajaxSimple",
+"cleanURLParameters":["year","agency","revcat","fundsrccode"],
+"urlParamMap":{"year":"year_id.year_id","agency":"agency_id","revcat":"revenue_category_id","fundsrccode":"funding_class_code"},
+"defaultParameters":{"year_id.year_id":114},
+"noDataInitialLoad":true,
+"dataset": "checkbook:revenue_cross_year_collections",
+"columns": ["agency.agency.agency_name","agency.agency",
+            "current_recognized","recognized_1","recognized_2","other_years","remaining_amount"],
+"summaryView":{
+    "template":"revenue_transactions_summary",
+    "templateTitle":"Agency by Cross Year Collections Transactions",
+    "templateLabel":"Agency",
+    "templateLabelEval":"return $node->data[0]['agency_agency_agency_name'];"
+}
+}

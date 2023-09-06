@@ -1,0 +1,23 @@
+name: NYC Checkbook
+type: theme
+base theme: stable9
+description: 'NYC Checkbook Theme'
+core_version_requirement: ^9 || ^10
+
+libraries:
+  - nyccheckbook/global-styling
+
+logo: images/logo.png
+
+regions:
+  header: Header
+  primary_menu: 'Primary menu'
+  secondary_menu: 'Secondary menu'
+  breadcrumb: Breadcrumb
+  top_navigation: 'Top Navigation'
+  title: Title
+  advanced_search_title: 'Advanced Search Results Page Title'
+  search_alerts: 'Smart Search, Advanced Search and Alerts'
+  content: Content
+  footer_first: 'Footer first'
+  featured_bottom_first: 'Featured bottom first'

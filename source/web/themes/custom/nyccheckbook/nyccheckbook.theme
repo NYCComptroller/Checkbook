@@ -1,0 +1,118 @@
+<?php
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (c) 2012 – 2023 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+use Drupal\checkbook_custom_breadcrumbs\CustomBreadcrumbs;
+use Drupal\checkbook_custom_breadcrumbs\CustomPageTitle;
+use Drupal\checkbook_infrastructure_layer\Constants\Common\PageType;
+use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
+use Drupal\checkbook_log\LogHelper;
+
+/**
+ * @file
+ * Functions to support theming in the NycCheckbook theme.
+ */
+
+function nyccheckbook_preprocess_checkbook3_two_columns_39_stacked(&$variables) {
+  $variables['current_route'] = \Drupal::routeMatch()->getRouteName();
+
+  if(empty($variables['settings']['php']['value'])) {
+    $results_exist = true;
+  } else {
+    try {
+      $results_exist =  eval($variables['settings']['php']['value']);
+    } catch (ParseError $e) {
+      LogHelper::log_error("Error while running PHP eval code in nyccheckbook_preprocess_checkbook3_two_columns_39_stacked : " . $e);
+      $results_exist = true;
+    } catch (Throwable $e) {
+      LogHelper::log_error("Error while running PHP eval code in nyccheckbook_preprocess_checkbook3_two_columns_39_stacked : " . $e);
+      $results_exist = true;
+    }
+  }
+  if ($results_exist) {
+    $variables['show_no_results_message'] = "No";
+  } else {
+    $variables['show_no_results_message'] = "Yes";
+  }
+}
+
+function nyccheckbook_preprocess_checkbook3_two_columns_66_bricks(&$variables) {
+  if(empty($variables['settings']['php']['value'])) {
+    $results_exist = true;
+  } else {
+    try {
+      $results_exist =  eval($variables['settings']['php']['value']);
+    } catch (ParseError $e) {
+      LogHelper::log_error("Error while running PHP eval code in nyccheckbook_preprocess_checkbook3_two_columns_66_bricks : " . $e);
+      $results_exist = true;
+    } catch (Throwable $e) {
+      LogHelper::log_error("Error while running PHP eval code in nyccheckbook_preprocess_checkbook3_two_columns_66_bricks : " . $e);
+      $results_exist = true;
+    }
+  }
+  if ($results_exist) {
+    $variables['show_no_results_message'] = "No";
+  } else {
+    $variables['show_no_results_message'] = "Yes";
+  }
+}
+
+function nyccheckbook_preprocess_checkbook3_charts_slider(&$variables) {
+  $variables['current_route'] = \Drupal::routeMatch()->getRouteName();
+}
+
+function nyccheckbook_preprocess_page(&$variables) {
+  $title = CustomPageTitle::getCustomPageTitle();
+  $pageType = PageType::getCurrent();
+  if($pageType == PageType::ADVANCED_SEARCH_PAGE || $pageType == PageType::TRENDS_PAGE) {
+    $variables['advanced_search_title'] = $title;
+  }else {
+    $variables['title'] = $title;
+  }
+  $query_path = \Drupal::request()->query->get('q');
+  if (!$query_path) {
+      $query_path = \Drupal::request()->getRequestUri();
+  }
+  if(preg_match("/newwindow/",$query_path)) {
+    $variables['new_window'] = 'newwindow';
+  }
+  else {
+    $variables['new_window'] = '';
+  }
+
+  // Instructional videos CSS + JS.
+  $path = \Drupal::service('path.current')->getPath();
+  switch ($path) {
+    case '/node/1087':
+      $variables['#attached']['library'][] = 'nyccheckbook/instructional-videos';
+  }
+}
+
+function nyccheckbook_preprocess_html(&$variables) {
+  if (PageType::getCurrent() == PageType::TRENDS_PAGE) {
+    if (RequestUtilities::get('widget')) {
+      $variables['attributes']['class'][] = 'page-trends-landing';
+    }
+    elseif (RequestUtilities::get('featuredtrends')) {
+      $variables['attributes']['class'][] = 'page-featuredtrends';
+    }
+  }
+
+  $variables['attributes']['class'][] = 'pageurl-' . trim(preg_replace('/[^a-zA-Z0-9]/', '', CustomBreadcrumbs::getCurrentPath()));
+}

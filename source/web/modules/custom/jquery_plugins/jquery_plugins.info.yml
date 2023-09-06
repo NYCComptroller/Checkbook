@@ -1,0 +1,6 @@
+name: 'jQuery plugins'
+description: 'A Home for miscellaneous jQuery plugins.'
+package: 'REI Checkbook'
+core_version_requirement: ^9 || ^10
+type: module
+dependencies: {  }

@@ -1,0 +1,14 @@
+{
+    "datasets": {
+        "subcontract_status": {
+            "datasourceName": "main",
+            "source":" SELECT contract_number, scntrc_status FROM subcontract_status",
+            "columns":[
+                {
+                    "name": "contract_number",
+                    "key": true
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,165 @@
+.tableHeader {
+  margin-top: 25px;
+}
+
+.tableHeader h2 {
+  margin: 0;
+}
+
+.tableHeader .contentCount {
+  color: #5c5c5c;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: bold;
+  padding-top: 6px;
+  margin-left: 15px;
+  font-family: "Roboto";
+}
+
+.dataTables_wrapper {
+  float: left;
+  clear: both;
+  width: 100%;
+  margin: 12px 0px 8px 0px;
+  border: 1px solid #cacaca;
+  position: relative;
+}
+
+.dataTables_wrapper table,
+.outerTable {
+  width: 100%;
+}
+
+.dataTables_wrapper thead tr {
+  height: 40px;
+}
+
+.dataTables_scrollHead thead tr {
+  height: auto;
+}
+
+.dataTables_wrapper th,
+.outerTable th {
+  background-color: #48759d;
+  background-image: linear-gradient(to bottom, #48759d 0%, #3f668f 100%);
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+table.dataTable tr.odd,
+table.dataTable tr.odd td,
+table.outerTable.ma-history tr.odd,
+table.outerTable.ma-history tr.odd td {
+  background-color: #fff;
+}
+
+table.dataTable tr.even,
+table.dataTable tr.even td,
+table.outerTable.ma-history tr.even,
+table.outerTable.ma-history tr.even td {
+  background-color: #f8f8f8;
+}
+
+.doubleHeader {
+  text-align: left;
+  height: 40px;
+  padding-left: 10px;
+}
+
+.dataTables_processing {
+  height: 24px;
+  width: 24px;
+  position: absolute;
+  top: -55px;
+}
+
+.tableFooter {
+  float: right;
+  clear: both;
+  padding-right: 5px;
+}
+
+.tableFooter .expandCollapseWidget img {
+  vertical-align: bottom;
+}
+
+.plus-or {
+  margin: 0px 7px;
+}
+table.dataTable th.sorting span,
+table.dataTable th.sorting_asc span,
+table.dataTable th.sorting_desc span {
+  padding-left: 15px;
+  display: block;
+  cursor: pointer;
+  float: left;
+}
+
+table.dataTable th.sorting_desc span {
+  background: url("../../images/arrow-asc.png") no-repeat scroll left center
+    transparent;
+}
+
+table.dataTable th.sorting_asc span {
+  background: url("../../images/arrow-desc.png") no-repeat scroll left center
+    transparent;
+}
+
+/* Temporary adding spacing here */
+.dataTables_wrapper {
+  margin: 10px 0;
+}
+.tableFooter {
+  margin-right: 10px;
+}
+
+
+/* =======================================
+             Spending Landing
+========================================== */
+/* Payroll section Title*/
+h2.payroll-title{
+  font-size: 28px;
+}
+/* Toggle Links container for EDC */
+.toggleVendorContainer{
+  float:left;
+  clear:both;
+  margin:0 0 10px 10px;
+}
+a.toggleVendor{
+  margin-top: 15px;
+  float: left;
+}
+a.toggleAgency{
+  margin-top: 15px;
+  float: left;
+}
+span.toggleVendor{
+  margin-top: 15px;
+  float: left;
+  font-size: 13px;
+  font-weight: bold;
+}
+span.toggleAgency{
+  margin-top: 15px;
+  float: left;
+  font-size: 13px;
+  font-weight: bold;
+}
+span.toggle{
+  margin-top: 15px;
+  float: left;
+  font-size: 13px;
+}
+
+article[about="/contract/transactions/contcat/expense"] h2.contract-title {
+  width: 550px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #3c5e7c;
+  position: absolute;
+  top:5px;
+}

@@ -1,0 +1,41 @@
+/* OverView & Spotlight */
+.main-overview-section {
+  background: url("../../images/overview-gradient.png") repeat-x scroll left top
+    transparent;
+}
+
+.main-overview-section p {
+  font-family: "Georgia", serif;
+  color: black;
+  line-height: 18px;
+}
+
+#region-postscript-first {
+  background: url("../../images/overview-vertical.png") no-repeat scroll right
+    4px transparent;
+  padding-right: 10px;
+  width: 450px;
+  float: left;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#region-postscript-second {
+  width: 50%;
+  float: right;
+}
+
+.overview-h2-title,
+.spotlight-h2-title {
+  font-family: "Georgia", serif;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 24px;
+  margin-bottom: 35px;
+  color: #3c5e7c;
+}
+
+iframe#fitvid716349 {
+  height: 279px;
+  width: 460px;
+}

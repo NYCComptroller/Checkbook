@@ -1,0 +1,6 @@
+checkbook_api.checkbook_api:
+  path: /api
+  defaults:
+    _controller: '\Drupal\checkbook_api\Controller\DefaultController::checkbook_api'
+  requirements:
+    _permission: 'access content'

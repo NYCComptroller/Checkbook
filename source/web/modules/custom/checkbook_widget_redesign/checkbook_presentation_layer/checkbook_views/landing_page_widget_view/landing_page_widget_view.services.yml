@@ -1,0 +1,14 @@
+services:
+  init_subscriber:
+    class: Drupal\landing_page_widget_view\EventSubscriber\InitSubscriber
+    tags:
+      -
+        name: event_subscriber
+  landing_page_widget_view.path_processor:
+    class: Drupal\widget_controller\PathProcessor\WidgetControllerPathProcessor
+    tags:
+      - { name: path_processor_inbound, priority: 350 }
+  landing_page_widget_view.Twig.LandingPageExtension:
+    class: Drupal\landing_page_widget_view\Twig\LandingPageExtension
+    tags:
+      - { name: twig.extension }

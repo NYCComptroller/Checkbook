@@ -1,0 +1,39 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":707,
+    "columns":["industry.industry", "industry.industry.industry_type_name", "txcount"],
+    "orderBy":"-txcount",
+    "autocomplete":false,
+    "urlParamMap":{
+        "doctype":"document_code.document_code.document_code",
+        "cindustry":"industry.industry",
+        "industry":"industry.industry"
+    },
+    "facetPager":true,
+    "filterName":"Industry",
+    "urlParameterName":"industry",
+    "autocompleteParamName":"industry_auto",
+    "autocompleteID":"fIndustryTypeId",
+    "autocompleteField":"industry.industry.industry_type_name",
+
+    "adjustParameters":"
+        if(isset($parameters['disb_vendor_type'])){
+            $parameters['disb_vendor_type'] =\\Drupal\\checkbook_project\\MwbeUtilities\\VendorType::getVendorTypeValue($parameters['disb_vendor_type']);
+        }
+        $year = $parameters['disb_fiscal_year_id'];
+        if(isset($year)){
+            $parameters['fiscal_year_id'] = $year;
+        }
+
+        $parameters = \\Drupal\\checkbook_project\\SpendingUtilities\\MwbeSpendingUtil::_checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
+
+        //Adjust Certification parameters
+        $parameters = \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::adjustCertificationFacetParameters($node,$parameters);
+        $adjustedParameters = $parameters;
+        $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+        $adjustedParameters['industry.industry'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

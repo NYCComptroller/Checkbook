@@ -1,0 +1,32 @@
+{{ {'#cache': {'max-age': 0}} }}
+<div class="smart-search-form display-flex flex-justify">
+  <!-- Search Input -->
+  <div class="smart-search-form--input flex-fill">
+    {{ form.search_box }}
+  </div>
+
+  <!-- Submit Button & Advanced Search -->
+  <div class="display-flex flex-column text-center smart-search-form--button-submit">
+    {{ form.submit }}
+    <a class="advanced-search use-ajax"
+      data-dialog-options="{&quot;width&quot;:955,&quot;autoResize&quot;:false,&quot;position&quot;:{&quot;my&quot;:&quot;center top&quot;,&quot;at&quot;:&quot;center top&quot;}}"
+      data-dialog-type="modal"
+      href="/advanced-search" style="display: inline;">
+      Advanced Search
+    </a>
+
+  </div>
+
+  <div class="smart-search-form--create-alert">
+    <a class="advanced-search-alerts use-ajax"
+       data-dialog-options="{&quot;width&quot;:955,&quot;autoResize&quot;:false,&quot;position&quot;:{&quot;my&quot;:&quot;center top&quot;,&quot;at&quot;:&quot;center top&quot;}}"
+       data-dialog-type="modal"
+       href="/checkbook-alerts" style="display: inline;">
+      Create Alert
+    </a>
+  </div>
+
+  <!-- Include the rest of the form elements -->
+  {{ form|without('search_box','submit') }}
+</div>
+

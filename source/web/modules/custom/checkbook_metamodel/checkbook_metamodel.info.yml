@@ -1,0 +1,12 @@
+name: 'Checkbook Metadata'
+description: 'Dataset Configurations'
+package: 'Custom'
+core_version_requirement: ^9 || ^10
+dependencies:
+#{data_controller_datasource_sql}
+type: module
+
+
+
+
+

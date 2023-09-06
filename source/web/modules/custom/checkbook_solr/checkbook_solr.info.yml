@@ -1,0 +1,6 @@
+name: 'Checkbook Solr Client'
+description: 'Checkbook Solr Client'
+package: 'Custom'
+core_version_requirement: ^9 || ^10
+type: module
+dependencies: {  }

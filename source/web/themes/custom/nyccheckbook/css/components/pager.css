@@ -1,0 +1,8 @@
+.pager__item.is-active {
+  background: url('../../images/pager-active-bg.png') repeat-x scroll 0 0 transparent;
+}
+
+.pager__item.is-active a {
+  color: white;
+  font-weight: bold;
+}

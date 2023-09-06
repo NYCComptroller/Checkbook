@@ -1,0 +1,5 @@
+services:
+  checkbook_custom_breadcrumbs.breadcrumb:
+    class: Drupal\checkbook_custom_breadcrumbs\Breadcrumb\CheckbookBreadcrumbBuilder
+    tags:
+      - { name: breadcrumb_builder, priority: 9001 }

@@ -1,0 +1,89 @@
+{{ attach_library('widget_highcharts/grid-view') }}
+
+{{ gridPrintExport(node) |raw }}
+<div id="gridprint">
+  <h3 class="grid_title">{{ contractTitle()|raw }}</h3>
+  <h3 class="grid_chart_title">{{ node.widgetConfig.chartTitle |raw}}</h3>
+  {{ pageGridTitle('Contracts')|raw }}
+  <div>
+
+    <table id="table_{{ node.nid }}" class=" {{node.widgetConfig.gridConfig.html_class}} ">
+      <thead>
+      <tr>
+        <th>{{ widget_get_table_header("contract_id") | raw}} </th>
+        <th>{{ widget_get_table_header("current_amount") | raw}} </th>
+        <th></th>
+        <th>{{ widget_get_table_header("prime_vendor") | raw}}</th>
+        <th>{{ widget_get_table_header("contract_agency") | raw}}</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      {% if node.data %}
+        {% for datarow in node.data %}
+          <tr>
+            <td>{{ datarow.contract_number_contract_number }}</td>
+            <td>{{ datarow.total_revised_maximum_amount }}</td>
+            <td></td>
+            <td>{{ datarow.vendor_legal_name_vendor_legal_name }}</td>
+            <td>{{ datarow.document_agency_name_document_agency_name }}</td>
+            <td></td>
+          </tr>
+        {% endfor %}
+      {% endif %}
+      </tbody>
+    </table>
+    {% set wurl = widget_url() %}
+    {% set dataTableOptions = '
+
+                    {
+                        "bFilter":false,
+                        "bInfo":false,
+                        "bLengthChange":false,
+                        "iDisplayLength":12,
+                        "aaSorting":[[1,"desc"]],
+                        "bPaginate": false,
+                        "sAltAjaxSource":"' ~ wurl ~ '",
+            			"fnDrawCallback"  :  function( oSettings ) {
+            			addPaddingToDataCells(this);
+            			},
+                        "aoColumnDefs": [
+                            {
+                                "aTargets": [0,2,4],
+                                "sClass":"text",
+                                "asSorting": [ "asc","desc" ]
+                            },
+                            {"aTargets":[0],"sWidth":"140px"},
+                            {
+                                "aTargets": [1],
+                                "aExportFn":"function",
+                                "mDataProp": function ( source, type, val ) {
+                                    if (type == "set") {
+                                        source.contract_amount = val;
+                                        source.contract_amount_display =  "<div>" + custom_number_format(val) + "</div>";
+                                        return;
+                                    }else if (type == "display") {
+                                        return source.contract_amount_display;
+                                    }
+                                    return source.contract_amount;
+                                },
+                                "sClass":"number",
+                                "asSorting": [ "desc", "asc" ],
+                                "sWidth":"140px"
+                            },
+                            {"aTargets":[2],"sWidth":"140px"},
+                            {
+                              "aTargets": [5],
+                              "sWidth":"15px"
+                            }
+
+                        ]
+                    }
+    '
+    %}
+    <script type="text/javascript">
+      {{ widget_highcharts_add_datatable_js(dataTableOptions,node) |raw}}
+    </script>
+  </div>
+</div>
+</div>

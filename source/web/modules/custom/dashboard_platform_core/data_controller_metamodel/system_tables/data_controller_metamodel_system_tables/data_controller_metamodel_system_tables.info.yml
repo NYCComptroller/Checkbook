@@ -1,0 +1,7 @@
+name: 'Dataset Meta Data completion using system tables'
+description: 'Provides core functionality to finalize Dataset Meta Data configuration using system tables'
+package: 'REI Dashboard Platform (Adapter)'
+core_version_requirement: ^9 || ^10
+dependencies:
+  data_controller: 'data_controller:data_controller'
+type: module

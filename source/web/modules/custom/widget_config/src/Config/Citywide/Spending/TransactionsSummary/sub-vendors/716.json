@@ -1,0 +1,45 @@
+{
+  "widgetType": "phpparser",
+  "defaultParameters":{"type_of_year":"B"},
+  "cleanURLParameters":[
+    "year",
+    "agency",
+    "vendor",
+    "subvendor",
+    "yeartype",
+    "calyear",
+    "category",
+    "vendor",
+    "mwbe",
+    "industry"
+  ],
+  "urlParamMap":{
+    "year":"year_id",
+    "agency":"agency_id",
+    "yeartype":"type_of_year",
+    "calyear":"year_id",
+    "category":"spending_category_id",
+    "vendor":"prime_vendor.prime_vendor",
+    "subvendor":"sub_vendor.sub_vendor",
+    "mwbe":"minority_type_id",
+    "industry":"industry_type_id"
+  },
+  "dataset":"checkbook:spending_subven_data",
+  "columns":[
+    "agency.agency",
+    "yeartype.yeartype",
+    "year.year",
+    "agency.agency.agency_name",
+    "sub_vendor_count",
+    "ytd_spending_sub_vendors",
+    "ytd_spending_vendors",
+    "check_amount_sum@checkbook:spending_data",
+    "check_amount_sum_no_payroll@checkbook:spending_data"
+  ],
+  "widgetDataLoader":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::subvendorStaticText($node);",
+  "limit":1,
+  "WidgetTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Agencies');",
+  "template":"spending_agency_summary",
+  "templateTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Agency');",
+  "templateLabel":"Agency"
+}

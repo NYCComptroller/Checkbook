@@ -1,0 +1,54 @@
+global-styling:
+  version: 1.0.1
+  css:
+    base:
+      css/base/fonts.css: {}
+      css/base/base.css: {}
+      css/base/utility.css: {}
+    layout:
+      css/layout/layout.css: {}
+      css/layout/region-primary-menu.css: {}
+      css/layout/region-secondary-menu.css: {}
+      css/layout/layout-builder.css: {}
+    component:
+      css/components/header-site-branding.css: {}
+      css/components/header-navigation.css: {}
+      css/components/header-secondary-navigation.css: {}
+      css/components/header-filter.css: {}
+      css/components/header-addtoany.css: {}
+      css/components/smart-search.css: {}
+      css/components/static-pages.css: {}
+      css/components/chart.css: {}
+      css/components/datatables-styling.css: {}
+      css/components/contracts-details.css: {}
+      css/components/landing-page-widget.css: {}
+      css/components/overview-and-spotlight.css: {}
+      css/components/footer.css: {}
+      css/components/breadcrumbs.css: {}
+      css/components/dialog.css: {}
+      css/components/top-navigation.css: {}
+      css/components/bottom-slider.css: {}
+      css/components/pager.css: {}
+      css/components/trends.css: {}
+      css/components/payroll_details.css: {}
+  js:
+    js/global.js: {}
+    js/cycle.js: {}
+    js/common-functions.js: {}
+    js/secondary-navigation.js: {}
+    js/chart.js: {}
+    js/landing-page-widget.js: {}
+  dependencies:
+    - jquery_ui_autocomplete/autocomplete
+    - jquery_ui_dialog/dialog
+    - core/once
+    - core/drupalSettings
+
+instructional-videos:
+  css:
+    component:
+      css/components/instructional-videos.css: {}
+  js:
+    js/instructional-videos.js: {}
+  dependencies:
+    - core/once

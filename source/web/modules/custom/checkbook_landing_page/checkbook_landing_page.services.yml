@@ -1,0 +1,5 @@
+services:
+  checkbook_landing_page.path_processor:
+    class: Drupal\checkbook_landing_page\PathProcessor\CheckbookLandingPagePathProcessor
+    tags:
+      - { name: path_processor_inbound, priority: 251 }

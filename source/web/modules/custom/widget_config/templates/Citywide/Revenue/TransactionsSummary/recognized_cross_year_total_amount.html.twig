@@ -1,0 +1,14 @@
+<div class="dollar-amounts">
+ <div class="total-spending-amount">
+   <div class="total-spending-amount">{{customAmount(node.data[1]['revenue_amount_sum'],2,'$')}}
+     <div class='amount-title'>Total Revenue<br />Recognized</div></div>
+ <div class="total-spending-amount">
+   <div class="total-spending-amount">{{customAmount(node.data[0]['total_current_modified_budget_amount'],2,'$')}}
+     <div class='amount-title'>Total Modified<br />Budget</div></div>
+ <div class="total-spending-amount">{{customAmount(node.data[0]['total_adopted_amount'],2,'$')}}
+   <div class='amount-title'>Total Adopted<br />Budget</div></div>
+ <div class="total-spending-amount">{{customAmount(node.data[0]['total_current_modified_budget_amount']-node.data[1]['revenue_amount_sum'],2,'$')}}
+   <div class='amount-title'>Total Remaining<br />Budget</div></div>
+  </div>
+ </div>
+</div>

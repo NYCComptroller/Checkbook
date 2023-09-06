@@ -1,0 +1,7 @@
+name: 'Dataset Meta Data completion using PostgreSQL system tables'
+description: 'Finalizes Dataset Meta Data configuration using PostgreSQL system tables'
+package: 'REI Dashboard Platform (Adapter)'
+core_version_requirement: ^9 || ^10
+dependencies:
+  data_controller_metamodel_system_tables: 'drupal:data_controller_metamodel_system_tables'
+type: module

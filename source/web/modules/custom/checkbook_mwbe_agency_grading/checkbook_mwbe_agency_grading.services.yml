@@ -1,0 +1,9 @@
+services:
+  checkbook_mwbe_agecny_grading.path_processor:
+    class: Drupal\widget_controller\PathProcessor\WidgetControllerPathProcessor
+    tags:
+      - { name: path_processor_inbound, priority: 350 }
+  checkbook_mwbe_agency_grading.Twig.MwbeSummaryExtension:
+    class: Drupal\checkbook_mwbe_agency_grading\Twig\MwbeSummaryExtension
+    tags:
+      - { name: twig.extension }

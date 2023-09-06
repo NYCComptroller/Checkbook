@@ -1,0 +1,227 @@
+/* =======================================
+             TOP NAVIGATION
+========================================== */
+.top-navigation{
+  padding: 0px 10px;
+}
+
+.top-navigation .top-navigation--item {
+  width: 131px;
+  text-align: center;
+  background: url('../../images/tile-bg.png') repeat-x 0 0;
+  position: relative;
+}
+
+.nycha.top-navigation .top-navigation--item{
+   width: 188px;
+}
+
+.top-navigation .top-navigation--item.active {
+  background: url('../../images/active-tile.png') repeat-x center 0;
+}
+
+/* Reducing the font because some of the labels in this section are long */
+.top-navigation .top-navigation--section-second .top-navigation--item-label {
+  font-size: 12px!important;
+}
+
+/* TOOLTIP
+============================= */
+.top-navigation .top-navigation--tooltip {
+  width: 260px;
+}
+
+.top-navigation--tooltip-content {
+  width: 250px;
+  padding: 8px 12px;
+  background-color: #f4f4f4;
+  color: #3b5f7f;
+  border: 1px solid #c5c5c3;
+  box-shadow: 5px 5px 5px 0px rgb(0 0 0 / 50%);
+  top: -65px;
+}
+
+.top-navigation--tooltip-content-bottom {
+  width:24px;
+  height:18px;
+  background: url("../../images/drop-arrow.png") no-repeat scroll right 0 transparent;
+  bottom:-14px;
+  right:110px;
+}
+
+
+/* ITEM INDICATORS
+============================= */
+.top-navigation .top-navigation--item .indicator-active {
+  background: url("../../images/carrot.png") no-repeat scroll center 0 transparent;
+  height: 17px;
+  margin-top: -1px;
+}
+
+.top-navigation .top-navigation--item .indicator-menu {
+  background: transparent url("../../images/arrow-gray_nofill.png") no-repeat;
+  width: 23px;
+  height: 20px;
+  position: absolute;
+  right: 7px;
+  top: 60px;
+}
+
+.top-navigation .top-navigation--item .indicator-menu:hover {
+  background: transparent url("../../images/arrow-gray.png") no-repeat;
+}
+
+.top-navigation .top-navigation--item.active .indicator-menu {
+  background: transparent url("../../images/arrow-white_nofill.png") no-repeat;
+}
+
+.top-navigation .top-navigation--item.active .indicator-menu:hover {
+  background: transparent url("../../images/arrow-white.png") no-repeat;
+}
+
+/* ITEM LABEL & DOLLAR AMOUNT
+============================= */
+.top-navigation .top-navigation--item .top-navigation--item-label {
+  border: 1px solid #bfbfbf;
+  border-left: none;
+  padding-top: 41px;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: bold;
+  color: #5A6A79;
+  white-space: nowrap;
+  height: 80px;
+}
+
+.top-navigation--section-second .top-navigation--item .top-navigation--item-label {
+  padding-top: 43px;
+}
+
+.top-navigation--section-first .top-navigation--item:first-child .top-navigation--item-label,
+.top-navigation--section-second > div:first-child .top-navigation--item-label {
+  border-left: 1px solid #bfbfbf;
+}
+
+/* Changing border bottom color on active state because it looks weird in the secondary section */
+.top-navigation--section-second .top-navigation--item.active .top-navigation--item-label {
+  border-bottom-color: #2da7c5;
+}
+
+/* Changing border bottom color on active state because it looks weird in the secondary section */
+.top-navigation--section-first .top-navigation--item.active .top-navigation--item-label {
+  border-bottom-color: #2da7c5;
+}
+
+.top-navigation .top-navigation--item.active .top-navigation--item-label {
+  color: white;
+}
+
+.top-navigation--item-label .top-navigation--item-dollar_amount {
+  font-family: NovecentowideNormalRegular;
+  font-style: normal;
+  font-size: 12px;
+  padding-top: 2px;
+  padding-bottom: 5px;
+  font-weight: normal;
+}
+
+/* ITEM ICONS
+============================= */
+/* Budget */
+.top-navigation--item.budget .top-navigation--item-label {
+  background: url("../../images/icon_budget.png") no-repeat center 5px;
+}
+.top-navigation--item.budget.active .top-navigation--item-label {
+  background: url("../../images/icon_budget_a.png") no-repeat center 5px;
+  padding-top: 40px;
+}
+
+/* Revenue */
+.top-navigation--item.revenue .top-navigation--item-label {
+  background: url("../../images/icon_revenue.png") no-repeat center 5px;
+}
+.top-navigation--item.revenue.active .top-navigation--item-label {
+  background: url("../../images/icon_revenue_a.png") no-repeat center 5px;
+}
+
+/* Spending */
+.top-navigation--item.spending .top-navigation--item-label {
+  background: url("../../images/icon_spending.png") no-repeat center 5px;
+}
+.top-navigation--item.spending.active .top-navigation--item-label {
+  background: url("../../images/icon_spending_a.png") no-repeat center 5px;
+}
+
+/* Contracts */
+.top-navigation--item.contracts .top-navigation--item-label {
+  background: url("../../images/icon_contracts.png") no-repeat center 10px;
+}
+.top-navigation--item.contracts.active .top-navigation--item-label {
+  background: url("../../images/icon_contracts_a.png") no-repeat center 10px;
+}
+
+/* Payroll */
+.top-navigation--item.payroll .top-navigation--item-label {
+  background: url("../../images/icon_employees.png") no-repeat center 5px;
+}
+.top-navigation--item.payroll.active .top-navigation--item-label {
+  background: url("../../images/icon_employees_a.png") no-repeat center 5px;
+}
+
+/* M/WBE and M/WBE Sub Vendors */
+.top-navigation--item.mwbe .top-navigation--item-label,
+.top-navigation--item.mwbesubvendors .top-navigation--item-label {
+  background: url("../../images/icon_mwbe.png") no-repeat center 5px;
+}
+.top-navigation--item.mwbe.active .top-navigation--item-label,
+.top-navigation--item.mwbesubvendors.active .top-navigation--item-label {
+  background: url("../../images/icon_mwbe_a.png") no-repeat center 5px;
+}
+
+/* Sub Vendors */
+.top-navigation--item.subvendors .top-navigation--item-label,
+.top-navigation--item.subvendorsmwbe .top-navigation--item-label {
+  background: url("../../images/icon_subvendor.png") no-repeat center 5px;
+}
+.top-navigation--item.subvendors.active .top-navigation--item-label,
+.top-navigation--item.subvendorsmwbe.active .top-navigation--item-label {
+  background: url("../../images/icon_subvendor_a.png") no-repeat center 5px;
+}
+
+/* ITEM MENU
+============================= */
+.top-navigation-item--menu {
+  top: 16px;
+  right: -7px;
+}
+
+.top-navigation-item--menu ul {
+  background-color: #efefef;
+  width: 130px;
+  border: 1px solid #acacac;
+  border-top: 3px solid #0073bd;
+  padding: 5px!important;
+  box-shadow: -3px 13px 12px -13px rgb(0 0 0 / 75%);
+}
+
+.top-navigation-item--menu ul li.title {
+  font-weight: bold;
+  padding: 5px;
+  color: black;
+}
+
+.top-navigation-item--menu ul li a {
+  color: #1F82C9;
+  padding-top: 0px;
+  font-size: 11px;
+  padding: 7px 5px;
+  display: block;
+  border: 1px solid #efefef;
+  text-decoration: none;
+}
+
+.top-navigation-item--menu ul li a:hover {
+  border-radius: 4px;
+  border: 1px solid #d3d3d3;
+  background: url("../../images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x 50% 50%;
+}

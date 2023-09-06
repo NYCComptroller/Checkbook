@@ -1,0 +1,24 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":706,
+  "no_results_content":"No Results Found",
+  "limit":10,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "autocomplete":false,
+  "filterName":"Certification",
+  "urlParameterName":"pscert",
+  "urlParameterType":"cert",
+  "autocompleteID":"fPrimeSubCert",
+  "columns":["prime_cert_women_count", "prime_cert_emerging_count","sub_cert_women_count", "sub_cert_emerging_count"],
+  "adjustParameters":"
+      $parameters = \\Drupal\\checkbook_project\\SpendingUtilities\\MwbeSpendingUtil::_checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
+      $parameters = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::_checkbook_project_adjust_date_spending_parameter_filters($node, $parameters);
+      $parameters = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::_checkbook_project_adjust_spending_parameter_filters($node, $parameters);
+      $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+    return $adjustedParameters;
+  ",
+  "template":"individual_filter"
+}

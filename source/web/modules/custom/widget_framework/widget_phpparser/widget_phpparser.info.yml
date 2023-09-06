@@ -1,0 +1,7 @@
+name: 'Widget PHP Parser'
+description: 'Widget Parser for widget module'
+core_version_requirement: ^9 || ^10
+package: 'REI Dashboard Platform '
+dependencies:
+  data_controller: 'drupal:data_controller'
+type: module

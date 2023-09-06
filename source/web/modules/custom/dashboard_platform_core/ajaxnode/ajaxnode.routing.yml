@@ -1,0 +1,9 @@
+ajaxnode.ajaxnode:
+  path: '/ajaxnode/{node}'
+  defaults:
+    _controller: '\Drupal\ajaxnode\Controller\AjaxNodeController::ajaxNodeView'
+    _title: 'Ajax Node'
+  requirements:
+    _permission: 'access content'
+
+

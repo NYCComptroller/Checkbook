@@ -1,0 +1,6 @@
+.region--secondary-menu {
+  background: url("../../images/filter-bg.png") repeat-x scroll 0 0;
+  height: 40px;
+  position: relative;
+  z-index: 99;
+}

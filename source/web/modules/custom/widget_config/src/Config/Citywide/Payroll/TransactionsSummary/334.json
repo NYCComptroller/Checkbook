@@ -1,0 +1,7 @@
+{
+    "widgetType": "phpparser",
+    "template":"payroll_title_payroll_summary",
+    "customDataHandlerClass":"\\Drupal\\checkbook_project\\PayrollUtilities\\payrollDetails",
+    "noDataInitialLoad":true,
+    "templateId":"return \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_getRequestParamValueBottomURL('smnid');"
+}

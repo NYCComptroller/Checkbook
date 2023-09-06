@@ -1,0 +1,25 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":939,
+    "no_results_content":"No Results Found",
+    "limit":10,
+    "startWith":0,
+    "maxSelect":5,
+    "showAllRecords":true,
+    "columns":["sub_industry_type_id.sub_industry_type_id", "sub_industry_type_name.sub_industry_type_name", "count_sub_records"],
+    "orderBy":"-count_sub_records",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"Sub Industry",
+    "urlParameterName":"scindustry",
+    "autocompleteParamName":"scindustry_auto",
+    "autocompleteID":"fSubIndustryTypeId",
+    "autocompleteField":"sub_industry_type_name",
+    "adjustParameters":"
+        $parameters = \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::adjustActiveContractCommonParams($node, $parameters);
+        $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+        $adjustedParameters['sub_industry_type_id.sub_industry_type_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

@@ -1,0 +1,7 @@
+landing_page_widget_view.ajaxdata:
+  path: '/checkbook_views/data_tables/ajax_data/node/{key}'
+  defaults:
+    _controller: '\Drupal\landing_page_widget_view\Controller\DefaultController::_landing_page_widget_view_ajaxdata'
+  requirements:
+    key: '^[^\?]*$'
+    _permission: 'access content'

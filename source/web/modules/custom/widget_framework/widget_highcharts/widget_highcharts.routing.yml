@@ -1,0 +1,6 @@
+widget_highcharts.grid_view_widget_popup:
+  path: '/gridview/popup/widget/{key}'
+  defaults:
+    _controller: '\Drupal\widget_highcharts\Controller\DefaultController::widget_highcharts_grid_view_widget_popup'
+  requirements:
+    _permission: 'access content'

@@ -1,0 +1,13 @@
+{{ attach_library('widget_highcharts/highcharts-globals') }}
+{{ attach_library('widget_highcharts/highstocks') }}
+
+
+{{  widget_highstocks_header(node) |raw }}
+<div class="content clearfix highcharts-border">
+  <div id="node-chart-{{node.nid}}" class="highstock-wrapper {{ node.widgetConfig.html_class }}"></div>
+</div>
+
+<script type="text/javascript">
+  {{ widget_highstocks_add_js(node) |raw}}
+</script>
+{{  widget_highstocks_footer(node) |raw }}

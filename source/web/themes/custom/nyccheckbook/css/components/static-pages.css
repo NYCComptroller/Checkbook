@@ -1,0 +1,210 @@
+/* =======================================
+                RESOURCES
+========================================== */
+article[about="/resources"]{
+  color: #000;
+  line-height: 18px;
+}
+
+.resources-page-padding {
+  padding: 0 16px;
+}
+.resources-paragraph-header {
+  font-size: medium;
+  margin-bottom: 5px;
+  margin-left: -4px;
+  margin-top: 5px;
+}
+
+.resources-logo {
+  margin-left: -4px;
+  width: 352px;
+  height: 61px;
+  vertical-align: bottom;
+  font-size: 12px;
+  margin-top: 10px;
+}
+.resources-message {
+  margin-left: -4px;
+  font-size: 12px;
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+.resources-message-last{
+  margin-left: -4px;
+  font-size: 12px;
+}
+.resources-list-title {
+  margin-left: -4px;
+  font-size: 12px;
+}
+.responsibilities-list {
+  font-size: 12px;
+  list-style: disc;
+  margin-bottom: 10px;
+  margin-left: 12px;
+  margin-top: -6px;!important;
+
+}
+.opendata-image {
+  margin-left: -6px;
+  font-size: 12px;
+  margin-top: 14px;
+}
+.dof-image {
+  margin-left: -9px;
+  font-size: 12px;
+  margin-top: -3px;
+}
+.edc-image {
+  margin-left: -6px;
+  font-size: 12px;
+  margin-top: -10px;
+  margin-bottom: -5px;
+}
+
+/* =======================================
+                     FAQ
+==========================================  */
+.faq-page-padding {
+  padding: 0 10px;
+  margin-bottom: 80px;
+}
+
+.faq-text {
+  color: #3C5E7C;
+  font-weight: bold;
+  display: block;
+  width: 100%;
+  float: left;
+  clear: both;
+  text-align: center;
+}
+
+/* =======================================
+          SITE NAVIGATION AND GLOSSARY
+==========================================  */
+
+ul#site-overview {
+  margin-top: 40px;
+}
+ul#site-overview li {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  width: 14%;
+}
+ul#site-overview li a {
+  color: #3C5E7C;
+  display: block;
+  font-style: italic;
+  font-weight: bold;
+  padding: 10px 0;
+}
+
+/* =======================================
+         NEW FEATURES
+==========================================  */
+.layout-content article[about="/new-features/newwindow"]{
+  margin-left:10px;
+}
+article[about="/new-features/newwindow"] .logo,
+article[about="/new-features/newwindow"] .logo-img{
+  pointer-events: none;
+  cursor: default;
+}
+div.new-features-title{
+  margin: 25px 10px 10px 10px;
+  font-weight: bold;
+  font-size: 14px;
+  color: black;
+}
+div.new-features-description{
+  font-size: 13px;
+  margin-left: 10px;
+  margin-right: 30px;
+  color: black;
+}
+.new-features-description > p{
+  line-height: 1.5;
+
+}
+.new-features-description > ul{
+  margin: 20px;
+  list-style: none;
+}
+.new-features-description > ul li{
+  padding-bottom: 5px;
+}
+.new-features-description > img{
+  width: 700px;
+  padding-top:20px;
+  padding-bottom:15px;
+}
+h3.new-features {
+  margin-left: 10px;
+  padding-bottom: 8px;
+  padding-top: 10px;
+  color: black;
+  font-size: 15px;
+  font-family: 'RobotoCondensed', serif
+}
+
+article[about="/new-features/newwindow"] #page-title{
+  margin-top:10px;
+  margin-left: 10px;
+}
+
+article[about="/new-features/newwindow"] h3.date-of-release {
+  border-bottom: 1px solid;
+  font-size: 20px;
+  margin-left: 10px;
+  margin-right: 30px;
+  text-transform: capitalize;
+}
+
+article[about="/new-features/newwindow"] h4.feature-title {
+  font-size: 16px;
+  margin-left: 7px;
+  margin-right: 30px;
+  text-transform: capitalize;
+  color: #3C5E7C;
+  margin-bottom: 16px;
+}
+
+a.new-features-morelink{
+  float: left;
+  margin-left: 10px;
+  font-size: 13px;
+}
+
+/* =======================================
+                STIMULUS
+========================================== */
+
+body.pageurl-stimulus {font-family:Roboto, sans-serif;color: #5b5b5b;}
+body.pageurl-stimulus .btn-link {background: none; border: none; box-shadow: none; padding: 0; line-height: 1; }
+body.pageurl-stimulus .tableHeader h2 {margin-bottom: 10px; font-size: 20px;}
+body.pageurl-stimulus .table-sm {font-size: 90%; }
+body.pageurl-stimulus .table-sm>:not(caption)>*>* {padding: 2px .35em; }
+body.pageurl-stimulus .gChart {width: 100%; }
+body.pageurl-stimulus .panel-panel h3 {margin-top: 25px; }
+body.pageurl-stimulus .panel-panel p {margin: 10px 0; }
+body.pageurl-stimulus .panel-panel ul li {list-style: disc; }
+body.pageurl-stimulus .panel-panel ol li {list-style: number; }
+body.pageurl-stimulus .panel-panel ul.list-unstyled li { list-style: none; }
+body.pageurl-stimulus .google-visualization-table tr td:nth-child(2) {width: 35%; }
+body.pageurl-stimulus .google-visualization-table tr td:nth-child(3), .google-visualization-table tr td:nth-child(4), .google-visualization-table tr td:nth-child(5), .google-visualization-table tr td:nth-child(6) {width: 15%; }
+body.pageurl-stimulus .goog-menu-button-inner-box {padding: 0px 5px;}
+body.pageurl-stimulus .goog-menu-button-dropdown {margin-top: 5px;}
+body.pageurl-stimulus .goog-inline-block.goog-menu-button-caption span {display: none; }
+body.pageurl-stimulus .goog-inline-block.goog-menu-button-caption:before {display: inline-block; content:'Export Data'; }
+body.pageurl-stimulus button { background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#ddd)); background: -moz-linear-gradient(top center,#fff 0%,#ddd 100%); font-weight: bold; }
+body.pageurl-stimulus #superfish-main {font-size: 12px}
+body.pageurl-stimulus .agency-nav-dropdowns-parent {font-size: 12px !important; font-family: Roboto !important;}
+body.pageurl-stimulus .block-system-breadcrumb-block ol {padding: 40px 20px 25px;}
+body.pageurl-stimulus #section-footer {font-family: Roboto;font-size: 12px;}
+body.pageurl-stimulus #agency-list-other .agency-list-open {width: 210px !important;height: 12px !important;}
+body.pageurl-stimulus .agency-list-open {width: 180px !important;height: 12px !important;}
+body.pageurl-stimulus .agency-list-content.all-agency-list-content {margin-top: 12px !important;}
+body.pageurl-stimulus .agency-list-content.other-agency-list-content {margin-top: 12px !important;}

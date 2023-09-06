@@ -1,0 +1,267 @@
+{
+  "widgetType": "data_tables",
+  "widgetSubType": "dataTableList",
+  "cleanURLParameters": ["year", "expcategory", "respcenter", "fundsrc", "program", "project", "bdgtyp",
+                          "bdgnm", "modamt", "modamtr", "comamtr", "adpamt", "encamt", "actual", "agency"],
+  "urlParamMap": {
+    "year": "budget_fiscal_year_id", "expcategory": "expenditure_type_id", "respcenter": "responsibility_center_id",
+    "fundsrc":"funding_source_id", "program": "program_phase_id", "project": "gl_project_id", "bdgtyp": "budget_type",
+    "bdgnm": "budget_name", "modamt": "adopted_budget", "modamtr": "adopted_budget", "comamt": "committed", "comamtr": "committed",
+    "encamt":"encumbrance_amount", "actual":"actual_amount", "adpamt": "adopted_budget", "agency": "agency_id"
+  },
+  "paramTypeConfig": {
+    "comamtr": "rangeid",
+    "comamt": "range",
+    "modamtr": "rangeid",
+    "modamt": "range",
+    "adpamt": "range",
+    "encamt": "range",
+    "actual": "range",
+    "bdgtyp": "eqignorecase",
+    "bdgnm": "eqignorecase",
+    "bdgnm_exact": "eqignorecase"
+  },
+  "header":"
+  $header = NULL;
+  $header .= widget_data_tables_export_link($node);
+  return $header;
+  ",
+  "useList":true,
+  "getTotalDataCount": true,
+  "limit": "35",
+  "stickyHeader": true,
+  "noDataInitialLoad": true,
+  "html_class": "initiative-table",
+  "no_results_content": "No Results Found",
+  "dataset": "checkbook_nycha:budget",
+  "uniqueSortColumn":"budget_id",
+  "columns": [
+    "budget_fiscal_year_id",
+    "adopted_budget",
+    "expenditure_type_name",
+    "expenditure_type_description",
+    "budget_fiscal_year",
+    "committed",
+    "funds_available",
+    "modified_budget",
+    "budget_type",
+    "budget_name",
+    "encumbrance_amount",
+    "actual_amount",
+    "display_funding_source_descr",
+    "responsibility_center_description",
+    "program_phase_description",
+    "gl_project_description",
+    "budget_id"
+  ],
+  "caption": "",
+  "derivedColumns": {
+    "formatted_expense_category": {
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['object_class_name'], 28)"
+    },
+    "budget_code_name_formatted": {
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['budget_code_name'], 36)"
+    },
+    "formatted_current_budget_amount": {
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['adopted_budget'])"
+    },
+    "formatted_adopted_amount": {
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['adopted_budget'])"
+    },
+    "formatted_modified_budget": {
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['adopted_budget'])"
+    },
+    "formatted_committed": {
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['committed'])"
+    },
+    "formatted_funds_available": {
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['funds_available'])"
+    },
+    "formatted_actual_amount": {
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['actual_amount'])"
+    },
+    "formatted_encumbered_amount": {
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['encumbrance_amount'])"
+    },
+    "exp_name_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['expenditure_type_description'],36)"
+    },
+    "budget_name_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup(\\Drupal\\checkbook_project\\BudgetUtilities\\NychaBudgetUtil::getBudgetName($row['budget_id']),36)"
+    },
+    "budget_type_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup(\\Drupal\\checkbook_project\\BudgetUtilities\\NychaBudgetUtil::getBudgetType($row['budget_id']),36)"
+    },
+    "resp_center_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['responsibility_center_description'],36)"
+    },
+    "funding_source_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['display_funding_source_descr'],36)"
+    },
+    "program_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['program_phase_description'],36)"
+    },
+    "project_formatted":{
+      "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['gl_project_description'],36)"
+    }
+  },
+  "table_columns": [
+    {
+      "labelAlias": "fiscal_year",
+      "column": "budget_fiscal_year"
+    },
+    {
+      "labelAlias": "adopted",
+      "column": "formatted_adopted_amount",
+      "sortSourceColumn": "adopted_budget"
+    },
+    {
+      "labelAlias": "modified",
+      "column": "formatted_modified_budget",
+      "sortSourceColumn": "adopted_budget"
+    },
+    {
+      "labelAlias": "budget_type",
+      "column": "budget_type_formatted",
+      "sortSourceColumn": "budget_type"
+    },
+    {
+      "labelAlias": "budget_name",
+      "column": "budget_name_formatted",
+      "sortSourceColumn": "budget_name"
+    },
+    {
+      "labelAlias": "encumbered",
+      "column": "formatted_encumbered_amount",
+      "sortSourceColumn": "encumbrance_amount"
+    },
+    {
+      "labelAlias": "actual_amount",
+      "column": "formatted_actual_amount",
+      "sortSourceColumn": "actual_amount"
+    },
+    {
+      "labelAlias": "committed",
+      "column": "formatted_committed",
+      "sortSourceColumn": "committed"
+    },
+    {
+      "labelAlias": "remaining",
+      "column": "formatted_funds_available",
+      "sortSourceColumn": "funds_available"
+    },
+    {
+      "labelAlias": "expense_category",
+      "column": "exp_name_formatted",
+      "sortSourceColumn": "expenditure_type_description"
+    },
+    {
+      "labelAlias": "funding_source",
+      "column": "funding_source_formatted",
+      "sortSourceColumn": "display_funding_source_descr"
+    },
+    {
+      "labelAlias": "responsibility_center",
+      "column": "resp_center_formatted",
+      "sortSourceColumn": "responsibility_center_description"
+    },
+    {
+      "labelAlias": "program",
+      "column": "program_formatted",
+      "sortSourceColumn": "program_phase_description"
+    },
+    {
+      "labelAlias": "project",
+      "column": "project_formatted",
+      "sortSourceColumn": "gl_project_description"
+    },
+    {
+      "label": "",
+      "column": ""
+    }
+  ],
+  "adjustParameters":"
+  $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+  return $adjustedParameters;
+",
+"adjustDataTableOptions":"
+$budgettype = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('budgettype');
+if(isset($budgettype)) {
+$is_committed_expense = ($budgettype == 'committed');
+$is_remaining_expense = ($budgettype == 'remaining');
+}
+if(isset($is_committed_expense)) {
+$node->widgetConfig->dataTableOptions->aaSorting[0][0] = 7;
+}
+if(isset($is_remaining_expense)) {
+$node->widgetConfig->dataTableOptions->aaSorting[0][0] = 8;
+}
+",
+"dataTableOptions":{
+"bRetrieve": true,
+"bServerSide": true,
+"bProcessing":true,
+"bFilter": false,
+"iDisplayLength":35,
+"bPaginate": true,
+"sPaginationType":"full_numbers_no_ellipses",
+"bLengthChange": false,
+"sDom":"<pr><t><ip>",
+"oLanguage": {
+"sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_"
+},
+"bInfo": true,
+"aoColumns":[
+{"sClass":"text","sWidth":"70px","asSorting": [ "desc","asc" ]},
+{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"number pad-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"number", "sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"sClass":"number", "sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"sClass":"number","sWidth":"135px","asSorting": [ "desc","asc" ]},
+{"sClass":"text pad-left","sWidth":"155px","asSorting": [ "desc","asc" ]},
+{"sClass":"text pad-left", "sWidth":"155px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left", "sWidth":"155px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"sClass":"text pad-left", "sWidth":"135px","asSorting": [ "asc","desc" ]},
+{"bSortable": true,"sWidth":"15px" }
+],
+"aaSorting":[[2,"desc"]],
+"sScrollX": "100%",
+"bScrollCollapse": false,
+"fnInitComplete": "##function () { new $j.fn.dataTable.FixedColumns( oTable, {
+\"iLeftColumns\": 1,
+\"iLeftWidth\": 115
+} );}##"
+},
+"customExternalJS":"function prepareTableListFilterUrl(){
+                      var oAgencyIds = getNamedFilterCriteria('fAgencyId');
+                      var oExpCategoryIds = getNamedFilterCriteria('fExpCategoryId');
+                      var oModAmount = getNamedFilterCriteria('fModAmount');
+                      var oComAmount = getNamedFilterCriteria('fComAmount');
+                      var obudgetCodeId = getNamedFilterCriteria('fbdgcode');
+                      var obudgetName = getNamedFilterCriteria('fbdgnm');
+                      var obudgetType = getNamedFilterCriteria('fbdgtyp');
+                      var oRespCenterIds = getNamedFilterCriteria('fRespCenter');
+                      var oFundingIds = getNamedFilterCriteria('fFundingId');
+                      var oProgramIds = getNamedFilterCriteria('fProgramId');
+                      var oProjectIds = getNamedFilterCriteria('fProjectId');
+
+                      var  cUrl = oTable.fnSettings().sAjaxSource;
+                      cUrl = adjustUrlParameter(cUrl,'agency',oAgencyIds);
+                      cUrl = adjustUrlParameter(cUrl,'expcategory',oExpCategoryIds);
+                      cUrl = adjustUrlParameter(cUrl,'respcenter', oRespCenterIds);
+                      cUrl = adjustUrlParameter(cUrl,'modamtr',oModAmount);
+                      cUrl = adjustUrlParameter(cUrl,'comamtr',oComAmount);
+                      cUrl = adjustUrlParameter(cUrl,'bdgcode',obudgetCodeId);
+                      cUrl = adjustUrlParameter(cUrl,'bdgnm',obudgetName);
+                      cUrl = adjustUrlParameter(cUrl,'bdgtyp',obudgetType);
+                      cUrl = adjustUrlParameter(cUrl,'fundsrc',oFundingIds);
+                      cUrl = adjustUrlParameter(cUrl,'program',oProgramIds);
+                      cUrl = adjustUrlParameter(cUrl,'project',oProjectIds);
+
+                      return cUrl;
+                      }"
+}

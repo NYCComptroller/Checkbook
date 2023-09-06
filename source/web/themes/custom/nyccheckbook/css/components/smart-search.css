@@ -1,0 +1,257 @@
+.smart-search-form {
+  /* padding: 20px 80px 5px; */
+  /* padding: 11px 81px 0px 82px; */
+  padding-top: 12px;
+  padding-bottom: 0px;
+}
+
+.smart-search-form--input input {
+  border: 1px solid #d5d5d5;
+  font-family: RobotoLight;
+  color: #828282;
+  font-size: 15px;
+  font-style: italic;
+  height: 37px;
+  line-height: 37px;
+  padding-left: 10px;
+  width: 600px;
+  outline: 0;
+  margin-right: 12px;
+}
+
+.smart-search-form--button-submit input.form-submit {
+  background: linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+  border: 1px solid #dcdcdc;
+  cursor: pointer;
+  color: #389be2;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 10px 50px;
+  margin-bottom: 3px;
+}
+
+.search-filters{
+  margin-top: 4px;
+}
+.smart-search-form--button-submit{
+  /*
+   margin-left: 3px;
+   margin-left: -27px;
+  */
+  margin-left: -3px;
+}
+
+
+.smart-search-form input {
+  margin-left: 8px;
+  margin-top: 3px;
+}
+
+/* this exists in other css files, review */
+.smart-search-form--input{
+  margin-left: 74px;
+
+}
+
+.smart-search-form--button-submit a{
+ /* margin-left: 8px;
+  margin-top: 3px;
+*/
+  margin-left: 14px;
+  margin-top: 1px;
+}
+
+.smart-search-form--button-submit .ajax-progress {
+  display: none;
+}
+
+.smart-search-form--button-submit .as-loading {
+  position: relative;
+  height: 0;
+  right: -2px;
+}
+
+.smart-search-form--input input.ui-autocomplete-loading {
+  background: white url("/modules/custom/jquery_plugins/images/loading_large.gif") right 10px center no-repeat;
+}
+
+.smart-search-form--create-alert {
+  margin-left: 4px;
+  margin-top: 3px;
+  margin-right: 45px;
+  width: 70px;
+  display: block;
+}
+
+/*This should move to main theme area */
+.region--breadcrumb{
+  /* padding-top: 3px; */
+}
+
+.smart-search-form--create-alert .ajax-progress {
+  display: none;
+}
+
+.smart-search-form--create-alert a.advanced-search-alerts {
+  display: block !important;
+  width: 70px;
+  padding-top: 40px;
+  background: url("../../images/create-alert-large.png") no-repeat top center transparent;
+}
+
+/* Autocomplete (jQuery UI Theme Overrides) */
+
+.ui-menu.ui-autocomplete {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 13.2px;
+  background: none repeat scroll 0 0 #EFEFEF;
+  border-radius: 0 0 0 0;
+  box-shadow: 3px 4px 5px #BBBBBB;
+  padding: 0 10px;
+  z-index: 1003 !important;
+  max-width: 578px;
+  /* Adding Scroll bar support. */
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  box-sizing: content-box;
+}
+
+.ui-menu.ui-autocomplete.smart-search-autocomplete {
+  max-height: none;
+}
+
+.ui-menu.ui-autocomplete li.ui-autocomplete-category {
+  color: #222;
+  font-weight: bold;
+  padding: 5px 0;
+}
+
+.ui-menu.ui-autocomplete .ui-menu-item a {
+  text-decoration: none;
+  display: block;
+  padding: 0.2em 0.4em;
+  line-height: 1.5;
+}
+
+.ui-menu.ui-autocomplete .ui-menu-item:hover, .ui-menu.ui-autocomplete .ui-menu-item:active {
+  border: 1px solid #999999;
+  background: #dadada url(/sites/all/themes/checkbook3/css/jquery-ui/images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;
+  font-weight: normal;
+  color: #212121;
+}
+
+.ui-menu.ui-autocomplete .ui-menu-item .ui-state-active {
+  border: 1px solid #999999;
+  background: #dadada url(/sites/all/themes/checkbook3/css/jquery-ui/images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;
+  font-weight: normal;
+  color: #212121;
+}
+
+.ui-menu.ui-autocomplete .ui-menu-item a:hover {
+  color: #212121;
+  text-decoration: none;
+}
+
+
+.ui-menu.ui-autocomplete .ui-menu-item a.ui-state-active {
+  border: 1px solid #999999;
+  border-radius: 3px;
+  background:  url("../../images/ui-bg_glass_75_dadada_1x400.png") repeat-x 50% 50% #dadada;
+  font-weight: normal;
+  color: #212121;
+}
+
+/* #checkbook-smart-search-form { */
+/*   margin: 15px 0px 0 72px; */
+/* } */
+/**/
+/* #checkbook-smart-search-form input#edit-search-box { */
+/*   border: 1px solid #d5d5d5; */
+/*   font-family: RobotoLight; */
+/*   color: #828282; */
+/*   font-size: 15px; */
+/*   font-style: italic; */
+/*   height: 37px; */
+/*   line-height: 37px; */
+/*   padding-left: 10px; */
+/*   width: 600px; */
+/*   outline: 0; */
+/*   margin-right: 12px; */
+/* } */
+/**/
+/* #checkbook-smart-search-form input#edit-submit { */
+/*   box-shadow: inset 0px 1px 0px 0px #ffffff; */
+/*   background: -webkit-gradient( */
+/*     linear, */
+/*     left top, */
+/*     left bottom, */
+/*     color-stop(0.05, #ffffff), */
+/*     color-stop(1, #f6f6f6) */
+/*   ); */
+/*   background: linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%); */
+/*   background-color: #ffffff; */
+/*   border-radius: 0; */
+/*   border: 1px solid #dcdcdc; */
+/*   display: inline-block; */
+/*   cursor: pointer; */
+/*   color: #389be2; */
+/*   font-family: Arial; */
+/*   font-size: 12px; */
+/*   font-weight: bold; */
+/*   padding: 10px 50px; */
+/*   text-decoration: none; */
+/*   text-shadow: 0px 1px 0px #ffffff; */
+/*   position: absolute; */
+/*   right: 130px; */
+/*   top: 0px; */
+/*   height: 37px; */
+/* } */
+/**/
+/* .email-icon { */
+/*   position: absolute; */
+/*   right: 77px; */
+/*   top: -48px; */
+/* } */
+/**/
+/* .advanced-search-create-alert { */
+/*   color: #1f82c9; */
+/*   position: relative; */
+/*   top: -8px; */
+/*   margin-left: 835px; */
+/* } */
+/**/
+/* .advanced-search-text-paragraph { */
+/*   position: relative; */
+/*   top: -33px; */
+/* } */
+/**/
+/* a.advanced-search.use-ajax { */
+/*   margin-left: 718px; */
+/*   position: relative; */
+/* } */
+
+body.createalert .region:not(.region--content) {
+  display: none;
+}
+
+body.createalert .layout-container {
+  margin-bottom: 0;
+  margin-top: 0;
+  max-width: 100%;
+}
+
+body.createalert h1 {
+  margin-top: 0;
+}
+
+.newwindow .contract-details-heading a{
+  pointer-events: none;
+  color: #5C5C5C;
+  cursor: default;
+}
+
+.newwindow .contract-details-heading a:hover{
+  text-decoration: none;
+}

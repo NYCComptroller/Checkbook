@@ -1,0 +1,201 @@
+.agency-nav-dropdowns {
+  display: block;
+  float: left;
+}
+
+.agency-list-open {
+  border-right: 1px solid #5387b7;
+  color: #d8eefc;
+  width: 177px;
+  padding: 14px 0px 14px 16px;
+  height: 40px;
+}
+
+#agency-list-other .agency-list-open {
+  width: 208px;
+}
+
+.agency-list-open span {
+  background: url("../../images/agency-list-arrow.png") no-repeat scroll 138px
+    3px transparent;
+  cursor: pointer;
+  padding-right: 31px;
+  user-select: none;
+  line-height: 12px;
+  display: block;
+}
+
+.agency-list-open span.open {
+  background: url("../../images/agency-list-arrow-closed.png") no-repeat scroll
+    138px 1px transparent;
+}
+
+#agency-list-other .agency-list-open span {
+  background: url("../../images/agency-list-arrow.png") no-repeat scroll 169px
+    3px transparent;
+}
+
+#agency-list-other .agency-list-open span.open {
+  background: url("../../images/agency-list-arrow-closed.png") no-repeat scroll
+    169px 3px transparent;
+}
+
+.agency_filter_highlight {
+  font-weight: bold;
+  font-size: 13px;
+  color: #e5f4fe;
+}
+
+.agency-list-content {
+  height: 260px;
+  width: 820px;
+  background-color: #eeeded;
+  border: 1px solid #b9cbdc;
+  box-shadow: 3px 1px 10px #aaa;
+  -moz-box-shadow: 3px 1px 10px #aaa;
+  -webkit-boz-shadow: 3px 1px 10px #aaa;
+  position: absolute;
+  z-index: 30;
+  display: none;
+}
+
+/* Content */
+.listContainer1 {
+  width: 100%;
+  height: 230px;
+  float: left;
+}
+
+.other-agency-list-content {
+  height: 160px;
+  left: 0px;
+  overflow: hidden;
+}
+
+/* Pager */
+.agency-list-pager {
+  clear: both;
+  float: left;
+  height: 20px;
+  padding: 5px 0 5px 300px;
+  text-align: center;
+  width: 520px;
+}
+
+#agency-list-other .agency-list-pager {
+  padding: 5px 0px 5px 430px;
+}
+
+.agency-list-pager a {
+  background: url("../../images/agency-list-button.png") no-repeat scroll 0 0
+    transparent;
+  color: white;
+  display: inline;
+  float: left;
+  height: 11px;
+  margin-right: 8px;
+  margin-top: 5px;
+  width: 11px;
+  z-index: 999;
+  font-size: 0px;
+}
+
+.agency-list-pager a.activeSlide,
+.agency-list-pager a:hover {
+  background: url("../../images/agency-list-active-button.png") repeat-x;
+  color: white;
+}
+
+.agency-list-nav #prev1,
+.agency-list-nav #prev2,
+.agency-list-nav #next1,
+.agency-list-nav #next2 {
+  bottom: 38%;
+  height: 79px;
+  position: absolute;
+  text-indent: -9999px;
+  width: 17px;
+  z-index: 10;
+}
+
+.agency-list-nav #prev1,
+.agency-list-nav #prev2 {
+  background: url("../../images/agency-list-prev.png") no-repeat;
+  left: 5px;
+}
+
+.agency-list-nav #next1,
+.agency-list-nav #next2 {
+  background: url("../../images/agency-list-next.png") no-repeat;
+  right: 5px;
+}
+
+.agency-list-nav #citywide_all_agencies {
+  bottom: 8px;
+  left: 10px;
+  position: absolute;
+  color: #1f82c9;
+  cursor: pointer;
+}
+
+.agency-list-close {
+  position: absolute;
+  bottom: 8px;
+  right: 0;
+  z-index: 10;
+  width: 60px;
+}
+
+.agency-list-close a {
+  color: #2a639a;
+  font-weight: bold;
+}
+
+/* Slide */
+
+.listContainer1 .agency-slide {
+  margin: 0 24px 0 64px;
+  padding: 0;
+  width: 89%;
+}
+
+#agency-list ul,
+#agency-list-other ul {
+  background: none;
+  float: left;
+  margin-right: 3%;
+  margin-top: 10px;
+}
+#agency-list ul{
+  width: 47%;
+}
+
+#agency-list li,
+#agency-list-other li {
+  list-style-type: disc;
+  list-style-position: outside;
+  line-height: 18px;
+}
+
+#agency-list li a,
+#agency-list-other li a {
+  color: #2a639a;
+  text-transform: uppercase;
+}
+
+.listContainer1 {
+  width: 100%;
+  height: 230px;
+  float: left;
+}
+
+.other-agency-list-content .listContainer1 {
+  height: 130px;
+}
+
+.listContainer1 .agency-slide {
+  margin: 0 24px 0 25px;
+  padding: 0;
+  width: 89%;
+  background-color: #eeeded;
+}

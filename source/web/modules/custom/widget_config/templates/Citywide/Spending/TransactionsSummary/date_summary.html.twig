@@ -1,0 +1,22 @@
+
+{% set title = customFunctionEvaluate(node.widgetConfig.summaryView.templateTitleEval) %}
+
+{% if customFunctionEvaluate(node.widgetConfig.summaryView.templateYearType) == 'C' %}
+  {% set yearLabel = 'CY' %}
+{% else %}
+  {% set yearLabel = 'FY' %}
+{% endif %}
+
+{% set year  = getTransactionYearVal(yearLabel) %}
+
+{%set amount = customAmount(spendingDateAmount(node),2,'$') %}
+
+{% set month = spendingMonth() %}
+
+<div class="contract-details-heading">
+  <div class="contract-id">
+    <h2 class="contract-title">{{title}}</h2>
+    <div class="spending-tx-subtitle"><b>Year</b>: {{year}}<br><b>Month</b>: {{month.0.month_name | upper}}</div>
+  </div>
+  <div class="dollar-amounts"><div class="total-spending-amount">{{amount}}<div class="amount-title">{{customFunctionEvaluate(node.widgetConfig.summaryView.catName)}} Amount</div></div></div>
+</div>

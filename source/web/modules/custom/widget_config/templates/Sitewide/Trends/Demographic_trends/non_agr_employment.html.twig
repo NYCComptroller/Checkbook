@@ -1,0 +1,69 @@
+{#
+/**
+* This file is part of the Checkbook NYC financial transparency software.
+*
+* Copyright (C) 2012, 2013 New York City
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/#}
+
+{{ attach_library('widget_highcharts/grid-view') }}
+{{ node.widgetConfig.header |raw }}
+
+{% set data = nonAgrEmploymentTop(node) %}
+{% set last_year = data.years|last %}
+
+<a class="trends-export" href="/export/trends/download/{{node.nid}}">Export</a>
+<table class="fy-ait">
+  <tbody>
+  <tr>
+    <td width="240"><div>&nbsp;</div></td>
+    <td class="bb"><div>{{ last_year }}-{{ data.years[0] }}<br>(average annual employment in thousands)</div></td>
+  </tr>
+  </tbody>
+</table>
+<table id="table_{{ node.nid }}" style='display:none' class="trendsShowOnLoad {{node.widgetConfig.html_class}}">
+    {{addCaption(node) |raw}}
+    <thead>
+        <tr>
+            <th><div>&nbsp;</div></th>
+            {% for year in data.years %}
+                <th><div>&nbsp;</div></th>
+                {% if year == 2021 %}
+                  <th class='number'><div>{{ year }}<sup>(b)</sup></div></th>
+                {% else %}
+                  <th class='number'><div>{{ year }}</div></th>
+                {% endif %}
+            {% endfor %}
+            <th><div>&nbsp;</div></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {{ nonAgrEmployment(data.table_rows, data.years) }}
+
+    </tbody>
+</table>
+    <div class="footnote">
+        <p>(a) Includes rounding adjustment</p>
+        <p>(b) Six months average</p><br>
+       <p>NOTES: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information. Other than the City of New York, no single
+       employer employs more than 2 percent of total nonagricultural employees.</p>
+       <p>Data are not seasonally adjusted.</p>
+        <p>SOURCE: New York State Department of Labor, Division of Research and Statistics.</p>
+    </div>
+<script type="text/javascript">
+    {{ addJs(node)|raw }}
+</script>

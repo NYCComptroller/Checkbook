@@ -1,0 +1,49 @@
+{#
+/**
+* @file
+* This template provides layout for Charts slider
+*
+* Available variables:
+* - content: The content for this layout.
+* - attributes: HTML attributes for the layout <div>.
+*
+* @ingroup themeable
+*/
+#}
+
+{%
+  set classes = [
+  'layout',
+  'layout--charts_slider',
+]
+%}
+{% if content|render|trim %}
+  <div{{ attributes.addClass(classes) }}>
+    <div class="grid-row">
+      <div {{ region_attributes.charts.addClass('layout__region', 'layout__region--charts', 'layout__region-charts', 'grid-col') }} {% if not region_attributes.charts %} class="layout__region layout__region--charts layout__region-charts" {% endif %}>
+
+        {% if content.charts %}
+          {% set count = 0 %}
+
+          {% if 'layout_builder.' in current_route %}
+            {{ content.charts }}
+          {% else %}
+
+            <div class="cycle-slideshow chart-slide">
+              {% for chart in content.charts %}
+                {% set count = count + 1 %}
+                {% if chart|render|striptags|trim is not empty %}
+                  <div class="slider-pane {{ count == 1 ? 'first' : '' }}">
+                      {{ chart }}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div class="slider-pager"></div>
+
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}

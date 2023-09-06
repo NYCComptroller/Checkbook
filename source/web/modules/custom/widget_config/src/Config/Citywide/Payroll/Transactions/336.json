@@ -1,0 +1,254 @@
+{
+    "widgetType": "data_tables",
+    "widgetSubType": "dataTableList",
+    "stickyHeader":true,
+    "cleanURLParameters":["calyear","year","empnm","empnm_exact","agencyh","payfq","paydate","baseamt","overamt","otheramt","grossamt","totalgrosspay","salamt","salamttype","agency","title","grosspayytd","annualsalary","overtimepayment","payfrequency","payrolltype","ratetype"],
+    "urlParamMap":{"calyear":"calendar_fiscal_year_id","year":"calendar_fiscal_year_id","empnm":"civil_service_title","empnm_exact":"civil_service_title","agencyh":"agency_history_id","payfq":"pay_frequency","paydate":"pay_date","baseamt":"base_pay","overamt":"overtime_pay","otheramt":"other_payments","grossamt":"gross_pay","totalgrosspay":"gross_pay_cytd","salamt":"annual_salary","salamttype":"amount_basis_id","payrolltype":"amount_basis_id","agency":"agency_id",
+        "grosspayytd":"gross_pay_cytd",
+        "annualsalary":"annual_salary",
+        "overtimepayment":"overtime_pay",
+        "ratetype": "amount_basis_id"
+    },
+    "paramTypeConfig":{"empnm":"like","empnm_exact":"eqignorecase","paydate":"range","baseamt":"range","overamt":"range","otheramt":"range","grossamt":"range","totalgrosspay":"range","salamt":"range",
+        "grosspayytd":"rangeid3",
+        "annualsalary":"rangeid3",
+        "overtimepayment":"rangeid3"
+    },
+    "header":"
+        $header = NULL;
+        $header .= widget_data_tables_export_link($node);
+        return $header;
+    ",
+    "useList":true,
+    "getTotalDataCount":true,
+    "limit":"35",
+    "noDataInitialLoad":true,
+    "html_class": "initiative-table transaction-table",
+    "no_results_content":"No Results Found",
+    "dataset": "checkbook:payroll",
+    "uniqueSortColumn":"payroll_id",
+    "columns": ["employee_number","civil_service_title","agency_name","pay_frequency","pay_date","annual_salary","gross_pay",
+      "base_pay","other_payments","overtime_pay","gross_pay_cytd","calendar_fiscal_year_id","agency_id","employee_id","amount_basis_id",
+      "salaried_amount","non_salaried_amount","hourly_rate","daily_wage"],
+    "additionalSelectColumns":["amount_basis_id"],
+    "derivedColumns": {
+        "formatted_daily_wage_amount": {
+        "expression":  "$row['amount_basis_id'] === 2 ? \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['daily_wage'])  : '-'  "
+      },
+        "formatted_hourly_rate_amount": {
+            "expression":  "$row['amount_basis_id'] === 3 ? \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['non_salaried_amount'])  : '-'  "
+        },
+        "daily_wage_link": {
+            "expression": "\\Drupal\\checkbook_project\\PayrollUtilities\\PayrollUtil::getDailyWageLink($row)"
+        },
+        "hourly_rate_link": {
+            "expression": "\\Drupal\\checkbook_project\\PayrollUtilities\\PayrollUtil::getHourlyRateLink($row)"
+        },
+        "employee_name_formatted": {
+            "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['civil_service_title'],30)"
+        },
+        "agency_name_formatted": {
+            "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['agency_name'],30)"
+        },
+        "employee_name_link": {
+            "expression": "'<a href=/payroll'.((!\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue(\\Drupal\\checkbook_infrastructure_layer\\Constants\\Common\\UrlParameter::AGENCY)) ? '/agency_landing' : '').'/title_landing/yeartype/C/year/' . $row['calendar_fiscal_year_id'] . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string('datasource'). \\Drupal\\checkbook_infrastructure_layer\\Constants\\Common\\Datasource::getNYCHAUrl() . '/title/' . urlencode($row['civil_service_title']) . '>'. $row['employee_name_formatted'] .'</a>'"
+        },
+        "agency_name_link": {
+            "expression": "!\\Drupal\\checkbook_infrastructure_layer\\Constants\\Common\\Datasource::isNYCHA()?'<a href=/payroll/agency_landing/agency/'. $row['agency_id'] . '/yeartype/C/year/' . $row['calendar_fiscal_year_id']  . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string('datasource'). \\Drupal\\checkbook_infrastructure_layer\\Constants\\Common\\Datasource::getNYCHAUrl() . '>'. $row['agency_name_formatted'] .'</a>':$row['agency_name_formatted']"
+        },
+        "formatted_salary_amount": {
+            "expression": " (($row['amount_basis_id'] === 1 && $row['salaried_amount']) > 0) ? \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['salaried_amount'])  : '-'  "
+        },
+        "annual_salary_link": {
+            "expression": "\\Drupal\\checkbook_project\\PayrollUtilities\\PayrollUtil::getAnnualSalaryLink($row)"
+        },
+        "formatted_non_salary_amount": {
+            "expression": " \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['non_salaried_amount'])"
+        },
+        "non_salary_link": {
+          "expression": "\\Drupal\\checkbook_project\\PayrollUtilities\\PayrollUtil::getNonSalaryLink($row)"
+        },
+        "export_salary_amount": {
+            "expression": " $row['amount_basis_id'] === 1 ? $row['salaried_amount']  : NULL "
+        },
+        "export_non_salary_amount": {
+                  "expression": " $row['amount_basis_id'] === 1? NULL : $row['non_salaried_amount']"
+        },
+       "formatted_gross_pay_amount": {
+          "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['gross_pay'])"
+        },
+        "formatted_base_pay_amount": {
+              "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['base_pay'])"
+        },
+        "formatted_other_payments_amount": {
+              "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['other_payments'])"
+        },
+        "formatted_overtime_pay_amount": {
+              "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['overtime_pay'])"
+        },
+        "formatted_gross_pay_cytd_amount": {
+              "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_basic_format($row['gross_pay_cytd'])"
+        },
+        "formatted_payroll_type": {
+            "expression": " $row['amount_basis_id'] === 1 ? 'SALARIED'  : 'NON-SALARIED' "
+        },
+        "employee_number": {
+            "expression": "$row['employee_number']"
+        }
+    },
+    "table_columns": [
+        {"labelAlias": "title","column": "employee_name_formatted","sortSourceColumn": "civil_service_title"},
+        {"labelAlias": "agency_name","column": "agency_name_link","sortSourceColumn": "agency_name"},
+        {"labelAlias": "pay_date","column": "pay_date"},
+        {"labelAlias": "annual_salary","column": "annual_salary_link","sortSourceColumn": "salaried_amount","exportColumn":"export_salary_amount"},
+        {"labelAlias": "hourly_rate","column": "non_salary_link","sortSourceColumn": "non_salaried_amount","exportColumn":"export_non_salary_amount"},
+        {"labelAlias": "daily_wage","column": "daily_wage_link","sortSourceColumn":"daily_wage"},
+        {"labelAlias": "pay_frequency","column": "pay_frequency"},
+        {"labelAlias": "gross_pay","column": "formatted_gross_pay_amount","sortSourceColumn": "gross_pay"},
+        {"labelAlias": "base_pay","column": "formatted_base_pay_amount","sortSourceColumn": "base_pay"},
+        {"labelAlias": "other_pays","column": "formatted_other_payments_amount","sortSourceColumn": "other_payments"},
+        {"labelAlias": "overtime_pay","column": "formatted_overtime_pay_amount","sortSourceColumn": "overtime_pay"},
+        {"labelAlias": "gross_pay_ytd","column": "formatted_gross_pay_cytd_amount","sortSourceColumn": "gross_pay_cytd"},
+        {"labelAlias": "payroll_type","column": "formatted_payroll_type","sortSourceColumn": "amount_basis_id","exportColumn":"formatted_payroll_type"}
+    ],
+    "adjustDataTableOptions":"
+        $adjustDataTableOptions = $node->widgetConfig->dataTableOptions;
+        $nid = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('smnid');
+        $payroll_type = \\Drupal\\checkbook_project\\PayrollUtilities\\PayrollUtil::getPayrollType();
+        $datasource = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('datasource');
+    foreach($node->widgetConfig->table_columns as $key => $table_column){
+    //daily wage column must not be included in citywide
+    if(($table_column->labelAlias == 'daily_wage' )&& ($datasource!='checkbook_nycha' )){
+    unset($node->widgetConfig->table_columns[$key]);
+    unset($adjustDataTableOptions->aoColumns[$key]);
+    }
+    //hourly rate column must refer amount basis id for nycha
+    if(($table_column->labelAlias == 'hourly_rate' )&& ($datasource=='checkbook_nycha' )){
+         $table_column->column= 'hourly_rate_link';
+    }
+    //daily wage column must be sorted by default for nycha and must  refer amount basis id
+    if($table_column->labelAlias == 'daily_wage' && ($datasource=='checkbook_nycha' )){
+    $adjustDataTableOptions->aaSorting = array(array(7, 'desc'));
+    }
+    }
+    //set nycha theming top scroller
+    if ($datasource=='checkbook_nycha')
+    {
+    $node->widgetConfig->stickyHeader='true';
+    $adjustDataTableOptions->fnInitComplete = '##function () { new $j.fn.dataTable.FixedColumns( oTable, {\"iLeftColumns\": 1,\"iLeftWidth\": 115} );}##';
+    }
+    $node->widgetConfig->table_columns = array_values($node->widgetConfig->table_columns);
+    $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoColumns);",
+    "exportColumnSqlOverride":[
+        {
+        "column":"formatted_payroll_type",
+        "sourceColumn":"amount_basis_id",
+        "sql":"CASE WHEN amount_basis_id = 1 THEN 'SALARIED' ELSE 'NON-SALARIED' END AS payroll_type"
+        },
+        {
+        "column":"non_salary_link",
+        "sourceColumn":"non_salaried_amount",
+        "sql":"CASE WHEN amount_basis_id = 3 OR amount_basis_id = 2 THEN CAST(non_salaried_amount AS TEXT) else CAST('-' AS TEXT)  END AS non_salaried_amount"
+        },
+       {
+      "column":"hourly_rate_link",
+       "sourceColumn":"non_salaried_amount",
+      "sql":"CASE WHEN amount_basis_id = 3 THEN CAST(non_salaried_amount AS TEXT) else CAST('-' AS TEXT)  END AS hourly_rates"
+      },
+      {
+      "column":"daily_wage_link",
+      "sourceColumn":"daily_wage",
+      "sql":"CASE WHEN amount_basis_id = 2 THEN CAST(daily_wage AS TEXT) else CAST('-' AS TEXT)  END AS daily_wages"
+      },
+      {
+      "column":"annual_salary_link",
+      "sourceColumn":"salaried_amount",
+      "sql":"CASE WHEN amount_basis_id = 1 AND salaried_amount > 0 THEN CAST(salaried_amount AS TEXT) else CAST('-' AS TEXT)  END AS annual_salarys"
+      }
+    ],
+    "adjustParameters":"
+
+                $sortingCol = $_REQUEST['iSortCol_0'];
+                if($sortingCol == 3){//annual sal
+                       //array_unshift($config->orderBy, 'amount_basis_id');
+               }else if($sortingCol == 4){//hourly rate
+                    //array_unshift($config->orderBy, '-amount_basis_id');
+               }
+                else if($sortingCol == 5){
+                    //array_unshift($config->orderBy, '-amount_basis_id');
+                  }
+
+                $adjustedParameters = $parameters;
+                $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+                return $adjustedParameters;
+    ",
+    "skipCustomPadding":true,
+    "dataTableOptions":{
+        "bRetrieve": true,
+        "bServerSide": true,
+        "bProcessing":true,
+        "bFilter": false,
+        "iDisplayLength":35,
+        "bPaginate": true,
+        "sPaginationType":"full_numbers_no_ellipses",
+        "bLengthChange": false,
+        "sDom":"<pr><t><ip>",
+        "oLanguage": {
+        "sInfo": "Displaying transactions _START_ - _END_ of _TOTAL_",
+        "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+        },
+        "bInfo": true,
+        "aaSorting":[[6,"desc"]],
+        "aoColumns": [
+            {"sClass":"text", "sWidth":"150px","asSorting": [ "asc","desc" ]},
+            {"sClass":"text", "sWidth":"150px","asSorting": [ "asc","desc" ]},
+            {"sClass":"text pad-left", "sWidth":"84px","asSorting": [ "asc","desc" ]},
+            {"sClass":"number pad-left","sWidth":"82px","asSorting": [ "desc","asc" ]},
+            {"sClass":"number pad-left","sWidth":"80px","asSorting": [ "desc","asc" ]},
+            {"sClass":"number pad-left","sWidth":"84px","asSorting": [ "desc","asc" ]},
+            {"sClass":"text pad-left", "sWidth":"104px","asSorting": [ "asc","desc" ]},
+            {"sClass":"number pad-left","sWidth":"74px","asSorting": [ "desc","asc" ]},
+            {"sClass":"number pad-left","sWidth":"73px","asSorting": [ "desc","asc" ]},
+            {"sClass":"number pad-left","sWidth":"96px","asSorting": [ "desc","asc" ]},
+            {"sClass":"number pad-left","sWidth":"93px","asSorting": [ "desc","asc" ]},
+            {"sClass":"number pad-left","sWidth":"90px","asSorting": [ "desc","asc" ]},
+            {"sClass":"text pad-left endCol","sWidth":"100px","asSorting": [ "desc","asc" ]}
+        ],
+        "sScrollX": "100%",
+        "bScrollCollapse": true,
+        "sScrollXInner": "1160px",
+        "bScrollCollapse": true,
+        "fnInitComplete": "##function () { new $j.fn.dataTable.FixedColumns( oTable, {
+        \"iLeftColumns\": 1,
+        \"iLeftWidth\": 150
+        } );}##"
+    },
+    "customExternalJS":"function prepareTableListFilterUrl(){
+        var oTitles = getNamedFilterCriteria('ftitle');
+        var oAgencyIds = getNamedFilterCriteria('fagencyId');
+        if(oAgencyIds.length==0 && eval(document.getElementById('fHideAgencyId'))){
+            oAgencyIds = document.getElementById('fHideAgencyId').value;
+        }
+        var oGrossPayYtd = getNamedFilterCriteria('fgrossPayYtd');
+        var oAnnualSalary = getNamedFilterCriteria('fannualSalary');
+        var oOvertimePayment = getNamedFilterCriteria('fovertimePayment');
+        var oPayFrequency = getNamedFilterCriteria('fpayFrequency');
+        var oPayrollType = getNamedFilterCriteria('fpayrolltype');
+       var oRateType = getNamedFilterCriteria('fratetype');
+
+        var cUrl = oTable.fnSettings().sAjaxSource;
+        var cUrlArray = cUrl.split('/');
+        var dtsmnidNameIndex = jQuery.inArray('dtsmnid', cUrlArray);
+
+        cUrl = adjustUrlParameter(cUrl,'empnm_exact',oTitles);
+        cUrl = adjustUrlParameter(cUrl,'agency',oAgencyIds);
+        cUrl = adjustUrlParameter(cUrl,'grosspayytd',oGrossPayYtd);
+        cUrl = adjustUrlParameter(cUrl,'annualsalary',oAnnualSalary);
+        cUrl = adjustUrlParameter(cUrl,'overtimepayment',oOvertimePayment);
+        cUrl = adjustUrlParameter(cUrl,'payfq',oPayFrequency);
+        cUrl = adjustUrlParameter(cUrl,'payrolltype',oPayrollType);
+       cUrl = adjustUrlParameter(cUrl,'ratetype',oRateType);
+
+        return cUrl;
+    }"
+}

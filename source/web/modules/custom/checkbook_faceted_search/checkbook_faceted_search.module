@@ -1,0 +1,755 @@
+<?php
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (c) 2012 – 2023 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
+use Drupal\checkbook_infrastructure_layer\Constants\Common\PageType;
+use Drupal\checkbook_infrastructure_layer\Utilities\FormattingUtilities;
+use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
+use Drupal\checkbook_log\LogHelper;
+use Drupal\checkbook_project\CommonUtilities\RequestUtil;
+use Drupal\data_controller\Datasource\Formatter\Handler\ArrayResultFormatter;
+use Drupal\data_controller\Datasource\Formatter\Handler\SpecialCharacterResultFormatter;
+use Drupal\data_controller\Datasource\Operator\Handler\EqualOperatorHandler;
+use Drupal\data_controller\Datasource\Operator\Handler\RegularExpressionOperatorHandler;
+
+/**
+ * @param $node
+ * @return array
+ */
+function _checkbook_faceted_search_update_data($node) {
+  $data = $node->data;
+  $output = array();
+  $output['filter_name'] = $node->widgetConfig->filterName;
+  if (empty(RequestUtilities::getBottomContUrl())) {
+    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  } else {
+    $params = explode('~', RequestUtilities::_getRequestParamValueBottomURL($node->widgetConfig->urlParameterName));
+  }
+
+  //The value in this facet can be 0
+  if (isset($node->widgetConfig->allowZeroValue) && $node->widgetConfig->allowZeroValue) {
+    $filter = $params[0] != "";
+  } else {
+    $filter = $params[0];
+  }
+  if ($filter) {
+    foreach ($params as $param) {
+      try {
+        if (isset($node->widgetConfig->widgetDataFilterLoader)) {
+          $node->param = $param;
+          eval($node->widgetConfig->widgetDataFilterLoader);
+          $checked_items = $node->checked_items;
+        } else {
+          $dataController = data_controller_get_instance();
+          $parameters = $node->nodeAdjustedParamaterConfig;
+          $urlParamMap = ( array )$node->widgetConfig->urlParamMap;
+          if (isset($node->widgetConfig->urlParameterNameType)) {
+            $paramValues = explode('~', $param);
+            switch($node->widgetConfig->urlParameterNameType){
+              case 'capitalize':
+                $values = [];
+                foreach ($paramValues as $value){
+                  $values[] = strtoupper($value);
+                }
+                $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $values));
+                break;
+              case 'eqtext':
+              default:
+                $patterns = array();
+                foreach ($paramValues as $value) {
+                  $value = checkbook_faceted_search_replaceSlash($value);
+                  $value = pg_escape_string(htmlspecialchars_decode($value));
+                  $patterns[] = "(^" . FormattingUtilities::_checkbook_regex_replace_pattern($value) . "$)";
+                }
+                $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, implode("|",$patterns)));
+                break;
+            }
+          } else {
+            $param = checkbook_faceted_search_replaceSlash($param);
+            $param = pg_escape_string(htmlspecialchars_decode($param));
+            $parameters[$urlParamMap[$node->widgetConfig->urlParameterName]] = array(data_controller_get_operator_factory_instance()->initiateHandler(EqualOperatorHandler::$OPERATOR__NAME, $param));
+          }
+          $resultFormatter = new SpecialCharacterResultFormatter(NULL, new ArrayResultFormatter());
+          $checked_items = $dataController->queryCube(_update_dataset_datasource($node->widgetConfig->dataset), $node->widgetConfig->columns, $parameters, null, null, null, $resultFormatter);
+        }
+      } catch (Exception $e) {
+        LogHelper::log_error($e->getMessage());
+      }
+      if ($checked_items[0]['txcount']) {
+        if (count($checked_items[0]) == 2) {
+          $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[1])]);
+        } else {
+          $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[1])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[2])]);
+        }
+      }
+      if ($checked_items[0]['count_vendorcode']) {
+        if (count($checked_items[0]) == 2) {
+          $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[1])]);
+        } else {
+          $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[1])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[2])]);
+        }
+
+      }
+      if ($checked_items[0]['title_count']) {
+        if (count($checked_items[0]) == 2) {
+          $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[1])]);
+        } else {
+          $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[1])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[2])]);
+        }
+      }
+      if ($checked_items[0]['agency_count']) {
+        if (count($checked_items[0]) == 2) {
+          $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[1])]);
+        } else {
+          $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[1])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[2])]);
+        }
+      }
+      if ($checked_items[0]['emp_count']) {
+        if (count($checked_items[0]) == 2) {
+          $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[1])]);
+        } else {
+          $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[1])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[2])]);
+        }
+      }
+      $custom_count = $checked_items[0]['count_prime_mwbe'] || $checked_items[0]['count_sub_mwbe'];
+      $custom_count = $custom_count || $checked_items[0]['count_prime_records'] || $checked_items[0]['count_sub_records'];
+      if ($custom_count) {
+        if (count($checked_items[0]) == 2) {
+          $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[1])]);
+        } else {
+          $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[1])]
+          , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[2])]);
+        }
+      }
+    }
+  }
+
+  // Facet preselection for NYCHA amount links
+  $setAutoDeselect= RequestUtil::isNychaAmountLinks();
+  $pagetype = PageType::getCurrent();
+
+  //Facets that have Url parameters that match the current Url will be disabled and show only the default checked items
+  if (($pagetype != PageType::ADVANCED_SEARCH_PAGE) && (!(isset($node->widgetConfig->allowFacetDeselect)) || ($setAutoDeselect == 1))){
+    $disableFacet = true;
+  }
+
+  if (isset($disableFacet) && $disableFacet) { //only URL parameters count and can be disabled
+    $url_ref = RequestUtilities::getBottomContUrl();
+    $url_ref = $url_ref ?? \Drupal::request()->server->get('HTTP_REFERER');
+    $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
+  }
+
+  if (isset($disableFacet) && $disableFacet) {
+    $output['unchecked'] = null;
+  } else {
+    foreach ($data as $row) {
+      if (count($row) == 2) {
+        $output['unchecked'][] = array($row[str_replace('.', '_', $node->widgetConfig->columns[0])]
+        , $row[str_replace('.', '_', $node->widgetConfig->columns[0])]
+        , $row[str_replace('.', '_', $node->widgetConfig->columns[1])]);
+      } else {
+        $output['unchecked'][] = array($row[str_replace('.', '_', $node->widgetConfig->columns[0])]
+        , $row[str_replace('.', '_', $node->widgetConfig->columns[1])]
+        , $row[str_replace('.', '_', $node->widgetConfig->columns[2])]);
+      }
+    }
+  }
+  $output['autocomplete_id'] = $node->widgetConfig->autocompleteID ?? null;
+  $output['autocomplete_field_name'] = $node->widgetConfig->urlParameterName ?? null;
+  $output['autocomplete_param_name'] = $node->widgetConfig->autocompleteParamName ?? null;
+  $output['disableFacet'] = $disableFacet ?? null;
+  return $output;
+}
+
+/**
+ * @param $node
+ * @return array
+ */
+function _checkbook_faceted_search_update_cert_filter($node){
+  $data = $node->data;
+  $output = array();
+  $output['filter_name'] = $node->widgetConfig->filterName;
+  //$params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  if (empty(RequestUtilities::getBottomContUrl())) {
+    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  } else {
+    $params = explode('~', RequestUtilities::_getRequestParamValueBottomURL($node->widgetConfig->urlParameterName));
+  }
+  if (!is_array($data[0])) {
+    $data = array(0 => array());
+  }
+
+  $pWomenCount = isset($data[0]['prime_cert_women_count']) ? $data[0]['prime_cert_women_count'] : $data[0]['cert_women_count'];
+  $sWomenCount = isset($data[0]['sub_cert_women_count']) ? $data[0]['sub_cert_women_count'] : 0;
+  $pEmergeCount = isset($data[0]['prime_cert_emerging_count']) ? $data[0]['prime_cert_emerging_count'] : $data[0]['cert_emerging_count'];
+  $sEmergeCount = isset($data[0]['sub_cert_emerging_count']) ? $data[0]['sub_cert_emerging_count'] : 0;
+
+  $initial = array();
+  switch($node->widgetConfig->filterName){
+    case "Prime Certification":
+      $initial[0] = array('pwomen', 'Woman Owned', $pWomenCount);
+      $initial[1] = array('pemerg', 'Emerging', $pEmergeCount);
+      break;
+    case "Sub Certification":
+      $initial[0] = array('swomen', 'Woman Owned', $sWomenCount);
+      $initial[1] = array('semerg', 'Emerging', $sEmergeCount);
+      break;
+    default:
+      $initial[0] = array('pswomen', 'Woman Owned', ($pWomenCount + $sWomenCount));
+      $initial[1] = array('psemerg', 'Emerging', ($pEmergeCount + $sEmergeCount));
+      break;
+  }
+
+  for ($i = 0; $i < 2; $i++) {
+    $checked = false;
+    foreach ($params as $param) {
+      if ($param == $initial[$i][0]) {
+        $checked = true;
+      }
+    }
+    if ($checked) {
+      $output['checked'][] = $initial[$i];
+    } else {
+      if ($initial[$i][2] > 0) {
+        $output['unchecked'][] = $initial[$i];
+      }
+    }
+  }
+  $output['autocomplete_id'] = $node->widgetConfig->autocompleteID ?? null;
+  return $output;
+}
+
+/**
+ * @param $node
+ * @return array
+ */
+function _checkbook_faceted_search_update_data_range_filter($node) {
+  $data = $node->data;
+  $rangeColumnNameVariant = $node->widgetConfig->rangeColumnNameVariant ?? null;
+  $output = array();
+  $output['filter_name'] = $node->widgetConfig->filterName;
+  //$params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  if (empty(RequestUtilities::getBottomContUrl())) {
+    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  } else {
+    $params = explode('~', RequestUtilities::_getRequestParamValueBottomURL($node->widgetConfig->urlParameterName));
+  }
+  if (!is_array($data[0])) {
+    $data = array(0 => array());
+  }
+  switch ($node->widgetConfig->filterName) {
+    case "Committed Expense Budget":
+      if($node->nid == '1042') {
+        $initial[0] = array(6, 'Greater than $100M', $data[0]['committed_g100m_' . $rangeColumnNameVariant . 'count']);
+        $initial[1] = array(5, '$51M - $100M', $data[0]['committed_g50m_le100m_' . $rangeColumnNameVariant . 'count']);
+        $initial[2] = array(4, '$26M - $50M', $data[0]['committed_g25m_le50m_' . $rangeColumnNameVariant . 'count']);
+        $initial[3] = array(3, '$11M - $25M', $data[0]['committed_g10m_le25m_' . $rangeColumnNameVariant . 'count']);
+        $initial[4] = array(2, '$1M - $10M', $data[0]['committed_ge1m_le10m_' . $rangeColumnNameVariant . 'count']);
+        $initial[5] = array(1, 'Less than $1M', $data[0]['committed_less1m_' . $rangeColumnNameVariant . 'count']);
+      }
+      break;
+    default :
+      $initial[0] = array(6, 'Greater than $100M', $data[0]['g100m_' . $rangeColumnNameVariant . 'count']);
+      $initial[1] = array(5, '$51M - $100M', $data[0]['g50m_le100m_' . $rangeColumnNameVariant . 'count']);
+      $initial[2] = array(4, '$26M - $50M', $data[0]['g25m_le50m_' . $rangeColumnNameVariant . 'count']);
+      $initial[3] = array(3, '$11M - $25M', $data[0]['g10m_le25m_' . $rangeColumnNameVariant . 'count']);
+      $initial[4] = array(2, '$1M - $10M', $data[0]['ge1m_le10m_' . $rangeColumnNameVariant . 'count']);
+      $initial[5] = array(1, 'Less than $1M', $data[0]['less1m_' . $rangeColumnNameVariant . 'count']);
+      break;
+  }
+
+  for ($i = 0; $i < 6; $i++) {
+    $checked = false;
+    foreach ($params as $param) {
+      if ($param == $initial[$i][0]) {
+        $checked = true;
+      }
+    }
+    if ($checked) {
+      $output['checked'][] = $initial[$i];
+    } else {
+      if ($initial[$i][2] > 0) {
+        $output['unchecked'][] = $initial[$i];
+      }
+    }
+  }
+  $output['autocomplete_id'] = $node->widgetConfig->autocompleteID;
+  return $output;
+}
+
+/**
+ * @param $node
+ * @return array
+ */
+function _checkbook_faceted_search_update_data_logical_or_filter($node) {
+  $data = $node->data;
+  $output = array();
+  $output['filter_name'] = $node->widgetConfig->filterName;
+  //$params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  if (empty(RequestUtilities::getBottomContUrl())) {
+    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  } else {
+    $params = explode('~', RequestUtilities::_getRequestParamValueBottomURL($node->widgetConfig->urlParameterName));
+  }
+  if (!is_array($data[0])) {
+    $data = array(0 => array());
+  }
+  $name = $id = $count = null;
+  foreach ($data as $row) {
+    if (count($row) == 2) {
+      $id = str_replace('.', '_', $node->widgetConfig->columns[0]);
+      $name = str_replace('.', '_', $node->widgetConfig->columns[0]);
+      $count = str_replace('.', '_', $node->widgetConfig->columns[1]);
+    } else {
+      $id = str_replace('.', '_', $node->widgetConfig->columns[0]);
+      $name = str_replace('.', '_', $node->widgetConfig->columns[1]);
+      $count = str_replace('.', '_', $node->widgetConfig->columns[2]);
+    }
+
+    $id = $row[$id];
+    $name = $row[$name];
+    $count = $row[$count];
+
+    if ($count > 0) {
+      $ids = explode('~', $id);
+      if (is_array($ids) && isset($ids[0])) {
+        foreach ($ids as $id_split) {
+          if (in_array($id_split, $params)) {
+            //checked
+            $output['checked'][] = array($id_split, $name, $count);
+          } else {
+            //unchecked
+            $output['unchecked'][] = array($id_split, $name, $count);
+          }
+        }
+      }
+    }
+  }
+  $output['autocomplete_id'] = $node->widgetConfig->autocompleteID;
+  return $output;
+}
+
+/**
+ * @param $node
+ * @return array
+ */
+function _checkbook_faceted_search_update_data_union_or_filter($node) {
+  $data = $node->data;
+  $output = array();
+  $output['filter_name'] = $node->widgetConfig->filterName;
+  //$params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  if (empty(RequestUtilities::getBottomContUrl())) {
+    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  } else {
+    $params = explode('~', RequestUtilities::_getRequestParamValueBottomURL($node->widgetConfig->urlParameterName));
+  }
+
+  if (!is_array($data[0])) {
+    $data = array(0 => array());
+  }
+
+  $checked = $unchecked = array();
+  foreach ($data as $row) {
+
+    $name = $id = $count = null;
+    $series_index = 0;
+    while (!isset($id)) {
+      $id = $row[str_replace('.', '_', $node->widgetConfig->model->series[$series_index]->columns[0])];
+      $name = $row[str_replace('.', '_', $node->widgetConfig->model->series[$series_index]->columns[1])];
+      $count = $row[str_replace('.', '_', $node->widgetConfig->model->series[$series_index]->columns[2])];
+      $series_index++;
+    }
+
+    if ($count > 0) {
+      $ids = explode('~', $id);
+      if (is_array($ids) && isset($ids[0])) {
+        foreach ($ids as $id_split) {
+          if (in_array($id_split, $params)) {
+            //checked
+            $blnFound = false;
+            foreach ($checked as $key => $checked_item) {
+              if ($checked_item[0] == $id_split) {
+                $checked[$key][2] += $count;
+                $blnFound = true;
+              }
+            }
+            if (!$blnFound) {
+              $checked[] = array($id_split, $name, $count);
+            }
+          } else {
+            //unchecked
+            $blnFound = false;
+            foreach ($unchecked as $key => $unchecked_item) {
+              if ($unchecked_item[0] == $id_split) {
+                $unchecked[$key][2] += $count;
+                $blnFound = true;
+              }
+            }
+            if (!$blnFound) {
+              $unchecked[] = array($id_split, $name, $count);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  $output['checked'] = $checked;
+  $output['unchecked'] = $unchecked;
+  $output['autocomplete_id'] = $node->widgetConfig->autocompleteID;
+  return $output;
+}
+
+/**
+ * @param $node
+ * @return array
+ */
+function _checkbook_faceted_search_update_data_range2_filter($node) {
+  $data = $node->data;
+  $output = array();
+  $output['filter_name'] = $node->widgetConfig->filterName;
+  if (empty(RequestUtilities::getBottomContUrl())) {
+    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  } else {
+    $params = explode('~', RequestUtilities::_getRequestParamValueBottomURL($node->widgetConfig->urlParameterName));
+  }
+  if (!is_array($data[0])) {
+    $data = array(0 => array());
+  }
+
+  $initial[0] = array(6, 'Greater than $5B', $data[0]['g5b_count']);
+  $initial[1] = array(5, '$4B - $5B', $data[0]['g4b_le5b_count']);
+  $initial[2] = array(4, '$3B - $4B', $data[0]['g3b_le4b_count']);
+  $initial[3] = array(3, '$2B - $3B', $data[0]['g2b_le3b_count']);
+  $initial[4] = array(2, '$1B - $2B', $data[0]['g1b_le2b_count']);
+  $initial[5] = array(1, 'Less than $1B', $data[0]['less1b_count']);
+  for ($i = 0; $i < 6; $i++) {
+    $checked = false;
+    foreach ($params as $param) {
+      if ($param == $initial[$i][0]) {
+        $checked = true;
+      }
+    }
+    if ($checked) {
+      $output['checked'][] = $initial[$i];
+    } else {
+      if ($initial[$i][2] > 0) {
+        $output['unchecked'][] = $initial[$i];
+      }
+    }
+  }
+  $output['autocomplete_id'] = $node->widgetConfig->autocompleteID;
+  return $output;
+}
+
+/**
+ * @param $node
+ * @return array
+ */
+function _checkbook_faceted_search_update_data_range3_filter($node) {
+  $data = $node->data;
+  $output = array();
+  $output['filter_name'] = $node->widgetConfig->filterName;
+  //$params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  if (empty(RequestUtilities::getBottomContUrl())) {
+    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  } else {
+    $params = explode('~', RequestUtilities::_getRequestParamValueBottomURL($node->widgetConfig->urlParameterName));
+  }
+  if (!is_array($data[0])) {
+    $data = array(0 => array());
+  }
+  switch ($node->widgetConfig->filterName) {
+    case "Overtime Payment":
+      switch ($node->nid) {
+        case 889:
+          $initial[0] = array(5, 'Greater than 250K', $data[0]['overtime_pay_g250k_count_title']);
+          $initial[1] = array(4, '101K-250K', $data[0]['overtime_pay_g101k_le250k_count_title']);
+          $initial[2] = array(3, '51K-100K', $data[0]['overtime_pay_g51k_le100k_count_title']);
+          $initial[3] = array(2, '20K-50K', $data[0]['overtime_pay_ge20k_le50k_count_title']);
+          $initial[4] = array(1, 'Less than 20K', $data[0]['overtime_pay_less20k_count_title']);
+          break;
+        default:
+          $initial[0] = array(5, 'Greater than 250K', $data[0]['overtime_pay_g250k_count']);
+          $initial[1] = array(4, '101K-250K', $data[0]['overtime_pay_g101k_le250k_count']);
+          $initial[2] = array(3, '51K-100K', $data[0]['overtime_pay_g51k_le100k_count']);
+          $initial[3] = array(2, '20K-50K', $data[0]['overtime_pay_ge20k_le50k_count']);
+          $initial[4] = array(1, 'Less than 20K', $data[0]['overtime_pay_less20k_count']);
+          break;
+      }
+      break;
+    case "Annual Salary":
+      switch ($node->nid) {
+        case 888:
+          $initial[0] = array(5, 'Greater than 250K', $data[0]['annual_salary_g250k_count_title']);
+          $initial[1] = array(4, '101K-250K', $data[0]['annual_salary_g101k_le250k_count_title']);
+          $initial[2] = array(3, '51K-100K', $data[0]['annual_salary_g51k_le100k_count_title']);
+          $initial[3] = array(2, '20K-50K', $data[0]['annual_salary_ge20k_le50k_count_title']);
+          $initial[4] = array(1, 'Less than 20K', $data[0]['annual_salary_less20k_count_title']);
+          break;
+        default:
+          $initial[0] = array(5, 'Greater than 250K', $data[0]['annual_salary_g250k_count']);
+          $initial[1] = array(4, '101K-250K', $data[0]['annual_salary_g101k_le250k_count']);
+          $initial[2] = array(3, '51K-100K', $data[0]['annual_salary_g51k_le100k_count']);
+          $initial[3] = array(2, '20K-50K', $data[0]['annual_salary_ge20k_le50k_count']);
+          $initial[4] = array(1, 'Less than 20K', $data[0]['annual_salary_less20k_count']);
+          break;
+      }
+      break;
+    case "Gross Pay YTD":
+      switch ($node->nid) {
+        case 871:
+        case 902:
+          $initial[0] = array(5, 'Greater than 250K', $data[0]['gross_pay_ytd_g250k_count']);
+          $initial[1] = array(4, '101K-250K', $data[0]['gross_pay_ytd_g101k_le250k_count']);
+          $initial[2] = array(3, '51K-100K', $data[0]['gross_pay_ytd_g51k_le100k_count']);
+          $initial[3] = array(2, '20K-50K', $data[0]['gross_pay_ytd_ge20k_le50k_count']);
+          $initial[4] = array(1, 'Less than 20K', $data[0]['gross_pay_ytd_less20k_count']);
+          break;
+        case 877:
+        case 909:
+          $initial[0] = array(5, 'Greater than 250K', $data[0]['gross_pay_cytd_g250k_count']);
+          $initial[1] = array(4, '101K-250K', $data[0]['gross_pay_cytd_g101k_le250k_count']);
+          $initial[2] = array(3, '51K-100K', $data[0]['gross_pay_cytd_g51k_le100k_count']);
+          $initial[3] = array(2, '20K-50K', $data[0]['gross_pay_cytd_ge20k_le50k_count']);
+          $initial[4] = array(1, 'Less than 20K', $data[0]['gross_pay_cytd_less20k_count']);
+          break;
+        case 887:
+          $initial[0] = array(5, 'Greater than 250K', $data[0]['gross_pay_g250k_count_title']);
+          $initial[1] = array(4, '101K-250K', $data[0]['gross_pay_g101k_le250k_count_title']);
+          $initial[2] = array(3, '51K-100K', $data[0]['gross_pay_g51k_le100k_count_title']);
+          $initial[3] = array(2, '20K-50K', $data[0]['gross_pay_ge20k_le50k_count_title']);
+          $initial[4] = array(1, 'Less than 20K', $data[0]['gross_pay_less20k_count_title']);
+          break;
+        default:
+          $initial[0] = array(5, 'Greater than 250K', $data[0]['gross_pay_g250k_count']);
+          $initial[1] = array(4, '101K-250K', $data[0]['gross_pay_g101k_le250k_count']);
+          $initial[2] = array(3, '51K-100K', $data[0]['gross_pay_g51k_le100k_count']);
+          $initial[3] = array(2, '20K-50K', $data[0]['gross_pay_ge20k_le50k_count']);
+          $initial[4] = array(1, 'Less than 20K', $data[0]['gross_pay_less20k_count']);
+          break;
+      }
+      break;
+  }
+  for ($i = 0; $i < 5; $i++) {
+    $checked = false;
+    foreach ($params as $param) {
+      if ($param == $initial[$i][0] && $initial[$i][2] > 0) {
+        $checked = true;
+      }
+    }
+    if ($checked) {
+      $output['checked'][] = $initial[$i];
+    } else {
+      if ($initial[$i][2] > 0) {
+        $output['unchecked'][] = $initial[$i];
+      }
+    }
+  }
+  $output['autocomplete_id'] = $node->widgetConfig->autocompleteID;
+  return $output;
+}
+
+/**
+ * @param $node
+ */
+function checkbook_faceted_search_adjust_param($node) {
+  if (\Drupal::request()->query->get('page')) {
+    $page = \Drupal::request()->query->get('page');
+    $limit = $node->widgetConfig->limit;
+    if ($page > 0) {
+      $node->widgetConfig->limit = 2 * $limit;
+      $node->widgetConfig->startWith = ($page - 1) * $limit;
+    }
+  }
+}
+
+/**
+ * Preprocess function for individual_filter.tpl.php
+ *
+ * @param $variables
+ */
+function checkbook_faceted_search_preprocess_individual_filter(&$variables) {
+  $node = $variables['node'];
+  $logicalOrFacet = $node->widgetConfig->logicalOrFacet ?? null;
+  $unionOrFacet = $node->widgetConfig->unionOrFacet ?? null;
+  $urlParameter = $node->widgetConfig->urlParameterName ?? null;
+
+  if (isset($node->widgetConfig->urlParameterType) && $node->widgetConfig->urlParameterType == "rangeid") {
+    $data = _checkbook_faceted_search_update_data_range_filter($node);
+  } elseif (isset($node->widgetConfig->urlParameterType) && $node->widgetConfig->urlParameterType == "rangeid2") {
+    $data = _checkbook_faceted_search_update_data_range2_filter($node);
+  } elseif (isset($node->widgetConfig->urlParameterType) && $node->widgetConfig->urlParameterType == "rangeid3") {
+    $data = _checkbook_faceted_search_update_data_range3_filter($node);
+  } elseif (isset($node->widgetConfig->urlParameterType) && $node->widgetConfig->urlParameterType == "cert") {
+    $data = _checkbook_faceted_search_update_cert_filter($node);
+  } elseif (isset($logicalOrFacet) && $logicalOrFacet) {
+    $data = _checkbook_faceted_search_update_data_logical_or_filter($node);
+  } elseif (isset($unionOrFacet) && $unionOrFacet) {
+    $data = _checkbook_faceted_search_update_data_union_or_filter($node);
+  } else {
+    $data = _checkbook_faceted_search_update_data($node);
+  }
+  $variables['filter_name'] = $data['filter_name'];
+
+  $datasource = RequestUtilities::_getRequestParamValueBottomURL('datasource');
+  $datasource = $datasource ?? RequestUtilities::get('datasource');
+  if(strtolower($variables['filter_name']) == 'agency' || strtolower($variables['filter_name']) == 'citywide agency'){
+    if(_checkbook_check_isEDCPage() || Datasource::isNYCHA() || ($datasource == DATASOURCE::OGE)){
+      $variables['filter_name'] = 'Other Government Entity';
+    }else{
+      $variables['filter_name'] = 'Citywide Agency';
+    }
+  }
+  if(strtolower($variables['filter_name']) == 'vendor' || strtolower($variables['filter_name']) == 'payee' ){
+    if(_checkbook_check_isEDCPage() || $datasource == DATASOURCE::OGE){
+      $variables['filter_name'] = 'Prime Vendor';
+    }
+  }
+
+  $variables['checked'] = $data['checked'] ?? null;
+  $variables['unchecked'] = $data['unchecked'] ?? null;
+  $variables['autocomplete_id'] = $data['autocomplete_id'] ?? null;
+  $variables['autocomplete_field_name'] = $data['autocomplete_field_name'] ?? null;
+  $variables['autocomplete_param_name'] = $data['autocomplete_param_name'] ?? null;
+
+  $variables['is_ajax_call'] = RequestUtilities::_checkbook_current_request_is_ajax();
+  $variables['is_advanced_search_page'] = (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE);
+
+
+  if (RequestUtilities::getBottomContUrl()) {
+    $current_path = RequestUtilities::getBottomContUrl();
+  } else {
+    $current_path = \Drupal::request()->query->get('q');
+  }
+
+  if (in_array($node->nid, [518, 540, 566, 709, 702, 768]) && !preg_match("/\/agency\//", $current_path)) {
+    $variables['hide_filter'] = ' style=display:none ';
+  } else {
+    $variables['hide_filter'] = "";
+  }
+  $variables['urlParameter'] = $urlParameter;
+  $variables['datasource'] = RequestUtilities::get('datasource');
+  \Drupal\checkbook_faceted_search\Utilities\FacetUtil::adjustFacetData($variables,$node);
+  if (isset($data['disableFacet'])) {
+    $variables['disableFacet'] = $data['disableFacet'];
+  }
+}
+
+/**
+ * Preprocess function for pagination.tpl.php
+ *
+ * @param $variables
+ */
+function checkbook_faceted_search_preprocess_pagination(&$variables) {
+  $node = $variables['node'];
+  $logicalOrFacet = $node->widgetConfig->logicalOrFacet ?? null;
+  $unionOrFacet = $node->widgetConfig->unionOrFacet ?? null;
+  if ($node->widgetConfig->urlParameterType == "rangeid") {
+    $data = _checkbook_faceted_search_update_data_range_filter($node);
+  } elseif ($node->widgetConfig->urlParameterType == "rangeid2") {
+    $data = _checkbook_faceted_search_update_data_range2_filter($node);
+  } elseif ($node->widgetConfig->urlParameterType == "rangeid3") {
+    $data = _checkbook_faceted_search_update_data_range3_filter($node);
+  } elseif ($node->widgetConfig->urlParameterType == "cert") {
+    $data = _checkbook_faceted_search_update_cert_filter($node);
+  } elseif (isset($logicalOrFacet) && $logicalOrFacet) {
+    $data = _checkbook_faceted_search_update_data_logical_or_filter($node);
+  } elseif (isset($unionOrFacet) && $unionOrFacet) {
+    $data = _checkbook_faceted_search_update_data_union_or_filter($node);
+  } else {
+    $data = _checkbook_faceted_search_update_data($node);
+  }
+
+  $variables['filter_name'] = $data['filter_name'];
+  $variables['checked'] = $data['checked'];
+  $variables['unchecked'] = $data['unchecked'];
+  $variables['autocomplete_id'] = $data['autocomplete_id'];
+}
+
+
+
+/**
+ * @param $string
+ * @return mixed
+ */
+function checkbook_faceted_search_replaceSlash($string)
+{
+  $string = str_replace('__', '/', $string);
+  $string = str_replace('@Q', ':', $string);
+  return  $string;
+}
+
+/**
+ * Implements hook_theme()
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
+ */
+function checkbook_faceted_search_theme($existing, $type, $theme, $path) {
+  return [
+    'individual_filter' => [
+      'template' => 'individual_filter',
+      'variables' => [
+        'node' => []
+      ]
+    ],
+    'smart_search_filter' => [
+      'template' => 'smart_search_filter',
+      'variables' => [
+        'facets' => [],
+        'active_contracts' => [],
+        'registered contracts' => [],
+        'facets_render' => []
+      ]
+    ],
+    'pagination' => [
+      'template' => 'pagination',
+      'variables' => [
+        'node' => []
+      ]
+    ]
+  ];
+}

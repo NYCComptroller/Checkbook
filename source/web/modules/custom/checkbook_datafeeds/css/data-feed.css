@@ -1,0 +1,489 @@
+
+/**** Styles for Data Feeds and API pages ***/
+
+article[about*="-api"] h3 {
+  font: bold 12px 'roboto';
+}
+
+body main {
+  color: #000;
+  line-height: 18px;
+}
+
+h1#page-title,
+h1.title {
+  font-family: "RobotoCondensed", serif;
+  font-size: 28px;
+  color: #3c5e7c;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 5px;
+  padding-bottom: 11px;
+  text-align: left;
+  text-transform: none;
+}
+
+[about*="-api"] h1.title {
+  margin: 0 !important;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+ul {
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.data-feeds-wizard .form-required::after {
+  position: relative;
+  top: 3px;
+  margin: 0;
+}
+
+/**** Content ****/
+
+fieldset {
+  position: relative;
+}
+
+fieldset[id^="edit-datafeeds-"] > legend {
+  padding-left: 0;
+  padding-right: 0;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #000 !important;
+  font-size: 12px !important;
+}
+
+form.data-feeds-wizard {
+  float: left;
+  width: 700px;
+}
+
+form.data-feeds-wizard p {
+  margin: 0;
+}
+
+.data-feeds-sidebar h2,
+.form-item-tracking-number label,
+form.checkbook-datafeeds-form .form-composite legend,
+#dynamic-filter-data-wrapper > fieldset > legend,
+form.data-feeds-wizard > fieldset > legend,
+#div_data_source > fieldset > legend,
+#dynamic-filter-data-wrapper > fieldset > legend,
+form.data-feeds-wizard h2 {
+  font: bold 14px 'roboto';
+  color: #2D4C68;
+}
+
+#api-landing-page h2 {
+  font: bold 14px 'RobotoCondensed';
+  color: #3c5e7c;
+  margin-top: 0;
+}
+
+article > h2 {
+  display: none;
+}
+
+.form-item-tracking-number label {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+form.data-feeds-wizard h2 {
+  margin-top: 0;
+  margin-bottom: 0px;
+}
+
+form.confirmation-page h2#edit-description {
+  margin-bottom: 20px;
+}
+
+form.data-feeds-wizard .domain-title h2 {
+  margin-top: -1px;
+}
+
+.data-feeds-sidebar .trackstatus form,
+form.checkbook-datafeeds-form,
+#dynamic-filter-data-wrapper > fieldset.form-item,
+form.data-feeds-wizard > fieldset.form-item,
+#div_data_source > fieldset.form-item,
+fieldset.oge-datasource-fieldset,
+#dynamic-columns-wrapper > fieldset.form-item {
+  border: 1px solid #CCCCCC;
+  border-radius: 5px 5px 5px 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+form.data-feeds-wizard > fieldset.form-item {
+  margin-bottom: 10px;
+}
+
+form.data-feeds-wizard > fieldset.form-item .fieldset-wrapper > div {
+  margin-bottom: 1px;
+}
+
+form.checkbook-datafeeds-form {
+  padding: 5px 10px;
+}
+
+.data-feeds-sidebar .trackstatus form {
+  padding-left: 7px;
+  padding-right: 7px;
+  margin-bottom: 5px;
+}
+
+#checkbook-datafeeds-tracking-form {
+  float: left;
+}
+
+#checkbook-datafeeds-tracking-form p {
+  margin-top: 0;
+}
+
+.form-item-tracking-number #edit-tracking-number {
+  width: 140px !important;
+  float: left !important;
+}
+
+.trackstatus {
+  margin-top: 29px;
+}
+
+.trackstatus form input.form-submit {
+  margin-left: 2px;
+}
+
+.data-feeds-sidebar {
+  float: left;
+  margin-right: 20px;
+  width: 200px;
+}
+
+.data-feeds-sidebar h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.data-feeds-sidebar p {
+  margin: 0;
+}
+
+form.checkbook-datafeeds-form {
+  float: left;
+  width: 698px;
+}
+
+form.checkbook-datafeeds-form .form-item,
+#edit-date-filter > .form-item,
+#div_data_source .form-item {
+  float: left;
+  width: auto;
+  clear: none;
+  margin-right: 45px;
+  margin-top: 10px;
+}
+
+#div_data_source fieldset > .form-item[class*="-domain-filter"] {
+
+}
+
+form.checkbook-datafeeds-form #edit-type > .form-item,
+form.checkbook-datafeeds-form #edit-format > .form-item {
+  margin-top: 15px;
+  margin-bottom: -15px;
+}
+
+[id^="edit-datafeeds-"] > .form-item {
+  margin-top: 20px !important;
+  margin-left: 15px;
+}
+
+fieldset.oge-datasource-fieldset {
+  width: 63%;
+  float: right;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.fieldset-legend {
+  position: relative;
+  top: -2px;
+}
+
+fieldset.oge-datasource-fieldset > .form-item {
+  margin-top: 4px !important;
+}
+
+.oge-datasource-fieldset  .js-form-item {
+  margin-left: -2px;
+}
+
+.oge-datasource-fieldset  .form-radio {
+  vertical-align: sub;
+}
+
+#dynamic-filter-data-wrapper #edit-date-filter > .form-item {
+  margin-right: 100px;
+}
+
+form.checkbook-datafeeds-form .datafeed-type {
+  margin-bottom: 10px;
+}
+
+form.checkbook-datafeeds-form .form-actions {
+  float: right;
+  margin-top: 18px;
+  margin-bottom: 5px;
+  clear: both;
+}
+
+#api-landing-page .left,
+#api-landing-page .right {
+  float: left;
+  margin-right: 100px;
+}
+
+#api-landing-page .field-label,
+#edit-columns label,
+.datafield > .form-item > label,
+.datafield.datarange,
+.budget-fieldset .column-right,
+#datefilter fieldset legend,
+#edit-email label {
+  font-weight: bold;
+}
+
+.datafield.datarange .description {
+  font-weight: normal;
+}
+
+#api-landing-page .field-content {
+  margin-bottom: 10px;
+}
+
+form.data-feeds-wizard .column {
+  display: block;
+  float: left;
+  vertical-align: top;
+  width: 318px;
+  padding-top: 1px;
+}
+
+form.data-feeds-wizard .column-right {
+  margin-left: 20px;
+}
+
+form.data-feeds-wizard .datafield {
+  height: 50px;
+  padding-top: 3px;
+}
+
+form.data-feeds-wizard .spending-fieldset select{
+  background-position-y: 8px;
+}
+
+
+form.data-feeds-wizard select.form-select,
+form.data-feeds-wizard input.form-text,
+form.data-feeds-wizard .contracts-fieldset .currentamt .ranges,
+form.data-feeds-wizard .datarange .ranges,
+form.data-feeds-wizard #edit-salary-type {
+  position: relative;
+  width: 178px;
+  float: right;
+}
+
+form.data-feeds-wizard #edit-salary-type {
+  float: right;
+}
+
+form.data-feeds-wizard .ranges input.form-text,
+form.data-feeds-wizard .ranges input.form-date {
+  width: 76px;
+  float: right;
+}
+
+form.data-feeds-wizard .ranges .form-item,
+form.data-feeds-wizard .datarange label,
+form.data-feeds-wizard .datafield > div > label,
+form.data-feeds-wizard #year {
+  float: left;
+  width: auto;
+  max-width: 135px;
+}
+
+form.data-feeds-wizard #edit-date-filter label {
+  float: none;
+}
+
+form.data-feeds-wizard .ranges .form-item label {
+  width: 25px;
+  display: inline-block;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+form.data-feeds-wizard .ranges .form-item label .prime-and-sub-datafeeds {
+  display: none;
+}
+
+form.data-feeds-wizard .year-filters select {
+  width: 75px;
+}
+
+form.data-feeds-wizard .js-form-type-date .description {
+  font-size: 8px;
+  text-align: right;
+  clear: both;
+}
+
+form.data-feeds-wizard .year-filters .ranges .form-item label {
+  width: 25px;
+}
+
+#datefilter fieldset,
+#datefilter fieldset > legend,
+#datefilter fieldset input.form-radio {
+  padding: 0;
+  margin: 0;
+}
+
+#dynamic-columns-wrapper fieldset .form-item,
+fieldset#edit-columns .form-item {
+  max-width: 475px;
+  margin: 0 auto;
+}
+
+.ms-container {
+  position: relative;
+  background: none !important;
+  padding-bottom: 10px;
+}
+
+.ms-container * {
+  box-sizing: content-box;
+}
+
+.ms-selectable {
+  margin: 0 !important;
+}
+
+.ms-selection,
+.form-submit {
+  float: right !important;
+}
+
+.form-submit[id*=edit-budget-submit],
+.form-submit[id*=edit-revenue-submit],
+.form-submit[id*=edit-spending-submit],
+.form-submit[id*=edit-contracts-submit],
+.form-submit[id*=edit-payroll-submit] {
+  float: none !important;
+  margin-right: 7px;
+}
+
+.form-submit#edit-prev,
+.confirmation-page .form-submit {
+  float: left !important;
+  margin-right: 10px;
+}
+
+.confirmation-page .form-submit {
+  margin-right: 0 !important;
+}
+
+.ms-container a.select,
+.ms-container a.deselect {
+  background: url(/themes/custom/nyccheckbook/images/arrow-right.png) no-repeat scroll right center transparent;
+  border: 1px solid #CCCCCC;
+  color: #555555;
+  display: block;
+  left: 196px;
+  padding: 3px 14px 3px 7px;
+  position: absolute;
+  top: 48px;
+  vertical-align: middle;
+  width: 63px;
+}
+
+.ms-container a.deselect {
+  background-image: url(/themes/custom/nyccheckbook/images/arrow-left.png);
+  background-position: left center;
+  top: 96px;
+  padding: 5px 0 5px 14px;
+  width: 70px;
+}
+
+.ms-selectable li.ms-elem-selectable,
+.ms-selection li.ms-elem-selected {
+  border-bottom: 1px #eee solid;
+  padding: 1px 10px;
+  color: #555;
+}
+
+#edit-email input.form-text {
+  width: auto;
+  float: none;
+  display: block;
+}
+
+.form-text.error,
+.form-date.error {
+  border: 2px solid red;
+}
+
+div[aria-label="Error message"] div[role="alert"]{
+  color: #8c2e0b;
+  background-image: url(/themes/custom/nyccheckbook/images/message-error.png);
+  background-position: 8px 8px;
+  background-repeat: no-repeat;
+  background-color: #fef5f1;
+  border: 1px solid #ed541d;
+  padding: 10px 10px 10px 50px;
+}
+
+div[aria-label="Error message"] div[role="alert"] ul{
+  list-style: none;
+  margin-left: 20px;
+}
+
+article[data-history-node-id="299"] a[rel="bookmark"]{
+  display:none;
+}
+
+#datafeeds-rotator {
+  position: absolute;
+  z-index: 1000;
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255,255,255,0.6);
+}
+
+#edit-count legend,
+#edit-email legend {
+  display: none;
+}
+
+ul.ui-autocomplete {
+  max-height: 200px;
+}
+
+ul.ui-autocomplete .ui-menu-item div {
+  padding: 0.2em 0.4em;
+  line-height: 1.5;
+}
+
+label[for="edit-nycha-column-select"] {
+  margin-left: -100px;
+}

@@ -1,0 +1,158 @@
+/*********************************
+***   PAYROLL DETAILS STYLES   ***
+*********************************/
+.page-payroll h2.contract-title {
+  color: #3c5e7c;
+  padding-bottom: 30px;
+  text-align: center;
+  text-transform: none;
+  margin:10px 0px -15px 0px;
+  width:100% !important;
+}
+.page-payroll-search-transactions h2.contract-title {
+  background: none repeat scroll 0 0 transparent;
+  color: #3C5E7C;
+  font-size: 28px;
+  padding-bottom: 0;
+  text-align: left;
+  text-transform: none;
+  margin-bottom: 10px;
+}
+.page-payroll-search-transactions .panel-display.omega-grid.omega-12-onecol{margin:0px;}
+.page-payroll-search-transactions .dataTables_wrapper > div + div{border: 1px solid #CACACA;}
+.page-payroll-search-transactions .dataTables_wrapper,
+.page-payroll-search-transactions .dataTables_wrapper > div + div > div,
+.page-payroll-search-transactions .dataTables_wrapper > div + div + div{border:none;}
+.page-payroll-search-transactions .dataTables_processing{top:-20px;}
+#emp-agency-detail-records th, #emp-agency-detail-records td,
+#emp-agency-detail-records-salaried th, #emp-agency-detail-records-salaried td,
+#emp-agency-detail-records-non-salaried th, #emp-agency-detail-records-non-salaried td,
+#emp-agency-detail-record-table th, #emp-agency-detail-record-table td,
+#emp-agency-detail-records-salaried-table th, #emp-agency-detail-records-salaried-table td,
+#emp-agency-detail-records-non-salaried-table th, #emp-agency-detail-records-non-salaried-table td,
+#payroll-tx-static-content-table th, #payroll-tx-static-content-table td{
+  padding: 10px 5px;
+  white-space: nowrap;
+}
+
+#emp-agency-detail-records th:nth-child(1),
+#emp-agency-detail-records td:nth-child(1),
+#emp-agency-detail-records-salaried td:nth-child(1),
+#emp-agency-detail-records-non-salaried td:nth-child(1) {
+  white-space: nowrap;
+}
+
+#emp-agency-detail-records,
+#emp-agency-detail-records-salaried,
+#emp-agency-detail-records-non-salaried {
+  width: 940px !important;
+}
+#prev-emp-salaried,
+#next-emp-salaried,
+#prev-emp-non-salaried,
+#next-emp-non-salaried{
+  height:50px;
+  width:18px;
+  position: absolute;
+  bottom:130px;
+  z-index: 25;
+}
+#prev-emp-salaried,
+#prev-emp-non-salaried{
+  left:145px;
+  background: url(../../images/NYC-Arrow_left.png) no-repeat scroll;
+  cursor: pointer;
+  top:120px;
+}
+#next-emp-salaried,
+#next-emp-non-salaried{
+  right:125px;
+  background: url(../../images/NYC-Arrow_right.png) no-repeat scroll;
+  cursor: pointer;
+  top:120px;
+
+}
+
+#emp-agency-detail-record-table {
+  width: 650px;
+  margin: auto 175px 15px 245px;
+  color:#5B5B5B;
+  font-size: 13px;
+}
+
+.emp-agency-detail-record{
+  background-color: rgb(255, 255, 255);
+}
+
+.center-align {
+  margin-left:190px !important;
+}
+
+#toggle-employee-salaried,
+#toggle-employee-non-salaried {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+#payroll-tx-static-content-table {
+  width: 600px;
+  margin-left:220px;
+  margin-bottom:15px;
+  color:#5B5B5B;
+  font-size: 13px;
+}
+#nyc-payroll > div.top-chart{
+  margin-top:0px;
+  margin-bottom:31px;
+}
+.page-payroll #nyc-payroll .dataTables_wrapper {
+  border: 1px solid #CACACA;
+}
+.page-payroll #nyc-payroll .page-contract-details .dataTables_wrapper {
+  border: none;
+}
+.payroll_agencytransactions .node-widget{position:relative;}
+
+#payroll-emp-trans-name, #payroll-tx-agency-name {
+  font-size: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+#payroll-emp-trans-name .payroll-label, #payroll-tx-agency-name .payroll-label{
+  font-weight: bold;
+}
+body.page-payroll-employee-transactions .container-12 .block .omega-grid{
+  margin: 0;
+}
+body.page-payroll-employee-transactions #node-widget-310 .dataTables_wrapper{
+  border: none;
+}
+body.page-payroll-employee-transactions #table_310{
+  border-left: 1px solid #CACACA;
+  border-bottom: 1px solid #CACACA;
+  border-right: 1px solid #CACACA;
+}
+
+div.payroll-year-month span.label,
+div.payroll-year-month span.data{
+  font-size: 15px;
+}
+div.payroll-year-month{
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+#payroll-tx-static-content-table .label,
+.emp-agency-detail-record .label {
+  font-weight: bold;
+}
+
+
+/* general font styles */
+a, a:link, a:visited {
+  color: #1F82C9;
+  cursor: pointer;
+  text-decoration:none;
+}
+a:hover{text-decoration:underline;}

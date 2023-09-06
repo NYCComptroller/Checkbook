@@ -1,0 +1,23 @@
+checkbook_faceted_search.ajaxfacetdata:
+  ## /faceted-search/ajax/node/{nid} fails in the current theme.
+  ## Below is the work around
+  path: '/faceted-search/ajax/widget/{nid}'
+  defaults:
+    _controller: '\Drupal\checkbook_faceted_search\Controller\DefaultController::_checkbook_faceted_search_node_ajax'
+  requirements:
+    key: '^[^\?]*$'
+    _permission: 'access content'
+checkbook_faceted_search.node_autocomplete:
+  path: '/faceted-search/ajax/autocomplete/node/{node}'
+  defaults:
+    _controller: '\Drupal\checkbook_faceted_search\Controller\DefaultController::_checkbook_faceted_search_node_autocomplete'
+  requirements:
+    key: '^[^\?]*$'
+    _permission: 'access content'
+checkbook_faceted_search.pagination:
+  path: '/faceted-search/ajax/pagination/{nid}'
+  defaults:
+    _controller: '\Drupal\checkbook_faceted_search\Controller\DefaultController::_checkbook_faceted_search_node_pagination'
+  requirements:
+    key: '^[^\?]*$'
+    _permission: 'access content'

@@ -1,0 +1,76 @@
+search-iframe-alerts:
+  js:
+    js/advanced-search-checkbook-alert.js: { }
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.dialog.ajax
+search-iframe-common:
+  js:
+    js/advanced-search-common.js: { }
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.dialog.ajax
+search-iframe-budget:
+  js:
+    js/advanced-search-budget.js: { }
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.dialog.ajax
+    - checkbook_advanced_search/search-iframe-common
+search-iframe-spending:
+  js:
+    js/advanced-search-spending.js: { }
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.dialog.ajax
+    - checkbook_advanced_search/search-iframe-common
+search-iframe-contracts:
+  js:
+    js/advanced-search-contracts.js: { }
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.dialog.ajax
+    - checkbook_advanced_search/search-iframe-common
+search-iframe-payroll:
+  js:
+    js/advanced-search-payroll.js: { }
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.dialog.ajax
+    - checkbook_advanced_search/search-iframe-common
+search-iframe-revenue:
+  js:
+    js/advanced-search-revenue.js: { }
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.dialog.ajax
+    - checkbook_advanced_search/search-iframe-common
+
+# Search form accordion iframe
+search-iframe:
+  version: 1.0.0
+  css:
+    theme:
+      /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.css: {}
+      css/advanced-search.css: {}
+  js:
+    /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.jquery.js: {}
+    js/advanced-search.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.dialog.ajax
+    - checkbook_advanced_search/search-iframe-common
+    - checkbook_advanced_search/search-iframe-budget
+    - checkbook_advanced_search/search-iframe-spending
+    - checkbook_advanced_search/search-iframe-contracts
+    - checkbook_advanced_search/search-iframe-payroll
+    - checkbook_advanced_search/search-iframe-revenue
+    - checkbook_advanced_search/search-iframe-alerts

@@ -1,0 +1,31 @@
+checkbook_advanced_search.form:
+  path: '/advanced-search'
+  defaults:
+    _title: 'Advanced Search'
+    _controller:  'Drupal\checkbook_advanced_search\Controller\DefaultController::checkbook_advanced_search_display'
+  requirements:
+    _permission: 'access content'
+
+budget.expcategory:
+  path: '/advanced-search/autocomplete/budget/expcategory/{fiscal_year}/{agency}/{dept}'
+  defaults:
+    _controller: 'Drupal\checkbook_advanced_search\Controller\DefaultController::checkbook_advanced_search_budget_expcategory'
+    _title: 'Budget Expense Category'
+  requirements:
+    _permission: 'access content'
+
+budget.budgetcode:
+  path: '/advanced-search/autocomplete/budget/budgetcode/{fiscal_year}/{agency}/{dept}/{expcategory}/{budget_name}/{catastrophic_events}'
+  defaults:
+    _controller: 'Drupal\checkbook_advanced_search\Controller\DefaultController::checkbook_advanced_search_budget_budgetcode'
+    _title: 'Budget Budget Code'
+  requirements:
+    _permission: 'access content'
+
+budget.budgetname:
+  path: '/advanced-search/autocomplete/budget/budgetname/{fiscal_year}/{agency}/{dept}/{expcategory}/{budget_code}/{catastrophic_events}'
+  defaults:
+    _controller: 'Drupal\checkbook_advanced_search\Controller\DefaultController::checkbook_advanced_search_budget_budgetname'
+    _title: 'Budget Budget Name'
+  requirements:
+    _permission: 'access content'

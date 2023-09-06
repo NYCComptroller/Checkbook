@@ -1,0 +1,1267 @@
+<?php
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (c) 2012 – 2023 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
+use Drupal\checkbook_infrastructure_layer\Constants\Common\PageType;
+use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
+use Drupal\checkbook_log\LogHelper;
+use Drupal\checkbook_project\WidgetUtilities\WidgetUtil;
+use Drupal\Component\Utility\Xss;
+use Drupal\data_controller\Common\Object\Converter\Handler\Json2PHPObject;
+use Drupal\data_controller\Datasource\Formatter\Handler\ArrayResultFormatter;
+use Drupal\data_controller\Datasource\Formatter\Handler\SpecialCharacterResultFormatter;
+use Drupal\data_controller\Datasource\Formatter\ResultFormatter;
+use Drupal\data_controller\Datasource\Operator\Handler\WildcardOperatorHandler;
+use Drupal\data_controller_sql\Datasource\Handler\AbstractSQLDataSourceHandler;
+use Drupal\data_controller_sql\Logger\Listener\StatementLogMessageKeeper;
+use Drupal\join_controller\Controller\JoinController_SourceConfiguration;
+use Drupal\widget\Path\WidgetUrlPath;
+
+
+require_once(\Drupal::service('extension.list.module')->getPath('checkbook_project') . "/includes/checkbook_database.inc");
+
+/***************************************/
+/* Implementation of Widget Node Type  */
+/***************************************/
+
+function widget_load($key){
+  return _widget_node_load_file($key);
+}
+
+function _widget_node_load($key, $type='node'){
+  if(str_starts_with(\Drupal::request()->query->get('q'), "admin")){
+    return "";
+  }
+
+  switch ($type) {
+    case 'node':
+      return \Drupal::entityTypeManager()->getStorage('node')->load($key);
+    case 'file':
+      return _widget_node_load_file($key);
+  }
+  return FALSE;
+}
+
+function _widget_node_load_file($key){
+  $node =  new stdClass();
+  $node->type = "widget";
+
+  $files = WidgetUtil::getWidgetJsonPath($key);
+  if(count($files) > 0){
+    $file_names = array_keys($files);
+    $json = file_get_contents($file_names[0]);
+    $node->widget_json =  $json;
+  }
+
+  $node->nid = $key;
+
+  return $node;
+}
+
+function _widget_node_view($key){
+  $node = _widget_node_load_file($key);
+  $node = widget_node_view($node);
+  return $node->content['body']['#markup'];
+}
+
+function widget_parent_node_load($parent_nid){
+  $parent_node =  new stdClass();
+  $files = WidgetUtil::getWidgetJsonPath($parent_nid);
+  if (count($files) > 0) {
+    $file_names = array_keys($files);
+    $json = file_get_contents($file_names[0]);
+    $parent_node->widget_json = $json;
+  }
+  return $parent_node;
+}
+
+function widget_node_load($nodes){
+  if(str_starts_with(\Drupal::request()->query->get('q'), "admin")){
+    return "";
+  }
+
+  foreach($nodes as $nid => $node ){
+    if( $node->type == "widget"){
+      $files = WidgetUtil::getWidgetJsonPath($node);
+      if (count($files) > 0) {
+        $file_names = array_keys($files);
+        $json = file_get_contents($file_names[0]);
+        $node->widget_json = $json;
+      } else {
+        $node->widget_json = $node->body['und'][0]['value'];
+      }
+    }
+  }
+  return FALSE;
+}
+
+function widget_node_validate(&$node) {
+  if (isset($node->type)) {
+    if ($node->type != 'widget') {
+      return;
+    }
+  }
+  widget_config($node);
+  return;
+}
+
+function widget_node_view($node, $nodata = true) {
+  if (isset($node->type)) {
+    if ($node->type != 'widget') {
+      return FALSE;
+    }
+  }
+
+  //make sure configuration is loaded
+  widget_config($node);
+
+  // Handle grivew config updates
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($route_name == 'widget_highcharts.grid_view_widget_popup'){
+    if (isset($node->widgetConfig->gridConfig->adjustWidgetConfig)) {
+      eval($node->widgetConfig->gridConfig->adjustWidgetConfig);
+    }
+
+    $node->widgetConfig->getTotalDataCount = true;
+    $node->widgetConfig->displayType = 'gridview';
+  }
+  //prepare anything we'll need before loading
+  widget_prepare($node);
+
+  //invoke widget specific prepare
+  widget_invoke($node, 'widget_prepare');
+
+  //load data
+  if((!isset($node->widgetConfig->noDataInitialLoad)) || !$nodata ){
+    widget_data($node);
+  }
+
+  if (isset($node->error)) {
+    //dont call the specific module. Display generic error message and return
+    //message needs to be set on the widget configuration. not hardcoded.
+    $errorMsg = 'There was an error processing your request. Please try again in a few minutes.';
+    $node->content['body'] = array('#value' => $errorMsg, '#weight' => 0,);
+    return $node;
+  }
+  //invoke widget specific post-load function
+  if(isset($node->widgetConfig->widgetUpdateJSONConfig)){
+    if($node->widgetConfig->widgetType == 'highcharts'){
+
+      if (!isset($node->widgetConfig->chartConfig->chart)) {
+        $node->widgetConfig->chartConfig->chart = new stdClass();
+      }
+
+      if (!isset($node->widgetConfig->chartConfig->credits)) {
+        $node->widgetConfig->chartConfig->credits = new stdClass();
+      }
+
+      $node->widgetConfig->chartConfig->chart->renderTo = 'node-chart-' . widget_unique_identifier($node);
+      $node->widgetConfig->chartConfig->credits->enabled = false;
+    }
+    @eval($node->widgetConfig->widgetUpdateJSONConfig);
+  }else{
+    widget_invoke($node, 'widget_data');
+  }
+  if (isset($node->widgetConfig->dataOnly)) {
+    $node->content['body'] = array(
+      '#value' => $node->data,
+      '#weight' => 0,
+    );
+  }
+  else {
+    // The final call which invoked widget_data_tables_widget_view and renders twig
+    $val = widget_invoke($node, 'widget_view');
+    if($val !== false) {
+      $node->content['body'] = array(
+        '#markup' => $val,
+        '#weight' => 0,
+      );
+    }
+  }
+  return $node;
+}
+
+/***************************************/
+/* Introduction of Widget Hooks        */
+/***************************************/
+
+function widget_hook(&$node, $hook) {
+  $module = widget_get_types('module', $node);
+  if ($module == 'widget') {
+    $module = 'widget_content'; // Avoid function name collisions.
+  }
+  return \Drupal::moduleHandler()->hasImplementations($hook,$module);
+}
+
+function widget_invoke(&$node, $hook, $a2 = NULL, $a3 = NULL, $a4 = NULL) {
+  if (widget_hook($node, $hook)) {
+    $module = widget_get_types('module', $node);
+    if ($module == 'widget') {
+      $module = 'widget_content'; // Avoid function name collisions.
+    }
+    $function = $module .'_'. $hook;
+    return ($function($node, $a2, $a3, $a4));
+  }
+  return FALSE;
+}
+
+function widget_get_types($op = 'types', $node = NULL, $reset = FALSE) {
+  static $_widget_types, $_widget_names;
+
+  if ($reset || !isset($_widget_types)) {
+    [$_widget_types, $_widget_names] = _widget_types_build();
+  }
+
+  $type = null;
+  if ($node) {
+    if (is_object($node)) {
+      $type = $node->widgetConfig->widgetType;
+    }
+    if (!isset($_widget_types[$type])) {
+      return FALSE;
+    }
+  }
+  switch ($op) {
+    case 'types':
+      return $_widget_types;
+    case 'type':
+      return $_widget_types[$type] ?? FALSE;
+    case 'module':
+      return $_widget_types[$type]->module ?? FALSE;
+    case 'names':
+      return $_widget_names;
+    case 'name':
+      return $_widget_names[$type] ?? FALSE;
+  }
+  return FALSE;
+}
+
+function _widget_types_build() {
+  $_widget_types = array();
+  $_widget_names = array();
+
+  $info_array = Drupal::moduleHandler()->invokeAll('widget_metadata');
+  foreach ($info_array as $type => $info) {
+    $info['type'] = $type;
+    $_widget_types[$type] = (object) _widget_type_set_defaults($info);
+    $_widget_names[$type] = $info['name'];
+  }
+
+  asort($_widget_names);
+  return array($_widget_types, $_widget_names);
+}
+
+function _widget_type_set_defaults($info) {
+  //currently we have no default values to set
+  return $info;
+}
+
+/***************************************/
+/* Default Implementation of Core      */
+/***************************************/
+
+function widget_prepare($node) {
+  //filter all the request variables
+  $request_vars = (array)\Drupal::request()->query->get('q');
+
+  foreach ($request_vars as $key => $val) {
+    $request_vars[$key] = $val;
+  }
+
+  if (\Drupal::request()->query->get('data') !== NULL) {
+    $node->widgetConfig->dataOnly = TRUE;
+  }
+
+  if(isset($node->widgetConfig->widgetPreprocessJSON)){
+    eval($node->widgetConfig->widgetPreprocessJSON);
+  }
+
+  //copy request params and apply default and additional params
+  //$node->widgetConfig->requestParams = $_REQUEST;
+  if (isset($node->widgetConfig->cleanURLParameters)) {
+    $urlParams = $node->widgetConfig->cleanURLParameters;
+    //$urlPath = $_GET['q'];
+    //$urlPath = \Drupal::request()->query->get('q');
+    $urlPath = WidgetUrlpath::getRequestPathForWidget($node->nid,$node->widgetConfig->widgetType);
+    //@ToDo: check if possible to remove urldecode (was added because some parameters used in sql query was having %20 for space - ticket NYCCHKBK-12699)
+    $pathParams = explode('/', $urlPath);
+
+    for($i = 0; $i < count($pathParams); $i = $i + 1) {
+      foreach ($urlParams as $up) {
+        $pathParam = $pathParams[$i];
+        if ($up != null) {
+          if ($up == $pathParams[$i]) {
+            $up = isset($node->widgetConfig->urlParamMap) ? $node->widgetConfig->urlParamMap->$up : $up;
+            if (isset($pathParams[$i + 1]) && $pathParams[$i + 1] != 'all') {
+              $pathParams[$i + 1] = _replaceSpecialCharactersDecode($pathParams[$i + 1]);
+              $node->widgetConfig->requestParams[$up] = Xss::filter(htmlspecialchars_decode($pathParams[$i + 1]));
+              $node->widgetConfig->originalRequestParams[$pathParam] =Xss::filter(htmlspecialchars_decode($pathParams[$i + 1]));
+            }
+            break;
+          }
+        }
+      }
+    }
+
+    if(isset($node->widgetConfig->allowRequestParams)){
+      foreach($node->widgetConfig->allowRequestParams as $param){
+        $index = array_search($param,$pathParams);
+        if( $index !== FALSE && ($pathParams[($index + 1)] != '') ){
+          $node->widgetConfig->allowRequestParamValues[$param] = $pathParams[($index + 1)];
+        }
+      }
+    }
+  }
+
+  if (isset($node->widgetConfig->urlParamMap) && is_array(get_object_vars($node->widgetConfig->urlParamMap))) {
+    foreach($node->widgetConfig->urlParamMap as $key=>$value){
+      if(!isset($node->widgetConfig->originalRequestParams[$key])) {
+        unset($node->widgetConfig->urlParamMap->$key);
+      }
+    }
+  }
+  if(isset($node->widgetConfig->requestParams)) {
+    prepare_dataset_parameters($node->widgetConfig->requestParams, $node->widgetConfig);
+  }
+  if(isset($node->widgetConfig->preProcessConfiguration)){
+   eval($node->widgetConfig->preProcessConfiguration);
+  }
+
+  if (isset($node->widgetConfig->model)) {
+    if (is_array($node->widgetConfig->model->series)) {
+      foreach ($node->widgetConfig->model->series as $series) {
+        if (isset($series->preProcessConfiguration)) {
+          eval($node->widgetConfig->preProcessConfiguration);
+        }
+      }
+    }
+  }
+}
+
+function prepare_dataset_parameters(&$requestParameters, $configuration,$widgetConfig = null) {
+  // remove excluded params
+  if (isset($configuration->excludeParams)) {
+    foreach ($configuration->excludeParams as $param) {
+      if (isset($requestParameters[$param])) {
+        unset($requestParameters[$param]);
+      }
+    }
+  }
+
+  if (isset($configuration->allowedParams)) {
+    foreach ($requestParameters as $key => $value) {
+      if (!in_array($key, $configuration->allowedParams)) {
+        unset($requestParameters[$key]);
+      }
+    }
+  }
+
+  if (isset($configuration->defaultParameters)) {
+    foreach ($configuration->defaultParameters as $key => $value) {
+      if (!isset($requestParameters[$key])) {
+        $key = _update_dataset_datasource($key, $configuration->keepOriginalDatasource??null);
+        $requestParameters[$key] = $value;
+      }
+    }
+  }
+
+  if (isset($configuration->additionalParameters)) {
+    foreach ($configuration->additionalParameters as $key => $value) {
+      $key = _update_dataset_datasource($key,$configuration->keepOriginalDatasource??null);
+      $requestParameters[$key] = $value;
+    }
+  }
+  if(isset($configuration->seriesURLParamMap) && is_array(get_object_vars($configuration->seriesURLParamMap))){
+    foreach($configuration->seriesURLParamMap as $key=>$value){
+      if(!isset($widgetConfig->originalRequestParams[$key])){
+        unset($configuration->seriesURLParamMap->$key);
+      } else {
+        if (in_array($value, $configuration->allowedParams) || !isset($configuration->allowedParams)) {
+          $requestParameters[$value] = $widgetConfig->originalRequestParams[$key];
+          unset($requestParameters[$key]);
+        }
+      }
+    }
+  }
+}
+
+function load_widget_data($node, $resultFormatter=null) {
+  $config = $node->widgetConfig;
+  if (isset($config->static_data)) {
+    $node->data = $config->static_data;
+    return;
+  }
+
+  $dataQueryController = data_controller_get_instance();
+  try {
+    // preparing default data controller parameters
+    $parameters = $config->requestParams ?? null;
+    if(is_array($parameters)) {
+      foreach ($parameters as $key => $value) {
+        if (!isset($value)) {
+          unset($parameters[$key]);
+          continue;
+        }
+        if (!is_array($value)) {
+          $parameters[$key] = explode("~", $value);
+        }
+      }
+    }
+
+    //update
+    $ajaxRequest = RequestUtilities::get('ajax');
+    if(isset($config->adjustParameters)){
+      @$parameters =  eval($config->adjustParameters);
+    } elseif (isset($config->autocompleteField) && ('autocomplete' == $ajaxRequest)
+      && isset($parameters[$config->autocompleteField]) && $parameters[$config->autocompleteField]) {
+      /**
+       * AUTOCOMPLETE
+       */
+      $autocomplete_value = $parameters[$config->autocompleteField][0];
+      $parameters[$config->autocompleteField] = data_controller_get_operator_factory_instance()->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, [
+        pg_escape_string(htmlspecialchars_decode($autocomplete_value)),
+        FALSE,
+        TRUE,
+      ]);
+    }
+
+    if(isset($config->adjustColumns)){
+      $config->columns =  eval($config->adjustColumns);
+    }
+
+    $updatedParameters = array();
+    if (is_array($parameters)) {
+      foreach($parameters as $key=>$value){
+        $key = _update_dataset_datasource($key,isset($node->widgetConfig->keepOriginalDatasource));
+        $updatedParameters[$key] = $value;
+      }
+    }
+    $parameters = $updatedParameters;
+
+    //$config->logicalOrColumns
+    if(isset($config->logicalOrColumns)) {
+      $parameters["logicalOrColumns"] = $config->logicalOrColumns;
+    }
+    if(isset($config->sortSourceByNull)){
+      $parameters["sortSourceByNull"]= $config->sortSourceByNull;
+    }
+
+    //if % (single or repeating) is passed as a parameter,
+    //this field needs to be ignored in an ilike/like
+    if(PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
+      foreach($parameters as $param_key => $param_value){
+        if(!is_array($param_value)) continue;
+        $operator_handler_class = is_object($param_value[0]) ? get_class($param_value[0]) : null;
+        if($operator_handler_class == "WildcardOperatorHandler") {
+          foreach($param_value[0] as $key => $value) {
+            if($key == "wildcard" && preg_match("/^%*$/",$value)) {
+              $data_controller_instance = data_controller_get_operator_factory_instance();
+              $parameters[$param_key] = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME,'');
+              continue;
+            }
+          }
+        }
+      }
+    }
+    //Do not move this code before adjusting parameters.
+    //Widget config may be updated.
+    $isList = isset($config->useList);
+    $datasetName = _update_dataset_datasource($config->dataset ?? null,isset($node->widgetConfig->keepOriginalDatasource));
+    $config->columns_datasource = $config->columns_datasource ?? null;
+    $columns = _update_columns_by_datasource($config->columns ?? null, $config->columns_datasource,isset($config->keepOriginalDatasource));
+
+    $orderBy = $config->orderBy ?? null;
+    $startWith = $config->startWith ?? 0;
+    $limit = $config->limit ?? null;
+
+
+    //Currently this is for list type of dataSets. For cube's more changes are required
+    if(isset($config->generateDBQuery)){
+      $generateDBQuery = widget_get_db_query($isList, $datasetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
+      $node->data = $generateDBQuery;
+      LogHelper::log_debug('Generate Db Query:' . $generateDBQuery);
+      return;
+    }
+
+    // FIXME v2. use 'model'-only configuration
+    if (isset($config->model)) {
+      $joinController = NULL;
+      $joinMethod = isset($config->model->join) ? $config->model->join->method : NULL;
+      $joinColumns = array();
+      if(isset($config->model->join->columns)){
+        $config->columns_datasource = $config->columns_datasource ?? null;
+        $joinColumns = _update_columns_by_datasource($config->columns ?? null, $config->columns_datasource ?? null,$config->keepOriginalDatasource ?? null);
+      }else{
+        $joinColumns = NULL;
+      }
+      $joinColumns = $config->model->join->columns ?? NULL;
+      if (isset($joinMethod)) {
+        $classname = "\\Drupal\\join_controller\\Controller\\Handler\\" . $joinMethod . 'JoinController';
+        //require_once(\Drupal::service('extension.list.module')->getPath('join_controller') . "/controller/handler/".$classname.'.php');
+        //require_once(realpath(Drupal::service('extension.path.resolver')->getPath('module', 'join_controller')) . "/controller/handler/" . $classname . '.php');
+        if (isset($joinColumns)) {
+          if (is_array($joinColumns)) {
+            if (count($joinColumns) == 0) {
+              throw new Exception("Join columns are not defined");
+            }
+          } else {
+            $joinColumns = array($joinColumns);
+          }
+          $joinController = new $classname($joinColumns);
+        } else {
+          $joinController = new $classname();
+        }
+      }
+
+
+
+      // preparing dataset formatter which needs to be used to load data
+      $datasetFormatter = isset($joinController) ? NULL : $resultFormatter;
+
+      $joinedRecords = NULL;
+      foreach ($config->model->series as $serie) {
+        // preparing serie data controller parameters
+        $isSerieList = $serie->useList ?? $isList;
+        $serieDatasetName = $serie->dataset ?? $datasetName;
+
+        $serieDatasetName = _update_dataset_datasource($serieDatasetName,$node->widgetConfig->keepOriginalDatasource ?? null);
+        $serieColumns = array();
+        if(isset($serie->columns)){
+          foreach($serie->columns as $column){
+            $serieColumns[] = _update_dataset_datasource($column, $node->widgetConfig->keepOriginalDatasource ?? null);
+          }
+        }
+        $serieColumns = isset($serieColumns)
+          ? (isset($columns) ? array_merge($columns, $serieColumns) : $serieColumns)
+          : $columns;
+        $serieParameters = $parameters;
+        prepare_dataset_parameters($serieParameters, $serie,$node->widgetConfig);
+
+        if(isset($serie->seriesDefaultParameters)){
+          foreach($serie->seriesDefaultParameters as $key => $value){
+            if (!isset($serieParameters[$key])) {
+              $serieParameters[$key] = explode("~",$value);;
+            }
+          }
+        }
+        //if($serieDatasetName == "checkbook_oge:pending_contracts"){
+        //  $serieDatasetName = "checkbook:pending_contracts";
+        //  var_dump($serieDatasetName);
+        //}
+
+        // getting data using data controller
+        if(is_array($serieParameters)) {
+          foreach ($serieParameters as $key => $value) {
+            if (!isset($value)) {
+              unset($serieParameters[$key]);
+              continue;
+            }
+            if (!is_array($value)) {
+              $serieParameters[$key] = explode("~", $value);
+            }
+          }
+        }
+
+        if(isset($serie->adjustSerieParameters)){
+          $serieParameters =  eval($serie->adjustSerieParameters);
+        }
+        if(isset($serie->adjustSerieColumns)){
+          $serieColumns =  eval($serie->adjustSerieColumns);
+        }
+        // log_debug("Serie parameters");
+        // log_debug($serieParameters);
+        $serieOrderBy = $serie->orderBy ?? $orderBy;
+        $serieStartWith = $serie->startWith ?? $startWith;
+        $serieLimit = $serie->limit ?? $limit;
+
+        if(isset($serie->widgetDataLoader)){
+          eval($serie->widgetDataLoader);
+          $records = $node->data;
+        }else {
+          $records = $isSerieList
+            ? $dataQueryController->queryDataset(
+              $serieDatasetName,
+              $serieColumns, $serieParameters, $serieOrderBy,
+              $serieStartWith, $serieLimit,
+              $resultFormatter)
+            : $dataQueryController->queryCube(
+              $serieDatasetName,
+              $serieColumns, $serieParameters, $serieOrderBy,
+              $serieStartWith, $serieLimit,
+              $resultFormatter);
+        }
+        $node->nodeAdjustedParamaterConfig[] = $parameters;
+        // post-processing records
+        if (isset($records) && (isset($serie->columnPrefix) || isset($serie->columnSuffix))) {
+          foreach ($records as &$record) {
+            $updatedRecord = NULL;
+            foreach ($record as $columnName => $value) {
+              $newColumnName = $columnName;
+              if (!isset($joinColumns) || (!in_array($columnName, $joinColumns))) {
+                $newColumnName =
+                  ($serie->columnPrefix ?? '')
+                  . $columnName
+                  . (isset($serie->columnSuffix) ? $serie->columnPrefix : '');
+              }
+              $updatedRecord[$newColumnName] = $value;
+            }
+            $record = $updatedRecord;
+          }
+        }
+
+        if (isset($joinedRecords)) {
+          // joining two datasets
+          if (isset($joinController)) {
+            $sourceConfigurationA = new JoinController_SourceConfiguration($joinedRecords, $config->model->join->columns ?? null);
+            $sourceConfigurationB = new JoinController_SourceConfiguration($records, $config->model->join->columns ?? null);
+            $joinedRecords = $joinController->join($sourceConfigurationA, $sourceConfigurationB)->data;
+          } else {
+            throw new Exception("Join method is not defined for multi-dataset widget");
+          }
+        } else {
+          $joinedRecords = $records;
+        }
+      }
+
+      // formatting data if necessary
+      /*if (isset($joinedRecords) && !isset($datasetFormatter) && isset($resultFormatter)) {
+          $records = NULL;
+          foreach ($joinedRecords as $joinedRecord) {
+              $resultFormatter->format($callcontext, $records, $joinedRecord);
+          }
+          $joinedRecords = $records;
+      }*/
+
+      $node->data = $joinedRecords;
+      //log_debug('Joined records:');
+      //log_debug($joinedRecords);
+    } else {
+      if(!isset($node->widgetConfig->getData) || (isset($node->widgetConfig->getData) && $node->widgetConfig->getData)){
+        //Alter Query - For now, this configuration is compatible only for widgets without facets
+        if(isset($node->widgetConfig->queryAlterFunction)){
+          $query = widget_get_db_query($isList, $datasetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
+          $alterFunction = $node->widgetConfig->queryAlterFunction;
+          $query = eval($alterFunction);
+          $node->data = _checkbook_project_execute_sql_by_data_source($query,_get_current_datasource());
+        }else {
+          $node->data = $isList
+            ? $dataQueryController->queryDataset(
+              $datasetName,
+              $columns, $parameters, $orderBy,
+              $startWith, $limit,
+              $resultFormatter)
+            : $dataQueryController->queryCube(
+              $datasetName,
+              $columns, $parameters, $orderBy,
+              $startWith, $limit,
+              $resultFormatter);
+        }
+        $node->nodeAdjustedParamaterConfig = $parameters;
+      }
+      if (isset($config->getTotalDataCount)) {
+        LogHelper::log_info('Count for node # '.$node->nid);
+        /**
+         * Added config setting in the widget json, if set, the count will only consider distinct columns
+         */
+        if(isset($node->widgetConfig->totalDataColumnConfig) || isset($node->widgetConfig->queryAlterFunction)) {
+
+          $distinctColumnArray = array();
+          $distinctMappedColumnsArray  = array();
+
+          if(is_array($node->widgetConfig->totalDataColumnConfig)) {
+            $totalDataColumnConfig = $node->widgetConfig->totalDataColumnConfig;
+            foreach($totalDataColumnConfig as $columnConfig) {
+              $distinctColumnArray[] = $columnConfig->distinctColumn;
+              $distinctMappedColumnsArray[] = $columnConfig->distinctColumnMap;
+            }
+          }
+          else {
+            $distinctColumnArray[] = $node->widgetConfig->totalDataColumnConfig->distinctColumn;
+            $distinctMappedColumnsArray[] = $node->widgetConfig->totalDataColumnConfig->distinctColumnMap;
+          }
+
+          $distinctColumns = $columns;
+          foreach($distinctColumns as $key => $value) {
+            if(!in_array($value,$distinctColumnArray)) {
+              unset($distinctColumns[$key]);
+            }
+          }
+
+          $query = widget_get_count_db_query($isList, $datasetName, $distinctColumns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
+          //Alter Query - For now, this configuration is compatible only for widgets without facets
+          if(isset($node->widgetConfig->queryAlterFunction)) {
+            $alterFunction = $node->widgetConfig->queryAlterFunction;
+            $query = eval($alterFunction);
+          }else{
+            $replace_string = "(SELECT ";
+            $query = substr_replace($query, $replace_string . "DISTINCT ", strpos($query, $replace_string), strlen($replace_string));
+          }
+
+          $results = _checkbook_project_execute_sql_by_data_source($query,_get_current_datasource());
+          $node->totalDataCount = $results[0]['record_count'];
+        } else {
+          $node->totalDataCount = $isList
+            ? $dataQueryController->countDatasetRecords(
+              $datasetName, $parameters)
+            : $dataQueryController->countCubeRecords(
+              $datasetName,
+              $columns, $parameters,
+              $resultFormatter);
+          $node->nodeAdjustedParamaterConfig = $parameters;
+        }
+      }
+
+
+      if (property_exists($config, 'totalAggregateColumns') && $config->totalAggregateColumns) {
+        foreach($config->totalAggregateColumns as $aggregateColumn){
+          $params = $parameters;
+          $ds = $datasetName;
+          $column = $aggregateColumn;
+          //Handle multiple cube joins
+          if (str_contains($aggregateColumn, '@')) {
+            $col_array = explode("@",$aggregateColumn);
+            $column = $col_array[0];
+            $ds = $col_array[1];
+          }
+          //Adjust aggregate parameters before sql call
+          if(isset($config->adjustTotalAggregateColumnsParameters)){
+            $params =  eval($config->adjustTotalAggregateColumnsParameters);
+          }
+          $result = $dataQueryController->queryCube($ds,array($column), $params, $orderBy,$startWith, $limit,$resultFormatter);
+          $node->widgetConfig->totalAggregateColumns[$aggregateColumn] = $result[0][$column];
+        }
+      }
+
+    }
+    $node->data = _update_node_data($node->data,isset($node->widgetConfig->keepOriginalDatasource));
+    if(isset($node->widgetConfig->transformationPHP)){
+      @$node->data = eval($node->widgetConfig->transformationPHP);
+    }
+  } catch(Exception $e) {
+    //var_dump($e);//(enable this to view log message with back trace infortmation)
+    /// FIXME Commented out printing of $e because it generates 100+ KBs in a log file
+    LogHelper::log_error("Error getting data from the controller: \n" . $e->getMessage()/*, $e*/);
+    $node->error = $e;
+    return;
+  }
+}
+
+function widget_get_count_db_query($isList, $dataSetName, $columns = NULL, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL){
+  $sqlQuery = NULL;
+
+  //Since we are disabling execution mode below, need to make sure meta model is loaded.
+  data_controller_get_metamodel();
+  $executionMode = AbstractSQLDataSourceHandler::$STATEMENT_EXECUTION_MODE;
+  try {
+    AbstractSQLDataSourceHandler::$STATEMENT_EXECUTION_MODE = AbstractSQLDataSourceHandler::STATEMENT_EXECUTION_MODE__IGNORE;
+    StatementLogMessageKeeper::reset();
+
+    $controller = data_controller_get_instance();
+    if($isList){
+      $controller->countDatasetRecords($dataSetName,$parameters);
+    }else{
+      $controller->countCubeRecords($dataSetName,$columns, $parameters,$resultFormatter);
+    }
+    $sqlQuery = $isList ? StatementLogMessageKeeper::$statements['*.count'][0] : StatementLogMessageKeeper::$statements['*.count'][0];
+  }
+  catch (Exception $e) {
+    AbstractSQLDataSourceHandler::$STATEMENT_EXECUTION_MODE = $executionMode;
+    throw $e;
+  }
+  AbstractSQLDataSourceHandler::$STATEMENT_EXECUTION_MODE = $executionMode;
+  return $sqlQuery;
+}
+
+
+function widget_get_db_query($isList, $dataSetName, $columns = NULL, $parameters = NULL, $orderBy = NULL, $startWith = 0, $limit = NULL, ResultFormatter $resultFormatter = NULL){
+  $sqlQuery = NULL;
+
+  //Since we are disabling execution mode below, need to make sure meta model is loaded.
+  data_controller_get_metamodel();
+  $executionMode = AbstractSQLDataSourceHandler::$STATEMENT_EXECUTION_MODE;
+  try {
+    AbstractSQLDataSourceHandler::$STATEMENT_EXECUTION_MODE = AbstractSQLDataSourceHandler::STATEMENT_EXECUTION_MODE__IGNORE;
+    StatementLogMessageKeeper::reset();
+
+    $controller = data_controller_get_instance();
+    if($isList){
+      $controller->queryDataset($dataSetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
+    }else{
+      $controller->queryCube($dataSetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
+    }
+    $sqlQuery = $isList ? StatementLogMessageKeeper::$statements['dataset.query'][0] : StatementLogMessageKeeper::$statements['cube.query'][0];
+
+   }
+  catch (Exception $e) {
+    AbstractSQLDataSourceHandler::$STATEMENT_EXECUTION_MODE = $executionMode;
+    throw $e;
+  }
+  AbstractSQLDataSourceHandler::$STATEMENT_EXECUTION_MODE = $executionMode;
+  return $sqlQuery;
+}
+
+function widget_data(&$node)
+{
+  $config = $node->widgetConfig ?? null;
+  $requestParams = $config->requestParams ?? null;
+  $originalReqParams = $config->originalRequestParams ?? null;
+  if (isset($requestParams)) {
+    foreach ($requestParams as $key => $value) {
+      $requestParams[$key] = pg_escape_string(htmlspecialchars_decode($value));
+    }
+  }
+  if (isset($requestParams)) {
+    $config->requestParams = $requestParams;
+  }
+
+  if (isset($originalReqParams)) {
+    foreach ($originalReqParams as $key => $value) {
+      $originalReqParams[$key] = pg_escape_string(htmlspecialchars_decode($value));
+    }
+    $config->originalRequestParams = $originalReqParams;
+  }
+
+
+  $resultFormatter = new SpecialCharacterResultFormatter(NULL, new ArrayResultFormatter());
+  if (isset($node->widgetConfig->exportData)) {
+    //During data export we do not want to escape data.
+    //If really required check for another formatter
+    $resultFormatter = null;
+  }
+
+  if (isset($node->widgetConfig->widgetDataLoader)) {
+    eval($node->widgetConfig->widgetDataLoader);
+
+  } elseif (isset($node->widgetConfig->dataset) || isset($node->widgetConfig->model)) {
+    LogHelper::log_notice("Loading widget node # " . $node->nid);
+    load_widget_data($node, $resultFormatter);
+  }
+
+  if (isset($node->widgetConfig->flattenRows)) {
+    //convert grouped results into flattened result array
+    if (isset($node->data)) {
+      $flattenedData = array();
+      foreach ($node->data as $rowKey => $row) {
+        $flattenedRow = array();
+        //put group by column into flattened row
+        $flattenedRow[$node->widgetConfig->flattenRows->groupByColumn] = $rowKey;
+
+        foreach ($row as $innerRow) {
+          //calculate discriminator value
+          $discriminatorValue = $innerRow[$node->widgetConfig->flattenRows->discriminatorColumn];
+          //put all other columns into flattened array with discriminator value prepended
+          foreach ($innerRow as $colName => $colVal) {
+            if (($colName == $node->widgetConfig->flattenRows->groupByColumn) || ($colName == $node->widgetConfig->flattenRows->discriminatorColumn)) {
+              continue;
+            }
+            $flattenedRow[$discriminatorValue . '_' . $colName] = $colVal;
+          }
+        }
+        $flattenedData[] = $flattenedRow;
+      }
+      $node->data = $flattenedData;
+    }
+
+  }
+
+  if (isset($node->widgetConfig->derivedColumns)) {
+    foreach ($node->widgetConfig->derivedColumns as $derivedColumnName => $derivedColumnDefinition) {
+      $flag = property_exists($derivedColumnDefinition, 'visibility_flag') ? $derivedColumnDefinition->visibility_flag : null;
+      $visibility_flag = check_node_flag_visibilty($flag, $node);
+      if (isset($node->data) && is_array($node->data) && $visibility_flag) {
+        foreach ($node->data as $rowKey => $row) {
+          $result = calculateDerivedCell($row, $node->data, $derivedColumnDefinition, $node);
+          $node->data[$rowKey][$derivedColumnName] = $result;
+          if (isset($derivedColumnDefinition->saveInConfig)) {
+            $node->widgetConfig->$derivedColumnName = $result;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+/**
+ * check if a given flag is set on the node. -flag_name with set visibilty to false, flag_name and empty value will set visibility to true.
+ * @param $flag
+ * @param $node
+ * @return bool
+ */
+function check_node_flag_visibilty($flag,$node){
+
+  $visibility_flag = true;
+  if(isset($flag)){
+    if($flag[0] == "-"){
+
+      $visibility_flag_name = substr($flag,1);
+      $visibility_flag = (!isset($visibility_flag_name) or $node->$visibility_flag_name == true   ) ? false : true;
+    }else{
+      $visibility_flag_name = $flag;
+      //var_dump($visibility_flag_name);
+      //var_dump($node->$visibility_flag_name);
+      $visibility_flag = (!isset($visibility_flag_name) or $node->$visibility_flag_name == true   ) ? true : false;
+    }
+
+  }
+  return $visibility_flag;
+}
+
+function calculateDerivedCell($row, $fulldata, $derivedColumnDefinition,$node) {
+  if (empty($derivedColumnDefinition->type)) {
+    $derivedColumnDefinition->type = 'default';
+  }
+  switch($derivedColumnDefinition->type) {
+    default:
+      $expression = $derivedColumnDefinition->expression;
+      return eval("return $expression;")??null;
+  }
+}
+
+/**
+ * @param $node
+ * @return mixed|object
+ */
+function widget_config($node) {
+  //save
+  if (isset($node->widgetConfig->uid)) {
+    $savedUid = $node->widgetConfig->uid;
+  }
+  if (isset($node->widgetConfig->additionalParameters)) {
+    $savedAdditionalParameters = $node->widgetConfig->additionalParameters;
+  }
+
+  $FUNCTION_START = '<function>';
+  $FUNCTION_END = '</function>';
+  $FUNCTION_DELIMITER = '##';
+  $FUNCTIONNAME_DELIMITER = '^^';
+
+  if(isset($node->widget_json)) {
+    $functionStart = strpos($node->widget_json, $FUNCTION_START);
+    if ($functionStart != false) {
+      $functionEnd = strpos($node->widget_json, $FUNCTION_END);
+      $functions = substr($node->widget_json, $functionStart + mb_strlen($FUNCTION_START), $functionEnd - $functionStart - mb_strlen($FUNCTION_START));
+      $funcList = explode($FUNCTION_DELIMITER, $functions);
+      $functionMap = array();
+      foreach ($funcList as $jsFunction) {
+        $keyVal = explode($FUNCTIONNAME_DELIMITER, $jsFunction);
+        $functionMap[str_replace("\r\n", "", $keyVal[0] ?? null)] = $keyVal[1] ?? null;
+      }
+      unset($jsFunction);
+      $node->jsFunctions = $functionMap;
+      $json = str_replace($FUNCTION_START . $functions . $FUNCTION_END, '', $node->widget_json);
+
+    } else {
+      $json = $node->widget_json;
+    }
+
+    $converter = new Json2PHPObject();
+    $node->widgetConfig = $converter->convert($json);
+  }
+  //restore
+  if (isset($savedUid)) {
+    $node->widgetConfig->uid = $savedUid;
+  }
+  if (isset($savedAdditionalParameters)) {
+    $node->widgetConfig->additionalParameters = $savedAdditionalParameters;
+  }
+  if(isset($node->widgetConfig->parentNid)) {
+    $node->widgetConfig = widget_merge_parent_node_config($node);
+  }
+  return $node->widgetConfig ?? null;
+}
+
+function widget_merge_parent_node_config($node){
+  $parent_nid = $node->widgetConfig->parentNid ?? null;
+  if($parent_nid > 0){
+    $parent_node = widget_parent_node_load($parent_nid);
+    widget_config($parent_node);
+
+    // Added to resolve the error messages produce when running cron.
+    // The messages indicated that under unknown conditions this was being run with empty parent_node.
+    // A Null check on $parent_nid might be a viable option?
+    if (!is_null($parent_node->widgetConfig)) {
+      if (!is_null($node->widgetConfig)) {
+        return widget_merge_config($parent_node->widgetConfig, $node->widgetConfig);
+      } else {
+        return $parent_node->widgetConfig;
+      }
+
+    } else {
+      if (!is_null($node->widgetConfig)) {
+        return $node->widgetConfig;
+      } else {
+        return null;
+      }
+    }
+
+   // return widget_merge_config($parent_node->widgetConfig, $node->widgetConfig);
+  }else{
+    return $node->widgetConfig;
+  }
+}
+
+function widget_merge_config($parent_config, $child_config){
+  $child_config->cleanURLParameters = $parent_config->cleanURLParameters??null;
+  $child_config->cleanURLParameters[] = $child_config->autocompleteParamName??null;
+
+  // During cron runs, this parent_config is being hit with empty parent_config values.
+  if (is_null($parent_config->paramTypeConfig)) {
+    $parent_config->paramTypeConfig = new stdClass();
+  }
+  $child_config->paramTypeConfig = $parent_config->paramTypeConfig;
+  $child_config->preProcessConfiguration = $parent_config->preProcessConfiguration ?? null;
+  if(isset($child_config->widgetConfig->adjustFacetOptions)){
+    eval($child_config->widgetConfig->adjustFacetOptions);
+  }
+  $autocompleteParamName = $child_config->autocompleteParamName??null;
+  if(isset($autocompleteParamName)){
+  //if(isset($autocompleteParamName) && isset($child_config->paramTypeConfig)){
+    $child_config->paramTypeConfig->$autocompleteParamName = "autocomplete";
+  }
+  $urlParameterName = $child_config->urlParameterName;
+
+  $paramNameType = $child_config->urlParameterNameType ?? 'ne';
+  $child_config->paramTypeConfig->$urlParameterName = match ($paramNameType) {
+    'eqtext' => "neqignorecase",
+    'capitalize' => "necapitalize",
+    default => "ne",
+  };
+
+  if (isset($child_config->urlParamMap) && $child_config->urlParamMap) {
+    foreach ($child_config->urlParamMap as $key => $value) {
+      $parent_config->urlParamMap->$key = $value;
+    }
+  }
+
+  $child_config->urlParamMap = $parent_config->urlParamMap;
+  $autocompleteParamName = $child_config->autocompleteParamName ?? null;
+  if(isset($autocompleteParamName)){
+    $child_config->urlParamMap->$autocompleteParamName = $child_config->autocompleteField;
+  }
+
+  if(isset($child_config->urlParameterType) && ($child_config->urlParameterType == "rangeid" || $child_config->urlParameterType == "rangeid2" || $child_config->urlParameterType == "rangeid3")){
+    if(($key = array_search($urlParameterName, $child_config->cleanURLParameters)) !== false) {
+      unset($child_config->cleanURLParameters[$key]);
+    }
+  }
+
+  if(!isset($child_config->dataset)){
+    $child_config->dataset = $parent_config->dataset;
+  }
+  if(!isset($child_config->logicalOrColumns)){
+    $child_config->logicalOrColumns = $parent_config->logicalOrColumns ?? null;
+  }
+  if(!isset($child_config->sortSourceByNull)){
+    $child_config->sortSourceByNull= $parent_config->sortSourceByNull ?? null;
+  }
+
+  return (object) $child_config;
+}
+
+
+/**
+ * Returns JSON file after merging in the js functions
+ * @param $node
+ * @param $phpArray
+ * @return false|mixed|string
+ */
+function widget_mergeJSFunctions($node, $phpArray) {
+  $PLACEHOLDER_START = '"function":"';
+  $PLACEHOLDER_END = '"';
+
+  $json = json_encode($phpArray);
+  if (!$json) {
+    $error = json_last_error_msg();
+    LogHelper::log_warn('Could not encode json:: '.$error);
+  }
+
+  if (isset($node->jsFunctions)) {
+    foreach ($node->jsFunctions as $key => $value) {
+      $replace = $PLACEHOLDER_START. trim($key) . $PLACEHOLDER_END;
+      $json = str_replace($replace, $value, $json);
+    }
+  }
+  //dsm($json);
+  return $json;
+}
+/***************************************/
+/* Functions to support same widget    */
+/* on the same page                    */
+/***************************************/
+
+function widget_set_uid(&$node, $uid) {
+  $node->widgetConfig->uid = $uid;
+}
+
+function widget_add_additional_parameters(&$node, $parameters) {
+  $node->widgetConfig->additionalParameters = $parameters;
+}
+
+/***************************************/
+/* Common naming functions             */
+/***************************************/
+
+function widget_unique_identifier($node) {
+  $uid = $node->nid;
+  if (isset($node->widgetConfig->uid)) {
+    $uid .= "_" . $node->widgetConfig->uid;
+  }
+  return $uid;
+}
+
+function widget_get_div_name($node) {
+  return "widgetdiv" . widget_unique_identifier($node);
+}
+
+function widget_get_widget_callback_function_name($node) {
+  return "widget" . widget_unique_identifier($node) . "Callback";
+}
+
+function widget_get_updated_data_function_name($node) {
+  return "widget" . widget_unique_identifier($node) . "UpdateData";
+}
+
+function widget_get_widget_exclude_params_name($node) {
+  return "widget" . widget_unique_identifier($node) . "ExcludeParams";
+}
+
+/***************************************/
+/* Content building utility functions  */
+/***************************************/
+
+function widget_callback_function($node) {
+  $output  = "function " . widget_get_widget_callback_function_name($node) . "(event) {\n";
+  $output .= widget_get_updated_data_function_name($node) . "();\n";
+  $output .= $node->widgetConfig->customCallbackJavascript . "\n";
+  $output .= "}\n";
+  return $output;
+}
+
+function widget_attach_to_widget_controller($node) {
+  $output = "widgetCoordinator.attach(" . widget_get_widget_callback_function_name($node) . ");\n";
+  return $output;
+}
+
+function widget_define_exclude_params($node) {
+  $output = "var " . widget_get_widget_exclude_params_name($node) . " = [";
+  if (isset($node->widgetConfig->excludeParams)) {
+    $i = 0;
+    foreach ($node->widgetConfig->excludeParams as $param) {
+      if ($i != 0) {
+        $output .= ", ";
+      }
+      $output .= "'" . $param . "'";
+      $i++;
+    }
+  }
+  $output .= "];\n";
+  return $output;
+}
+
+function _replaceSpecialCharactersDecode($string){
+  $string = str_replace('__','/',$string);
+  $string = str_replace('@Q',':',$string);
+  return str_replace('^^','.',$string);
+}
+
+function _update_node_data($data,$keepOriginalDatasource = false){
+  if($keepOriginalDatasource == true){
+    return $data;
+  }
+  $returnData = array();
+  if ($data){
+    foreach((Array)$data as $key=>$value){
+      $arrayValues = array();
+      foreach((Array)$value as $a=>$b){
+        $a = str_replace('@checkbook_oge:',"@checkbook:",$a);
+        $a = str_replace('@checkbook_nycha:',"@checkbook:",$a);
+        $arrayValues[$a] = $b;
+      }
+      $returnData[$key] = $arrayValues;
+    }
+  }
+
+  return $returnData;
+}
+
+function _update_columns_by_datasource($node_columns, $datasource_mapping = null, $keepOriginalDatasource= false){
+  if($keepOriginalDatasource == true){
+    return $node_columns;
+  }
+  $columns = array();
+  $database = RequestUtilities::get('datasource');
+  $datasource_mapping = ($datasource_mapping != null) ? get_object_vars($datasource_mapping) : null;
+  if (isset($node_columns) && $node_columns) {
+    foreach($node_columns as $column){
+      if($datasource_mapping == null){
+        $columns[] = _update_dataset_datasource($column);
+      }else{
+        if(!array_key_exists($column, $datasource_mapping)){
+          $columns[] = _update_dataset_datasource($column);
+        }
+        else if($datasource_mapping[$column] == $database){
+          $columns[] = _update_dataset_datasource($column);
+        }
+      }
+    }
+  }
+  return $columns;
+}
+
+function _get_current_datasource(){
+  $datasource = RequestUtilities::get('datasource');
+  if(isset($datasource)){
+    return $datasource;
+  }else{
+    return _get_default_datasource();
+  }
+}
+
+function _get_default_datasource(){
+  return Datasource::CITYWIDE;
+}
+
+function _widget_build_sql_condition($column, $value){
+  $values_array = explode('~',$value);
+  if(count($values_array) > 1){
+    return  $column . ' in ' . '(\'' . implode('\',\'', $values_array) . '\')';
+  }else{
+    return  $column . '=' . '\'' . $value . '\'';
+  }
+}
+function _widget_build_sql_not_condition($column, $value){
+  $values_array = explode('~',$value);
+  if(count($values_array) > 1){
+    return  $column . ' in ' . '(\'' . implode('\',\'', $values_array) . '\')';
+  }else{
+    return  $column . '!=' . '\'' . $value . '\'';
+  }
+}
+
+function _widget_build_sql_add_null($column, $value){
+  $values_array = explode('~',$value);
+  if(count($values_array) > 1){
+    return  $column . ' in ' . '(\'' . implode('\',\'', $values_array) . '\')';
+  }else{
+    return   '\'' . $value . '\''. ' AS '. $column;
+  }
+}

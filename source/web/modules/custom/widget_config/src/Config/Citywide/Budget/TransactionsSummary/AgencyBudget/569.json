@@ -1,0 +1,13 @@
+{
+"widgetType": "data_tables",
+"cleanURLParameters":["year","expcategory","agency","dept"],
+"urlParamMap":{"year":"year_id.year_id","expcategory":"object_class_id","agency":"agency_id","dept":"department_code"},
+"defaultParameters":{"year_id.year_id":113},
+"noDataInitialLoad":true,
+"dataset": "checkbook:budget_percent_difference",
+"columns": ["year_id.year_id","dept.dept.department_name","dept.dept",
+            "percent_difference1","percent_difference2","percent_difference3",
+            "current_amount","previous_amount","previous_1_amount","previous_2_amount"],
+"limit":1,
+"widgetTitle":"Departments by Percent Difference Expense Budget Transactions"
+}

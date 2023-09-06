@@ -1,0 +1,6 @@
+name: 'Checkbook Infrastructure Layer'
+description: 'Functionality to serve as a common infrastructure layer for checkbook'
+package: 'REI Checkbook Widget Redesign'
+core_version_requirement: ^9 || ^10
+type: module
+dependencies: {  }

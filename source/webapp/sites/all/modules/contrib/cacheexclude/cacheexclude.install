@@ -1,8 +1,0 @@
-<?php
-
-/**
- * Implements hook_uninstall().
- */
-function cacheexclude_uninstall() {
-  variable_del('cacheexclude_list');
-}

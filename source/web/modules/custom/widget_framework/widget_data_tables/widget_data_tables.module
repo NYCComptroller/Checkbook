@@ -1,0 +1,796 @@
+<?php
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (c) 2012 – 2023 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+require_once(\Drupal::service('extension.list.module')->getPath('checkbook_project') . "/includes/checkbook_project.inc");
+require_once(\Drupal::service('extension.list.module')->getPath('checkbook_project') . "/includes/checkbook_database.inc");
+
+use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
+use Drupal\checkbook_log\LogHelper;
+use Drupal\checkbook_project\CommonUtilities\CustomURLHelper;
+use Drupal\checkbook_project\WidgetUtilities\WidgetUtil;
+
+
+/*************************************************************************************/
+/* Widget Hooks                                                                      */
+/*************************************************************************************/
+
+function widget_data_tables_widget_metadata() {
+	return array(
+    'data_tables' => array(
+      'name' => t('Table'),
+      'module' => 'widget_data_tables',
+      'description' => t("This widget type implements HTML table.")
+	  )
+	);
+}
+
+function _widget_add_padding_data($node){
+  if(isset($node->widgetConfig->skipCustomPadding)){
+    return;
+  }
+  $index= 0;
+  $paddings = array();
+  $columns_max_length = array();
+  foreach ($node->widgetConfig->table_columns as $row){
+      if (check_node_flag_visibilty($row->visibility_flag ?? NULL, $node)) {
+        if (!isset($row->datasource) || (isset($row->datasource) && ($row->datasource == RequestUtilities::get('datasource')))) {
+          $colDataTableOptions = $node->widgetConfig->dataTableOptions->aoColumns[$index];
+          if (!isset($colDataTableOptions)) {
+            $colDataTableOptions = new \stdClass();
+            $colDataTableOptions->sClass = $row->type;
+          }
+          if (preg_match("/number/", $colDataTableOptions->sClass)) {
+            $label = (isset($row->labelAlias)) ? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
+            $labelWords = explode("<br/>", $label);
+            $maxlength = 0;
+            foreach ($labelWords as $word) {
+              $maxlength = ($maxlength > strlen(strip_tags($word))) ? $maxlength : strlen(strip_tags($word));
+            }
+            $maxColumnDataLength = 0;
+            foreach ($node->data as $datarow) {
+              $maxColumnDataLength = ($maxColumnDataLength > strlen(strip_tags($datarow[$row->column]))) ? $maxColumnDataLength : strlen(strip_tags($datarow[$row->column]));
+            }
+            $paddings[$row->column] = (($maxlength - $maxColumnDataLength) / 2 > 0) ? ($maxlength - $maxColumnDataLength) / 2 : 0;
+          }
+          if (preg_match("/number-center/", $colDataTableOptions->sClass) || preg_match("/number-center-scroll/", $colDataTableOptions->sClass)) {
+            $label = (isset($row->labelAlias)) ? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
+            $labelWords = explode("<br/>", $label);
+            $maxlength = 0;
+            foreach ($labelWords as $word) {
+              $maxlength = ($maxlength > strlen(strip_tags($word))) ? $maxlength : strlen(strip_tags($word));
+            }
+            $maxColumnDataLength = 0;
+            foreach ($node->data as $datarow) {
+              $maxColumnDataLength = ($maxColumnDataLength > strlen(strip_tags($datarow[$row->column]))) ? $maxColumnDataLength : strlen(strip_tags($datarow[$row->column]));
+            }
+            $columns_max_length[$row->column] = $maxColumnDataLength;
+          }
+          $index += 1;
+        }
+      }
+  }
+  $node->customDataPaddings =  $paddings;
+  $node->maxColumnDataLength = $columns_max_length;
+}
+
+/**
+ * construct the json from data returned from data controller.This function is used for simple ajax data table widget .
+ * @param $node
+ * @return array
+ */
+function _widget_data_tables_ajaxdata_json($node){
+  global $conf;
+
+  if(is_null($node->totalDataCount)){
+    $iTotalRecords_dataTable = 0;
+    $iTotalDisplayRecords_dataTable = 0;
+  }else{
+    $iTotalDisplayRecords =  \Drupal::config('check_book')->get('datatables')['iTotalDisplayRecords'] ?? $node->totalDataCount;
+    $iTotalRecords_dataTable = $node->totalDataCount;
+    $iTotalDisplayRecords_dataTable = $node->totalDataCount > $iTotalDisplayRecords ? $iTotalDisplayRecords : $node->totalDataCount;
+  }
+  $response = array(
+    "sEcho"=> intval($_REQUEST['sEcho']),
+    "iTotalRecords"=> $iTotalRecords_dataTable,
+    "iTotalDisplayRecords"=> $iTotalDisplayRecords_dataTable,
+    "iDisplayLength"=> (isset($node->widgetConfig->limit) ? $node->widgetConfig->limit : 10)
+  );
+
+  // Process the data table results to add links /css etc
+  $response['aaData'] = array();
+    if(is_array($node->data)){
+        foreach ($node->data as $datarow) {
+            $rowarray = array();
+            if(is_array($node->widgetConfig->table_columns)){
+                foreach ($node->widgetConfig->table_columns as $row){
+                    if(check_node_flag_visibilty($row->visibility_flag ?? null, $node)){
+                        if(!isset($row->datasource) || (($row->datasource == RequestUtilities::get('datasource')))){
+                            if (isset($node->customDataPaddings[$row->column]) && $node->customDataPaddings[$row->column] > 0) {
+                                $style = "style='margin-right:" . $node->customDataPaddings[$row->column] * 8 . "px'";
+                            } else {
+                                $style = "";
+                            }
+                            if (isset($node->maxColumnDataLength[$row->column]) && $node->maxColumnDataLength[$row->column] > 0) {
+                                $style = "style='text-align: center;'";
+                                $value = str_pad($datarow[$row->column], $node->maxColumnDataLength[$row->column], " ", STR_PAD_LEFT);
+                                $value = str_replace(" ", "&nbsp;", $value);
+                                $rowarray[] = '<div ' . $style . '>' . $value . '</div>';
+                            } else {
+                                $rowarray[] = '<div ' . $style . '>' . ($datarow[$row->column] ?? '') . '</div>';
+                            }
+
+                        }
+                    }
+                }
+            }
+            $response['aaData'][] = $rowarray;
+        }
+    }
+  return $response;
+}
+
+/**
+ * gets the data from the data controller based
+ * @param $node
+ * @return mixed
+ */
+function widget_data_tables_get_data($node){
+	  widget_config($node);
+    if (!empty($node->nid) && $node->nid) {
+      LogHelper::log_notice("Loading node ".$node->nid.".json");
+    }
+
+    //prepare anything we'll need before loading
+    widget_prepare($node);
+
+    //invoke widget specific prepare
+    widget_invoke($node, 'widget_prepare');
+
+    //load data
+    widget_data($node);
+    return $node;
+}
+
+/*
+Modified the data controller query to add the right order by clause...
+*/
+function widget_data_tables_widget_prepare($node){
+    if(isset($node->widgetConfig->adjustDataTableOptions)){
+      eval($node->widgetConfig->adjustDataTableOptions);
+    }
+    //Remove any columns with visibility = false from sorting
+    $sort_columns = array();
+    if (property_exists($node->widgetConfig, 'table_columns')) {
+        foreach($node->widgetConfig->table_columns as $column) {
+          $flag = $column->visibility_flag ?? null;
+            if(check_node_flag_visibilty($flag, $node)) {
+                $sort_columns[] = $column;
+            }
+        }
+    }
+
+    $count = 0;
+    $node->widgetConfig->orderBy = isset($node->widgetConfig->orderBy) ? array($node->widgetConfig->orderBy):array();
+    $iSortCols = $_REQUEST['iSortingCols'] ?? null;
+    while($count < $iSortCols){
+      $index =  $count ;
+      $sort_actual_column = '';
+      $sort_column = $sort_columns[$_REQUEST['iSortCol_' . $index ]]->column;
+      if(isset($sort_columns[$_REQUEST['iSortCol_' . $index ]]->sortSourceColumn)){
+        $sort_actual_column = $sort_columns[$_REQUEST['iSortCol_' . $index ]]->sortSourceColumn;
+      } else{
+        foreach($node->widgetConfig->columns as $column) {
+          if ($sort_column == str_replace('.', '_', $column)) {
+            $sort_actual_column = $column;
+          }
+        }
+      }
+      $node->widgetConfig->orderBy[]  = ($_REQUEST['sSortDir_' . $index] == 'desc') ? '-' . $sort_actual_column : $sort_actual_column;
+      $count += 1;
+    }
+
+    /**
+     * uniqueSortColumn will allow the data to order properly by a secondary unique sort
+     */
+    $index = 0;
+    $sortDir = isset($_REQUEST['sSortDir_' . $index]) ?? '';
+    $uniqueSortColumn = $node->widgetConfig->uniqueSortColumn;
+    if(isset($node->widgetConfig->orderBy) && !empty($node->widgetConfig->orderBy)) {
+        if(isset($uniqueSortColumn)) {
+            if(is_array($uniqueSortColumn)) {
+                foreach($uniqueSortColumn as $value) {
+                    if($sortDir == 'desc' && !str_starts_with($value, '-'))
+                        $node->widgetConfig->orderBy[]  = '-' . $value;
+                    else
+                        $node->widgetConfig->orderBy[] =  (str_starts_with($value, '-'))? ltrim($value, '-') : $value;
+                }
+            }
+            else {
+                $node->widgetConfig->orderBy[] = ($sortDir == 'desc' && strpos($uniqueSortColumn, '-') !== 0) ? '-' . $uniqueSortColumn : ltrim($uniqueSortColumn, '-');
+            }
+        }
+    }
+
+    foreach($node->widgetConfig->orderBy as $key=>$value){
+        $value = _update_dataset_datasource($value);
+        $node->widgetConfig->orderBy[$key] = $value;
+    }
+
+    $iDisplayStart = $_REQUEST['iDisplayStart'] ?? null;
+    if(is_numeric($iDisplayStart)){
+        $node->widgetConfig->startWith = $iDisplayStart;
+    }
+    $iDisplayLength = $_REQUEST['iDisplayLength'] ?? null;
+    $iDisplayLength = (is_numeric($iDisplayLength) && ((int)$iDisplayLength) > 0) ? (int)$iDisplayLength :
+                      ($node->widgetConfig->limit ?? NULL);
+    if(isset($iDisplayLength)){
+        $node->widgetConfig->limit = $iDisplayLength;
+    }
+}
+
+/**
+ * Adds tables header for twig
+ * @param  $node
+ * @return string
+ */
+function _widget_data_tables_header($node){
+  $th = "";
+  foreach ($node->widgetConfig->table_columns as $row) {
+    if(check_node_flag_visibilty($row->visibility_flag ?? null, $node)){
+      if(!isset($row->datasource) || (($row->datasource == RequestUtilities::get('datasource')))){
+        $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
+
+        if(isset($row->adjustLabelFunction)){
+          $fn = $row->adjustLabelFunction;
+          $label = function_exists($fn) ? $fn($label) : "";
+        }else if(isset($row->evalLabel) && $row->evalLabel){
+          $label = eval("return $row->label;");
+        }
+
+        $headerClass = isset($row->headerClass) ? ' class="'.$row->headerClass.'"':'';
+        $th .= "<th $headerClass>" . $label . "</th>";
+      }
+    }
+  }
+
+  // Adds Export and Create Alert links
+  if(isset($node->widgetConfig->header)) {
+    $node->widgetConfig->header = eval($node->widgetConfig->header);
+  }
+
+  if(isset($node->widgetConfig->headerConfig)){
+    $headerConfig = eval($node->widgetConfig->headerConfig);
+  }
+  if(isset($headerConfig)){
+    foreach($headerConfig as $header=>$colSpan){
+      $th1 .= "<th class='doubleHeader' colspan='$colSpan'>" . $header . "</th>";
+    }
+    $double_header = $th1."</tr>\n<tr>".$th;
+  }
+
+  $node->widgetConfig->tableHeader = $double_header ?? $th;
+}
+
+function widget_data_tables_widget_view(&$node) {
+ 	switch ($node->widgetConfig->widgetSubType){
+    case "template" :
+      $twigFilePath = Drupal\widget_services\Common\CommonService::getTemplatePath($node->widgetConfig->template);
+      $twigService = \Drupal::service('twig');
+      $template = $twigService->loadTemplate($twigFilePath);
+      $markup = [
+        '#markup' => $template->render(['node' => $node]),
+        '#allowed_tags' => ['script', 'div', 'table', 'tr', 'td', 'tbody', 'thead', 'th', 'span', 'h3','br','caption','a'],
+      ];
+      return \Drupal::service('renderer')->render($markup);
+		case "ajaxSimple" :
+      $sAjaxSource = '/dashboard_platform/data_tables/ajax_data/node/' .$node->nid  ;
+      if(is_array($node->widgetConfig->requestParams))  {
+				if(isset($node->widgetConfig->urlParamMap))
+				  $urlParamMap = array_flip(get_object_vars($node->widgetConfig->urlParamMap));
+		    	foreach($node->widgetConfig->requestParams as $key=>$value) {
+		    		 $key = $urlParamMap[$key] ?? $key;
+             $sAjaxSource .= "/$key/$value" ;
+        }
+      }
+      $sAjaxSource = $sAjaxSource.CustomURLHelper::_checkbook_append_url_params();
+			$node->widgetConfig->dataTableOptions->sAjaxSource =  escapeSpecialCharacters(html_entity_decode($sAjaxSource,ENT_QUOTES));
+			$node->widgetConfig->dataTableOptions->fnServerData= "##function ( sSource, aoData, fnCallback ) {
+			aoData.push( {
+			  'name': 'data_type', 'value': 'json' } );".
+			  "\$j".".ajax( {
+			    'dataType': 'json',
+			    'type': 'GET',
+			    'url': sSource,
+			    'data': aoData,
+			    'success': fnCallback
+			  } );
+			}##";
+
+      // Get Table header for display
+      _widget_data_tables_header($node);
+      $twigFilePath = \Drupal::service('extension.list.module')->getPath('widget_data_tables').'/templates/table_by_rows.html.twig';
+      $twigService = \Drupal::service('twig');
+      $template = $twigService->loadTemplate($twigFilePath);
+      $markup = [
+        '#children' => $template->render([ 'node' => $node]),
+        '#attached' => [
+          'html_head' => [
+
+          ]
+        ]
+      ];
+      return \Drupal::service('renderer')->render($markup);
+    case "dataTableList" :
+      $sAjaxSource = '/dashboard_platform/data_tables_list/ajax_data/node/' . $node->nid;
+      $reqParams = array();
+      if(is_array($node->widgetConfig->originalRequestParams)){
+        foreach($node->widgetConfig->originalRequestParams as $key=>$value) {
+             $value = str_replace('/','__',$value);
+             $value = str_replace(':','@Q',$value);
+             $sAjaxSource .= "/$key/$value" ;
+             $reqParams[$key] = $value;
+        }
+      }
+      if(is_array($node->widgetConfig->allowRequestParamValues)){
+        foreach($node->widgetConfig->allowRequestParamValues as $paramKey=>$paramValue) {
+            if(!array_key_exists($paramKey, $reqParams))
+                $sAjaxSource .= "/$paramKey/$paramValue" ;
+        }
+      }
+      $sAjaxSource = $sAjaxSource.CustomURLHelper::_checkbook_append_url_params($sAjaxSource);
+      $node->widgetConfig->dataTableOptions->sAjaxSource =  escapeSpecialCharacters(html_entity_decode($sAjaxSource,ENT_QUOTES));
+      $node->widgetConfig->dataTableOptions->fnServerData= "##function ( sSource, aoData, fnCallback ) {
+      aoData.push( {
+      'name': 'data_type', 'value': 'json' } );".
+      "\$j".".ajax( {
+      'dataType': 'json',
+      'type': 'GET',
+      'url': sSource,
+      'data': aoData,
+      'success': fnCallback,
+      complete: function () {
+        addExpandBottomContURL();
+       }
+      } );
+      }##";
+
+      // Get Table header for display
+      _widget_data_tables_header($node);
+
+      $twigFilePath = \Drupal::service('extension.list.module')->getPath('widget_data_tables').'/templates/table_by_list.html.twig';
+      $twigService = \Drupal::service('twig');
+      $template = $twigService->loadTemplate($twigFilePath);
+      $markup = [
+        '#children' => $template->render([ 'node' => $node]),
+        '#attached' => [
+          'html_head' => [
+
+          ]
+        ]
+      ];
+      return \Drupal::service('renderer')->render($markup);
+		default :
+		  break;
+	}
+}
+
+/**
+ * Adds custom JS settings to widget
+ * @param  $node
+ * @return string
+ */
+function widget_data_tables_add_js($node){
+	$theme_path =  'modules/custom/jquery_plugins';
+	//FIX ME: The following customization needs to be moved to a utility class
+  $datasource = RequestUtilities::get('datasource');
+  if ('checkbook_nycha'===$datasource){
+    if(!empty($node->widgetConfig->stickyHeader)){$node->widgetConfig->stickyHeader='true';}
+  }
+  $node->widgetConfig->dataTableOptions->oLanguage = array("sProcessing"=>"<img src='/themes/custom/nyccheckbook/images/loading_large.gif' title='Processing...'/>",
+    "sZeroRecords"=>"<div class='clearfix' id='no-records-datatable'><span>No Matching Records Found</span></div>");
+  $oldDataTableOptions = get_object_vars($node->widgetConfig->dataTableOptions);
+  if(isset($oldDataTableOptions['aoColumns'])) {
+    $newAolcols = [];
+    foreach($oldDataTableOptions['aoColumns'] as $key=>$value) {
+        if (is_null($value)) {
+            $newAolcols[] = $value;
+            continue;
+        }
+        $aoCols = get_object_vars($value);
+        $visibility_flag = check_node_flag_visibilty($aoCols['visibility_flag'] ?? null, $node);
+        if ($visibility_flag && ((isset($aoCols['datasource']) && RequestUtilities::get('datasource') == isset($aoCols['datasource'])))) {
+            $newAolcols[] = $value;
+        } else if ((!isset($aoCols['datasource'])) && $visibility_flag) {
+            $newAolcols[] = $value;
+        }
+    }
+    if(count($newAolcols)){
+        $oldDataTableOptions['aoColumns'] = $newAolcols;
+    }
+  }
+
+
+  if(isset($node->widgetConfig->stickyHeader)) {
+    //<editor-fold desc="Sticky Headers">
+    /* NYCCHKBK-3724: hooks into fnDrawCallback and fnInitComplete for sticky header implementation */
+    //Append custom js to events
+    $fnInitComplete = $oldDataTableOptions["fnInitComplete"];
+    $fnInitCompleteExists = isset($fnInitComplete);
+    $fnInitComplete = str_replace("##", "", $fnInitComplete);
+    $fnInitComplete = $fnInitComplete ? substr_replace($fnInitComplete, "fnCustomInitComplete();}", strlen($fnInitComplete) - 1, 1) : "function () { new fnCustomInitComplete(); }";
+    $fnInitComplete = "##" . $fnInitComplete . "##";
+    $fnDrawCallback = $oldDataTableOptions["fnDrawCallback"] ?? null;
+    $fnDrawCallbackExists = isset($fnDrawCallback);
+    $fnDrawCallback = str_replace("##", "", $fnDrawCallback);
+    $fnDrawCallback = $fnDrawCallback ? substr_replace($fnDrawCallback, "fnCustomDrawCallback();}", strlen($fnDrawCallback) - 1, 1) : "function () { new fnCustomDrawCallback(); }";
+    $fnDrawCallback = "##" . $fnDrawCallback . "##";
+
+    // if the function exists, update it, else insert it to the front
+    if ($fnDrawCallbackExists) {
+      $oldDataTableOptions["fnDrawCallback"] = $fnDrawCallback;
+    }else {
+      $oldDataTableOptions = array_slice($oldDataTableOptions, 0, 0, true) +
+        array("fnDrawCallback" => $fnDrawCallback) +
+        array_slice($oldDataTableOptions, 0, NULL, true);
+    }
+    if ($fnInitCompleteExists) {
+      $oldDataTableOptions["fnInitComplete"] = $fnInitComplete;
+    }else {
+      $oldDataTableOptions = array_slice($oldDataTableOptions, 0, 0, true) +
+        array("fnInitComplete" => $fnInitComplete) +
+        array_slice($oldDataTableOptions, 0, NULL, true);
+    }
+    //FIX ME: The following code needs to be moved to a utility class if it cannot be handled in CSS
+    //Custom js for sticky headers, top spacing will change if the drupal admin menu is present
+    //Custom js for nycha transcation pages top scroll and height adjustments
+    if ('checkbook_nycha' === $datasource) {
+      $scroller_header_js = "
+      function fnCustomDrawCallback() {".
+        "\$j"."('.dataTables_scrollHead').css('overflow', 'auto');".
+        "\$j"."('.dataTables_scrollHead').scroll(function () {".
+        "\$j"."('.dataTables_scrollBody').scrollLeft(jQuery(this).scrollLeft());
+            });
+        }";
+    }
+    else{
+      $scroller_header_js = "
+      function fnCustomDrawCallback() {".
+        "\$j"."('.dataTables_scrollHead').width("."\$j"."('.dataTables_scroll').width());".
+        "\$j"."('.dataTables_scrollHead').scrollLeft(0);".
+        "\$j"."('.dataTables_scrollBody').scrollLeft(0);
+        }";
+    }
+
+    $sticky_header_js = "
+       function fnCustomInitComplete() {
+         var topSpacing = " . (\Drupal::currentUser()->isAuthenticated() ? 66 : 0) . ";
+         var tableOffsetTop =". "\$j"."('.dataTables_scroll').offset().top;
+         var tableHeight = "."\$j"."('.dataTables_scroll').height();
+         var docHeight = "."\$j"."(document).height();
+         var bottomSpacing = docHeight - (tableOffsetTop + tableHeight);".
+         "\$j"."('.dataTables_scrollHead').sticky({ topSpacing: topSpacing, bottomSpacing: bottomSpacing, getWidthFrom:'.dataTables_scroll' });
+
+          if( "."\$j"."('.DTFC_ScrollWrapper') && "."\$j"."('.DTFC_ScrollWrapper').offset()) {".
+         "\$j"."('.DTFC_LeftHeadWrapper').sticky({ topSpacing: topSpacing, bottomSpacing: bottomSpacing, getWidthFrom:'.DTFC_LeftWrapper' });
+          }
+      }";
+  }
+
+  $dataTableOptions = json_encode((object)$oldDataTableOptions);
+  $id  = "";
+  if($node->widgetConfig->widgetSubType == "ajaxSimple"){
+      $id = widget_unique_identifier($node);
+  }
+  $js = "
+      var oTable" . $id  .  ";
+      var "."\$j"."= jQuery.noConflict();".
+      "\$j"."(document).ready(function() {
+          oTable" . $id  .  " ="."\$j"."('#table_" . widget_unique_identifier($node) . "').dataTable(
+
+          " . stripcslashes(str_replace('##"','',str_replace('"##','',$dataTableOptions))) ."
+          );
+          oTable" . $id  .  ".node_id = \"" . $node->nid . "\" ;
+          oTable" . $id  .  ".initAjaxSource = '" . (isset($node->widgetConfig->sAjaxSource) ? ($node->widgetConfig->sAjaxSource . CustomURLHelper::_checkbook_append_url_params()) : "") . "' ;
+
+        " . stripcslashes($node->widgetConfig->customJS ?? null) .
+      ($sticky_header_js ?? '') .//append sticky header js
+      ($scroller_header_js ?? '') .//append scroller headers js
+      "} );" .
+      stripcslashes($node->widgetConfig->customExternalJS ?? null);
+  return  $js ;
+}
+
+/**
+ * Adds custom JS settings to widget
+ * @param  $node
+ * @return string
+ */
+/*function widget_data_tables_add_js_setting($node){
+  require_once(realpath(drupal_get_path('module', 'data_controller')) .'/common/object/converter/handler/PHP2Json.php');
+  $dataTableOptions = json_encode($node->widgetConfig->dataTableOptions);
+  $dataTableOptions = str_replace('"##',"",$dataTableOptions);
+  $dataTableOptions = str_replace('##"',"",$dataTableOptions);
+  $id = widget_unique_identifier($node);
+  $options = array();
+  $options['deferredRender'][] = array(
+    'type'=>'datatable',
+    'id'=>$id,
+    'dataTableOptions'=>$dataTableOptions,
+    'nodeId'=>$node->nid,
+    'initAjaxSource'=>$node->widgetConfig->sAjaxSource.CustomURLHelper::_checkbook_append_url_params(),
+    'customJS'=>stripcslashes($node->widgetConfig->customJS),
+    'customExternalJS'=>stripcslashes($node->widgetConfig->customExternalJS),
+  );
+
+}*/
+/*************************************************************************************/
+/* Theme Hooks                                                                       */
+/*************************************************************************************/
+
+function widget_data_tables_theme($existing, $type, $theme, $path) {
+  return [
+    'widget_data_tables_default_theme' => [
+      'template' => 'table_by_rows',
+      'variables' => [
+        'node' => [],
+        'uid' => ''
+      ],
+    ],
+    'widget_data_tables_by_rows_theme' => [
+      'template' => 'table_by_rows',
+      'variables' => [
+        'node' => [],
+        'uid' => ''
+      ],
+    ],
+    'widget_data_tables_list_by_rows_theme' => [
+      'template' => 'table_by_list',
+      'variables' => [
+        'node' => [],
+        'uid' => ''
+      ],
+    ],
+    'trends_ratios_of_outstanding_debt' => [
+      'template' => 'ratios_of_outstanding_debt',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Debt_capacity_trends'
+    ],
+    'trends_ratios_of_general_bonded_debt' => [
+      'template' => 'ratios_of_general_bonded_debt',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Debt_capacity_trends'
+    ],
+    'trends_legal_debt_margin' => [
+      'template' => 'legal_debt_margin',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Debt_capacity_trends'
+    ],
+    'trends_pledged_rev_cov_nyc_trans' => [
+      'template' => 'pledged_rev_cov_nyc_trans',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Debt_capacity_trends'
+    ],
+    'trends_assesed_val_and_estd_act_val' => [
+      'template' => 'assesed_val_and_estd_act_val',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Revenue_capacity_trends'
+    ],
+    'trends_property_tax_rates' => [
+      'template' => 'property_tax_rates',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Revenue_capacity_trends'
+    ],
+    'trends_property_tax_levies' => [
+      'template' => 'property_tax_levies',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Revenue_capacity_trends'
+    ],
+    'trends_tax_rate_by_class' => [
+      'template' => 'assessed_val_and_tax_rate_by_class',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Revenue_capacity_trends'
+    ],
+    'trends_collections_cancellations_abatements' => [
+      'template' => 'collections_cancellations_abatements',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Revenue_capacity_trends'
+    ],
+    'trends_uncollected_parking_violation_fee' => [
+      'template' => 'uncollected_parking_violation_fee',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Revenue_capacity_trends'
+    ],
+    'trends_hudson_yards_infra_corp' => [
+      'template' => 'hudson_yards_infra_corp',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Revenue_capacity_trends'
+    ],
+    'trends_cap_assets_stats_by_program' => [
+      'template' => 'cap_assets_stats_by_program',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Operational_trends'
+    ],
+    'trends_no_of_city_employees' => [
+      'template' => 'no_of_city_employees',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Operational_trends'
+    ],
+    'trends_changes_in_net_assets' => [
+      'template' => 'changes_in_net_assets',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Financial_trends'
+    ],
+    'trends_fund_bal_govt_funds' => [
+      'template' => 'fund_bal_govt_funds',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Financial_trends'
+    ],
+    'trends_changes_in_fund_bal' => [
+      'template' => 'changes_in_fund_bal',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Financial_trends'
+    ],
+    'trends_general_fund_revenue_other_fin_sources' => [
+      'template' => 'general_fund_revenue_other_fin_sources',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Financial_trends'
+    ],
+    'trends_general_fund_expend_other_fin_sources' => [
+      'template' => 'general_fund_expend_other_fin_sources',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Financial_trends'
+    ],
+    'trends_capital_proj_rev_by_agency' => [
+      'template' => 'capital_proj_rev_by_agency',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Financial_trends'
+    ],
+    'trends_nyc_edu_const_fund' => [
+      'template' => 'nyc_edu_const_fund',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Financial_trends'
+    ],
+    'trends_nyc_population' => [
+      'template' => 'nyc_population',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Demographic_trends'
+    ],
+    'trends_personal_income_tax_revenues' => [
+      'template' => 'personal_income_tax_revenues',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Demographic_trends'
+    ],
+    'trends_non_agr_employment' => [
+      'template' => 'non_agr_employment',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Demographic_trends'
+    ],
+    'trends_persons_rec_pub_asst' => [
+      'template' => 'persons_rec_pub_asst',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Demographic_trends'
+    ],
+    'trends_emp_status_of_resident_population' => [
+      'template' => 'emp_status_of_resident_population',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/Trends/Demographic_trends'
+    ],
+
+  ];
+}
+
+/**
+ * Returns hyperlink for export
+ * @param  $node
+ * @return string
+ */
+function widget_data_tables_export_link($node) {
+  $nid = widget_unique_identifier($node);
+	return widget_data_tables_alerts_link($node)." <span class=export exportid={$nid}>Export</span>";
+}
+
+/**
+ * Returns hyperlink for alerts
+ * @param  $node
+ * @return string
+ */
+function widget_data_tables_alerts_link($node){
+    $nid = widget_unique_identifier($node);
+    return "<span class=alerts alertsid={$nid}>Schedule Alert</span>";
+}
+
+/**
+ * Escapes Special characters in widget Query
+ * @param  $string
+ * @return $string
+ */
+function escapeSpecialCharacters($string): array|string
+{
+    $string = str_replace("%", "%25", $string);
+    $string = str_replace("\\", "%5C%5C", $string);
+    $string = str_replace(" ", "%20", $string);
+    $string = str_replace("#", "%23", $string);
+    $string = str_replace("&", "%26", $string);
+    $string = str_replace("[", "\[", $string);
+    $string = str_replace("]", "\]", $string);
+    $string = str_replace(":", "\:", $string);
+    $string = str_replace("'", "%27", $string);
+    $string = str_replace("+", "\%2B", $string);
+    $string = str_replace("?", "\%3F", $string);
+    $string = str_replace("$", "\%24", $string);
+    $string = str_replace("!", "\%21", $string);
+    $string = str_replace("^", "\%5E", $string);
+    $string = str_replace("|", "\%7C", $string);
+    $string = str_replace("(", "\%28", $string);
+    $string = str_replace(")", "\%29", $string);
+    $string = str_replace("*", "\%2A", $string);
+    $string = str_replace(".", "\%2E", $string);
+    return $string;
+}

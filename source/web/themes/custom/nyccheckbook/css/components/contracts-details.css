@@ -1,0 +1,1328 @@
+/********************************************
+***   CONTRACT TOTALS MENU TABLE STYLING  ***
+********************************************/
+
+.contracts-oge-spending-bottom td div >  .float-clear + .float-clear{
+  margin-top: 20px;
+}
+.contracts-oge-spending-bottom h3{
+  clear: both;
+  padding-top: 5px;
+
+}
+.panel-panel.grid-12 .bottom-nav-container.panel-pane.pane-node,
+.panel-panel.grid-12 .bottom-nav-container.panel-pane.pane-custom,
+.pane-contracts-cta-history,
+.float-clear{
+  float:left;
+  clear:both;
+  width:100%;
+}
+
+.nyc_totals_links table{
+  width:100%;
+}
+.nyc_totals_links table tbody{
+  border:none;
+}
+.nyc_totals_links td{
+  border: 1px solid #c5c5c5;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  text-align: center;
+  margin:0;
+  padding: 0;
+  background-color: #f4f4f4;
+  text-transform: none;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 1.5em;
+  vertical-align: baseline;
+}
+span.count,
+span.dollars{
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+}
+.nyc_totals_links{
+  color:#596c7d;
+  cursor:default;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+.nyc_totals_links a,
+.nyc_totals_links a:link,
+.nyc_totals_links a:visited,
+.nyc_totals_links a:hover {
+  color: #596c7d;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  display: block;
+  padding: 2px 10px;
+}
+.nyc_totals_links .count a,
+.nyc_totals_links .dollars a,
+.nyc_totals_links .count a:link,
+.nyc_totals_links .dollars a:link,
+.nyc_totals_links .count a:visited,
+.nyc_totals_links .dollars a:visited,
+.nyc_totals_links .count a:hover,
+.nyc_totals_links .dollars a:hover {
+  color: #596c7d;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: normal;
+}
+.nyc_totals_links td.active a{
+  color:#ffffff;
+  text-shadow: 1px 2px #1A88CF;
+  display: block;
+  padding: 2px 10px;
+}
+.nyc_totals_links td.active{
+  background: url("../images/active-tile2.png") repeat-x 0 0 #25a9dc;
+  border: 1px solid #0071bc;
+}
+.nyc_totals_links td.active div.indicator{
+  background:url("../images/blue-carrot.png") no-repeat center 0;
+  height: 10px;
+  margin-bottom: -10px;
+  top: 0;
+}
+#nyc-spending .nyc_totals_links a,
+#nyc-spending .nyc_totals_links a:link,
+#nyc-spending .nyc_totals_links a:visited,
+#nyc-spending .nyc_totals_links a:hover
+#nycha-spending-landing .nyc_totals_links a,
+#nycha-spending-landing .nyc_totals_links a:link,
+#nycha-spending-landing .nyc_totals_links a:visited,
+#nycha-spending-landing .nyc_totals_links a:hover
+{
+  padding: 7px 10px;
+}
+#nyc-spending .nyc_totals_links td,
+#nycha-spending-landing .nyc_totals_links td{
+  width:16.66%;
+}
+
+/*subvendors */
+.nyc_subvendors_totals_links table{
+  width:100%;
+}
+.nyc_subvendors_totals_links table tbody{
+  border:none;
+}
+.nyc_subvendors_totals_links td{
+  border: 1px solid #c5c5c5;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  text-align: center;
+  margin:0;
+  padding: 0;
+  background-color: #f4f4f4;
+  text-transform: none;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 1.5em;
+  vertical-align: baseline;
+  width:33%;
+  height:86px;
+}
+.nyc_subvendors_totals_links{
+  color:#596c7d;
+  cursor:default;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+.nyc_subvendors_totals_links a,
+.nyc_subvendors_totals_links a:link,
+.nyc_subvendors_totals_links a:visited,
+.nyc_subvendors_totals_links a:hover {
+  color: #596c7d;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  display: block;
+  padding: 2px 10px;
+}
+.nyc_subvendors_totals_links .count a,
+.nyc_subvendors_totals_links .dollars a,
+.nyc_subvendors_totals_links .count a:link,
+.nyc_subvendors_totals_links .dollars a:link,
+.nyc_subvendors_totals_links .count a:visited,
+.nyc_subvendors_totals_links .dollars a:visited,
+.nyc_subvendors_totals_links .count a:hover,
+.nyc_subvendors_totals_links .dollars a:hover {
+  color: #596c7d;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: normal;
+}
+.nyc_subvendors_totals_links td.active a{
+  color:#ffffff;
+  text-shadow: 1px 2px #1A88CF;
+  display: block;
+  padding: 2px 10px;
+}
+.nyc_subvendors_totals_links td.active{
+  background: url("../images/active-tile2.png") repeat-x 0 0 #25a9dc;
+  border: 1px solid #0071bc;
+}
+.nyc_subvendors_totals_links td.active div.indicator{
+  background:url("../images/blue-carrot.png") no-repeat center 0;
+  height: 10px;
+  margin-bottom: -10px;
+  top: 0;
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  /* IE10+ CSS styles go here */
+  .subvendor_third_bottom_nav{ top: 1px !important; }
+}
+
+#node-widget-737 .nyc_subvendors_totals_links a,
+#node-widget-737 .nyc_subvendors_totals_links a:link,
+#node-widget-737 .nyc_subvendors_totals_links a:visited,
+#node-widget-737 .nyc_subvendors_totals_links a:hover{
+  padding: 7px 0px;
+}
+#node-widget-737 div.nyc_subvendors_totals_links table tbody tr td.active div.positioning a{
+  height:86px !important;
+}
+/* subvendors end */
+
+a.bottomContainerToggle {
+  margin-top: 15px;
+  float: right;
+}
+
+div.bottomContainer{
+  margin-top: 15px;
+  width:100%;
+  float:left;
+  clear:both;
+}
+
+
+/* table pagination */
+.dataTables_wrapper .dataTables_paginate {
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 15px;
+}
+.dataTables_paginate a{
+  padding:8px 6px 4px 6px;
+  margin-left:12px;
+}
+.dataTables_paginate a.first {
+  margin-left: 0;
+}
+.dataTables_paginate a.paginate_button_disabled,
+.dataTables_paginate a.paginate_button.disabled {
+  color: #606060;
+  cursor: default;
+  text-decoration: none;
+}
+.dataTables_paginate a.paginate_active,
+.dataTables_paginate a.paginate_button.current{
+  background: url("../../images/pager-active-bg.png") repeat-x scroll 0 0 transparent;
+  color: #FFFFFF;
+  display: inline;
+  font-weight: bold;
+  height: 1em;
+}
+.dataTables_info {
+  margin:3px 0px 20px 0px;
+  text-align: left;
+  width: 100%;
+  color:#000;
+}
+/**********************************
+***   CONTRACT DETAILS STYLES   ***
+**********************************/
+#contract-transactions {
+  margin: 13px 19px 0px 19px;
+  color:#000;
+}
+.contract-id,
+.inside .contract-details-heading,
+.inside .nycha-contract-details-heading,
+.page-revenue #revenue-transactions .inside .panel-pane.pane-custom.pane-2,
+.page-budget .inside .panel-pane.pane-custom.pane-2,
+.expense_category_budget_details .panel-pane.pane-custom.pane-1
+{
+  float: left;
+}
+/*next two styles relate to this page /contracts_landing/status/A/mwbe/4~5/yeartype/B/year/116?expandBottomContURL=/panel_html/contract_transactions/contract_details/magid/2031629/doctype/MA1/mwbe/4~5*/
+/*if it affects other pages be more specific with selector*/
+.contract-information .dollar-amounts{
+  border-top: 1px dotted #CACACA;
+  border-left: 1px dotted #CACACA;
+  width: 341px;
+  padding-top: 20px;
+}
+
+.contract-information .original-amount{
+  margin-right: 0;
+}
+.contract-information .dollar-amounts > div {
+  color: #5C5C5C;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.inside .transactions-container{
+  float: right;
+  width:430px;
+  margin-top: 30px;
+}
+
+.dollar-amounts {
+  float: right;
+  width: 430px;
+}
+
+.oge-ma-details .dollar-amounts {
+  margin-top: 0;
+}
+
+.block-checkbook-transactions .dollar-amounts {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+[about='/nycha_spending/transactions'] .dollar-amounts {
+  padding-bottom: 10px;
+}
+
+.oge-ma-details > .dollar-amounts,
+.cb-ma-details > .dollar-amounts {
+  width: 550px;
+  float: right;
+}
+
+#nycha-contracts-landing .contract-details-heading{
+  width: 920px;
+}
+
+.contract-details{
+  border: 1px dotted #CACACA;
+  border-width: 1px 1px 0px 0px;
+  display: block;
+  float:left;
+  clear:none;
+  width: 550px;
+  padding-top: 20px;
+  vertical-align: top;
+}
+.dollar-amounts > h4,
+.dollar-amounts > ul{
+  margin-left: 20px;
+}
+.oge-ca-details .contract-details{
+  width:100%;
+  border-right:none;
+}
+.oge-ca-details .contract-details .left,
+.oge-ca-details .contract-details .right{
+  width:441px;
+}
+.oge-ma-details .contract-id h2.contract-title,
+.cb-ma-details .contract-id h2.contract-title,
+.oge-ma-details .contract-id .contractLinkNote,
+.cb-ma-details .contract-id .contractLinkNote,
+.oge-ca-details .contract-id h2.contract-title,
+.cb-ca-details .contract-id h2.contract-title,
+.oge-ca-details .contract-id .contractLinkNote,
+.cb-ca-details .contract-id .contractLinkNote,
+.oge-ca-details .contract-id .master-contract-link,
+.cb-ca-details .contract-id .master-contract-link,
+.oge-assoc-contracts-list .contractLinkNote{
+  float:left;
+}
+.cb-ma-details .contract-id .contractLinkNote,
+.oge-ma-details .contract-id .contractLinkNote,
+.cb-ca-details .contract-id .contractLinkNote,
+.oge-ca-details .contract-id .contractLinkNote,
+.oge-assoc-contracts-list .contractLinkNote {
+  position: relative;
+}
+.oge-ma-details .contract-id .contractIcon,
+.oge-ca-details .contract-id .contractIcon {
+  margin-left: 10px;
+}
+.page-contracts-landing #assoc_contracts_list_wrapper .dollar-amounts div,
+.page-contract-details #assoc_contracts_list_wrapper .dollar-amounts div{
+  margin: 0;
+  width: 105px;
+}
+.page-contracts-landing #assoc_contracts_list_wrapper .contract-title,
+.page-contract-details #assoc_contracts_list_wrapper .contract-title{
+  margin: 10px 0 -20px 0;
+}
+.contract-details-heading .contract-id .master-contract-link{
+  margin:10px 0px;
+}
+
+.oge-ma-details .contract-id .contractLinkNote a,
+.cb-ma-details .contract-id .contractLinkNote a,
+.oge-ca-details .contract-id .contractLinkNote a,
+.cb-ca-details .contract-id .contractLinkNote a,
+.oge-assoc-contracts-list .contractLinkNote a{
+  display:block;
+  height:16px;
+  width:14px;
+  margin:5px 0px 0px 5px;
+  text-indent: -99999px;
+  background: url("../../images/note-icon.png") no-repeat scroll right 0 transparent;
+}
+[about^='/contract_details'] .oge-ma-details .contract-id .contractLinkNote a {
+  margin-top: 25px;
+}
+
+.featured-dashboard-title .toolTip,
+.oge-ma-details .toolTip,
+.cb-ma-details .toolTip,
+.oge-ca-details .toolTip,
+.cb-ca-details .toolTip,
+.assoc-contracts-list .toolTip,
+.oge-assoc-contracts-list .toolTip{
+  display:none;
+  position:absolute;
+  top:-100px;
+  width:195px;
+  left:-183px;
+  padding:8px 12px;
+  background-color: #f4f4f4;
+  color:#3b5f7f;
+  border:1px solid #c5c5c3;
+  -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+  -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+  box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+  text-transform: none;
+  margin:0px;
+}
+.oge-assoc-contracts-list .toolTip,
+.assoc-contracts-list .toolTip{
+  top:-89px;
+}
+
+.featured-dashboard-title a{
+  text-decoration:none;
+  cursor: default;
+}
+
+.featured-dashboard-title .toolTip{
+  top: -65px;
+  width: 222px;
+  margin: 0 0 0 140px;
+}
+
+.featured-dashboard-title .toolTip .bottom,
+.oge-ma-details .toolTip .bottom,
+.cb-ma-details .toolTip .bottom,
+.oge-ca-details .toolTip .bottom,
+.cb-ca-details .toolTip .bottom,
+.assoc-contracts-list .toolTip .bottom,
+.oge-assoc-contracts-list .toolTip .bottom{
+  display:block;
+  width:24px;
+  height:18px;
+  position:absolute;
+  margin:0px;
+  background: url("../images/drop-arrow.png") no-repeat scroll right 0 transparent;
+  bottom:-18px;
+  right:12px;
+}
+
+.featured-dashboard-title .toolTip .bottom{
+  right: 111px;
+}
+
+.assoc-contracts-list .contractLinkNote a,
+.oge-assoc-contracts-list .contractLinkNote a{
+  margin:0 0 0 5px;
+}
+
+.activeExpenseContractNote.toolTip {
+  display:none;
+  position:absolute;
+  top:100px;
+  width:210px;
+  left:20px;
+  padding:3px 10px;
+  background-color: #f4f4f4;
+  color:#3b5f7f;
+  border:1px solid #c5c5c3;
+  -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+  -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+  box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
+  text-transform: none;
+  margin:0px;
+
+}
+
+.oge-assoc-contracts-list .assoc_item .contract-title{
+  margin-bottom:5px;
+}
+
+table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title .contract-title-text{
+  margin-top:3px;
+}
+.oge-assoc-contracts-list .assoc_amounts{
+  float:right;
+
+}
+.oge-assoc-contracts-list .assoc_amounts .rfed-amount{
+  float:right;
+  width: 150px;
+
+}
+.oge-assoc-contracts-list .assoc_amounts .rfed-amount span{
+  display:block;
+  width:150%;
+  text-align: center;
+  text-transform: uppercase;
+  float:left;
+  clear:both;
+}
+.oge-assoc-contracts-list .assoc_amounts .rfed-amount span.label{
+  font-size: 11px;
+  font-weight: normal;
+  line-height: 16px;
+}
+
+.cb-ca-details .contract-id .master-contract-link,
+.oge-ca-details .contract-id .master-contract-link{
+  clear:both;
+}
+
+.contract-vendor-details {
+  border-top: 1px dotted #CACACA;
+  display: block;
+  float:left;
+  clear:none;
+  width: 340px;
+  padding-left: 20px;
+  padding-top: 20px;
+}
+
+.dollar-amounts > div{
+  color: #5C5C5C;
+  float: right;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  width: 105px;
+  margin-left: 22px;
+  margin-bottom: 0;
+}
+
+[about='/contract/spending/transactions'] .dollar-amounts > div,
+[about^='/spending_landing/dashboard'] .dollar-amounts > div,
+[about^='/spending/transactions'] .dollar-amounts > div {
+  width: auto;
+}
+
+.transactions-total-amount,
+.contract-information .dollar-difference,
+.contract-information .dollar-difference,
+.contract-information .percent-difference,
+.no-of-contracts{
+  color: #5C5C5C;
+  float: right;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  width: auto;
+  margin-left: 32px;
+  margin-bottom: 10px;
+}
+
+.transactions-total-amount {
+  margin-top: 30px;
+  margin-bottom: 23px;
+}
+
+.contract-vendor-details .dollar-amounts > div{
+  margin-left: 0px;
+  width: 105px;
+}
+.dollar-amounts > div:first-child,
+.transactions-total-amount,
+.contract-information .dollar-difference{
+  margin-right:0px;
+}
+article[about="/spending/transactions"] .dollar-amounts > div {
+  padding-top: 15px;
+  width: auto;
+}
+.dollar-amounts > div > div,
+.transactions-total-amount > div,
+.contract-information > div > div{
+  font-size: 11px;
+  font-weight: normal;
+  line-height:16px;
+  margin-top:5px;
+}
+.amount-title{text-transform: uppercase;}
+.contract-information{
+  float:left;
+  clear:both;
+  line-height: 19px;
+  width:100%;
+}
+
+.contract-information li {
+  margin-bottom: 16px;
+}
+
+[about^='/nycha_spending/transactions'] .contract-information li,
+[about^='/contract/spending/transactions'] .contract-information li,
+[about^='/spending/transactions'] .contract-information li {
+  margin-bottom: 0px;
+  color: #5b5b5b;
+}
+
+[about^='/nycha_spending/transactions'] .contract-information li {
+  width: 460px;
+}
+
+[about^='/contract/spending/transactions'] .contract-information li {
+  width: 540px;
+}
+
+[about^='/spending/transactions'] .contract-information li {
+  width: 470px;
+}
+
+[about^='/contract_details'] {
+  padding: 0 19px;
+  color: #000;
+}
+
+.contract-information li div,
+.spending-tx-subtitle div,
+#payroll-tx-static-content div {
+  display: inline-block;
+}
+
+.contract-information li div br,
+.spending-tx-subtitle div br,
+#payroll-tx-static-content div br {
+  display: none;
+}
+
+.spacer {
+  display: inline-block;
+  width: 3px;
+}
+
+#spending-transactions .contract-information li,
+#nycha-spending-transactions .contract-information li
+{margin-bottom:0px;}
+#spending-transactions .contract-information {margin-top:0px;}
+
+.spending-tx-subtitle {
+  margin-top: 10px;
+  color: #5b5b5b;
+}
+
+.spending-tx-subtitle b,
+.spending-tx-subtitle strong {
+  text-transform: none;
+}
+
+.contract-information li span{
+  font-size: 13px;
+  font-weight: bold;
+}
+.dollar-amounts .left{
+  font-size: 13px;
+  padding-bottom: 5px;
+}
+.contract-information ul.left {
+  display: block;
+  float:left;
+  width: 316px;
+}
+.contract-information ul.right {
+  display: block;
+  float:left;
+  margin-left: 20px;
+  width: 209px;
+}
+
+/* contract details table styles */
+.outerTable{table-layout: fixed; text-transform: uppercase;}
+.outerTable th div{text-align:center;}
+.outerTable th div, .outerTable td div{
+  margin: 8px 0 8px 5px;
+}
+.outerTable th{
+  line-height:18px;
+}
+.outerTable th.text div {
+  float: left;
+  text-align: center;
+}
+.outerTable td.text div {
+  float: left;
+  text-align: left;
+}
+.outerTable th.number div {
+  float: right;
+  text-align: center;
+}
+.outerTable td.number div {
+  float: right;
+  text-align: right;
+}
+.outerTable tr.even, .outerTable tr.odd {
+  border-bottom: none;
+}
+
+#contract-transactions .showHide td{
+  padding: 10px 5px;
+}
+.sub-table{width:100%; table-layout: fixed;}
+.sub-table th,
+.outerTable .sub-table th {
+  background: transparent;
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(enabled = false)"; /* ie7 */
+  color: #336699;
+  font-size: 12px;
+  line-height: 13px;
+  font-weight: bold;
+  margin-top:0;
+}
+.sub-table th div{
+  background: transparent;
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(enabled = false)"; /* ie7 */
+  color: #336699;
+  font-size: 12px;
+  line-height:13px;
+  font-weight: bold;
+  margin-top:0;
+  font-family: 'RobotoCondensed';
+}
+.ma-history .sub-table th div,
+.cta-spending-history .sub-table th div,
+.cta-history .sub-table th div{
+  margin-top:8px;
+}
+.outerTable td div.scroll {
+  border-top: 1px dotted #CACACA;
+  max-height: 200px;
+  overflow: auto;
+  margin: 0 0 0 20px;
+}
+#spending-transactions .dataTables_wrapper,
+#contract-details .dataTables_wrapper,
+#nyc-payroll .dataTables_wrapper,
+#budget-transactions .dataTables_wrapper,
+#revenue-transactions .dataTables_wrapper,
+#nycha-contracts-transactions .dataTables_wrapper,
+#nycha-spending-transactions .dataTables_wrapper,
+#nycha-budget-transactions .dataTables_wrapper,
+#nycha-revenue-transactions .dataTables_wrapper,
+.page-budget .page-contract-details .dataTables_wrapper,
+.page-revenue .page-contract-details .dataTables_wrapper
+{
+  border:none;
+}
+#spending-transactions > div:nth-child(1),
+#contract-details > div:nth-child(1),
+#nyc-payroll > div:nth-child(1),
+#budget-transactions > div:nth-child(1),
+#revenue-transactions > div:nth-child(1),
+#nycha-contracts-transactions > div:nth-child(1),
+#nycha-spending-transactions > div:nth-child(1),
+#nycha-budget-transactions > div:nth-child(1),
+#nycha-revenue-transactions > div:nth-child(1)
+{
+  margin:18px 10px 5px 10px;
+}
+
+#spending-transactions .dataTables_wrapper > div:nth-child(2),
+#contract-details .dataTables_wrapper > div:nth-child(2),
+#nyc-payroll .dataTables_wrapper > div:nth-child(2),
+#budget-transactions .dataTables_wrapper > div:nth-child(2),
+#revenue-transactions .dataTables_wrapper > div:nth-child(2),
+#nycha-contracts-transactions .dataTables_wrapper > div:nth-child(2),
+#nycha-spending-transactions .dataTables_wrapper > div:nth-child(2),
+#nycha-budget-transactions .dataTables_wrapper > div:nth-child(2),
+#nycha-revenue-transactions .dataTables_wrapper > div:nth-child(2),
+.page-budget .page-contract-details .dataTables_wrapper > div:nth-child(2),
+.page-revenue .page-contract-details .dataTables_wrapper > div:nth-child(2)
+{
+  border:1px solid #cacaca;
+}
+#spending-transactions .dollar-amounts,
+#contract-details .dollar-amounts,
+#nyc-payroll .dollar-amounts,
+#spending-transactions .contract-id,
+#nycha-spending-transactions .contract-id,
+#nycha-budget-transactions .contract-id,
+#nycha-revenue-transactions .contract-id,
+#contract-details .contract-id,
+#nyc-payroll .contract-id,
+.inside .contract-details-heading,
+.inside .nycha-contract-details-heading,
+.inside .transactions-container,
+.contract_transactions,
+#nyc-expense-pending-contracts .omega-12-twocol-3-9 .inside .contract-details-heading,
+.page-revenue #revenue-transactions .inside .panel-pane.pane-custom.pane-2,
+  /*.page-budget .inside .panel-pane.pane-custom.pane-2,*/
+.expense_category_budget_details .panel-pane.pane-custom.pane-1{
+  width:420px;
+}
+
+/*style fix for budget domain - top 5 agencies by committed expense budget*/
+#spending-transactions .page-budget .inside .panel-pane.pane-custom.pane-2 {
+  width: auto;
+}
+
+#node-widget-percent_difference_by_agencies_view > div.content.clearfix {
+  position: static;
+}
+
+
+/* NYCCHKBK-12958 defect #6 - removing to fix issue with title not coming when no transactions
+h1.no-spending-transactions {width: 500px}*/
+
+.newwindow #page-title{
+  visibility: hidden;
+  height:0;
+}
+
+#assoc_contracts_list .region:not(.region--content){
+  display:none;
+}
+
+.newwindow .inside .transactions-container,
+.newwindow .inside .contract-details-heading,
+.newwindow .inside .nycha-contract-details-heading,
+.contract_transactions .inside .contract-details-heading,
+#nyc-expense-pending-contracts .inside .contract-details-heading,
+.inside #node-widget-545 .contract-details-heading,
+#spending-transactions .inside .contract-details-heading,
+#nycha-spending-transactions .inside .contract-details-heading,
+#nycha-budget-transactions .inside .contract-details-heading,
+#nycha-revenue-transactions .inside .contract-details-heading
+{
+  width:100%;
+}
+.budget_agency_perecent_difference_transactions .inside .panel-pane.pane-custom.pane-1,
+.expense_category_budget_details .inside .panel-pane.pane-custom.pane-1,
+.department_budget_details .inside .panel-pane.pane-custom.pane-1
+
+{
+  float:left !important;
+  width:50% !important;
+}
+.nycha_assoc_contracts_list .inside .panel-pane.pane-custom.pane-1{
+  margin-left: 10px !important;
+  margin-right:10px !important;
+}
+.page-revenue #revenue-transactions .inside .panel-pane.pane-custom.pane-2.noDataShowFull,
+.page-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull,
+.page-nycha-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull,
+.page-nycha-revenue .inside .panel-pane.pane-custom.pane-2.noDataShowFull
+{
+  width:100% !important;
+  float:none !important;
+}
+.page-revenue #revenue-transactions .inside .panel-pane.pane-custom.pane-2.noDataShowFull #no-records,
+.page-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull #no-records,
+.page-nycha-budget .inside .panel-pane.pane-custom.pane-2.noDataShowFull #no-records,
+.page-nycha-revenue .inside .panel-pane.pane-custom.pane-2.noDataShowFull #no-records
+{
+  text-align:center;
+  float:left;
+  clear:both;
+  width:100%;
+}
+.revenue-no-records {
+  width:100% !important;
+}
+.outerTable{
+  border:1px solid #cacaca;
+  margin-bottom:20px;
+}
+
+
+#spending-transactions .narrow-down-filter,
+#contract-details .narrow-down-filter,
+#nyc-payroll .narrow-down-filter{
+  margin-top:35px;
+}
+#spending-transactions .dollar-amounts > div,
+#contract-details .dollar-amounts > div,
+#nyc-payroll .dollar-amounts > div{
+  width:auto;
+}
+.newwindow #spending-transactions .grid-3, #contract-details .grid-3,
+#budget-transactions .grid-3,#nycha-contract-details .grid-3,
+#revenue-transactions .grid-3
+{
+  margin-top: 46px;
+}
+.newwindow #section-header{margin-bottom:0;}
+.newwindow #contract-transactions{margin-top:5px;}
+
+
+.newwindow #mini-panel-contracts_cta_history{
+  margin-left:0;
+  margin-right: 0;
+}
+
+.transactions-total-amount{
+  width:auto;
+  font-family:inherit !important;
+}
+span.export, span.summary_export {
+  background: url("../../images/export.png") no-repeat scroll right 0 transparent;
+  width: 70px;
+  height:17px;
+  cursor: pointer;
+  position: absolute;
+  top:17px;
+  right: 0;
+  padding-top:3px;
+  color: #209AD6;
+  font-weight: bold;
+  text-transform: uppercase;
+  z-index: 100;
+}
+.information {
+  background: url(/themes/custom/nyccheckbook/images/information-icon-small.png) no-repeat scroll right 0 transparent;
+  height:20px;
+  width:123px;
+  cursor: pointer;
+  position: relative;
+  top:-65px;
+  right: 10px;
+  padding-top:6px;
+}
+
+.information .tooltiptext {
+  visibility: hidden;
+  width: 320px;
+  background-color: #f6f6f6b8;
+  color: #5C5C5C;
+  text-align: left;
+  border-radius: 1px;
+  padding: 2px 4px;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: -40%;
+  margin-left: -160px;
+}
+
+.information:hover .tooltiptext {
+  visibility: visible;
+}
+
+span.alerts {
+  background: url("../../images/create-alert.png") no-repeat scroll right 0 transparent;
+  height:18px;
+  width:123px;
+  cursor: pointer;
+  position: absolute;
+  top:-5px;
+  right: 0;
+  padding-top:5px;
+  color: #209AD6;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.newwindow .contract-details-heading a{
+  color: #5C5C5C;
+  cursor: default;
+}
+
+a.noclick{
+  cursor: default;
+}
+
+.newwindow .contract-details-heading a:hover{
+  text-decoration: none;
+}
+/* Contract ID Detail Pages*/
+.contract_transactions #mini-panel-contracts_cta_history table.outerTable,
+table.outerTable.ma-history
+,table.oge-cta-vendor-info
+{
+  border:1px solid #cacaca;
+  margin-bottom:15px;
+}
+
+.contract_transactions .oge-cta-details table.outerTable,
+table.outerTable.ma-history{
+  border:1px solid #cacaca;
+  margin-bottom:15px;
+}
+
+
+#assoc_contracts_list_info {
+  float:left;
+  text-align: left;
+  width: 49.5%;
+}
+#assoc_contracts_list_paginate {
+  float:right;
+  text-align: right;
+  width: 49.5%;
+}
+
+.dataTables_paginate span[id*=_list_] {
+  cursor: pointer;
+  display: inline-block;
+  padding: 0.5em;
+  vertical-align: middle;
+}
+.paging_input input {
+  display: inline;
+  width: 3em;
+}
+
+#node-widget-427 h3,
+#node-widget-426 h3{
+  margin-top: 12px;
+}
+
+[about^="/contract_details"] h3 {
+  margin-top: 0;
+}
+
+[about^="/contract_details"] .contracts-spending-bottom h3 {
+  margin-top: 35px;
+  margin-bottom: 0;
+  float: left;
+}
+
+#spending-transactions > div:first-child,
+#contract-details > div:first-child,
+#nyc-payroll > div:first-child,
+#budget-transactions > div:first-child,
+#revenue-transactions > div:first-child {
+  margin: 18px 10px 5px;
+}
+
+.newwindow #nycha-spending-transactions > div:first-child
+{
+  margin: 18px 10px 1px;
+}
+
+#nycha-spending-transactions > div:first-child
+{
+  margin: 0 10px 1px;
+}
+
+.contract-details-heading {
+  color: #000;
+  margin-top: 25px;
+}
+
+[about^='/contract_details'] .contract-details-heading {
+  margin-top: 5px;
+}
+
+.newwindow [about='/contract/spending/transactions/datasource/checkbook_oge'] .contract-details-heading,
+.newwindow [about='/nycha_spending/transactions'] .contract-details-heading {
+  margin-top: 5px;
+}
+
+.newwindow [about='/contract/spending/transactions/datasource/checkbook_oge'] .block-checkbook-transactions .dollar-amounts {
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+.contract-details-heading h2,
+.newwindow [about^='/contract_details'] .contract-details-heading h2 {
+  font-size: 28px;
+  margin: 0;
+}
+
+[about^='/contract_details'] .contract-details-heading h2 {
+  margin-top: 20px;
+  max-width: 480px;
+}
+
+.contract-details-heading::after {
+  display: table;
+  clear: both;
+  content: "";
+}
+
+.contract-details-heading h3 {
+  font-size: 15px;
+  font-weight: bold;
+  color: #3C5E7C;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.contract-details-heading h4 {
+  font-size: 15px;
+  font-weight: bold;
+  color: #3C5E7C;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.contract-details-heading ul,
+.contract-information ul {
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+#assoc_contracts_list .clearfix::after {
+  display: block;
+}
+
+#assoc_contracts_list > tbody > tr > td > div {
+  margin: 13px 1px 5px 15px;
+}
+
+table.outerTable > thead th,
+table.outerTable tr.outer td {
+  padding-right: 6%;
+}
+
+[about^='/contract_details'] table.outerTable > thead th,
+[about^='/contract_details'] table.outerTable tr.outer td {
+  padding-right: 10%;
+}
+
+.contracts-spending-bottom table.outerTable > thead th,
+.contracts-spending-bottom table.outerTable tr.outer td {
+  padding-right: 0;
+}
+
+span.subContractStatus {
+  padding-left: 67px;
+}
+
+[about^='/contract_details'] table.outerTable table.outerTable > thead th,
+[about^='/contract_details'] table.outerTable table.outerTable tr.outer td {
+  padding-right: 0;
+}
+
+[about^='/contract_details'] .showHide td {
+  padding: 10px 5px;
+}
+
+.dollar-amounts > div:last-child {
+  margin-bottom: 5px;
+}
+
+.newwindow .DTFC_LeftBodyWrapper {
+  margin-top: 0 !important;
+}
+
+.nycha-assoc-releases .assoc_item .contract-title{
+  margin-top:7px;
+}
+
+.nycha-contract-history td.thVNum{
+  padding: 0 50px;
+}
+
+table.nycha_assoc_contracts_list {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.nycha_assoc_contracts_list tr{
+  width:100%;
+}
+
+.nycha_assoc_contracts_list .assoc_item{
+  border: 1px solid #cacaca;
+}
+
+.nycha_assoc_contracts_list .assoc_item .contract-title div.assoc-release-link{
+  width: 400px;
+  float:left;
+  margin: 8px 0 10px 10px;
+  text-transform: uppercase;
+  font-weight:bold;
+}
+
+.nycha_assoc_contracts_list .assoc_item .contract-title div.assoc-release-link span{
+  font-size: 14px;
+}
+
+.nycha_assoc_contracts_list .assoc_item .contract-title a.showHide{
+  margin-top:-2px;
+}
+
+.nycha_assoc_contracts_list .assoc_item div.dollar-amounts{
+  width: 500px;
+  margin:0;
+}
+.nycha_assoc_contracts_list .assoc_item div.dollar-amounts > div{
+  width: 120px;
+  margin:0;
+}
+.nycha_assoc_contracts_list .assoc_item div.dollar-amounts  div.amount-title{
+  margin:0;
+}
+.nycha_assoc_contracts_list div.inside{
+  margin:5px;
+}
+.nycha_assoc_contracts_list div.thVerStat{
+  margin:5px;
+}
+
+.nycha-contract-history td.thVerStat div{
+  padding-left:20px;
+}
+
+.nycha-contract-history td.thVNum div{
+  padding-right:18px;
+}
+.nycha-contract-history td.thCurAmt div,
+.nycha-contract-history td.thOrigAmt div {
+  padding-right:48px;
+  /* padding-left:40px;*/
+}
+.nycha-contract-history td.thLastMDate div{
+  padding-left:20px;
+}
+.nycha-contract-history .outerTable th.text div{
+  padding-left:10px;
+}
+.nycha-contract-history th.thEndDate div{
+  padding-left:17px;
+}
+
+.nycha_assoc_contracts_list .cta-history th.thEndDate div{
+  padding-left:17px;
+}
+.nycha_assoc_contracts_list th.item_description div,
+.nycha_assoc_contracts_list td.item_description div,
+.nycha_assoc_contracts_list td.shipment_number div,
+.dataTable th.ncc-item_description div,
+.dataTable td.ncc-item_description div,
+.dataTable th.nycc-shipment_number div,
+.dataTable td.nycc-shipment_number div
+{
+  padding-left:50px;
+}
+
+.nycha_assoc_contracts_list td.responsibility_center_descr div{
+  padding-left: 20px;
+  padding-right: 5px;
+}
+.cta-history td{
+  vertical-align: middle;
+}
+
+.nycha_assoc_contracts_list .cta-r-data th.th3,
+.nycha_assoc_contracts_list .cta-r-data td.td3 {
+  padding-right: 20px;
+}
+.nycha_assoc_contracts_list .assoc-release-link {
+  color: #3C5E7C;
+}
+
+.nycha_assoc_rel_pager {
+  display: inline-block;
+}
+
+.pager-center{
+  text-align: center;
+  margin:10px;
+}
+
+.pager-center li{
+  cursor: pointer;
+  display: inline-block;
+  padding:0.5em;
+  font-size:14px;
+}
+
+.pager-center li > a,
+.pager-center li > span{
+  border: none;
+  box-shadow: none;
+  background: none;
+  padding: 0;
+  color: #1F82C9;
+  min-width: 0;
+  margin: 0;
+  line-height: normal;
+}
+
+.pager-center .current {
+  border: none;
+  box-shadow: none;
+  background: none;
+}
+
+.pager-center .disabled > span {
+  color: #5b5b5b;
+  cursor: pointer;
+}
+
+.pager-center li.active{
+  background: url(/themes/custom/nyccheckbook/images/pager-active-bg.png) repeat-x scroll 0 0 transparent;
+}
+
+.superscript {
+  position: relative;
+  top: -0.5em;
+  font-size: 12px;
+  font-weight: 400;
+  font-family: Roboto;
+  text-transform: none;
+  color: black;
+}
+
+.contracts-spending-top > h3 {
+  margin-block-start: auto;
+}
+
+.nycha_assoc_contracts_list .contract-title {
+  border-spacing: 0 0px;
+}
+
+.contracts-spending-top table.outerTable > thead th,
+.contracts-spending-top table.outerTable tr.outer td,
+#spending_transactions table.outerTable > thead th,
+#spending_transactions table.outerTable tr.outer td{
+  padding-right: 0;
+}
+
+h2.contract-title {
+  font-size: 28px;
+}
+
+.node-widget-429 h2.contract-title {
+  width: 550px;
+}

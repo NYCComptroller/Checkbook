@@ -1,0 +1,26 @@
+{% set percent_spending_value = spendingSummaryTitle(node.widgetConfig.totalAggregateColumns['check_amount_sum'] ,node.data[0]['check_amount_sum'] )%}
+{% set percent_spending = customWidgetLabel("percent_spending")  %}
+{% set snmid = RequestGet("smnid") %}
+
+{% if snmid == 750  %}
+{% set industry_name = node.data[0]['industry_type_industry_type_industry_type_name'] %}
+{% else %}
+{% set industry_name = node.data[0]['industry_industry_industry_type_name'] %}
+{% endif %}
+
+<div class="contract-details-heading">
+  <div class="contract-id">
+    <h2 class="contract-title">{{customFunctionEvaluate(node.widgetConfig.templateTitleEval)}}</h2>
+    <div class="spending-tx-subtitle"><b>{{node.widgetConfig.templateLabel}}</b>: {{industry_name}}</div>
+  </div>
+  <div class="dollar-amounts">
+    <div class="ytd-spending-amount">
+      {{customAmount(node.data[0]['check_amount_sum'],2,'$') |raw }}
+      <div class="amount-title">{{customWidgetLabel("ytd_spending") |raw}}</div>
+    </div>
+    <div class="percent-spending-amount">
+      {{percent_spending_value}}
+      <div class="amount-title">{{percent_spending |raw}}</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,259 @@
+<?php
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (c) 2012 – 2023 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
+use Drupal\checkbook_log\LogHelper;
+use Drupal\checkbook_solr\CheckbookSolr;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function checkbook_smart_search_page_attachments_alter(array &$attachments) {
+  /* Legacy Javascript located here: /js/smart_search.js attempts to load a name for the uploads from solr api.
+  *  That module doesn't currently exist.  We simulate that modules functionality by population the data here.
+  */
+
+  $solr_datasource = Datasource::getCurrentSolrDatasource();
+  // if(!$attachments['#attached']['drupalSettings']['solr_datasource'] ){
+  // This check is throwing an error on dev, and QA server.
+    $attachments['#attached']['drupalSettings']['solr_datasource'] = $solr_datasource;
+  // }
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ */
+function checkbook_smart_search_form_alter(&$form, FormStateInterface &$form_state, $form_id) {
+  if ($form_id == 'checkbook_smart_search_form') {
+    $solr_datasource = Datasource::getCurrentSolrDatasource();
+    $placeholder = match (trim($solr_datasource)) {
+      'edc' => 'Search New York City Economic Development Corporation...',
+      'nycha' => 'Search New York City Housing Authority...',
+      default => 'Search New York City information...',
+    };
+    $form['search_box']['#attributes']['placeholder'] = $placeholder;
+
+    $form['#attached']['library'][] = 'checkbook_smart_search/smart_search_autocomplete';
+    $form['#attached']['drupalSettings']['checkbook_smart_search']['solr_datasource'] = $solr_datasource;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for form element templates.
+ */
+function checkbook_smart_search_theme_suggestions_form_element_alter(array &$suggestions, array $variables) {
+  if (isset($variables['element']['#attributes']['name']) && $variables['element']['#attributes']['name'] == 'search_box') {
+    $suggestions[] = 'form_element__search_box';
+  }
+}
+
+function checkbook_smart_search_filter_results($solr_datasource,$facet_counts,$selected_facet_results) {
+
+  $facet_config = CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
+  $facets_render = [];
+
+  foreach (array_merge($facet_counts['facet_fields'] ?? [], $facet_counts['facet_intervals'] ?? []) as $facet => $results) {
+    if (!$results) {
+      continue;
+    }
+    if (!isset($facet_config->$facet)) {
+      LogHelper::log_warn("Facet {$facet} is undefined");
+    }
+    $facets_render[$facet] = $facet_config->$facet;
+    // apply json config `prepare_results` function
+    if(isset($facet_config->$facet->prepare_results)) {
+      // @todo: Confirm the "=" below isn't supposed to be "==".
+      if ($prepare_fn = $facet_config->$facet->prepare_results) {
+        $results = $prepare_fn($results);
+      }
+    }
+
+    $facets_render[$facet]->results = array_slice($results, 0, 100, true);
+  }
+
+
+  $selected = $selected_facet_results;
+  if (sizeof($selected)) {
+    foreach ($selected as $facet => $values) {
+      if (isset($facets_render[$facet])) {
+        $facets_render[$facet]->selected = $values;
+      } else {
+        LogHelper::log_warn("Facet {$facet} is undefined");
+      }
+    }
+  }
+  return $facets_render;
+}
+/** Theme for search results page. **/
+function checkbook_smart_search_theme($existing, $type, $theme, $path) {
+  return [
+    'smart_search_form' => [
+      'render element' => 'form'
+    ],
+    'form_element__search_box' => [
+      'template' => 'form-element--search-box',
+      'base hook'=> 'form-element',
+      'path' => $path . "/templates"
+    ],
+    'smart_search_results' => [
+      'template' => 'results',
+      'variables' => [
+        'search_results' => [],
+        'solr_datasource' => '',
+        'selected_facet_results' => [],
+        'registered_contracts' => 0,
+        'active_contracts' => 0,
+      ],
+    ],
+    'smart_search_filter' => [
+      'variables' => [
+        'solr_datasource' => '',
+        'facets_render' => [],
+        'selected_facet_results' => [],
+        'registered_contracts' => 0,
+        'active_contracts' => 0,
+      ],
+    ],
+    'revenue' => [
+      'variables' => [
+        'search_results' => [],
+        'params' => [],
+      ],
+    ],
+    'revenue_budget' => [
+      'variables' => ['revenue_budget_results' => NULL],
+    ],
+    'budget' => [
+      'variables' => [
+        'search_results' => [],
+        'params' => [],
+      ],
+    ],
+    'spending' => [
+      'variables' => [
+        'search_results' => [],
+        'params' => [],
+      ],
+    ],
+    'nycha_spending' => [
+      'variables' => [
+        'search_results' => [],
+        'params' => [],
+      ],
+    ],
+    'payroll' => [
+      'variables' => [
+        'search_results' => [],
+        'params' => [],
+      ],
+    ],
+    'contracts' => [
+      'variables' => [
+        'search_results' => [],
+        'params' => [],
+      ],
+    ],
+    'nycha_contracts' => [
+      'variables' => [
+        'search_results' => [],
+        'params' => [],
+      ],
+    ],
+    'nycha_budget' => [
+      'variables' => [
+        'search_results' => [],
+        'params' => [],
+      ],
+    ],
+    'nycha_revenue' => [
+      'variables' => [
+        'search_results' => [],
+        'params' => [],
+      ],
+    ],
+    'ajax_results' => [
+      'variables' => [
+        'search_results' => [],
+        'solr_datasource' => ''
+      ],
+    ],
+    'checkbook_smart_search_export_form' => [
+      'template' => 'export_dialog'
+    ],
+  ];
+}
+
+/** Displays domain results
+ *
+ * @return array
+ */
+function checkbook_smart_search_display_domain_results($value, $solr_datasource, $template) {
+  $twigFilePath = \Drupal::service('extension.list.module')->getPath('checkbook_smart_search') . "/templates/" . $template . ".html.twig";
+  $twigService = \Drupal::service('twig');
+  $load_template = $twigService->loadTemplate($twigFilePath);
+  $params['datasource'] = $solr_datasource;
+  $params['domain'] = $template;
+  $markup = [
+    '#markup' => $load_template->render([
+      'search_results' => $value,
+      'params' => $params,
+    ]),
+    '#allowed_tags' => ['table','tbody','tr','td','a','script','div','h2','h3','h4','input','label','ol','li','ul']
+  ];
+  return \Drupal::service('renderer')->render($markup);
+}
+
+/** Gets facet results
+ *
+ * @return array
+ */
+function checkbook_smart_search_facet_results($facet_counts,$solr_datasource,$selected_facet_results,$registered_contracts,$active_contracts) {
+  $twigFilePath = \Drupal::service('extension.list.module')->getPath('checkbook_smart_search') . "/templates/smart_search_filter.html.twig";
+  $twigService = \Drupal::service('twig');
+  $load_template = $twigService->loadTemplate($twigFilePath);
+  $facets_render = checkbook_smart_search_filter_results($solr_datasource,$facet_counts,$selected_facet_results);
+  //var_dump($selected_facet_results);
+  $markup = [
+    '#markup' => $load_template->render([
+      'solr_datasource' => $solr_datasource,
+      'facets_render' => $facets_render,
+      'selected_facet_results' => $selected_facet_results,
+      'registered_contracts' => $registered_contracts,
+      'active_contracts' => $active_contracts
+    ]),
+    '#allowed_tags' => ['script','span','div','h2','input','label','li','ul']
+  ];
+  return \Drupal::service('renderer')->render($markup);
+}
+
+/**
+ * Implements template_preprocess_html().
+ *
+ * @param $variables
+ */
+function checkbook_smart_search_preprocess_html(&$variables) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  if (preg_match('/\/createalert$/', $current_path)) {
+    $variables['attributes']['class'][] = 'createalert';
+  }
+}

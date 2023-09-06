@@ -1,0 +1,4 @@
+.region--primary-menu {
+  display: flex;
+  background: url("../../images/main-nav-bg.png") repeat-x scroll 0 0;
+}

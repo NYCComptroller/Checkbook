@@ -1,0 +1,24 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":1012,
+  "no_results_content":"No Results Found",
+  "limit":100,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "columns":["invoice_number.invoice_number","txcount"],
+  "orderBy":"-txcount",
+  "facetPager":true,
+  "filterName":"Invoice Number",
+  "urlParameterName":"invoice_number",
+  "autocompleteParamName":"invoice_number_auto",
+  "autocompleteID":"fInvoiceNumber",
+  "autocompleteField":"invoice_number",
+  "adjustParameters":"
+      $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+      $adjustedParameters['invoice_number.invoice_number'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+      return $adjustedParameters;
+  ",
+  "template":"individual_filter"
+}
