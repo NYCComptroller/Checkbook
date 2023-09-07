@@ -20,7 +20,6 @@
 
 namespace Drupal\checkbook_datafeeds\Payroll;
 
-use Drupal\checkbook_datafeeds\Utilities\FeedConstants;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\CheckbookDomain;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
 use Drupal\Core\Form\FormStateInterface;
@@ -90,7 +89,7 @@ abstract class PayrollFeedBase
    */
   public function __construct()
   {
-    $this->user_criteria = [FeedConstants::TYPE_OF_DATA => $this->type_of_data];
+    $this->user_criteria = ['Type of Data' => $this->type_of_data];
   }
 
   /**
@@ -103,6 +102,7 @@ abstract class PayrollFeedBase
     $this->form = $form;
     $this->form_state = $form_state;
 
+    $current_step = 'payroll';
     $this->_process_user_criteria_confirmation();
     $this->user_criteria['Formatted'] = $this->formatted_search_criteria;
     $this->_process_criteria();
@@ -130,7 +130,7 @@ abstract class PayrollFeedBase
 
     $this->user_criteria = [];
 
-    $this->user_criteria[FeedConstants::TYPE_OF_DATA] = $this->data_source == Datasource::NYCHA ? 'Payroll_NYCHA' : 'Payroll';
+    $this->user_criteria['Type of Data'] = $this->data_source == Datasource::NYCHA ? 'Payroll_NYCHA' : 'Payroll';
     $this->user_criteria['Type of File'] = $this->response_type;
 
     $this->form['download_feeds'] = [
@@ -168,19 +168,24 @@ abstract class PayrollFeedBase
     $this->form['filter']['data_type'] = array(
       '#markup' => '<div><strong>Type of Data:</strong> Payroll</div>',
     );
-    $this->formatted_search_criteria[FeedConstants::TYPE_OF_DATA] = 'Payroll';
+    $this->formatted_search_criteria['Type of Data'] = 'Payroll';
     $this->form['filter']['file_type'] = array(
+//    '#markup' => '<div><strong>Type of File:</strong> ' . $this->form_state['step_information']['type']['stored_values']['format'] . '</div>',
       '#markup' => '<div><strong>Type of File:</strong> ' . $pvalues['format'] . '</div>',
     );
 
     if ($this->form_state->hasValue('title') && !empty($this->form_state->getValue('title'))){
     $this->form['filter']['title'] = array(
+//    '#markup' => '<div><strong>Type of File:</strong> ' . $this->form_state['step_information']['type']['stored_values']['format'] . '</div>',
       '#markup' => '<div><strong>Title:</strong> ' . $this->form_state->getValue('title') . '</div>',
     );
   }
+//  $this->formatted_search_criteria['Type of File'] = $this->form_state['step_information']['type']['stored_values']['format'];
     $this->formatted_search_criteria['Type of File'] = $this->form_state->get(['step_information', 'type', 'stored_values', 'format']);
+//    kint($this->formatted_search_criteria['Type of File']);
     $this->_process_user_criteria_by_datasource();
 
+    return;
   }
 
   abstract protected function _process_user_criteria_by_datasource();
@@ -199,6 +204,7 @@ abstract class PayrollFeedBase
       'responseColumns' => $this->filtered_columns
     ];
     $this->_process_datasource_values();
+    return;
   }
 
   protected function _process_datasource_values()

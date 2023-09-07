@@ -227,7 +227,7 @@ class DefaultController extends ControllerBase {
           "url" => $url,
           "category" => $autocomplete_categories[$term],
           "label" => $match,
-          "value" => urlencode($match),
+          "value" => $match,
         ];
       }
     }

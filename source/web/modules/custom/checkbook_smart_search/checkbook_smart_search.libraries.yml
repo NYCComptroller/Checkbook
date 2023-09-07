@@ -1,5 +1,4 @@
 smart_search_autocomplete:
-  version: 1.0.0
   js:
     /modules/custom/jquery_plugins/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.concat.min.js: {}
     js/smart_search.js: {}

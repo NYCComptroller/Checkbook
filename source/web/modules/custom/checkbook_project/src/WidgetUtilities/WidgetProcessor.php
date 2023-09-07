@@ -51,19 +51,15 @@ Class WidgetProcessor{
     if (str_contains(RequestUtilities::getCurrentPageUrl(), 'fvendor')) {
       //Vendor Facet
       if ($node->widgetConfig->filterName == 'Vendor') {
-        if (isset($node->widgetConfig->urlParamMap->fvendor)) {
+        if (isset($node->widgetConfig->urlParamMap->fvendor))
           unset($node->widgetConfig->urlParamMap->fvendor);
-        }
-        if (($key = array_search('fvendor', $node->widgetConfig->cleanURLParameters)) !== false) {
+        if (($key = array_search('fvendor', $node->widgetConfig->cleanURLParameters)) !== false)
           unset($node->widgetConfig->cleanURLParameters[$key]);
-        }
       } else {
-        if (isset($node->widgetConfig->urlParamMap->vendornm)) {
+        if (isset($node->widgetConfig->urlParamMap->vendornm))
           unset($node->widgetConfig->urlParamMap->vendornm);
-        }
-        if (($key = array_search('vendornm', $node->widgetConfig->cleanURLParameters)) !== false) {
+        if (($key = array_search('vendornm', $node->widgetConfig->cleanURLParameters)) !== false)
           unset($node->widgetConfig->cleanURLParameters[$key]);
-        }
       }
     }
   }
@@ -103,9 +99,8 @@ Class WidgetProcessor{
 
         foreach ($intersectKeys as $intersectKey => $keyValue) {
           if ($paramTypeConfig->$intersectKey && $urlParamMap[$intersectKey] == $param) {
-            if ((!isset($logicalOrFacet) || !$logicalOrFacet) && (!isset($unionOrFacet) || !$unionOrFacet)) {
+            if ((!isset($logicalOrFacet) || !$logicalOrFacet) && (!isset($unionOrFacet) || !$unionOrFacet))
               $configurationTypes[$param][$paramTypeConfig->$intersectKey] = explode("~", $originalRequestParams[$intersectKey]);
-            }
           }
         }
       }
@@ -243,8 +238,6 @@ Class WidgetProcessor{
                     $conditions[] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, 100000000);
                   }
                   break;
-                default:
-                  break;
               }
             }
             break;
@@ -283,8 +276,6 @@ Class WidgetProcessor{
                     $conditions[] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, 5000000000);
                   }
                   break;
-                default:
-                  break;
               }
             }
             break;
@@ -315,8 +306,6 @@ Class WidgetProcessor{
                   if (!in_array($i, $paramValues)) {
                     $conditions[] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, 250000);
                   }
-                  break;
-                default:
                   break;
               }
             }

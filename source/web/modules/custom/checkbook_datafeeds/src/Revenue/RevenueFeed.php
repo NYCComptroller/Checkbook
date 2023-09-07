@@ -19,10 +19,11 @@
  */
 
 namespace Drupal\checkbook_datafeeds\Revenue;
-use Drupal\checkbook_datafeeds\Utilities\FeedConstants;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\CheckbookDomain;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
 use Drupal\Core\Form\FormStateInterface;
+
+//use checkbook_advanced_search\Domain;
 
 /**
  * Class RevenueFeed
@@ -84,8 +85,6 @@ abstract class RevenueFeed{
 
   protected string $bracket_value_pattern = "/.*?(\\[.*?\\])/is";
 
-  protected string $spcial_char_pattren = '/[\'^£$%&*()}{@#~?><,|=_+¬-]/';
-
   /**
    * RevenueFeed constructor.
    */
@@ -104,7 +103,9 @@ abstract class RevenueFeed{
     $this->_process_user_criteria_confirmation();
     $this->user_criteria['Formatted'] = $this->formatted_search_criteria;
     $this->_process_criteria();
+//  $this->form_state['step_information']['confirmation']['stored_values']['criteria'] = $this->criteria;
     $this->form_state->set(['step_information', 'confirmation', 'stored_values', 'criteria'], $this->criteria);
+//  $this->form_state['step_information']['confirmation']['stored_values']['user_criteria'] = $this->user_criteria;
     $this->form_state->set(['step_information', 'confirmation', 'stored_values', 'user_criteria'], $this->user_criteria);
     $modified_form = checkbook_datafeeds_end_of_confirmation_form($this->form, $this->form_state, $this->criteria, $this->response_type, CheckbookDomain::$REVENUE);
     $form_state = $this->form_state;
@@ -112,10 +113,14 @@ abstract class RevenueFeed{
   }
   protected function _process_user_criteria_confirmation(){
     $pvalues = $this->form_state->get('page_values');
+//  $this->values = $this->form_state['step_information']['revenue']['stored_values'];
     $this->values = $this->form_state->get(['step_information', 'revenue', 'stored_values']);
+//  $this->response_type = $this->form_state['step_information']['type']['stored_values']['format'];
     $this->response_type = $this->form_state->get(['step_information', 'type', 'stored_values', 'format']) ?? 'CSV';
     $this->user_criteria = [];
-    $this->user_criteria[FeedConstants::TYPE_OF_FILE] = $this->response_type;
+    //    $page_values = $form_state->get('page_values');
+    $page_values = $this->form_state->get('page_values');
+  $this->user_criteria['Type of File'] = $this->response_type;
     $this->form['download_feeds'] = [
       '#markup' => '<h2 id="edit-description">Download Data</h2>',
     ];
@@ -154,11 +159,16 @@ abstract class RevenueFeed{
     );
     $this->formatted_search_criteria['Type of Data'] = 'Revenue';
     $this->form['filter']['file_type'] = array(
-      '#markup' => '<div><strong>'.FeedConstants::TYPE_OF_FILE.':</strong> ' . $pvalues['format'] . '</div>',
+//    '#markup' => '<div><strong>Type of File:</strong> ' . $this->form_state['step_information']['type']['stored_values']['format'] . '</div>',
+      '#markup' => '<div><strong>Type of File:</strong> ' . $pvalues['format'] . '</div>',
     );
-    $this->formatted_search_criteria[FeedConstants::TYPE_OF_FILE] = $this->user_criteria[FeedConstants::TYPE_OF_FILE];
+//  $this->formatted_search_criteria['Type of File'] = $this->form_state['step_information']['type']['stored_values']['format'];
+    $this->formatted_search_criteria['Type of File'] = $this->user_criteria['Type of File'];
+//    kint($this->formatted_search_criteria['Type of File']);
 
     $this->_process_user_criteria_by_datasource();
+
+    return;
   }
 
   abstract protected function _process_user_criteria_by_datasource();
@@ -167,106 +177,35 @@ abstract class RevenueFeed{
    * Convert values from Revenue section of form to an array format expected by API SearchCriteria.
    */
   private function _process_criteria(){
+    //global $conf;
     $this->criteria = [
       'global' => [
         //Set data source for query
         'type_of_data' => $this->type_of_data,
         'records_from' => 1,
+        //'max_records' => $conf['check_book']['data_feeds']['max_record_limit'] ?? 200000,
         'max_records' => \Drupal::config('check_book')->get('data_feeds')['max_record_limit'] ?? 200000,
       ],
       'responseColumns' => $this->filtered_columns
     ];
 
     $this->_process_datasource_values();
+    return;
   }
 
   protected function _process_datasource_values(){}
 
   public function checkbook_datafeeds_revenue_validate(&$form, &$form_state){
     //Hidden Field for multi-select
-    if($this->data_source == Datasource::NYCHA) {
-      $multi_select_hidden = !empty( $form_state->getValue('nycha_column_select') ) ? '|' . implode('||',  $form_state->getValue('nycha_column_select') ) . '|' : '';
-    } else {
-      $multi_select_hidden = !empty( $form_state->getValue('column_select') ) ? '|' . implode('||', $form_state->getValue('column_select') ) . '|' : '';
+    switch ($this->data_source) {
+      case Datasource::NYCHA:
+        $multi_select_hidden = !empty( $form_state->getValue('nycha_column_select') ) ? '|' . implode('||',  $form_state->getValue('nycha_column_select') ) . '|' : '';
+        break;
+      default:
+        $multi_select_hidden = !empty( $form_state->getValue('column_select') ) ? '|' . implode('||', $form_state->getValue('column_select') ) . '|' : '';
     }
     $form_state->set(['complete form', 'hidden_multiple_value', '#value'], $multi_select_hidden);
     $this->_validate_by_datasource($form, $form_state);
-  }
-
-  protected function _process_user_criteria_by_datasource_single_field($field_name, $form_filter_key, $visual_field_name, $user_criteria_name = null) {
-    $this->form['filter'][$form_filter_key] = array('#markup' => '<div><strong>'.$visual_field_name.':</strong> ' . $this->form_state->getValue($field_name) . '</div>');
-    if (is_null($user_criteria_name)) {
-      $this->user_criteria[$visual_field_name] = $this->form_state->getValue($field_name);
-    } else {
-      $this->user_criteria[$user_criteria_name] = $this->form_state->getValue($field_name);
-    }
-    $this->formatted_search_criteria[$visual_field_name] = $this->form_state->getValue($field_name);
-  }
-
-  protected function _process_user_criteria_by_datasource_single_field_and_check($field_name, $form_filter_key, $visual_field_name, $user_criteria_name = null) {
-    if ($this->form_state->getValue($field_name)) {
-      $this->_process_user_criteria_by_datasource_single_field($field_name, $form_filter_key, $visual_field_name, $user_criteria_name);
-    }
-  }
-
-  protected function _process_user_criteria_by_datasource_single_field_convert_special_chars($field_name, $form_filter_key, $visual_field_name, $user_criteria_name = null) {
-    // converts special characters to HTML entities
-    if (preg_match($this->spcial_char_pattren, $this->form_state->getValue($field_name))) {
-      $this->form_state->setValue($field_name, htmlspecialchars($this->form_state->getValue($field_name)));
-    }
-    $this->_process_user_criteria_by_datasource_single_field($field_name, $form_filter_key, $visual_field_name, $user_criteria_name);
-  }
-
-  protected function _process_user_criteria_by_datasource_ranged_amount_field($start_field_name, $end_field_name, $form_filter_id, $visual_field_name, $formatted_search_criteria_key=null) {
-    $formatted_search_criteria_id = $formatted_search_criteria_key ?? $visual_field_name;
-
-    $user_criteria_greater_than_id = $visual_field_name . ' Greater Than';
-    $user_criteria_less_than_id = $visual_field_name . ' Less Than';
-
-    $greater_than_equal_to_string = 'Greater Than Equal to: $';
-    $less_than_equal_to_string = 'Less Than Equal to: $';
-
-    if (($this->form_state->getValue($start_field_name) || $this->form_state->getValue($start_field_name) === "0") && ($this->form_state->getValue($end_field_name) || $this->form_state->getValue($end_field_name) === "0")) {
-      $this->form['filter'][$form_filter_id] = array(
-        '#markup' => '<div><strong>'.$visual_field_name.':</strong> ' . $greater_than_equal_to_string . $this->form_state->getValue($start_field_name) . ' and ' . $less_than_equal_to_string . $this->form_state->getValue($end_field_name) . '</div>',
-      );
-      $this->user_criteria[$user_criteria_greater_than_id] = $this->form_state->getValue($start_field_name);
-      $this->user_criteria[$user_criteria_less_than_id] = $this->form_state->getValue($end_field_name);
-      $this->formatted_search_criteria[$formatted_search_criteria_id] = $greater_than_equal_to_string . $this->form_state->getValue($start_field_name) . ' and ' . $less_than_equal_to_string . $this->form_state->getValue($end_field_name);
-    } elseif (($this->form_state->getValue($start_field_name) || $this->form_state->getValue($start_field_name) === "0") && !$this->form_state->getValue($end_field_name)) {
-      $this->form['filter'][$form_filter_id] = array(
-        '#markup' => '<div><strong>'.$visual_field_name.':</strong> ' . $greater_than_equal_to_string . $this->form_state->getValue($start_field_name) . '</div>',
-      );
-      $this->user_criteria[$user_criteria_greater_than_id] = $this->form_state->getValue($start_field_name);
-      $this->formatted_search_criteria[$formatted_search_criteria_id] = $greater_than_equal_to_string . $this->form_state->getValue($start_field_name);
-    } elseif (!$this->form_state->getValue($start_field_name) && ($this->form_state->getValue($end_field_name) || $this->form_state->getValue($end_field_name) === "0")) {
-      $this->form['filter'][$form_filter_id] = array(
-        '#markup' => '<div><strong>'.$visual_field_name.':</strong> ' . $less_than_equal_to_string . $this->form_state->getValue($end_field_name) . '</div>',
-      );
-      $this->user_criteria[$user_criteria_less_than_id] = $this->form_state->getValue($end_field_name);
-      $this->formatted_search_criteria[$formatted_search_criteria_id] = $less_than_equal_to_string . $this->form_state->getValue($end_field_name);
-    }
-  }
-
-  /**
-   * This function will process ranged values for datasource and place inside criteria
-   *
-   * @param $start_field_name
-   * @param $end_field_name
-   * @param $criteria_key
-   *
-   * @return void
-   */
-  protected function _process_ranged_datasource_values($start_field_name, $end_field_name, $criteria_key) {
-    $start = $this->form_state->getValue($start_field_name);
-    $end = $this->form_state->getValue($end_field_name);
-
-    if ($start !== '' || $end !== '') {
-      $this->criteria['range'][$criteria_key] = array(
-        checknull($start),
-        checknull($end),
-      );
-    }
   }
 
   protected function _validate_by_datasource(&$form, &$form_state){}

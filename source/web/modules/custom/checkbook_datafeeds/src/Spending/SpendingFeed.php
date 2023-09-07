@@ -19,7 +19,6 @@
  */
 namespace Drupal\checkbook_datafeeds\Spending;
 
-use Drupal\checkbook_datafeeds\Utilities\FeedConstants;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\CheckbookDomain;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
 use Drupal\checkbook_infrastructure_layer\Utilities\FormattingUtilities;
@@ -172,65 +171,29 @@ abstract class SpendingFeed
 
     //Issued Date
     if ($this->form_state->getValue('date_filter') == 1) {
-      $this->_process_user_criteria_by_datasource_ranged_date_field('issuedfrom', 'issuedto', 'issued_date', 'Issued Date', 'Issue Date');
-    }
-  }
-
-  protected function _process_user_criteria_by_datasource_single_field($field_name, $form_filter_key, $visual_field_name, $user_criteria_name = null) {
-    $this->form['filter'][$form_filter_key] = array('#markup' => '<div><strong>'.$visual_field_name.':</strong> ' . $this->form_state->getValue($field_name) . '</div>');
-    if (is_null($user_criteria_name)) {
-      $this->user_criteria[$visual_field_name] = $this->form_state->getValue($field_name);
-    } else {
-      $this->user_criteria[$user_criteria_name] = $this->form_state->getValue($field_name);
-    }
-    $this->formatted_search_criteria[$visual_field_name] = $this->form_state->getValue($field_name);
-  }
-
-  protected function _process_user_criteria_by_datasource_single_field_and_check($field_name, $form_filter_key, $visual_field_name, $user_criteria_name = null) {
-    if ($this->form_state->getValue($field_name)) {
-      $this->_process_user_criteria_by_datasource_single_field($field_name, $form_filter_key, $visual_field_name, $user_criteria_name);
-    }
-  }
-
-  protected function _process_user_criteria_by_datasource_ranged_field($start_field_name, $end_field_name, $form_filter_id, $visual_field_name, $field_type = 'amount', $formatted_search_criteria_key=null) {
-    $and = '';
-    if ($field_type == 'amount') {
-      $user_criteria_greater_than_id = $visual_field_name . ' Greater Than';
-      $user_criteria_less_than_id = $visual_field_name . ' Less Than';
-      $greater_than_equal_text = 'Greater Than Equal to: $';
-      $less_than_equal_text = 'Less Than Equal to: $';
-      $and = 'and ';
-    } else {
-      $user_criteria_greater_than_id = $visual_field_name . ' After';
-      $user_criteria_less_than_id = $visual_field_name . ' Before';
-      $greater_than_equal_text = 'From: ';
-      $less_than_equal_text = 'To: ';
+      if ($this->form_state->getValue('issuedfrom') && $this->form_state->getValue('issuedto')) {
+        $this->form['filter']['issued_date'] = array(
+          '#markup' => '<div><strong>Issue Date:</strong> From: ' . $this->form_state->getValue('issuedfrom') . ' To: ' . $this->form_state->getValue('issuedto') . '</div>'
+        );
+        $this->user_criteria['Issued Date After'] = $this->form_state->getValue('issuedfrom');
+        $this->user_criteria['Issued Date Before'] = $this->form_state->getValue('issuedto');
+        $this->formatted_search_criteria['Issue Date'] = 'From: ' . $this->form_state->getValue('issuedfrom') . ' To: ' . $this->form_state->getValue('issuedto');
+      } elseif (!$this->form_state->getValue('issuedfrom') && $this->form_state->getValue('issuedto')) {
+        $this->form['filter']['issued_date'] = array(
+          '#markup' => '<div><strong>Issue Date:</strong> From: ' . $this->form_state->getValue('issuedto') . '</div>',
+        );
+        $this->user_criteria['Issued Date Before'] = $this->form_state->getValue('issuedto');
+        $this->formatted_search_criteria['Issue Date'] = 'From: ' . $this->form_state->getValue('issuedto');
+      } elseif ($this->form_state->getValue('issuedfrom') && !$this->form_state->getValue('issuedto')) {
+        $this->form['filter']['issued_date'] = array(
+          '#markup' => '<div><strong>Issue Date:</strong> To: ' . $this->form_state->getValue('issuedfrom') . '</div>',
+        );
+        $this->user_criteria['Issued Date After'] = $this->form_state->getValue('issuedfrom');
+        $this->formatted_search_criteria['Issue Date'] = 'To: ' . $this->form_state->getValue('issuedfrom');
+      }
     }
 
-    $formatted_search_criteria_id = $formatted_search_criteria_key ?? $visual_field_name;
-
-    if (($this->form_state->getValue($start_field_name) || ($field_type == 'amount' && $this->form_state->getValue($start_field_name) === "0")) && ($this->form_state->getValue($end_field_name) || ($field_type == 'amount' && $this->form_state->getValue($end_field_name) === "0"))) {
-      $this->form['filter'][$form_filter_id] = array('#markup' => '<div><strong>'.$visual_field_name.':</strong> '.$greater_than_equal_text . $this->form_state->getValue($start_field_name) . ' '.$and . $less_than_equal_text . $this->form_state->getValue($end_field_name) . '</div>');
-      $this->user_criteria[$user_criteria_greater_than_id] = $this->form_state->getValue($start_field_name);
-      $this->user_criteria[$user_criteria_less_than_id] = $this->form_state->getValue($end_field_name);
-      $this->formatted_search_criteria[$formatted_search_criteria_id] = $greater_than_equal_text . ' ' . $this->form_state->getValue($start_field_name) . ' and ' . $less_than_equal_text . ' ' . $this->form_state->getValue($end_field_name);
-    } elseif (!$this->form_state->getValue($start_field_name) && ($this->form_state->getValue($end_field_name) || ($field_type == 'amount' && $this->form_state->getValue($end_field_name) === "0"))) {
-      $this->form['filter'][$form_filter_id] = array('#markup' => '<div><strong>'.$visual_field_name.':</strong> ' . $less_than_equal_text . $this->form_state->getValue($end_field_name) . '</div>');
-      $this->user_criteria[$user_criteria_less_than_id] = $this->form_state->getValue($end_field_name);
-      $this->formatted_search_criteria[$formatted_search_criteria_id] = $less_than_equal_text . ' ' . $this->form_state->getValue($end_field_name);
-    } elseif (($this->form_state->getValue($start_field_name) || ($field_type == 'amount' && $this->form_state->getValue($start_field_name) === "0")) && !$this->form_state->getValue($end_field_name)) {
-      $this->form['filter'][$form_filter_id] = array('#markup' => '<div><strong>'.$visual_field_name.':</strong> ' . $greater_than_equal_text . $this->form_state->getValue($start_field_name) . '</div>');
-      $this->user_criteria[$user_criteria_greater_than_id] = $this->form_state->getValue($start_field_name);
-      $this->formatted_search_criteria[$formatted_search_criteria_id] = $greater_than_equal_text . ' ' . $this->form_state->getValue($start_field_name);
-    }
-  }
-
-  protected function _process_user_criteria_by_datasource_ranged_date_field($start_field_name, $end_field_name, $form_filter_id, $visual_field_name, $formatted_search_criteria_key=null) {
-    $this->_process_user_criteria_by_datasource_ranged_field($start_field_name, $end_field_name, $form_filter_id, $visual_field_name, 'date', $formatted_search_criteria_key);
-  }
-
-  protected function _process_user_criteria_by_datasource_ranged_amount_field($start_field_name, $end_field_name, $form_filter_id, $visual_field_name, $formatted_search_criteria_key=null) {
-    $this->_process_user_criteria_by_datasource_ranged_field($start_field_name, $end_field_name, $form_filter_id, $visual_field_name, 'amount', $formatted_search_criteria_key);
+    return;
   }
 
   abstract protected function _process_user_criteria_by_datasource();
@@ -250,12 +213,12 @@ abstract class SpendingFeed
       'responseColumns' => $this->filtered_columns
     ];
 
-    if ((!empty($this->form_state->getValue('dept'))) && $this->form_state->getValue('dept') != 'Select Department' && $this->form_state->getValue('dept') != '0' && (!($this->data_source == Datasource::CITYWIDE && $this->values['agency'] == FeedConstants::CITYWIDE_ALL_AGENCIES))) {
+    if ((!empty($this->form_state->getValue('dept'))) && $this->form_state->getValue('dept') != 'Select Department' && $this->form_state->getValue('dept') != '0' && (!($this->data_source == Datasource::CITYWIDE && $this->values['agency'] == 'Citywide (All Agencies)'))) {
       preg_match($this->bracket_value_pattern, $this->form_state->getValue('dept'), $department_matches);
       $this->criteria['value']['department_code'] = trim($department_matches[1], '[ ]');
     }
 
-    if (!empty($this->form_state->getValue('expense_category')) && $this->form_state->getValue('expense_category') != 'Select Expense Category' && $this->form_state->getValue('expense_category') != '0' && (!($this->data_source == Datasource::CITYWIDE && $this->values['agency'] == FeedConstants::CITYWIDE_ALL_AGENCIES))) {
+    if (!empty($this->form_state->getValue('expense_category')) && $this->form_state->getValue('expense_category') != 'Select Expense Category' && $this->form_state->getValue('expense_category') != '0' && (!($this->data_source == Datasource::CITYWIDE && $this->values['agency'] == 'Citywide (All Agencies)'))) {
       preg_match($this->bracket_value_pattern, $this->form_state->getValue('expense_category'), $expense_category_matches);
       $this->criteria['value']['expense_category'] = trim($expense_category_matches[1], '[ ]');
     }
@@ -269,7 +232,13 @@ abstract class SpendingFeed
       }
     }
 
-    $this->_process_ranged_datasource_values('check_amt_from', 'check_amt_to', 'check_amount');
+    if (!empty($this->form_state->getValue('check_amt_from')) || !empty($this->form_state->getValue('check_amt_to'))) {
+
+      $this->criteria['range']['check_amount'] = array(
+        checknull($this->form_state->getValue('check_amt_from')),
+        checknull($this->form_state->getValue('check_amt_to')),
+      );
+    }
 
     if (!empty($this->form_state->getValue('contractno'))) {
       $this->criteria['value']['contract_id'] = strtoupper($this->form_state->getValue('contractno'));
@@ -284,37 +253,17 @@ abstract class SpendingFeed
     }
 
     if ($this->form_state->getValue('date_filter') == '1') {
-      $this->_process_ranged_datasource_values('issuedfrom', 'issuedto', 'issue_date');
+      if (!empty($this->form_state->getValue('issuedfrom')) || !empty($this->form_state->getValue('issuedto'))) {
+        $this->criteria['range']['issue_date'] = array(
+          checknull($this->form_state->getValue('issuedfrom')),
+          checknull($this->form_state->getValue('issuedto'))
+        );
+      }
     }
 
     $this->_process_datasource_values();
 
-  }
-
-  /**
-   * This function will process ranged values for datasource and place inside criteria
-   *
-   * @param $start_field_name
-   * @param $end_field_name
-   * @param $criteria_key
-   * @param $pvalues
-   *
-   * @return void
-   */
-  protected function _process_ranged_datasource_values($start_field_name, $end_field_name, $criteria_key, $pvalues=null) {
-    if (is_null($pvalues)) {
-      $start = $this->form_state->getValue($start_field_name);
-      $end = $this->form_state->getValue($end_field_name);
-    } else {
-      $start = $pvalues[$start_field_name];
-      $end = $pvalues[$end_field_name];
-    }
-    if ($start !== '' || $end !== '') {
-      $this->criteria['range'][$criteria_key] = array(
-        checknull($start),
-        checknull($end),
-      );
-    }
+    return;
   }
 
   protected function _process_datasource_values()
@@ -326,12 +275,36 @@ abstract class SpendingFeed
   {
     $agency = $form_state->getValue('agency');
     $agency_code = FormattingUtilities::emptyToZero($agency);
+    $check_from = $form_state->getValue('check_amt_from');
+    $check_to = $form_state->getValue('check_amt_to');
+    $date_from = $form_state->getValue('issuedfrom');
+    $date_to = $form_state->getValue('issuedto');
     $vendor = $form_state->getValue('payee_name');
     $contract_id = $form_state->getValue('contractno');
 
-    checkbook_datafeeds_check_ranged_amounts($form_state, 'check_amt_from', 'check_amt_to', 'Check Amount', 'Check Amount From', 'Check Amount To');
+    if ($check_from && !is_numeric($check_from)) {
+      $form_state->setErrorByName('check_amt_from', t('Check Amount From must be a number.'));
+    }
 
-    checkbook_datafeeds_check_ranged_date($form_state, 'issuedfrom', 'issuedto', 'Issue Date');
+    if ($check_to && !is_numeric($check_to)) {
+      $form_state->setErrorByName('check_amt_to', t('Check Amount To must be a number.'));
+    }
+
+    if (is_numeric($check_from) && is_numeric($check_to) && $check_to < $check_from) {
+      $form_state->setErrorByName('check_amt_to', t('Invalid range for Check Amount.'));
+    }
+
+    if (strlen($date_from) > 0 && !checkDateFormat($date_from)) {
+      $form_state->setErrorByName('issuedfrom', t('Issue Date must be a valid date (YYYY-MM-DD).'));
+    }
+
+    if (strlen($date_to) > 0 && !checkDateFormat($date_to)) {
+      $form_state->setErrorByName('issuedto', t('Issue Date must be a valid date (YYYY-MM-DD).'));
+    }
+
+    if (strlen($date_from) > 0 && strlen($date_to) > 0 && strtotime($date_to) < strtotime($date_from)) {
+      $form_state->setErrorByName('issuedto', t('Invalid range for Issue Date.'));
+    }
 
     //Contract ID
     if ($contract_id && preg_match("/(^MMA1|^MA1)/", strtoupper($contract_id))) {
@@ -339,36 +312,9 @@ abstract class SpendingFeed
     }
 
     //Vendor
-    $this->checkbook_datafeeds_spending_validate_vendor($form, $form_state);
-
-    //Set the hidden filed values on Spending form
-    $form_state->set([FeedConstants::COMPLETE_FORM, 'dept_hidden', '#value'], $form_state->getValue('dept'));
-    $form_state->set([FeedConstants::COMPLETE_FORM, 'expense_category_hidden', '#value'], $form_state->getValue('expense_category'));
-    $form_state->set([FeedConstants::COMPLETE_FORM, 'date_filter_hidden', '#value'], $form_state->getValue('date_filter'));
-
-    //Hidden Field for multi-select
-    switch ($this->data_source) {
-      case Datasource::OGE:
-        $multi_select_hidden = !empty( $form_state->getValue('oge_column_select') ) ? '|' . implode('||',  $form_state->getValue('oge_column_select') ) . '|' : '';
-        break;
-      case Datasource::NYCHA:
-        $multi_select_hidden = !empty( $form_state->getValue('nycha_column_select') ) ? '|' . implode('||',  $form_state->getValue('nycha_column_select') ) . '|' : '';
-        break;
-      default:
-        $multi_select_hidden = !empty( $form_state->getValue('column_select') ) ? '|' . implode('||',  $form_state->getValue('column_select') ) . '|' : '';
-        break;
-    }
-    $form_state->set([FeedConstants::COMPLETE_FORM, 'hidden_multiple_value', '#value'], $multi_select_hidden);
-
-    $this->_validate_by_datasource($form, $form_state);
-  }
-
-  protected function checkbook_datafeeds_spending_validate_vendor(&$form, &$form_state) {
-    $agency = $form_state->getValue('agency');
-    $vendor = $form_state->getValue('payee_name');
-    $agency_code = FormattingUtilities::emptyToZero($agency);
     if ($vendor) {
-      preg_match($this->bracket_value_pattern, $vendor, $vmatches);
+      $pattern = "/.*?(\\[.*?\\])/is";
+      preg_match($pattern, $vendor, $vmatches);
       if (!$vmatches) {
         try {
           $dataController = data_controller_get_instance();
@@ -395,12 +341,49 @@ abstract class SpendingFeed
         } catch (\Exception $e) {
           LogHelper::log_error($e->getMessage());
         }
-        if (!($results[0] ?? true)) {
-          $the_message = ($this->data_source == Datasource::OGE) ? 'Please enter a valid vendor name.' : 'Please enter a valid vendor code.';
-          $form_state->setErrorByName('payee_name', t($the_message));
+         if (!($results[0] ?? true)) {
+          switch ($this->data_source) {
+            case Datasource::OGE:
+              $form_state->setErrorByName('payee_name', t('Please enter a valid vendor name.'));
+              break;
+            default:
+              $form_state->setErrorByName('payee_name', t('Please enter a valid vendor code.'));
+              break;
+          }
         }
       }
     }
+
+    //ADD COLUMN CHECK HERE..
+//    $responseColumns = $form_state->getValue('column_select');
+////  if (!$responseColumns) {
+//    if (empty(array_filter($responseColumns))) {
+////      form_set_error('column_select', t('You must select at least one column.'));
+//      $form_state->setErrorByName('column_select', t('You must select at least one column.'));
+//    }
+
+
+    //Set the hidden filed values on Spending form
+    $form_state->set(['complete form', 'dept_hidden', '#value'], $form_state->getValue('dept'));
+    $form_state->set(['complete form', 'expense_category_hidden', '#value'], $form_state->getValue('expense_category'));
+    $form_state->set(['complete form', 'date_filter_hidden', '#value'], $form_state->getValue('date_filter'));
+
+    //Hidden Field for multi-select
+    switch ($this->data_source) {
+      case Datasource::OGE:
+        $multi_select_hidden = !empty( $form_state->getValue('oge_column_select') ) ? '|' . implode('||',  $form_state->getValue('oge_column_select') ) . '|' : '';
+        break;
+      case Datasource::NYCHA:
+        $multi_select_hidden = !empty( $form_state->getValue('nycha_column_select') ) ? '|' . implode('||',  $form_state->getValue('nycha_column_select') ) . '|' : '';
+        break;
+      default:
+        $multi_select_hidden = !empty( $form_state->getValue('column_select') ) ? '|' . implode('||',  $form_state->getValue('column_select') ) . '|' : '';
+        break;
+    }
+//    $form_state['complete form']['hidden_multiple_value']['#value'] = $multi_select_hidden;
+    $form_state->set(['complete form', 'hidden_multiple_value', '#value'], $multi_select_hidden);
+
+    $this->_validate_by_datasource($form, $form_state);
   }
 
   protected function _validate_by_datasource(&$form, &$form_state)

@@ -82,8 +82,6 @@ abstract class BudgetFeed{
 
   protected string $bracket_value_pattern = "/.*?(\\[.*?\\])/is";
 
-  protected string $special_characters_pattern = '/[\'^£$%&*()}{@#~?><,|=_+¬-]/';
-
   /**
    * BudgetFeed constructor.
    */
@@ -158,6 +156,8 @@ abstract class BudgetFeed{
     );
     $this->formatted_search_criteria['Type of File'] = $this->form_state->get(['step_information', 'type', 'stored_values', 'format']);
     $this->_process_user_criteria_by_datasource();
+
+    return;
   }
 
   abstract protected function _process_user_criteria_by_datasource();
@@ -176,16 +176,19 @@ abstract class BudgetFeed{
       'responseColumns' => $this->filtered_columns
     ];
     $this->_process_datasource_values();
+    return;
   }
 
   protected function _process_datasource_values(){}
 
   public function checkbook_datafeeds_budget_validate(&$form, FormStateInterface &$form_state){
     //Hidden Field for multi-select
-    if ($this->data_source == Datasource::NYCHA) {
-      $multi_select_hidden = !empty( $form_state->getValue('nycha_column_select') ) ? '|' . implode('||',  $form_state->getValue('nycha_column_select') ) . '|' : '';
-    } else {
-      $multi_select_hidden = !empty( $form_state->getValue('column_select_expense') ) ? '|' . implode('||',  $form_state->getValue('column_select_expense') ) . '|' : '';
+    switch ($this->data_source) {
+      case Datasource::NYCHA:
+        $multi_select_hidden = !empty( $form_state->getValue('nycha_column_select') ) ? '|' . implode('||',  $form_state->getValue('nycha_column_select') ) . '|' : '';
+        break;
+      default:
+        $multi_select_hidden = !empty( $form_state->getValue('column_select_expense') ) ? '|' . implode('||',  $form_state->getValue('column_select_expense') ) . '|' : '';
     }
     $form_state->set(['complete form', 'hidden_multiple_value', '#value'], $multi_select_hidden);
     $this->_validate_by_datasource($form, $form_state);
@@ -193,84 +196,4 @@ abstract class BudgetFeed{
   }
 
   protected function _validate_by_datasource(&$form, &$form_state){}
-
-  /**
-   * This function is there to process submitted values for ranged amounts.
-   *
-   * @param $start_field_name
-   * @param $end_field_name
-   * @param $form_filter_id
-   * @param $visual_field_name
-   *
-   * @return void
-   */
-  protected function _process_ranged_amounts_user_criteria($start_field_name, $end_field_name, $form_filter_id, $visual_field_name) {
-    $user_criteria_greater_than_id = $visual_field_name . ' Greater Than';
-    $user_criteria_less_than_id = $visual_field_name . ' Less Than';
-    $formatted_search_criteria_id = $visual_field_name;
-
-    if (($this->form_state->getValue($start_field_name) || $this->form_state->getValue($start_field_name) === "0") && ($this->form_state->getValue($end_field_name) || $this->form_state->getValue($end_field_name) === "0")) {
-      $this->form['filter'][$form_filter_id] = array('#markup' => '<div><strong>'.$visual_field_name.':</strong> Greater Than Equal to: $' . $this->form_state->getValue($start_field_name) . ' and Less Than Equal to: $' . $this->form_state->getValue($end_field_name) . '</div>');
-      $this->user_criteria[$user_criteria_greater_than_id] = $this->form_state->getValue($start_field_name);
-      $this->user_criteria[$user_criteria_less_than_id] = $this->form_state->getValue($end_field_name);
-      $this->formatted_search_criteria[$formatted_search_criteria_id] = 'Greater Than Equal to: $' . $this->form_state->getValue($start_field_name) . ' and Less Than Equal to: $' . $this->form_state->getValue($end_field_name);
-    } elseif (!$this->form_state->getValue($start_field_name) && ($this->form_state->getValue($end_field_name) || $this->form_state->getValue($end_field_name) === "0")) {
-      $this->form['filter'][$form_filter_id] = array('#markup' => '<div><strong>'.$visual_field_name.':</strong> Less Than Equal to: $' . $this->form_state->getValue($end_field_name) . '</div>');
-      $this->user_criteria[$user_criteria_less_than_id] = $this->form_state->getValue($end_field_name);
-      $this->formatted_search_criteria[$formatted_search_criteria_id] = 'Less Than Equal to: $' . $this->form_state->getValue($end_field_name);
-    } elseif (($this->form_state->getValue($start_field_name) || $this->form_state->getValue($start_field_name) === "0")  && !$this->form_state->getValue($end_field_name)) {
-      $this->form['filter'][$form_filter_id] = array('#markup' => '<div><strong>'.$visual_field_name.':</strong> Greater Than Equal to: $' . $this->form_state->getValue($start_field_name) . '</div>');
-      $this->user_criteria[$user_criteria_greater_than_id] = $this->form_state->getValue($start_field_name);
-      $this->formatted_search_criteria[$formatted_search_criteria_id] = 'Greater Than Equal to: $' . $this->form_state->getValue($start_field_name);
-    }
-  }
-
-  /**
-   * This function will process single values for datasource and place inside criteria
-   *
-   * @param $field_name
-   * @param $criteria_key
-   *
-   * @return void
-   */
-  protected function _process_single_field_datasource_values($field_name, $criteria_key) {
-    if ($this->form_state->getValue($field_name)) {
-      preg_match($this->bracket_value_pattern, $this->form_state->getValue($field_name), $ecmatches);
-      if ($ecmatches) {
-        $this->criteria['value'][$criteria_key] = trim($ecmatches[1], '[ ]');
-      }
-    }
-  }
-
-  /**
-   * This function will process ranged values for datasource and place inside criteria
-   *
-   * @param $start_field_name
-   * @param $end_field_name
-   * @param $criteria_key
-   *
-   * @return void
-   */
-  protected function _process_ranged_datasource_values($start_field_name, $end_field_name, $criteria_key) {
-    if ($this->form_state->getValue($start_field_name) !== '' || $this->form_state->getValue($end_field_name) !== '') {
-      $this->criteria['range'][$criteria_key] = array(
-        checknull($this->form_state->getValue($start_field_name)),
-        checknull($this->form_state->getValue($end_field_name)),
-      );
-    }
-  }
-
-  protected function _process_user_criteria_by_datasource_single_field($field_name, $form_filter_key, $visual_field_name) {
-    $this->form['filter'][$form_filter_key] = array('#markup' => '<div><strong>'.$visual_field_name.':</strong> ' . $this->form_state->getValue($field_name) . '</div>');
-    $this->user_criteria[$visual_field_name] = $this->form_state->getValue($field_name);
-    $this->formatted_search_criteria[$visual_field_name] = $this->form_state->getValue($field_name);
-  }
-
-  protected function _process_user_criteria_by_datasource_single_field_convert_special_chars($field_name, $form_filter_key, $visual_field_name) {
-    // converts special characters to HTML entities
-    if (preg_match($this->special_characters_pattern, $this->form_state->getValue($field_name))) {
-      $this->form_state->setValue($field_name, htmlspecialchars($this->form_state->getValue($field_name)));
-    }
-    $this->_process_user_criteria_by_datasource_single_field($field_name, $form_filter_key, $visual_field_name);
-  }
 }

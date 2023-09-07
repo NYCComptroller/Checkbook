@@ -27,8 +27,6 @@ use Drupal\widget_services\Common\CommonService;
 
 class WidgetUtil
 {
-  const MODIFIED = "Modified<br/>";
-  const RECOGNIZED = "Recognized<br/>";
   /**
    * @param $labelAlias
    * @return array|string|string[]
@@ -40,17 +38,16 @@ class WidgetUtil
                                  "no_of_contracts", "num_sub_contracts", "ytd_spending", "total_contract_amount",
                                  "percent_spending", "ytd_spending_sub_vendors", "sub_vendors_percent_paid",
                                  "num_sub_vendors", "ytd_spending_agency");
-
         if(in_array($labelAlias,$dynamic_labelAlias)){
             $year = (int)CheckbookDateUtil::_getYearValueFromID(RequestUtilities::get('year'));
-            $dynamic_labels = array("current_modified" => self::MODIFIED.$year,
-                                    "previous_modified" => self::MODIFIED.($year-1),
-                                    "previous_1_modified" => self::MODIFIED.($year-2),
-                                    "previous_2_modified" => self::MODIFIED.($year-3),
-                                    "recognized_current" => self::RECOGNIZED.$year,
-                                    "recognized_1" => self::RECOGNIZED.($year+1),
-                                    "recognized_2" => self::RECOGNIZED.($year+2),
-                                    "recognized_3" => self::RECOGNIZED.($year+3));
+            $dynamic_labels = array("current_modified" => "Modified<br/>".$year,
+                                    "previous_modified" => "Modified<br/>".($year-1),
+                                    "previous_1_modified" => "Modified<br/>".($year-2),
+                                    "previous_2_modified" => "Modified<br/>".($year-3),
+                                    "recognized_current" => "Recognized<br/>".$year,
+                                    "recognized_1" => "Recognized<br/>".($year+1),
+                                    "recognized_2" => "Recognized<br/>".($year+2),
+                                    "recognized_3" => "Recognized<br/>".($year+3));
 
             return str_replace(array('<br/>','<br>'),' ',$dynamic_labels[$labelAlias]);
         }else if(in_array($labelAlias,$labelAliases_br)){
@@ -78,14 +75,14 @@ class WidgetUtil
                                     "recognized_current","recognized_1","recognized_2","recognized_3");
         if(in_array($labelAlias,$dynamic_labelAlias)){
             $year =CheckbookDateUtil::_getYearValueFromID(RequestUtilities::get('year'));
-            $dynamic_labels = array("current_modified" => self::MODIFIED.$year,
-                                    "previous_modified" => self::MODIFIED.($year-1),
-                                    "previous_1_modified" => self::MODIFIED.($year-2),
-                                    "previous_2_modified" => self::MODIFIED.($year-3),
-                                    "recognized_current" => self::RECOGNIZED.$year,
-                                    "recognized_1" => self::RECOGNIZED.($year+1),
-                                    "recognized_2" => self::RECOGNIZED.($year+2),
-                                    "recognized_3" => self::RECOGNIZED.($year+3));
+            $dynamic_labels = array("current_modified" => "Modified<br/>".$year,
+                                    "previous_modified" => "Modified<br/>".($year-1),
+                                    "previous_1_modified" => "Modified<br/>".($year-2),
+                                    "previous_2_modified" => "Modified<br/>".($year-3),
+                                    "recognized_current" => "Recognized<br/>".$year,
+                                    "recognized_1" => "Recognized<br/>".($year+1),
+                                    "recognized_2" => "Recognized<br/>".($year+2),
+                                    "recognized_3" => "Recognized<br/>".($year+3));
 
             $label = "<div><span>". $dynamic_labels[$labelAlias] ."</span></div>";
 
@@ -381,10 +378,10 @@ class WidgetUtil
    */
    public static function generateTable($table_definition, $is_main = true){
         $html = '';
-        $header_title = $table_definition["header"]["title"] ?? null;
-        $header_columns = $table_definition["header"]["columns"] ?? null;
-        $table_body = $table_definition["body"] ?? null;
-        $table_rows = $table_definition["body"]["rows"] ?? null;
+        $header_title = isset($table_definition["header"]["title"]) ? $table_definition["header"]["title"] : null;
+        $header_columns = isset($table_definition["header"]["columns"])?$table_definition["header"]["columns"] : null;
+        $table_body = isset($table_definition["body"]) ? $table_definition["body"] : null;
+        $table_rows = isset($table_definition["body"]["rows"]) ? $table_definition["body"]["rows"]: null;
         //Title
         if($header_title) {
           $html .= $header_title;
@@ -406,7 +403,6 @@ class WidgetUtil
 
         //Table body
       $html .= "<tbody>";
-       $display_none = "display: none;";
       if(isset($table_body)) {
         //Table rows
             if(isset($table_rows)) {
@@ -426,7 +422,7 @@ class WidgetUtil
                         $html .= WidgetUtil::generateColumns($table_rows[$row_index]['columns']);
                         $html .= "</tr>";
                     } elseif(isset($table_rows[$row_index]['child_tables'])) {
-                    	$display_main = $outer_table_count > 0 ? $display_none : "";
+                    	$display_main = $outer_table_count > 0 ? "display: none;" : "";
                     	$outer_table_count++;
                         $col_span = count($table_rows[$row_index-1]['columns']);
                         $html .= "<tr class='showHide' style='" .$display_main . "'>";
@@ -439,7 +435,7 @@ class WidgetUtil
                         $html .= "</td>";
                         $html .= "</tr>";
                     } elseif(isset($table_rows[$row_index]['embed_node'])) {
-                        $display_main = $outer_table_count > 0 ? $display_none : "";
+                        $display_main = $outer_table_count > 0 ? "display: none;" : "";
                         $outer_table_count++;
                         $col_span = count($table_rows[$row_index-1]['columns']);
                         $html .= "<tr class='showHide' style='" .$display_main . "'>";
@@ -452,7 +448,7 @@ class WidgetUtil
                         $html .= "</td>";
                         $html .= "</tr>";
                     } elseif(isset($table_rows[$row_index]['inner_table'])) {
-                        $display = $inner_tbl_count > 0 ? $display_none : "";
+                        $display = $inner_tbl_count > 0 ? "display: none;" : "";
                         $inner_tbl_count++;
                         $col_span = count($table_rows[$row_index-1]['columns']);
                         $html .= "<tr class='showHide' style='".$display."'>";
@@ -489,22 +485,20 @@ class WidgetUtil
     {
         $html = "";
         $border = "";
-        $th = '<th style="';
-        $span = '</span></th>';
         foreach($header_columns as $index => $header_column) {
             $value = $header_column['value'];
             $type = $header_column['type'];
             $first_column = $index == 0;
             if($first_column) {
-                $html .= $th.$border.'text-align: left !important; vertical-align: middle;">';
-                $html .= '<span style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: center !important;">'. $value .$span;
+                $html .= '<th style="'.$border.'text-align: left !important; vertical-align: middle;">';
+                $html .= '<span style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: center !important;">'. $value .'</span></th>';
             } else {
                 if($type == 'number') {
-                    $html .= $th.$border.'text-align: center !important; vertical-align: middle; padding-right:6% !important">';
+                    $html .= '<th style="'.$border.'text-align: center !important; vertical-align: middle; padding-right:6% !important">';
                 } else {
-                    $html .= $th.$border.'text-align: left !important; vertical-align: middle; padding-left:10px !important">';
+                    $html .= '<th style="'.$border.'text-align: left !important; vertical-align: middle; padding-left:10px !important">';
                 }
-              $html .= '<span style="margin:8px 0px 8px 0px!important;display:inline-block; text-align: center !important;">'. $value .$span;
+              $html .= '<span style="margin:8px 0px 8px 0px!important;display:inline-block; text-align: center !important;">'. $value .'</span></th>';
             }
         }
         return $html;
@@ -519,49 +513,42 @@ class WidgetUtil
         $html = "";
         $border = "";
         foreach($columns as $index => $column) {
-          $value = $column['value'];
-          $type = $column['type'];
-          $max_column_length = $column['max_column_length'];
-          $first_column = $index == 0;
-          $td = '<td style="';
-          $span = '</span></td>';
-          if ($first_column) {
-            $html .= $td . $border . 'text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">';
-            $html .= '<span style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: left !important;">' . $value . $span;
-          } else {
-            //Numbers are center aligned and padded to align right
-            switch ($type) {
-              case ('number'):
-                $column_length = strlen($value);
-                if ($column_length < $max_column_length) {
-                $value = str_pad($value, $max_column_length, " ", STR_PAD_LEFT);
-                $value = str_replace(" ", "&nbsp;", $value);
-                }
-                $html .= $td . $border . 'text-align: center !important; vertical-align: middle; padding-right:6% !important">';
-                $html .= '<span style="display:inline-block; text-align: right !important;">' . $value . $span;
-            break;
-              case('number_link'):
-                $link_value = $column['link_value'];
-                $actual_value = $value;
-                $column_length = strlen($value);
-                if ($column_length < $max_column_length) {
-                  $value = str_pad($value, $max_column_length, " ", STR_PAD_LEFT);
-                  $value = str_replace(" ", "&nbsp;", $value);
-                  $value = str_replace($actual_value, $value, $link_value);
-                } else {
-                  $value = $link_value;
-                }
-                $html .= $td . $border . 'text-align: center !important; vertical-align: middle; padding-right:6% !important">';
-                $html .= '<span style="display:inline-block; text-align: right !important;">' . $value . $span;
-            break;
-            //Text is left aligned
-              default:
-                $html .= $td . $border . 'text-align: left !important; vertical-align: middle; padding-left:10px !important">';
-                $html .= '<span style="display:inline-block; text-align: left !important;">' . $value . $span;
-              break;
-            }
-          }
+            $value = $column['value'];
+            $type = $column['type'];
+            $max_column_length = $column['max_column_length'];
+            $first_column = $index == 0;
 
+            if($first_column) {
+                $html .= '<td style="'.$border.'text-align: left !important; vertical-align: middle; padding: 10px 5px !important;">';
+                $html .= '<span style="margin:8px 0px 8px 15px!important; display:inline-block; text-align: left !important;">'. $value .'</span></td>';
+            } else {
+                //Numbers are center aligned and padded to align right
+                if($type == 'number') {
+                    $column_length = strlen($value);
+                    if($column_length < $max_column_length) {
+                        $value = str_pad($value, $max_column_length, " ", STR_PAD_LEFT);
+                        $value = str_replace(" ", "&nbsp;", $value);
+                    }
+                    $html .= '<td style="'.$border.'text-align: center !important; vertical-align: middle; padding-right:6% !important">';
+                    $html .= '<span style="display:inline-block; text-align: right !important;">'. $value .'</span></td>';
+                } else if($type == 'number_link') {
+                    $link_value = $column['link_value'];
+                    $actual_value = $value;
+                    $column_length = strlen($value);
+                    if($column_length < $max_column_length) {
+                        $value = str_pad($value, $max_column_length, " ", STR_PAD_LEFT);
+                        $value = str_replace(" ", "&nbsp;", $value);
+                        $value = str_replace($actual_value, $value, $link_value);
+                    } else {
+                        $value = $link_value;
+                    }
+                    $html .= '<td style="'.$border.'text-align: center !important; vertical-align: middle; padding-right:6% !important">';
+                    $html .= '<span style="display:inline-block; text-align: right !important;">'. $value .'</span></td>';
+                } else {//Text is left aligned
+                    $html .= '<td style="'.$border.'text-align: left !important; vertical-align: middle; padding-left:10px !important">';
+                    $html .= '<span style="display:inline-block; text-align: left !important;">'. $value .'</span></td>';
+                }
+            }
         }
         return $html;
     }
@@ -576,14 +563,14 @@ class WidgetUtil
             "recognized_current","recognized_1","recognized_2","recognized_3");
         if(in_array($labelAlias,$dynamic_labelAlias)){
             $year = (int)_getYearValueFromID(RequestUtilities::get('year'));
-            $dynamic_labels = array("current_modified" => self::MODIFIED.$year,
-                "previous_modified" => self::MODIFIED.($year-1),
-                "previous_1_modified" => self::MODIFIED.($year-2),
-                "previous_2_modified" => self::MODIFIED.($year-3),
-                "recognized_current" => self::RECOGNIZED.$year,
-                "recognized_1" => self::RECOGNIZED.($year+1),
-                "recognized_2" => self::RECOGNIZED.($year+2),
-                "recognized_3" => self::RECOGNIZED.($year+3));
+            $dynamic_labels = array("current_modified" => "Modified<br/>".$year,
+                "previous_modified" => "Modified<br/>".($year-1),
+                "previous_1_modified" => "Modified<br/>".($year-2),
+                "previous_2_modified" => "Modified<br/>".($year-3),
+                "recognized_current" => "Recognized<br/>".$year,
+                "recognized_1" => "Recognized<br/>".($year+1),
+                "recognized_2" => "Recognized<br/>".($year+2),
+                "recognized_3" => "Recognized<br/>".($year+3));
             $label = $dynamic_labels[$labelAlias];
         }else{
             if($labelOnly){
@@ -596,17 +583,19 @@ class WidgetUtil
     }
 
     public static function getWidgetJsonPath($key) {
-      $keyfile = $key.'\.json$/';
-      $files = \Drupal::service('file_system')->scanDirectory( \Drupal::service('extension.path.resolver')->getPath('module','widget_config') , '/^'.$keyfile);
+      $files = \Drupal::service('file_system')->scanDirectory( \Drupal::service('extension.path.resolver')->getPath('module','widget_config') , '/^'.$key.'\.json$/');
       if(!(count($files) > 0)){
-        $files = \Drupal::service('file_system')->scanDirectory( \Drupal::service('extension.path.resolver')->getPath('module','checkbook_landing_page') , '/^'.$keyfile);
+        $files = \Drupal::service('file_system')->scanDirectory( \Drupal::service('extension.path.resolver')->getPath('module','checkbook_landing_page') , '/^'.$key.'\.json$/');
       }
       return $files;
     }
 
     public static function isWidgetJsonValid($key) {
-      $files = self::getWidgetJsonPath($key);
-      if (count($files) > 0) {
+      $files = \Drupal::service('file_system')->scanDirectory( \Drupal::service('extension.path.resolver')->getPath('module','widget_config') , '/^'.$key.'\.json$/');
+      if(!(count($files) > 0)){
+        $files = \Drupal::service('file_system')->scanDirectory( \Drupal::service('extension.path.resolver')->getPath('module','checkbook_landing_page') , '/^'.$key.'\.json$/');
+      }
+      if ((count($files) > 0)) {
         return true;
       } else {
         return false;

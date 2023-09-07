@@ -12,10 +12,6 @@ class CheckbookApiRefExtension extends AbstractExtension
       'CheckbookApiRefTabel' => new TwigFunction('CheckbookApiRefTabel', [
         $this,
         'CheckbookApiRefTabel',
-      ]),
-      'CheckbookApiRefFooter' => new TwigFunction('CheckbookApiRefFooter', [
-        $this,
-        'CheckbookApiRefFooter',
       ])
     ];
   }

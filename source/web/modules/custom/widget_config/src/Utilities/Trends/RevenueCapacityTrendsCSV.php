@@ -24,8 +24,6 @@ use Drupal\checkbook_infrastructure_layer\Utilities\FormattingUtilities;
 
 class RevenueCapacityTrendsCSV  {
 
-  const FISCAL_YEAR = 'Fiscal year';
-
   public static function assesedValAndEstdActValCsv($node){
     $header = '';
     $output ='';
@@ -33,7 +31,7 @@ class RevenueCapacityTrendsCSV  {
     $last_year = end($node->data)['fiscal_year'];
     reset($node->data);
 
-    $header = self::FISCAL_YEAR;
+    $header = 'Fiscal year';
 
     $header .=  ",Class One" ;
     $header .=  ",Class Two" ;
@@ -90,7 +88,7 @@ class RevenueCapacityTrendsCSV  {
     $header = '';
     $output = '';
 
-    $header = self::FISCAL_YEAR;
+    $header = 'Fiscal year';
     $header .=  ",Basic Rate (1)" ;
     $header .=  ",Obligation Debt" ;
     $header .=  ",Total Direct";
@@ -121,7 +119,7 @@ class RevenueCapacityTrendsCSV  {
     $last_year = end($node->data)['fiscal_year'];
     reset($node->data);
 
-    $header = self::FISCAL_YEAR;
+    $header = 'Fiscal year';
     $header .=  ",Taxes Levied for the Fiscal Year"  ;
     $header .=  ",Collected Within the Fiscal Year of the Levy - Amount"  ;
     $header .=  ",Collected Within the Fiscal Year of the Levy - Percentage of Levy,"  ;
@@ -180,14 +178,14 @@ class RevenueCapacityTrendsCSV  {
     $header = 'Type of Property';
     foreach ($years as $year){
       if($year == 2014){
-        $header = $header .  "," . self::FISCAL_YEAR . $year . " (3) - Assessed Value (in millions)";
-        $header = $header .  "," . self::FISCAL_YEAR . $year . " (3) - Percentage of Taxable Real Estate,";
-        $header = $header .  "," . self::FISCAL_YEAR . $year . " (3) - Direct Tax Rate (2)";
+        $header = $header .  ",Fiscal Year" . $year . " (3) - Assessed Value (in millions)";
+        $header = $header .  ",Fiscal Year" . $year . " (3) - Percentage of Taxable Real Estate,";
+        $header = $header .  ",Fiscal Year" . $year . " (3) - Direct Tax Rate (2)";
       }
       else{
-        $header = $header .  "," . self::FISCAL_YEAR . $year . " - Assessed Value (in millions)";
-        $header = $header .  "," . self::FISCAL_YEAR . $year . " - Percentage of Taxable Real Estate,";
-        $header = $header .  "," . self::FISCAL_YEAR . $year . " - Direct Tax Rate (2)";
+        $header = $header .  ",Fiscal Year" . $year . " - Assessed Value (in millions)";
+        $header = $header .  ",Fiscal Year" . $year . " - Percentage of Taxable Real Estate,";
+        $header = $header .  ",Fiscal Year" . $year . " - Direct Tax Rate (2)";
       }
     }
     $output .= $header . "\n";
@@ -202,34 +200,28 @@ class RevenueCapacityTrendsCSV  {
       $rowString = '"'.$row['category'].'"' ;
       foreach ($years as $year){
         if(isset($row[$year]['assesed_value_million_amount'])){
-          if($row[$year]['assesed_value_million_amount'] == -1) {
+          if($row[$year]['assesed_value_million_amount'] == -1)
             $row[$year]['assesed_value_million_amount'] = ' - ';
-          }
-          else {
+          else
             $row[$year]['assesed_value_million_amount'] = FormattingUtilities::trendsNumberDisplay($row[$year]['assesed_value_million_amount'], 1, '.',',');
-          }
         }else{
           $row[$year]['assesed_value_million_amount'] = '';
         }
 
         if(isset($row[$year]['percentage_taxable_real_estate'])){
-          if($row[$year]['percentage_taxable_real_estate'] == -1) {
+          if($row[$year]['percentage_taxable_real_estate'] == -1)
             $row[$year]['percentage_taxable_real_estate'] = ' - ';
-          }
-          else {
+          else
             $row[$year]['percentage_taxable_real_estate'] = $row[$year]['percentage_taxable_real_estate'];
-          }
         }else{
           $row[$year]['percentage_taxable_real_estate'] = '';
         }
 
         if(isset($row[$year]['direct_tax_rate'])){
-          if($row[$year]['direct_tax_rate'] == -1) {
+          if($row[$year]['direct_tax_rate'] == -1)
             $row[$year]['direct_tax_rate'] = ' - ';
-          }
-          else {
+          else
             $row[$year]['direct_tax_rate'] = $row[$year]['direct_tax_rate'];
-          }
         }else{
           $row[$year]['direct_tax_rate'] = '';
         }
@@ -262,7 +254,7 @@ class RevenueCapacityTrendsCSV  {
     reset($node->data);
 
     $output .= "\n".",,".'"'."Percent of Levy through June 30, {$last_year}".'"'."\n";
-    $header = self::FISCAL_YEAR;
+    $header = 'Fiscal year';
     $header .=  ",Tax Levy (in millions)(2)" ;
     $header .=  ",Collections,";
     $header .=  ",Cancellations,";
@@ -348,7 +340,7 @@ class RevenueCapacityTrendsCSV  {
     $header = '';
     $output = '';
 
-    $header = self::FISCAL_YEAR;
+    $header = 'Fiscal year';
 
     $header .=  ",DIB Revenue(1)";
     $header .=  ",TEP Revenue(2)";

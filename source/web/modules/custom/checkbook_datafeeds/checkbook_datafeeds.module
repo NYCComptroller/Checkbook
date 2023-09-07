@@ -26,13 +26,12 @@ use Drupal\checkbook_api\Queue\QueueUtil;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\CheckbookDomain;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
 use Drupal\checkbook_log\LogHelper;
-use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 spl_autoload_register(function ($class) {
 
   if (FALSE !== strpos($class, 'checkbook_datafeeds')) {
-    [, $class] = explode('\\', $class);
+    list(, $class) = explode('\\', $class);
     $domain = substr($class, 0, strpos($class, 'Feed'));
     if (strlen($domain) > 0) {
       include_once 'includes/' . strtolower($domain) . '/' . $class . '.class.inc';
@@ -614,82 +613,6 @@ function checkDateFormat($date)
     }
   } else {
     return FALSE;
-  }
-}
-
-/**
- * Check whether a start and end dates are valid and also if range given is valid
- *
- * @param FormStateInterface $form_state
- *    Form State to get values and set error messages to
- * @param string $start_field_name
- *    Name of starting date field
- * @param string $end_field_name
- *    Name of ending date field
- * @param string $visual_field_name
- *    Name for the field to display in error message
- *
- * @return void
- *   This sets the error message in $form_state
- */
-function checkbook_datafeeds_check_ranged_date(&$form_state, $start_field_name, $end_field_name, $visual_field_name, $visual_field_name_from = null, $visual_field_name_to = null) {
-  $date_invalid_message = ' must be a valid date (YYYY-MM-DD).';
-
-  $from_date_field_name = $visual_field_name_from ?? $visual_field_name;
-  $to_date_field_name = $visual_field_name_to ?? $visual_field_name;
-  $date_invalid_message_from = $from_date_field_name . $date_invalid_message;
-  $date_invalid_message_to = $to_date_field_name . $date_invalid_message;
-
-  $range_invalid_message = 'Invalid date range for ' . $visual_field_name . '.';
-
-  $start_value = $form_state->getValue($start_field_name);
-  $end_value = $form_state->getValue($end_field_name);
-
-  if (strlen($start_value) > 0 && !checkDateFormat($start_value)) {
-    $form_state->setErrorByName($start_field_name, t($date_invalid_message_from));
-  }
-  if (strlen($end_value) > 0 && !checkDateFormat($end_value)) {
-    $form_state->setErrorByName($end_field_name, t($date_invalid_message_to));
-  }
-  if (strlen($start_value) > 0 && $end_value && strtotime($end_value) < strtotime($start_value)) {
-    $form_state->setErrorByName($end_field_name, t($range_invalid_message));
-  }
-}
-
-/**
- * Check whether a start and end amounts are valid and also if range given is valid
- *
- * @param FormStateInterface $form_state
- *    Form State to get values and set error messages to
- * @param string $start_field_name
- *    Name of starting amount field
- * @param string $end_field_name
- *    Name of ending amount field
- * @param string $visual_field_name
- *    Name for the field to display in error message
- *
- * @return void
- *   This sets the error message in $form_state
- */
-function checkbook_datafeeds_check_ranged_amounts(&$form_state, $start_field_name, $end_field_name, $visual_field_name, $visual_field_name_from = null, $visual_field_name_to = null) {
-  $from_field_name = $visual_field_name_from ?? $visual_field_name;
-  $to_field_name = $visual_field_name_to ?? $visual_field_name;
-  $amount_invalid_message_from = $from_field_name . ' must be a number.';
-  $amount_invalid_message_to = $to_field_name . ' must be a number.';
-
-  $range_invalid_message = 'Invalid range for ' . $visual_field_name . '.';
-
-  $start_value = $form_state->getValue($start_field_name);
-  $end_value = $form_state->getValue($end_field_name);
-
-  if ($start_value && !is_numeric($start_value)) {
-    $form_state->setErrorByName($start_field_name, t($amount_invalid_message_from));
-  }
-  if ($end_value && !is_numeric($end_value)) {
-    $form_state->setErrorByName($end_field_name, t($amount_invalid_message_to));
-  }
-  if (is_numeric($start_value) && is_numeric($end_value) && $end_value < $start_value) {
-    $form_state->setErrorByName($end_field_name, t($range_invalid_message));
   }
 }
 

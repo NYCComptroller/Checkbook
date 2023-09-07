@@ -33,6 +33,7 @@
         "drupal/exclude_node_title": "^1.4",
         "drupal/filelog": "^2.0.2",
         "drupal/form_options_attributes": "^2.0",
+        "drupal/google_analytics": "^4.0",
         "drupal/jquery_ui_autocomplete": "^2.0",
         "drupal/jquery_ui_button": "^2.0",
         "drupal/jquery_ui_checkboxradio": "^2.0",
@@ -125,9 +126,6 @@
             ]
         },
         "enable-patching": true,
-        "patchLevel": {
-            "drupal/core": "-p2"
-        },
         "patches": {
             "drupal/core": {
                 "3162699 - Improve debugability of block plugins returning NULL in Layout Builder": "https://www.drupal.org/files/issues/2020-08-10/3162699-blockbuild-13.patch"

@@ -62,15 +62,12 @@ class DebtCapacityTrendsCSV  {
       $rowString .= ','  . '"'. (($row['hyic_bonds_notes']>0)?FormattingUtilities::trendsNumberDisplay($row['hyic_bonds_notes']):'-') . '"';
       $rowString .= ','  . '"'. (($row['capital_leases_obligations']>0)?FormattingUtilities::trendsNumberDisplay($row['capital_leases_obligations']):'-') . '"';
       $rowString .= ','  . '"'. (($row['ida_bonds']>0)?FormattingUtilities::trendsNumberDisplay($row['ida_bonds']):'-') . '"';
-      if($row['treasury_obligations'] < 0 ) {
+      if($row['treasury_obligations'] < 0 )
         $rowString .= ','  . '"'. "(" . FormattingUtilities::trendsNumberDisplay(abs($row['treasury_obligations'])) . ")" . '"';
-      }
-      else if ($row['treasury_obligations'] == 0) {
+      else if ($row['treasury_obligations'] == 0)
         $rowString .= ',' .  "-";
-      }
-      else {
+      else
         $rowString .= ','  . '"'. FormattingUtilities::trendsNumberDisplay($row['treasury_obligations']) . '"';
-      }
 
       $rowString .= ','  . '"'. (($row['total_primary_government']>0)?FormattingUtilities::trendsNumberDisplay($row['total_primary_government']):'-') . '"';
       $output .= $rowString . "\n";
@@ -200,12 +197,10 @@ class DebtCapacityTrendsCSV  {
             }else if($row[$year]['amount'] < 0){
               $amount = '"' . "(" . FormattingUtilities::trendsNumberDisplay(abs($row[$year]['amount'])) . ")" . '"';
             }else if($row[$year]['amount'] == 0){
-              if(strpos($row['category'], ':')) {
+              if(strpos($row['category'], ':'))
                 $amount = '';
-              }
-              else {
+              else
                 $amount = '"-"';
-              }
             }
           }
 

@@ -6,10 +6,6 @@
   <li><a href="#sample-xml">Sample XML Requests and Responses</a></li>
   <li><a href="#sample-request-spending">Sample Request: Spending Transactions</a></li>
   <li><a href="#sample-response-spending">Sample Response: Spending Transactions</a></li>
-  <li><a href="#sample-request-spending-nycedc_oge">Sample Request: Spending Transactions  (OTHER GOVERNMENT ENTITIES - NYCEDC)</a></li>
-  <li><a href="#sample-response-spending-nycedc_oge">Sample Response: Spending Transactions  (OTHER GOVERNMENT ENTITIES - NYCEDC)</a></li>
-  <!--<li><a href="#sample-request-spending-nycha_oge">Sample Request: Spending Transactions (OTHER GOVERNMENT ENTITIES - NYCHA)</a></li>
-  <li><a href="#sample-response-spending-nycha_oge">Sample Response: Spending Transactions (OTHER GOVERNMENT ENTITIES - NYCHA)</a></li>-->
   <li><a href="#status-codes-messages">Status Codes and Messages</a></li>
 </ul>
 <a name="global-parameters"></a>
@@ -28,9 +24,9 @@
   <tr>
     <td>type_of_data</td>
     <td>Y</td>
-    <td>String –Maximum 15 Characters
+    <td>String – Must be one of the following:<br/>Contracts, Budget, Revenue, Payroll, Spending, Spending_OGE, Contracts_OGE.
     </td>
-    <td>Allows user to select different types of data. Value must be one of the following: <br/>Contracts, Budget, Revenue, Payroll, Spending, Spending_OGE and Contracts_OGE<!--, Spending_NYCHA, Contracts_NYCHA, and Payroll_NYCHA-->. </td>
+    <td>Allows user to select different types of data:<br/>Value must be one of the following Contracts, Budget, Revenue, Payroll, Spending, Spending_OGE, and Contracts_OGE.</td>
     <td>Spending</td>
   </tr>
   <tr>
@@ -55,8 +51,6 @@
 <p>Spending Parameters – All the parameters are optional, meaning that you can send only 1 or all of them.  If you choose to not send any, you will receive random transactions in return, as these parameters are the filter.</p>
 <table class="api-table">
   <thead>
-  <col width="50">
-  <col width="20">
   <tr>
     <th>Name</th>
     <th>Required (Y/N/C)</th>
@@ -65,17 +59,17 @@
     <th>Applicable Filters</th>
     <th>Description</th>
     <th>Spending Category</th>
-    <th>Reference Codes</th>
     <th>Example</th>
   </tr>
   </thead>
   <tbody>
+
   <tr>
     <td>fiscal_year</td>
     <td>C</td>
     <td>value</td>
     <td>String - YYYY - Maximum 4 characters</td>
-    <td>Citywide Agencies and Other Government Entities (NYCEDC<!--, NYCHA-->)</td>
+    <td>Citywide Agencies and Other Government Entities</td>
     <td>Fiscal Year. Must be exactly 4 characters. Either fiscal year or Issue Date can be specified.</td>
     <td style="width:175px;">
       <ul>
@@ -85,18 +79,16 @@
         <li>Contract Spending</li>
         <li>Trust &amp; Agency Spending</li>
         <li>Other Spending</li>
-        <li>Section 8 Spending</li>
       </ul>
     </td>
-    <td></td>
     <td>2005</td>
   </tr>
   <tr>
     <td >payee_name</td>
     <td>N</td>
     <td>value</td>
-    <td>String - Maximum 100 characters</td>
-    <td>Other Government Entities (NYCEDC)</td>
+    <td>String - Maximum 20 characters</td>
+    <td>Other Government Entities</td>
     <td>Vendor name. The user shall be able to search using vendor name. The search will return all results that match the first three letters of the vendor name.</td>
     <td style="width:175px;">
       <ul>
@@ -107,16 +99,15 @@
         <li>Other Spending</li>
       </ul>
     </td>
-    <td></td>
     <td>apple inc</td>
   </tr>
   <tr>
     <td >payee_code</td>
     <td>N</td>
     <td>value</td>
-    <td>String - Maximum 10 characters</td>
+    <td>String - Maximum 20 characters</td>
     <td>Citywide Agencies</td>
-    <td>The unique identifier assigned to the vendor/customer. </td>
+    <td>The unique identifier assigned to the vendor/customer. See here for <a href="/ref_code_list/payee">payee codes list (CSV</a>, <a href="/ref_code_list_excel/payee">Excel</a>).</td>
     <td style="width:175px;">
       <ul>
         <li>Total Spending</li>
@@ -126,18 +117,15 @@
         <li>Other Spending</li>
       </ul>
     </td>
-    <td>
-      Citywide: <a href="/ref_code_list/payee">Payee Codes List(CSV</a>, <a href="/ref_code_list_excel/payee">Excel)</a><!-- ,
-      NYCHA: <a href="/ref_code_list/nycha_vendor">Vendor Codes list(CSV</a>, <a href="/ref_code_list_excel/nycha_vendor">Excel) </a>--></td>
     <td>0000636940</td>
   </tr>
   <tr>
     <td>document_id</td>
     <td>N</td>
     <td>value</td>
-    <td>String - Maximum 32 characters</td>
-    <td>Citywide Agencies and Other Government Entities(NYCEDC<!--, NYCHA-->) </td>
-    <td>The unique identifier assigned to the vendor/customer. </td>
+    <td>String - Maximum 30 characters</td>
+    <td>Citywide Agencies</td>
+    <td>The unique identifier assigned to the vendor/customer.</td>
     <td><ul>
       <li>Total Spending</li>
       <li>Payroll Spending</li>
@@ -147,7 +135,6 @@
       <li>Other Spending</li>
     </ul>
     </td>
-    <td></td>
     <td>20110480413</td>
   </tr>
   <tr>
@@ -156,7 +143,7 @@
     <td>value</td>
     <td>String - Maximum 3 characters</td>
     <td>Citywide Agencies</td>
-    <td>The unique identifier assigned to the agency.</a></td>
+    <td>See here for <a href="/ref_code_list/agency">agency codes list (CSV</a>, <a href="/ref_code_list_excel/agency">Excel</a>)</td>
     <td><ul>
       <li>Total Spending</li>
       <li>Payroll Spending</li>
@@ -165,9 +152,6 @@
       <li>Trust &amp; Agency Spending</li>
       <li>Other Spending</li>
     </ul>
-    </td>
-    <td>
-      Citywide: <a href="/ref_code_list/agency">Agency Codes List(CSV</a>, <a href="/ref_code_list_excel/agency">Excel)</a>.
     </td>
     <td>002</td>
   </tr>
@@ -185,10 +169,8 @@
       <li>Contract Spending</li>
       <li>Trust &amp; Agency Spending</li>
       <li>Other Spending</li>
-      <li>Section 8 Spending</li>
     </ul>
     </td>
-    <td></td>
     <td>2011-06-13</td>
   </tr>
   <tr>
@@ -196,8 +178,8 @@
     <td>N</td>
     <td>value</td>
     <td>String – Maximum 9 characters</td>
-    <td>Citywide Agencies and Other Government Entities (NYCEDC) </td>
-    <td>An identification code associated with a department on the accounting line.
+    <td>Citywide Agencies and Other Government Entities</td>
+    <td>An identification code associated with a department on the accounting line. See here for <a href="/ref_code_list/department">department_codes list (CSV</a>, <a href="/ref_code_list_excel/department">Excel</a>)</td>
     <td><ul>
       <li>Total Spending</li>
       <li>Payroll Spending</li>
@@ -207,9 +189,6 @@
       <li>Other Spending</li>
     </ul>
     </td>
-    <td>Citywide: <a href="/ref_code_list/department">Department Codes List(CSV</a>, <a href="/ref_code_list_excel/department">Excel)</a> </a>
-    </td>
-
     <td>561</td>
   </tr>
   <tr>
@@ -217,7 +196,7 @@
     <td>N</td>
     <td>range</td>
     <td>String - Maximum 22 characters</td>
-    <td>Citywide Agencies and Other Government Entities(NYCEDC<!--, NYCHA-->)</td>
+    <td>Citywide Agencies and Other Government Entities</td>
     <td>This is the net check amount.  It reflects the line amount net any of the deductions (i.e., discount, retainage, withholding, intercepts, interest). Up to "99999999999999.99" (99 trillion); includes decimal and leading negative; no commas or dollar sign.</td>
     <td><ul>
       <li>Total Spending</li>
@@ -226,19 +205,17 @@
       <li>Contract Spending</li>
       <li>Trust &amp; Agency Spending</li>
       <li>Other Spending</li>
-      <li>Section 8 Spending</li>
     </ul>
     </td>
-    <td></td>
-    <td>10000.00</td>
+    <td>1000000.00</td>
   </tr>
   <tr>
     <td>expense_category</td>
     <td>N</td>
     <td>value</td>
-    <td>String – Maximum 22 characters</td>
-    <td>Citywide Agencies and Other Government Entities(NYCEDC<!--, NYCHA-->)</td>
-    <td>The unique identifier assigned to Expense Category</td>
+    <td>String – Maximum 4 characters</td>
+    <td>Citywide Agencies and Other Government Entities</td>
+    <td>See here for <a href="/ref_code_list/spending_expense_category">expense category codes list (CSV</a>, <a href="/ref_code_list_excel/spending_expense_category">Excel</a>)</td>
     <td><ul>
       <li>Total Spending</li>
       <li>Payroll Spending</li>
@@ -246,12 +223,8 @@
       <li>Contract Spending</li>
       <li>Trust &amp; Agency Spending</li>
       <li>Other Spending</li>
-      <li>Section 8 Spending</li>
     </ul>
     </td>
-    <td>
-      Citywide: <a href="/ref_code_list/expensecategory">Expense Category Codes List(CSV</a>, <a href="/ref_code_list_excel/expensecategory"> Excel)</a>,
-      <!--NYCHA: <a href="/ref_code_list/nycha_expense_category">Expense Category Codes List(CSV</a>, <a href="/ref_code_list_excel/nycha_expense_category"> Excel) </a>--></td>
     <td>6620</td>
   </tr>
   <tr>
@@ -259,7 +232,7 @@
     <td>N</td>
     <td>value</td>
     <td>String - Maximum 32 characters</td>
-    <td>Citywide Agencies and Other Government Entities(NYCEDC<!--, NYCHA-->)</td>
+    <td>Citywide Agencies and Other Government Entities</td>
     <td>Identification code associated with contract.</td>
     <td><ul>
       <li>Total Spending</li>
@@ -268,8 +241,7 @@
       <li>Trust &amp; Agency Spending</li>
     </ul>
     </td>
-    <td></td>
-    <td>MMA12009</td>
+    <td>MMA120090026495069</td>
   </tr>
   <tr>
     <td>capital_project_code</td>
@@ -277,7 +249,7 @@
     <td>value</td>
     <td>String - Maximum 15 characters</td>
     <td>Citywide Agencies</td>
-    <td>Identification of Capital Project for which Disbursement is being made. </td>
+    <td>Identification of Capital Project for which Disbursement is being made. See here for <a href="/ref_code_list/capital_project">capital project codes (CSV</a>, <a href="/ref_code_list_excel/capital_project">Excel</a>).</td>
     <td><ul>
       <li>Total Spending</li>
       <li>Payroll Spending</li>
@@ -287,17 +259,15 @@
       <li>Other Spending</li>
     </ul>
     </td>
-    <td></td>
-
-    <td>040A000</td>
+    <td>040A00020892020</td>
   </tr>
   <tr>
     <td>spending_category</td>
     <td>N</td>
     <td>value</td>
-    <td>String - Maximum 10 characters</td>
-    <td>Citywide Agencies and Other Government Entities(NYCEDC<!--, NYCHA-->)</td>
-    <td>For total spending, the user shall not include the script for spending category in the request xml (search criteria).By default, that data for total spending is displayed. </td>
+    <td>String - Maximum 2 characters</td>
+    <td>Citywide Agencies and Other Government Entities</td>
+    <td>For total spending, the user shall not include the script for spending category in the request xml (search criteria).By default, that data for total spending is displayed. See here for <a href="/ref_code_list/spending_category">spending category codes (CSV</a>, <a href="/ref_code_list_excel/spending_category">Excel</a>) list</td>
     <td><ul>
       <li>Total Spending</li>
       <li>Payroll Spending</li>
@@ -305,12 +275,7 @@
       <li>Contract Spending</li>
       <li>Trust &amp; Agency Spending</li>
       <li>Other Spending</li>
-      <li>Section 8 Spending</li>
     </ul>
-    </td>
-    <td>
-      Citywide: <a href="/ref_code_list/spending_category">spending category codes List(CSV</a>, <a href="/ref_code_list_excel/spending_category">Excel)</a><!--,
-      NYCHA: <a href="/ref_code_list/nycha_spending_category">spending category codes List(CSV</a>, <a href="/ref_code_list_excel/nycha_spending_category">Excel) </a>-->
     </td>
     <td>c</td>
   </tr>
@@ -319,7 +284,7 @@
     <td>N</td>
     <td>value</td>
     <td>String- Maximum 75 characters</td>
-    <td>Other Government Entities(NYCEDC)</td>
+    <td>Other Government Entities</td>
     <td>Budget name. The user shall be able to search using budget name. The search will return all results that match the first three letters of the budget name.</td>
     <td><ul>
       <li>Total Spending</li>
@@ -330,7 +295,6 @@
       <li>Other Spending</li>
     </ul>
     </td>
-    <td></td>
     <td>FA - EDUCATIONAL  ALLIANCE RENOVATIONS</td>
   </tr>
   <tr>
@@ -338,8 +302,8 @@
     <td>N</td>
     <td>value</td>
     <td>String- Maximum 3 characters</td>
-    <td>Other Government Entities(NYCEDC)</td>
-    <td></td>
+    <td>Other Government Entities</td>
+    <td>Commodity line associated to EDC contracts.</td>
     <td><ul>
       <li>Total Spending</li>
       <li>Payroll Spending</li>
@@ -349,7 +313,6 @@
       <li>Other Spending</li>
     </ul>
     </td>
-    <td></td>
     <td>1</td>
   </tr>
   <tr>
@@ -357,7 +320,7 @@
     <td>N</td>
     <td>value</td>
     <td>String- Maximum 15 characters</td>
-    <td>Other Government Entities(NYCEDC)</td>
+    <td>Other Government Entities</td>
     <td>Identification code associated with OGE contract. The user would need to enter the contract number manually.</td>
     <td><ul>
       <li>Total Spending</li>
@@ -368,17 +331,15 @@
       <li>Other Spending</li>
     </ul>
     </td>
-    <td></td>
     <td>48440001</td>
   </tr>
   <tr>
-    <td>other_government
-      _entities_code</td>
+    <td>other_government_entities_code</td>
     <td>N</td>
     <td>value</td>
     <td>String- Maximum 3 characters</td>
-    <td>Other Government Entities(NYCEDC)</td>
-    <td>Identifies which government entities the user would want to search. Currently Includes EDC<!-- and NYCHA-->. Code for EDC is z81<!-- and NYCHA is 996-->.</td>
+    <td>Other Government Entities</td>
+    <td>Identifies which government entities the user would want to search. Currently includes only Includes EDC. Code for EDC is z81.</td>
     <td><ul>
       <li>Total Spending</li>
       <li>Payroll Spending</li>
@@ -386,10 +347,8 @@
       <li>Contract Spending</li>
       <li>Trust &amp; Agency Spending</li>
       <li>Other Spending</li>
-      <li>Section 8 Spending</li>
     </ul>
     </td>
-    <td></td>
     <td>z81</td>
   </tr>
   <tr>
@@ -398,7 +357,7 @@
     <td>value</td>
     <td>String- Maximum 9 characters</td>
     <td>Citywide Agencies</td>
-    <td>User shall be able to extract data for specific mwbe categories, by specifying the mwbe category code in the request XML. For all m/wbe categories results, user need not give any m/wbe category codes in the request. By default, it shall display results for all categories.For Total M/WBE, include all the m/wbe category codes in the request XML, which is 2~3~4~5~9.</td>
+    <td>User shall be able to extract data for specific mwbe categories, by specifying the mwbe category code in the request XML. For all m/wbe categories results, user need not give any m/wbe category codes in the request. By default, it shall display results for all categories. See here for <a href="/ref_code_list/mwbe">mwbe categories list (CSV</a>, <a href="/ref_code_list_excel/mwbe">Excel</a>). For Total M/WBE, include all the m/wbe category codes in the request XML, which is 2~3~4~5~9.</td>
     <td>
       <ul>
         <li>Total Spending</li>
@@ -409,17 +368,16 @@
         <li>Other Spending</li>
       </ul>
     </td>
-    <td> Citywide: <a href="/ref_code_list/mwbe">mwbe categories list(CSV</a>, <a href="/ref_code_list_excel/mwbe">Excel) </a> </td>
     <td>3</td>
   </tr>
   <tr>
-    <td>industry</td>
+    <td>industry_type_id</td>
     <td>N</td>
     <td>value</td>
-    <td>String- Maximum 4 characters</td>
-    <td>Citywide Agencies<!-- and Other Government Entities(NYCHA)--></td>
+    <td>String- Maximum 2 characters</td>
+    <td>Citywide Agencies</td>
     <td>User shall be able to extract data for specific industry types, by specifying the industry type codes in the request XML.
-      By default, it shall display results for all industries. </td>
+      By default, it shall display results for all industries. See here for <a href="/ref_code_list/industry">industry codes list (CSV</a>, <a href="/ref_code_list_excel/industry">Excel</a>).</td>
     <td>
       <ul>
         <li>Total Spending</li>
@@ -428,93 +386,10 @@
         <li>Contract Spending</li>
         <li>Trust &amp; Agency Spending</li>
         <li>Other Spending</li>
-        <li>Section 8 Spending</li>
       </ul>
     </td>
-    <td>Citywide: <a href="/ref_code_list/industry">Industry Codes list(CSV</a>, <a href="/ref_code_list_excel/industry">Excel)</a><!--,
-      NYCHA: <a href="/ref_code_list/nycha_industry">Industry Codes list(CSV</a>, <a href="/ref_code_list_excel/nycha_industry"> Excel) </a>--></td>
     <td>2</td>
   </tr>
-  <!--<tr>
-    <td>funding_source_id</td>
-    <td>N</td>
-    <td>value</td>
-    <td>String- Maximum 9 characters</td>
-    <td>Other Government Entities(NYCHA)</td>
-    <td>User shall be able to extract data for specific funding sources, by specifying the funding source codes in the request XML.By default, it shall display results for all funding sources. Spending Categories- Total,Contract, and Other spending are applicable for NYCHA.</td>
-    <td>
-      <ul>
-        <li>Total Spending</li>
-        <li>Payroll Spending</li>
-        <li>Contract Spending</li>
-        <li>Section 8 Spending</li>
-        <li>Other Spending</li>
-      </ul>
-    </td>
-    <td>  NYCHA: <a href="/ref_code_list/nycha_funding_source">Funding Source Codes list(CSV</a>, <a href="/ref_code_list_excel/nycha_funding_source">Excel) </a>.</td>
-    <td>2</td>
-  </tr>
-
-  <tr>
-    <td>responsibility_center</td>
-    <td>N</td>
-    <td>value</td>
-    <td>String- Maximum 10 characters</td>
-    <td>Other Government Entities(NYCHA)</td>
-    <td>User shall be able to extract data for specific responsibility center, by specifying the responsibility center codes in the request XML.By default, it shall display results for all responsibility center. </td>
-    <td>
-      <ul>
-        <li>Total Spending</li>
-        <li>Payroll Spending</li>
-        <li>Contract Spending</li>
-        <li>Section 8 Spending</li>
-        <li>Other Spending</li>
-      </ul>
-    </td>
-    <td>NYCHA:<a href="/ref_code_list/nycha_responsibility_center">Responsibility Center Codes list(CSV</a>, <a href="/ref_code_list_excel/nycha_responsibility_center"> Excel)</a>.</td>
-    <td>B0361600</td>
-  </tr>
-
-  <tr>
-    <td>purchase_order_type</td>
-    <td>N</td>
-    <td>value</td>
-    <td>String- Maximum 9 characters</td>
-    <td>Other Government Entities(NYCHA)</td>
-    <td>User shall be able to narrow down the results by providing by pruchase order type </td>
-    <td>
-      <ul>
-        <li>Total Spending</li>
-        <li>Payroll Spending</li>
-        <li>Contract Spending</li>
-        <li>Section 8 Spending</li>
-        <li>Other Spending</li>
-      </ul>
-    </td>
-    <td>NYCHA: <a href="/ref_code_list/nycha_purchase_order"> Purchase Order codes (CSV</a>, <a href="/ref_code_list_excel/nycha_purchase_order"> Excel)</a>.</td>
-    <td>PA</td>
-  </tr>
-
-  <tr>
-    <td>amount_spent</td>
-    <td>N</td>
-    <td>value</td>
-    <td>String- Maximum 22 characters</td>
-    <td>Other Government Entities(NYCHA)</td>
-    <td>This is the net amount spent by NYCHA. It reflects the line amount net including the deductions (i.e., invoice discount, retainage, withholding). Up to "99999999999999.99" (99 trillion); includes decimal and leading negative; no commas or dollar sign. S </td>
-    <td>
-      <ul>
-        <li>Total Spending</li>
-        <li>Payroll Spending</li>
-        <li>Contract Spending</li>
-        <li>Section 8 Spending</li>
-        <li>Other Spending</li>
-      </ul>
-    </td>
-    <td></td>
-    <td>200</td>
-  </tr>-->
-
   </tbody>
 </table>
 <a href="#top" class="float-right">Back to the top</a>
@@ -569,7 +444,6 @@
         </tr>
         </tbody>
       </table></td>
-
       <td class="api-td-right"><table class="api-response-columns-table">
         <thead>
         <tr>
@@ -606,72 +480,10 @@
         </tr>
         </tbody>
       </table></td>
-      <!--<table>
-        <tbody>
-        <tr>
-          <td class="api-td-left"><table class="api-response-columns-table">
-            <thead>
-            <tr>
-              <th  colspan="2">Response Column Names(Other Government Entities-NYCHA)</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td>amount_spent</td>
-              <td>issue_date</td>
-            </tr>
-            <tr>
-              <td>check_amount</td>
-              <td>program</td>
-            </tr>
-            <tr>
-              <td>contract_id</td>
-              <td>project</td>
-            </tr>
-            <tr>
-              <td>distribution_line_number</td>
-              <td>line_number</td>
-            </tr>
-            <tr>
-              <td>document_id</td>
-              <td>purchase_order_type</td>
-            </tr>
-            <tr>
-              <td>expense_category</td>
-              <td>purpose</td>
-            </tr>
-            <tr>
-              <td>funding_source</td>
-              <td>section_8</td>
-            </tr>
-            <tr>
-              <td>industry</td>
-              <td>check_status</td>
-            </tr>
-            <tr>
-              <td>invoice_number</td>
-              <td>responsibility_center</td>
-            </tr>
-            <tr>
-              <td>release_number</td>
-              <td>spending_category</td>
-            </tr>
-            <tr>
-              <td>year</td>
-              <td>vendor</td>
-            </tr>
-
-            </tbody>
-          </table></td>
-        </tr>
-        </tbody>
-      </table>-->
-
     </tr>
     </tbody>
   </table>
 </div>
-<div class="divider" style="clear: both;"></div>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="predefined-xml-entities"></a>
 <h3>Predefined Entities in XML</h3>
@@ -776,7 +588,7 @@
             &lt;value&gt;7&lt;/value&gt;
         &lt;/criteria&gt;
        &lt;criteria&gt;
-            &lt;name&gt;industry&lt;/name&gt;
+            &lt;name&gt;industry_type_id&lt;/name&gt;
             &lt;type&gt;value&lt;/type&gt;
             &lt;value&gt;2&lt;/value&gt;
         &lt;/criteria&gt;
@@ -789,7 +601,7 @@
         &lt;column&gt;department&lt;/column&gt;
         &lt;column&gt;check_amount&lt;/column&gt;
         &lt;column&gt;expense_category&lt;/column&gt;
-        &lt;column&gt;contract_id&lt;/column&gt;
+        &lt;column&gt;contract_ID&lt;/column&gt;
         &lt;column&gt;capital_project&lt;/column&gt;
         &lt;column&gt;industry&lt;/column&gt;
         &lt;column&gt;issue_date&lt;/column&gt;
@@ -846,7 +658,7 @@
           &lt;value&gt;7&lt;/value&gt;
         &lt;/criteria&gt;
         &lt;criteria&gt;
-          &lt;name&gt;industry&lt;/name&gt;
+          &lt;name&gt;industry_type_id&lt;/name&gt;
           &lt;type&gt;value&lt;/type&gt;
           &lt;value&gt;2&lt;/value&gt;
         &lt;/criteria&gt;
@@ -897,8 +709,7 @@
 &lt;/response&gt;
 </pre>
 <a href="#top" class="float-right">Back to the top</a>
-<a name="sample-request-spending-nycedc_oge"></a>
-<h3 class="title">Sample Request: Spending Transactions (Other Government Entities - NYCEDC)</h3>
+<h3 class="title">Sample Request: Spending Transactions (Other Government Entities)</h3>
 <pre>
     &lt;request&gt;
         &lt;type_of_data&gt;Spending_OGE&lt;/type_of_data&gt;
@@ -970,8 +781,7 @@
     &lt;/request&gt;
 </pre>
 <a href="#top" class="float-right">Back to the top</a>
-<a name="sample-response-spending-nycedc_oge"></a>
-<h3 class="title">Sample Response: Spending Transactions (Other Government Entities - NYCEDC)</h3>
+<h3 class="title">Sample Response: Spending Transactions (Other Government Entities)</h3>
 <pre>
     &lt;response&gt;
   &lt;status&gt;
@@ -1119,154 +929,6 @@ CORPORATION&lt;/other_government_entities&gt;
 &lt;/response&gt;
 </pre>
 <a href="#top" class="float-right">Back to the top</a>
-<!--<a name="sample-request-spending-nycha_oge"></a>
-<h3 class="title">Sample Request: Spending Transactions (Other Government Entities - NYCHA)</h3>
-<pre>
-&lt;request&gt;
-        &lt;type_of_data&gt;Spending_NYCHA&lt;/type_of_data&gt;
-        &lt;records_from&gt;1&lt;/records_from&gt;
-        &lt;max_records&gt;10&lt;/max_records&gt;
-        &lt;search_criteria&gt;
-            &lt;criteria&gt;
-                &lt;name&gt;other_government_entities_code&lt;/name&gt;
-                &lt;type&gt;value&lt;/type&gt;
-                &lt;value&gt;996&lt;/value&gt;
-            &lt;/criteria&gt;
-                &lt;criteria&gt;
-                &lt;name&gt;contract_id&lt;/name&gt;
-                &lt;type&gt;value&lt;/type&gt;
-                &lt;value&gt;BA1601045&lt;/value&gt;
-           &lt;/criteria&gt;
-             &lt;criteria&gt;
-                &lt;name&gt;fiscal_year&lt;/name&gt;
-                &lt;type&gt;value&lt;/type&gt;
-                &lt;value&gt;2019&lt;/value&gt;
-            &lt;/criteria&gt;
-
-            &lt;criteria&gt;
-                &lt;name&gt;expense_category&lt;/name&gt;
-                &lt;type&gt;value&lt;/type&gt;
-                &lt;value&gt;77934&lt;/value&gt;
-            &lt;/criteria&gt;
-            &lt;criteria&gt;
-                &lt;name&gt;spending_category&lt;/name&gt;
-                &lt;type&gt;value&lt;/type&gt;
-                &lt;value&gt;CONTRACT&lt;/value&gt;
-         &lt;/criteria&gt;
-       &lt;/search_criteria&gt;
-     &lt;response_columns&gt;
-            &lt;column&gt;amount_spent&lt;/column&gt;
-            &lt;column&gt;check_amount&lt;/column&gt;
-            &lt;column&gt;document_id&lt;/column&gt;
-            &lt;column&gt;contract_id&lt;/column&gt;
-            &lt;column&gt;expense_category&lt;/column&gt;
-            &lt;column&gt;funding_source&lt;/column&gt;
-            &lt;column&gt;industry&lt;/column&gt;
-            &lt;column&gt;invoice_number&lt;/column&gt;
-            &lt;column&gt;release_number&lt;/column&gt;
-            &lt;column&gt;line_number&lt;/column&gt;
-            &lt;column&gt;distribution_line_number&lt;/column&gt;
-            &lt;column&gt;issue_date&lt;/column&gt;
-            &lt;column&gt;program&lt;/column&gt;
-            &lt;column&gt;project&lt;/column&gt;
-            &lt;column&gt;purchase_order_type&lt;/column&gt;
-            &lt;column&gt;purpose&lt;/column&gt;
-            &lt;column&gt;section_8&lt;/column&gt;
-            &lt;column&gt;check_status&lt;/column&gt;
-            &lt;column&gt;responsibility_center&lt;/column&gt;
-            &lt;column&gt;spending_category&lt;/column&gt;
-            &lt;column&gt;vendor&lt;/column&gt;
-              &lt;column&gt;year&lt;/column&gt;
-        &lt;/response_columns&gt;
-&lt;/request&gt;
-</pre>
-<a href="#top" class="float-right">Back to the top</a>
-<a name="sample-response-spending-nycha_oge"></a>
-<h3 class="title">Sample Response: Spending Transactions (Other Government Entities - NYCHA)</h3>
-<pre>
-    &lt;response&gt;
-  &lt;status&gt;
-    &lt;result&gt;success&lt;/result&gt;
-  &lt;/status&gt;
-  &lt;request_criteria&gt;
-    &lt;request&gt;
-        &lt;type_of_data&gt;Spending_NYCHA&lt;/type_of_data&gt;
-        &lt;records_from&gt;1&lt;/records_from&gt;
-        &lt;max_records&gt;1&lt;/max_records&gt;
-        &lt;search_criteria&gt;
-            &lt;criteria&gt;
-                &lt;name&gt;other_government_entities_code&lt;/name&gt;
-                &lt;type&gt;value&lt;/type&gt;
-                &lt;value&gt;996&lt;/value&gt;
-            &lt;/criteria&gt;
-                &lt;criteria&gt;
-                &lt;name&gt;contract_id&lt;/name&gt;
-                &lt;type&gt;value&lt;/type&gt;
-                &lt;value&gt;BA1601045&lt;/value&gt;
-           &lt;/criteria&gt;
-             &lt;criteria&gt;
-                &lt;name&gt;fiscal_year&lt;/name&gt;
-                &lt;type&gt;value&lt;/type&gt;
-                &lt;value&gt;2019&lt;/value&gt;
-            &lt;/criteria&gt;
-
-            &lt;criteria&gt;
-                &lt;name&gt;expense_category&lt;/name&gt;
-                &lt;type&gt;value&lt;/type&gt;
-                &lt;value&gt;77934&lt;/value&gt;
-            &lt;/criteria&gt;
-            &lt;criteria&gt;
-                &lt;name&gt;spending_category&lt;/name&gt;
-                &lt;type&gt;value&lt;/type&gt;
-                &lt;value&gt;3&lt;/value&gt;
-         &lt;/criteria&gt;
-       &lt;/search_criteria&gt;
-     &lt;response_columns&gt;
-            &lt;column&gt;amount_spent&lt;/column&gt;
-           &lt;column&gt;check_amount&lt;/column&gt;
-            &lt;column&gt;document_id&lt;/column&gt;
-            &lt;column&gt;contract_id&lt;/column&gt;
-             &lt;column&gt;document_id&lt;/column&gt;
-            &lt;column&gt;expense_category&lt;/column&gt;
-            &lt;column&gt;funding_source&lt;/column&gt;
-            &lt;column&gt;industry&lt;/column&gt;
-            &lt;column&gt;invoice_number&lt;/column&gt;
-            &lt;column&gt;release_number&lt;/column&gt;
-           &lt;column&gt;line_number&lt;/column&gt;
-           &lt;column&gt;distribution_line_number&lt;/column&gt;
-            &lt;column&gt;issue_date&lt;/column&gt;
-            &lt;column&gt;program&lt;/column&gt;
-            &lt;column&gt;project&lt;/column&gt;
-            &lt;column&gt;purchase_order_type&lt;/column&gt;
-            &lt;column&gt;purpose&lt;/column&gt;
-            &lt;column&gt;section_8&lt;/column&gt;
-            &lt;column&gt;check_status&lt;/column&gt;
-            &lt;column&gt;responsibility_center&lt;/column&gt;
-            &lt;column&gt;spending_category&lt;/column&gt;
-            &lt;column&gt;vendor&lt;/column&gt;
-            &lt;column&gt;year&lt;/column&gt;
-        &lt;/response_columns&gt;
-&lt;/request&gt;
-&lt;/request_criteria&gt;
-  &lt;result_records&gt;
-    &lt;record_count&gt;24&lt;/record_count&gt;
-    &lt;spending_transactions&gt;
-      &lt;transaction&gt;
-        &lt;issue_date&gt;2019-11-21&lt;/issue_date&gt;
-        &lt;document_id&gt;199666-48758-20191121-996-EFT&lt;/document_id&gt;
-        &lt;contract_id&gt;BA1601045&lt;/contract_id&gt;
-        &lt;release_number&gt;7349&lt;/release_number&gt;
-        &lt;line_number&gt;1&lt;/release_number&gt;
-        &lt;distirbution_line_number&gt;1&lt;/release_number&gt;
-        &lt;invoice_number&gt;526&lt;/invoice_number&gt;
-        &lt;check_status&gt;NEGOTIABLE&lt;/check_status&gt;
-       &lt;check_amount&gt;55115.89&lt;/check_amount&gt;
-      &lt;/transaction&gt;
-    &lt;/spending_transactions&gt;
-  &lt;/result_records&gt;
-&lt;/response&gt;
-</pre>
-<a href="#top" class="float-right">Back to the top</a>-->
 <a name="status-codes-messages"></a>
 <h3 class="title">Status Codes and Messages</h3>
 <p>Status messages are categorized and displayed as status codes with short description for the user to understand the cause of the error. In case of an error no result records will be displayed and the error message will be displayed inside the &lt;message&gt; XML element as shown below. See here for <a href="#" class="status-codes">list of Status codes and Messages</a>.</p>

@@ -173,13 +173,13 @@ function _checkbook_faceted_search_update_data($node) {
     $disableFacet = true;
   }
 
-  if (isset($disableFacet) && $disableFacet) { //only URL parameters count and can be disabled
+  if (isset($disableFacet)) { //only URL parameters count and can be disabled
     $url_ref = RequestUtilities::getBottomContUrl();
     $url_ref = $url_ref ?? \Drupal::request()->server->get('HTTP_REFERER');
     $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
   }
 
-  if (isset($disableFacet) && $disableFacet) {
+  if (isset($disableFacet)) {
     $output['unchecked'] = null;
   } else {
     foreach ($data as $row) {

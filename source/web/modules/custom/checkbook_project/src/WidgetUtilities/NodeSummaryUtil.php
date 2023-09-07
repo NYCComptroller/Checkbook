@@ -54,11 +54,17 @@ class NodeSummaryUtil
    * @return mixed|null
    */
     public static function getInitNodeSummaryTitle($nid = null){
-      $nid = $nid ?? self::getNodeId();
-      if(empty($nid)){
-        return NULL;
-      }
-      $smnid = RequestUtilities::get('smnid');
+        $smnid = RequestUtilities::getTransactionsParams("smnid");
+        if($nid == null) {
+          if (!empty($smnid)) {
+            $nid = $smnid;
+          } else {
+            $nid = self::getNodeId();
+          }
+        }
+        if(empty($nid)){
+            return NULL;
+        }
         $node = _widget_node_load_file($nid);
         widget_config($node);
         $title = NULL;

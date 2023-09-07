@@ -111,10 +111,6 @@ class TrendCsvUtil
         case '357':
           $result = OperationalTrendsCSV::noOfCityEmployeesCsv($node);
           break;
-
-        default:
-          $result = NULL;
-          break;
       }
 
       return $result;

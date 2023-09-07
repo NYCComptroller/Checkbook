@@ -65,7 +65,7 @@
 
             return $( "<li>" )
               .attr( "data-value", item.value )
-              .append('<a href="' + item.url + '">' + htmlEntities(item.label) + '</a>')
+              .append("<a href='" + item.url + "'>" + htmlEntities(item.label) + "</a>")
               .appendTo( ul );
           }
         });

@@ -1,9 +1,7 @@
 <?php
 namespace Drupal\checkbook_project\WidgetUtilities;
 
-use Drupal\checkbook_infrastructure_layer\Constants\Common\CheckbookDomain;
 use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
-use Drupal\checkbook_project\CommonUtilities\RequestUtil;
 use Drupal\Component\Utility\Html;
 
 class ChartUtil
@@ -35,39 +33,35 @@ class ChartUtil
   public static function _checkbook_project_getChartTitle($domain, $subTitle, $by = null, $chart = null){
     $title = NULL;
     // need url and refurl to get the correct title text
-    $url = RequestUtilities::getRefUrl() ?? RequestUtilities::getCurrentPageUrl();
+    $refUrl = \Drupal::request()->query->get('refURL');
+    $url = $refUrl ?? RequestUtilities::getCurrentPageUrl();
     $status =RequestUtilities::get('status');
-    if (strtolower($domain) == CheckbookDomain::$CONTRACTS) {
-      switch ($url) {
-        case(RequestUtil::isExpenseContractPath($url)):
-          if ($status == "A") {
+    if (strtolower($domain) == "contracts") {
+      if (str_starts_with($url, "/contracts_landing")) {
+        if ($status == "A") {
           $title = 'Active Expense Contracts';
-          }
-        elseif ($status == "R") {
-        $title = 'Registered Expense Contracts';
+        } else if ($status == "R") {
+          $title = 'Registered Expense Contracts';
         }
-          break;
-        case(RequestUtil::isRevenueContractPath($url)):
-          if ($status == "A") {
+      } else if (str_starts_with($url, "/contracts_revenue_landing")) {
+        if ($status == "A") {
           $title = 'Active Revenue Contracts';
         } else if ($status == "R") {
           $title = 'Registered Revenue Contracts';
         }
-          break;
-        case(RequestUtil::isPendingRevenueContractPath($url)):
+      } else if (str_contains($url, "/contracts_pending_rev_landing")) {
         $title = 'Pending Revenue Contracts';
-        break;
-        case(RequestUtil::isPendingExpenseContractPath($url)):
+      } else if (str_contains($url, "/contracts_pending_exp_landing")) {
         $title = 'Pending Expense Contracts';
-        break;
-        default:
-          break;
       }
     }
     if ($chart == 'contracts') {
       return 'Top Ten ' . $title . ' by Current Amount';
     } else {
-      return isset($by) ? $subTitle . ' by ' . $title : $title . ' ' . $subTitle;
+      if (!$by)
+        return $title . ' ' . $subTitle;
+      else
+        return $subTitle . ' by ' . $title;
     }
   }
 

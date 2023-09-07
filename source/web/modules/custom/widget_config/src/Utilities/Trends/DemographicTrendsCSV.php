@@ -118,12 +118,10 @@ class DemographicTrendsCSV  {
     $header .= ',,,,,,(average annual employment in thousands),,,,,'."\n";
 
     foreach ($years as $year){
-      if($year == 2021) {
+      if($year == 2021)
         $header = $header .  "," . $year .'(b)' ;
-      }
-      else {
+      else
         $header = $header .  "," . $year ;
-      }
     }
     $output .= $header . "\n";
     $i = 0;
@@ -150,12 +148,10 @@ class DemographicTrendsCSV  {
           }else if($row[$year]['amount'] < 0){
             $amount = '"' . "(" . FormattingUtilities::trendsNumberDisplay(abs($row[$year]['amount'])) . ")" . '"';
           }else if($row[$year]['amount'] == 0){
-            if(strpos($row['category'], ':')) {
+            if(strpos($row['category'], ':'))
               $amount = '';
-            }
-            else {
+            else
               $amount = '"-"';
-            }
           }
 
         }

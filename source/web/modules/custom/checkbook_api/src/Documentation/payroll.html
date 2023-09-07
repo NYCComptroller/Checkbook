@@ -6,8 +6,6 @@
   <li><a href="#sample-xml">Sample XML Requests and Responses</a></li>
   <li><a href="#sample-request-payroll">Sample Request: Payroll Transactions</a></li>
   <li><a href="#sample-response-payroll">Sample Response: Payroll Transactions</a></li>
-  <!--<li><a href="#sample-request-payroll-oge">Sample Request: Payroll Transactions(OTHER GOVERNMENT ENTITIES - NYCHA)</a></li>
-  <li><a href="#sample-response-payroll-oge">Sample Response: Payroll Transactions(OTHER GOVERNMENT ENTITIES - NYCHA)</a></li>-->
   <li><a href="#status-codes-messages">Status Codes and Messages</a></li>
 </ul>
 <a name="global-parameters" id="global-parameters"></a>
@@ -25,8 +23,9 @@
   <tr>
     <td>type_of_data</td>
     <td>Y</td>
-    <td>String – Maximum 15 Characters.</td>
-    <td>Allows user to select different types of data. Value must be one of the following :<br/>  Contracts, Budget, Revenue, Payroll, Spending, Spending_OGE and Contracts_OGE<!--Spending_NYCHA, Contracts_NYCHA, and Payroll_NYCHA--></td>
+    <td>String – Must be one of the following: <br />
+      Contracts, Payroll, or Spending.</td>
+    <td>Allows user to select different types of data. Value must be one of the following: Contracts, Payroll, or Spending.</td>
     <td>Payroll</td>
   </tr>
   <tr>
@@ -57,7 +56,6 @@
       Conditional)</th>
     <th>Type of Criteria (value/range)</th>
     <th>Format/Value</th>
-    <th>Applicable Filters</th>
     <th>Description</th>
     <th>Example</th>
   </tr>
@@ -67,7 +65,6 @@
     <td>C</td>
     <td>value</td>
     <td>String - YYYY - Maximum 4 characters </td>
-    <td>Citywide Agencies</td>
     <td>Fiscal Year. Must be exactly 4 characters. It is mandatory to select either fiscal year or calendar year.</td>
     <td>2005</td>
   </tr>
@@ -76,7 +73,6 @@
     <td>C</td>
     <td>value</td>
     <td>String - YYYY - Maximum 4 characters</td>
-    <td>Citywide Agencies<!-- and Other Government Entities (NYCHA)--></td>
     <td>Calendar Year. Must be exactly 4 characters. It is mandatory to select either fiscal year or calendar year. </td>
     <td>2011</td>
   </tr>
@@ -85,8 +81,7 @@
     <td>N</td>
     <td>value</td>
     <td>String - Maximum 3 characters</td>
-    <td>Citywide Agencies</td>
-    <td>Identification code associated with agency. See here for <a href="/ref_code_list/agency">agency codes list</a></td>
+    <td>Identification code associated with agency. See here for <a href="/ref_code_list/agency">agency codes list (CSV</a>, <a href="/ref_code_list_excel/agency">Excel</a>)</td>
     <td>127</td>
   </tr>
   <tr>
@@ -94,7 +89,6 @@
     <td>N</td>
     <td>value</td>
     <td>Possible values are: BI-WEEKLY, WEEKLY, SEMI-MONTHLY, SUPPLEMENTAL, DAILY AND HOURLY</td>
-    <td>Citywide Agencies<!-- and Other Government Entities (NYCHA)--></td>
     <td>Possible values are: BI-WEEKLY, WEEKLY, SEMI-MONTHLY, SUPPLEMENTAL, DAILY AND HOURLY</td>
     <td>BI-WEEKLY</td>
   </tr>
@@ -103,7 +97,6 @@
     <td>N</td>
     <td>value</td>
     <td>String - Maximum 100 characters</td>
-    <td>Citywide Agencies<!-- and Other Government Entities (NYCHA)--></td>
     <td>Displays employees civil service title</td>
     <td>teacher</td>
   </tr>
@@ -112,7 +105,6 @@
     <td>N</td>
     <td>range</td>
     <td>String - YYYY-MM-DD</td>
-    <td>Citywide Agencies<!-- and Other Government Entities (NYCHA)--></td>
     <td>Date of payment</td>
     <td>2001-08-12</td>
   </tr>
@@ -121,7 +113,6 @@
     <td>N</td>
     <td>range</td>
     <td>String - Maximum 18 characters</td>
-    <td>Citywide Agencies<!-- and Other Government Entities (NYCHA)--></td>
     <td>If amount is provided, then amount type needs to be provided in order to distinguish annual, rate and all. By default, data for all types is provided.</td>
     <td>250000.00</td>
   </tr>
@@ -130,7 +121,6 @@
     <td>N</td>
     <td>value</td>
     <td>Possible values are &ldquo;ANNUAL&rdquo;, &rdquo;RATE&rdquo; and &rdquo;ALL&rdquo; </td>
-    <td>Citywide Agencies<!-- and Other Government Entities (NYCHA)--></td>
     <td>Three possible columns should be in this format: ANNUAL, RATE and ALL. By default, ‘ALL’ is preselected.</td>
     <td>ANNUAL</td>
   </tr>
@@ -139,7 +129,6 @@
     <td>N</td>
     <td>range</td>
     <td>String - Maximum 18 characters</td>
-    <td>Citywide Agencies<!-- and Other Government Entities (NYCHA)--></td>
     <td>A dollar amount which is summation of base pay, other payments and overtime amounts.</td>
     <td>250000.00</td>
   </tr>
@@ -148,7 +137,6 @@
     <td>N</td>
     <td>range</td>
     <td>String - Maximum 18 characters</td>
-    <td>Citywide Agencies<!-- and Other Government Entities (NYCHA)--></td>
     <td>An employee's base pay can be expressed as a base hourly rate of pay or as an annual salary</td>
     <td>250000.00</td>
   </tr>
@@ -157,7 +145,6 @@
     <td>N</td>
     <td>range</td>
     <td>String - Maximum 18 characters</td>
-    <td>Citywide Agencies<!-- and Other Government Entities (NYCHA)--></td>
     <td>Other payments associated to an employee salary.</td>
     <td>250000.00</td>
   </tr>
@@ -166,7 +153,6 @@
     <td>N</td>
     <td>range</td>
     <td>String - Maximum 18 characters</td>
-    <td>Citywide Agencies<!-- and Other Government Entities (NYCHA)--></td>
     <td>Employee's overtime pay</td>
     <td>250000.00</td>
   </tr>
@@ -175,7 +161,6 @@
     <td>N</td>
     <td>range</td>
     <td>String - Maximum 18 characters</td>
-    <td>Citywide Agencies<!-- and Other Government Entities (NYCHA) --></td>
     <td>The Total Gross pay would be displayed based on the selected Fiscal year or calendar year.</td>
     <td>250000.00</td>
   </tr>
@@ -184,86 +169,44 @@
 <a name="possible-response" id="possible-response"></a>
 <h3 class="title">Possible response columns:</h3>
 <p>User would be able to select which columns he would like to view in his output. Below mentioned are the possible column names for payroll domain. The user should include the required column names in the request xml in an element called &lt;response_coloumns&gt;</p>
-<div class="api-response-columns-center">
-  <table>
+<div>
+  <table class="api-table">
+    <thead>
     <tr>
-      <td style="width: 5%"></td>
-      <td  class="api-td-left" style="width: 45%">
-        <table class="api-response-columns-table">
-          <thead>
-          <tr>
-            <th colspan="2">(Citywide)Response Column Names</th>
-          </tr>
-          <thead>
-          <tr>
-            <td>agency</td>
-            <td>base_pay</td>
-          </tr>
-          <tr>
-            <td>fiscal_year</td>
-            <td>other_payments</td>
-          </tr>
-          <tr>
-            <td>pay_frequency</td>
-            <td>overtime_payments</td>
-          </tr>
-          <tr>
-            <td>hourly_rate</td>
-            <td>gross_pay_ytd</td>
-          </tr>
-          <tr>
-            <td>gross_pay</td>
-            <td>calendar_year</td>
-          </tr>
-          <tr>
-            <td>title</td>
-            <td>annual_salary</td>
-          </tr>
-          <tr>
-            <td>pay_date</td>
-            <td>payroll_type</td>
-          </tr>
-        </table>
-      </td>
-      <td style="width: 5%">&nbsp;</td>
-      <td class="api-td-right" style="width:45">
-        <!--<table class="api-response-columns-table">
-          <thead>
-          <tr>
-            <th colspan="2">(Other Government Entities - NYCHA)Response Column Names</th>
-          </tr>
-          <thead>
-          <tr>
-            <td>annual_salary</td>
-            <td>base_pay</td>
-          </tr>
-          <tr>
-            <td>calendar_year</td>
-            <td>other_payments</td>
-          </tr>
-          <tr>
-            <td>pay_frequency</td>
-            <td>overtime_payments</td>
-          </tr>
-          <tr>
-            <td>hourly_rate</td>
-            <td>gross_pay_ytd</td>
-          </tr>
-          <tr>
-            <td>gross_pay</td>
-            <td>title</td>
-          </tr>
-          <tr>
-            <td>payroll_type</td>
-            <td>pay_date</td>
-          </tr>
-
-        </table>-->
-      </td>
+      <th colspan="2">Response Column Names</th>
+    </tr>
+    <thead>
+    <tr>
+      <td>agency</td>
+      <td>base_pay</td>
+    </tr>
+    <tr>
+      <td>fiscal_year</td>
+      <td>other_payments</td>
+    </tr>
+    <tr>
+      <td>pay_frequency</td>
+      <td>overtime_payments</td>
+    </tr>
+    <tr>
+      <td>hourly_rate</td>
+      <td>gross_pay_ytd</td>
+    </tr>
+    <tr>
+      <td>gross_pay</td>
+      <td>calendar_year</td>
+    </tr>
+    <tr>
+      <td>title</td>
+      <td>annual_salary</td>
+    </tr>
+    <tr>
+      <td>pay_date</td>
+      <td>payroll_type</td>
     </tr>
   </table>
 </div>
-<br/>
+<br />
 <div class="divider" style="clear: both;"></div>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="predefined-xml-entities"></a>
@@ -333,7 +276,7 @@
 <p>The response xml also includes status messages for the result. If there is an error, corresponding error code along with description will be included in an element called &lt;messages&gt; for user reference.</p>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="sample-request-payroll" id="sample-request-payroll"></a>
-<h3 class="title">Sample Request: Payroll Transactions(CITYWIDE)</h3>
+<h3 class="title">Sample Request: Payroll Transactions</h3>
 <pre>
     &lt;request&gt;
       &lt;type_of_data&gt;Payroll&lt;/type_of_data&gt;
@@ -427,7 +370,7 @@
 </pre>
 <a href="#top" class="float-right">Back to the top</a>
 <a name="sample-response-payroll" id="sample-response-payroll"></a>
-<h3 class="title">Sample Response: Payroll Transactions(CITYWIDE)</h3>
+<h3 class="title">Sample Response: Payroll Transactions</h3>
 <pre>
     &lt;response&gt;
       &lt;status&gt;
@@ -532,206 +475,6 @@
     &lt;/response&gt;
 </pre>
 <a href="#top" class="float-right">Back to the top</a>
-<!--<a name="sample-request-payroll-oge" id="sample-request-payroll-oge"></a>
-<h3 class="title">Sample Request: Payroll Transactions(OTHER GOVERNMENT ENTITIES - NYCHA)</h3>
-<pre>
-   &lt;request&gt;
-      &lt;type_of_data&gt;Payroll_NYCHA&lt;/type_of_data&gt;
-      &lt;records_from&gt;1&lt;/records_from&gt;
-      &lt;max_records&gt;1&lt;/max_records&gt;
-      &lt;search_criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;calendar_year&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;value&gt;2017&lt;/value&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;pay_frequency&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;value&gt;BI-WEEKLY&lt;/value&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;pay_date&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;2016-11-18&lt;/start&gt;
-          &lt;end&gt;2018-11-30&lt;/end&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;amount&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;0.00&lt;/start&gt;
-          &lt;end&gt;100000000.00&lt;/end&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;amount_type&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;value&gt;ANNUAL&lt;/value&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;gross_pay&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;0.00&lt;/start&gt;
-          &lt;end&gt;100000000.00&lt;/end&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;base_pay&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;0.00&lt;/start&gt;
-          &lt;end&gt;100000000.00&lt;/end&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;other_payments&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;0.00&lt;/start&gt;
-          &lt;end&gt;100000000.00&lt;/end&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;overtime_payments&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;0.00&lt;/start&gt;
-          &lt;end&gt;100000000.00&lt;/end&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;gross_pay_ytd&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;0.00&lt;/start&gt;
-          &lt;end&gt;100000000.00&lt;/end&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;title&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;value&gt;COMMUNITY ASSOCIATE&lt;/value&gt;
-        &lt;/criteria&gt;
-      &lt;/search_criteria&gt;
-      &lt;response_columns&gt;
-        &lt;column&gt;title&lt;/column&gt;
-        &lt;column&gt;pay_frequency&lt;/column&gt;
-        &lt;column&gt;pay_date&lt;/column&gt;
-        &lt;column&gt;annual_salary&lt;/column&gt;
-        &lt;column&gt;hourly_rate&lt;/column&gt;
-        &lt;column&gt;gross_pay&lt;/column&gt;
-        &lt;column&gt;base_pay&lt;/column&gt;
-        &lt;column&gt;other_payments&lt;/column&gt;
-        &lt;column&gt;overtime_payments&lt;/column&gt;
-        &lt;column&gt;gross_pay_ytd&lt;/column&gt;
-        &lt;column&gt;calendar_year&lt;/column&gt;
-      &lt;/response_columns&gt;
-    &lt;/request&gt;
-</pre>
-<a href="#top" class="float-right">Back to the top</a>
-<a name="sample-response-payroll-oge" id="sample-response-payroll-oge"></a>
-<h3 class="title">Sample Response: Payroll Transactions(OTHER GOVERNMENT ENTITIES -NYCHA)</h3>
-<pre>
-   &lt;response&gt;
-  &lt;status&gt;
-    &lt;result&gt;success&lt;/result&gt;
-  &lt;/status&gt;
-  &lt;request_criteria&gt;
-    &lt;request&gt;
-      &lt;type_of_data&gt;Payroll_NYCHA&lt;/type_of_data&gt;
-      &lt;records_from&gt;1&lt;/records_from&gt;
-      &lt;max_records&gt;1&lt;/max_records&gt;
-      &lt;search_criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;calendar_year&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;value&gt;2017&lt;/value&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;pay_frequency&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;value&gt;BI-WEEKLY&lt;/value&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;pay_date&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;2016-11-18&lt;/start&gt;
-          &lt;end&gt;2018-11-30&lt;/end&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;amount&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;0.00&lt;/start&gt;
-          &lt;end&gt;100000000.00&lt;/end&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;amount_type&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;value&gt;ANNUAL&lt;/value&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;gross_pay&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;0.00&lt;/start&gt;
-          &lt;end&gt;100000000.00&lt;/end&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;base_pay&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;0.00&lt;/start&gt;
-          &lt;end&gt;100000000.00&lt;/end&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;other_payments&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;0.00&lt;/start&gt;
-          &lt;end&gt;100000000.00&lt;/end&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;overtime_payments&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;0.00&lt;/start&gt;
-          &lt;end&gt;100000000.00&lt;/end&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;gross_pay_ytd&lt;/name&gt;
-          &lt;type&gt;range&lt;/type&gt;
-          &lt;start&gt;0.00&lt;/start&gt;
-          &lt;end&gt;100000000.00&lt;/end&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-          &lt;name&gt;title&lt;/name&gt;
-          &lt;type&gt;value&lt;/type&gt;
-          &lt;value&gt;COMMUNITY ASSOCIATE&lt;/value&gt;
-        &lt;/criteria&gt;
-      &lt;/search_criteria&gt;
-      &lt;response_columns&gt;
-        &lt;column&gt;title&lt;/column&gt;
-        &lt;column&gt;pay_frequency&lt;/column&gt;
-        &lt;column&gt;pay_date&lt;/column&gt;
-        &lt;column&gt;annual_salary&lt;/column&gt;
-        &lt;column&gt;hourly_rate&lt;/column&gt;
-        &lt;column&gt;gross_pay&lt;/column&gt;
-        &lt;column&gt;base_pay&lt;/column&gt;
-        &lt;column&gt;other_payments&lt;/column&gt;
-        &lt;column&gt;overtime_payments&lt;/column&gt;
-        &lt;column&gt;gross_pay_ytd&lt;/column&gt;
-        &lt;column&gt;calendar_year&lt;/column&gt;
-      &lt;/response_columns&gt;
-    &lt;/request&gt;
-  &lt;/request_criteria&gt;
-  &lt;result_records&gt;
-    &lt;record_count&gt;2042&lt;/record_count&gt;
-    &lt;payroll_transactions&gt;
-      &lt;transaction&gt;
-        &lt;title&gt;COMMUNITY ASSOCIATE&lt;/title&gt;
-        &lt;pay_frequency&gt;BI-WEEKLY&lt;/pay_frequency&gt;
-        &lt;pay_date&gt;2017-09-28&lt;/pay_date&gt;
-        &lt;annual_salary&gt;59429&lt;/annual_salary&gt;
-        &lt;hourly_rate&gt;0&lt;/hourly_rate&gt;
-        &lt;gross_pay&gt;3699.46&lt;/gross_pay&gt;
-        &lt;base_pay&gt;2279.47&lt;/base_pay&gt;
-        &lt;other_payments&gt;141.65&lt;/other_payments&gt;
-        &lt;overtime_payments&gt;1278.34&lt;/overtime_payments&gt;
-        &lt;gross_pay_ytd&gt;57335.22&lt;/gross_pay_ytd&gt;
-        &lt;calendar_year&gt;2017&lt;/calendar_year&gt;
-      &lt;/transaction&gt;
-    &lt;/payroll_transactions&gt;
-  &lt;/result_records&gt;
-&lt;/response&gt;
-
-</pre>
-<a href="#top" class="float-right">Back to the top</a>-->
 <a name="status-codes-messages" id="status-codes-messages"></a>
 <h3 class="title">Status Codes and Messages</h3>
 <p>Status messages are categorized and displayed as status codes with short description for the user to understand the cause of the error. In case of an error no result records will be displayed and the error message will be displayed inside the &lt;message&gt; XML element as shown below. See here for <a href="#" class="status-codes">list of status codes and messages</a></p>
