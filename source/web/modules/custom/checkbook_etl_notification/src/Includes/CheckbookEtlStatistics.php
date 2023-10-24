@@ -166,7 +166,7 @@ class CheckbookEtlStatistics
     $msg['body'] = self::$message_body;
 
     $date = self::get_date('m-d-Y');
-    $msg['subject'] = "ETL Status: " . self::$successSubject . " ($date) (Using D9)";
+    $msg['subject'] = "ETL Status: " . self::$successSubject . " ($date)";
 
     $message = array_merge($message, $msg);
 
@@ -195,7 +195,7 @@ class CheckbookEtlStatistics
 
       $checkbook_dev_group_email = \Drupal::config('check_book')->get('checkbook_dev_group_email') ?? null;
       if (!isset($checkbook_dev_group_email)) {
-        LogHelper::log_error("ETL STATUS MAIL CRON skips. Reason: \$config['check_book']['checkbook_dev_group_email'] not defined");
+        LogHelper::log_notice("ETL STATUS MAIL CRON skips. Reason: \$config['check_book']['checkbook_dev_group_email'] not defined");
         return false;
       }
 
@@ -212,12 +212,12 @@ class CheckbookEtlStatistics
       $config = \Drupal::service('config.factory')->getEditable('variable_get_set.api');
 
       if ($config->get(self::CRON_LAST_RUN_DRUPAL_VAR) == $today) {
-        LogHelper::log_error("ETL STATUS MAIL CRON skips. Reason: already ran today :: $today :: " . $config->get(self::CRON_LAST_RUN_DRUPAL_VAR));
+        LogHelper::log_notice("ETL STATUS MAIL CRON skips. Reason: already ran today :: $today :: " . $config->get(self::CRON_LAST_RUN_DRUPAL_VAR));
         return false;
       }
 
       if ($current_hour < 9 || $current_hour > 10) {
-        LogHelper::log_error("ETL STATUS MAIL CRON skips. Reason: will run between 9 AM and 11 AM EST :: current hour: $current_hour");
+        LogHelper::log_notice("ETL STATUS MAIL CRON skips. Reason: will run between 9 AM and 11 AM EST :: current hour: $current_hour");
         return false;
       }
 

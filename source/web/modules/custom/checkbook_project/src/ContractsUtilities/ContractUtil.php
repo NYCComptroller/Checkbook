@@ -916,25 +916,21 @@ class ContractUtil{
           if (isset($parameters['vendor_name'])) {
             $vendornm_exact = RequestUtilities::get('vendornm_exact');
             $vendornm = RequestUtilities::get('vendornm');
-            $vendor_name = implode("",$parameters['vendor_name']);
-
             if (isset($vendornm_exact)) {
-              $vendornm_exact = explode('~', $vendor_name);
+              $vendornm_exact = explode('~', $vendornm_exact);
               $vendornm_exact = implode('|', $vendornm_exact);
               $vendornm_exact = self::_replaceSlashCharacter($vendornm_exact);
-              $pattern = "(^" . FormattingUtilities::_checkbook_regex_replace_pattern($vendornm_exact) . "$)";
-
+              $pattern = "(^".trim(FormattingUtilities::_checkbook_regex_replace_pattern($vendornm_exact))."$)";
               $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
               $parameters['prime_vendor_name'] = $condition;
               $parameters['sub_vendor_name'] = $condition;
             } else if (isset($vendornm)) {
-              $vendornm = explode('~', $vendor_name);
+              $vendornm = explode('~', $vendornm);
               $vendornm = implode('|', $vendornm);
               $condition = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($vendornm, FALSE, TRUE));
               $parameters['prime_vendor_name'] = $condition;
               $parameters['sub_vendor_name'] = $condition;
             }
-
             unset($parameters['vendor_name']);
           }
 
@@ -1085,6 +1081,8 @@ class ContractUtil{
 
         private static function _replaceSlashCharacter($string) {
           $string = str_replace('@Q', ':', $string);
+          $string = str_replace('amp;', '', $string);
+          $string = str_replace("'", "''", $string);
             return str_replace('__', '/', $string);
         }
 

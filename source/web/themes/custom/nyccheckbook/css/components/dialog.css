@@ -1,11 +1,11 @@
 /* Dialog */
 
-.ui-widget {
+body .ui-widget {
   font-family: Verdana,Arial,sans-serif;
   font-size: 1.1em;
 }
 
-.ui-dialog .ui-widget-header {
+body .ui-dialog .ui-widget-header {
   font-weight: bold;
   border: 1px solid #aaaaaa;
   background: #cccccc url(/themes/custom/nyccheckbook/images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;
@@ -14,7 +14,7 @@
   padding: 0.6em 1em !important;
 }
 
-.ui-dialog .ui-dialog-content {
+body .ui-dialog .ui-dialog-content {
   overflow: visible;
 }
 
@@ -46,7 +46,7 @@ label[for=export-frmt-csv] {
   font-style: italic;
 }
 
-.ui-dialog .ui-dialog-buttonset > button {
+body .ui-dialog .ui-dialog-buttonset > button {
   -moz-border-bottom-colors: none;
   -moz-border-left-colors: none;
   -moz-border-right-colors: none;
@@ -67,20 +67,20 @@ label[for=export-frmt-csv] {
   padding: 0.4em 1em;
 }
 
-.ui-dialog p {
+body .ui-dialog p {
   margin: 0;
 }
 
-.ui-dialog td {
+body .ui-dialog td {
   padding: 10px 5px;
 }
 
-.ui-dialog .ui-widget-content {
+body .ui-dialog .ui-widget-content {
   border: none;
 }
 
-.ui-widget.noTitleDialog .ui-widget-header,
-.ui-widget.dialog-schedule-confirm .ui-widget-header {
+body .ui-widget.noTitleDialog .ui-widget-header,
+body .ui-widget.dialog-schedule-confirm .ui-widget-header {
   background: none;
   border: none;
 }
@@ -248,31 +248,31 @@ form[action*="alert"] .form-submit {
   z-index: 1000;
 }
 
-.ui-dialog .ui-dialog-titlebar-close {
+body .ui-dialog .ui-dialog-titlebar-close {
   background-color: transparent;
   border: none;
 }
 
-.ui-dialog .ui-dialog-titlebar-close:hover {
+body .ui-dialog .ui-dialog-titlebar-close:hover {
   background-color: #e1e1e1;
   border: 1px solid #999999;
 }
 
-.ui-dialog .ui-dialog-titlebar-close .ui-icon {
+body .ui-dialog .ui-dialog-titlebar-close .ui-icon {
   background-image: url(/core/assets/vendor/jquery.ui/themes/base/images/ui-icons_444444_256x240.png);
 }
 
-.ui-dialog {
+body .ui-dialog {
   z-index: 1000 !important;
 }
 
-.ui-dialog:not(.dialog-schedule-confirm):not(.ui-dialog-position-side){
+body .ui-dialog:not(.dialog-schedule-confirm):not(body .ui-dialog-position-side){
   outline: 0px;
   height: auto !important;
   max-width: 805px;
 }
 
-.ui-dialog.with-iframe {
+body .ui-dialog.with-iframe {
   width: 985px !important;
   max-width: 985px !important;
 }

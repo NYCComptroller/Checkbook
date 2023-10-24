@@ -1,0 +1,4 @@
+use PHP for settings:
+  title: 'Use PHP for settings'
+  description: 'Allows users to enter PHP code in settings.'
+  restrict access: true

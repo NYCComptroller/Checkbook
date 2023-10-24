@@ -250,33 +250,30 @@ class XMLDataHandler extends AbstractDataHandler
 
             LogHelper::log_notice("DataFeeds :: XML QUERY FOR > 10000 records: ".$command);
 
-            //prepend open tags command
-            $command = "sed -i '1i " . $open_tags . "' " . $tempOutputFile;
-            $commands[] = $command;
+            $this->processCommands($commands);
 
-            //append close tags command
-            $command = "sed -i '$"."a" . $close_tags . "' " . $tempOutputFile;
-            $commands[] = $command;
+            $commands = [];
 
-            //escape '&' for xml compatibility
-            $command = "sed -i 's/&/&amp;/g' " . $tempOutputFile;
-            $commands[] = $command;
+            //prepend open tags command - (replaces the following command:- "sed -i '1i " . $open_tags . "' " . $tempOutputFile;)
+            APIUtil::prependToFile($tempOutputFile,$open_tags);
 
-            //escape '<' for xml compatibility
-            $command = "sed -i 's/</\&lt;/g' " . $tempOutputFile;
-            $commands[] = $command;
+            //append close tags command - (replaces the following command:- "sed -i '$"."a" . $close_tags . "' " . $tempOutputFile;)
+            APIUtil::appendToFile($tempOutputFile,$close_tags);
 
-            //escape '>' for xml compatibility
-            $command = "sed -i 's/>/\&gt;/g' " . $tempOutputFile;
-            $commands[] = $command;
+            //escape '&' for xml compatibility - (replaces the following command:- "sed -i 's/&/&amp;/g' " . $tempOutputFile;)
+            APIUtil::replaceInFile($tempOutputFile, '&', '&amp;');
 
-            //put back the '<' tags
-            $command = "sed -i 's/|LT|/</g' " . $tempOutputFile;
-            $commands[] = $command;
+            //escape '<' for xml compatibility - (replaces the following command:- "sed -i 's/</\&lt;/g' " . $tempOutputFile;)
+            APIUtil::replaceInFile($tempOutputFile, '<', '&lt;');
 
-            //put back the '>' tags
-            $command = "sed -i 's/|GT|/>/g' " . $tempOutputFile;
-            $commands[] = $command;
+            //escape '>' for xml compatibility - (replaces the following command:- "sed -i 's/>/\&gt;/g' " . $tempOutputFile;)
+            APIUtil::replaceInFile($tempOutputFile, '>', '&gt;');
+
+            //put back the '<' tags - (replaces the following command:- "sed -i 's/|LT|/</g' " . $tempOutputFile;)
+            APIUtil::replaceInFile($tempOutputFile, '|LT|', '<');
+
+            //put back the '>' tags - (replaces the following command:- "sed -i 's/|GT|/>/g' " . $tempOutputFile;)
+            APIUtil::replaceInFile($tempOutputFile, '|GT|', '>');
 
             //xmllint command to format the xml
             $maxmem = 1024 * 1024 * 750;  // 750 MB

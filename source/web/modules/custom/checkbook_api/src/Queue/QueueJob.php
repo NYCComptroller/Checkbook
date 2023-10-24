@@ -22,6 +22,7 @@ namespace Drupal\checkbook_api\Queue;
 
 use Drupal\checkbook_api\config\ConfigUtil;
 use Drupal\checkbook_api\Criteria\SearchCriteria;
+use Drupal\checkbook_api\Utilities\APIUtil;
 use Drupal\checkbook_log\LogHelper;
 use Drupal\Core\File\FileSystemInterface;
 use Exception;
@@ -72,25 +73,32 @@ class QueueJob {
       switch($this->responseFormat) {
         case "csv":
           if($this->recordCount > $this->csvFileLimit) {
-            $commands = $this->getCSVCommands();
+            $this->runCSVCommands();
             $compressed_filename  = $this->prepareFileName();
             $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
           }
           else {
             $filename = $this->prepareFileName();
             $commands[$filename][] = $this->getCSVJobCommand($filename);
-            $commands[$filename][] = $this->getCSVHeaderCommand($filename);
+            //running the previous created command
+            $this->processCommands($commands);
+            //reset commands since previous line has run the commands that were there
+            $commands = array();
+
+            //adding header to file created in previous command above this
+            $this->addCSVHeader($filename);
+
             $commands[$filename][] = $this->getMoveCommand($filename);
           }
           break;
         case "xml":
           if($this->recordCount > $this->xmlFileLimit) {
-            $commands = $this->getXMLJobCommands();
+            $this->runXMLJobCommands();
             $compressed_filename  = $this->prepareFileName();
             $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
           }else{
             $filename = $this->prepareFileName();
-            $commands = $this->getXMLJobCommand($filename);
+            $this->runXMLJobCommand($filename);
             $commands[$filename][] = $this->getMoveCommand($filename, 'xml.zip');
           }
           break;
@@ -136,10 +144,9 @@ class QueueJob {
   }
 
   /**
-   * Generates the unix commands to create multiple files from the data source directly.
-   * @return array
+   * Generates the unix commands to create multiple files from the data source directly. Runs those as well.
    */
-  private function getCSVCommands() {
+  private function runCSVCommands() {
 
     $num_files = ceil($this->recordCount/$this->csvFileLimit);
     $commands = array();
@@ -152,14 +159,17 @@ class QueueJob {
 
       //sql command
       $commands[$filename][] = $this->getCSVJobCommand($filename, $this->csvFileLimit, $offset);
+      $this->processCommands($commands);
+      $commands = array();
 
-      //append header command
-      $commands[$filename][] = $this->getCSVHeaderCommand($filename);
+      //append header command (used to be sed command returned)
+      $this->addCSVHeader($filename);
 
       //append file to zip and delete the file
       $commands[$filename][] = $this->getAppendToZipAndRemoveCommand($filename, $compressed_filename);
+      $this->processCommands($commands);
+      $commands = array();
     }
-    return $commands;
   }
 
   /**
@@ -194,11 +204,10 @@ class QueueJob {
   }
 
   /**
-   * Given the filename, will return an executable command ot add CSV header row.
+   * Given the filename, will add CSV header row.
    * @param $filename
-   * @return string
    */
-  private function getCSVHeaderCommand($filename) {
+  private function addCSVHeader($filename) {
     $response_format = $this->responseFormat;
     $request_criteria = $this->jobDetails['request_criteria'];
     $search_criteria = new SearchCriteria($request_criteria, $response_format);
@@ -207,17 +216,16 @@ class QueueJob {
     $response_columns = is_array($request_criteria['responseColumns']) ? $request_criteria['responseColumns'] : array_keys($configured_response_columns);
     $csv_headers = '"' . implode('","', $response_columns) . '"';
     $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
-    $command = "sed -i '1s;^;" . $csv_headers . "\\".PHP_EOL.";' " . $file;
-    LogHelper::log_notice("DataFeeds :: QueueJob::getCSVHeaderCommand() cmd: ".$command);
-    return $command;
+    //below replaces the following command:- " sed -i '1s;^;" . $csv_headers . "\\".PHP_EOL.";' " . $file;
+    APIUtil::prependToFile($file,$csv_headers . "\\".PHP_EOL.";");
+    LogHelper::log_notice("DataFeeds :: QueueJob::addCSVHeader() calling APIUtil::prependToFile with headers: ".$csv_headers);
   }
 
   /**
-   * Given the filename, returns an array of commands to execute for xml file creation,
+   * Given the filename, runs commands to execute for xml file creation,
    * This function modifies the sql to handle derived columns dynamically.
-   * @return array
    */
-  private function getXMLJobCommands() {
+  private function runXMLJobCommands() {
     $query = $this->jobDetails['data_command'];
     $request_criteria = $this->jobDetails['request_criteria'];
     $search_criteria = new SearchCriteria($request_criteria, $this->responseFormat);
@@ -315,18 +323,20 @@ class QueueJob {
 
       $commands[$filename][] = $command;
 
-      //prepend open tags command
-      $command = "sed -i '1i " . $open_tags . "' " . $file;
-      $commands[$filename][] = $command;
+      $this->processCommands($commands);
+      $commands = array();
 
-      //append close tags command
-      $command = "sed -i '$"."a" . $close_tags . "' " . $file;
-      $commands[$filename][] = $command;
+      //prepend open tags command (replaced -  " sed -i '1i " . $open_tags . "' " . $file;)
+      APIUtil::prependToFile($file,$open_tags);
+
+      //append close tags command (replaced - " sed -i '$"."a" . $close_tags . "' " . $file;)
+      APIUtil::appendToFile($file,$close_tags);
 
       //append file to zip and delete the file
       $commands[$filename][] = $this->getAppendToZipAndRemoveCommand($filename, $compressed_filename);
+      $this->processCommands($commands);
+      $commands = array();
     }
-    return $commands;
   }
 
   /**
@@ -334,9 +344,8 @@ class QueueJob {
    * This function modifies the sql to handle derived columns dynamically.
    *
    * @param $filename
-   * @return array
    */
-  private function getXMLJobCommand($filename) {
+  private function runXMLJobCommand($filename) {
     $query = $this->jobDetails['data_command'];
     $request_criteria = $this->jobDetails['request_criteria'];
     $search_criteria = new SearchCriteria($request_criteria, $this->responseFormat);
@@ -424,20 +433,20 @@ class QueueJob {
       . "' \" ";
     LogHelper::log_notice("DataFeeds :: QueueJob::getXMLJobCommand() cmd: ".$command);
     $commands[$filename][] = $command;
+    $this->processCommands($commands);
+    //reset commands as previous line has run those
+    $commands = array();
 
-    //prepend open tags command
-    $command = "sed -i '1i " . $open_tags . "' " . $file;
-    $commands[$filename][] = $command;
+    //prepend open tags command. Replaced the following command:- "sed -i '1i " . $open_tags . "' " . $file;
+    APIUtil::prependToFile($file,$open_tags);
 
-    //append close tags command
-    $command = "sed -i '$"."a" . $close_tags . "' " . $file;
-    $commands[$filename][] = $command;
+    //append close tags command. Replaced the following command:- "sed -i '$"."a" . $close_tags . "' " . $file;
+    APIUtil::appendToFile($file,$close_tags);
 
     //Zip file
     $commands[$filename][] = "zip $file.zip $file";
     $commands[$filename][] = "rm $file";
-
-    return $commands;
+    $this->processCommands($commands);
   }
 
   /**

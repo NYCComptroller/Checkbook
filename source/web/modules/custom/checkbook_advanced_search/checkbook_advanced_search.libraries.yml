@@ -1,4 +1,5 @@
 search-iframe-alerts:
+  version: 1.0.0
   js:
     js/advanced-search-checkbook-alert.js: { }
   dependencies:

@@ -1,0 +1,13 @@
+diff --git a/src/Logger/SyslogFilter.php b/src/Logger/SyslogFilter.php
+index e0c65a8dfc5aec062a87aec04f502b6f2601d9f3..9f508bb71665eef94cdb337b5531e4d9127bd0e1 100644
+--- a/src/Logger/SyslogFilter.php
++++ b/src/Logger/SyslogFilter.php
+@@ -40,7 +40,7 @@ class SyslogFilter extends SysLog {
+   /**
+    * {@inheritdoc}
+    */
+-  public function log($level, $message, array $context = []) {
++  public function log($level, string|\Stringable $message, array $context = []):void {
+     $result = FALSE;
+     // Get RFC Log levels.
+     $levels = RfcLogLevel::getLevels();

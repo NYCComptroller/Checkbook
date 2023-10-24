@@ -35,13 +35,6 @@ class DefaultController extends ControllerBase {
     return \Drupal::formBuilder()->getForm('Drupal\checkbook_advanced_search\Form\CheckbookAdvancedSearchForm');
   }
 
-  /*public function checkbook_advanced_search_display_ajax() {
-    $element = \Drupal::formBuilder()->getForm('Drupal\checkbook_advanced_search\Form\CheckbookAdvancedSearchForm');
-    $html = \Drupal\Core\Render\RendererInterface::render($element);
-    echo $html;
-    exit;
-  }*/
-
   /**
    * @param $fiscal_year
    * @param $agency

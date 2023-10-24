@@ -1,0 +1,7 @@
+services:
+  filter.uninstall_validator:
+    class: Drupal\php\PhpUninstallValidator
+    tags:
+      - { name: module_install.uninstall_validator }
+    arguments: ['@plugin.manager.filter', '@entity_type.manager', '@string_translation']
+    lazy: false

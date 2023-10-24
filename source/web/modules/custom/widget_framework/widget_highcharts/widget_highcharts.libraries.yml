@@ -31,7 +31,7 @@ grid-view:
   js:
     /modules/custom/jquery_plugins/data_tables/1.13.4/js/jquery.dataTables1.13.4.min.js: {}
     /modules/custom/jquery_plugins/data_tables/1.13.4/extensions/full_numbers_no_ellipses/full_numbers_no_ellipses.js: {}
-    /modules/custom/jquery_plugins/js/chosen.jquery.js: {}
+    /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.jquery.js: {}
     /modules/custom/widget_framework/widget_data_tables/js/transactions.js: {}
     js/grid-view.js: {}
   dependencies:

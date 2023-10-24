@@ -291,11 +291,9 @@ class Form{
             $domain_field = "{$this->domain_name}_next";
 
             $form[$domain][$domain_field]['#type'] = 'button';
-            //$form[$domain][$domain_field]['#type'] = $field->field_type;
             $form[$domain][$domain_field]['#name'] = $domain_field;
             $form[$domain][$domain_field]['#value'] = t('Next');
             $form[$domain][$domain_field]['#prefix'] = t('<div class="'.$submit_class.'">');
-            //$form[$domain][$domain_field]['#submit'] = ['checkbook_advanced_search_form_submit'];
             $form[$domain][$domain_field]['#ajax'] = array(
                 'callback' => 'checkbook_alerts_create_alert_results_ajax',
                 'event' => 'click',

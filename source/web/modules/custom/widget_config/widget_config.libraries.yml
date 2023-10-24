@@ -27,7 +27,7 @@ datatables_ajaxSimple:
   header: true
   js:
     /modules/custom/jquery_plugins/data_tables/1.13.4/js/jquery.dataTables1.13.4.min.js: {}
-    /modules/custom/jquery_plugins/js/chosen.jquery.js: {}
+    /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.jquery.js: {}
     /modules/custom/jquery_plugins/js/jquery.sticky.js: { }
     /modules/custom/jquery_plugins/js/jquery.jscrollpane.min.js: {}
     /modules/custom/widget_framework/widget_data_tables/js/transactions.js: {}
@@ -48,7 +48,7 @@ datatables_dataTableList:
   js:
     /modules/custom/jquery_plugins/data_tables/1.13.4/js/jquery.dataTables1.13.4.min.js: {}
     /modules/custom/jquery_plugins/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.concat.min.js: {}
-    /modules/custom/jquery_plugins/js/chosen.jquery.js: {}
+    /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.jquery.js: {}
     /modules/custom/jquery_plugins/js/jquery.sticky.js: {}
     /modules/custom/jquery_plugins/js/jquery.jscrollpane.min.js: {}
     /modules/custom/widget_framework/widget_data_tables/js/transactions.js: {}

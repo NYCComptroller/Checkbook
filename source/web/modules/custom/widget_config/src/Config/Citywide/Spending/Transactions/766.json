@@ -5,7 +5,9 @@
       $cevent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('cevent');
       $mocs = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('mocs');
       $node->show_moc_registered = ($cevent > 0 || isset($mocs));
-    ",
+      $year = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('year');
+      if(!isset($year)) $node->widgetConfig->dataset = 'checkbook:spending_transactions_all_years';
+  ",
     "cleanURLParameters":[
       "vendornm_exact",
       "expdoc_exact",
@@ -158,7 +160,6 @@
         "budget_name",
         "reference_document_number",
         "purpose",
-        "purpose_cy",
         "reporting_code",
         "spending_category_name",
         "expenditure_object_id",

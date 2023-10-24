@@ -149,25 +149,42 @@ class RequestUtilities {
       self::resetUrl();
       $urlPath = \Drupal::service('path.current')->getPath();
     }
+
+    // Check, if the URL is still encoded:
+    // sequences with percent (%) signs followed by two hex digits.
+    if (preg_match('/%[0-9a-hA-H]{2}/', $urlPath)) {
+      $urlPath = urldecode($urlPath);
+    }
+
     $pathParams = explode('/', $urlPath);
     $index = array_search($paramName, $pathParams);
     if ($index !== FALSE && isset($pathParams[($index + 1)])) {
       $value = trim(Xss::filter($pathParams[($index + 1)]));
       if ('' !== $value) {
-        return Xss::filter(htmlspecialchars_decode($value, ENT_QUOTES));
+        return self::filterParamValue($paramName, $value);
       }
     }
 
     if (\Drupal::request()->query->get($paramName) !== NULL) {
-      return Xss::filter(htmlspecialchars_decode(\Drupal::request()->query->get($paramName), ENT_QUOTES));
+      return self::filterParamValue($paramName, \Drupal::request()->query->get($paramName));
     }
 
     return NULL;
   }
 
 
-  public static function getParamValueFromCurrentURL(){
-
+  public static function filterParamValue($paramName, $value) {
+    switch ($paramName) {
+      case 'year':
+        // Keep only Numbers
+        $value = preg_replace('/\D/', '', $value);
+        break;
+      case 'yeartype':
+        // Keep only A-Z
+        $value = preg_replace('/[^a-zA-Z]/', '', $value);
+        break;
+    }
+    return Xss::filter(htmlspecialchars_decode($value, ENT_QUOTES));
   }
 
   /**
@@ -209,10 +226,10 @@ class RequestUtilities {
         return NULL;
       }
       if (isset($value) || $fromRequestPath) {
-        return Xss::filter(htmlspecialchars_decode($value, ENT_QUOTES));
+        return self::filterParamValue($paramName, $value);
       }
     } else {
-      return Xss::filter(htmlspecialchars_decode(\Drupal::request()->query->get($paramName), ENT_QUOTES));
+      return self::filterParamValue($paramName, \Drupal::request()->query->get($paramName));
     }
     return $value;
   }

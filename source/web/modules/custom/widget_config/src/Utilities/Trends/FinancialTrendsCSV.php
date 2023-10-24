@@ -24,6 +24,12 @@ use Drupal\checkbook_infrastructure_layer\Utilities\FormattingUtilities;
 
 class FinancialTrendsCSV  {
 
+  const FISCAL_YEAR = ',,,,,,,,Fiscal Year,,,,,';
+
+  const AMOUNTS_IN_THOUSANDS = ',,,,,,,,(AMOUNTS IN THOUSANDS),,,,,';
+
+  const INFO_1 = 'Source: Annual Comprehensive Financial Reports of the Comptroller.';
+
   public static function changesInNetAssetsCsv($node){
     $output ='';
 
@@ -38,12 +44,12 @@ class FinancialTrendsCSV  {
       $years[$row['fiscal_year']] = $row['fiscal_year'];
     }
     rsort($years);
-    $header = ',,,,,,,,Fiscal Year,,,,,' . "\n";
+    $header = self::FISCAL_YEAR . "\n";
     foreach ($years as $year) {
       $header = $header . "," . $year;
     }
 
-    $header .= "\n" . ',,,,,,,,(AMOUNTS IN THOUSANDS),,,,,';
+    $header .= "\n" . self::AMOUNTS_IN_THOUSANDS;
     $output .= $header . "\n";
 
     $count = 0;
@@ -62,10 +68,12 @@ class FinancialTrendsCSV  {
         } else if ($row[$year]['amount'] < 0) {
           $amount = '"(' . FormattingUtilities::trendsNumberDisplay(abs($row[$year]['amount'])) . ')"';
         } else if ($row[$year]['amount'] == 0) {
-          if (strpos($row['category'], ':'))
+          if (strpos($row['category'], ':')) {
             $amount = '';
-          else
+          }
+          else {
             $amount = '"-"';
+          }
         }
 
         $rowString .= ',' . $amount;
@@ -73,7 +81,7 @@ class FinancialTrendsCSV  {
       $output .= $rowString . "\n";
     }
 
-    $output .= "\n"."\n".'"'."Source: Annual Comprehensive Financial Reports of the Comptroller.".'"';
+    $output .= "\n"."\n".'"'.self::INFO_1.'"';
     return $output;
   }
 
@@ -91,12 +99,12 @@ class FinancialTrendsCSV  {
       $years[$row['fiscal_year']] = 	$row['fiscal_year'];
     }
     rsort($years);
-    $header = ',,,,,,,,Fiscal Year,,,,,'."\n";
+    $header = self::FISCAL_YEAR."\n";
     foreach ($years as $year){
       $header = $header .  "," . $year ;
     }
 
-    $header .= "\n".',,,,,,,,(AMOUNTS IN THOUSANDS),,,,,';
+    $header .= "\n".self::AMOUNTS_IN_THOUSANDS;
     $output .= $header . "\n";
     $count = 0;
     foreach( $table_rows as $row){
@@ -113,10 +121,12 @@ class FinancialTrendsCSV  {
         }else if($row[$year]['amount'] < 0){
           $amount = '"' . "(" . FormattingUtilities::trendsNumberDisplay(abs($row[$year]['amount'])) . ")" . '"';
         }else if($row[$year]['amount'] == 0){
-          if(strpos($row['category'], ':'))
+          if(strpos($row['category'], ':')) {
             $amount = '';
-          else
+          }
+          else {
             $amount = '"-"';
+          }
         }
 
         $rowString .= ',' . $amount;
@@ -124,7 +134,7 @@ class FinancialTrendsCSV  {
       $output .= $rowString . "\n";
     }
 
-    $output .= "\n"."\n".'"'."Source: Annual Comprehensive Financial Reports of the Comptroller.".'"';
+    $output .= "\n"."\n".'"'.self::INFO_1.'"';
     $output .= "\n"."\n".'"'."Note: In fiscal year 2010, the Fund balance classifications were changed to conform to the requirements of GASB54.".'"';
     return $output;
   }
@@ -144,12 +154,12 @@ class FinancialTrendsCSV  {
       $years[$row['fiscal_year']] = 	$row['fiscal_year'];
     }
     rsort($years);
-    $header = ',,,,,,,,Fiscal Year,,,,,'."\n";
+    $header = self::FISCAL_YEAR."\n";
     foreach ($years as $year){
       $header = $header .  "," . $year ;
     }
 
-    $header .= "\n".',,,,,,,,(AMOUNTS IN THOUSANDS),,,,,';
+    $header .= "\n".self::AMOUNTS_IN_THOUSANDS;
     $output .= $header . "\n";
     $count = 0;
 
@@ -171,10 +181,12 @@ class FinancialTrendsCSV  {
           }else if($row[$year]['amount'] < 0){
             $amount = '"' . "(" . FormattingUtilities::trendsNumberDisplay(abs($row[$year]['amount'])) . ")" . '"';
           }else if($row[$year]['amount'] == 0){
-            if(strpos($row['category'], ':')|| strtolower($row['category']) == 'less capital outlays')
+            if(strpos($row['category'], ':')|| strtolower($row['category']) == 'less capital outlays') {
               $amount = '';
-            else
+            }
+            else {
               $amount = '"-"';
+            }
           }
         }
         $rowString .= ',' . $amount;
@@ -183,7 +195,7 @@ class FinancialTrendsCSV  {
       $output .= $rowString . "\n";
     }
 
-    $output .= "\n"."\n".'"'."Source: Annual Comprehensive Financial Reports of the Comptroller".'"';
+    $output .= "\n"."\n".'"'.self::INFO_1.'"';
     return $output;
   }
 
@@ -202,12 +214,12 @@ class FinancialTrendsCSV  {
       $years[$row['fiscal_year']] = 	$row['fiscal_year'];
     }
     rsort($years);
-    $header = ',,,,,,,,Fiscal Year,,,,,'."\n";
+    $header = self::FISCAL_YEAR."\n";
     foreach ($years as $year){
       $header = $header .  "," . $year ;
     }
 
-    $header .= "\n".',,,,,,,,(AMOUNTS IN THOUSANDS),,,,,';
+    $header .= "\n".self::AMOUNTS_IN_THOUSANDS;
     $output .= $header . "\n";
     $count = 0;
 
@@ -226,10 +238,12 @@ class FinancialTrendsCSV  {
         }else if($row[$year]['amount'] < 0){
           $amount = '"' . "(" . FormattingUtilities::trendsNumberDisplay(abs($row[$year]['amount'])) . ")" . '"';
         }else {
-          if(strpos($row['category'], ':'))
+          if(strpos($row['category'], ':')) {
             $amount = '';
-          else
+          }
+          else {
             $amount = '"-"';
+          }
         }
 
         $rowString .= ',' . $amount;
@@ -237,7 +251,7 @@ class FinancialTrendsCSV  {
       $output .= $rowString . "\n";
     }
 
-    $output .= "\n"."\n".'"'."Source: Annual Comprehensive Financial Reports of the Comptroller".'"';
+    $output .= "\n"."\n".'"'.self::INFO_1.'"';
     return $output;
   }
 
@@ -256,12 +270,12 @@ class FinancialTrendsCSV  {
       $years[$row['fiscal_year']] = 	$row['fiscal_year'];
     }
     rsort($years);
-    $header = ',,,,,,,,Fiscal Year,,,,,'."\n";
+    $header = self::FISCAL_YEAR."\n";
     foreach ($years as $year){
       $header = $header .  "," . $year ;
     }
 
-    $header .= "\n".',,,,,,,,(AMOUNTS IN THOUSANDS),,,,,';
+    $header .= "\n".self::AMOUNTS_IN_THOUSANDS;
     $output .= $header . "\n";
     $count = 0;
 
@@ -280,10 +294,12 @@ class FinancialTrendsCSV  {
         }else if($row[$year]['amount'] < 0){
           $amount = '"' . "(" . FormattingUtilities::trendsNumberDisplay(abs($row[$year]['amount'])) . ")" . '"';
         }else {
-          if(strpos($row['category'], ':'))
+          if(strpos($row['category'], ':')) {
             $amount = '';
-          else
+          }
+          else {
             $amount = '"-"';
+          }
         }
 
         $rowString .= ',' . $amount;
@@ -291,7 +307,7 @@ class FinancialTrendsCSV  {
       $output .= $rowString . "\n";
     }
 
-    $output .= "\n"."\n".'"'."Source: Annual Comprehensive Financial Reports of the Comptroller".'"';
+    $output .= "\n"."\n".'"'.self::INFO_1.'"';
     return $output;
   }
 
@@ -310,12 +326,12 @@ class FinancialTrendsCSV  {
       $years[$row['fiscal_year']] = 	$row['fiscal_year'];
     }
     rsort($years);
-    $header = ',,,,,,,,Fiscal Year,,,,,'."\n";
+    $header = self::FISCAL_YEAR."\n";
     foreach ($years as $year){
       $header = $header .  "," . $year ;
     }
 
-    $header .= "\n".',,,,,,,,(AMOUNTS IN THOUSANDS),,,,,';
+    $header .= "\n".self::AMOUNTS_IN_THOUSANDS;
     $output .= $header . "\n";
     $count = 0;
 
@@ -334,10 +350,12 @@ class FinancialTrendsCSV  {
         }else if($row[$year]['amount'] < 0){
           $amount = '"' . "(" . FormattingUtilities::trendsNumberDisplay(abs($row[$year]['amount'])) . ")" . '"';
         }else if($row[$year]['amount'] == 0){
-          if(strpos($row['category'], ':'))
+          if(strpos($row['category'], ':')) {
             $amount = '';
-          else
+          }
+          else {
             $amount = '"-"';
+          }
         }
 
         $rowString .= ',' . $amount;
@@ -345,7 +363,7 @@ class FinancialTrendsCSV  {
       $output .= $rowString . "\n";
     }
 
-    $output .= "\n"."\n".'"'."Source: Annual Comprehensive Financial Reports of the Comptroller".'"';
+    $output .= "\n"."\n".'"'.self::INFO_1.'"';
     return $output;
   }
 

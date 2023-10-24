@@ -1,11 +1,10 @@
-{% if node.widgetConfig.templateLabel == 'Funding Class' %}
+{% if node.widgetConfig.templateLabel == 'Funding Class' or node.widgetConfig.summaryView.templateLabel == 'Funding Class' %}
   {% set templateValue = node.data[0]['funding_funding_funding_class_name'] %}
-{% elseif node.widgetConfig.templateLabel == 'Revenue Category' %}
+{% elseif node.widgetConfig.templateLabel == 'Revenue Category' or node.widgetConfig.summaryView.templateLabel == 'Revenue Category' %}
   {% set templateValue = node.data[0]['category_category_revenue_category_name'] %}
-{% elseif node.widgetConfig.templateLabel == 'Agency' %}
+{% elseif node.widgetConfig.templateLabel == 'Agency' or node.widgetConfig.summaryView.templateLabel == 'Agency'%}
   {% set templateValue = node.data[0]['agency_agency_agency_name'] %}
-{% elseif node.widgetConfig.summaryView.templateLabel == 'Year' or
-  node.widgetConfig.summaryView.templateLabel == 'Revenue Category' %}
+{% elseif node.widgetConfig.summaryView.templateLabel == 'Year' %}
   {% set templateValue = customFunctionEvaluate(node.widgetConfig.summaryView.templateLabelEval) %}
 {% else %}
   {% set templateValue = node.data[0]['object_class_name_object_class_name'] %}
@@ -17,8 +16,13 @@
   {%  set title = node.widgetConfig.summaryView.templateTitle %}
   {% set label = node.widgetConfig.summaryView.templateLabel %}
 {% else %}
-  {% set  title = node.widgetConfig.templateTitle %}
-  {% set label = node.widgetConfig.templateLabel %}
+    {% if node.widgetConfig.templateLabel %}
+      {% set  title = node.widgetConfig.templateTitle %}
+      {% set label = node.widgetConfig.templateLabel %}
+    {% else %}
+      {% set  title = node.widgetConfig.summaryView.templateTitle %}
+      {% set label = node.widgetConfig.summaryView.templateLabel %}
+  {% endif %}
 {% endif %}
 
 <h2 class="contract-title">{{title}}</h2>

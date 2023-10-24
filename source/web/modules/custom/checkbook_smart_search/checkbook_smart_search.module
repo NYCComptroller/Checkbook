@@ -32,10 +32,8 @@ function checkbook_smart_search_page_attachments_alter(array &$attachments) {
   */
 
   $solr_datasource = Datasource::getCurrentSolrDatasource();
-  // if(!$attachments['#attached']['drupalSettings']['solr_datasource'] ){
   // This check is throwing an error on dev, and QA server.
     $attachments['#attached']['drupalSettings']['solr_datasource'] = $solr_datasource;
-  // }
 }
 
 /**
@@ -210,7 +208,8 @@ function checkbook_smart_search_theme($existing, $type, $theme, $path) {
 function checkbook_smart_search_display_domain_results($value, $solr_datasource, $template) {
   $twigFilePath = \Drupal::service('extension.list.module')->getPath('checkbook_smart_search') . "/templates/" . $template . ".html.twig";
   $twigService = \Drupal::service('twig');
-  $load_template = $twigService->loadTemplate($twigFilePath);
+  $templateClass = $twigService->getTemplateClass($twigFilePath);
+  $load_template = $twigService->loadTemplate($templateClass, $twigFilePath);
   $params['datasource'] = $solr_datasource;
   $params['domain'] = $template;
   $markup = [
@@ -230,7 +229,8 @@ function checkbook_smart_search_display_domain_results($value, $solr_datasource,
 function checkbook_smart_search_facet_results($facet_counts,$solr_datasource,$selected_facet_results,$registered_contracts,$active_contracts) {
   $twigFilePath = \Drupal::service('extension.list.module')->getPath('checkbook_smart_search') . "/templates/smart_search_filter.html.twig";
   $twigService = \Drupal::service('twig');
-  $load_template = $twigService->loadTemplate($twigFilePath);
+  $templateClass = $twigService->getTemplateClass($twigFilePath);
+  $load_template = $twigService->loadTemplate($templateClass, $twigFilePath);
   $facets_render = checkbook_smart_search_filter_results($solr_datasource,$facet_counts,$selected_facet_results);
   //var_dump($selected_facet_results);
   $markup = [

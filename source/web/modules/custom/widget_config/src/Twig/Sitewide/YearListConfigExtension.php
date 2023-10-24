@@ -9,6 +9,7 @@ use Drupal\checkbook_project\CommonUtilities\CheckbookDateUtil;
 use Drupal\checkbook_project\CommonUtilities\RequestUtil;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Drupal\Component\Utility\Xss;
 
 class YearListConfigExtension extends AbstractExtension
 {
@@ -112,7 +113,7 @@ public function getFunctions()
         $displayText = ($dataSource == Datasource::NYCHA) ? 'FY ' . $value['year_value'] . ' (Jan 1, ' . $value['year_value'] . ' - Dec 31, ' . $value['year_value'] . ')' :
           'FY ' . $value['year_value'] . ' (Jul 1, ' . ($value['year_value'] - 1) . ' - Jun 30, ' . $value['year_value'] . ')';
         $fyDisplayData[] = array('display_text' => $displayText,
-          'link' => $yearOptionUrl,
+          'link' => Xss::filter($yearOptionUrl),
           'value' => $value['year_id'] . '~B',
           'selected' => $selectedFY
         );

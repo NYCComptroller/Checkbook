@@ -100,10 +100,12 @@ class OperationalTrendsCSV  {
           $rowString .= ',' .'"'. (!(strpos($row['category'],':'))?FormattingUtilities::trendsNumberDisplay($row[$year]['amount']):'') .'"';
         }
         else{
-          if($row[$year]['amount'] < 0)
+          if($row[$year]['amount'] < 0) {
             $rowString .= ',' . "(". abs($row[$year]['amount']) . ')%';
-          else
+          }
+          else {
             $rowString .= ',' . $row[$year]['amount'] . "%";
+          }
         }
       }
       $output .= $rowString . "\n";
