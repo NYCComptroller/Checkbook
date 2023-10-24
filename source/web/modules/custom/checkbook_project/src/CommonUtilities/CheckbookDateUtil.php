@@ -58,6 +58,7 @@ class CheckbookDateUtil{
    */
   private static $startingCalendarYearId;
 
+  const MONTH_DATASET = 'checkbook:month';
 
   /**
    * Sets up current and beginning year values if Drupal variables are not set
@@ -351,8 +352,7 @@ class CheckbookDateUtil{
     if (!isset($monthId)) {
       return NULL;
     }
-
-    $monthDetails = _checkbook_project_querydataset('checkbook:month', array('month_id', 'month_value', 'month_name', 'month_short_name'), array('month_id' => $monthId));
+    $monthDetails = _checkbook_project_querydataset(self::MONTH_DATASET, array('month_id', 'month_value', 'month_name', 'month_short_name'), array('month_id' => $monthId));
     return $monthDetails;
   }
 
@@ -468,7 +468,7 @@ class CheckbookDateUtil{
   public static function _getMonthIDFromValue($month_value, $year_id, $year_type = null){
     $month_id = null;
     if ($year_type == "C") {
-      $monthIDs = _checkbook_project_querydataset('checkbook:month', array('month_id'), array('month_value' => $month_value, 'year_id' => $year_id));
+      $monthIDs = _checkbook_project_querydataset(self::MONTH_DATASET, array('month_id'), array('month_value' => $month_value, 'year_id' => $year_id));
       $month_id = $monthIDs[0]['month_id'];
     } else {
       $query =
@@ -489,7 +489,7 @@ class CheckbookDateUtil{
    * @return mixed
    */
   public static function _getMonthValueFromId($month_id){
-    $monthValues = _checkbook_project_querydataset('checkbook:month', array('month_value'), array('month_id' => $month_id));
+    $monthValues = _checkbook_project_querydataset(self::MONTH_DATASET, array('month_value'), array('month_id' => $month_id));
     $month_value = $monthValues[0]['month_value'];
     return $month_value;
   }

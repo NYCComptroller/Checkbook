@@ -1,12 +1,12 @@
 {
   "agency_code_list": {
-    "sql": "SELECT DISTINCT t1.agency_code, t1.agency_name FROM ref_agency t1 where t1.is_display = 'Y' AND EXISTS ( select 1 from all_disbursement_transactions t2 where t2.agency_id = t1.agency_id ) ORDER BY t1.agency_name",
+    "sql": "SELECT DISTINCT t1.agency_code, t1.agency_name FROM ref_agency t1 where t1.is_display = 'Y' AND EXISTS ( select 1 from all_disbursement_transactions_allyears t2 where t2.agency_id = t1.agency_id ) ORDER BY t1.agency_name",
     "force_quote": [
       "agency_code"
     ]
   },
   "vendor_code_list": {
-    "sql": "SELECT DISTINCT t1.vendor_customer_code, t1.legal_name FROM vendor t1 WHERE EXISTS ( select 1 from all_disbursement_transactions t2 where t2.vendor_id = t1.vendor_id ) ORDER BY t1.vendor_customer_code",
+    "sql": "SELECT DISTINCT t1.vendor_customer_code, t1.legal_name FROM vendor t1 WHERE EXISTS ( select 1 from all_disbursement_transactions_allyears t2 where t2.vendor_id = t1.vendor_id ) ORDER BY t1.vendor_customer_code",
     "force_quote": [
       "vendor_customer_code"
     ]
@@ -85,7 +85,7 @@
     ]
   },
   "payee_code_list": {
-    "sql": "SELECT DISTINCT t1.vendor_customer_code, t1.legal_name FROM vendor t1 WHERE EXISTS ( select 1 from all_disbursement_transactions t2 where t2.vendor_id = t1.vendor_id ) ORDER BY t1.legal_name",
+    "sql": "SELECT DISTINCT t1.vendor_customer_code, t1.legal_name FROM vendor t1 WHERE EXISTS ( select 1 from all_disbursement_transactions_allyears t2 where t2.vendor_id = t1.vendor_id ) ORDER BY t1.legal_name",
     "force_quote": [
       "vendor_customer_code"
     ]
@@ -98,7 +98,7 @@
     ]
   },
   "spending_expense_category_code_list": {
-    "sql": "SELECT DISTINCT t1.expenditure_object_code, t1.expenditure_object_name FROM ref_expenditure_object t1 WHERE EXISTS ( select 1 from all_disbursement_transactions t2 where t2.expenditure_object_id = t1.expenditure_object_id ) ORDER BY t1.expenditure_object_name",
+    "sql": "SELECT DISTINCT t1.expenditure_object_code, t1.expenditure_object_name FROM ref_expenditure_object t1 WHERE EXISTS ( select 1 from all_disbursement_transactions_allyears t2 where t2.expenditure_object_id = t1.expenditure_object_id ) ORDER BY t1.expenditure_object_name",
     "force_quote": [
       "expenditure_object_code"
     ]

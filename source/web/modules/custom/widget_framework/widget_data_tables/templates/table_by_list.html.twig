@@ -7,7 +7,8 @@
   </tr>
   </thead>
   <tbody>
-  {% if node.data %} {
+  {% if node.data and node.content %} {
+    {{node.widgetConfig.table_columns}}
     {% for datarow in node.data %}
       <tr>
         {% for row in node.widgetConfig.table_columns %}

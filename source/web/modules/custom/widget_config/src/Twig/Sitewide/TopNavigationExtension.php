@@ -280,10 +280,10 @@ class TopNavigationExtension extends AbstractExtension
     }
 
     // conditions for making mwbe active.
-    if ($featured_dashboard == "mp" || $featured_dashboard == "ms" || ($featured_dashboard != null && ($mwbe_amount > 0 || $mwbe_amount_active_inc > 0)) || RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero) {
+    if ($featured_dashboard == "mp" || $featured_dashboard == "ms" || ($featured_dashboard != null && ($mwbe_amount > 0 || $mwbe_amount_active_inc > 0))) {
       $mwbeclass = true;
     }
-    if ($featured_dashboard == "sp" || $featured_dashboard == "ss" || ($featured_dashboard != null && ($svendor_amount > 0 || $svendor_amount_active_inc > 0)) || RequestUtil::$is_prime_mwbe_amount_zero_sub_mwbe_not_zero) {
+    if ($featured_dashboard == "sp" || $featured_dashboard == "ss" || ($featured_dashboard != null && ($svendor_amount > 0 || $svendor_amount_active_inc > 0))) {
       $svclass = true;
     }
 

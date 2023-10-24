@@ -216,7 +216,7 @@
         ],
         "sScrollX": "100%",
         "bScrollCollapse": true,
-        "sScrollXInner": "1160px",
+        "sScrollXInner": "1480px",
         "bScrollCollapse": true,
         "fnInitComplete": "##function () { new $j.fn.dataTable.FixedColumns( oTable, {
         \"iLeftColumns\": 1,
@@ -234,7 +234,7 @@
         var oOvertimePayment = getNamedFilterCriteria('fovertimePayment');
         var oPayFrequency = getNamedFilterCriteria('fpayFrequency');
         var oPayrollType = getNamedFilterCriteria('fpayrolltype');
-       var oRateType = getNamedFilterCriteria('fratetype');
+        var oRateType = getNamedFilterCriteria('fratetype');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
         var cUrlArray = cUrl.split('/');
@@ -247,7 +247,7 @@
         cUrl = adjustUrlParameter(cUrl,'overtimepayment',oOvertimePayment);
         cUrl = adjustUrlParameter(cUrl,'payfq',oPayFrequency);
         cUrl = adjustUrlParameter(cUrl,'payrolltype',oPayrollType);
-       cUrl = adjustUrlParameter(cUrl,'ratetype',oRateType);
+        cUrl = adjustUrlParameter(cUrl,'ratetype',oRateType);
 
         return cUrl;
     }"

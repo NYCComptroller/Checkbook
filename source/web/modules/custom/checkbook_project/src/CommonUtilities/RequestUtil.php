@@ -35,6 +35,11 @@ use Drupal\Core\Url;
 class RequestUtil
 {
 
+    const VENDOR_CUSTM_CODE = "0000776804";
+    const VENDOR_DATASET = "checkbook:vendor";
+
+    const YEAR = "/year/";
+
     //Links for landing pages. This can be avoided if ajax requests can be identified uniquely.
     /**
      * @var array
@@ -157,6 +162,8 @@ class RequestUtil
                 return "M/WBE (Sub Vendors)";
             case "ss" :
                 return "Sub Vendors";
+          default:
+            break;
         }
         return '';
     }
@@ -201,7 +208,7 @@ class RequestUtil
         switch ($domain) {
             case "nycha_contracts":
                 $path = "/nycha_contracts/datasource/".Datasource::NYCHA;
-                $path .="/year/".$fiscalYearId;
+                $path .=self::YEAR.$fiscalYearId;
                 $path .= Datasource::getNYCHAUrl();
                 if (RequestUtilities::get("vendor") > 0) {
                     $path .=  "/vendor/" . RequestUtilities::get("vendor");
@@ -232,7 +239,7 @@ class RequestUtil
                 break;
             case "nycha_spending":
               $path = "/nycha_spending/datasource/".Datasource::NYCHA;
-              $path .="/year/".$fiscalYearId;
+              $path .=self::YEAR.$fiscalYearId;
               $path .= Datasource::getNYCHAUrl();
               if (RequestUtilities::get("vendor") > 0) {
                 $path .=  "/vendor/" . RequestUtilities::get("vendor");
@@ -240,7 +247,7 @@ class RequestUtil
             break;
             case "payroll":
                 //Payroll is always redirected to the respective Calendar Year irrespective of the 'yeartype' paramenter in the URL for all the other Domains
-                if (!str_contains(\Drupal::request()->getRequestUri(), 'payroll')) {
+              if (!str_contains(\Drupal::request()->getRequestUri(), 'payroll')) {
                     $yearType = 'C';
                     $year = CheckbookDateUtil::getCalYearIdForTopNavigation();
                 } else {
@@ -249,12 +256,12 @@ class RequestUtil
                 }
 
                 if (str_contains(Url::fromRoute("<current>")->toString(), 'agency_landing')) {
-                    $path = "/payroll/agency_landing/yeartype/" . $yearType . "/year/" . $year;
+                    $path = "/payroll/agency_landing/yeartype/" . $yearType . self::YEAR . $year;
                     $path .= RequestUtilities::buildUrlFromParam('title');
                     $path .= RequestUtilities::buildUrlFromParam('agency');
                     $path .= RequestUtilities::buildUrlFromParam('datasource');
                 } else if (str_contains(Url::fromRoute("<current>")->toString(), 'title_landing')) {
-                    $path = "/payroll/title_landing/yeartype/" . $yearType . "/year/" . $year;
+                    $path = "/payroll/title_landing/yeartype/" . $yearType . self::YEAR . $year;
                     $path .= RequestUtilities::buildUrlFromParam('agency');
                     $path .= RequestUtilities::buildUrlFromParam('title');
                     $path .= RequestUtilities::buildUrlFromParam('datasource');
@@ -263,17 +270,17 @@ class RequestUtil
                     $bottomURL = ($bottomURL) ?: Url::fromRoute("<current>")->toString();
                     $last_parameter = RequestUtil::_getLastRequestParamValue($bottomURL);
                     if (isset($last_parameter['agency']) && $last_parameter['agency'] > 0 ) {
-                        $path = "/payroll/agency_landing/yeartype/" . $yearType . "/year/" . $year;
+                        $path = "/payroll/agency_landing/yeartype/" . $yearType . self::YEAR . $year;
                         $path .= RequestUtilities::buildUrlFromParam('datasource');
                         $path .= RequestUtilities::buildUrlFromParam('title');
                         $path .= RequestUtilities::buildUrlFromParam('agency');
                     } else if (isset($last_parameter['title']) && $last_parameter['title'] > 0) {
-                        $path = "/payroll/title_landing/yeartype/" . $yearType . "/year/" . $year;
+                        $path = "/payroll/title_landing/yeartype/" . $yearType . self::YEAR . $year;
                         $path .= RequestUtilities::buildUrlFromParam('datasource');
                         $path .= RequestUtilities::buildUrlFromParam('agency');
                         $path .= RequestUtilities::buildUrlFromParam('title');
                     } else if(RequestUtilities::get('agency')) {
-                        $path = "/payroll/agency_landing/yeartype/" . $yearType . "/year/" . $year;
+                        $path = "/payroll/agency_landing/yeartype/" . $yearType . self::YEAR . $year;
                         $path .= RequestUtilities::buildUrlFromParam('datasource');
                         $path .= RequestUtilities::buildUrlFromParam('title');
                         $path .= RequestUtilities::buildUrlFromParam('agency');
@@ -282,10 +289,10 @@ class RequestUtil
                       // NYCHA level
                       $datasource = RequestUtilities::get('datasource');
                       if ($datasource == 'checkbook_nycha') {
-                        $path = "/payroll/agency_landing/yeartype/" . $yearType . "/year/" . $year . RequestUtilities::buildUrlFromParam('datasource') . Datasource::getNYCHAUrl();
+                        $path = "/payroll/agency_landing/yeartype/" . $yearType . self::YEAR . $year . RequestUtilities::buildUrlFromParam('datasource') . Datasource::getNYCHAUrl();
                       } //Nyc Level
                       else {
-                        $path = "/payroll/yeartype/" . $yearType . "/year/" . $year . RequestUtilities::buildUrlFromParam('datasource');
+                        $path = "/payroll/yeartype/" . $yearType . self::YEAR . $year . RequestUtilities::buildUrlFromParam('datasource');
                       }
                     }
                 }
@@ -299,7 +306,7 @@ class RequestUtil
                 break;
             case "nycha_budget":
               $path = "/nycha_budget/datasource/".Datasource::NYCHA;
-              $path .="/year/".$fiscalYearId;
+              $path .= self::YEAR.$fiscalYearId;
               $path .= Datasource::getNYCHAUrl();
               break;
             case "revenue":
@@ -307,7 +314,7 @@ class RequestUtil
                 break;
             case "nycha_revenue":
               $path = "/nycha_revenue/datasource/".Datasource::NYCHA;
-              $path .="/year/".$fiscalYearId;
+              $path .= self::YEAR.$fiscalYearId;
               $path .= Datasource::getNYCHAUrl();
               break;
         }
@@ -331,7 +338,7 @@ class RequestUtil
               if(!stripos(' '.$path,'/mwbe/') && stripos(' '.$path,'/dashboard/')) {
                   $mwbe_param = RequestUtilities::get('mwbe');
                   $path .= '/mwbe/';
-                  $path .= isset($mwbe_param)? $mwbe_param : MappingUtil::getTotalMinorityIds('url');
+                  $path .= $mwbe_param ?? MappingUtil::getTotalMinorityIds('url');
                 }
             }
         }
@@ -369,9 +376,9 @@ class RequestUtil
     {
         $vendor_id = RequestUtilities::get('vendor');
         if ($vendor_id != null) {
-            $vendor = _checkbook_project_querydataset("checkbook:vendor", "vendor_customer_code", array("vendor_id" => $vendor_id));
+            $vendor = _checkbook_project_querydataset(self::VENDOR_DATASET, "vendor_customer_code", array("vendor_id" => $vendor_id));
 
-            if ($vendor[0]['vendor_customer_code'] == "0000776804") {
+            if ($vendor[0]['vendor_customer_code'] == self::VENDOR_CUSTM_CODE) {
                 return true;
             } else {
                 return false;
@@ -386,7 +393,7 @@ class RequestUtil
      */
     public static function getEDCURL()
     {
-        $vendor = _checkbook_project_querydataset("checkbook:vendor", "vendor_id", array("vendor_customer_code" => "0000776804"));
+        $vendor = _checkbook_project_querydataset(self::VENDOR_DATASET, "vendor_id", array("vendor_customer_code" => self::VENDOR_CUSTM_CODE));
         $url = "contracts_landing/status/A/yeartype/B/year/" . CheckbookDateUtil::getCurrentFiscalYearId() . "/vendor/" . $vendor[0]['vendor_id'];
         return $url;
     }
@@ -396,7 +403,7 @@ class RequestUtil
      */
     public static function getSpendingEDCURL()
     {
-        $vendor = _checkbook_project_querydataset("checkbook:vendor", "vendor_id", array("vendor_customer_code" => "0000776804"));
+        $vendor = _checkbook_project_querydataset(self::VENDOR_DATASET, "vendor_id", array("vendor_customer_code" => self::VENDOR_CUSTM_CODE));
         $url = "spending_landing/yeartype/B/year/" . CheckbookDateUtil::getCurrentFiscalYearId() . "/vendor/" . $vendor[0]['vendor_id'];
         return $url;
     }
@@ -441,6 +448,8 @@ class RequestUtil
             case "ms" :
             case "ss" :
                 return "ms";
+          default:
+            break;
         }
         return "mp";
 
@@ -488,6 +497,8 @@ class RequestUtil
             case "ms" :
             case "ss" :
                 return "ss";
+          default:
+            break;
         }
         return "ss";
     }
@@ -512,6 +523,8 @@ class RequestUtil
             case "sp" :
             case "ss" :
                 return true;
+          default:
+            break;
 
         }
 
@@ -566,6 +579,8 @@ class RequestUtil
 
                 $url .= "/dashboard/" . self::getNextSubvendorDashboardStateParam();
                 break;
+          default:
+            break;
         }
 
         //For MWBE and Sub Vendor dashboard links add status parameters if it is not there
@@ -643,6 +658,8 @@ class RequestUtil
                     return "Sub Vendors (M/WBE)";
                 }
                 return "Sub Vendors";
+          default:
+            break;
         }
         return '';
     }
@@ -709,6 +726,8 @@ class RequestUtil
                 $default_params = array("status_flag" => "A");
                 $sub_vendors_total_link = RequestUtil::getLandingPageUrl("contracts", RequestUtilities::get("year"), 'B');
                 break;
+          default:
+            break;
         }
         if (self::get_top_nav_records_count($urlParamMap, $default_params, $table) > 0) {
             return "/" . $sub_vendors_total_link . RequestUtilities::buildUrlFromParam('agency')
@@ -738,7 +757,7 @@ class RequestUtil
                 $path = "spending_landing/yeartype/B/year/" . $year;
                 break;
             case "payroll":
-                $path = "payroll/yeartype/" . $yearType . "/year/" . $year;
+                $path = "payroll/yeartype/" . $yearType . self::YEAR . $year;
                 break;
             case "budget":
                 $path = "budget/yeartype/B/year/" . $year;
@@ -746,6 +765,8 @@ class RequestUtil
             case "revenue":
                 $path = "revenue/yeartype/B/year/" . $year;
                 break;
+          default:
+            break;
         }
 
         return $path;
@@ -825,6 +846,8 @@ class RequestUtil
                 $urlParamMapSubven = array("year" => "fiscal_year_id", "agency" => "agency_id", "vendor" => "prime_vendor_id");
                 $default_params = array("status_flag" => "A", "minority_type_id" => MappingUtil::getTotalMinorityIds('url'), 'type_of_year' => 'B');
                 break;
+          default:
+            break;
         }
         if (self::get_top_nav_records_count($urlParamMap, $default_params, $table) > 0) {
             $dashboard = "mp";
@@ -900,8 +923,9 @@ class RequestUtil
 
     if ($param == null) {
       $paramName = $replacedPathParams[count($replacedPathParams) - 2];
-    } else
+    } else {
       $paramName = $param;
+    }
     $index = array_search($paramName, $replacedPathParams);
 
     if ($index != FALSE) {

@@ -139,7 +139,8 @@ function landing_page_widget_view_widget_controller_view(&$node) {
 
       $twigFilePath = \Drupal::service('extension.list.module')->getPath('landing_page_widget_view').'/templates/table_by_rows.html.twig';
       $twigService = \Drupal::service('twig');
-      $template = $twigService->loadTemplate($twigFilePath);
+      $templateClass = $twigService->getTemplateClass($twigFilePath);
+      $template = $twigService->loadTemplate($templateClass, $twigFilePath);
 
       $markup = [
         '#children' => $template->render([ 'node' => $node]),

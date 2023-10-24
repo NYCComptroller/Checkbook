@@ -256,22 +256,13 @@ class CheckbookAlertsHelper {
   }
 
   public function checkbook_alerts_alertFrequency($days){
-    switch($days){
-      case 1:
-        $alertFrequency="Daily";
-        break;
-      case 7:
-        $alertFrequency="Weekly";
-        break;
-      case 30:
-        $alertFrequency="Monthly";
-        break;
-      case 90:
-        $alertFrequency="Quarterly";
-        break;
-      default:
-        $alertFrequency="{$_GET['alert_minimum_days']} days";
-    }
+    $alertFrequency = match ($days) {
+      1 => "Daily",
+      7 => "Weekly",
+      30 => "Monthly",
+      90 => "Quarterly",
+      default => "{$_GET['alert_minimum_days']} days",
+    };
     return $alertFrequency;
   }
 
@@ -287,9 +278,6 @@ class CheckbookAlertsHelper {
   }
 
   function checkbook_alerts_get_node_config(){
-
-    //$_GET['q']=urldecode(check_plain($_GET['refURL']));
-    //\Drupal::request()->query->set('q', urldecode(RequestUtilities::getRefUrl()));
     \Drupal::request()->query->set('q', urldecode(\Drupal::request()->query->get('refURL')));
 
 
@@ -342,8 +330,6 @@ class CheckbookAlertsHelper {
       '#alerts' => $alerts,
     ];
     $msg = \Drupal::service('renderer')->renderPlain($renderable);
-
-    ///$message = drupal_mail($module,$key,$alerts[0]->recipient,language_default(),array(),"",false);
 
     $params['message'] = $msg;
     $params['title'] = "Checkbook NYC Alert";

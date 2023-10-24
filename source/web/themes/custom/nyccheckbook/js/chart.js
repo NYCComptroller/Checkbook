@@ -2,7 +2,7 @@
   Drupal.behaviors.chart = {
     attach: function (context, drupalSetting) {
       if ($(".cycle-slideshow").filter(":first").length > 0) {
-        $(".cycle-slideshow").filter(":first").once("chart-slide").cycle({
+        $(once("chart-slide", ".cycle-slideshow")).filter(":first").cycle({
           slideExpr: ".slider-pane",
           fx: "fade",
           timeout: 45000,

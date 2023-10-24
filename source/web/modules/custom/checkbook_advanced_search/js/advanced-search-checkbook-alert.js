@@ -293,12 +293,12 @@
         }
       };
 
-      $('[id^="edit-next-submit"]', context).once('createAlertNextSubmit').click(function (event) {
+      $(once('createAlertNextSubmit', '[id^="edit-next-submit"]', context)).click(function (event) {
         $.fn.onScheduleAlertNextClick($('input:hidden[name="step"]').val());
         event.preventDefault();
       });
 
-      $('[id^="edit-back-submit"]', context).once('createAlertBackSubmit').click(function (event) {
+      $(once('createAlertBackSubmit', '[id^="edit-back-submit"]', context)).click(function (event) {
         $.fn.onScheduleAlertBackClick($('input:hidden[name="step"]').val());
         event.preventDefault();
       });

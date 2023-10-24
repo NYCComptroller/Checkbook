@@ -37,112 +37,39 @@ class SpendingFeedNycedc extends SpendingFeed
     $this->formatted_search_criteria[$this->oge_label] = $this->oge_name_code;
 
     //Department
-    if (!empty($this->form_state->getValue('dept')) && $this->form_state->getValue('dept') != 'Select Department' && $this->form_state->getValue('dept') != '0') {
-      // converts special characters to HTML entities
-      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->form_state->getValue('dept'))) {
-        $this->form_state->setValue('dept', htmlspecialchars($this->form_state->getValue('dept')));
-      }
-      $this->form['filter']['dept'] = array('#markup' => '<div><strong>Department:</strong>' . $this->form_state->getValue('dept') . '</div>');
-      $this->user_criteria['Department'] = $this->form_state->getValue('dept');
-      $this->formatted_search_criteria['Department'] = $this->form_state->getValue('dept');
-    }
+    $this->_process_user_criteria_by_datasource_department();
 
     //Expense Category
-    if (!empty($this->form_state->getValue('expense_category')) && $this->form_state->getValue('expense_category') != 'Select Expense Category' && $this->form_state->getValue('expense_category') != '0') {
-      // converts special characters to HTML entities
-      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->form_state->getValue('expense_category'))) {
-        $this->form_state->setValue('expense_category', htmlspecialchars($this->form_state->getValue('expense_category')));
-      }
-      $this->form['filter']['expense_category'] = array('#markup' => '<div><strong>Expense Category:</strong> ' . $this->form_state->getValue('expense_category') . '</div>');
-      $this->user_criteria['Expense Category'] = $this->form_state->getValue('expense_category');
-      $this->formatted_search_criteria['Expense Category'] = $this->form_state->getValue('expense_category');
-    }
+    $this->_process_user_criteria_by_datasource_expense_category();
 
     //Spending Category
     if (!empty($this->form_state->getValue('nycedc_expense_type'))) {
-      $this->form['filter']['nycedc_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> ' . $this->form_state->getValue('nycedc_expense_type') . '</div>');
-      $this->user_criteria['Expense Type'] = $this->form_state->getValue('nycedc_expense_type');
-      $this->formatted_search_criteria['Spending Category'] = $this->form_state->getValue('nycedc_expense_type');
+      $this->_process_user_criteria_by_datasource_single_field('nycedc_expense_type', 'nycedc_expense_type', 'Spending Category', 'Expense Type');
     } else {
       $this->form['filter']['nycedc_expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> Total Spending</div>');
       $this->formatted_search_criteria['Spending Category'] = 'Total Spending';
     }
 
     //Vendor
-    if (!empty($this->form_state->getValue('payee_name'))) {
-      $this->form['filter']['payee_name'] = array(
-        '#markup' => '<div><strong>Payee Name:</strong> ' . $this->form_state->getValue('payee_name') . '</div>',
-      );
-      $this->user_criteria['Payee Name'] = $this->form_state->getValue('payee_name');
-      $this->formatted_search_criteria['Payee Name'] = $this->form_state->getValue('payee_name');
-    }
+    $this->_process_user_criteria_by_datasource_single_field_and_check('payee_name', 'payee_name', 'Payee Name');
 
     //Check Amount
-    if ((!empty($this->form_state->getValue('check_amt_from')) || $this->form_state->getValue('check_amt_from') === "0") && (!empty($this->form_state->getValue('check_amt_to')) || $this->form_state->getValue('check_amt_to') === "0")) {
-      $this->form['filter']['chkamount'] = array(
-        '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->form_state->getValue('check_amt_from') . ' and Less Than Equal to: $' . $this->form_state->getValue('check_amt_to') . '</div>',
-      );
-      $this->user_criteria['Check Amount Greater Than'] = $this->form_state->getValue('check_amt_from');
-      $this->user_criteria['Check Amount Less Than'] = $this->form_state->getValue('check_amt_to');
-      $this->formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $this->form_state->getValue('check_amt_from') . ' and Less Than Equal to: $' . $this->form_state->getValue('check_amt_to');
-    } elseif (empty($this->form_state->getValue('check_amt_from')) && (!empty($this->form_state->getValue('check_amt_to')) || $this->form_state->getValue('check_amt_to') === "0")) {
-      $this->form['filter']['chkamount'] = array(
-        '#markup' => '<div><strong>Check Amount:</strong> Less Than Equal to: $' . $this->form_state->getValue('check_amt_to') . '</div>',
-      );
-      $this->user_criteria['Check Amount Less Than'] = $this->form_state->getValue('check_amt_to');
-      $this->formatted_search_criteria['Check Amount'] = 'Less Than Equal to: $' . $this->form_state->getValue('check_amt_to');
-    } elseif ((!empty($this->form_state->getValue('check_amt_from')) || $this->form_state->getValue('check_amt_from') === "0")  && empty($this->form_state->getValue('check_amt_to'))) {
-      $this->form['filter']['chkamount'] = array(
-        '#markup' => '<div><strong>Check Amount:</strong> Greater Than Equal to: $' . $this->form_state->getValue('check_amt_from') . '</div>',
-      );
-      $this->user_criteria['Check Amount Greater Than'] = $this->form_state->getValue('check_amt_to');
-      $this->formatted_search_criteria['Check Amount'] = 'Greater Than Equal to: $' . $this->form_state->getValue('check_amt_from');
-    }
+    $this->_process_user_criteria_by_datasource_ranged_amount_field('check_amt_from', 'check_amt_to', 'chkamount', 'Check Amount');
 
     //Contract ID
-    if (!empty($this->form_state->getValue('contractno'))) {
-      $this->form['filter']['contractno'] = array(
-        '#markup' => '<div><strong>Contract ID:</strong> ' . $this->form_state->getValue('contractno') . '</div>',
-      );
-      $this->user_criteria['Contract ID'] = $this->form_state->getValue('contractno');
-      $this->formatted_search_criteria['Contract ID'] = $this->form_state->getValue('contractno');
-    }
+    $this->_process_user_criteria_by_datasource_single_field_and_check('contractno', 'contractno', 'Contract ID');
 
     //Commodity Line
-    if (!empty($this->form_state->getValue('commodity_line'))) {
-      $this->form['filter']['commodity_line'] = array(
-        '#markup' => '<div><strong>Commodity Line:</strong> ' . $this->form_state->getValue('commodity_line') . '</div>',
-      );
-      $this->user_criteria['Commodity Line'] = $this->form_state->getValue('commodity_line');
-      $this->formatted_search_criteria['Commodity Line'] = $this->form_state->getValue('commodity_line');
-    }
+    $this->_process_user_criteria_by_datasource_single_field_and_check('commodity_line', 'commodity_line', 'Commodity Line');
 
     //Entity Contract Number
-    if (!empty($this->form_state->getValue('entity_contract_number'))) {
-      $this->form['filter']['entity_contract_number'] = array(
-        '#markup' => '<div><strong>Entity Contract #:</strong> ' . $this->form_state->getValue('entity_contract_number') . '</div>',
-      );
-      $this->user_criteria['Entity Contract #'] = $this->form_state->getValue('entity_contract_number');
-      $this->formatted_search_criteria['Entity Contract #'] = $this->form_state->getValue('entity_contract_number');
-    }
+    $this->_process_user_criteria_by_datasource_single_field_and_check('entity_contract_number', 'entity_contract_number', 'Entity Contract #');
 
     //capital Project
-    if (!empty($this->form_state->getValue('capital_project'))) {
-      $this->form['filter']['capital_project'] = array(
-        '#markup' => '<div><strong>Capital Project:</strong> ' . $this->form_state->getValue('capital_project') . '</div>',
-      );
-      $this->user_criteria['Capital Project'] = $this->form_state->getValue('capital_project');
-      $this->formatted_search_criteria['Capital Project'] = $this->form_state->getValue('capital_project');
-    }
+    $this->_process_user_criteria_by_datasource_single_field_and_check('capital_project', 'capital_project', 'Capital Project');
 
     //Budget Name
-    if (!empty($this->form_state->getValue('budget_name'))) {
-      $this->form['filter']['budget_name'] = array(
-        '#markup' => '<div><strong>Budget Name:</strong> ' . $this->form_state->getValue('budget_name') . '</div>',
-      );
-      $this->user_criteria['Budget Name'] = $this->form_state->getValue('budget_name');
-      $this->formatted_search_criteria['Budget Name'] = $this->form_state->getValue('budget_name');
-    }
+    $this->_process_user_criteria_by_datasource_single_field_and_check('budget_name', 'budget_name', 'Budget Name');
 
     //Year Filter
     if (!empty($this->form_state->getValue('year')) && $this->form_state->getValue('year') !== '0') {
@@ -158,6 +85,26 @@ class SpendingFeedNycedc extends SpendingFeed
       $this->formatted_search_criteria['Year'] = ' All Years';
     }
 
+  }
+
+  protected function _process_user_criteria_by_datasource_department(){
+    if (!empty($this->form_state->getValue('dept')) && $this->form_state->getValue('dept') != 'Select Department' && $this->form_state->getValue('dept') != '0') {
+      // converts special characters to HTML entities
+      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->form_state->getValue('dept'))) {
+        $this->form_state->setValue('dept', htmlspecialchars($this->form_state->getValue('dept')));
+      }
+      $this->_process_user_criteria_by_datasource_single_field('dept', 'dept', 'Department');
+    }
+  }
+
+  protected function _process_user_criteria_by_datasource_expense_category() {
+    if (!empty($this->form_state->getValue('expense_category')) && $this->form_state->getValue('expense_category') != 'Select Expense Category' && $this->form_state->getValue('expense_category') != '0') {
+      // converts special characters to HTML entities
+      if (preg_match('/[\'^£$%&*()}{@#~?><,|=_+¬-]/', $this->form_state->getValue('expense_category'))) {
+        $this->form_state->setValue('expense_category', htmlspecialchars($this->form_state->getValue('expense_category')));
+      }
+      $this->_process_user_criteria_by_datasource_single_field('expense_category', 'expense_category', 'Expense Category');
+    }
   }
 
   protected function _process_datasource_values()
@@ -196,16 +143,12 @@ class SpendingFeedNycedc extends SpendingFeed
   protected function _validate_by_datasource(&$form, &$form_state)
   {
     //Validate Commodity Line
-//    $entity_contractno = $form_state['values']['entity_contract_number'];
     $entity_contractno = $form_state->getValue('entity_contract_number');
-//    $commodity_line = $form_state['values']['commodity_line'];
     $commodity_line = $form_state->getValue('commodity_line');
     if ($commodity_line && !is_numeric($commodity_line)) {
-//      form_set_error('commodity_line', t('Commodity Line must be a number.'));
       $form_state->setErrorByName('commodity_line', t('Commodity Line must be a number.'));
     }
     if ($entity_contractno && !is_numeric($entity_contractno)) {
-//      form_set_error('entity_contract_number', t('Entity Contract # must be a number'));
       $form_state->setErrorByName('entity_contract_number', t('Entity Contract # must be a number.'));
     }
 
@@ -215,11 +158,9 @@ class SpendingFeedNycedc extends SpendingFeed
       $form_state->setErrorByName('column_select', t('You must select at least one column.'));
     }
 
-//  $multi_select_hidden = isset($form_state['input']['oge_column_select']) ? '|' . implode('||', $form_state['input']['oge_column_select']) . '|' : '';
     $multi_select_hidden = $form_state->hasValue('oge_column_select') ? '|' . implode('||', $form_state->getValue('oge_column_select')) . '|' : '';
 
     if (!$multi_select_hidden) {
-//      form_set_error('oge_column_select', t('You must select at least one column.'));
       $form_state->setErrorByName('oge_column_select', t('You must select at least one column.'));
     }
   }

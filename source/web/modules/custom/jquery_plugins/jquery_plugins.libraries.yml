@@ -1,25 +1,3 @@
-cycle:
-  title: 'jQuery Cycle'
-  version: 2.9999.2
-  js:
-    js/jquery.cycle.all.js:
-      type: file
-      group: -100
-      every_page: true
-  dependencies:
-    - system/jquery
-  remote: 'http://jquery.malsup.com/cycle/'
-easyListSplitter:
-  title: 'Easy List Splitter'
-  version: 1.0.2
-  js:
-    js/jquery.easyListSplitter.js:
-      type: file
-      group: -100
-      every_page: true
-  dependencies:
-    - system/jquery
-  remote: 'http://www.madeincima.it/en/articles/resources-and-tools/easy-list-splitter-plugin/'
 jScrollPane:
   title: jScrollPane
   version: 1.0.2
@@ -33,44 +11,46 @@ jScrollPane:
       group: -100
       every_page: true
   css:
-    css/jquery.jscrollpane.css: {  }
+    component:
+      css/jquery.jscrollpane.css: {  }
   dependencies:
     - system/jquery
   remote: 'http://jscrollpane.kelvinluck.com/'
+  license:
+    name: 'Dual licensed under the MIT and GPL licenses.'
+    gpl-compatible: true
 chosen:
   title: jquery.searchabledropdown.js
   version: 1.0.8
   js:
-    /jquery.searchabledropdown/chosen.jquery.js: {  }
+    jquery.searchabledropdown/chosen.jquery.js: {  }
   css:
-    /jquery.searchabledropdown/chosen.css:
-      type: file
-      media: all
+    component:
+      jquery.searchabledropdown/chosen.css:
+        type: file
+        media: all
   dependencies:
     - system/jquery
   remote: 'https://sourceforge.net/projects/jsearchdropdown/'
-fitvids:
-  title: fitvids
-  version: '1.0'
-  js:
-    js/jquery.fitvids.js:
-      type: file
-      group: -100
-      every_page: true
-  dependencies:
-    - system/jquery
-  remote: 'http://fitvidsjs.com/'
+  license:
+    name: 'MIT License'
+    url: 'https://github.com/harvesthq/chosen/blob/master/LICENSE.md'
+    gpl-compatible: true
 custom-scrollbar:
   title: 'jQuery custom content scroller'
   version: 2.8.1
   js:
-    /malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.concat.min.js:
+    malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.concat.min.js:
       type: file
       group: -100
       every_page: true
   css:
-    /malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.css: {  }
+    component:
+      malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.css: {  }
   remote: 'http://manos.malihu.gr/jquery-custom-content-scroller/'
+  license:
+    name: 'MIT License (MIT)'
+    gpl-compatible: true
 sticky:
   title: 'Sticky Plugin v1.0.0 for jQuery'
   version: 1.0.0
@@ -80,14 +60,22 @@ sticky:
       group: -100
       every_page: true
   remote: 'http://labs.anthonygarand.com/sticky'
+  license:
+    name: 'The MIT License (MIT)'
+    url: 'https://github.com/garethdn/jquery-sticky/blob/master/LICENSE'
+    gpl-compatible: true
 simplePagination:
   title: 'Simple Pagination'
   version: '1.6'
   js:
-    /simplePagination/jquery.simplePagination.js:
+    simplePagination/jquery.simplePagination.js:
       type: file
       group: -100
       every_page: true
   dependencies:
     - system/jquery
   remote: 'http://flaviusmatis.github.io/simplePagination.js/'
+  license:
+    name: 'Released under the MIT license.'
+    url: 'http://flaviusmatis.github.com/license.html'
+    gpl-compatible: true

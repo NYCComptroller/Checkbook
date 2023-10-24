@@ -27,6 +27,7 @@ use Drupal\checkbook_log\LogHelper;
 
 function checkbook_api_ref_cron()
 {
+  LogHelper::log_notice("Running checkbook_api_ref_cron");
   $CES = new \Drupal\checkbook_api_ref\API\CheckbookApiRef();
   return $CES->api_ref_cron();
 }

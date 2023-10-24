@@ -12,7 +12,7 @@
 
   Drupal.behaviors.disableOnClick = {
     attach: function (context, settings) {
-      $('.export', context).once('disableOnClick').click(function (event) {
+      $(once('disableOnClick', '.export', context)).click(function (event) {
         event.preventDefault();
         var $this = $(this);
         if (!$this.hasClass('clicked')) {
@@ -65,7 +65,7 @@
 
             return $( "<li>" )
               .attr( "data-value", item.value )
-              .append("<a href='" + item.url + "'>" + htmlEntities(item.label) + "</a>")
+              .append('<a href="' + item.url + '">' + htmlEntities(item.label) + '</a>')
               .appendTo( ul );
           }
         });
@@ -76,6 +76,12 @@
           minLength: 0,
           classes: {
             "ui-autocomplete": "smart-search-autocomplete"
+          },
+          select: function (event, ui) {
+            $(event.target).data('selected-label', ui.item.label);
+          },
+          close: function (event) {
+            $(event.target).val($(event.target).data('selected-label'));
           }
         });
       });
@@ -148,7 +154,7 @@
   Drupal.behaviors.exportSmartSearchTransactions = {
     attach: function (context, settings) {
 
-      $("span.exportSmartSearch").once("exportSmartSearch").each(function () {
+      $(once('exportSmartSearch', 'span.exportSmartSearch')).each(function () {
         $("span.exportSmartSearch").on("click", function () {
           var dialog = $("#dialog");
           if (!dialog.length) {

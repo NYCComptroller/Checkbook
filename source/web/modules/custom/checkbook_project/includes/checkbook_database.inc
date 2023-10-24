@@ -178,7 +178,6 @@ function _checkbook_project_recordsExists($nid){
   LogHelper::log_info('Loading node # ' . $nid);
 
   $startTime = microtime(TRUE);
-  //$node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
   $node = _widget_node_load_file($nid);
 
   widget_config($node);
@@ -249,43 +248,16 @@ function _checkbook_dmemcache_get($key, $bin = 'cache', $mc = NULL){
   if (\Drupal::currentUser()->isAuthenticated()) {
     return false;
   }
-  /*$drupal_state = \Drupal::state();
-  //if (function_exists('dmemcache_get')) {
-  if (method_exists($drupal_state, 'get')) {
-    //$return = dmemcache_get($key, $bin, $mc);
-    $return = \Drupal::state()->get($key);
 
-    if ($return) {
-      LogHelper::log_info($key . ' CACHE HIT! ' . md5(json_encode($return)));
+  if (\Drupal::hasService('memcache.factory')) {
+    $memcache = \Drupal::service('memcache.factory')->get();
+    if ($memcache) {
+      return $memcache->get($key);
     }
-    return $return;
-  }*/
-
-  if (class_exists('Memcached')) {
-    $memcached = new Memcached();
-
-    $memcache_host = \Drupal::config('memcache')->get('host') ?? 'localhost';
-    $memcache_port = \Drupal::config('memcache')->get('port') ?? 11211;
-    $memcached->addServer($memcache_host, $memcache_port);
-
-    $return = $memcached->get($key);
-    if ($return) {
-      LogHelper::log_info($key . ' CACHE HIT! ' . md5(json_encode($return)));
-    }
-    return $memcached->get($key);
   }
 
-  if (class_exists('Memcache')) {
-    $memcache = new Memcache;
-    $memcache->connect('localhost', 11211);
-    $return = $memcache->get($key);
-    if ($return) {
-      LogHelper::log_info($key . ' CACHE HIT! ' . md5(json_encode($return)));
-    }
-    return $memcache->get($key);
-  }
-  LogHelper::log_warn('could not find Memcached class, try enabling memcache');
-  return false;
+  LogHelper::log_warn('Memcache module is disabled.');
+  return FALSE;
 }
 
 /**
@@ -303,51 +275,20 @@ function _checkbook_dmemcache_set($key, $value, $exp = 54000, $bin = 'cache', $m
     return true;
   }
   if (\Drupal::currentUser()->isAuthenticated() || !$value) {
-    return false;
-  }
-  /*$drupal_state = \Drupal::state();
-  //if (function_exists('dmemcache_set')) {
-  if (method_exists($drupal_state, 'set')) {
-    //$return = dmemcache_set($key, $value, $exp, $bin, $mc);
-    $return = \Drupal::state()->set($key, $value, $exp, $bin, $mc);
-    if ($return) {
-      LogHelper::log_info($key . ' CACHED NOW! ' . md5(json_encode($value)));
-    }
-    return $return;
-  }*/
-
-  if (class_exists('Memcached')) {
-    LogHelper::log_info($key . ' In Memcached class exists! ' . md5(json_encode($value)));
-    $memcached = new Memcached();
-    $memcache_host = \Drupal::config('memcache')->get('host') ?? 'localhost';
-    $memcache_port = \Drupal::config('memcache')->get('port') ?? 11211;
-    $memcached->addServer($memcache_host, $memcache_port);
-
-    $memcached->set($key, $value, $exp);
-    $return = $memcached->get($key);
-    if ($return) {
-      LogHelper::log_info($key . ' CACHED NOW! ' . md5(json_encode($value)));
-    } else {
-      LogHelper::log_info("Memcached::getResultCode" . $memcached->getResultCode());
-    }
-    Memcached::OPT_RECV_TIMEOUT;
-    return $memcached->get($key);
+    return TRUE;
   }
 
-  if (class_exists('Memcache')) {
-    LogHelper::log_info($key . ' In Memcache class exists! ' . md5(json_encode($value)));
-    $memcache = new Memcache;
-    $memcache->connect('localhost', 11211);
-    $memcache->set($key, $value, null,$exp);
-    $return = $memcache->get($key);
-    if ($return) {
-      LogHelper::log_info($key . ' CACHED NOW! ' . md5(json_encode($value)));
+  LogHelper::log_info($key . ' in memcache! ' . md5(json_encode($value)));
+
+  if (\Drupal::hasService('memcache.factory')) {
+    $memcache = \Drupal::service('memcache.factory')->get();
+    if ($memcache) {
+      return $memcache->set($key, $value, $exp);
     }
-    return $memcache->get($key);
   }
 
-  LogHelper::log_warn('could not find Memcached class, try enabling memcache');
-  return false;
+  LogHelper::log_warn('Memcache module is disabled.');
+  return FALSE;
 }
 
 /**
@@ -364,13 +305,6 @@ function _checkbook_psql_command($database = 'checkbook'){
 
   $checkbook_db_info = Database::getConnectionInfo($database);
 
-  //if (!isset($databases[$database])) {
-   // LogHelper::log_warn('$databases[' . $database . '] not found');
-  //  return '';
-  //} else {
-  //  LogHelper::log_notice('Using $databases[' . $database . '] database');
-  //}
-
   if (!isset($checkbook_db_info)) {
    LogHelper::log_warn('$databases[' . $database . '] not found');
     return '';
@@ -378,7 +312,6 @@ function _checkbook_psql_command($database = 'checkbook'){
     LogHelper::log_notice('Using $databases[' . $database . '] database');
   }
 
-  //$command = $conf['check_book']['data_feeds']['command'] ." ".$databases[$database]['main']['database']." ";
   $command = \Drupal::config('check_book')->get('data_feeds')['command'] ." ".$checkbook_db_info['main']['database']." ";
 
   return $command;
