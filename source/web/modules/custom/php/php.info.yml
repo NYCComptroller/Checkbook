@@ -1,0 +1,13 @@
+name: PHP Filter
+type: module
+description: Allows embedded PHP code/snippets to be evaluated. Enabling this can cause security and performance issues as it allows users to execute PHP code on your site.
+core_version_requirement: ^9 || ^10
+package: 'Filters'
+configure: filter.admin_overview
+dependencies:
+  - drupal:filter
+
+# Information added by Drupal.org packaging script on 2020-10-08
+version: '8.x-1.1'
+project: 'php'
+datestamp: 1602147051
