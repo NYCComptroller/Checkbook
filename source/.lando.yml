@@ -1,16 +1,17 @@
-name: checkbooknyc
-recipe: drupal9
+name: checkbooknyc10
+recipe: drupal10
 config:
   webroot: ./web
   php: '8.2'
-  xdebug: 'develop,debug'
+  xdebug: false
 services:
   appserver:
     overrides:
       environment:
         # Support debugging CLI with XDEBUG.
-        PHP_IDE_CONFIG: "serverName=checkbooknyc"
+        PHP_IDE_CONFIG: "serverName=checkbooknyc10"
         XDEBUG_SESSION_START: lando
+        XDEBUG_MODE: 'debug,develop'
     build_as_root:
       - docker-php-ext-install pgsql
       - rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && /etc/init.d/apache2 reload
@@ -20,7 +21,7 @@ services:
     type: phpmyadmin
 proxy:
   pma:
-    - pma-checkbooknyc.lndo.site
+    - pma-checkbooknyc10.lndo.site
 tooling:
   xdebug-on:
     service: appserver

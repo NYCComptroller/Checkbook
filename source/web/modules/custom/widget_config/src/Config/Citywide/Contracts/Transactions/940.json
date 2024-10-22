@@ -42,6 +42,7 @@
     "prime_minority_type_id",
     "prime_minority_type_name",
     "prime_original_contract_amount",
+    "prime_oca_number",
     "prime_document_version",
     "prime_maximum_contract_amount",
     "prime_dollar_difference",
@@ -67,7 +68,10 @@
     "sub_effective_end_date",
     "sub_rfed_amount",
     "is_sub_women_owned",
-    "is_sub_emerging"
+    "is_sub_emerging",
+    "percent_covid_spending",
+    "percent_asylum_spending",
+    "percent_other_spending"
   ],
   "logicalOrColumns":[
     ["prime_vendor_code","sub_vendor_code"],
@@ -202,14 +206,23 @@
 },
 "formatted_sub_effective_end_date": {
 "expression":"(strtolower($row['vendor_record_type']) == 'sub vendor')? $row['sub_effective_end_date'] : 'N/A'"
+},
+"formatted_percent_covid":{
+"expression":"strtolower($row['vendor_record_type']) == 'sub vendor' || empty($row['event_id']) ? 'N/A' : ($row['event_id'] == 2 ? '0' : $row['percent_covid_spending'])"
+},
+"formatted_percent_asylum":{
+"expression":"strtolower($row['vendor_record_type']) == 'sub vendor' || empty($row['event_id']) ? 'N/A' : ($row['event_id'] == 1 ? '0' : $row['percent_asylum_spending'])"
+},
+"formatted_percent_other":{
+"expression":"strtolower($row['vendor_record_type']) == 'sub vendor' ? 'N/A' : $row['percent_other_spending']"
 }
-
 },
 "skipCustomPadding":true,
 "table_columns": [
 {"label": "&nbsp;","column": "child_contrats_link"},
 {"labelAlias":"contract_id","column":"contract_link"},
 {"labelAlias":"contract_includes_sub","column":"contract_includes_sub"},
+{"label":"","column":""},
 {"labelAlias":"prime_vendor","column":"prime_vendor_name_link"},
 {"labelAlias":"prime_mwbe_category","column":"prime_minority_type_name"},
 {"labelAlias":"contract_purpose","column":"prime_purpose_formatted"},
@@ -224,6 +237,7 @@
 {"labelAlias":"prime_woman_owned_business","column":"is_prime_women_owned"},
 {"labelAlias":"prime_emerging_business","column":"is_prime_emerging"},
 {"labelAlias":"contract_agency","column":"agency_name_link"},
+{"labelAlias":"oca_number","column":"prime_oca_number"},
 {"labelAlias":"version","column":"prime_document_version"},
 {"labelAlias":"fms_doc_id","column":"parent_contract_link"},
 {"labelAlias":"contract_type","column":"contract_type_formatted"},
@@ -232,6 +246,9 @@
 {"labelAlias":"prime_contract_industry","column":"prime_industry_name_formatted"},
 {"labelAlias":"pin","column":"tracking_number"},
 {"labelAlias":"apt_pin","column":"brd_awd_no"},
+{"labelAlias":"percent_covid_spending","column":"formatted_percent_covid"},
+{"labelAlias":"percent_asylum_spending","column":"formatted_percent_asylum"},
+{"labelAlias":"percent_other_spending","column":"formatted_percent_other"},
 {"labelAlias":"sub_vendor_name","column":"subvendor_name"},
 {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name"},
 {"labelAlias":"contract_purpose","column":"sub_purpose_formatted"},

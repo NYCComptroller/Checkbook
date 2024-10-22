@@ -112,6 +112,9 @@ function nyccheckbook_preprocess_html(&$variables) {
     elseif (RequestUtilities::get('featuredtrends')) {
       $variables['attributes']['class'][] = 'page-featuredtrends';
     }
+    else {
+      $variables['attributes']['class'][] = 'page-trends';
+    }
   }
 
   $variables['attributes']['class'][] = 'pageurl-' . trim(preg_replace('/[^a-zA-Z0-9]/', '', CustomBreadcrumbs::getCurrentPath()));

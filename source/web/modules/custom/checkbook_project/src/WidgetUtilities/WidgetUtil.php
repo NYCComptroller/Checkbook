@@ -176,6 +176,7 @@ class WidgetUtil
         "version_number" => "Version<br/>Number",
         "revision_number" => "Revision<br/>Number",
         "revision_total_amount" => "Revision<br/>Total Amount",
+        "oca_number" => "OCA<br/>Number",
         "version" => "Version",
         "start_date" => "Start<br/>Date",
         "end_date" => "End<br/>Date",
@@ -275,7 +276,7 @@ class WidgetUtil
         "acco_cancelled" => "Acco<br/>Canceled",
         "assoc_releases" => "Assoc. Releases",
         "subvendor_mwbe_category" => "Sub Vendor's M/WBE<br/>Category",
-        "subvendor_status_pip" => "Sub Vendor<br/>Status in PIP",
+        "subvendor_status_pip" => "Subcontract<br/>Status",
         "spend_to_date" => "Spend to<br/> Date",
         "delta_amount" => "Delta<br/>Amount",
         "po_number"=>"PO Number",
@@ -347,6 +348,9 @@ class WidgetUtil
         "woman_owned_business" => "Woman Owned<br/> Business",
         "emerging_business" => "Emerging<br/> Business",
         "mocs_registered" => "MOCS<br/> Registered",
+        "percent_covid_spending" => "% Covid<br/> Spending",
+        "percent_asylum_spending" => "% Asylum Seekers<br/> Spending",
+        "percent_other_spending" => "% Other<br/> Spending",
     );
 
   //For number cols, need to find out if they are uniform number of digits for formatting

@@ -172,6 +172,12 @@
                 },
                 "remaining_amount_sum":{
                     "function":"SUM(COALESCE(current_modified_budget_amount,0)) - SUM(COALESCE(posting_amount,0))"
+                },
+                "asylum_count":{
+                    "function": "SUM(CASE WHEN event_id ~* '(^|,)2(,|$)' THEN 1 ELSE 0 END)"
+                },
+                "covid_count":{
+                    "function": "SUM(CASE WHEN event_id ~* '(^|,)1(,|$)' THEN 1 ELSE 0 END)"
                 }
             }
         }

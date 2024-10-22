@@ -25,27 +25,30 @@
 
 <a class="trends-export" href="/export/trends/download/{{node.nid}}">Export</a>
 
-<table id="table_{{ node.nid }}" style='display:none' class="trendsShowOnLoad {{node.widgetConfig.html_class}}">
+<table id="table_{{ node.nid }}" style='display:none;border-collapse:unset;' class="trendsShowOnLoad {{node.widgetConfig.html_class}}">
     {{addCaption(node) |raw}}
     <thead>
         <tr>
-            <th class="centrig"><div>&nbsp;</div></th>
+            <th rowspan="2"><div>Type of Property</div></th>
             {% for year in data.years %}
               {% if year == 2014 %}
-                <th rowspan='2'><div></div></th><th colspan="5" class="centrig bb"><div>Fiscal Year {{ year }} <sup>(3)</sup></div></th>
+                <th><div>&nbsp;</div></th>
+                <th colspan="5" class="centrig bb"><div>Fiscal Year {{ year }} <sup>(3)</sup></div></th>
               {% else %}
-                <th rowspan='2'><div></div></th><th colspan="5" class="centrig bb"><div>Fiscal Year {{ year }}</div></th>
+                <th><div>&nbsp;</div></th>
+                <th colspan="5" class="centrig bb"><div>Fiscal Year {{ year }}</div></th>
               {% endif %}
             {% endfor %}
-            <th rowspan="2" >&nbsp;</th>
+            <th><div>&nbsp;</div></th>
         </tr>
         <tr>
-          <th class="text"><div>Type of Property</div></th>
             {% for year in data.years %}
+                <th><div>&nbsp;</div></th>
                 <th class="number"><div class="trendCen thAssess" >Assessed<br/>Value<br/>(in millions)</div></th>
                 <th><div>&nbsp;</div></th><th class="number "><div class="trendCen thPercent" >Percentage<br>of Taxable<br>Real Estate</div></th>
                 <th><div>&nbsp;</div></th><th class="number "><div class="trendCen thDirect" >Direct<br>Tax<br>Rate <sup>(2)</sup></div></th>
             {% endfor %}
+            <th><div>&nbsp;</div></th>
         </tr>
     </thead>
 
@@ -70,7 +73,7 @@
     <p>(3) In fiscal year 2014 The Annual Report, the New York City Property Tax Fiscal Year 2014, reported various classifications of
     condos as class four real property for the first time.</p>
     <p>Note: Property in New York City is reassessed once a year. The City assesses property at approximately 40
-percent of Market Value for commercial and industrial property and 20 percent of Market Value for residential property.</p>
-<p>Sources: Resolutions of the City Council and The Annual Report, The New York City Property Tax Fiscal Year {{ data.years[0] }}. </p>
+      percent of Market Value for commercial and industrial property and 20 percent of Market Value for residential property.</p>
+<p>Sources: Resolutions of the City Council and The Annual Report, The New York City Property Tax Fiscal Year {{ data.years[0] }}.</p>
 </div>
 

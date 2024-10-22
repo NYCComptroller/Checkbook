@@ -10,7 +10,7 @@
   <div class="contract-details-heading">
   <div class="contract-id">
     <h2 class="contract-title">{{customFunctionEvaluate(node.widgetConfig.templateTitleEval)}}</h2>
-    <div class="spending-tx-subtitle"><b>{{node.widgetConfig.templateLabel}}</b>: {{node.data[0]['expenditure_object_expenditure_object_original_expenditure_object_name']}}</div>
+    <div class="spending-tx-subtitle"><b>{{node.widgetConfig.templateLabel}}</b>: {{node.data[0]['expenditure_object_expenditure_object_original_expenditure_object_name']|upper|raw}}</div>
   </div>
   <div class="dollar-amounts">
     <div class="ytd-spending-amount">
@@ -19,7 +19,7 @@
     </div>
     <div class="percent-spending-amount">
       {{ percent_spending_value |raw }}
-      <div class="amount-title">{{percent_spending |raw}}</div>
+      <div class="amount-title">{{percent_spending|raw}}</div>
     </div>
   </div>
 </div>

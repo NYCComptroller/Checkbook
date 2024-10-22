@@ -4,7 +4,7 @@
     "preProcessConfiguration":"
       $cevent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('cevent');
       $mocs = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('mocs');
-      $node->show_moc_registered = ($cevent > 0 || isset($mocs));
+      $node->show_moc_registered = ($cevent > 0 && isset($mocs));
       $year = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('year');
       if(!isset($year)) $node->widgetConfig->dataset = 'checkbook:spending_transactions_all_years';
   ",
@@ -92,7 +92,7 @@
       "agid": "agreement_id",
       "cvendor": "vendor_id@checkbook:contracts_spending_transactions",
       "cagency": "document_agency_id@checkbook:contracts_spending_transactions",
-      "awdmethod": "award_method_id@checkbook:contracts_spending_transactions",
+      "awdmethod": "award_method_code@checkbook:contracts_spending_transactions",
       "status": "status_flag@checkbook:contracts_spending_transactions",
       "csize": "award_size_id@checkbook:contracts_spending_transactions",
       "cindustry": "industry_type_id@checkbook:contracts_spending_transactions",
@@ -125,9 +125,10 @@
       "scalyear": "le",
       "deptnm": "eqignorecase",
       "expcategorynm": "eqignorecase",
-      "vendornm": "like"
+      "vendornm": "like",
+      "cevent": "any"
     },
-    "allowRequestParams":["dtsmnid","smnid","pscert"],
+    "allowRequestParams":["dtsmnid","smnid","pscert","cevent","cond"],
     "header":"
         $header = NULL;
         $header .= widget_data_tables_export_link($node);
@@ -533,6 +534,7 @@
         var oIndustryType = getNamedFilterCriteria('fIndustryTypeId');
         var oBudgetCode = getNamedFilterCriteria('fBudgetCode');
         var oPrimeSubCert = getNamedFilterCriteria('fPrimeSubCert');
+        var oCondEvent = getNamedFilterCriteria('feventId');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
         var cUrlArray = cUrl.split('/');
@@ -559,6 +561,7 @@
         cUrl = adjustUrlParameter(cUrl,'industry',oIndustryType);
         cUrl = adjustUrlParameter(cUrl,'bdgcode',oBudgetCode);
         cUrl = adjustUrlParameter(cUrl,'pscert',oPrimeSubCert);
+        cUrl = adjustUrlParameter(cUrl,'cevent',oCondEvent);
 
         return cUrl;
     }"

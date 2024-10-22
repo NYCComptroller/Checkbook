@@ -1,0 +1,885 @@
+<h1 id="page-title">Payroll API</h1>
+
+<ul class="api-jump-links add-list-reset">
+	<li><a href="#global-parameters">Global Parameters</a></li>
+	<li><a href="#payroll-parameters">Payroll Parameters</a></li>
+	<li><a href="#possible-response">Possible Response Columns</a></li>
+	<li><a href="#predefined-xml-entities">Predefined Entities in XML</a></li>
+	<li><a href="#sample-xml">Sample XML Requests and Responses</a></li>
+	<li><a href="#sample-request-payroll">Sample Request: Payroll Transactions</a></li>
+	<li><a href="#sample-response-payroll">Sample Response: Payroll Transactions</a></li>
+	<li><a href="#sample-request-payroll-oge">Sample Request: Payroll Transactions(OTHER GOVERNMENT ENTITIES - NYCHA)</a></li>
+	<li><a href="#sample-response-payroll-oge">Sample Response: Payroll Transactions(OTHER GOVERNMENT ENTITIES - NYCHA)</a></li>
+	<li><a href="#status-codes-messages">Status Codes and Messages</a></li>
+</ul>
+
+<p><a id="global-parameters" name="global-parameters"></a></p>
+
+<h3 class="title">Global Parameters</h3>
+
+<table class="api-table">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Required (Y/N)</th>
+			<th>Format/Value</th>
+			<th>Description</th>
+			<th>Example</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>type_of_data</td>
+			<td>Y</td>
+			<td>String – Maximum 15 Characters.</td>
+			<td>Allows user to select different types of data. Value must be one of the following:Contracts, Budget, Revenue, Payroll, Spending, Spending_OGE, Contracts_OGE, Spending_NYCHA, Contracts_NYCHA and Payroll_NYCHA <!-- Budget_NYCHA, and Revenue_NYCHA --></td>
+			<td>Payroll</td>
+		</tr>
+		<tr>
+			<td>max_records</td>
+			<td>N</td>
+			<td>String - Maximum 4 Characters</td>
+			<td>Allows you to set the maximum number of records retrieved to fewer than 1000</td>
+			<td>500</td>
+		</tr>
+		<tr>
+			<td>record_from</td>
+			<td>N</td>
+			<td>String - Maximum 15 Characters</td>
+			<td>Allows you to set the starting position of the records to be retrieved</td>
+			<td>12500</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><a class="float-right" href="#top">Back to the top</a> <a id="budget-parameters" name="payroll-parameters"></a></p>
+
+<h3 class="title">type_of_data:Payroll</h3>
+
+<p><strong>Payroll Parameters</strong> – All the parameters are optional, meaning that you can send only 1 or all of them. If you choose to not send any, you will receive random transactions in return, as these parameters are the filter.</p>
+
+<table class="api-table">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Required (Y/N/C)<br />
+			(Yes/No/<br />
+			Conditional)</th>
+			<th>Type of Criteria (value/range)</th>
+			<th>Format/Value</th>
+			<th>Description</th>
+			<th>Applicable Filters</th>
+			<th>Reference Codes</th>
+			<th>Example</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>fiscal_year</td>
+			<td>C</td>
+			<td>value</td>
+			<td>String - YYYY - Maximum 4 characters</td>
+			<td>Fiscal Year. Must be exactly 4 characters. It is mandatory to select either fiscal year or calendar year.</td>
+			<td>Citywide Agencies and Other Government Entities (NYCHA)</td>
+			<td>&nbsp;</td>
+			<td>2005</td>
+		</tr>
+		<tr>
+			<td>calendar_year</td>
+			<td>C</td>
+			<td>value</td>
+			<td>String - YYYY - Maximum 4 characters</td>
+			<td>Calendar Year. Must be exactly 4 characters. It is mandatory to select either fiscal year or calendar year.</td>
+			<td>Citywide Agencies</td>
+			<td>&nbsp;</td>
+			<td>2011</td>
+		</tr>
+		<tr>
+			<td>agency_code</td>
+			<td>N</td>
+			<td>value</td>
+			<td>String - Maximum 3 characters</td>
+			<td>Identification code associated with agency.</td>
+			<td>Citywide Agencies</td>
+			<td>Citywide: <a href="/ref_code_list/agency">Agency Codes List</a></td>
+			<td>127</td>
+		</tr>
+		<tr>
+			<td>pay_frequency</td>
+			<td>N</td>
+			<td>value</td>
+			<td>String - Maximum 18 characters</td>
+			<td>Possible values are: BI-WEEKLY, WEEKLY, SEMI-MONTHLY, SUPPLEMENTAL, DAILY AND HOURLY</td>
+			<td>Citywide Agencies and Other Government Entities (NYCHA)</td>
+			<td>Possible values are: BI-WEEKLY, WEEKLY, SEMI-MONTHLY, SUPPLEMENTAL, DAILY AND HOURLY</td>
+			<td>BI-WEEKLY</td>
+		</tr>
+		<tr>
+			<td>title</td>
+			<td>N</td>
+			<td>value</td>
+			<td>String - Maximum 100 characters</td>
+			<td>Displays employees civil service title</td>
+			<td>Citywide Agencies and Other Government Entities (NYCHA)</td>
+			<td>&nbsp;</td>
+			<td>teacher</td>
+		</tr>
+		<tr>
+			<td>pay_date</td>
+			<td>N</td>
+			<td>range</td>
+			<td>String - YYYY-MM-DD</td>
+			<td>Date of payment</td>
+			<td>Citywide Agencies and Other Government Entities (NYCHA)</td>
+			<td>&nbsp;</td>
+			<td>2001-08-12</td>
+		</tr>
+		<tr>
+			<td>amount</td>
+			<td>N</td>
+			<td>range</td>
+			<td>String - Maximum 18 characters</td>
+			<td>Citywide Agencies and Other Government Entities (NYCHA)</td>
+			<td>If amount is provided, then amount type needs to be provided in order to distinguish annual, rate and all. By default, data for all types is provided.</td>
+			<td>&nbsp;</td>
+			<td>250000.00</td>
+		</tr>
+		<tr>
+			<td>amount_type</td>
+			<td>N</td>
+			<td>value</td>
+			<td>String - Maximum 18 characters</td>
+			<td>Possible values are “ANNUAL”, ”RATE” and ”ALL”</td>
+			<td>Citywide Agencies and Other Government Entities (NYCHA)</td>
+			<td>Three possible columns should be in this format: ANNUAL, RATE and ALL. By default, ‘ALL’ is preselected.</td>
+			<td>ANNUAL</td>
+		</tr>
+		<tr>
+			<td>gross_pay</td>
+			<td>N</td>
+			<td>range</td>
+			<td>String - Maximum 18 characters</td>
+			<td>A dollar amount which is summation of base pay, other payments and overtime amounts.</td>
+			<td>Citywide Agencies and Other Government Entities (NYCHA)</td>
+			<td>&nbsp;</td>
+			<td>250000.00</td>
+		</tr>
+		<tr>
+			<td>base_pay</td>
+			<td>N</td>
+			<td>range</td>
+			<td>String - Maximum 18 characters</td>
+			<td>An employee's base pay can be expressed as a base hourly rate of pay or as an annual salary</td>
+			<td>Citywide Agencies and Other Government Entities (NYCHA)</td>
+			<td>&nbsp;</td>
+			<td>250000.00</td>
+		</tr>
+		<tr>
+			<td>other_payments</td>
+			<td>N</td>
+			<td>range</td>
+			<td>String - Maximum 18 characters</td>
+			<td>Other payments associated to an employee salary.</td>
+			<td>Citywide Agencies and Other Government Entities (NYCHA)</td>
+			<td>&nbsp;</td>
+			<td>250000.00</td>
+		</tr>
+		<tr>
+			<td>overtime_payments</td>
+			<td>N</td>
+			<td>range</td>
+			<td>String - Maximum 18 characters</td>
+			<td>Employee's overtime pay</td>
+			<td>Citywide Agencies and Other Government Entities (NYCHA)</td>
+			<td>&nbsp;</td>
+			<td>250000.00</td>
+		</tr>
+		<tr>
+			<td>gross_pay_ytd</td>
+			<td>N</td>
+			<td>range</td>
+			<td>String - Maximum 18 characters</td>
+			<td>The Total Gross pay would be displayed based on the selected Fiscal year or calendar year.</td>
+			<td>Citywide Agencies and Other Government Entities (NYCHA)</td>
+			<td>&nbsp;</td>
+			<td>250000.00</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><a class="float-right" href="#top">Back to the top</a> <a id="possible-response" name="possible-response"></a></p>
+
+<h3 class="title">Possible response columns:</h3>
+
+<p>User would be able to select which columns he would like to view in his output. Below mentioned are the possible column names for payroll domain. The user should include the required column names in the request xml in an element called &lt;response_coloumns&gt;</p>
+
+<div class="api-response-columns-center">
+<table>
+	<tbody>
+		<tr>
+			<td style="width: 5%">&nbsp;</td>
+			<td class="api-td-left" style="width: 45%">
+			<table class="api-response-columns-table">
+				<thead>
+					<tr>
+						<th colspan="2">(Citywide)Response Column Names</th>
+					</tr>
+				</thead>
+				<thead>
+					<tr>
+						<td>agency</td>
+						<td>base_pay</td>
+					</tr>
+					<tr>
+						<td>fiscal_year</td>
+						<td>other_payments</td>
+					</tr>
+					<tr>
+						<td>pay_frequency</td>
+						<td>overtime_payments</td>
+					</tr>
+					<tr>
+						<td>hourly_rate</td>
+						<td>gross_pay_ytd</td>
+					</tr>
+					<tr>
+						<td>gross_pay</td>
+						<td>calendar_year</td>
+					</tr>
+					<tr>
+						<td>title</td>
+						<td>annual_salary</td>
+					</tr>
+					<tr>
+						<td>pay_date</td>
+						<td>payroll_type</td>
+					</tr>
+				</thead>
+			</table>
+			</td>
+			<td style="width: 5%">&nbsp;</td>
+			<td class="api-td-right" style="width:45">
+			<table class="api-response-columns-table">
+				<thead>
+					<tr>
+						<th colspan="2">(Other Government Entities - NYCHA)Response Column Names</th>
+					</tr>
+				</thead>
+				<thead>
+					<tr>
+						<td>annual_salary</td>
+						<td>base_pay</td>
+					</tr>
+					<tr>
+						<td>calendar_year</td>
+						<td>other_payments</td>
+					</tr>
+					<tr>
+						<td>pay_frequency</td>
+						<td>overtime_payments</td>
+					</tr>
+					<tr>
+						<td>hourly_rate</td>
+						<td>gross_pay_ytd</td>
+					</tr>
+					<tr>
+						<td>gross_pay</td>
+						<td>title</td>
+					</tr>
+					<tr>
+						<td>payroll_type</td>
+						<td>pay_date</td>
+					</tr>
+				</thead>
+			</table>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<p><a class="float-right" href="#top">Back to the top</a> <a name="predefined-xml-entities"></a></p>
+
+<p>&nbsp;</p>
+
+<h3>Predefined Entities in XML</h3>
+
+<p>The user has to encode the names using the predefined entities list embedded below, while searching using names (payee_name, budget_name, vendor, and purpose). The table below lists the five XML predefined entities. The "Name" column mentions the entity's name. The "Character" column shows the character. To render the character, the format &amp;name; is used; for example, &amp;amp; renders as &amp;.</p>
+
+<table class="api-table">
+	<tbody>
+		<tr>
+			<th>Name</th>
+			<th>Character</th>
+			<th>Description</th>
+			<th>Representation</th>
+			<th>Example Text</th>
+			<th>Example Request/Response</th>
+		</tr>
+		<tr>
+			<td>quot</td>
+			<td>"</td>
+			<td>double quotation mark</td>
+			<td>&amp;quot;</td>
+			<td>“Gilbane”</td>
+			<td>&amp;quot;Gilbane&amp;quot;</td>
+		</tr>
+		<tr>
+			<td>amp</td>
+			<td>&amp;</td>
+			<td>ampersand</td>
+			<td>&amp;amp;</td>
+			<td>Mckissack &amp; Mckissack</td>
+			<td>Mckissack &amp;amp; Mckissack</td>
+		</tr>
+		<tr>
+			<td>apos</td>
+			<td>'</td>
+			<td>apostrophe (apostrophe-quote)</td>
+			<td>&amp;apos;</td>
+			<td>‘turner’</td>
+			<td>&amp;apos; turner &amp;apos;</td>
+		</tr>
+		<tr>
+			<td>lt</td>
+			<td>&lt;</td>
+			<td>less-than sign</td>
+			<td>&amp;lt;</td>
+			<td>&lt;gilbane building</td>
+			<td>&amp;lt;gilbane building</td>
+		</tr>
+		<tr>
+			<td>gt</td>
+			<td>&gt;</td>
+			<td>greater-than sign</td>
+			<td>&amp;gt;</td>
+			<td>gilbane building&gt;</td>
+			<td>gilbane building&amp;gt;</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><a class="float-right" href="#top">Back to the top</a> <a id="sample-xml" name="sample-xml"></a></p>
+
+<p>&nbsp;</p>
+
+<h3 class="title">Sample XML Requests and Responses</h3>
+
+<p>The following xml file will specify API method calls and the details for each call.</p>
+
+<p>The request xml would include global parameters which specify the selected domain, records from and maximum records to return in response. It also includes search parameters along with requested response column.</p>
+
+<p>In the response xml, the actual search parameters that were sent will be returned in an element called &lt;search_criteria&gt; along with the actual result for a given search criteria will be displayed in an element called &lt;result_records&gt;.</p>
+
+<p>The total number of resulting records for a given search criteria will be displayed within an element called &lt;record_count&gt;, which helps user to view the total number of records found for a given search criteria.</p>
+
+<p>The response xml also includes status messages for the result. If there is an error, corresponding error code along with description will be included in an element called &lt;messages&gt; for user reference.</p>
+
+<p><a class="float-right" href="#top">Back to the top</a><br />
+<a id="sample-request-payroll" name="sample-request-payroll"></a></p>
+
+<h3 class="title">Sample Request: Payroll Transactions(CITYWIDE)</h3>
+
+<pre class="prettyprint prettyprinted" style=""><span class="pln">    </span><span class="tag">&lt;request&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type_of_data&gt;</span><span class="pln">Payroll</span><span class="tag">&lt;/type_of_data&gt;</span><span class="pln">
+      </span><span class="tag">&lt;records_from&gt;</span><span class="pln">1</span><span class="tag">&lt;/records_from&gt;</span><span class="pln">
+      </span><span class="tag">&lt;max_records&gt;</span><span class="pln">5</span><span class="tag">&lt;/max_records&gt;</span><span class="pln">
+      </span><span class="tag">&lt;search_criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">fiscal_year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">2011</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">agency_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">040</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">pay_frequency</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">SEMI-MONTHLY</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">pay_date</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">2011-01-30</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">2011-07-30</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">amount</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">amount_type</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">ANNUAL</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">gross_pay</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">base_pay</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">other_payments</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">overtime_payments</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">gross_pay_ytd</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">title</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">teacher</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/search_criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;response_columns&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">agency</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">title</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">pay_frequency</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">pay_date</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">annual_salary</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">hourly_rate</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">gross_pay</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">base_pay</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">other_payments</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">overtime_payments</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">gross_pay_ytd</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">fiscal_year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">calendar_year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/response_columns&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/request&gt;</span></pre>
+
+<p><a class="float-right" href="#top">Back to the top</a><br />
+<a id="sample-response-payroll" name="sample-response-payroll"></a></p>
+
+<h3 class="title">Sample Response: Payroll Transactions(CITYWIDE)</h3>
+
+<pre class="prettyprint prettyprinted" style=""><span class="pln">    </span><span class="tag">&lt;response&gt;</span><span class="pln">
+      </span><span class="tag">&lt;status&gt;</span><span class="pln">
+        </span><span class="tag">&lt;result&gt;</span><span class="pln">success</span><span class="tag">&lt;/result&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/status&gt;</span><span class="pln">
+      </span><span class="tag">&lt;request_criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;request&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type_of_data&gt;</span><span class="pln">Payroll</span><span class="tag">&lt;/type_of_data&gt;</span><span class="pln">
+          </span><span class="tag">&lt;records_from&gt;</span><span class="pln">1</span><span class="tag">&lt;/records_from&gt;</span><span class="pln">
+          </span><span class="tag">&lt;max_records&gt;</span><span class="pln">1000</span><span class="tag">&lt;/max_records&gt;</span><span class="pln">
+          </span><span class="tag">&lt;search_criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+              </span><span class="tag">&lt;name&gt;</span><span class="pln">fiscal_year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+              </span><span class="tag">&lt;value&gt;</span><span class="pln">2011</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+              </span><span class="tag">&lt;name&gt;</span><span class="pln">agency_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+              </span><span class="tag">&lt;value&gt;</span><span class="pln">040</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+              </span><span class="tag">&lt;name&gt;</span><span class="pln">pay_frequency</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+              </span><span class="tag">&lt;value&gt;</span><span class="pln">SEMI-MONTHLY</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+              </span><span class="tag">&lt;name&gt;</span><span class="pln">pay_date</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+              </span><span class="tag">&lt;start&gt;</span><span class="pln">2011-01-30</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+              </span><span class="tag">&lt;end&gt;</span><span class="pln">2011-07-30</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+              </span><span class="tag">&lt;name&gt;</span><span class="pln">amount</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+              </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+              </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+              </span><span class="tag">&lt;name&gt;</span><span class="pln">amount_type</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+              </span><span class="tag">&lt;value&gt;</span><span class="pln">ANNUAL</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+              </span><span class="tag">&lt;name&gt;</span><span class="pln">gross_pay</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+              </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+              </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+              </span><span class="tag">&lt;name&gt;</span><span class="pln">base_pay</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+              </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+              </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+              </span><span class="tag">&lt;name&gt;</span><span class="pln">other_payments</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+              </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+              </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+              </span><span class="tag">&lt;name&gt;</span><span class="pln">overtime_payments</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+              </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+              </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+              </span><span class="tag">&lt;name&gt;</span><span class="pln">gross_pay_ytd</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+              </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+              </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+              </span><span class="tag">&lt;name&gt;</span><span class="pln">title</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+              </span><span class="tag">&lt;value&gt;</span><span class="pln">TEACHER</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;/search_criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/request&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/request_criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;result_records&gt;</span><span class="pln">
+        </span><span class="tag">&lt;record_count&gt;</span><span class="pln">1</span><span class="tag">&lt;/record_count&gt;</span><span class="pln">
+        </span><span class="tag">&lt;payroll_transactions&gt;</span><span class="pln">
+          </span><span class="tag">&lt;transaction&gt;</span><span class="pln">
+            </span><span class="tag">&lt;agency&gt;</span><span class="pln">DEPARTMENT OF CULTURAL AFFAIRS</span><span class="tag">&lt;/agency&gt;</span><span class="pln">
+            </span><span class="tag">&lt;title&gt;</span><span class="pln">civil service title 1</span><span class="tag">&lt;/title&gt;</span><span class="pln">
+            </span><span class="tag">&lt;fiscal_year&gt;</span><span class="pln">2011</span><span class="tag">&lt;/fiscal_year&gt;</span><span class="pln">
+            </span><span class="tag">&lt;calendar_year&gt;</span><span class="pln">2011</span><span class="tag">&lt;/calendar_year</span><span class="pln"> </span><span class="tag">&gt;</span><span class="pln">
+            </span><span class="tag">&lt;pay_frequency&gt;</span><span class="pln">SEMI-MONTHLY</span><span class="tag">&lt;/pay_frequency&gt;</span><span class="pln">
+            </span><span class="tag">&lt;annual_salary&gt;</span><span class="pln">65000.00</span><span class="tag">&lt;/annual_salary&gt;</span><span class="pln">
+            </span><span class="tag">&lt;hourly_rate&gt;</span><span class="pln">N/A</span><span class="tag">&lt;/hourly_rate&gt;</span><span class="pln">
+            </span><span class="tag">&lt;pay_date&gt;</span><span class="pln">2011-06-30</span><span class="tag">&lt;/pay_date&gt;</span><span class="pln">
+            </span><span class="tag">&lt;gross_pay&gt;</span><span class="pln">5143.00</span><span class="tag">&lt;/gross_pay&gt;</span><span class="pln">
+            </span><span class="tag">&lt;base_pay&gt;</span><span class="pln">5000.00</span><span class="tag">&lt;/base_pay&gt;</span><span class="pln">
+            </span><span class="tag">&lt;other_payments&gt;</span><span class="pln">60.00</span><span class="tag">&lt;/other_payments&gt;</span><span class="pln">
+            </span><span class="tag">&lt;overtime_payments&gt;</span><span class="pln">83.00</span><span class="tag">&lt;/overtime_payments&gt;</span><span class="pln">
+            </span><span class="tag">&lt;gross_pay_ytd&gt;</span><span class="pln">61799.00</span><span class="tag">&lt;/gross_pay_ytd&gt;</span><span class="pln">
+          </span><span class="tag">&lt;/transaction&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/payroll_transactions&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/result_records&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/response&gt;</span></pre>
+
+<p><a class="float-right" href="#top">Back to the top</a><br />
+<a id="sample-request-payroll-oge" name="sample-request-payroll-oge"></a></p>
+
+<h3 class="title">Sample Request: Payroll Transactions(OTHER GOVERNMENT ENTITIES - NYCHA)</h3>
+
+<pre class="prettyprint prettyprinted" style=""><span class="pln">   </span><span class="tag">&lt;request&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type_of_data&gt;</span><span class="pln">Payroll_NYCHA</span><span class="tag">&lt;/type_of_data&gt;</span><span class="pln">
+      </span><span class="tag">&lt;records_from&gt;</span><span class="pln">1</span><span class="tag">&lt;/records_from&gt;</span><span class="pln">
+      </span><span class="tag">&lt;max_records&gt;</span><span class="pln">1</span><span class="tag">&lt;/max_records&gt;</span><span class="pln">
+      </span><span class="tag">&lt;search_criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">fiscal_year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">2017</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">pay_frequency</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">BI-WEEKLY</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">pay_date</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">2016-11-18</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">2018-11-30</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">amount</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">amount_type</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">ANNUAL</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">gross_pay</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">base_pay</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">other_payments</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">overtime_payments</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">gross_pay_ytd</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">title</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">COMMUNITY ASSOCIATE</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/search_criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;response_columns&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">title</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">pay_frequency</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">pay_date</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">annual_salary</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">hourly_rate</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">gross_pay</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">base_pay</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">other_payments</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">overtime_payments</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">gross_pay_ytd</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">fiscal_year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/response_columns&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/request&gt;</span></pre>
+
+<p><a class="float-right" href="#top">Back to the top</a><br />
+<a id="sample-response-payroll-oge" name="sample-response-payroll-oge"></a></p>
+
+<h3 class="title">Sample Response: Payroll Transactions(OTHER GOVERNMENT ENTITIES -NYCHA)</h3>
+
+<pre class="prettyprint prettyprinted" style=""><span class="pln">   </span><span class="tag">&lt;response&gt;</span><span class="pln">
+  </span><span class="tag">&lt;status&gt;</span><span class="pln">
+    </span><span class="tag">&lt;result&gt;</span><span class="pln">success</span><span class="tag">&lt;/result&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/status&gt;</span><span class="pln">
+  </span><span class="tag">&lt;request_criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;request&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type_of_data&gt;</span><span class="pln">Payroll_NYCHA</span><span class="tag">&lt;/type_of_data&gt;</span><span class="pln">
+      </span><span class="tag">&lt;records_from&gt;</span><span class="pln">1</span><span class="tag">&lt;/records_from&gt;</span><span class="pln">
+      </span><span class="tag">&lt;max_records&gt;</span><span class="pln">1</span><span class="tag">&lt;/max_records&gt;</span><span class="pln">
+      </span><span class="tag">&lt;search_criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">fiscal_year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">2017</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">pay_frequency</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">BI-WEEKLY</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">pay_date</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">2016-11-18</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">2018-11-30</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">amount</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">amount_type</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">ANNUAL</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">gross_pay</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">base_pay</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">other_payments</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">overtime_payments</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">gross_pay_ytd</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">100000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">title</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">COMMUNITY ASSOCIATE</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/search_criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;response_columns&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">title</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">pay_frequency</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">pay_date</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">annual_salary</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">hourly_rate</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">gross_pay</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">base_pay</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">other_payments</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">overtime_payments</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">gross_pay_ytd</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">fiscal_year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/response_columns&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/request&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/request_criteria&gt;</span><span class="pln">
+  </span><span class="tag">&lt;result_records&gt;</span><span class="pln">
+    </span><span class="tag">&lt;record_count&gt;</span><span class="pln">2042</span><span class="tag">&lt;/record_count&gt;</span><span class="pln">
+    </span><span class="tag">&lt;payroll_transactions&gt;</span><span class="pln">
+      </span><span class="tag">&lt;transaction&gt;</span><span class="pln">
+        </span><span class="tag">&lt;title&gt;</span><span class="pln">COMMUNITY ASSOCIATE</span><span class="tag">&lt;/title&gt;</span><span class="pln">
+        </span><span class="tag">&lt;pay_frequency&gt;</span><span class="pln">BI-WEEKLY</span><span class="tag">&lt;/pay_frequency&gt;</span><span class="pln">
+        </span><span class="tag">&lt;pay_date&gt;</span><span class="pln">2017-09-28</span><span class="tag">&lt;/pay_date&gt;</span><span class="pln">
+        </span><span class="tag">&lt;annual_salary&gt;</span><span class="pln">59429</span><span class="tag">&lt;/annual_salary&gt;</span><span class="pln">
+        </span><span class="tag">&lt;hourly_rate&gt;</span><span class="pln">0</span><span class="tag">&lt;/hourly_rate&gt;</span><span class="pln">
+        </span><span class="tag">&lt;gross_pay&gt;</span><span class="pln">3699.46</span><span class="tag">&lt;/gross_pay&gt;</span><span class="pln">
+        </span><span class="tag">&lt;base_pay&gt;</span><span class="pln">2279.47</span><span class="tag">&lt;/base_pay&gt;</span><span class="pln">
+        </span><span class="tag">&lt;other_payments&gt;</span><span class="pln">141.65</span><span class="tag">&lt;/other_payments&gt;</span><span class="pln">
+        </span><span class="tag">&lt;overtime_payments&gt;</span><span class="pln">1278.34</span><span class="tag">&lt;/overtime_payments&gt;</span><span class="pln">
+        </span><span class="tag">&lt;gross_pay_ytd&gt;</span><span class="pln">57335.22</span><span class="tag">&lt;/gross_pay_ytd&gt;</span><span class="pln">
+        </span><span class="tag">&lt;fiscal_year&gt;</span><span class="pln">2017</span><span class="tag">&lt;/fiscal_year&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/transaction&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/payroll_transactions&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/result_records&gt;</span><span class="pln">
+</span><span class="tag">&lt;/response&gt;</span><span class="pln">
+</span></pre>
+
+<p><a class="float-right" href="#top">Back to the top</a><br />
+<a id="status-codes-messages" name="status-codes-messages"></a></p>
+
+<h3 class="title">Status Codes and Messages</h3>
+
+<p>Status messages are categorized and displayed as status codes with short description for the user to understand the cause of the error. In case of an error no result records will be displayed and the error message will be displayed inside the &lt;message&gt; XML element as shown below. See here for <a class="status-codes" href="#">list of status codes and messages</a></p>
+
+<p>Example:</p>
+
+<p><strong>Result is Success:</strong></p>
+
+<pre class="prettyprint prettyprinted" id="xml" style=""><span class="tag">&lt;status&gt;</span><span class="pln">
+    </span><span class="tag">&lt;result&gt;</span><span class="pln">success</span><span class="tag">&lt;/result&gt;</span><span class="pln">
+    </span><span class="tag">&lt;messages&gt;</span><span class="pln">
+        </span><span class="tag">&lt;message&gt;</span><span class="pln">
+            </span><span class="tag">&lt;code&gt;</span><span class="pln">1</span><span class="tag">&lt;/code&gt;</span><span class="pln">
+            </span><span class="tag">&lt;description&gt;</span><span class="pln">The status is still a success but there are no results found for given search criteria</span><span class="tag">&lt;/description&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/message&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/messages&gt;</span><span class="pln">
+</span><span class="tag">&lt;/status&gt;</span></pre>
+
+<p><strong>Example: Result is Failure</strong></p>
+
+<pre class="prettyprint prettyprinted" id="xml" style=""><span class="pln"> </span><span class="tag">&lt;status&gt;</span><span class="pln">
+    </span><span class="tag">&lt;result&gt;</span><span class="pln">error</span><span class="tag">&lt;/result&gt;</span><span class="pln">
+    </span><span class="tag">&lt;messages&gt;</span><span class="pln">
+        </span><span class="tag">&lt;message&gt;</span><span class="pln">
+            </span><span class="tag">&lt;code&gt;</span><span class="pln">1000</span><span class="tag">&lt;/code&gt;</span><span class="pln">
+            </span><span class="tag">&lt;description&gt;</span><span class="pln">Required parameter 'type_of_data' is missing</span><span class="tag">&lt;/description&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/message&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/messages&gt;</span><span class="pln">
+</span><span class="tag">&lt;/status&gt;</span></pre>
+
+<p><a class="float-right" href="#top">Back to the top</a><br />
+&nbsp;</p>
+
+<div class="status-codes">
+<table class="api-table">
+	<thead>
+		<tr>
+			<th>Status Code</th>
+			<th>Description</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>1</td>
+			<td>The status is still a success but there are no results found for given search criteria.</td>
+		</tr>
+		<tr>
+			<td>1000</td>
+			<td>Required parameter 'type_of_data' is missing.</td>
+		</tr>
+		<tr>
+			<td>1001</td>
+			<td>Invalid value 'PayrollRequest' is provided for 'type_of_data'. Valid values are Payroll, Contracts, Budget, Spending, and Revenue.</td>
+		</tr>
+		<tr>
+			<td>1002</td>
+			<td>Provided value '2.1' for 'records_from' is not an integer. Valid value is a number values without decimal places</td>
+		</tr>
+		<tr>
+			<td>1003</td>
+			<td>Total number of requested records '1001' exceeds allowed limit of '1000' records</td>
+		</tr>
+		<tr>
+			<td>1101</td>
+			<td>Provided request parameter 'date' is not valid for 'Payroll' domain. Valid values are 'fiscal_year, agency_code, department_code, budget_code, expense_category, adopted_budget, current_modified_budget, pre_encumbered, encumbered, cash_expense, post_adjustment, accrued_expense</td>
+		</tr>
+		<tr>
+			<td>1102</td>
+			<td>No value is provided for request parameter 'fiscal_year'.</td>
+		</tr>
+		<tr>
+			<td>1103</td>
+			<td>Provided value '20000' for request parameter 'fiscal_year' is not valid year.</td>
+		</tr>
+		<tr>
+			<td>1104</td>
+			<td>Provided 'start' value '200s' for request parameter 'adopted_budget' is not valid amount.</td>
+		</tr>
+		<tr>
+			<td>1105</td>
+			<td>Provided start value '1000' is greater than end value '500' for request parameter 'adopted_budget'.</td>
+		</tr>
+		<tr>
+			<td>1106</td>
+			<td>Provided response column 'agencyname' value is not allowed for 'Payroll' domain. Valid values are 'agency_name, department_name, expense_category, budget_code, budget_code_name, current_modified_budget, adopted_budget, pre_encumbered, encumbered, cash_expense, post_adjustment, accrued_expense'.</td>
+		</tr>
+		<tr>
+			<td>1108</td>
+			<td>Provided value 'abcd' for request parameter 'agency_code' exceeds maximum allowed '3' characters.</td>
+		</tr>
+		<tr>
+			<td>1109</td>
+			<td>Provided 'start' value '1234567890' for request parameter 'adopted_budget' exceeds maximum allowed '5' characters.</td>
+		</tr>
+		<tr>
+			<td>1110</td>
+			<td>Request parameter 'agency_code' do not support range values.</td>
+		</tr>
+	</tbody>
+</table>
+</div>

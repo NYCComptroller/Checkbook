@@ -43,21 +43,50 @@ function disable_input(selector) {
   });
 }
 
-// updateYearValue - change year value display for catastrophic events
-function updateEventYearValue(div_val, cevent) {
-  jQuery(div_val).each(function () {
+// updateYearValue - change year value display for conditional categories.
+function updateEventYearValue(enclosingDiv, cevent, domain = '') {
+  jQuery(enclosingDiv).each(function () {
     let year = "";
-    if((this.text).indexOf(' ') > -1) {
+    if ((this.text).indexOf(' ') > -1) {
       year = parseInt((this.text).split(' ')[1]);
-    }else{
+    }
+    else{
       year = parseInt(this.text);
     }
+
     if (year < 2020 && parseInt(cevent) === 1) {
       jQuery(this).hide();
-    }else {
+    } else if (year < 2018 && parseInt(cevent) === 2 && (domain !== 'revenue' && domain !== 'budget')) {
+      jQuery(this).hide();
+    } else {
       jQuery(this).show();
     }
   });
+}
+
+// updateConditionalEventValue - change Conditional Category value based on the selected year.
+function updateConditionalEventValue(enclosingDiv, year, allDisable, domain = '') {
+  year = parseInt(year) ?? 0;
+  year = year && year <= 1899 ? year + 1899 : year;
+
+  if(domain === 'revenue' || domain === 'budget') {
+    if(year < 2020){
+      disable_input(enclosingDiv.find('option[value*=1]'));
+    }else{
+      enable_input(enclosingDiv.find('option[value*=1]'));
+    }
+  }else{
+    if ((allDisable || (year && year < 2018))) {
+      disable_input(enclosingDiv);
+      jQuery(enclosingDiv).val('0');
+    } else if (year && (year === 2019 || year === 2018)) {
+      enable_input(enclosingDiv);
+      disable_input(enclosingDiv.find('option[value*=1]'));
+    }else{
+      enable_input(enclosingDiv);
+      enable_input(enclosingDiv.find('option[value*=1]'));
+    }
+  }
 }
 
 // advanced-search clearing/restting input fields
@@ -65,10 +94,11 @@ function clearInputFields(enclosingDiv, domain, dataSourceName) {
   jQuery(enclosingDiv).find(':input').each(function () {
     switch (this.type) {
       case 'select-one':
-        jQuery(this).val(jQuery(this).find('option:first').val());
+        jQuery(this).val(jQuery(this).find('option:not([disabled]):first').val());
         break;
       case 'date':
         jQuery(this).val('');
+        jQuery('.date-item-label', jQuery(this).parent()).html('');
         break;
       case 'text':
         jQuery(this).val('');
@@ -89,5 +119,4 @@ function clearInputFields(enclosingDiv, domain, dataSourceName) {
         break;
     }
   });
-  jQuery('.date-item-label', enclosingDiv).html('');
 }

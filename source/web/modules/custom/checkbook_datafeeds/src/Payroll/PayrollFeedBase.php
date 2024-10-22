@@ -151,7 +151,7 @@ abstract class PayrollFeedBase
     $this->selected_columns = checkbook_datafeeds_format_columns();
 
     //Filter columns for current data source
-    $this->filtered_columns = checkbook_datafeeds_payroll_filter_selected_columns($this->selected_columns, $this->data_source, $this->response_type);
+    $this->filtered_columns = checkbook_datafeeds_payroll_filter_selected_columns($this->selected_columns, $this->data_source, $this->response_type, $this->data_source == Datasource::NYCHA ? 'fiscal_year' : 'calendar_year');
 
     foreach ($this->selected_columns as $column) {
       $this->form['columns'][$column] = array('#markup' => '<div>' . $column . '</div>');

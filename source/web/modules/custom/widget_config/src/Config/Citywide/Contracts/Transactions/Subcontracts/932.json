@@ -14,7 +14,7 @@
         "contnum":"contract_number",
         "pmwbe":"prime_minority_type_id",
         "smwbe":"sub_minority_type_id",
-        "awdmethod":"award_method_id",
+        "awdmethod":"award_method_code@checkbook:award_method",
         "cindustry":"industry_type_id",
         "scindustry":"industry_type_id",
         "pcindustry":"industry_type_id",

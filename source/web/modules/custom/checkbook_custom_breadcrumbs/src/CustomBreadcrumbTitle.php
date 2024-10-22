@@ -1,8 +1,11 @@
 <?php
+
+namespace Drupal\checkbook_custom_breadcrumbs;
+
 /**
  * This file is part of the Checkbook NYC financial transparency software.
  *
- * Copyright (c) 2012 – 2023 New York City
+ * Copyright (c) 2012 – 2023 New York City.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,10 +21,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Drupal\checkbook_custom_breadcrumbs;
-
 use Drupal\checkbook_infrastructure_layer\Constants\Common\CheckbookDomain;
 
+/**
+ * Breadcrumb Title class.
+ */
 class CustomBreadcrumbTitle {
 
   /**
@@ -32,7 +36,10 @@ class CustomBreadcrumbTitle {
   protected static $title;
 
   /**
+   * Get custom breadcrumb title.
+   *
    * @return string|null
+   *   The title.
    */
   public static function getCustomBreadcrumbTitle(): ?string {
     if (!isset(self::$title)) {
@@ -41,7 +48,7 @@ class CustomBreadcrumbTitle {
         CheckbookDomain::$BUDGET => BudgetBreadcrumbs::getBudgetBreadcrumbTitle(),
         CheckbookDomain::$NYCHA_BUDGET => BudgetBreadcrumbs::getNychaBudgetBreadcrumbTitle(),
         CheckbookDomain::$REVENUE => RevenueBreacrumbs::getRevenueBreadcrumbTitle(),
-        CheckbookDomain::$NYCHA_REVENUE => RevenueBreacrumbs::getNYCHARevenueBreadcrumbTitle(),
+        CheckbookDomain::$NYCHA_REVENUE => RevenueBreacrumbs::getNychaRevenueBreadcrumbTitle(),
         CheckbookDomain::$PAYROLL => PayrollBreadcrumbs::getPayrollBreadcrumbTitle(),
         CheckbookDomain::$SPENDING => SpendingBreadcrumbs::getSpendingBreadcrumbTitle(),
         CheckbookDomain::$NYCHA_SPENDING => SpendingBreadcrumbs::getNychaSpendingBreadcrumbTitle(),
@@ -55,4 +62,5 @@ class CustomBreadcrumbTitle {
     }
     return self::$title;
   }
+
 }

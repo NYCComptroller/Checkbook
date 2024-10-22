@@ -144,7 +144,7 @@ function checkbook_datafeeds_budget($form, FormStateInterface &$form_state)
     '#limit_validation_errors' => array(),
     '#attributes' => array("onclick" => "
            jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
   );
   $form['feeds_budget_next'] = array(
@@ -154,7 +154,7 @@ function checkbook_datafeeds_budget($form, FormStateInterface &$form_state)
     '#submit' => array('checkbook_datafeeds_budget_next_submit'),
     '#attributes' => array("onclick" => "
            jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
   );
 
@@ -174,7 +174,7 @@ function checkbook_datafeeds_budget($form, FormStateInterface &$form_state)
 */
   $form['#attached']['library'][] = 'checkbook_datafeeds/datafeeds.budget';
   $form['#validate'] = array('checkbook_datafeeds_budget_validate');
-  $form['#attributes'] = array('class' => array('budget', 'data-feeds-wizard'));
+  $form['#attributes'] = array('class' => array('budget', 'data-feeds-wizard', 'datafeeds-domain-form'));
   return $form;
 }
 
@@ -245,15 +245,15 @@ function checkbook_datafeeds_budget_filter_data($form, FormStateInterface $form_
     '#prefix' => '<div class="datafield budgetcode">',
     '#suffix' => '</div>',
   );
-  $form['filter']['catastrophic_event'] = array(
+  $form['filter']['conditional_category'] = array(
     '#type' => 'select',
-    '#title' => t('Catastrophic Event:'),
+    '#title' => t('Conditional Category:'),
     '#options' => FormUtil::getEventNameAndId('attributes'),
     '#attributes' => array('class' => array('watch')),
-    '#prefix' => '<div id="catastrophic-event" class="datafield catastrophic-event">',
+    '#prefix' => '<div id="conditional-category" class="datafield conditional-category">',
     '#suffix' => '</div>',
     '#validated' => TRUE,
-    '#default_value' => $form_state->getValue('catastrophic_event', ''),
+    '#default_value' => $form_state->getValue('conditional_category', ''),
   );
   $form['filter']['fiscal_year'] = array(
     '#type' => 'select',
@@ -307,7 +307,7 @@ function checkbook_datafeeds_budget_filter_data($form, FormStateInterface $form_
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield preencumbered datarange"><label>Pre-encumbered:</label><div class="ranges">',
-//    '#default_value' => (!empty($form_state->getValue('preencumberedfrom')) || $form_state->getValue('preencumberedfrom') === "0") ?? '',
+    '#default_value' => $form_state->getValue('preencumberedfrom', ''),
   );
   $form['filter']['preencumberedto'] = array(
     '#type' => 'textfield',
@@ -315,7 +315,6 @@ function checkbook_datafeeds_budget_filter_data($form, FormStateInterface $form_
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-//    '#default_value' => (!empty($form_state->getValue('preencumberedto')) || $form_state->getValue('preencumberedto') === "0") ?? '',
     '#default_value' => $form_state->getValue('preencumberedto', ''),
   );
   $form['filter']['encumberedfrom'] = array(
@@ -331,7 +330,6 @@ function checkbook_datafeeds_budget_filter_data($form, FormStateInterface $form_
     '#title' => t('to'),
     '#size' => 15,
     '#maxlength' => 15,
-//    '#default_value' => (!empty($form_state->getValue('encumberedto')) || $form_state->getValue('encumberedto') === "0") ?? '',
     '#default_value' => $form_state->getValue('encumberedto', ''),
     '#suffix' => '</div></div>',
   );
@@ -340,7 +338,6 @@ function checkbook_datafeeds_budget_filter_data($form, FormStateInterface $form_
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield accruedexpense datarange"><label>Accrued Expense:</label><div class="ranges">',
-//    '#default_value' => (!empty($form_state->getValue('accruedexpensefrom')) || $form_state->getValue('accruedexpensefrom') === "0") ?? '',
     '#default_value' => $form_state->getValue('accruedexpensefrom', ''),
   );
   $form['filter']['accruedexpenseto'] = array(
@@ -349,14 +346,12 @@ function checkbook_datafeeds_budget_filter_data($form, FormStateInterface $form_
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-//    '#default_value' => (!empty($form_state->getValue('accruedexpenseto')) || $form_state->getValue('accruedexpenseto') === "0") ?? '',
     '#default_value' => $form_state->getValue('accruedexpenseto', ''),
   );
   $form['filter']['cashfrom'] = array(
     '#type' => 'textfield',
     '#size' => 15,
     '#maxlength' => 15,
-//    '#default_value' => (!empty($form_state->getValue('cashfrom')) || $form_state->getValue('cashfrom') === "0") ?? '',
     '#default_value' => $form_state->getValue('cashfrom', ''),
     '#prefix' => '<div class="datafield cashexpense datarange"><label>Cash Expense:</label><div class="ranges">',
   );
@@ -365,8 +360,7 @@ function checkbook_datafeeds_budget_filter_data($form, FormStateInterface $form_
     '#title' => t('to'),
     '#size' => 15,
     '#maxlength' => 15,
-//    '#default_value' => (!empty($form_state->getValue('cashto')) || $form_state->getValue('cashto') === "0") ?? '',
-    '#default_value' => $form_state->getValue('XXX', ''),
+    '#default_value' => $form_state->getValue('cashto', ''),
     '#suffix' => '</div></div>',
   );
   $form['filter']['postadjustmentsfrom'] = array(
@@ -374,7 +368,6 @@ function checkbook_datafeeds_budget_filter_data($form, FormStateInterface $form_
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield postadjustments datarange"><label>Post Adjustment:</label><div class="ranges">',
-//    '#default_value' => (!empty($form_state->getValue('postadjustmentsfrom')) || $form_state->getValue('postadjustmentsfrom') === "0") ?? '',
     '#default_value' => $form_state->getValue('postadjustmentsfrom', ''),
   );
   $form['filter']['postadjustmentsto'] = array(
@@ -383,7 +376,6 @@ function checkbook_datafeeds_budget_filter_data($form, FormStateInterface $form_
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-//    '#default_value' => (!empty($form_state->getValue('postadjustmentsto')) || $form_state->getValue('postadjustmentsto') === "0") ?? '',
     '#default_value' => $form_state->getValue('postadjustmentsto', ''),
   );
   $form['filter']['rightend'] = array(
@@ -410,7 +402,6 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
     '#type' => 'select',
     '#title' => t('Year:'),
     '#options' => CheckbookDateUtil::getFiscalYearsRange($data_source, CheckbookDomain::$BUDGET),
-    //'#default_value' => !empty($form_state['values']['nycha_fiscal_year']) ? $form_state['values']['nycha_fiscal_year'] : CheckbookDateUtil::getCurrentFiscalYear($data_source),
     '#default_value' => $form_state->getValue('nycha_fiscal_year', ''),
     '#attributes' => array('class' => array('watch')),
     '#prefix' => '<div class="datafield fiscalyear">',
@@ -426,7 +417,6 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
     '#prefix' => '<div id="expense-category" class="datafield expensecategory">',
     '#suffix' => '</div>',
     '#validated' => TRUE,
-    //'#default_value' => !empty($form_state['values']['nycha_expense_category']) ? $form_state['values']['nycha_expense_category'] : 'Select Expense Category',
     '#default_value' => $form_state->getValue('nycha_expense_category', ''),
   );
 
@@ -439,7 +429,6 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
     '#prefix' => '<div class="datafield nycha_resp_center">',
     '#suffix' => '</div>',
     '#validated' => TRUE,
-//    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'nycha_resp_center', $first_time_load, 'Select Responsibility Center'),
     '#default_value' => $form_state->getValue('nycha_resp_center', ''),
   );
   $funding_source_options = FormUtil::getFundingSourceOptions(Datasource::NYCHA);
@@ -497,8 +486,8 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
 
   $form['nycha_budget_type_hidden'] = array(
     '#title' => 'nycha_budget_type_hidden',
-    //'#value' => $form_state['values']['nycha_budget_type'],
-    '#type' => 'hidden'
+    '#value' => $form_state->getValue('nycha_budget_type'),
+    '#type' => 'hidden',
   );
 
   $budget_name_options = BudgetFormUtil::getBudgetName(CheckbookDomain::$BUDGET, Datasource::NYCHA);
@@ -511,14 +500,13 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
     '#validated' => TRUE,
-    // '#default_value' => !empty($form_state['values']['nycha_budget_name']) ? $form_state['values']['nycha_budget_name'] : 'Select Budget Name',
     '#default_value' => $form_state->getValue('nycha_budget_name', 'Select Budget Name'),
   );
 
   $form['nycha_budget_name_hidden'] = array(
     '#title' => 'nycha_budget_name_hidden',
-    //'#value' => $form_state['values']['nycha_budget_name'],
-    '#type' => 'hidden'
+    '#value' => $form_state->getValue('nycha_budget_name'),
+    '#type' => 'hidden',
   );
 
   $form['filter']['nycha-leftend'] = array(
@@ -533,7 +521,6 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield nycha_adopted_from datarange"><label>Adopted:</label><div class="ranges">',
-    // '#default_value' => (!empty($form_state['values']['nycha_adopted_from']) || $form_state['values']['nycha_adopted_from'] === "0") ? $form_state['values']['nycha_adopted_from'] : '',
     '#default_value' => $form_state->getValue('nycha_adopted_from', ''),
   );
 
@@ -543,7 +530,6 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    //'#default_value' => (!empty($form_state['values']['nycha_adopted_to']) || $form_state['values']['nycha_adopted_to'] === "0") ? $form_state['values']['nycha_adopted_to'] : '',
     '#default_value' => $form_state->getValue('nycha_adopted_to', ''),
   );
   //Modified Amount
@@ -552,7 +538,6 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield nycha_modified_from datarange"><label>Modified:</label><div class="ranges">',
-    // '#default_value' => (!empty($form_state['values']['nycha_modified_from']) || $form_state['values']['nycha_modified_from'] === "0") ? $form_state['values']['nycha_modified_from'] : '',
     '#default_value' => $form_state->getValue('nycha_modified_from', ''),
   );
   $form['filter']['nycha_modified_to'] = array(
@@ -561,7 +546,6 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    //'#default_value' => (!empty($form_state['values']['nycha_modified_to']) || $form_state['values']['nycha_modified_to'] === "0") ? $form_state['values']['nycha_modified_to'] : '',
     '#default_value' => $form_state->getValue('nycha_modified_to', ''),
   );
   //Committed Amount
@@ -570,7 +554,6 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield nycha_committed_from datarange"><label>Committed:</label><div class="ranges">',
-    // '#default_value' => (!empty($form_state['values']['nycha_committed_from']) || $form_state['values']['nycha_committed_from'] === "0") ? $form_state['values']['nycha_committed_from'] : '',
     '#default_value' => $form_state->getValue('nycha_committed_from', ''),
   );
   $form['filter']['nycha_committed_to'] = array(
@@ -579,7 +562,6 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    // '#default_value' => (!empty($form_state['values']['nycha_committed_to']) || $form_state['values']['nycha_committed_to'] === "0") ? $form_state['values']['nycha_committed_to'] : '',
     '#default_value' => $form_state->getValue('nycha_committed_to', ''),
   );
   //Encumbered  Amount
@@ -588,7 +570,6 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield nycha_encumbered_from datarange"><label>Encumbered:</label><div class="ranges">',
-    //'#default_value' => (!empty($form_state['values']['nycha_encumbered_from']) || $form_state['values']['nycha_encumbered_from'] === "0") ? $form_state['values']['nycha_encumbered_from'] : '',
     '#default_value' => $form_state->getValue('nycha_encumbered_from', ''),
   );
   $form['filter']['nycha_encumbered_to'] = array(
@@ -597,7 +578,6 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    // '#default_value' => (!empty($form_state['values']['nycha_encumbered_to']) || $form_state['values']['nycha_encumbered_to'] === "0") ? $form_state['values']['nycha_encumbered_to'] : '',
     '#default_value' => $form_state->getValue('nycha_encumbered_to', ''),
   );
   //Actual Amount
@@ -606,7 +586,6 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
     '#size' => 15,
     '#maxlength' => 15,
     '#prefix' => '<div class="datafield nycha_actual_from datarange"><label>Actual Amount:</label><div class="ranges">',
-    // '#default_value' => (!empty($form_state['values']['nycha_actual_from']) || $form_state['values']['nycha_actual_from'] === "0") ? $form_state['values']['nycha_actual_from'] : '',
     '#default_value' => $form_state->getValue('nycha_actual_from', ''),
   );
   $form['filter']['nycha_actual_to'] = array(
@@ -615,7 +594,6 @@ function checkbook_datafeeds_nycha_budget_filter_data($form, FormStateInterface 
     '#size' => 15,
     '#maxlength' => 15,
     '#suffix' => '</div></div>',
-    // '#default_value' => (!empty($form_state['values']['nycha_actual_to']) || $form_state['values']['nycha_actual_to'] === "0") ? $form_state['values']['nycha_actual_to'] : '',
     '#default_value' => $form_state->getValue('nycha_actual_to', ''),
   );
   $form['filter']['nycha-rightend'] = array(
@@ -648,11 +626,9 @@ function checkbook_datafeeds_budget_next_submit($form, &$form_state)
 
   $current_step = 'budget_confirmation';
 
-//  if (!empty($form_state['step_information'][$current_step]['stored_values'])) {
   if ($form_state->hasValue(['step_information', $current_step, 'stored_values'])) {
     $form_state->set('values', $form_state->getValues(['step_information', $current_step, 'stored_values']));
   } else {
-    //    $form_state['values'] = array();
     $form_state->setValue('values', array());
   }
 
@@ -660,7 +636,7 @@ function checkbook_datafeeds_budget_next_submit($form, &$form_state)
     ->set('user_values', $form_state->getValues())
     ->set('page_num', 3)
     // Since we have logic in our buildForm() method, we have to tell the form
-    // builder to rebuild the form. Otherwise, even though we set 'page_num'
+    // builder to rebuild the form. Otherwise, even though we sØet 'page_num'
     // to 2, the AJAX-rendered form will still show page 1.
     ->setRebuild();
 }

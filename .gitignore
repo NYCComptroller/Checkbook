@@ -16,7 +16,6 @@
 /source/web/sites/*/files/
 /source/web/themes/custom/checkbook3/node_modules/
 
-/source/web/modules/custom/widget_framework/widget_highcharts/Highcharts-Stock-*/
 # Ignore SimpleTest multi-site environment.
 /source/web/sites/simpletest
 

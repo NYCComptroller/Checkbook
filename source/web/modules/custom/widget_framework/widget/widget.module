@@ -64,14 +64,13 @@ function _widget_node_load_file($key){
   $node->type = "widget";
 
   $files = WidgetUtil::getWidgetJsonPath($key);
-  if(count($files) > 0){
+  if (count($files) > 0) {
     $file_names = array_keys($files);
     $json = file_get_contents($file_names[0]);
     $node->widget_json =  $json;
   }
 
   $node->nid = $key;
-
   return $node;
 }
 
@@ -93,18 +92,19 @@ function widget_parent_node_load($parent_nid){
 }
 
 function widget_node_load($nodes){
-  if(str_starts_with(\Drupal::request()->query->get('q'), "admin")){
+  if (str_starts_with(\Drupal::request()->query->get('q') ?? '', "admin")) {
     return "";
   }
 
   foreach($nodes as $nid => $node ){
     if( $node->type == "widget"){
       $files = WidgetUtil::getWidgetJsonPath($node);
-      if (count($files) > 0) {
+      if (!empty($files)) {
         $file_names = array_keys($files);
         $json = file_get_contents($file_names[0]);
         $node->widget_json = $json;
-      } else {
+      }
+      else {
         $node->widget_json = $node->body['und'][0]['value'];
       }
     }
@@ -129,10 +129,10 @@ function widget_node_view($node, $nodata = true) {
     }
   }
 
-  //make sure configuration is loaded
+  // Make sure configuration is loaded.
   widget_config($node);
 
-  // Handle grivew config updates
+  // Handle gridview config updates.
   $route_name = \Drupal::routeMatch()->getRouteName();
   if ($route_name == 'widget_highcharts.grid_view_widget_popup'){
     if (isset($node->widgetConfig->gridConfig->adjustWidgetConfig)) {
@@ -142,28 +142,28 @@ function widget_node_view($node, $nodata = true) {
     $node->widgetConfig->getTotalDataCount = true;
     $node->widgetConfig->displayType = 'gridview';
   }
-  //prepare anything we'll need before loading
+  // Prepare anything we'll need before loading.
   widget_prepare($node);
 
-  //invoke widget specific prepare
+  // Invoke widget specific prepare.
   widget_invoke($node, 'widget_prepare');
 
-  //load data
-  if((!isset($node->widgetConfig->noDataInitialLoad)) || !$nodata ){
+  // Load data.
+  if ((!isset($node->widgetConfig->noDataInitialLoad)) || !$nodata) {
     widget_data($node);
   }
 
   if (isset($node->error)) {
-    //dont call the specific module. Display generic error message and return
-    //message needs to be set on the widget configuration. not hardcoded.
+    // Dont call the specific module. Display generic error message and return
+    // message needs to be set on the widget configuration. not hardcoded.
     $errorMsg = 'There was an error processing your request. Please try again in a few minutes.';
     $node->content['body'] = array('#value' => $errorMsg, '#weight' => 0,);
     return $node;
   }
-  //invoke widget specific post-load function
-  if(isset($node->widgetConfig->widgetUpdateJSONConfig)){
-    if($node->widgetConfig->widgetType == 'highcharts'){
 
+  // invoke widget specific post-load function.
+  if (isset($node->widgetConfig->widgetUpdateJSONConfig)) {
+    if ($node->widgetConfig->widgetType == 'highcharts') {
       if (!isset($node->widgetConfig->chartConfig->chart)) {
         $node->widgetConfig->chartConfig->chart = new stdClass();
       }
@@ -176,9 +176,11 @@ function widget_node_view($node, $nodata = true) {
       $node->widgetConfig->chartConfig->credits->enabled = false;
     }
     @eval($node->widgetConfig->widgetUpdateJSONConfig);
-  }else{
+  }
+  else {
     widget_invoke($node, 'widget_data');
   }
+
   if (isset($node->widgetConfig->dataOnly)) {
     $node->content['body'] = array(
       '#value' => $node->data,
@@ -188,7 +190,7 @@ function widget_node_view($node, $nodata = true) {
   else {
     // The final call which invoked widget_data_tables_widget_view and renders twig
     $val = widget_invoke($node, 'widget_view');
-    if($val !== false) {
+    if ($val !== false) {
       $node->content['body'] = array(
         '#markup' => $val,
         '#weight' => 0,
@@ -579,22 +581,25 @@ function load_widget_data($node, $resultFormatter=null) {
           }
         }
 
-        if(isset($serie->adjustSerieParameters)){
+        if (isset($serie->adjustSerieParameters)) {
           $serieParameters =  eval($serie->adjustSerieParameters);
         }
-        if(isset($serie->adjustSerieColumns)){
+
+        if (isset($serie->adjustSerieColumns)) {
           $serieColumns =  eval($serie->adjustSerieColumns);
         }
+
         // log_debug("Serie parameters");
         // log_debug($serieParameters);
         $serieOrderBy = $serie->orderBy ?? $orderBy;
         $serieStartWith = $serie->startWith ?? $startWith;
         $serieLimit = $serie->limit ?? $limit;
 
-        if(isset($serie->widgetDataLoader)){
+        if (isset($serie->widgetDataLoader)) {
           eval($serie->widgetDataLoader);
           $records = $node->data;
-        }else {
+        }
+        else {
           $records = $isSerieList
             ? $dataQueryController->queryDataset(
               $serieDatasetName,
@@ -607,6 +612,7 @@ function load_widget_data($node, $resultFormatter=null) {
               $serieStartWith, $serieLimit,
               $resultFormatter);
         }
+
         $node->nodeAdjustedParamaterConfig[] = $parameters;
         // post-processing records
         if (isset($records) && (isset($serie->columnPrefix) || isset($serie->columnSuffix))) {
@@ -705,18 +711,20 @@ function load_widget_data($node, $resultFormatter=null) {
           }
 
           $query = widget_get_count_db_query($isList, $datasetName, $distinctColumns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
-          //Alter Query - For now, this configuration is compatible only for widgets without facets
-          if(isset($node->widgetConfig->queryAlterFunction)) {
+          // Alter Query - For now, this configuration is compatible only for widgets without facets.
+          if (isset($node->widgetConfig->queryAlterFunction)) {
             $alterFunction = $node->widgetConfig->queryAlterFunction;
             $query = eval($alterFunction);
-          }else{
+          }
+          else {
             $replace_string = "(SELECT ";
             $query = substr_replace($query, $replace_string . "DISTINCT ", strpos($query, $replace_string), strlen($replace_string));
           }
 
           $results = _checkbook_project_execute_sql_by_data_source($query,_get_current_datasource());
           $node->totalDataCount = $results[0]['record_count'];
-        } else {
+        }
+        else {
           $node->totalDataCount = $isList
             ? $dataQueryController->countDatasetRecords(
               $datasetName, $parameters)
@@ -727,7 +735,6 @@ function load_widget_data($node, $resultFormatter=null) {
           $node->nodeAdjustedParamaterConfig = $parameters;
         }
       }
-
 
       if (property_exists($config, 'totalAggregateColumns') && $config->totalAggregateColumns) {
         foreach($config->totalAggregateColumns as $aggregateColumn){
@@ -824,7 +831,7 @@ function widget_data(&$node)
   $originalReqParams = $config->originalRequestParams ?? null;
   if (isset($requestParams)) {
     foreach ($requestParams as $key => $value) {
-      $requestParams[$key] = pg_escape_string(htmlspecialchars_decode($value));
+      $requestParams[$key] = pg_escape_string(htmlspecialchars_decode($value ?? ''));
     }
   }
   if (isset($requestParams)) {
@@ -833,7 +840,7 @@ function widget_data(&$node)
 
   if (isset($originalReqParams)) {
     foreach ($originalReqParams as $key => $value) {
-      $originalReqParams[$key] = pg_escape_string(htmlspecialchars_decode($value));
+      $originalReqParams[$key] = pg_escape_string(htmlspecialchars_decode($value ?? ''));
     }
     $config->originalRequestParams = $originalReqParams;
   }
@@ -932,7 +939,7 @@ function calculateDerivedCell($row, $fulldata, $derivedColumnDefinition,$node) {
   switch($derivedColumnDefinition->type) {
     default:
       $expression = $derivedColumnDefinition->expression;
-      return eval("return $expression;")??null;
+      return eval("return $expression;") ?? NULL;
   }
 }
 
@@ -941,10 +948,11 @@ function calculateDerivedCell($row, $fulldata, $derivedColumnDefinition,$node) {
  * @return mixed|object
  */
 function widget_config($node) {
-  //save
+  // Save.
   if (isset($node->widgetConfig->uid)) {
     $savedUid = $node->widgetConfig->uid;
   }
+
   if (isset($node->widgetConfig->additionalParameters)) {
     $savedAdditionalParameters = $node->widgetConfig->additionalParameters;
   }
@@ -954,9 +962,9 @@ function widget_config($node) {
   $FUNCTION_DELIMITER = '##';
   $FUNCTIONNAME_DELIMITER = '^^';
 
-  if(isset($node->widget_json)) {
+  if (isset($node->widget_json)) {
     $functionStart = strpos($node->widget_json, $FUNCTION_START);
-    if ($functionStart != false) {
+    if ($functionStart != FALSE) {
       $functionEnd = strpos($node->widget_json, $FUNCTION_END);
       $functions = substr($node->widget_json, $functionStart + mb_strlen($FUNCTION_START), $functionEnd - $functionStart - mb_strlen($FUNCTION_START));
       $funcList = explode($FUNCTION_DELIMITER, $functions);
@@ -969,21 +977,25 @@ function widget_config($node) {
       $node->jsFunctions = $functionMap;
       $json = str_replace($FUNCTION_START . $functions . $FUNCTION_END, '', $node->widget_json);
 
-    } else {
+    }
+    else {
       $json = $node->widget_json;
     }
 
     $converter = new Json2PHPObject();
     $node->widgetConfig = $converter->convert($json);
   }
-  //restore
+
+  // Restore.
   if (isset($savedUid)) {
     $node->widgetConfig->uid = $savedUid;
   }
+
   if (isset($savedAdditionalParameters)) {
     $node->widgetConfig->additionalParameters = $savedAdditionalParameters;
   }
-  if(isset($node->widgetConfig->parentNid)) {
+
+  if (isset($node->widgetConfig->parentNid)) {
     $node->widgetConfig = widget_merge_parent_node_config($node);
   }
   return $node->widgetConfig ?? null;

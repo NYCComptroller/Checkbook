@@ -14,8 +14,8 @@ abstract class ContractCategory {
    */
     public static function getCurrent(): string
     {
-        $urlPath = RequestUtilities::getCurrentPageUrl();
-        $ajaxPath = RequestUtilities::getAjaxPath();
+        $urlPath = RequestUtilities::getCurrentPageUrl() ?? '';
+        $ajaxPath = RequestUtilities::getAjaxPath() ?? '';
         $category = self::EXPENSE;
       // str_contains does not return the correct category
       if(preg_match('/contracts_revenue/',$urlPath) || preg_match('/contracts_revenue/',$ajaxPath)

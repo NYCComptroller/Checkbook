@@ -172,9 +172,9 @@ class FacetUtil
         }
     }
 
-    //Sub Vendor Status in PIP
+    //Sub Vendor Subcontract Status
 //For N/A value, some values are null, this needs to be handled
-    if($node->widgetConfig->filterName == 'Sub Vendor Status in PIP') {
+    if($node->widgetConfig->filterName == 'Subcontract Status') {
       if (isset($variables['unchecked']) && $variables['unchecked'])
         foreach($variables['unchecked']as $key => $value) {
           if($value[1] == null) {

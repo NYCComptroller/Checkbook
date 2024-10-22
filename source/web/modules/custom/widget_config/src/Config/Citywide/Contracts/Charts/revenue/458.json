@@ -34,7 +34,7 @@
                 "dataset": "checkbook:pending_contracts",
                 "columns": ["document_agency_id.document_agency_id","document_agency_name.document_agency_name",
                             "document_agency_short_name.document_agency_short_name","total_contract_amount","total_contracts"],
-                "defaultParameters":{"document_code.document_code.document_code":"RCT1","latest_flag":"Y"},
+                "defaultParameters":{"document_code.document_code.document_code_id":"7","latest_flag":"Y"},
                 "orderBy": "-total_contract_amount"
 
             },
@@ -56,10 +56,10 @@
 "datasets":[
     {"name":"agency_short","column":"agency_formatted","type":"string","isArray":true}
 ],
-"defaultParameters":{"document_code.document_code.document_code":"RCT1","revised_maximum_amount":"0"},
+"defaultParameters":{"document_code.document_code.document_code_id":"7","revised_maximum_amount":"0"},
 "defaultParamTypeConfig":{"revised_maximum_amount":"ne"},
 "cleanURLParameters":["vendor","agency","awdmethod","csize","cindustry"],
-"urlParamMap":{"cindustry":"industry_type_id","vendor":"vendor.vendor","agency":"document_agency_id.document_agency_id","awdmethod":"award_method_id","csize":"award_size.award_size"},
+"urlParamMap":{"cindustry":"industry_type_id","vendor":"vendor.vendor","agency":"document_agency_id.document_agency_id","awdmethod":"award_method.award_method.award_method_code","csize":"award_size.award_size"},
 "transformationPHP": "
     $data = array();
     $categories=array();

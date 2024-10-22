@@ -205,6 +205,7 @@ class CheckbookAdvancedSearchForm extends FormBase
       '#markup' => $spending_pref,
       '#allowed_tags' => ['div', 'button', 'h1', 'h2', 'h3', 'span'],
     );
+
     $form = $this->_checkbook_advanced_search_get_form($form, CheckbookDomain::$SPENDING, $agencies, $agency_attributes, $year_range);
     $form['checkbook_spending']['spending_advanced_search_domain_filter']['#default_value'] = $requesting_page_datasource;
 
@@ -557,6 +558,7 @@ class CheckbookAdvancedSearchForm extends FormBase
       $sub_vendor_status = FormUtil::getSubvendorStatusInPIP(false);
       $includes_sub_vendors = FormUtil::getContractIncludesSubvendors();
       $contract_type_attribute = FormUtil::getContractTypes();
+      $event_type_attributes = FormUtil::getEventNameAndId();
       $year_attribute = _checkbook_advanced_search_get_year($domain, null, $data_source);
       $revenue_categories = _checkbook_advanced_search_get_revenue_category_and_id();
       $revenue_funding_classes = _checkbook_advanced_search_get_funding_source_and_id();
@@ -603,7 +605,7 @@ class CheckbookAdvancedSearchForm extends FormBase
               $field_definition_configs[$i]['attributes']['option_attributes'] = $contract_type_attribute['option_attributes'] ?? null;
               break;
             case'$event_type_attributes':
-              $field_definition_configs[$i]['attributes']['options'] = $this->event_type_attributes ?? null;
+              $field_definition_configs[$i]['attributes']['options'] = $event_type_attributes ?? null;
               break;
             case '$mwbe_category_attributes':
               $field_definition_configs[$i]['attributes']['options'] = $mwbe_category_attributes ?? null;

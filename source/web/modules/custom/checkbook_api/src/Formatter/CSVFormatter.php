@@ -66,7 +66,7 @@ class CSVFormatter extends AbstractFormatter {
         //Handle reference columns in data-set
         $data_set_column_map = str_replace('@', '_', $data_set_column);
         $data_set_column_map = str_replace(':', '_', $data_set_column_map);
-        $data = (isset($data_record[$data_set_column_map])) ? $data_record[$data_set_column_map] : $data_record[$data_set_column];
+        $data = ((isset($data_record[$data_set_column_map])) ? $data_record[$data_set_column_map] : $data_record[$data_set_column]) ?? "";
         $data = str_replace('"', chr(34) . '"', $data);
         if ($first_column == 0) {
           $record_str .= '"' . $data . '"';

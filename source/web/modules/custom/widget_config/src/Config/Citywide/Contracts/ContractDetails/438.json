@@ -1,6 +1,6 @@
 {
-"widgetType": "phpparser",
-"template":"contracts_ca_details",
-"customDataHandlerClass":"\\Drupal\\checkbook_project\\ContractsUtilities\\ChildAgreementDetails",
-"noDataInitialLoad":true
+  "widgetType": "phpparser",
+  "template": "contracts_ca_details",
+  "customDataHandlerClass": "\\Drupal\\checkbook_project\\ContractsUtilities\\ChildAgreementDetails",
+  "noDataInitialLoad": true
 }

@@ -218,6 +218,16 @@
                         }
                     ]
                 },
+              {
+                "name": "event",
+                "levels": [
+                  {
+                    "name": "event",
+                    "datasetName": "event",
+                    "sourceColumnName": "event_id"
+                  }
+                ]
+              },
                 {
                     "name": "contnum",
                     "levels": [
@@ -443,7 +453,13 @@
                 },
                 "sub_cert_emerging_count":{
                   "function": "SUM(CASE WHEN (vendor_type = 'S' OR vendor_type = 'SM') AND is_emerging = 'Yes' THEN 1 ELSE 0 END)"
-                }
+                },
+              "asylum_count":{
+                "function": "SUM(CASE WHEN event_id ~* '(^|,)2(,|$)' THEN 1 ELSE 0 END)"
+              },
+              "covid_count":{
+                "function": "SUM(CASE WHEN event_id ~* '(^|,)1(,|$)' THEN 1 ELSE 0 END)"
+              }
             }
         }
     },

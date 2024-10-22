@@ -41,6 +41,9 @@
         {% endif %}
         <li><span class="gi-list-item">Purpose:</span> {{ node.data[0]['description'] }}</li>
         <li><span class="gi-list-item">Contract Type:</span> {{ node.data[0]['agreement_type_name'] }}</li>
+        {% if RequestGet("datasource") != "checkbook_oge" %}
+        <li><span class="gi-list-item">Contract Class:</span> {{ node.data[0]['contract_class_description']|default('N/A') }}</li>
+        {% endif %}
         {% if datasource is null %}
           <li><span class="gi-list-item">Contracting Agency:</span> <a href="{{ agency_link }}">{{ node.data[0]['agency_name_checkbook_agency'] }}</a></li>
         {% else %}
@@ -48,6 +51,7 @@
         {% endif %}
         <li><span class="gi-list-item">Award Method:</span> {{ node.data[0]['award_method_name_checkbook_award_method'] }}</li>
         {% if RequestGet("datasource") != "checkbook_oge" %}
+          <li><span class="gi-list-item">OCA Number:</span> {{ node.data[0]['oca_number'] }}</li>
           <li><span class="gi-list-item">Version Number:</span> {{ node.data[0]['document_version'] }}</li>
         {% endif %}
         <li><span class="gi-list-item">FMS Document:</span> {{ node.data[0]['document_code_checkbook_ref_document_code'] }}</li>

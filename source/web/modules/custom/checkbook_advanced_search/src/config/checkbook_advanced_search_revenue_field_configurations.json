@@ -5,7 +5,7 @@
     {"field_name":"agency","column":"column-left"},
     {"field_name":"revenue_category","column":"column-left"},
     {"field_name":"revenue_source","column":"column-left"},
-    {"field_name":"catastrophic_events","column":"column-left"},
+    {"field_name":"conditional_categories","column":"column-left"},
     {"field_name":"adopted","column":"column-right"},
     {"field_name":"recognized","column":"column-right"},
     {"field_name":"fiscal_year","column":"column-right"},

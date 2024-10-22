@@ -12,6 +12,7 @@ html {
   font-family: Roboto, sans-serif;
   font-weight: normal;
   font-style: normal;
+  overflow: auto !important;
 }
 
 body {
@@ -254,6 +255,10 @@ select,
 .sticky-wrapper > div {
   z-index: 20;
   left: auto !important;
+}
+
+input[type="radio"] {
+  accent-color: #0075ff;
 }
 
 input[type="file"]:focus,

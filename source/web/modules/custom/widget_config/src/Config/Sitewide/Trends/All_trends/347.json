@@ -16,7 +16,7 @@
        "bSort":false,
        "sScrollX": "100%",
       "sScrollY": "400px",
-         "sScrollXInner": "2700px",
+         "sScrollXInner": "3000px",
          "bScrollCollapse": false,
         "fnPreDrawCallback":"##function( oSettings ) {
             jQuery('.trendsShowOnLoad').show();

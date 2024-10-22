@@ -82,11 +82,11 @@ class TransactionsUtil
     $dashboard = RequestUtilities::getRequestParamValue('dashboard');
     if($dashboard == 'ss')
     {
-      $title = "Sub Contract Status by Prime Contract ID";
+      $title = "Subcontract Status by Prime Contract ID";
     }
     if($dashboard == 'ms' || $dashboard == 'sp')
     {
-      $title = "M/WBE Sub Contract Status by Prime Contract ID";
+      $title = "M/WBE Subcontract Status by Prime Contract ID";
     }
     echo  "<div class='contract-id'><h2 class='contract-title js-breadcrumb-title' class='title'>{$title}</h2></div>";
   }
@@ -203,6 +203,17 @@ class TransactionsUtil
       }
     }
 
+  }
+
+  // Title for spending month transactions pages
+  public static function spendingPageDateTitle($nid) {
+    $dtTitle = \Drupal\checkbook_project\SpendingUtilities\SpendingUtil::getSpendingTransactionsTitle();
+    $amount = \Drupal\checkbook_project\WidgetUtilities\WidgetUtil::getWidgetTemplate($nid);
+    $year = 'FY' . CheckbookDateUtil::_getYearValueFromID(RequestUtilities::getTransactionsParams('year'));
+    $monthDetails = CheckbookDateUtil::getMonthDetails(RequestUtilities::_getRequestParamValueBottomURL('month'));
+    echo "<div class='contract-id'><h2 class='contract-title js-breadcrumb-title' class='title'>$dtTitle</h2>";
+    echo "<div class='spending-tx-subtitle'><b>Year</b>: " . $year . "<br><b>Month</b>: " . strtoupper($monthDetails[0]['month_name']) . "</div></div>";
+    echo $amount;
   }
 
   /**

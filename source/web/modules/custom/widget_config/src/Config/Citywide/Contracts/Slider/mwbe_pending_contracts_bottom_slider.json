@@ -25,8 +25,8 @@ unset($node->widgetConfig->model->series[3]->seriesURLParamMap->vendor );
 "columns": [
 "current_amount_sum","total_contracts"
 ],
-"seriesURLParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
-"allowedParams":["minority_type_id","fiscal_year_id","agency_id","type_of_year","award_method_id","award_size.award_size","industry_type_id","vendor_id"],
+"seriesURLParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method.award_method.award_method_code","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
+"allowedParams":["minority_type_id","fiscal_year_id","agency_id","type_of_year","award_method.award_method.award_method_code","award_size.award_size","industry_type_id","vendor_id"],
 "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~MA1","contract_status.contract_status":"A"}
 },
 {
@@ -34,8 +34,8 @@ unset($node->widgetConfig->model->series[3]->seriesURLParamMap->vendor );
 "columns": [
 "current_amount_sum","total_contracts"
 ],
-"seriesURLParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
-"allowedParams":["minority_type_id","fiscal_year_id","agency_id","type_of_year","award_method_id","award_size.award_size","industry_type_id","vendor_id"],
+"seriesURLParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method.award_method.award_method_code","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
+"allowedParams":["minority_type_id","fiscal_year_id","agency_id","type_of_year","award_method.award_method.award_method_code","award_size.award_size","industry_type_id","vendor_id"],
 "seriesDefaultParameters":{"document_code.document_code.document_code":"CT1~CTA1~MA1","contract_status.contract_status":"R"}
 },
 {
@@ -43,8 +43,8 @@ unset($node->widgetConfig->model->series[3]->seriesURLParamMap->vendor );
 "columns": [
 "current_amount_sum","total_contracts"
 ],
-"seriesURLParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
-"allowedParams":["minority_type_id","fiscal_year_id","agency_id","type_of_year","award_method_id","award_size.award_size","industry_type_id","vendor_id"],
+"seriesURLParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method.award_method.award_method_code","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
+"allowedParams":["minority_type_id","fiscal_year_id","agency_id","type_of_year","award_method.award_method.award_method_code","award_size.award_size","industry_type_id","vendor_id"],
 "seriesDefaultParameters":{"document_code.document_code.document_code":"RCT1","contract_status.contract_status":"A"}
 },
 {
@@ -52,8 +52,8 @@ unset($node->widgetConfig->model->series[3]->seriesURLParamMap->vendor );
 "columns": [
 "current_amount_sum","total_contracts"
 ],
-"seriesURLParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
-"allowedParams":["minority_type_id","fiscal_year_id","agency_id","type_of_year","award_method_id","award_size.award_size","industry_type_id","vendor_id"],
+"seriesURLParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method.award_method.award_method_code","vendor":"vendor_id","status":"status_flag","cindustry":"industry_type_id","csize":"award_size.award_size"},
+"allowedParams":["minority_type_id","fiscal_year_id","agency_id","type_of_year","award_method.award_method.award_method_code","award_size.award_size","industry_type_id","vendor_id"],
 "seriesDefaultParameters":{"document_code.document_code.document_code":"RCT1","contract_status.contract_status":"R"}
 },
 {
@@ -61,8 +61,8 @@ unset($node->widgetConfig->model->series[3]->seriesURLParamMap->vendor );
 "columns": [
 "total_contract_amount","current_amount_sum","total_contracts"
 ],
-"seriesURLParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","awdmethod":"award_method_id.award_method_id","csize":"award_size.award_size","cindustry":"industry.industry"},
-"allowedParams":["minority_type_id","document_agency_id.document_agency_id","vendor.vendor","award_method_id.award_method_id","award_size.award_size","industry.industry"],
+"seriesURLParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","awdmethod":"award_method_code.award_method_code","csize":"award_size.award_size","cindustry":"industry.industry"},
+"allowedParams":["minority_type_id","document_agency_id.document_agency_id","vendor.vendor","award_method_code.award_method_code","award_size.award_size","industry.industry"],
 "allowedParams2":[],
 "seriesDefaultParameters":{"document_code.document_code.document_code":"MMA1~MA1~MAR~CTA1~CT1~CTR","latest_flag":"Y"}
 },
@@ -71,8 +71,8 @@ unset($node->widgetConfig->model->series[3]->seriesURLParamMap->vendor );
 "columns": [
 "total_contract_amount","current_amount_sum","total_contracts"
 ],
-"seriesURLParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","awdmethod":"award_method_id.award_method_id","csize":"award_size.award_size","cindustry":"industry.industry"},
-"allowedParams":["minority_type_id","document_agency_id.document_agency_id","vendor.vendor","award_method_id.award_method_id","award_size.award_size","industry.industry"],
+"seriesURLParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","awdmethod":"award_method_code.award_method_code","csize":"award_size.award_size","cindustry":"industry.industry"},
+"allowedParams":["minority_type_id","document_agency_id.document_agency_id","vendor.vendor","award_method_code.award_method_code","award_size.award_size","industry.industry"],
 "allowedParams2":[],
 "seriesDefaultParameters":{"document_code.document_code.document_code":"MMA1~MA1~MAR~CTA1~CT1~CTR"}
 },
@@ -81,8 +81,8 @@ unset($node->widgetConfig->model->series[3]->seriesURLParamMap->vendor );
 "columns": [
 "total_contract_amount","current_amount_sum","total_contracts"
 ],
-"seriesURLParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","awdmethod":"award_method_id.award_method_id","csize":"award_size.award_size","cindustry":"industry.industry"},
-"allowedParams":["minority_type_id","document_agency_id.document_agency_id","vendor.vendor","award_method_id.award_method_id","award_size.award_size","industry.industry"],
+"seriesURLParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","awdmethod":"award_method_code.award_method_code","csize":"award_size.award_size","cindustry":"industry.industry"},
+"allowedParams":["minority_type_id","document_agency_id.document_agency_id","vendor.vendor","award_method_code.award_method_code","award_size.award_size","industry.industry"],
 "allowedParams2":[],
 "seriesDefaultParameters":{"document_code.document_code.document_code":"RCT1","latest_flag":"Y"}
 },
@@ -91,8 +91,8 @@ unset($node->widgetConfig->model->series[3]->seriesURLParamMap->vendor );
 "columns": [
 "total_contract_amount","current_amount_sum","total_contracts"
 ],
-"seriesURLParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","awdmethod":"award_method_id.award_method_id","csize":"award_size.award_size","cindustry":"industry.industry"},
-"allowedParams":["minority_type_id","document_agency_id.document_agency_id","vendor.vendor","award_method_id.award_method_id","award_size.award_size","industry.industry"],
+"seriesURLParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","awdmethod":"award_method_code.award_method_code","csize":"award_size.award_size","cindustry":"industry.industry"},
+"allowedParams":["minority_type_id","document_agency_id.document_agency_id","vendor.vendor","award_method_code.award_method_code","award_size.award_size","industry.industry"],
 "allowedParams2":[],
 "seriesDefaultParameters":{"document_code.document_code.document_code":"RCT1"}
 }

@@ -7,7 +7,7 @@
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code",
         "cindustry":"industry.industry",
-        "industry":"industry.industry"
+        "industry":"industry.industry", "awdmethod":"award_method.award_method.award_method_code"
     },
     "facetPager":true,
     "filterName":"Industry",

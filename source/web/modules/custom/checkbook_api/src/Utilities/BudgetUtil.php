@@ -4,6 +4,7 @@ namespace Drupal\checkbook_api\Utilities;
 
 use Drupal\data_controller\Datasource\Operator\Handler\EqualOperatorHandler;
 use Drupal\data_controller\Datasource\Operator\Handler\RegularExpressionOperatorHandler;
+use Drupal\data_controller\Datasource\Operator\Handler\NotWildcardOperatorHandler;
 
 class BudgetUtil {
 
@@ -44,5 +45,20 @@ class BudgetUtil {
       $where_part
     ]) : $select_part;
   }
+  /**
+   * @param $data_set
+   * @param $parameters
+   * @param $criteria
+   * @param null $datasource
+   */
+  public static function checkbook_api_adjustNychaBudgetParameterFilters(&$data_set, &$parameters, $criteria, $datasource = NULL) {
+    if (isset($parameters['program_phase_code']) && $parameters['program_phase_code'] == '000000') {
+      $parameters['program_phase_code']='';
+    }
+    if (isset($parameters['gl_project_code']) && $parameters['gl_project_code'] == '000000') {
+      $parameters['gl_project_code']='';
+    }
+  }
+
 
 }

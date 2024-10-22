@@ -9,7 +9,7 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="subvendor" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <param name="is_modification" type="bool" />
@@ -32,17 +32,18 @@
                 SUM(COALESCE(l1.maximum_contract_amount,0)) AS current_amount_sum,
                 SUM(COALESCE(l1.spending_amount,0)) AS spending_amount_sum,
                 SUM(COALESCE(dollar_difference,0)) AS dollar_difference,
-                AVG(percent_difference) AS percent_difference 
+                AVG(percent_difference) AS percent_difference
             FROM aggregateon_subven_contracts_cumulative_spending l1
             JOIN
             (
-                SELECT DISTINCT original_agreement_id, contract_number 
+                SELECT DISTINCT original_agreement_id, contract_number
                 FROM agreement_snapshot WHERE latest_flag = 'Y'
             ) l4 ON l4.contract_number = l1.contract_number
             JOIN subvendor sv on sv.vendor_id = l1.vendor_id
             JOIN vendor pv on pv.vendor_id = l1.prime_vendor_id
             JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
-            JOIN ref_agency l3 on l3.agency_id = l1.agency_id 
+            JOIN ref_agency l3 on l3.agency_id = l1.agency_id
+            JOIN ref_award_method l5 on l5.award_method_id = l1.award_method_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="l1.fiscal_year_id" paramName="year" />
@@ -53,16 +54,16 @@
                     <exp op="=" dbField="l1.agency_id" paramName="agency" />
                     <exp op="=" dbField="l1.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="l1.vendor_id" paramName="subvendor" />
-                    <exp op="=" dbField="l1.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="l5.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="l1.award_size_id" paramName="csize" />
                     <exp op="=" dbField="l1.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             GROUP BY l1.type_of_year, l1.description,l1.contract_number, l4.original_agreement_id, l1.original_agreement_id,
                 l1.document_code_id,l2.document_code, l1.minority_type_id,l3.agency_id,l3.agency_name,
-                sv.vendor_id, sv.legal_name, pv.vendor_id, pv.legal_name 
+                sv.vendor_id, sv.legal_name, pv.vendor_id, pv.legal_name
             <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
-                HAVING SUM(COALESCE(dollar_difference,0)) != 0 
+                HAVING SUM(COALESCE(dollar_difference,0)) != 0
             </exp>
         </sql>
     </statement>
@@ -76,7 +77,7 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="subvendor" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <param name="is_modification" type="bool" />
@@ -92,6 +93,7 @@
             JOIN vendor pv on pv.vendor_id = l1.prime_vendor_id
             JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
             JOIN ref_agency l3 on l3.agency_id = l1.agency_id
+            JOIN ref_award_method l5 on l5.award_method_id = l1.award_method_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="l1.fiscal_year_id" paramName="year" />
@@ -102,7 +104,7 @@
                     <exp op="=" dbField="l1.agency_id" paramName="agency" />
                     <exp op="=" dbField="l1.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="l1.vendor_id" paramName="subvendor" />
-                    <exp op="=" dbField="l1.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="l5.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="l1.award_size_id" paramName="csize" />
                     <exp op="=" dbField="l1.industry_type_id" paramName="cindustry" />
                 </exp>
@@ -123,14 +125,14 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="subvendor" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <sql>
             SELECT
             a.type_of_year,
-            e.award_method_id,
-            e.award_method_name,
+            e.award_method_code,
+            amc.award_method_name,
             SUM(COALESCE(a.original_contract_amount,0)) AS original_amount_sum,
             SUM(COALESCE(a.maximum_contract_amount,0)) AS current_amount_sum,
             SUM(COALESCE(a.spending_amount,0)) AS spending_amount_sum,
@@ -138,6 +140,7 @@
             FROM aggregateon_subven_contracts_cumulative_spending a
             JOIN ref_document_code b ON a.document_code_id = b.document_code_id
             JOIN ref_award_method e ON e.award_method_id = a.award_method_id
+            JOIN (SELECT award_method_code, award_method_name FROM ref_award_method WHERE active_flag = 'Y') amc ON e.award_method_code = amc.award_method_code
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
@@ -148,12 +151,12 @@
                     <exp op="=" dbField="a.agency_id" paramName="agency" />
                     <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
-                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="e.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="a.award_size_id" paramName="csize" />
                     <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
-            GROUP BY a.type_of_year,e.award_method_id,e.award_method_name
+            GROUP BY a.type_of_year,e.award_method_code,amc.award_method_name
         </sql>
     </statement>
 
@@ -167,7 +170,7 @@
         <param name="vendor" type="int" />
         <param name="subvendor" />
         <param name="mwbe" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <sql>
@@ -182,6 +185,7 @@
             JOIN ref_document_code b ON a.document_code_id = b.document_code_id
             JOIN ref_agency c on c.agency_id = a.agency_id
             JOIN ref_industry_type e ON e.industry_type_id = a.industry_type_id
+            JOIN ref_award_method l5 on l5.award_method_id = a.award_method_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
@@ -192,7 +196,7 @@
                     <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
-                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="l5.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="a.award_size_id" paramName="csize" />
                     <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
@@ -211,7 +215,7 @@
         <param name="vendor" type="int" />
         <param name="subvendor" />
         <param name="mwbe" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <sql>
@@ -225,6 +229,7 @@
             FROM aggregateon_subven_contracts_cumulative_spending a
             JOIN ref_document_code b ON a.document_code_id = b.document_code_id
             JOIN ref_award_size e ON e.award_size_id = a.award_size_id
+            JOIN ref_award_method l5 on l5.award_method_id = a.award_method_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
@@ -235,7 +240,7 @@
                     <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
-                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="l5.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="a.award_size_id" paramName="csize" />
                     <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
@@ -254,7 +259,7 @@
         <param name="vendor" type="int" />
         <param name="subvendor" type="int" />
         <param name="mwbe" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <sql>
@@ -269,6 +274,7 @@
             FROM aggregateon_subven_contracts_cumulative_spending s0
             JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
             JOIN vendor v ON v.vendor_id = s0.prime_vendor_id
+            JOIN ref_award_method l5 on l5.award_method_id = s0.award_method_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="s0.status_flag" paramName="status" />
@@ -279,7 +285,7 @@
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="s0.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="s0.vendor_id" paramName="subvendor" />
-                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="l5.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="s0.award_size_id" paramName="csize" />
                     <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
                 </exp>
@@ -297,13 +303,14 @@
         <param name="vendor" type="int" />
         <param name="subvendor" type="int" />
         <param name="mwbe" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <sql>
             SELECT DISTINCT prime_vendor_id AS vendor_id
             FROM aggregateon_subven_contracts_cumulative_spending s0
             JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
+            JOIN ref_award_method l5 on l5.award_method_id = s0.award_method_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="s0.status_flag" paramName="status" />
@@ -314,7 +321,7 @@
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="s0.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="s0.vendor_id" paramName="subvendor" />
-                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="l5.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="s0.award_size_id" paramName="csize" />
                     <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
                 </exp>
@@ -332,7 +339,7 @@
         <param name="vendor" type="int" />
         <param name="subvendor" type="int" />
         <param name="mwbe" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <sql>
@@ -346,7 +353,8 @@
                 COUNT(contract_number) AS total_contracts
             FROM aggregateon_subven_contracts_cumulative_spending s0
             JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
-            JOIN ref_agency a ON a.agency_id = s0.agency_id 
+            JOIN ref_agency a ON a.agency_id = s0.agency_id
+            JOIN ref_award_method l5 on l5.award_method_id = s0.award_method_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="s0.fiscal_year_id" paramName="year" />
@@ -357,12 +365,12 @@
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="s0.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="s0.vendor_id" paramName="subvendor" />
-                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="l5.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="s0.award_size_id" paramName="csize" />
                     <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
-            GROUP BY s0.agency_id, s0.type_of_year, a.agency_short_name, a.agency_name 
+            GROUP BY s0.agency_id, s0.type_of_year, a.agency_short_name, a.agency_name
         </sql>
     </statement>
 
@@ -376,7 +384,7 @@
         <param name="vendor" type="int" />
         <param name="subvendor" type="int" />
         <param name="mwbe" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <sql>
@@ -392,6 +400,7 @@
             JOIN ref_document_code b ON b.document_code_id = a.document_code_id
             JOIN subvendor c ON c.vendor_id = a.vendor_id
             JOIN ref_minority_type e ON e.minority_type_id = a.minority_type_id
+            JOIN ref_award_method l5 on l5.award_method_id = a.award_method_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
@@ -402,7 +411,7 @@
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
-                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="l5.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="a.award_size_id" paramName="csize" />
                     <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
@@ -419,13 +428,14 @@
         <param name="vendor" type="int" />
         <param name="subvendor" type="int" />
         <param name="mwbe" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <sql>
             SELECT DISTINCT vendor_id
             FROM aggregateon_subven_contracts_cumulative_spending a
             JOIN ref_document_code b ON b.document_code_id = a.document_code_id
+            JOIN ref_award_method l5 on l5.award_method_id = a.award_method_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="a.fiscal_year_id" paramName="year" />
@@ -436,7 +446,7 @@
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="a.prime_vendor_id" paramName="vendor" />
                     <exp op="=" dbField="a.vendor_id" paramName="subvendor" />
-                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="l5.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="a.award_size_id" paramName="csize" />
                     <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>

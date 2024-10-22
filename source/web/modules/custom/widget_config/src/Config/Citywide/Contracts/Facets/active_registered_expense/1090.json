@@ -1,0 +1,23 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":939,
+  "no_results_content":"No Results Found",
+  "limit":10,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "autocomplete":false,
+  "filterName":"Conditional Categories",
+  "urlParameterName":"cevent",
+  "urlParameterType":"any",
+  "autocompleteID":"feventId",
+  "columns":["asylum_count","covid_count"],
+  "adjustParameters":"
+  if(isset($parameters['event_id'])){unset($parameters['event_id']);}
+  $parameters = \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::adjustActiveContractCommonParams($node, $parameters);
+  $parameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+  return $parameters;
+  ",
+  "template":"individual_filter"
+}

@@ -24,7 +24,7 @@
   <div class="contract-details-heading">
   <div class="contract-id">
     <h2 class="contract-title">{{customFunctionEvaluate(node.widgetConfig.templateTitleEval)}}</h2>
-    <div class="spending-tx-subtitle"><b>{{node.widgetConfig.templateLabel}}</b>: {{node.data[0]['agency_agency_agency_name']}}</div>
+    <div class="spending-tx-subtitle"><b>{{node.widgetConfig.templateLabel}}</b>: {{node.data[0]['agency_agency_agency_name']|upper|raw}}</div>
   </div>
   <div class="dollar-amounts">
     <div class="ytd-spending-amount">

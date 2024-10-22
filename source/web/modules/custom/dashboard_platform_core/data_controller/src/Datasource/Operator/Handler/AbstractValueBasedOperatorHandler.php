@@ -45,6 +45,8 @@ use Drupal\data_controller\Common\Object\Manipulation\StringHelper;
 
 abstract class AbstractValueBasedOperatorHandler extends AbstractSingleParameterBasedOperatorHandler {
 
+    public $value;
+
     public function __construct($configuration, $value = NULL) {
         parent::__construct($configuration);
 

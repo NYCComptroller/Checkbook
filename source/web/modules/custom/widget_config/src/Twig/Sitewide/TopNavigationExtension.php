@@ -11,6 +11,7 @@ use Drupal\checkbook_project\CommonUtilities\RequestUtil;
 use Drupal\checkbook_project\ContractsUtilities\ContractURLHelper;
 use Drupal\checkbook_project\ContractsUtilities\ContractUtil;
 use Drupal\checkbook_project\MwbeUtilities\MappingUtil;
+use Drupal\Component\Utility\Xss;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -321,7 +322,7 @@ class TopNavigationExtension extends AbstractExtension
       'mwbe' => [
         'label' => RequestUtil::getDashboardTopNavTitle("mwbe"),
         'dollar_amount' => $mwbe_link['dollar_amount'],
-        'link' => '/'.ltrim($mwbe_link['link'],"/"),
+        'link' => str_replace(["'", '"'], ['%27', '%22'], Xss::filter('/' . ltrim($mwbe_link['link'],"/"))),
         'active' => $mwbeclass,
         'menu' => _checkbook_check_isEDCPage() ? false : $mwbe_filters,
         'indicator' => $featured_dashboard == "mp" || $featured_dashboard == "ms"
@@ -329,7 +330,7 @@ class TopNavigationExtension extends AbstractExtension
       'sub_vendors' => [
         'label' => RequestUtil::getDashboardTopNavTitle("subvendor"),
         'dollar_amount' => $subvendors_link['dollar_amount'],
-        'link' => '/'.ltrim($subvendors_link['link'],"/"),
+        'link' => str_replace(["'", '"'], ['%27', '%22'], Xss::filter('/' . ltrim($subvendors_link['link'],"/"))),
         'active' => $svclass,
         'menu' => _checkbook_check_isEDCPage() ? false : $svendor_filters,
         'indicator' => $featured_dashboard == "sp" || $featured_dashboard == "ss"

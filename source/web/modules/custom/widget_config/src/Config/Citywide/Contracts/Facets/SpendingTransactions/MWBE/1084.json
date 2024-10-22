@@ -10,6 +10,11 @@
   "facetPager":true,
   "filterName":"Budget Code",
   "urlParameterName":"bdgcode",
+  "urlParamMap":{
+    "doctype":"document_code.document_code.document_code",
+    "cagency":"agency.agency",
+    "awdmethod":"award_method.award_method.award_method_code"
+  },
   "autocompleteParamName":"bdgcode_auto",
   "autocompleteID":"fBudgetCode",
   "autocompleteField":"budget_name_code.budget_name_code",

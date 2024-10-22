@@ -112,7 +112,7 @@ class ReferencePathHelper {
     }
 
     public static function splitReferencePath($reference) {
-        return explode(self::$SEPARATOR_REFERENCE_PATH, $reference);
+        return explode(self::$SEPARATOR_REFERENCE_PATH, $reference ?? '');
     }
 
     public static function generateDatabaseColumnName($reference) {

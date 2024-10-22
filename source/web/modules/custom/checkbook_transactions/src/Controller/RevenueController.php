@@ -223,10 +223,6 @@ class RevenueController extends ControllerBase {
       return $output;
     }
     else{
-      $result = "<h2 id='contract-title' class='title'>NYCHA Revenue Transactions</h2>";
-      if ($result) {
-        $return['title_block'] = $result;
-      }
       $return['no_records_block'] = [
         '#markup' => '<div id="no-records" class="clearfix">There are no revenue transactions.</div>',
       ];

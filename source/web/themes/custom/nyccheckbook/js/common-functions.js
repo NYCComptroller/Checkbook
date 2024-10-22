@@ -57,6 +57,7 @@
     $('body')
       .on('change', 'input[type="date"]', function() {
         let input = this;
+        $(input).parent().parent().find('.error').removeClass('error');
         update_date_label(input);
       })
       .ready(function(){

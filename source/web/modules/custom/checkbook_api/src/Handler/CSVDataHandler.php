@@ -27,8 +27,7 @@ class CSVDataHandler extends AbstractDataHandler {
   function addResponseMessages() {
     // Add status messages:
     $status = NULL;
-//var_dump("dd");
-//die();
+
     if ($this->requestSearchCriteria->hasErrors() || $this->requestSearchCriteria->hasMessages()) {
       // Errors:
       $errors = $this->requestSearchCriteria->getErrors();
@@ -110,10 +109,10 @@ class CSVDataHandler extends AbstractDataHandler {
         $columnMappings = array_flip($columnMappings);
 
         $end = strpos($query, 'FROM');
-        $select_part = substr($query,0,$end);
+        $select_part = substr($query, 0, $end);
         $select_part = str_replace("SELECT", "", $select_part);
 
-       // $sql_parts = explode(",", $select_part);
+        // $sql_parts = explode(",", $select_part);
         $sql_parts  = $this->specialExplodeIgnoreParentheses($select_part);
 
         $new_select_part = "SELECT ";
@@ -121,33 +120,34 @@ class CSVDataHandler extends AbstractDataHandler {
         foreach($sql_parts as $sql_part) {
             $sql_part = trim($sql_part);
             $column = $sql_part;
-            $alias = "";
 
-            //Remove "AS"
+            // Remove "AS".
             $selectColumn = NULL;
-            if (strpos($sql_part,"AS") !== false) {
-                $pos = strrpos($column, " AS");
+            if (strripos($sql_part," AS") !== FALSE) {
+                $pos = strripos($column, " AS");
                 //Get Column name from derived columns
                 $selectColumn = trim(substr($sql_part, $pos + strlen(" AS")));
-                $sql_part = substr($sql_part,0,$pos);
+                $sql_part = substr($sql_part, 0, $pos);
             }
 
-            //Get only column
-            if (strpos($sql_part,".") !== false) {
+            // Get only column.
+            if (strpos($sql_part,".") !== FALSE) {
               $select_column_parts = explode('.', trim($sql_part), 2);
-              $alias = $select_column_parts[0] . '.';
               $column = $select_column_parts[1];
-            }else{
+            }
+            else {
               $column = $sql_part;
             }
 
           $data_set_column = isset($selectColumn) ? $selectColumn : $column;
-          $new_select_part .= $alias . $column . ' AS \\"' . $columnMappings[$data_set_column] . '\\",' .  "\n";
+          if (isset($columnMappings[$data_set_column])) {
+            $new_select_part .= $sql_part . ' AS \\"' . $columnMappings[$data_set_column] . '\\",' .  "\n";
+          }
         }
         $new_select_part = rtrim($new_select_part,",\n");
         $query = substr_replace($query, $new_select_part.' ', 0, $end);
 
-        try{
+        try {
             $fileDir = FeedUtil::_checkbook_project_prepare_data_feeds_file_output_dir();
             $filename = APIUtil::_checkbook_project_generate_uuid(). '.csv';
 
@@ -155,7 +155,6 @@ class CSVDataHandler extends AbstractDataHandler {
             $tmpDir =  (isset($checkbook_tempdir) && is_dir($checkbook_tempdir)) ? rtrim($checkbook_tempdir,'/') : '/tmp';
 
             LogHelper::log_notice("DataFeeds :: csv::getJobCommand() tmp dir: ".$tmpDir);
-
 
             $command = _checkbook_psql_command($this->requestDataSet->data_source);
 
@@ -180,9 +179,8 @@ class CSVDataHandler extends AbstractDataHandler {
             LogHelper::log_notice("DataFeeds :: csv::getJobCommand() mv_cmd: ".$move_cmd);
             $out = shell_exec($move_cmd);
             LogHelper::log_notice("DataFeeds :: csv::getJobCommand() mv_cmd out: ".var_export($out, true));
-
         }
-        catch (Exception $e){
+        catch (Exception $e) {
             $value = TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM;
             TextLogMessageTrimmer::$LOGGED_TEXT_LENGTH__MAXIMUM = NULL;
 

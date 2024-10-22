@@ -23,6 +23,7 @@ namespace Drupal\checkbook_project\PayrollUtilities;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
 use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
 use Exception;
+use Drupal\checkbook_project\CommonUtilities\CheckbookDateUtil;
 
 class payrollDetails {
 
@@ -278,6 +279,9 @@ class payrollDetails {
         if(isset($employee_id)) {
             $where .= " AND emp.employee_id = $employee_id";
         }
+
+        $year_type = $year_type ?? 'C';
+        $year = $year ?? CheckbookDateUtil::getCurrentCalendarYearId();
         $query = "
             SELECT SUM(annual_salary) AS max_annual_salary FROM
             (

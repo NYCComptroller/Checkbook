@@ -42,7 +42,7 @@
             return $adjustedParameters;
 ",
 "cleanURLParameters":["year","calyear","agency","yeartype","awdmethod","vendor","status","csize","cindustry"],
-"urlParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
+"urlParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_code@checkbook:award_method","vendor":"vendor_id","status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
 "model": {
     "join": {
         "method": "Union"

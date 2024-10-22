@@ -20,7 +20,7 @@
         "contnum_exact":"contract_number",
         "aptpin":"brd_awd_no",
         "pin":"tracking_number",
-        "awdmethod":"award_method_id",
+        "awdmethod":"award_method_code",
         "curamt":"maximum_contract_amount",
         "startdate":"effective_begin_date",
         "enddate":"effective_end_date",

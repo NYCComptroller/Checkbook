@@ -1,0 +1,6 @@
+name: 'Checkbook Path Validator'
+description: 'Checkbook 2.0 path and query validator.'
+package: 'Custom'
+core_version_requirement: ^9 || ^10
+type: module
+configure: checkbook_path_validator.form

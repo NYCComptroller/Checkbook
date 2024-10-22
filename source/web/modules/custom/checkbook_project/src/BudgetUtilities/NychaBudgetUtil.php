@@ -23,8 +23,10 @@ namespace Drupal\checkbook_project\BudgetUtilities;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
 use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
 
-class NychaBudgetUtil
-{
+class NychaBudgetUtil {
+
+  const EXPENSE_BUDGET_TRANSACTION = 'Expense Budget Transactions';
+
   static array $widget_titles = array(
     'wt_expense_categories' => 'Expense Categories',
     'wt_resp_centers' => 'Responsibility Centers',
@@ -48,19 +50,20 @@ class NychaBudgetUtil
    * @param $url
    * @return null|string -- Returns transactions title for NYCHA Budget
    */
-  static public function getTransactionsTitle()
-  {
+  static public function getTransactionsTitle() {
     $widget = RequestUtilities::_getRequestParamValueBottomURL('widget');
     $widget_titles = self::$widget_titles;
     $budgetType = RequestUtilities::_getRequestParamValueBottomURL('budgettype');
     //Transactions Page main title
     $title = (isset($widget) && ($widget != 'wt_year')) ? $widget_titles[$widget] : "";
     if ($title && $budgetType == 'committed' && $widget != 'wt_year') {
-      $title .= ' ' . "by Committed " . ' ' . "Expense Budget Transactions";
-    } elseif ($title && $budgetType == 'percdiff') {
-      $title .= ' ' . "by Percent Difference " . ' ' . "Expense Budget Transactions";
-    } else {
-      $title .= ' ' . "Expense Budget Transactions";
+      $title .= ' ' . "by Committed " . ' ' . self::EXPENSE_BUDGET_TRANSACTION;
+    }
+    elseif ($title && $budgetType == 'percdiff') {
+      $title .= ' ' . "by Percent Difference " . ' ' . self::EXPENSE_BUDGET_TRANSACTION;
+    }
+    else {
+      $title .= ' ' . self::EXPENSE_BUDGET_TRANSACTION;
     }
     return $title;
   }
@@ -70,8 +73,7 @@ class NychaBudgetUtil
    * @param $bottomURL string
    * @return null|string -- Returns Sub Title for Committed Transactions Details
    */
-  static public function getTransactionsSubTitle($widget, $bottomURL)
-  {
+  static public function getTransactionsSubTitle($widget, $bottomURL) {
     $widgetTitles = self::$widget_titles;
     $title = '<b>' . $widgetTitles[$widget] . ': </b>';
 
@@ -99,6 +101,9 @@ class NychaBudgetUtil
       case 'wt_year' :
         $reqParam = RequestUtilities::get('year',  ['q'=>$bottomURL]);
         $title .= 'FY ' . \Drupal\checkbook_project\CommonUtilities\CheckbookDateUtil::_getYearValueFromID($reqParam);
+        break;
+      default:
+        break;
     }
     return $title;
   }
@@ -107,15 +112,15 @@ class NychaBudgetUtil
    * @param $query string
    * @return string Altered Query
    */
-  static public function alterPercentDifferenceQuery($query)
-  {
+  static public function alterPercentDifferenceQuery($query) {
     //Remove the filters at the end for count query
     if (strpos($query, 'COUNT(*) AS record_count')) {
       $filters = substr($query, strpos($query, 'WHERE b.'));
       $urlFilters = str_replace('WHERE ', '', $filters);
       $urlFilters = ' AND ' . str_replace('b.', 'a.', $urlFilters);
       $query = str_replace($filters, "", $query);
-    } else {//Remove the filters at the end for Data query
+    }
+    else {//Remove the filters at the end for Data query
       $start = "WHERE b.";
       $end = "ORDER BY";
       $filters = explode($start, $query);
@@ -138,25 +143,24 @@ class NychaBudgetUtil
   }
 
   // Requirement for Transactions Page results - budget_type and budget_name to display null as null and 'n/a' as 'n/a'
-  static public function getBudgetName($budgetId)
-  {
+  static public function getBudgetName($budgetId) {
     if (isset($budgetId)) {
       $where = "WHERE budget_id = '" . $budgetId . "' AND budget_name IS NOT NULL";
       $query = "SELECT budget_name FROM budget {$where} ";
       $data = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
       return $data[0]['budget_name'] ?? null;
     }
-    return null;
+    return NULL;
   }
 
-  static public function getBudgetType($budgetId)
-  {
+  static public function getBudgetType($budgetId) {
     if (isset($budgetId)) {
       $where = "WHERE budget_id = '" . $budgetId . "' AND budget_type IS NOT NULL";
       $query = "SELECT budget_type FROM budget {$where} ";
       $data = _checkbook_project_execute_sql_by_data_source($query, Datasource::NYCHA);
       return $data[0]['budget_type'] ?? null;
     }
-    return null;
+    return NULL;
   }
+
 }

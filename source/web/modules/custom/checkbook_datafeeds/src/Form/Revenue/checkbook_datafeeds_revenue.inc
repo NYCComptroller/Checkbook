@@ -149,7 +149,7 @@ function checkbook_datafeeds_revenue($form, FormStateInterface &$form_state){
     '#limit_validation_errors' => [],
     '#attributes' => array("onclick" => "
            jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
   );
   $form['feeds_revenue_next'] = array(
@@ -158,13 +158,12 @@ function checkbook_datafeeds_revenue($form, FormStateInterface &$form_state){
     '#submit' => array('checkbook_datafeeds_revenue_next_submit'),
     '#attributes' => array("onclick" => "
            jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
   );
   $form['#attached']['library'][] = 'checkbook_datafeeds/datafeeds.revenue';
   $form['#validate'] = array('checkbook_datafeeds_revenue_validate');
-  $form['#attributes'] = array('class' => array('revenue', 'data-feeds-wizard',)
-  );
+  $form['#attributes'] = array('class' => array('revenue', 'data-feeds-wizard', 'datafeeds-domain-form'));
 
   return $form;
 }
@@ -220,17 +219,17 @@ function checkbook_datafeeds_revenue_filter_data($form, $form_state, $data_sourc
     '#default_value' => $form_state->getValue('revenue_source', ''),
   );
 
-  $form['filter']['catastrophic_event'] = array(
+  $form['filter']['conditional_category'] = array(
     '#type' => 'select',
-    '#title' => t('Catastrophic Event:'),
+    '#title' => t('Conditional Category:'),
     '#options' => FormUtil::getEventNameAndId(),
     '#prefix' => '<div class="datafield catastrophicevent citywide">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
     '#validated' => TRUE,
-    '#id' => 'edit-catastrophic-event',
-    '#name' => 'catastrophic_event',
-    '#default_value' => $form_state->getValue('catastrophic_event', ''),
+    '#id' => 'edit-conditional-category',
+    '#name' => 'conditional_category',
+    '#default_value' => $form_state->getValue('conditional_category', ''),
     );
 
   $form['filter']['leftend'] = array(

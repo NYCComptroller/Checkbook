@@ -1,8 +1,11 @@
 <?php
+
+namespace Drupal\checkbook_custom_breadcrumbs\Breadcrumb;
+
 /**
  * This file is part of the Checkbook NYC financial transparency software.
  *
- * Copyright (c) 2012 – 2023 New York City
+ * Copyright (c) 2012 – 2023 New York City.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,12 +21,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Drupal\checkbook_custom_breadcrumbs\Breadcrumb;
-
 use Drupal\checkbook_custom_breadcrumbs\CustomBreadcrumbs;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 
+/**
+ * Breadcrumb Builder class.
+ */
 class CheckbookBreadcrumbBuilder implements BreadcrumbBuilderInterface {
 
   /**
@@ -38,7 +42,7 @@ class CheckbookBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    * {@inheritdoc}
    */
   public function build(RouteMatchInterface $route_match) {
-    // Define a new object of type Breadcrumb
+    // Define a new object of type Breadcrumb.
     $breadcrumb = new CheckbookBreadcrumb();
 
     // Get current page is hierarchical.

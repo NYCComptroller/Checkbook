@@ -8,6 +8,7 @@
 "dataset": "checkbook:revenue_cross_year_collections",
 "columns": ["funding.funding.funding_class_name","funding.funding.funding_class_code",
             "current_recognized","recognized_1","recognized_2","other_years","remaining_amount"],
+"widgetTitle":"Revenue by Funding Class by Cross Year Collections Transactions",
 "summaryView":{
     "template":"revenue_transactions_summary",
     "templateTitle":"Revenue by Funding Class by Cross Year Collections Transactions",

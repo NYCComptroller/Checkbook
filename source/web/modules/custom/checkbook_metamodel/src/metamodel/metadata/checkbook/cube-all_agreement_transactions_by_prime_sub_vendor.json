@@ -175,20 +175,37 @@
                     }]
                 },
                 {
-                    "name":"award_method_id",
-                    "levels": [
-                        {
-                            "name":"award_method_id",
-                            "sourceColumnName":"award_method_id"
-                        }]
-                },
-                {
                     "name":"event_id",
                     "levels": [
                         {
                             "name":"event_id",
                             "sourceColumnName":"event_id"
                          }]
+                },
+                {
+                  "name":"award_method_by_code",
+                  "levels": [
+                    {
+                      "name":"award_method_by_code",
+                      "datasetName":"award_method_by_code",
+                      "sourceColumnName":"award_method_code"
+                    }]
+                },
+                {
+                  "name":"award_method_id",
+                  "levels": [
+                    {
+                      "name":"award_method_id",
+                      "sourceColumnName":"award_method_id"
+                    }]
+                },
+                {
+                  "name":"award_method_code",
+                  "levels": [
+                    {
+                      "name":"award_method_code",
+                      "sourceColumnName":"award_method_code"
+                    }]
                 },
                 {
                     "name":"award_method_name",
@@ -287,6 +304,30 @@
                   }]
               },
               {
+                "name":"percent_covid_spending",
+                "levels": [
+                  {
+                    "name":"percent_covid_spending",
+                    "sourceColumnName":"percent_covid_spending"
+                  }]
+              },
+              {
+                "name":"percent_asylum_spending",
+                "levels": [
+                  {
+                    "name":"percent_asylum_spending",
+                    "sourceColumnName":"percent_asylum_spending"
+                  }]
+              },
+              {
+                "name":"percent_other_spending",
+                "levels": [
+                  {
+                    "name":"percent_other_spending",
+                    "sourceColumnName":"percent_other_spending"
+                  }]
+              },
+              {
                 "name":"is_sub_emerging",
                 "levels": [
                   {
@@ -323,8 +364,11 @@
                 "g10m_le25m_prime_count": {
                     "function": "SUM(CASE WHEN COALESCE($COLUMN{prime_maximum_contract_amount},0) > 10000000 AND COALESCE($COLUMN{prime_maximum_contract_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
                 },
-                "ge1m_le10m_prime_count": {
-                    "function": "SUM(CASE WHEN COALESCE($COLUMN{prime_maximum_contract_amount},0) >= 1000000 AND COALESCE($COLUMN{prime_maximum_contract_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
+               "ge15mm_le10m_prime_count": {
+                "function": "SUM(CASE WHEN COALESCE($COLUMN{prime_maximum_contract_amount},0) > 1500000 AND COALESCE($COLUMN{prime_maximum_contract_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
+               },
+                "ge1m_le15mm_prime_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{prime_maximum_contract_amount},0) >= 1000000 AND COALESCE($COLUMN{prime_maximum_contract_amount},0) <= 1500000 THEN 1 ELSE 0 END)"
                 },
                 "less1m_prime_count": {
                     "function": "SUM(CASE WHEN COALESCE($COLUMN{prime_maximum_contract_amount},0) < 1000000 THEN 1 ELSE 0 END)"
@@ -358,6 +402,12 @@
                 },
                 "sub_cert_emerging_count":{
                   "function": "COUNT(DISTINCT(CASE WHEN is_sub_emerging = 'Yes' THEN sub_vendor_name||contract_number||sub_contract_id END))"
+                },
+                "asylum_count":{
+                  "function": "SUM(CASE WHEN event_id ~* '(^|,)2(,|$)' THEN 1 ELSE 0 END)"
+                },
+                "covid_count":{
+                  "function": "SUM(CASE WHEN event_id ~* '(^|,)1(,|$)' THEN 1 ELSE 0 END)"
                 }
             }
         },

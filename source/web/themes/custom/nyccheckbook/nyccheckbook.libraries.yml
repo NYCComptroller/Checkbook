@@ -1,5 +1,5 @@
 global-styling:
-  version: 1.0.4
+  version: 1.0.18
   css:
     base:
       css/base/fonts.css: {}

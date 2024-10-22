@@ -12,7 +12,7 @@
     "filterName":"Vendor Type",
     "urlParameterName":"vendortype",
     "autocompleteID":"fvendorType",
-    "urlParamMap":{"doctype":"document_code.document_code.document_code"},
+    "urlParamMap":{"doctype":"document_code.document_code.document_code", "awdmethod":"award_method.award_method.award_method_code"},
     "adjustParameters":"
         if(isset($parameters['disb_vendor_type'])){
             $parameters['disb_vendor_type'] = \\Drupal\\checkbook_project\\MwbeUtilities\\VendorType::getVendorTypeValue($parameters['disb_vendor_type']);

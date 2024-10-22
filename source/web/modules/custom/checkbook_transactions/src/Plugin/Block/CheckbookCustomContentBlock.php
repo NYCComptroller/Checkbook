@@ -111,14 +111,16 @@ class CheckbookCustomContentBlock extends BlockBase {
 
   public function blockValidate($form, FormStateInterface $form_state) {
     $php_value = $form_state->getValue('body');
-    //remove the php tags as eval should not have them
-    $php_value = str_replace('<?php','',$php_value);
-    $php_value = str_replace('?>','',$php_value);
-    if (!empty($php_value)) {
-      try{
-        $result = eval($php_value['value']);
-      } catch (ParseError $e) {
-        $form_state->setErrorByName('body', $this->t('Error in PHP code'));
+    if (!empty($php_value['format']) && $php_value['format'] == 'php_code') {
+      //remove the php tags as eval should not have them
+      $php_value = str_replace('<?php', '', $php_value);
+      $php_value = str_replace('?>', '', $php_value);
+      if (!empty($php_value)) {
+        try{
+          $result = eval($php_value['value']);
+        } catch (ParseError $e) {
+          $form_state->setErrorByName('body', $this->t('Error in PHP code'));
+        }
       }
     }
     return $form_state;

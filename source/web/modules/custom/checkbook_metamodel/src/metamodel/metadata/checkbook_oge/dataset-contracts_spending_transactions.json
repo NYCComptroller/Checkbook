@@ -112,7 +112,17 @@
                             "sourceColumnName": "disb_contract_number"
                         }
                     ]
-                }
+                },
+              {
+                "name": "award_method",
+                "levels": [
+                  {
+                    "name": "award_method",
+                    "datasetName": "award_method",
+                    "sourceColumnName": "award_method_id"
+                  }
+                ]
+              }
             ],
             "measures": {
                 "txcount": {
@@ -150,6 +160,10 @@
         "contracts_spending_transactions__oge_contract": [
             {"datasetName": "contracts_spending_transactions", "columnNames": ["disb_contract_number", "disb_agreement_commodity_line_number"]},
             {"datasetName": "oge_contract_contract", "columnNames": ["fms_contract_number","fms_commodity_line"]}
+        ],
+        "contracts_spending_transactions__award_method": [
+          {"datasetName": "contracts_spending_transactions", "columnNames": ["award_method_id"]},
+          {"datasetName": "award_method", "columnNames": ["award_method_id"]}
         ]
     }
 }

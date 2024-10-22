@@ -12,8 +12,9 @@
     "autocompleteField":"agency.agency.agency_name",
     "maxSelect":5,
     "urlParamMap":{
-				"doctype":"document_code.document_code.document_code"
-			  }  ,
+				"doctype":"document_code.document_code.document_code",
+        "awdmethod":"award_method.award_method.award_method_code"
+    },
     "adjustParameters":"
     $year = $parameters['disb_fiscal_year_id'];
     if(isset($year)){

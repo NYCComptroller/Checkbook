@@ -25,49 +25,53 @@ use Drupal\checkbook_project\WidgetUtilities\WidgetUtil;
 
 class ChartGrid
 {
-  public static function chartGridDisplay($node){
+  /**
+   * @param $node
+   * @return string
+   */
+  public static function chartGridDisplay($node)
+  {
     $output = "<thead><tr>";
     $yearType = RequestUtilities::get('yeartype');
-    	foreach($node->widgetConfig->gridConfig->table_columns as $column){
-        $colTitle = WidgetUtil::generateLabelMappingNoDiv($column->labelAlias);
-        $colTitle = $colTitle ?? $column->labelAlias;
-			  $output .= "<th class='" . $column->columnType . "'><div><span>" . $colTitle . "</div></span></th>";
-		}
+    foreach ($node->widgetConfig->gridConfig->table_columns as $column) {
+      $colTitle = WidgetUtil::generateLabelMappingNoDiv($column->labelAlias);
+      $colTitle = $colTitle ?? $column->labelAlias;
+      $output .= "<th class='" . $column->columnType . "'><div><span>" . $colTitle . "</div></span></th>";
+    }
 
-      $output .= "<th>&nbsp;</th>
+    $output .= "<th>&nbsp;</th>
     </tr>
   </thead>
   <tbody>";
-        if (isset($node->widgetConfig->gridConfig->data) && is_array($node->widgetConfig->gridConfig->data)) {
-            foreach ($node->widgetConfig->gridConfig->data as $datarow) {
-              $output .= "<tr>";
-              $index = 0;
-              while($index < count($node->widgetConfig->gridConfig->table_columns)){
-				if($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "amount" || $node->widgetConfig->gridConfig->table_columns[$index]->formatType == "number"
-                || $node->widgetConfig->gridConfig->table_columns[$index]->formatType == "month" ||$node->widgetConfig->gridConfig->table_columns[$index]->formatType == "monthfy"){
-          $output .= "<td>".$datarow[$index]."</td>";
-				}
-				else{
-          $output .= "<td><div class='" .$node->widgetConfig->gridConfig->table_columns[$index]->columnType ."'>".$datarow[$index]."</div></td>";
-				}
+    if (isset($node->widgetConfig->gridConfig->data) && is_array($node->widgetConfig->gridConfig->data)) {
+      foreach ($node->widgetConfig->gridConfig->data as $datarow) {
+        $output .= "<tr>";
+        $index = 0;
+        while ($index < count($node->widgetConfig->gridConfig->table_columns)) {
+          if ($node->widgetConfig->gridConfig->table_columns[$index]->formatType == "amount" || $node->widgetConfig->gridConfig->table_columns[$index]->formatType == "number"
+            || $node->widgetConfig->gridConfig->table_columns[$index]->formatType == "month" || $node->widgetConfig->gridConfig->table_columns[$index]->formatType == "monthfy") {
+            $output .= "<td>" . $datarow[$index] . "</td>";
+          } else {
+            $output .= "<td><div class='" . $node->widgetConfig->gridConfig->table_columns[$index]->columnType . "'>" . $datarow[$index] . "</div></td>";
+          }
 
-				$index +=1;
-			  }
-              $output .= "<td>&nbsp;</td>";
-              $output .= "</tr>";
-            }
+          $index += 1;
         }
+        $output .= "<td>&nbsp;</td>";
+        $output .= "</tr>";
+      }
+    }
     $output .= "</tbody>
-</table>";
+    </table>";
 
-	$index = 0;
-	$aoColumnDefs = '';
-	foreach($node->widgetConfig->gridConfig->table_columns as $column){
+    $index = 0;
+    $aoColumnDefs = '';
+    foreach ($node->widgetConfig->gridConfig->table_columns as $column) {
 
-		if($column->formatType == 'amount'){
-			$aoColumnDefs .= '
+      if ($column->formatType == 'amount') {
+        $aoColumnDefs .= '
 		                        {
-		                        	"aTargets": [' . $index.'],
+		                        	"aTargets": [' . $index . '],
 		                            "aExportFn":"function",
 									"mDataProp": function ( source, type, val ) {
 										if (type == "set") {
@@ -79,15 +83,13 @@ class ChartGrid
 										}
 										return source.total_amount' . $index . ';
 									},
-		 							"sClass":"' . $column->columnType .'",
+		 							"sClass":"' . $column->columnType . '",
 		                            "asSorting": [ "asc","desc" ]
 		                        },
 		                    ';
-
-		}elseif($column->formatType == 'number'){
-
-			$aoColumnDefs .= '	{
-				"aTargets": [' . $index.'],
+      } elseif ($column->formatType == 'number') {
+        $aoColumnDefs .= '	{
+				"aTargets": [' . $index . '],
 					"aExportFn":"function",
 					"mDataProp": function ( source, type, val ) {
 							if (type == "set") {
@@ -99,13 +101,13 @@ class ChartGrid
 					}
 					return source.total_contracts' . $index . ';
 					},
-					"sClass":"' . $column->columnType .'",
+					"sClass":"' . $column->columnType . '",
 					"asSorting": [ "desc", "asc" ]
 					},
 				';
-		}elseif(($column->formatType == 'monthfy' || $column->formatType == 'month') && $yearType == 'B'){
-			$aoColumnDefs .= '	{
-				"aTargets": [' . $index.'],
+      } elseif (($column->formatType == 'monthfy' || $column->formatType == 'month') && $yearType == 'B') {
+        $aoColumnDefs .= '	{
+				"aTargets": [' . $index . '],
 					"aExportFn":"function",
 					"mDataProp": function ( source, type, val ) {
 						if (type == "set") {
@@ -121,49 +123,49 @@ class ChartGrid
 						}
 						return source.month' . $index . ';
 					},
-					"sClass":"' . $column->columnType .'",
+					"sClass":"' . $column->columnType . '",
 					"asSorting": [ "desc", "asc" ]
 					},
 				';
-		}elseif($column->formatType == 'padding'){
+      } elseif ($column->formatType == 'padding') {
 
-			$aoColumnDefs .= '
+        $aoColumnDefs .= '
 				{
 					"aTargets": [' . $index . '],
 					"sWidth":"' . $column->sWidth . '"
 				},
 			    ';
-		}else{
+      } else {
 
-			$aoColumnDefs .= '
+        $aoColumnDefs .= '
 		                        {
-		                        	"aTargets": [' . $index.'],
-		                            "sClass":"' . $column->columnType .'",
+		                        	"aTargets": [' . $index . '],
+		                            "sClass":"' . $column->columnType . '",
 		                            "asSorting": [ "asc","desc" ]
 		                        },
 		                    ';
-		}
-		$index +=1;
-	}
+      }
+      $index += 1;
+    }
 
-	$aoColumnDefs .= '
+    $aoColumnDefs .= '
 	{
 	"aTargets": [' . $index . '],
 	"sWidth":"15px"
 	}
     ';
 
-	$sortOrder = (isset($node->widgetConfig->gridConfig->sortOrder))? $node->widgetConfig->gridConfig->sortOrder:"desc";
-	$sortColumn = (isset($node->widgetConfig->gridConfig->sortColumn))? $node->widgetConfig->gridConfig->sortColumn:$index - 1;
-    $dataTableOptions ='
+    $sortOrder = (isset($node->widgetConfig->gridConfig->sortOrder)) ? $node->widgetConfig->gridConfig->sortOrder : "desc";
+    $sortColumn = (isset($node->widgetConfig->gridConfig->sortColumn)) ? $node->widgetConfig->gridConfig->sortColumn : $index - 1;
+    $dataTableOptions = '
                     {
                         "bFilter":false,
                         "bInfo":false,
                         "bLengthChange":false,
                         "iDisplayLength":10,
-                        "aaSorting":[[ ' . ($sortColumn)  .  ' ,"' . $sortOrder . '"]],
+                        "aaSorting":[[ ' . ($sortColumn) . ' ,"' . $sortOrder . '"]],
                         "bPaginate": false,
-                        "sAltAjaxSource":"'.\Drupal::request()->query->get('q') .'",
+                        "sAltAjaxSource":"' . \Drupal::request()->query->get('q') . '",
             			"fnDrawCallback"  :  function( oSettings ) {
             			addPaddingToDataCells(this);
             			},

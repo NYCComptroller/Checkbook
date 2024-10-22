@@ -2,6 +2,10 @@
 ***   DATA TABLE STYLING   ***
 *****************************/
 
+.datatable-ajax-started:not(.datatable-ajax-completed) {
+  visibility: hidden;
+}
+
 .layout__region-filter1 {
   border-bottom: 1px solid #CACACA;
   border-left: 1px solid #CACACA;
@@ -105,6 +109,7 @@ table.fy-ait td {
   padding: 10px 5px;
 }
 
+table.fy-ait tr:first-child td,
 table.fy-ait tr.first-row td,
 table.fy-ait td.bb {
   border-bottom: 1px solid #5D96C8;
@@ -255,7 +260,7 @@ td.text div {
   text-align: left;
 }
 td.text{
-  padding :0px 1px 1px 0px;
+  padding :0px 1px 1px 10px;
 }
 
 td.number div {
@@ -368,6 +373,10 @@ a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collap
   float:left;
   margin:0px 5px 0px 0px;
 }
+a.subContractViewAll {
+  display: block;
+  margin-top: 5px;
+}
 .assoc_item .contract-title.clearfix div{
   margin:0px;
 }
@@ -378,11 +387,11 @@ a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collap
 .jspPane{margin-left:25px !important;}
 
 .dataTable td.childcontracts .jspPane {
-  margin-left:30px !important;
+  margin-left: 30px !important;
   padding: 0px 14px 0px 0px;
 }
-.jspVerticalBar{
-  background: none repeat scroll 0 0 red;
+.jspVerticalBar {
+  background: none repeat scroll 0 0 transparent;
   height: 100%;
   position: absolute;
   top: 0px;
@@ -399,6 +408,7 @@ a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collap
 }
 .jspArrow, .jspArrow.jspDisabled {
   background-color: #EDEDED;
+  display: block;
 }
 .jspArrow.jspDisabled.jspActive, .jspArrow.jspActive {
   background-color: #6FCAF0;
@@ -417,10 +427,30 @@ a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collap
 table.dataTable td.childcontracts {
   padding: 0;
   position: relative;
+  height: 100px;
+  overflow: hidden;
 }
 td.childcontracts div.sub-table-wrapper {
   height: 100px;
+  top: 0;
   position: relative;
+}
+td.childcontracts div.sub-table-wrapper table {
+  position: relative;
+}
+td.childcontracts div.sub-table-wrapper table .contract_number {
+  position: sticky;
+  left: 30px;
+}
+td.childcontracts div.sub-table-wrapper table .contract_number::after {
+  position: absolute;
+  display: block;
+  content: '';
+  background-color: inherit;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  right: 100%;
 }
 .jspScrollable .jspContainer {
   overflow: hidden;

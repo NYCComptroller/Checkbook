@@ -71,11 +71,11 @@ class CheckBookFacetExtension extends AbstractExtension
   {
     if (!isset($node->widgetConfig->autocomplete) || $node->widgetConfig->autocomplete == TRUE) {
       $output = "
-  <div class=\"autocomplete\">
-  <input class=\"autocomplete\" " . $disabled . " pages=" . $pages . " type=\"text\" name=" . $node->widgetConfig->urlParameterName .
-        " autocomplete_param_name= " . $node->widgetConfig->autocompleteParamName . " nodeid=" . $node->nid . " id=" . $node->widgetConfig->autocompleteID . ">
-  <input type=\"hidden\" id=\"" . $node->widgetConfig->autocompleteID . "_orig\" value=\"\">
-  </div>";
+      <div class=\"autocomplete\">
+        <input class=\"autocomplete\" " . $disabled . " pages=\"" . $pages . "\" type=\"text\" name=\"" . $node->widgetConfig->urlParameterName .
+            "\" autocomplete_param_name=\"" . $node->widgetConfig->autocompleteParamName . "\" nodeid=\"" . $node->nid . "\" id=\"" . $node->widgetConfig->autocompleteID . "\">
+        <input type=\"hidden\" id=\"" . $node->widgetConfig->autocompleteID . "_orig\" value=\"\">
+      </div>";
     }
     return $output;
   }

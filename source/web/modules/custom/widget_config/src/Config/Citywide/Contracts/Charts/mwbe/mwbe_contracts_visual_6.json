@@ -32,14 +32,18 @@
 "no_results_content":"No Results Found",
 
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year"],
-"urlParamMap":{"year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id",
+"urlParamMap":{"year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_code","vendor":"prime_vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
 "chartTitle":"Top Ten Sub Vendors by Active Expense Contracts",
 "widgetDataLoader":"
 
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
-        $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+  if($param == 'award_method_code'){
+  $where_filters[] = _widget_build_sql_condition(' am.' . $param, $value);
+}else{
+$where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+}
     }
 
     if(count($where_filters) > 0){
@@ -56,6 +60,7 @@
 		from {aggregateon_subven_contracts_cumulative_spending} a1
 	    join {subvendor} v on v.vendor_id =  a1.vendor_id
 	    join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+      join {ref_award_method} am on am.award_method_id = a1.award_method_id
    		' . $where_filter . '
    		group by v.legal_name  ,a1.vendor_id
     	order by 3 desc limit 10';

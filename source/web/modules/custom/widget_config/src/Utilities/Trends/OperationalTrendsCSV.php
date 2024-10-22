@@ -63,9 +63,9 @@ class OperationalTrendsCSV  {
       $output .= $rowString . "\n";
     }
 
-    $output .= "\n"."\n".'"'."(1)The Fire Vehicles for FY 2018 were corrected from 2,616 to 2,641".'"';
-    $output .= "\n"."(2) The Street Lights for FY 2017 were corrected from 396,572 to 321,807 and FY 2018 from 414,938 to 323,195 due to re-evaluation of items included in street lighting Inventory".'"';
-    $output .= "\n"."(3)The Lane miles Resurfaced for FY 2018 were corrected from 1,300 to 1,321 ".'"';
+    $output .= "\n"."\n".'"'."(1) The Fire Vehicles for FY 2018 were corrected from 2,616 to 2,641".'"';
+    $output .= "\n".'"'."(2) The Street Lights for FY 2017 were corrected from 396,572 to 321,807 and FY 2018 from 414,938 to 323,195 due to re-evaluation of items included in street lighting Inventory".'"';
+    $output .= "\n".'"'."(3) The Lane miles Resurfaced for FY 2018 were corrected from 1,300 to 1,321".'"';
     $output .= "\n"."\n".'"'."Sources: Various City Agencies".'"';
     return $output;
   }

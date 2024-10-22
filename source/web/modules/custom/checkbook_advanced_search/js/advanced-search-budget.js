@@ -14,7 +14,7 @@
           'budget_code_chosen': 'select[name=' + data_source + '_budget_budget_code_chosen]',
           'budget_name': 'select[name=' + data_source + '_budget_budget_name]',
           'budget_name_chosen': 'select[name=' + data_source + '_budget_budget_name_chosen]',
-          'catastrophic_events': 'select[name=' + data_source + '_budget_catastrophic_events]',
+          'conditional_categories': 'select[name=' + data_source + '_budget_conditional_categories]',
           'year': 'select[name=' + data_source + '_budget_year]',
           'adopted_from': 'input:text[name=' + data_source + '_budget_adopted_from]',
           'adopted_to': 'input:text[name=' + data_source + '_budget_adopted_to]',
@@ -115,19 +115,21 @@
 
       let budgetCodeAlreadyLoaded = false;
 
-      let reloadBudgetCode = function (div) {
+      let reloadBudgetCode = function (div, cevent_changed = false) {
         let fiscal_year = div.ele('year').val() || 0;
         let agency = div.ele('agency').val() || 0;
         let dept = div.ele('department').val() || 0;
         let expcategory = div.ele('expense_category').val() || 0;
-        let budget_code = div.ele('budget_code').val() || 0;
-        let budget_name = div.ele('budget_name').val() || 0;
-        let catastrophic_events = div.ele('catastrophic_events').val() || 0;
+        let budget_code_div = div.ele('budget_code');
+        let budget_code = cevent_changed ? 0 : (budget_code_div.val() || 0);
+        let budget_name = cevent_changed ? 0 : (div.ele('budget_name').val() || 0);
+        let budget_code_selected = budget_code_div.val() || 0;
+        let conditional_categories = div.ele('conditional_categories').val() || 0;
         let url = '/advanced-search/autocomplete/budget/budgetcode/' + fiscal_year + '/' + agency + '/' +
           dept.toString().replace(/\//g, "__") + '/' +
           expcategory.toString().replace(/\//g, "__") + '/' +
-          budget_name.toString().replace(/\//g, "__") + '/' +
-          catastrophic_events;
+          budget_name.toString().replace(/\//g, "__")  + '/' +
+          conditional_categories;
 
         if (url === budgetCodeAlreadyLoaded) {
           return;
@@ -137,15 +139,20 @@
           $.ajax({
             url: url,
             success: function (data) {
-              let html = '<option select="selected" value="0" title="">Select Budget Code</option>';
+              let html = '<option value="0" title="">Select Budget Code</option>';
               if (data[0]) {
                 if (data[0].label !== 'No Matches Found') {
                   for (let i = 0; i < data.length; i++) {
-                    html = html + '<option title="' + data[i] + '" value="' + data[i] + ' ">' + data[i] + '</option>';
+                    let value = data[i].trim();
+                    html = html + '<option title="' + value + '" value="' + value + '">' + value + '</option>';
                   }
                 }
               }
-              div.ele('budget_code').html(html).val(budget_code).trigger("chosen:updated");
+              budget_code_div.html(html);
+              if (!$('option[value="' + budget_code_selected.trim().replace('"', '') + '"]', budget_code_div).length) {
+                budget_code_selected = 0;
+              }
+              budget_code_div.val(budget_code_selected).trigger("chosen:updated");
               if (budget_name !== div.ele('budget_name').val()) {
                 //@ToDo: check if below needed to call itself back
                 //reloadBudgetCode(div);
@@ -157,19 +164,21 @@
 
       let budgetNamesAlreadyLoaded = false;
 
-      let reloadBudgetName = function (div) {
+      let reloadBudgetName = function (div, cevent_changed = false) {
         let fiscal_year = div.ele('year').val() || 0;
         let agency = div.ele('agency').val() || 0;
         let dept = div.ele('department').val() || 0;
         let expcategory = div.ele('expense_category').val() || 0;
-        let budget_code = div.ele('budget_code').val() || 0;
-        let budget_name = div.ele('budget_name').val() || 0;
-        let catastrophic_events = div.ele('catastrophic_events').val() || 0;
+        let budget_name_div = div.ele('budget_name');
+        let budget_code = cevent_changed ? 0 : (div.ele('budget_code').val() || 0);
+        let budget_name = cevent_changed ? 0 : (budget_name_div.val() || 0);
+        let budget_name_selected = budget_name_div.val() || 0;
+        let conditional_categories = div.ele('conditional_categories').val() || 0;
         //  path: '/data-feeds/budget_type/{domain}/{dataSource}/{budgetName}/{json}'
         let url = '/advanced-search/autocomplete/budget/budgetname/' + fiscal_year + '/' + agency + '/' +
           dept.toString().replace(/\//g, "__") + '/' +
           expcategory.toString().replace(/\//g, "__") + '/' +
-          budget_code + '/' + catastrophic_events;
+          budget_code  + '/' + conditional_categories;
 
         if (url === budgetNamesAlreadyLoaded) {
           return;
@@ -179,15 +188,20 @@
         $.ajax({
           url: url,
           success: function (data) {
-            let html = '<option select="selected" value="0" title="">Select Budget Name</option>';
+            let html = '<option value="0" title="">Select Budget Name</option>';
             if (data[0]) {
               if (data[0].label !== 'No Matches Found') {
                 for (let i = 0; i < data.length; i++) {
-                  html = html + '<option title="' + data[i].value + '" value="' + data[i].value + '">' + data[i].label + '</option>';
+                  let value = data[i].value.trim();
+                  html = html + '<option title="' + value + '" value="' + value + '">' + data[i].label.trim() + '</option>';
                 }
               }
             }
-            div.ele('budget_name').html(html).val(budget_name).trigger("chosen:updated");
+            budget_name_div.html(html);
+            if (!$('option[value="' + budget_name_selected.trim().replace('"', '') + '"]', budget_name_div).length) {
+              budget_name_selected = 0;
+            }
+            budget_name_div.val(budget_name_selected).trigger("chosen:updated");
             if (budget_code !== div.ele('budget_code').val()) {
               //@ToDo: check if below needed to call itself back
               //reloadBudgetName(div);
@@ -309,8 +323,8 @@
             reloadBudgetCode(div_checkbook_budget);
             reloadBudgetName(div_checkbook_budget);
             // Update year drop down
-            div_checkbook_budget.ele('catastrophic_events').removeAttr("disabled");
-            updateEventYearValue("select[name='checkbook_budget_year'] option", '0');
+            div_checkbook_budget.ele('conditional_categories').removeAttr("disabled");
+            updateEventYearValue("select[name='checkbook_budget_year'] option", '0', domain);
 
         }
       }
@@ -358,20 +372,15 @@
         let yval = $(this).find("option:selected").text();
         reloadBudgetCode(div_checkbook_budget);
         reloadBudgetName(div_checkbook_budget);
-        if (yval < 2020) {
-          div_checkbook_budget.ele('catastrophic_events').attr("disabled", "disabled");
-          div_checkbook_budget.ele('catastrophic_events').val('0');
-        } else {
-          div_checkbook_budget.ele('catastrophic_events').removeAttr("disabled");
-        }
+        updateConditionalEventValue(div_checkbook_budget.ele('conditional_categories'), yval, false,'budget');
       });
 
-      //Reload budget type and budget code on catastrophic event reload
-      div_checkbook_budget.ele('catastrophic_events').change(function () {
-        let cevent = div_checkbook_budget.ele('catastrophic_events').val();
-        reloadBudgetCode(div_checkbook_budget);
-        reloadBudgetName(div_checkbook_budget);
-        updateEventYearValue("select[name='checkbook_budget_year'] option", cevent);
+      // Reload budget type and budget code on conditional category reload.
+      div_checkbook_budget.ele('conditional_categories').change(function () {
+        let cevent = div_checkbook_budget.ele('conditional_categories').val();
+        reloadBudgetCode(div_checkbook_budget, true);
+        reloadBudgetName(div_checkbook_budget, true);
+        updateEventYearValue("select[name='checkbook_budget_year'] option", cevent, 'budget');
       });
 
       //NYCHA Budget- Trigger Chosen input tool for 'Budget Type' and 'Budget Name'

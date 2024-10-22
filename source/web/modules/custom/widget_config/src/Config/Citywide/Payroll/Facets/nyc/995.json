@@ -10,7 +10,7 @@
   "filterName":"Rate Type",
   "autocomplete":false,
   "urlParameterName":"ratetype",
-  "autocompleteID":"fratetype",
+  "autocompleteID":"frateType",
   "adjustParameters":"
     $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
     return $adjustedParameters;

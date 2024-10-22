@@ -60,8 +60,8 @@ class ContractsFeedCitywide extends ContractsFeed
 
     $this->_process_user_criteria_by_datasource_single_field_and_check('category', 'category', 'Category');
 
-    if ($this->form_state->getValue('category') != 'revenue' && ($this->form_state->getValue('catastrophic_event') && ($this->form_state->getValue('year') == '0' || (substr($this->form_state->getValue('year'), -4) >= 2020)))) {
-      $this->_process_user_criteria_by_datasource_single_field('catastrophic_event', 'catastrophic_event', 'Catastrophic Event');
+    if ($this->form_state->getValue('category') != 'revenue' && ($this->form_state->getValue('conditional_category') && ($this->form_state->getValue('year') == '0' || (substr($this->form_state->getValue('year'), -4) >= 2020)))) {
+      $this->_process_user_criteria_by_datasource_single_field('conditional_category', 'conditional_category', 'Conditional Category');
     }
 
     $this->_process_user_criteria_by_datasource_sub_vendors();
@@ -112,11 +112,11 @@ class ContractsFeedCitywide extends ContractsFeed
       $this->formatted_search_criteria['Contract Includes Sub Vendors'] = $scntrc_status_name;
     }
 
-    if ($this->form_state->getValue('sub_vendor_status_in_pip_id') && ($this->form_state->getValue('sub_vendor_status_in_pip_id') != 'Select Status' && $this->form_state->getValue('sub_vendor_status_in_pip_id') != 0 && !empty($this->form_state->getValue('sub_vendor_status_in_pip_id')))) {
-      $aprv_sta_name = MappingUtil::getaprv_sta_name($this->form_state->getValue('sub_vendor_status_in_pip_id'));
-      $this->form['filter']['sub_vendor_status_in_pip_id'] = array('#markup' => '<div><strong><nobr>Sub Vendor Status in PIP&nbsp;:</nobr></strong> ' . $aprv_sta_name . '</div>');
-      $this->user_criteria['Sub Vendor Status in PIP'] = $this->form_state->getValue('sub_vendor_status_in_pip_id');
-      $this->formatted_search_criteria['Sub Vendor Status in PIP'] = $aprv_sta_name;
+    if ($this->form_state->getValue('sub_contract_status_id') && ($this->form_state->getValue('sub_contract_status_id') != 'Select Status' && $this->form_state->getValue('sub_contract_status_id') != 0 && !empty($this->form_state->getValue('sub_contract_status_id')))) {
+      $aprv_sta_name = MappingUtil::getaprv_sta_name($this->form_state->getValue('sub_contract_status_id'));
+      $this->form['filter']['sub_contract_status_id'] = array('#markup' => '<div><strong><nobr>Subcontract Status&nbsp;:</nobr></strong> ' . $aprv_sta_name . '</div>');
+      $this->user_criteria['Subcontract Status'] = $this->form_state->getValue('sub_contract_status_id');
+      $this->formatted_search_criteria['Subcontract Status'] = $aprv_sta_name;
     }
   }
 

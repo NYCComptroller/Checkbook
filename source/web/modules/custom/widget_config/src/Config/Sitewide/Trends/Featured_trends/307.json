@@ -3,7 +3,7 @@
   "widgetSubType": "highstock",
   "html_class": "thumbnail",
   "header":"
-    print '<h2 class=\"chart-title\">Capital Projects Fund Aid Revenues</h2>
+    print '<h2 class=\"chart-title\">Capital Projects Fund Aid Revenues by Agency</h2>
       <div class=\"featured-trends-filter\" id=\"capital-projects-filter\">
       <div class=\"filter-container\">
       <input type=\"text\" class=\"chartdatefrom\" maxlength=\"4\" size=\"4\">
@@ -13,7 +13,7 @@
       </div>';",
   "footer":"
       print '<div class=\"detail-page-links\">
-        <a class=\"show-detail-link\" href=\"/featuredtrends/node/354\">Show Details for Capital Projects Fund Aid Revenues</a>
+        <a class=\"show-detail-link\" href=\"/featuredtrends/node/354\">Show Details for Capital Projects Fund Aid Revenues by Agency</a>
         </div>';",
   "callback":"
       var axis = chart.xAxis[0].getExtremes();
@@ -144,8 +144,8 @@
     "linkOptions": [
       {"text": "<a class=\"show-detail-link\" href=\"/featuredtrends/node/354\">Show Details for Capital Projects Fund Expenditures</a>"}
     ],
-    "bigTitle":"Capital Projects Fund Aid Revenues",
-    "littleTitle":"Capital Projects<br>Fund Aid Revenues"
+    "bigTitle":"Capital Projects Fund Aid Revenues by Agency",
+    "littleTitle":"Capital Projects<br>Fund Aid Revenues by Agency"
   }
 }
 <function>

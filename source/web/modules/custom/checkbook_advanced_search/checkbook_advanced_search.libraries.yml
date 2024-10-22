@@ -7,6 +7,7 @@ search-iframe-alerts:
     - core/jquery
     - core/jquery.dialog.ajax
 search-iframe-common:
+  version: 1.0.3
   js:
     js/advanced-search-common.js: { }
   dependencies:
@@ -14,6 +15,7 @@ search-iframe-common:
     - core/jquery
     - core/jquery.dialog.ajax
 search-iframe-budget:
+  version: 1.0.4
   js:
     js/advanced-search-budget.js: { }
   dependencies:
@@ -22,6 +24,7 @@ search-iframe-budget:
     - core/jquery.dialog.ajax
     - checkbook_advanced_search/search-iframe-common
 search-iframe-spending:
+  version: 1.0.2
   js:
     js/advanced-search-spending.js: { }
   dependencies:
@@ -30,6 +33,7 @@ search-iframe-spending:
     - core/jquery.dialog.ajax
     - checkbook_advanced_search/search-iframe-common
 search-iframe-contracts:
+  version: 1.0.3
   js:
     js/advanced-search-contracts.js: { }
   dependencies:
@@ -38,6 +42,7 @@ search-iframe-contracts:
     - core/jquery.dialog.ajax
     - checkbook_advanced_search/search-iframe-common
 search-iframe-payroll:
+  version: 1.0.0
   js:
     js/advanced-search-payroll.js: { }
   dependencies:
@@ -46,6 +51,7 @@ search-iframe-payroll:
     - core/jquery.dialog.ajax
     - checkbook_advanced_search/search-iframe-common
 search-iframe-revenue:
+  version: 1.0.3
   js:
     js/advanced-search-revenue.js: { }
   dependencies:

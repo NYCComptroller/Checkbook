@@ -12,7 +12,7 @@
             'spending_category': 'select[name=' + data_source + '_spending_expense_type]',
             'industry': 'select[name=' + data_source + '_spending_industry]',
             'mwbe_category': 'select[name=' + data_source + '_spending_mwbe_category]',
-            'catastrophic_events': 'select[name=' + data_source + '_spending_catastrophic_events]',
+            'conditional_categories': 'select[name=' + data_source + '_spending_conditional_categories]',
             'payee_name': 'input:text[name=' + data_source + '_spending_payee_name]',
             'check_amt_from': 'input:text[name=' + data_source + '_spending_check_amount_from]',
             'check_amt_to': 'input:text[name=' + data_source + '_spending_check_amount_to]',
@@ -72,6 +72,7 @@
               return;
             }
           }
+          div.ele('exp_category').addClass('loading');
           let dept = 0;
           if (data_source !== 'checkbook_nycha') {
             dept = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
@@ -82,7 +83,6 @@
             ? (div.ele('exp_category').val()) : '';
           $.ajax({
             url: '/datafeeds/spending/expcategory/' + year + '/' + agency + '/' + dept + '/' + exptype + '/' + data_source + '/0',
-
             success: function (data) {
               let html = '<option select="selected" value="" >Select Expense Category</option>';
               if (data[0]) {
@@ -99,9 +99,12 @@
               }
               div.ele('exp_category').html(html);
               //div.ele('exp_category').val(expCat);
+            },
+            complete: function () {
+              div.ele('exp_category').removeClass('loading');
+              enable_input(div.ele('exp_category'));
             }
           });
-          enable_input(div.ele('exp_category'));
         }
 
         //Populate Spending Domain departments drop-down
@@ -116,6 +119,7 @@
             if (agency === 0)
               return;
           }
+          div.ele('dept').addClass('loading');
           if (data_source === 'checkbook_oge') {
             agency = 9000;
           }
@@ -128,7 +132,7 @@
               if (data[0]) {
                 if (data[0] !== 'No Matches Found') {
                   for (let i = 0; i < data.length; i++) {
-                    html = html + '<option value="' + data[i].code + ' ">' + data[i].title + '</option>';
+                    html = html + '<option value="' + data[i].code + '">' + data[i].title + '</option>';
                   }
                 } else {
                   dept = 0;
@@ -136,10 +140,13 @@
                 }
               }
               div.ele('dept').html(html);
-              div.ele('dept').val(dept);
+              //div.ele('dept').val(dept);
+            },
+            complete: function () {
+              div.ele('dept').removeClass('loading');
+              enable_input(div.ele('dept'));
             }
           });
-          enable_input(div.ele('dept'));
         }
 
         //When agency is selected
@@ -155,13 +162,15 @@
               disable_input(div.ele('exp_category'));
             } else {
               //Load departments and expense categories drop-downs
-              loadSpendingDepartments(div, data_source);
+              div.ele('dept').val('0');
+              div.ele('exp_category').val('0');
               loadSpendingExpenseCategories(div, data_source);
+              loadSpendingDepartments(div, data_source);
             }
           } else {
             //Load departments and expense categories drop-downs
-            loadSpendingDepartments(div, data_source);
             loadSpendingExpenseCategories(div, data_source);
+            loadSpendingDepartments(div, data_source);
           }
         }
 
@@ -227,24 +236,24 @@
           } else {
             //CITYWIDE and OGE - disabling fields based on Spending category selected
             if (exptype === '2') {
-              disable_input([div.ele('contract_id'), div.ele('payee_name'), div.ele('catastrophic_events')]);
+              disable_input([div.ele('contract_id'), div.ele('payee_name'), div.ele('conditional_categories')]);
               div.ele('contract_id').val("");
               div.ele('payee_name').val("");
               onCatastrophicEventChange(div);
             } else if (exptype === '4') {
-              disable_input([div.ele('contract_id'), div.ele('catastrophic_events')]);
+              disable_input([div.ele('contract_id'), div.ele('conditional_categories')]);
               div.ele('contract_id').val("");
               enable_input(div.ele('payee_name'));
               onCatastrophicEventChange(div);
             } else {
-              enable_input([div.ele('contract_id'), div.ele('payee_name'), div.ele('catastrophic_events')]);
+              enable_input([div.ele('contract_id'), div.ele('payee_name'), div.ele('conditional_categories')]);
               onFiscalYearChange(div);
             }
           }
         }
 
-        //On change of "Catastrophic event"
-        div_checkbook_spending.ele('catastrophic_events').change(function () {
+        // On change of "Conditional Category".
+        div_checkbook_spending.ele('conditional_categories').change(function () {
           onCatastrophicEventChange(div_checkbook_spending);
         });
 
@@ -252,7 +261,7 @@
           //Selecting 'COVID-19' option causes the following changes:
           //Data within following fields update: Payee Name, Contract ID, Document ID, Capital Project
 
-          let cevent = div.ele('catastrophic_events').val();
+          let cevent = div.ele('conditional_categories').val();
           updateEventYearValue("select[name='checkbook_spending_fiscal_year'] option", cevent);
         }
 
@@ -274,16 +283,17 @@
           if (data_source === 'checkbook') {
             let fiscal_year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
             let exptype = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
-            if (fiscal_year && !(fiscal_year === "fy~all" || removeFY(fiscal_year) >= 121)) disable_input(div.ele('catastrophic_events'));
-            else if (exptype === '2' || exptype === '4') disable_input(div.ele('catastrophic_events'));
-            else enable_input(div.ele('catastrophic_events'));
+            updateConditionalEventValue(div_checkbook_spending.ele('conditional_categories'), removeFY(fiscal_year),(exptype === '2'|| exptype === '4'));
             agency = (div.ele('agency').val()) ? div.ele('agency').val() : 0;
-            if (agency === 0)
+            if (agency === 0) {
               return;
+            }
           }
           //Reload Department and Expense Category drop-downs for CityWide
-          loadSpendingExpenseCategories(div, data_source);
+          div.ele('dept').val('0');
+          div.ele('exp_category').val('0');
           loadSpendingDepartments(div, data_source);
+          loadSpendingExpenseCategories(div, data_source);
         }
 
         //On clicking "Clear"
@@ -421,9 +431,9 @@
                 disable_input([div_checkbook_spending.ele('dept'), div_checkbook_spending.ele('exp_category')]);
               }
               onCatastrophicEventChange(div_checkbook_spending);
-              div_checkbook_spending.ele('catastrophic_events').removeAttr('style');
-              div_checkbook_spending.ele('catastrophic_events').removeAttr('disabled');
-              enable_input([div_checkbook_spending.ele('contract_id'), div_checkbook_spending.ele('payee_name'), div_checkbook_spending.ele('catastrophic_events')]);
+              div_checkbook_spending.ele('conditional_categories').removeAttr('style');
+              div_checkbook_spending.ele('conditional_categories').removeAttr('disabled');
+              enable_input([div_checkbook_spending.ele('contract_id'), div_checkbook_spending.ele('payee_name'), div_checkbook_spending.ele('conditional_categories')]);
               break;
           }
         }
@@ -446,20 +456,20 @@
               year_id = year.split('~')[1];
             }
           }
-          department_name = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
-          department_name = department_name.toString().replace(/\//g, "__");
+          department_code = (div.ele('dept').val()) ? (div.ele('dept').val()) : 0;
+          department_code = department_code.toString().replace(/\//g, "__");
           expenditure_object_code = (div.ele('exp_category').val()) ? (div.ele('exp_category').val()) : 0;
           spending_category_id = (div.ele('spending_category').val()) ? (div.ele('spending_category').val()) : 0;
           minority_type_id = (div.ele('mwbe_category').val()) ? (div.ele('mwbe_category').val()) : 0;
           industry_type_id = (div.ele('industry').val()) ? (div.ele('industry').val()) : 0;
-          let catastrophic_event_id = (div.ele('catastrophic_events').val()) ? div.ele('catastrophic_events').val() : 0;
+          let conditional_category_id = (div.ele('conditional_categories').val()) ? div.ele('conditional_categories').val() : 0;
           datasource = $('input:radio[name=spending_advanced_search_domain_filter]:checked').val();
           // enable purchase order filter for nycha
           let agreement_type_code = (div.ele('po_type').val()) ? (div.ele('po_type').val()) : 0;
           let resp_center_id = (div.ele('resp_center').val()) ? (div.ele('resp_center').val()) : 0;
           let fund_src_id = (div.ele('fundsrc').val()) ? (div.ele('fundsrc').val()) : 0;
           let filters = {
-            department_name: department_name,
+            department_code: department_code,
             agency_id: agency_id,
             expenditure_object_code: expenditure_object_code,
             spending_category_id: spending_category_id,
@@ -469,7 +479,7 @@
             agreement_type_code: agreement_type_code,
             responsibility_center_id: resp_center_id,
             funding_source_id: fund_src_id,
-            event_id: catastrophic_event_id
+            event_id: conditional_category_id
           };
 
            div.ele('payee_name').autocomplete({

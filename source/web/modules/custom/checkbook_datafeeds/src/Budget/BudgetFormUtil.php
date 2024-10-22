@@ -35,9 +35,11 @@ class BudgetFormUtil
    */
   public static function getBudgetType($domain, string $dataSource = Datasource::NYCHA, $budgetName = null, bool $json = false)
   {
-    $budgetName = str_replace("__", "/", $budgetName);
     $where = "WHERE budget_type IS NOT NULL";
-    $where .= (!in_array($budgetName, array('Select Budget Name', '', 0, '0', 'null'), true)) ? " AND budget_name = '". $budgetName ."' ":"";
+    if(!in_array($budgetName, array('Select Budget Name', '', 0, '0', 'null', null), true)){
+      $budgetName = str_replace("__", "/", $budgetName);
+      $where .= " AND budget_name = '". $budgetName ."' ";
+    }
     $query = "SELECT DISTINCT budget_type FROM {$domain} {$where} ORDER BY budget_type ASC";
     $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
     $title = 'Select Budget Type';
@@ -65,14 +67,13 @@ class BudgetFormUtil
    * @param bool $json
    * @return array|JsonResponse
    */
-  public static function getBudgetName($domain, string $dataSource = Datasource::NYCHA, string $budgetType = null, bool $json = false)
+  public static function getBudgetName($domain, string $dataSource = Datasource::NYCHA, $budgetType = null, bool $json = false)
   {
-    if ($budgetType == '0') {
-      $budgetType = null;
-    }
-    $budgetType = str_replace("__", "/", $budgetType);
     $where = "WHERE budget_name IS NOT NULL";
-    $where .= (!in_array($budgetType, array('Select Budget Type', '', 0, '0', 'null'), true)) ? " AND budget_type = '" . $budgetType . "' " : "";
+    if(!in_array($budgetType, array('Select Budget Name', '', 0, '0', 'null', null), true)){
+      $budgetType = str_replace("__", "/", $budgetType);
+      $where .=" AND budget_type = '" . $budgetType . "' " ;
+    }
     $query = "SELECT DISTINCT budget_name FROM {$domain} {$where} ORDER BY budget_name ASC";
     $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
     $title = 'Select Budget Name';

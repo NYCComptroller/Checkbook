@@ -3,7 +3,7 @@
     "dataFunc":"GetContractsSubvendorStatusByPrime",
     "countFunc":"GetCountContractsReportedWithSubVendors",
     "defaultParameters":{"doctype":"'CTA1'~'CT1'~'CT2'","status_flag":"A"},
-    "table_title":"Sub Contract Status by Prime Contract ID",
+    "table_title":"Subcontract Status by Prime Contract ID",
     "headerSubTitle":"Reported Prime Contracts with Sub Vendors",
     "table_columns":[
         {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},

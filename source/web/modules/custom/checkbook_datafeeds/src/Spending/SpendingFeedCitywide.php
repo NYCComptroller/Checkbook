@@ -29,27 +29,28 @@ class SpendingFeedCitywide extends SpendingFeed
   protected $filtered_columns_container = 'column_select';
 
   protected function _process_user_criteria_by_datasource(){
-    //Agency
+    // Agency.
     $this->_process_user_criteria_by_datasource_single_field_and_check('agency', 'agency', 'Agency');
 
-    //Department
+    // Department.
     $this->_process_user_criteria_by_datasource_department();
 
-    //Expense Category
+    // Expense Category.
     $this->_process_user_criteria_by_datasource_expense_category();
 
-    //Spending Category
+    // Spending Category.
     if ($this->form_state->getValue('expense_type')) {
       $this->_process_user_criteria_by_datasource_single_field('expense_type', 'expense_type', 'Spending Category', 'Expense Type');
-    } else {
+    }
+    else {
       $this->form['filter']['expense_type'] = array('#markup' => '<div><strong>Spending Category:</strong> Total Spending</div>');
       $this->formatted_search_criteria['Spending Category'] = 'Total Spending';
     }
 
-    //Catastrophic event filter - Not applicable for categories Payroll and Others
-    $this->_process_user_criteria_by_datasource_catastrophic_event();
+    // Conditional Category filter - Not applicable for categories Payroll and Others.
+    $this->_process_user_criteria_by_datasource_conditional_category();
 
-    //Industry
+    // Industry.
     if ($this->form_state->getValue('industry')) {
       preg_match("/.*?(\\[.*?])/is", $this->form_state->getValue('industry'), $matches);
       $industry_type_name = str_replace($matches[1], "", $matches[0]);
@@ -59,37 +60,38 @@ class SpendingFeedCitywide extends SpendingFeed
       $this->formatted_search_criteria['Industry'] = $industry_type_name;
     }
 
-    //M/WBE Category
+    // M/WBE Category.
     if ($this->form_state->getValue('mwbe_category')) {
       $this->form['filter']['mwbe_category'] = array('#markup' => '<div><strong>M/WBE Category:</strong> ' . MappingUtil::getCurrenEthnicityName(explode('~', $this->form_state->getValue('mwbe_category'))) . '</div>');
       $this->user_criteria['M/WBE Category'] = $this->form_state->getValue('mwbe_category');
       $this->formatted_search_criteria['M/WBE Category'] = MappingUtil::getCurrenEthnicityName(explode('~', $this->form_state->getValue('mwbe_category')));
     }
 
-    //Vendor
+    // Vendor.
     $this->_process_user_criteria_by_datasource_single_field_and_check('payee_name', 'payee_name', 'Payee Name');
 
-    //Check Amount
+    // Check Amount.
     $this->_process_user_criteria_by_datasource_ranged_amount_field('check_amt_from', 'check_amt_to', 'chkamount', 'Check Amount');
 
-    //Contract ID
+    // Contract ID.
     $this->_process_user_criteria_by_datasource_single_field_and_check('contractno', 'contractno', 'Contract ID');
 
-    //Document ID
+    // Document ID.
     $this->_process_user_criteria_by_datasource_single_field_and_check('document_id', 'document_id', 'Document ID');
 
-    //capital Project
+    // capital Project.
     $this->_process_user_criteria_by_datasource_single_field_and_check('capital_project', 'capital_project', 'Capital Project');
 
-    //Year Filter
-    if($this->form_state->getValue('date_filter') == 0) {
+    // Year Filter.
+    if ($this->form_state->getValue('date_filter') == 0) {
       if ($this->form_state->getValue('year') && $this->form_state->getValue('year') !== '0') {
         $this->form['filter']['year'] = array(
           '#markup' => '<div><strong>Year:</strong> ' . substr($this->form_state->getValue('year'), 0, -4) . ' ' . substr($this->form_state->getValue('year'), -4) . '</div>',
         );
         $this->user_criteria['Fiscal Year'] = $this->form_state->getValue('year');
         $this->formatted_search_criteria['Year'] = $this->form_state->getValue('year');
-      } else{
+      }
+      else{
         $this->form['filter']['year'] = array(
           '#markup' => '<div><strong>Year:</strong> All Years</div>',
         );
@@ -119,13 +121,13 @@ class SpendingFeedCitywide extends SpendingFeed
     }
   }
 
-  protected function _process_user_criteria_by_datasource_catastrophic_event() {
-    if ($this->form_state->getValue('expense_type') != 'Payroll [p]' && $this->form_state->getValue('expense_type') != 'Others [o]' && ($this->form_state->getValue('catastrophic_event') && ($this->form_state->getValue('year') == '0' || substr($this->form_state->getValue('year'), -4) >= 2020))) {
-        $catastrophic_events = FormUtil::getEventNameAndId();
-        $catastrophic_event = $catastrophic_events[$this->form_state->getValue('catastrophic_event')] . "[" . $this->form_state->getValue('catastrophic_event') . "]";
-        $this->form['filter']['catastrophic_event'] = array('#markup' => '<div><strong>Catastrophic Event:</strong> ' . $catastrophic_event . '</div>');
-        $this->user_criteria['Catastrophic Event'] = $this->form_state->getValue('catastrophic_event');
-        $this->formatted_search_criteria['Catastrophic Event'] = $this->form_state->getValue('catastrophic_event');
+  protected function _process_user_criteria_by_datasource_conditional_category() {
+    if ($this->form_state->getValue('expense_type') != 'Payroll [p]' && $this->form_state->getValue('expense_type') != 'Others [o]' && ($this->form_state->getValue('conditional_category') && ($this->form_state->getValue('year') == '0' || substr($this->form_state->getValue('year'), -4) >= 2020 || $this->form_state->getValue('date_filter') == 1))) {
+        $conditional_categories = FormUtil::getEventNameAndId();
+        $conditional_category = $conditional_categories[$this->form_state->getValue('conditional_category')] . "[" . $this->form_state->getValue('conditional_category') . "]";
+        $this->form['filter']['conditional_category'] = array('#markup' => '<div><strong>Conditional Category:</strong> ' . $conditional_category . '</div>');
+        $this->user_criteria['Conditional Category'] = $this->form_state->getValue('conditional_category');
+        $this->formatted_search_criteria['Conditional Category'] = $this->form_state->getValue('conditional_category');
     }
   }
 
@@ -136,8 +138,8 @@ class SpendingFeedCitywide extends SpendingFeed
       $this->criteria['value']['spending_category'] = trim($etmatches[1], '[ ]');
     }
 
-    if ($this->form_state->getValue('expense_type') != 'Payroll [p]' && $this->form_state->getValue('expense_type') != 'Others [o]' && ($this->form_state->getValue('catastrophic_event') && ($this->form_state->getValue('year') == '0' || substr($this->form_state->getValue('year'), -4) >= 2020))) {
-      $this->criteria['value']['catastrophic_event'] = $this->form_state->getValue('catastrophic_event');
+    if ($this->form_state->getValue('expense_type') != 'Payroll [p]' && $this->form_state->getValue('expense_type') != 'Others [o]' && ($this->form_state->getValue('conditional_category') && ($this->form_state->getValue('year') == '0' || substr($this->form_state->getValue('year'), -4) >= 2020))) {
+      $this->criteria['value']['conditional_category'] = $this->form_state->getValue('conditional_category');
     }
     if ($this->form_state->getValue('agency') != 'Citywide (All Agencies)') {
       preg_match($this->bracket_value_pattern, $this->form_state->getValue('agency'), $agency_matches);

@@ -78,7 +78,9 @@ class HighChartsExtension extends AbstractExtension {
 		    var oTable" . $id  .  ";
 		    var "."\$j"."= jQuery.noConflict();".
         "\$j"."(document).ready(function() {
-		        oTable" . $id  .  " = "."\$j"."('#table_" . widget_unique_identifier($node) . "').dataTable(
+		        oTable" . $id  .  " = "."\$j"."('#table_" . widget_unique_identifier($node) . "')" .
+		        ".on('preXhr.dt', function() {\$j(this).addClass('datatable-ajax-started');}).on('xhr.dt', function() {\$j(this).addClass('datatable-ajax-completed');})" .
+		        ".dataTable(
 		        " . $node->widgetConfig->gridConfig->dataTableOptions . ");
         }
         );"

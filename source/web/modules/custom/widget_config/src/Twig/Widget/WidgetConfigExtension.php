@@ -191,7 +191,7 @@ class WidgetConfigExtension extends AbstractExtension
   {
     return FormattingUtilities::custom_number_formatter_format($amount, $digits, $digival);
   }
-  public function customNumber($digits,$decimals =null)
+  public function customNumber($digits,$decimals = 0)
   {
     return number_format($digits,$decimals);
   }

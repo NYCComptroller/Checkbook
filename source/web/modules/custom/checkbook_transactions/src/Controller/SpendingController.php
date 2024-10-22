@@ -221,11 +221,6 @@ class SpendingController extends ControllerBase {
       else{
         $message = "There are no spending transactions";
       }
-      $contentController = new DefaultController();
-      $result = $contentController->_widget_node_view_page($request_params);
-      if ($result) {
-        $return['title_block'] = $result;
-      }
       $return['no_records_block'] = [
         '#markup' => '<div id="no-records" class="clearfix">'.$message.'</div>',
       ];
@@ -250,10 +245,6 @@ class SpendingController extends ControllerBase {
       return $output;
     }
     else{
-      $result = '<h1 id="page-title" class="title">' . SpendingBreadcrumbs::getSpendingBreadcrumbTitle() . '</h1>';
-      if ($result) {
-        $return['title_block'] = $result;
-      }
       $return['no_records_block'] = [
         '#markup' => '<div id="no-records" class="clearfix">There are no spending transactions.</div>',
       ];
@@ -280,7 +271,7 @@ class SpendingController extends ControllerBase {
   else
     {
   $result = '<div class="contract-details-heading">
-                  <div class="contract-id"> <h2 class="contract-title">' . SpendingBreadcrumbs::getNYCHASpendingBreadcrumbTitle() . '</h2> </div></div>';
+                  <div class="contract-id"> <h2 class="contract-title">' . SpendingBreadcrumbs::getNychaSpendingBreadcrumbTitle() . '</h2> </div></div>';
   $return['no_records_block'] = [
     '#markup' => $result.'<div id="no-records" class="clearfix">There are no spending transactions.</div>',
   ];

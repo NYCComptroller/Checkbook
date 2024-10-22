@@ -87,3 +87,12 @@ function php_eval($code) {
 
   return $output;
 }
+
+/**
+ * Implements hook_update_projects_alter().
+ *
+ * Disable update checking on for PHP module.
+ */
+function php_update_projects_alter(&$projects){
+  unset($projects['php']);
+}

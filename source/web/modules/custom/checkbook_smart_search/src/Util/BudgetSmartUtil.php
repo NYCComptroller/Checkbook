@@ -49,7 +49,8 @@ class BudgetSmartUtil {
       "encumbered_amount",
       "accrued_expense_amount",
       "cash_expense_amount",
-      "post_closing_adjustment_amount"
+      "post_closing_adjustment_amount",
+      "committed"
     ];
 
     $count = 1;

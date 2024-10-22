@@ -1,29 +1,26 @@
 
 (function ($) {
-	if (typeof Drupal != "undefined") {
-
-		 Drupal.behaviors.contractListPager = {
-			      attach:function (context, settings) {
-
-			    if($('#contListContainer').length > 0){
-			    	$('#contListContainer')
-			    	.after('<div class="cont-list-pager"></div>')
-			    	.cycle({
-		              fx: 'none',
-		              speed:  1000,
-		              timeout: 0,
-		              pause: true,
-		              pauseOnPagerHover: 0,
-		              pager: '.cont-list-pager',
-		              prev:   '#prev',
-		              next:   '#next',
-		              startingSlide: 0
-		            });
-		         }
-			 }
-       };
-
-	}
+  if (typeof Drupal != "undefined") {
+    Drupal.behaviors.contractListPager = {
+      attach:function (context, settings) {
+        if ($('#contListContainer').length > 0) {
+          $('#contListContainer')
+          .after('<div class="cont-list-pager"></div>')
+          .cycle({
+            fx: 'none',
+            speed:  1000,
+            timeout: 0,
+            pause: true,
+            pauseOnPagerHover: 0,
+            pager: '.cont-list-pager',
+            prev:   '#prev',
+            next:   '#next',
+            startingSlide: 0
+          });
+        }
+      }
+    };
+  }
 
   $(document).ready(function(e) {
     $(document).on("click", "a.showHide", function(event){
@@ -40,6 +37,18 @@
 
     jQuery(document).on("click", 'a.subContractViewAll', function(event){
       jQuery(this).parent().parent().siblings().find('a').click();
+    });
+
+    jQuery(document).on("click", 'a.contracts-details-spending-link', function(event){
+      jQuery('.contracts-spending-table').dialog({
+        title: '% of contract expenses budgeted for Covid or Asylum Seekers',
+        position: { my: "center", at: "center", of: window },
+        width: 1000,
+        modal: true,
+        autoResize: true,
+        resizable: false
+      });
+      return false;
     });
 
     jQuery(document).on( 'click', '[id^="master_assoc_cta_expand"]', function () {

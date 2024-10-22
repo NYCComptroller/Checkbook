@@ -32,7 +32,7 @@
             {
                 "dataset": "checkbook:pending_contracts",
                 "columns": ["vendor.vendor","vendor_legal_name.vendor_legal_name","total_contract_amount","total_contracts"],
-                "defaultParameters":{"document_code.document_code.document_code":"RCT1","latest_flag":"Y"},
+                "defaultParameters":{"document_code_id.document_code_id":"7","latest_flag":"Y"},
                 "orderBy": "-total_contract_amount"
 
             },
@@ -46,14 +46,14 @@
 "datasets":[
         {"name":"vendor","column":"vendor_legal_name_vendor_legal_name","type":"string","isArray":true}
 ],
-"defaultParameters":{"document_code.document_code.document_code":"RCT1","revised_maximum_amount":"0"},
+"defaultParameters":{"document_code_id.document_code_id":"7","revised_maximum_amount":"0"},
 "defaultParamTypeConfig":{"revised_maximum_amount":"ne"},
 "adjustParameters":"
             $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
             return $adjustedParameters;
 ",
 "cleanURLParameters":["agency","awdmethod","csize","cindustry"],
-"urlParamMap":{"cindustry":"industry_type_id","awdmethod":"award_method_id","agency":"document_agency_id.document_agency_id","csize":"award_size.award_size"},
+"urlParamMap":{"cindustry":"industry_type_id","awdmethod":"award_method.award_method.award_method_code","agency":"document_agency_id.document_agency_id","csize":"award_size.award_size"},
 "transformationPHP": "
     $data = array();
     $categories=array();

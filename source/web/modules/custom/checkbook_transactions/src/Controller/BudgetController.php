@@ -222,12 +222,6 @@ class BudgetController extends ControllerBase {
       return $output;
     }
     else{
-      $customTitle = 'NYCHA Expense Budget Transactions';
-      $result = "<h2 class='contract-title' class='title'>{$customTitle}</h2>";
-      if ($result) {
-        $return['title_block'] = $result;
-      }
-      $message = TransactionsUtil::nychaBudgetNodataMessage();
       $return['no_records_block'] = [
         '#markup' => '<div id="no-records" class="clearfix">There are no Expense Budget transactions.</div>',
       ];

@@ -27,13 +27,13 @@
       <span class="gi-list-item">{{node.widgetConfig.templateLabel}}:</span> {{node.data[0]['document_id_document_id']}}
     </li>
     <li class="contract-purpose">
-      <span class="gi-list-item">{{puprose |raw }}:</span> {{node.data[0]['contract_purpose_contract_purpose'] | upper}}
+      <span class="gi-list-item">{{puprose |raw }}:</span> {{node.data[0]['contract_purpose_contract_purpose'] | upper | raw}}
     </li>
     <li class="agency">
       <span class="gi-list-item">{{agency | raw}}:</span> {{node.data[0]['agency_agency_agency_name'] | raw}}
     </li>
     <li class="vendor">
-      <span class="gi-list-item">{{vendor |raw}}:</span> {{node.data[0]['vendor_vendor_legal_name']}}
+      <span class="gi-list-item">{{vendor |raw}}:</span> {{node.data[0]['vendor_vendor_legal_name']| raw}}
     </li>
   </ul>
 </div>
