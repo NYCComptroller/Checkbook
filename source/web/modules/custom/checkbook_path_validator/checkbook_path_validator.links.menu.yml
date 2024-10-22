@@ -1,0 +1,4 @@
+checkbook_path_validator.path_form:
+  title: 'Checkbook Path Settings'
+  route_name: checkbook_path_validator.form
+  parent: system.admin_config_system

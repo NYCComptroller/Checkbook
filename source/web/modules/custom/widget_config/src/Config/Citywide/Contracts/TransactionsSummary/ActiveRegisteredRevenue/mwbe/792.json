@@ -3,7 +3,8 @@
     "no_results_content":"No Results Found",
     "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"RCT1","status_flag":"A"},
     "cleanURLParameters":["mwbe","year","calyear","agency","yeartype","awdmethod","vendor","status","csize","cindustry"],
-    "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},"dataset": "checkbook:contracts_coa_aggregates",
+    "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year",
+      "awdmethod":"award_method.award_method.award_method_code","vendor":"vendor_id","status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},"dataset": "checkbook:contracts_coa_aggregates",
     "preProcessConfiguration":"
         if(!_checkbook_check_isEDCPage()) {
             $node->widgetConfig->dataset = 'checkbook:mwbe_contracts_coa_aggregates';

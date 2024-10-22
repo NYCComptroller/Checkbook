@@ -7,6 +7,16 @@
                 {
                     "name": "award_method_id",
                     "key": true}
-            ]}
+            ]
+    },
+    "award_method_by_code": {
+      "datasourceName": "main",
+      "source": "SELECT * FROM ref_award_method WHERE active_flag = 'Y'",
+      "columns": [
+        {
+          "name": "award_method_code",
+          "key": true}
+      ]
+    }
     }
 }

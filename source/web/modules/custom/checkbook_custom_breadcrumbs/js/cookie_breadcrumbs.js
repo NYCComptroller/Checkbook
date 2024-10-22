@@ -7,6 +7,7 @@
         let CookieDomainName = "checkbookHistoryDomain";
         let HistoryLink = [];
         let HistoryTitle = [];
+        let cookieOptions = {path: '/', sameSite: 'lax', secure: true};
 
         function GetCookie() {
           let cookieContent = '';
@@ -39,7 +40,7 @@
 
           }
           let value = pairs.join('@@');
-          cookies.set(CookieName,value, '/');
+          cookies.set(CookieName, value, cookieOptions);
           $('#breadcrumb').html('<span class="breadcrumb-inner">' + breadcrumbHTML + '</span>');
         }
 
@@ -76,64 +77,64 @@
           if (!link.match(/gridview/) && !link.match(/createalert/) && !link.match(/newwindow/) && !link.match(/admin/) && !link.match(/-api/)) {
             if (link.match(/contract/) && !link.match(/datasource/) && !link.match(/checkbook_oge/) && !link.match(/checkbook_nycha/)) {
               if (cookies.get(CookieDomainName) !== 'contract'){
-                cookies.set(CookieName, null, '/');
+                cookies.set(CookieName, null, cookieOptions);
               }
-              cookies.set(CookieDomainName, 'contract', '/');
+              cookies.set(CookieDomainName, 'contract', cookieOptions);
             } else if (link.match(/payroll/) && !link.match(/datasource/) && !link.match(/checkbook_nycha/)) {
               if (cookies.get(CookieDomainName) !== 'payroll') {
-                cookies.set(CookieName, null, '/');
+                cookies.set(CookieName, null, cookieOptions);
               }
-              cookies.set(CookieDomainName, 'payroll', '/');
+              cookies.set(CookieDomainName, 'payroll', cookieOptions);
             } else if ((link.match(/spending/) || link == '/') && !link.match(/datasource/) && !link.match(/checkbook_oge/) && !link.match(/checkbook_nycha/)) {
               if (cookies.get(CookieDomainName) !== 'spending') {
-                cookies.set(CookieName, null, '/');
+                cookies.set(CookieName, null, cookieOptions);
               }
-              cookies.set(CookieDomainName, 'spending', '/');
+              cookies.set(CookieDomainName, 'spending', cookieOptions);
             } else if (link.match(/budget/)) {
               if (cookies.get(CookieDomainName) !== 'budget') {
-                cookies.set(CookieName, null, '/');
+                cookies.set(CookieName, null, cookieOptions);
               }
-              cookies.set(CookieDomainName, 'budget', '/');
+              cookies.set(CookieDomainName, 'budget', cookieOptions);
             } else if (link.match(/revenue/)) {
               if (cookies.get(CookieDomainName) !== 'revenue') {
-                cookies.set(CookieName, null, '/');
+                cookies.set(CookieName, null, cookieOptions);
               }
-              cookies.set(CookieDomainName, 'revenue', '/');
+              cookies.set(CookieDomainName, 'revenue', cookieOptions);
             } else if (link.match(/spending/) && link.match(/datasource/) && link.match(/checkbook_oge/)) {
               if (cookies.get(CookieDomainName) !== 'oge_spending') {
-                cookies.set(CookieName, null, '/');
+                cookies.set(CookieName, null, cookieOptions);
               }
-              cookies.set(CookieDomainName, 'oge_spending', '/');
+              cookies.set(CookieDomainName, 'oge_spending', cookieOptions);
             } else if (link.match(/contract/) && link.match(/datasource/) && link.match(/checkbook_oge/)) {
               if (cookies.get(CookieDomainName) !== 'oge_contract') {
-                cookies.set(CookieName, null, '/');
+                cookies.set(CookieName, null, cookieOptions);
               }
-              cookies.set(CookieDomainName, 'oge_contract', '/');
+              cookies.set(CookieDomainName, 'oge_contract', cookieOptions);
             } else if (link.match(/nycha_contracts/)) {
               if (cookies.get(CookieDomainName) !== 'nycha_contract') {
-                cookies.set(CookieName, null, '/');
+                cookies.set(CookieName, null, cookieOptions);
               }
-              cookies.set(CookieDomainName, 'nycha_contract', '/');
+              cookies.set(CookieDomainName, 'nycha_contract', cookieOptions);
             } else if (link.match(/nycha_spending/)) {
               if (cookies.get(CookieDomainName) !== 'nycha_spending') {
-                cookies.set(CookieName, null, '/');
+                cookies.set(CookieName, null, cookieOptions);
               }
-              cookies.set(CookieDomainName, 'nycha_spending', '/');
+              cookies.set(CookieDomainName, 'nycha_spending', cookieOptions);
             } else if (link.match(/nycha_revenue/)) {
               if (cookies.get(CookieDomainName) !== 'nycha_revenue') {
-                cookies.set(CookieName, null, '/');
+                cookies.set(CookieName, null, cookieOptions);
               }
-              cookies.set(CookieDomainName, 'nycha_revenue', '/');
+              cookies.set(CookieDomainName, 'nycha_revenue', cookieOptions);
             }else if (link.match(/nycha_budget/)) {
               if (cookies.get(CookieDomainName) !== 'nycha_budget') {
-                cookies.set(CookieName, null, '/');
+                cookies.set(CookieName, null, cookieOptions);
               }
-              cookies.set(CookieDomainName, 'nycha_budget', '/');
+              cookies.set(CookieDomainName, 'nycha_budget', cookieOptions);
             } else if (link.match(/payroll/) && link.match(/datasource/) && link.match(/checkbook_nycha/)) {
               if (cookies.get(CookieDomainName) !== 'nycha_payroll') {
-                cookies.set(CookieName, null, '/');
+                cookies.set(CookieName, null, cookieOptions);
               }
-              cookies.set(CookieDomainName, 'nycha_payroll', '/');
+              cookies.set(CookieDomainName, 'nycha_payroll', cookieOptions);
             }
 
             let homepages = [ '/'];
@@ -147,22 +148,22 @@
           }
         }
         $('#node-widget-472 .top-navigation-left a').click(function (event) {
-          cookies.set(CookieName,null,'/');
+          cookies.set(CookieName, null, cookieOptions);
         });
         $('#year_list_chzn li').on("click",function (event) {
-          cookies.set(CookieName,null,'/');
+          cookies.set(CookieName, null, cookieOptions);
               });
         $('#year_list').change(function (event) {
-          cookies.set(CookieName,null,'/');
+          cookies.set(CookieName, null, cookieOptions);
               });
         $('.nice-menu a').click(function (event) {
-          cookies.set(CookieName,null,'/');
+          cookies.set(CookieName, null, cookieOptions);
               });
         $('.region-branding a').click(function (event) {
-          cookies.set(CookieName,null,'/');
+          cookies.set(CookieName, null, cookieOptions);
               });
         $('a.homeLink').click(function (event) {
-          cookies.set(CookieName,null,'/');
+          cookies.set(CookieName, null, cookieOptions);
         });
       }
     };

@@ -45,7 +45,9 @@
   }
 
   let reloadBudgetType = function(){
-    let budget_name = encodeURIComponent($('#edit-nycha-budget-name').val());
+    //The exception for 'N/A' is handled in   public static function 'getBudgetName' function (\Drupal\checkbook_datafeeds\Budget\budgetType)
+    let budget_name = $('#edit-nycha-budget-name').val().replace('/','__');
+    budget_name = (budget_name.length > 0) ? encodeURIComponent(budget_name) : null;
     let budget_type_hidden = $('input:hidden[name="nycha_budget_type_hidden"]').val();
     let data_source = 'checkbook_nycha';
 
@@ -67,7 +69,9 @@
   }
 
   let reloadBudgetName = function(){
-    let budget_type = $('#edit-nycha-budget-type').val() ? encodeURIComponent($('#edit-nycha-budget-type').val()) : '0';
+    //The exception for 'N/A' is handled in   public static function 'getBudgetType' function (\Drupal\checkbook_datafeeds\Budget\budgetName)
+    let budget_type = $('#edit-nycha-budget-type').val().replace('/','__');
+    budget_type = (budget_type.length > 0) ? encodeURIComponent(budget_type) : null;
     let budget_name_hidden = $('input:hidden[name="nycha_budget_name_hidden"]').val();
     let data_source = 'checkbook_nycha';
 
@@ -88,51 +92,29 @@
     });
   }
 
-   //On Catastrophic Event filter change
+   // On Conditional Category filter change.
    function onCatastrophicEventChange(){
-     //Limit fiscal year to just 'FY 2020', 'FY 2021' and 'All years'
-     let budget_fiscal_year = $('#edit-budget-fiscal-year').attr("name");
-     budget_fiscal_year = document.getElementsByName(budget_fiscal_year)[0];
-
-     if($('#edit-catastrophic-event').val() === "1"){
-       for (let i = 0; i < budget_fiscal_year.length; i++) {
-         let year = budget_fiscal_year.options[i].text.toLowerCase();
-         let include = (year >= 2020);
-         budget_fiscal_year.options[i].style.display = include ? '':'none';
+     let cevent = $('#edit-conditional-category').val();
+     $("#edit-budget-fiscal-year option").each(function () {
+       let year = this.text;
+       let include = true;
+       if(cevent === "1") {
+         include = (year >= 2020);
        }
-     }
-     else{
-       for (let i = 0; i < budget_fiscal_year.length; i++) {
-         budget_fiscal_year.options[i].style.display = '';
-       }
-     }
-}
+       this.style.display = include ? '':'none';
+     });
+  }
 
 function onBudgetFiscalYearChange() {
   //Setting data source value
   let data_source = $('input[name="datafeeds-revenue-domain-filter"]:checked').val();
-  if(data_source == 'checkbook') {
-    let budget_fiscal_year = ($('#edit-budget-fiscal-year').val()) ? $('#edit-budget-fiscal-year').val() : 0;
-    let catastrophic_event = document.getElementById("edit-catastrophic-event");
-    let enabled_count = catastrophic_event.length;
-
-    if(budget_fiscal_year < 2020){
-      for (let i = 0; i < catastrophic_event.length; i++) {
-        let event = catastrophic_event.options[i].text.toLowerCase();
-        catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
-        if(catastrophic_event.options[i].style.display === 'none') enabled_count--;
-      }
-      if(enabled_count <=1) disable_input($('#edit-catastrophic-event'));
-    }
-    else{
-      for (let i = 0; i < catastrophic_event.length; i++) {
-        let event = catastrophic_event.options[i].text.toLowerCase();
-        if(event === 'covid-19'){
-          catastrophic_event.options[i].style.display = "";
-          break;
-        }
-      }
-      enable_input($('#edit-catastrophic-event'));
+  if (data_source === 'checkbook') {
+    let year_value = $('#edit-budget-fiscal-year').val();
+    // disable COVID when category is all and year value is less than 2020
+    if (year_value < 2020) {
+      $('select[name="conditional_category"] option[value="1"]').attr('disabled', 'disabled');
+    } else {
+      $('select[name="conditional_category"] option[value="1"]').removeAttr('disabled', 'disabled');
     }
   }
 }
@@ -143,9 +125,10 @@ function onBudgetFiscalYearChange() {
         $.fn.formatDatafeedsDatasourceRadio('edit-datafeeds-revenue-domain-filter');
       });
       let dataSource = $('input[name="datafeeds-revenue-domain-filter"]:checked', context).val();
-
-      reloadBudgetType();
-      reloadBudgetName();
+      if(dataSource === 'checkbook_nycha') {
+        reloadBudgetType();
+        reloadBudgetName();
+      }
 
       //Display or hide fields based on data source selection
       showHideRevenueFields(dataSource);
@@ -160,7 +143,7 @@ function onBudgetFiscalYearChange() {
         $('input:hidden[name="nycha_budget_type_hidden"]', context).val($('#edit-nycha-budget-type', context).val());
         $('input:hidden[name="nycha_budget_name_hidden"]', context).val($(this, context).val());
         reloadBudgetType();
-        if($(this, context).val() == 'Select Budget Name' || $(this, context).val() == ''){
+        if($(this, context).val() === 'Select Budget Name' || $(this, context).val() === ''){
           reloadBudgetName();
         }
       });
@@ -169,13 +152,13 @@ function onBudgetFiscalYearChange() {
         $('input:hidden[name="nycha_budget_type_hidden"]', context).val($(this, context).val());
         $('input:hidden[name="nycha_budget_name_hidden"]', context).val($('#edit-nycha-budget-name', context).val());
         reloadBudgetName();
-        if($(this, context).val() == 'Select Budget Type' || $(this, context).val() == ''){
+        if ($(this, context).val() === 'Select Budget Type' || $(this, context).val() === ''){
           reloadBudgetType();
         }
       });
 
-      //On change of "Catastrophic event"
-      $('select[name="catastrophic_event"]', context).change(function(){
+      // On change of "Conditional Category".
+      $('select[name="conditional_category"]', context).change(function(){
         onCatastrophicEventChange();
       });
 
@@ -221,7 +204,7 @@ function onBudgetFiscalYearChange() {
       let budgetYear = ($('#edit-budget-fiscal-year').val() === 'All Years') ? 0 : $('#edit-budget-fiscal-year').val();
       let revCat = emptyToZero($('#edit-revenue-category').val());
       let fundingSrc = emptyToZero($('#edit-funding-class').val());
-      let catastrophic_event_id = $('#edit-catastrophic-event').val() ? $('#edit-catastrophic-event').val() : 0;
+      let conditional_category_id = $('#edit-conditional-category').val() ? $('#edit-conditional-category').val() : 0;
       let filters = {
         fiscal_year: fiscalYear,
         fund_class_code: fundClass,
@@ -229,7 +212,7 @@ function onBudgetFiscalYearChange() {
         revenue_budget_fiscal_year: budgetYear,
         revenue_category_code: revCat,
         funding_class_code: fundingSrc,
-        event_id: catastrophic_event_id
+        event_id: conditional_category_id
       };
       $('#edit-revenue-class').autocomplete({
         source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_class_name_code',filters),
@@ -315,13 +298,13 @@ function onBudgetFiscalYearChange() {
     $(selector).each(function () {
       $(this).attr('disabled','disabled');
       // store value
-      if ('text' == $(this).attr('type')) {
+      if ('text' === $(this).attr('type')) {
         if ($(this).val()){
           $(this).attr('storedvalue', $(this).val());
         }
         $(this).val('');
       }
-      if (this.type == 'select-one') {
+      if (this.type === 'select-one') {
         var default_option = $(this).attr('default_selected_value');
         if (!default_option)
           $(this).find('option:first').attr("selected", "selected");
@@ -341,7 +324,7 @@ function onBudgetFiscalYearChange() {
       $(this).removeAttr('disabled');
 
       // restore value
-      if ('text' == $(this).attr('type')) {
+      if ('text' === $(this).attr('type')) {
         if ($(this).attr('storedvalue')){
           $(this).val($(this).attr('storedvalue'));
         }

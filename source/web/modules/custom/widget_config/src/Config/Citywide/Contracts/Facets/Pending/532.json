@@ -6,14 +6,15 @@
         "doctype":"document_code.document_code.document_code"
     },
     "limit":100,
-    "columns":["award_method.award_method", "award_method.award_method.award_method_name", "txcount"],
+  "columns":["award_method_by_code.award_method_by_code","award_method_by_code.award_method_by_code.award_method_name","txcount"],
+  "defaultParameters":{"cum_spend.cum_spend.status_flag":"A"},
     "orderBy":"-txcount",
 	"facetPager":true,
     "filterName":"Award Method",
     "urlParameterName":"awdmethod",
     "autocompleteParamName":"awdmethod_auto",
     "autocompleteID":"fAwdMethodId",
-    "autocompleteField":"award_method_name",
+    "autocompleteField":"award_method_by_code.award_method_by_code.award_method_name",
     "maxSelect":5,
     "adjustParameters":"
 if(isset($parameters['vendor_type'])){

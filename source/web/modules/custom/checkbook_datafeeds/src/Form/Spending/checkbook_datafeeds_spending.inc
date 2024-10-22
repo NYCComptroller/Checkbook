@@ -87,7 +87,7 @@ function checkbook_datafeeds_spending($form, &$form_state)
 
   $form['columns']['oge_column_select'] = array(
     '#type' => 'select',
-    '#title' => t('Columns<span class="form-required" title="This field is required.">*</span>'),
+    '#title' => t('Columns<span class="form-required" title="This field is required."></span>'),
     '#options' => _checkbook_datafeeds_spending_column_options(Datasource::OGE, $datatype),
     '#multiple' => TRUE,
     '#validated' => TRUE,
@@ -129,7 +129,7 @@ function checkbook_datafeeds_spending($form, &$form_state)
     '#limit_validation_errors' => array(),
     '#attributes' => array("onclick" => "
            jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
   );
 
@@ -139,13 +139,13 @@ function checkbook_datafeeds_spending($form, &$form_state)
     '#submit' => array('checkbook_datafeeds_spending_next_submit'),
     '#attributes' => array("onclick" => "
            jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
   );
 
   $form['#attached']['library'][] = 'checkbook_datafeeds/datafeeds.spending';
   $form['#validate'] = array('checkbook_datafeeds_spending_validate');
-  $form['#attributes'] = array('class' => array('spending', 'data-feeds-wizard',));
+  $form['#attributes'] = array('class' => array('spending', 'data-feeds-wizard', 'datafeeds-domain-form'));
   return $form;
 }
 
@@ -191,7 +191,7 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#type' => 'select',
     '#title' => t('Agency:'),
     '#options' => $agency_options['options'],
-  '#options_attributes' => $agency_options['options_attributes'],
+    '#options_attributes' => $agency_options['options_attributes'],
     '#attributes' => array('class' => array('watch')),
     '#prefix' => '<div class="column column-left"><div class="datafield agency">',
     '#suffix' => '</div>',
@@ -355,17 +355,17 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
     '#default_value' => $form_state->getValue('mwbe_category', ''),
   );
 
-  $form['filter']['catastrophic_event'] = array(
+  $form['filter']['conditional_category'] = array(
     '#type' => 'select',
-    '#title' => t('Catastrophic Event:'),
+    '#title' => t('Conditional Category:'),
     '#options' => FormUtil::getEventNameAndId(),
     '#prefix' => '<div class="datafield catastrophicevent citywide">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
     '#multiple' => FALSE,
-    '#id' => 'edit-catastrophic-event',
-    '#name' => 'catastrophic_event',
-    '#default_value' => $form_state->getValue('catastrophic_event', ''),
+    '#id' => 'edit-conditional-category',
+    '#name' => 'conditional_category',
+    '#default_value' => $form_state->getValue('conditional_category', ''),
   );
 
   $form['filter']['hidden_data_format'] = array(

@@ -29,7 +29,7 @@
         $('#breadcrumb span.last').text("Property Tax Levies and Collections");
         break;
       case '2':
-        $('#breadcrumb span.last').text("Capital Projects Fund Aid Revenues");
+        $('#breadcrumb span.last').text("Capital Projects Fund Aid Revenues by Agency");
         break;
       case '3':
         $('#breadcrumb span.last').text("Personal Income");
@@ -61,7 +61,7 @@
                             return '<div id="property-tax" class="navigation">Property Tax Levies<br>and Collections</div>';
                             break;
                         case 2:
-                            return '<div id="capital-projects" class="navigation">Capital Projects Fund<br>Aid Revenues</div>';
+                            return '<div id="capital-projects" class="navigation">Capital Projects Fund<br>Aid Revenues by Agency</div>';
                             break;
                         case 3:
                             return '<div id="personal-income" class="navigation">Personal Income</div>';
@@ -82,7 +82,7 @@
             case 'property-tax':
                 $('#breadcrumb span.last').text("Property Tax Levies and Collections"); break;
             case 'capital-projects':
-                $('#breadcrumb span.last').text("Capital Projects Fund Aid Revenues"); break;
+                $('#breadcrumb span.last').text("Capital Projects Fund Aid Revenues by Agency"); break;
             case 'personal-income':
                 $('#breadcrumb span.last').text("Personal Income"); break;
             case 'debt-ratio':

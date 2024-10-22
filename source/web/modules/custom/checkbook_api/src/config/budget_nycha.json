@@ -69,6 +69,7 @@
                   }
               }
           },
+          "adjustParameters":"if(method_exists('\\Drupal\\checkbook_api\\Utilities\\BudgetUtil', 'checkbook_api_adjustBudgetParameterFilters')){\\Drupal\\checkbook_api\\Utilities\\BudgetUtil::checkbook_api_adjustNychaBudgetParameterFilters($data_set,$parameters,$criteria);}",
           "adjustSql":"if(method_exists('\\Drupal\\checkbook_api\\Utilities\\BudgetUtil', 'checkbook_api_adjustNYCHABudgetSql')){\\Drupal\\checkbook_api\\Utilities\\BudgetUtil::checkbook_api_adjustNYCHABudgetSql($sql_query);}"
       },
       "requestParameters":{

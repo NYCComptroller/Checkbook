@@ -1,8 +1,11 @@
 <?php
+
+namespace Drupal\checkbook_custom_breadcrumbs\Breadcrumb;
+
 /**
  * This file is part of the Checkbook NYC financial transparency software.
  *
- * Copyright (c) 2012 – 2023 New York City
+ * Copyright (c) 2012 – 2023 New York City.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,23 +21,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Drupal\checkbook_custom_breadcrumbs\Breadcrumb;
-
 use Drupal\Core\Breadcrumb\Breadcrumb;
 
+/**
+ * Breadcrumb class.
+ */
 class CheckbookBreadcrumb extends Breadcrumb {
 
   /**
    * Show history on/off.
    *
-   * @var boolean
+   * @var bool
    */
   protected $history = FALSE;
 
   /**
    * Get history status.
    *
-   * @return boolean
+   * @return bool
+   *   The history.
    */
   public function getHistory() {
     return $this->history;
@@ -62,7 +67,7 @@ class CheckbookBreadcrumb extends Breadcrumb {
     if (empty($this->history)) {
       $build = parent::toRenderable();
     }
-    elseif ($this->history) {
+    else {
       $build = [
         '#theme' => 'breadcrumb_history',
         '#attached' => [
@@ -75,7 +80,7 @@ class CheckbookBreadcrumb extends Breadcrumb {
         ],
       ];
     }
-    return $build;
+    return $build ?? [];
   }
 
 }

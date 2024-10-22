@@ -23,7 +23,7 @@
             return true;
         }##",
         "sScrollX": "100%",
-        "sScrollXInner":"925px",
+        "sScrollXInner":"938px",
         "aoColumns":[
           null,
           {"sWidth":"100px"},

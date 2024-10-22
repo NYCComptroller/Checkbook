@@ -54,6 +54,14 @@ class PayrollFeed extends PayrollFeedBase
       }
     }
 
+    if ($this->form_state->getValue('title')) {
+      $this->form['filter']['title'] = array(
+        '#markup' => '<div><strong>Title:</strong> ' . $this->form_state->getValue('title')  . '</div>',
+      );
+      $this->user_criteria['Title'] = $this->form_state->getValue('title');
+      $this->formatted_search_criteria['Title'] = $this->form_state->getValue('title');
+    }
+
     // PAYROLL STARTS
     $this->_process_user_criteria_by_datasource_ranged_amount_field('otherfrom', 'otherto', 'other_pay', 'Other Pay', 'Other Payments');
 
@@ -100,8 +108,8 @@ class PayrollFeed extends PayrollFeedBase
 
     $this->_process_user_criteria_by_datasource_single_field_and_check('budget_code', 'budget_code', 'Budget Code');
 
-    if ($this->form_state->getValue('catastrophic_event') !== "0" && $this->form_state->getValue('catastrophic_event') >= 2020) {
-      $this->_process_user_criteria_by_datasource_single_field('catastrophic_event', 'catastrophic_event', 'Catastrophic Event');
+    if ($this->form_state->getValue('conditional_category') !== "0" && $this->form_state->getValue('conditional_category') >= 2020) {
+      $this->_process_user_criteria_by_datasource_single_field('conditional_category', 'conditional_category', 'Conditional Category');
     }
 
     $this->_process_user_criteria_by_datasource_single_field_and_check('fiscal_year', 'fiscal_year', 'Year');

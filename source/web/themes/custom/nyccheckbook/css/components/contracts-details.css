@@ -380,7 +380,8 @@ div.bottomContainer{
 .cb-ma-details .contract-id .contractLinkNote a,
 .oge-ca-details .contract-id .contractLinkNote a,
 .cb-ca-details .contract-id .contractLinkNote a,
-.oge-assoc-contracts-list .contractLinkNote a{
+.oge-assoc-contracts-list .contractLinkNote a,
+.contract-asylum-rider {
   display:block;
   height:16px;
   width:14px;
@@ -388,6 +389,7 @@ div.bottomContainer{
   text-indent: -99999px;
   background: url("../../images/note-icon.png") no-repeat scroll right 0 transparent;
 }
+
 [about^='/contract_details'] .oge-ma-details .contract-id .contractLinkNote a {
   margin-top: 25px;
 }
@@ -398,7 +400,8 @@ div.bottomContainer{
 .oge-ca-details .toolTip,
 .cb-ca-details .toolTip,
 .assoc-contracts-list .toolTip,
-.oge-assoc-contracts-list .toolTip{
+.oge-assoc-contracts-list .toolTip,
+.contract-asylum-rider-tooltip {
   display:none;
   position:absolute;
   top:-100px;
@@ -413,7 +416,16 @@ div.bottomContainer{
   box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.5);
   text-transform: none;
   margin:0px;
+  z-index: 999;
 }
+
+.contract-asylum-rider-tooltip {
+  top: 0;
+  width: 500px;
+  left: 20px;
+  text-indent: initial;
+}
+
 .oge-assoc-contracts-list .toolTip,
 .assoc-contracts-list .toolTip{
   top:-89px;
@@ -645,11 +657,11 @@ article[about="/spending/transactions"] .dollar-amounts > div {
   text-transform: none;
 }
 
-.contract-information li span{
+.contract-information li span {
   font-size: 13px;
   font-weight: bold;
 }
-.dollar-amounts .left{
+.dollar-amounts .left {
   font-size: 13px;
   padding-bottom: 5px;
 }
@@ -1324,6 +1336,42 @@ h2.contract-title {
   font-size: 28px;
 }
 
+.node-widget-429 h2.contract-title,
+.contract-asylum-rider {
+  float: left;
+}
+
 .node-widget-429 h2.contract-title {
-  width: 550px;
+  width: auto;
+}
+
+.contract-asylum-rider {
+  position: relative;
+}
+
+.contract-asylum-rider:hover .contract-asylum-rider-tooltip {
+  display: block !important;
+}
+
+.contracts-details-spending-link {
+  font-weight: normal !important;
+}
+
+.contracts-spending-table {
+  font-size: 12px;
+}
+
+.contracts-spending-table th {
+  padding: 5px 10px !important;
+  text-align: center;
+}
+
+.contracts-spending-table th:first-child {
+  text-align: left;
+  padding-left: 15px !important;
+}
+
+.contracts-spending-table td {
+  padding: 10px 35px 10px 15px !important;
+  text-align: right;
 }

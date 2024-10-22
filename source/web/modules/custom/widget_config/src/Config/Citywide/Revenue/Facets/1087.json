@@ -1,0 +1,24 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":280,
+    "startWith":0,
+    "limit":5,
+    "maxSelect":5,
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
+    "autocomplete":false,
+    "filterName":"Conditional Categories",
+    "urlParameterName":"cevent",
+    "urlParameterType":"any",
+    "autocompleteID":"feventId",
+    "columns":["asylum_count","covid_count"],
+    "orderBy":"",
+    "adjustParameters":"
+      if(isset($parameters['event_id'])){unset($parameters['event_id']);}
+      checkbook_faceted_search_adjust_param($node);
+      $parameters = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::_checkbook_project_adjust_spending_parameter_filters($node, $parameters);
+      $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+      return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

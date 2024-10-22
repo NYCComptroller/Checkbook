@@ -1,8 +1,11 @@
 <?php
+
+namespace Drupal\checkbook_custom_breadcrumbs;
+
 /**
  * This file is part of the Checkbook NYC financial transparency software.
  *
- * Copyright (c) 2012 – 2023 New York City
+ * Copyright (c) 2012 – 2023 New York City.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,22 +21,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Drupal\checkbook_custom_breadcrumbs;
-
-use Drupal;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\PageType;
 use Drupal\checkbook_project\BudgetUtilities\NychaBudgetUtil;
 use Drupal\checkbook_project\CommonUtilities\RequestUtil;
 use Drupal\checkbook_project\WidgetUtilities\NodeSummaryUtil;
 
-class BudgetBreadcrumbs
-{
+/**
+ * Budget breadcrumbs class.
+ */
+class BudgetBreadcrumbs {
+
   /**
-   * Returns Budget page title and Breadcrumb
+   * Returns Budget page title and Breadcrumb.
+   *
    * @return string
+   *   The title.
    */
-  public static function getBudgetBreadcrumbTitle(): string
-  {
+  public static function getBudgetBreadcrumbTitle(): string {
     $current_path = \Drupal::service('path.current')->getPath();
     $expand_bottom_param = \Drupal::request()->query->get('expandBottomContURL');
     $bottomURL = $expand_bottom_param ?? FALSE;
@@ -43,7 +47,8 @@ class BudgetBreadcrumbs
 
     if (!$bottomURL && stripos('_' . $current_path, 'budget/transactions/')) {
       $title = "Expense Budget Transactions";
-    } elseif (
+    }
+    elseif (
       stripos($find, 'transactions')
       || stripos($find, 'deppartment_budget_details')
       || stripos($find, 'expense_category_budget_details')
@@ -52,7 +57,8 @@ class BudgetBreadcrumbs
       $smnid = $bottomURL ? RequestUtil::getRequestKeyValueFromURL("smnid", $bottomURL) : RequestUtil::getRequestKeyValueFromURL("smnid", $current_path);
       if (isset($dtsmnid)) {
         $title = NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid);
-      } else {
+      }
+      else {
         if (isset($smnid)) {
           $title = NodeSummaryUtil::getInitNodeSummaryTemplateTitle($smnid);
         }
@@ -61,17 +67,20 @@ class BudgetBreadcrumbs
     return html_entity_decode($title);
   }
 
-  /** Custom function to get title for Budget landing pages
+  /**
+   * Custom function to get title for Budget landing pages.
+   *
    * @return string|null
+   *   The title.
    */
-  public static function getBudgetPageTitle(): ?string
-  {
-    $current_path = Drupal::service('path.current')->getPath();
-    $expand_bottom_param = Drupal::request()->query->get('expandBottomContURL');
+  public static function getBudgetPageTitle(): ?string {
+    $current_path = \Drupal::service('path.current')->getPath();
+    $expand_bottom_param = \Drupal::request()->query->get('expandBottomContURL');
     $bottomURL = $expand_bottom_param ?? FALSE;
     if (!$bottomURL && preg_match('/^budget\/transactions/', $current_path)) {
       $title = NULL;
-    } else {
+    }
+    else {
       $lastReqParam = RequestUtil::_getLastRequestParamValue();
       $title = "New York City";
 
@@ -80,15 +89,21 @@ class BudgetBreadcrumbs
           case 'agency':
             $title = _checkbook_project_get_name_for_argument("agency_id", $value);
             break;
+
           case 'expcategory':
             $title = _checkbook_project_get_name_for_argument("object_class_id", $value);
             break;
+
           case 'dept':
             $title = _checkbook_project_get_name_for_argument("department_code", $value);
             break;
+
           case 'bdgcode':
             $title = _checkbook_project_get_name_for_argument("budget_code_id", $value);
+            break;
+
           default:
+            break;
         }
       }
     }
@@ -96,34 +111,43 @@ class BudgetBreadcrumbs
   }
 
   /**
+   * Get advanced search title.
+   *
    * @return string
+   *   The title.
    */
   public static function advancedSearchTitle() {
     return 'Expense Budget Transactions';
   }
 
   /**
+   * Get NYCHA advanced search title.
+   *
    * @return string
+   *   The title.
    */
   public static function nychaAdvancedSearchTitle() {
     return 'NYCHA Expense Budget Transactions';
   }
 
   /**
-   * Returns NYCHA Budget page title and Breadcrumb
+   * Returns NYCHA Budget page title and Breadcrumb.
+   *
    * @return string
+   *   The title.
    */
-  public static function getNYCHABudgetBreadcrumbTitle(): string
-  {
+  public static function getNychaBudgetBreadcrumbTitle(): string {
     $title = "";
     $expand_bottom_param = \Drupal::request()->query->get('expandBottomContURL');
     $bottomURL = $expand_bottom_param ?? FALSE;
     if (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE && !$bottomURL) {
       $title = 'NYCHA Expense Budget Transactions';
-    } else {
+    }
+    else {
       if ($bottomURL) {
         $title = NychaBudgetUtil::getTransactionsTitle();
-      } else {
+      }
+      else {
         $lastReqParam = RequestUtil::_getLastRequestParamValue();
         foreach ($lastReqParam as $key => $value) {
           $title = match ($key) {
@@ -142,14 +166,16 @@ class BudgetBreadcrumbs
   }
 
   /**
-   * Custom function to get title for NYCHA Budget landing pages
+   * Custom function to get title for NYCHA Budget landing pages.
+   *
    * @return string|null
+   *   The page title.
    */
-  public static function getNychaBudgetPageTitle(): ?string
-  {
+  public static function getNychaBudgetPageTitle(): ?string {
     if (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
       $title = NULL;
-    } else {
+    }
+    else {
       $lastReqParam = RequestUtil::_getLastRequestParamValue();
       foreach ($lastReqParam as $key => $value) {
         $title = match ($key) {
@@ -162,6 +188,7 @@ class BudgetBreadcrumbs
         };
       }
     }
-    return $title;
+    return $title ?? NULL;
   }
+
 }

@@ -11,7 +11,7 @@
         "vendor":"disb_vendor_id","expcategory":"disb_expenditure_object_id","category":"disb_spending_category_id",
         "checkamtr":"disb_check_amount","dept":"disb_department_id","syear":"disb_fiscal_year_id",
         "scalyear":"disb_fiscal_year_id","magid":"disb_master_agreement_id","agid":"disb_agreement_id",
-        "cvendor":"prime_vendor_id","cagency":"document_agency_id","awdmethod":"award_method_id","csize":"award_size_id",
+        "cvendor":"prime_vendor_id","cagency":"document_agency_id","awdmethod":"award_method_code@checkbook:award_method","csize":"award_size_id",
         "cindustry":"industry_type_id","doctype":"document_code@checkbook:ref_document_code",
         "month":"disb_check_eft_issued_cal_month_id",
         "mwbe":"disb_minority_type_id","industry":"industry_type_id","contnum":"disb_contract_number",

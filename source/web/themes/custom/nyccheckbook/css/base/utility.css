@@ -288,7 +288,12 @@ article[data-history-node-id="604"] ul {
   background: url(/themes/custom/nyccheckbook/images/loading_bigger.gif) no-repeat center;
 }
 
-#checkbook-datafeeds-form select.loading{
+.disabled-element {
+  background-color: #eee !important;
+}
+
+#checkbook-datafeeds-form select.loading,
+#spending-advanced-search select.loading {
   background: url(/themes/custom/nyccheckbook/images/loading.gif) no-repeat right center;
   color:#fff;
 }

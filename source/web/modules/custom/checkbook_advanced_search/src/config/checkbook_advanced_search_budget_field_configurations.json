@@ -6,7 +6,7 @@
     {"field_name":"expense_category","column":"column-left"},
     {"field_name":"budget_code","column":"column-left"},
     {"field_name":"budget_name","column":"column-left"},
-    {"field_name":"catastrophic_events","column":"column-left"},
+    {"field_name":"conditional_categories","column":"column-left"},
     {"field_name":"year","column":"column-left"},
     {"field_name":"adopted","column":"column-right"},
     {"field_name":"modified","column":"column-right"},

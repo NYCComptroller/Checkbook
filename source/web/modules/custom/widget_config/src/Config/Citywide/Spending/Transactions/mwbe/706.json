@@ -29,7 +29,7 @@
         "scalyear":"calendar_fiscal_year_id","magid":"master_agreement_id","agid":"agreement_id",
         "cvendor":"vendor_id@checkbook:contracts_spending_transactions",
         "cagency":"document_agency_id@checkbook:contracts_spending_transactions",
-        "awdmethod":"award_method_id@checkbook:contracts_spending_transactions",
+        "awdmethod":"award_method_code@checkbook:contracts_spending_transactions",
         "status":"status_flag@checkbook:contracts_spending_transactions",
         "csize":"award_size_id@checkbook:contracts_spending_transactions",
         "cindustry":"industry_type_id@checkbook:contracts_spending_transactions",
@@ -80,7 +80,6 @@
         "budget_name",
         "reference_document_number",
         "purpose",
-        "purpose_cy",
         "reporting_code",
         "spending_category_name",
         "expenditure_object_id",
@@ -96,7 +95,8 @@
         "original_agreement_id@checkbook:sub_vendor_agid",
         "budget_name_code",
         "is_women_owned",
-        "is_emerging"
+        "is_emerging",
+        "check_eft_issued_nyc_year_id"
     ],
     "derivedColumns": {
         "associated_prime_vendor_name":{

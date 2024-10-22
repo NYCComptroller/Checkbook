@@ -1,8 +1,11 @@
 <?php
+
+namespace Drupal\checkbook_custom_breadcrumbs;
+
 /**
  * This file is part of the Checkbook NYC financial transparency software.
  *
- * Copyright (c) 2012 – 2023 New York City
+ * Copyright (c) 2012 – 2023 New York City.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,24 +21,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Drupal\checkbook_custom_breadcrumbs;
-
 use Drupal\checkbook_infrastructure_layer\Constants\Common\Dashboard;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
 use Drupal\checkbook_infrastructure_layer\Constants\Payroll\PayrollLandingPage;
 use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
-use Drupal\checkbook_log\LogHelper;
 use Drupal\checkbook_project\CommonUtilities\RequestUtil;
 use Drupal\checkbook_project\PayrollUtilities\PayrollUtil;
 use Drupal\checkbook_project\WidgetUtilities\NodeSummaryUtil;
 
+/**
+ * Payroll breadcrumbs class.
+ */
 class PayrollBreadcrumbs {
+
   /**
-   * Returns Payroll page title and Breadcrumb
+   * Returns Payroll page title and Breadcrumb.
+   *
    * @return string
+   *   The title.
    */
-  public static function getPayrollBreadcrumbTitle(): string
-  {
+  public static function getPayrollBreadcrumbTitle(): string {
     $title = '';
     $current_path = \Drupal::service('path.current')->getPath();
     $expand_bottom_param = \Drupal::request()->query->get('expandBottomContURL');
@@ -127,8 +132,8 @@ class PayrollBreadcrumbs {
                   $title = 'New York City Payroll';
                 }
                 else {
-                  global $checkbook_breadcrumb_title;
-                  $title = $checkbook_breadcrumb_title;
+                  global $_checkbook_breadcrumb_title;
+                  $title = $_checkbook_breadcrumb_title;
                 }
               }
             }
@@ -140,29 +145,37 @@ class PayrollBreadcrumbs {
   }
 
   /**
-   * Custom function to get title for Payroll landing pages
+   * Custom function to get title for Payroll landing pages.
+   *
    * @return string|null
+   *   The title.
    */
-  public static function getPayrollPageTitle($url = null): ?string
-  {
-    if(isset($url)){
+  public static function getPayrollPageTitle($url = NULL): ?string {
+    if (isset($url)) {
       $current_path = $url;
-      $bottomURL = null;
-    }else {
+      $bottomURL = NULL;
+    }
+    else {
       $current_path = RequestUtilities::getCurrentPageUrl();
       $bottomURL = RequestUtilities::getBottomContUrl();
     }
     if (!$bottomURL && preg_match('/^\/payroll\/search\/transactions/', $current_path)) {
       $title = NULL;
-    } else {
+    }
+    else {
       if (PayrollLandingPage::getCurrent() == PayrollLandingPage::AGENCY_LEVEL) {
         $value = RequestUtilities::get('agency');
         $title = _checkbook_project_get_name_for_argument("agency_id", $value);
-      } else {
+      }
+      else {
         if (PayrollLandingPage::getCurrent() == PayrollLandingPage::TITLE_LEVEL) {
           $value = RequestUtilities::get('title');
           $title = _checkbook_project_get_name_for_argument("title", $value);
-        } else {
+        }
+        elseif (stripos($current_path, '/checkbook_nycha/')) {
+          $title = "New York City Housing Authority";
+        }
+        else {
           $title = "New York City";
         }
       }

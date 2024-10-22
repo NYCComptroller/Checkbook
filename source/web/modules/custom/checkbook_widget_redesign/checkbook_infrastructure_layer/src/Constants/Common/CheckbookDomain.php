@@ -4,15 +4,15 @@ namespace Drupal\checkbook_infrastructure_layer\Constants\Common;
 
 abstract class CheckbookDomain {
 
+  public static $BUDGET = 'budget';
+  public static $REVENUE = 'revenue';
   public static $SPENDING = 'spending';
   public static $CONTRACTS = 'contracts';
-  public static $REVENUE = 'revenue';
-  public static $BUDGET = 'budget';
   public static $PAYROLL = 'payroll';
   public static $NYCHA_BUDGET = 'nycha_budget';
   public static $NYCHA_REVENUE = 'nycha_revenue';
-  public static $NYCHA_CONTRACTS = 'nycha_contracts';
   public static $NYCHA_SPENDING = 'nycha_spending';
+  public static $NYCHA_CONTRACTS = 'nycha_contracts';
 
   /**
    * @return string|null
@@ -71,7 +71,7 @@ abstract class CheckbookDomain {
         }
 
         if (!$domain && stripos($urlPath, '/revenue/')) {
-            $domain = self::$REVENUE;
+          $domain = self::$REVENUE;
         }
 
         if (!$domain && stripos($urlPath, '/nycha_revenue/')) {

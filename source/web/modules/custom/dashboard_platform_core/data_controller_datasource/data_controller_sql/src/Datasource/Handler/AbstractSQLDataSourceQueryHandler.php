@@ -661,19 +661,19 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
     StatementLogMessageKeeper::$statements['cube.query'][] = preg_replace('/\s+/', ' ', str_replace("\r","",str_replace("\n","",$sql)));
 
     $return = $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
-    $cache = false;
+    $cache = FALSE;
     if (is_array($return)) {
       if (stripos($sql, 'txcount')) {
-//                facet
-        $cache = true;
+        // Facet.
+        $cache = TRUE;
       }
       if (14 > sizeof($return) && 14 > sizeof($return[0])) {
         // some small piece of data
-        $cache = true;
+        $cache = TRUE;
       }
       if ('checkbook:budget' == $cubeName && 3 > sizeof($return[0])) {
-        // budget codes
-        $cache = true;
+        // Budget codes.
+        $cache = TRUE;
       }
     }
     if ($cache) {
@@ -774,6 +774,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
       LogHelper::log_info("Calling _checkbook_dmemcache_get to get count in countRecords function with cachekey " . $cacheKey . " datasource name: " . $datasource->name . " Sql is: $sql");
       return $count;
     }
+
     $records = $this->executeQuery($callcontext, $datasource, $sql, new PassthroughResultFormatter());
     LogHelper::log_info("Calling _checkbook_dmemcache_set in countRecords function with cachekey " . $cacheKey . " datasource name: " . $datasource->name . " Sql is: $sql");
 

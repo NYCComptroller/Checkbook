@@ -30,6 +30,11 @@ class ChildAgreementDetails {
     //$ag_id = RequestUtilities::get("agid");
     $ag_id = RequestUtilities::_getRequestParamValueBottomURL('agid');
     $ag_id = $ag_id ?? RequestUtilities::get('agid');
+    $datasource = RequestUtilities::get('datasource');
+    if(!isset($datasource)){
+      $contract_class_where =", rcc.contract_class_description ";
+      $contract_class_join = " LEFT OUTER JOIN {ref_contract_class} AS rcc ON l1.contract_class_code = rcc.contract_class_code ";
+    }
 
     $query1 = "SELECT l1.contract_number, a.master_contract_number,
            l2.vendor_id AS vendor_id_checkbook_vendor_history,
@@ -38,6 +43,7 @@ class ChildAgreementDetails {
            l531.agency_name AS agency_name_checkbook_agency,
            l531.agency_id AS agency_id_checkbook_agency,
            l1071.award_method_name AS award_method_name_checkbook_award_method,
+           l1.oca_number,
            l1.document_version,
            l1.tracking_number,
            l1.number_responses,
@@ -49,7 +55,7 @@ class ChildAgreementDetails {
            l1237.date AS date_chckbk_date_id_effctv_begin_date_id_chckbk_histor_agrmnt_0,
            l1318.date AS date_checkbk_date_id_effctv_end_date_id_chckbk_history_agrmnt_1,
            l1399.date AS date_chckbk_date_id_rgstrd_date_id_checkbook_history_agreemnt_2,
-           rat.agreement_type_name
+           rat.agreement_type_name".$contract_class_where."
       FROM history_agreement AS l1
            LEFT OUTER JOIN agreement_snapshot AS a ON l1.master_agreement_id = a.master_agreement_id
            LEFT OUTER JOIN vendor_history AS l2 ON l2.vendor_history_id = l1.vendor_history_id
@@ -61,7 +67,7 @@ class ChildAgreementDetails {
            LEFT OUTER JOIN ref_date AS l1237 ON l1237.date_id = l1.effective_begin_date_id
            LEFT OUTER JOIN ref_date AS l1318 ON l1318.date_id = l1.effective_end_date_id
            LEFT OUTER JOIN ref_date AS l1399 ON l1399.date_id = l1.registered_date_id
-           LEFT OUTER JOIN {ref_agreement_type} AS rat ON l1.agreement_type_id = rat.agreement_type_id
+           LEFT OUTER JOIN {ref_agreement_type} AS rat ON l1.agreement_type_id = rat.agreement_type_id".$contract_class_join."
      WHERE l1.original_agreement_id = " . $ag_id . "
        AND l1.latest_flag = 'Y'
     ";

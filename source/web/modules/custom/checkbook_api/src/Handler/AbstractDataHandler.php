@@ -37,9 +37,9 @@ abstract class AbstractDataHandler {
     // Load data:
     $data_records = $this->getDataRecords();
 
-      if (isset($this->requestDataSet->adjustDataSetResults)) {
-          eval($this->requestDataSet->adjustDataSetResults);
-      }
+    if (isset($this->requestDataSet->adjustDataSetResults)) {
+      eval($this->requestDataSet->adjustDataSetResults);
+    }
 
     // Format Data:
     $data_response = NULL;
@@ -85,27 +85,27 @@ abstract class AbstractDataHandler {
 
       $queue_request_token = NULL;
 
-    // Get queue request:
-    $queue_criteria = $this->getQueueCriteria($this->requestSearchCriteria->getCriteria());
-    $queue_search_results = QueueUtil::searchQueue($email, $queue_criteria);
+      // Get queue request:
+      $queue_criteria = $this->getQueueCriteria($this->requestSearchCriteria->getCriteria());
+      $queue_search_results = QueueUtil::searchQueue($email, $queue_criteria);
 
-    // Different user, same request, add entry in custom_queue_request only
-    if (isset($queue_search_results['job_id'])) {
-        // Generate Token:
-        $token = $this->generateToken();
-        // Create queue request:
-        QueueUtil::createQueueRequest($token, $email, $queue_search_results['job_id']);
-        //Update the last_update_date of the existing job
-        QueueUtil::updateJobTimestamp($queue_search_results);
-        return $token;
-    }
+      // Different user, same request, add entry in custom_queue_request only
+      if (isset($queue_search_results['job_id'])) {
+          // Generate Token:
+          $token = $this->generateToken();
+          // Create queue request:
+          QueueUtil::createQueueRequest($token, $email, $queue_search_results['job_id']);
+          //Update the last_update_date of the existing job
+          QueueUtil::updateJobTimestamp($queue_search_results);
+          return $token;
+      }
 
       $sql_query = get_db_query(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
-        $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
+      $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
 
-        if (isset($this->requestDataSet->adjustSql)) {
-            eval($this->requestDataSet->adjustSql);
-        }
+      if (isset($this->requestDataSet->adjustSql)) {
+        eval($this->requestDataSet->adjustSql);
+      }
 
       $token = $this->generateToken();
 
@@ -157,10 +157,10 @@ abstract class AbstractDataHandler {
             $queue_criteria = $this->getQueueCriteria($this->requestSearchCriteria->getCriteria());
 
             $sql_query = get_db_query(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
-                $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
+            $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
 
             if (isset($this->requestDataSet->adjustSql)) {
-                eval($this->requestDataSet->adjustSql);
+              eval($this->requestDataSet->adjustSql);
             }
 
             $token = $this->generateToken();
@@ -305,7 +305,8 @@ abstract class AbstractDataHandler {
       $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
       eval($this->requestDataSet->adjustSql);
       $records = _checkbook_project_execute_sql_by_data_source($sql_query, $data_source);
-    }else{
+    }
+    else{
       $records = get_db_results(TRUE, $this->requestDataSet->name, $this->requestDataSet->columns,
       $this->requestDataSet->parameters, $this->requestDataSet->sortColumn, $this->requestDataSet->startWith, $this->requestDataSet->limit, NULL);
     }
@@ -350,11 +351,11 @@ abstract class AbstractDataHandler {
     $limit = $this->requestDataSet->limit;
     $resultFormatter = null;
 
-    $query = widget_get_db_query($isList, $dataSetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
+    $sql_query = widget_get_db_query($isList, $dataSetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
 
-    LogHelper::log_notice("DataFeeds :: generateFile() query: ".$query);
+    LogHelper::log_notice("DataFeeds :: generateFile() query: " . $sql_query);
 
-    $filename = $this->getJobCommand($query);
+    $filename = $this->getJobCommand($sql_query);
 
     return $filename;
   }

@@ -3,21 +3,26 @@
 {% set dashboard = RequestGet('dashboard') %}
 {% set contactCategory = RequestGet('contcat') %}
 {% set mocsContracts = RequestGet('mocs') %}
+{% set cEvent = RequestGet('cevent') %}
 
 {% if contactStatus == 'A' %}
-{% set contactStatusLabel = "Active"  %}
+  {% set contactStatusLabel = "Active"  %}
+  {% set rider = TRUE  %}
 {% endif %}
 
 {% if contactStatus == 'R' %}
-{% set contactStatusLabel = "Registered"  %}
+  {% set contactStatusLabel = "Registered"  %}
+  {% set rider = TRUE  %}
 {% endif %}
 
 {% set contactCategoryLabel = 'Expense' %}
+
 {% if contactCategory == 'revenue' %}
   {% set contactCategoryLabel = 'Revenue' %}
 {% endif %}
+
 {% if contactCategory == 'all' %}
-{% set contactCategoryLabel = '' %}
+  {% set contactCategoryLabel = '' %}
 {% endif %}
 
 {% if dashboard == 'ss' %}
@@ -38,11 +43,18 @@
 
 {% set summaryTitles = ActiveRegisteredTitle(dashboard,smnid,mocsContracts) %}
 
+{% if (rider) %}
+  {% if cEvent matches '/(^|~)2($|~)/' %}
+    {% set riderDisplay = 'block' %}
+  {% else %}
+    {% set riderDisplay = 'none' %}
+  {% endif %}
+  {% set riderHtml = '<span class="contract-asylum-rider" style="display:' ~ riderDisplay ~ ';"><span class="contract-asylum-rider-tooltip" style="display:none;">Note: The contracts on this list were identified by this Office using information collected from City Hall and other publicly available sources. This list may include contracts that don\'t have an expressed purpose related to the City\'s asylum response but were nonetheless flagged due to the presence of spending and budget codes associated with an asylum-related activities. Interested parties can view all spending (and associated budget codes) for each contract in Checkbook NYC by entering the contract ID into the search bar, and then exporting a record of spending transactions.</span></span>' %}
+{% endif %}
+
 {% if (dashboard == 'ss' or dashboard == 'sp' or dashboard == 'ms') %}
-
-{% set titles = ActiveRegisteredDashboardTitle(dashboard,smnid,bottomNavigation) %}
-{{ titles[0] |raw }}
+  {% set titles = ActiveRegisteredDashboardTitle(dashboard,smnid,bottomNavigation) %}
+  {{ titles[0]|raw }}{{ riderHtml|raw }}
 {% else %}
-  <h2 class='contract-title js-breadcrumb-title' class='title'>{{ summaryTitles[0] }} {{summaryTitles[1]}} {{contactStatusLabel}} {{contactCategoryLabel}} Contracts Transactions</h2>
-
+  <h2 class='contract-title js-breadcrumb-title' class='title'>{{ summaryTitles[0] }} {{summaryTitles[1]}} {{contactStatusLabel}} {{contactCategoryLabel}} Contracts Transactions</h2>{{ riderHtml|raw }}
 {% endif %}

@@ -161,13 +161,12 @@
             // Reset covid field based on the form input year value
             let yearval = $('select[name="fiscal_year"]', context).val()
             if ( yearval < 2020){
-              $("#edit-catastrophic-event").attr('disabled', 'disabled');
-              $('#edit-catastrophic-event', context).val('0');
+              $('select[name="conditional_category"] option[value*="[1]"]', context).attr('disabled', 'disabled');
             }
-            let cevent =$('#edit-catastrophic-event', context).val();
+            let event_id = $('#edit-conditional-category', context).val();
             $(once('budget_window_load',document)).ready(function () {
               $.fn.formatDatafeedsDatasourceRadio('edit-datafeeds-budget-domain-filter');
-              updateYearValue(cevent);
+              updateYearValue(event_id);
             });
 
 
@@ -175,7 +174,7 @@
             $('input:radio[name=datafeeds-budget-domain-filter]', context).change(function () {
               $('input:hidden[name="hidden_multiple_value"]', context).val("");
               onDataSourceChange($(this, context).val());
-              updateYearValue(cevent);
+              updateYearValue(event_id);
             });
 
             $('#edit-agency', context).change(function () {
@@ -191,21 +190,21 @@
                 $.fn.reloadExpenseCategory();
             });
 
-            $('#edit-catastrophic-event', context).change(function () {
-              let cevent = $('#edit-catastrophic-event', context).val();
-              updateYearValue(cevent);
+            $('#edit-conditional-category', context).change(function () {
+              let event_id = $('#edit-conditional-category', context).val();
+              updateYearValue(event_id);
             });
 
             $('#edit-fiscal-year', context).change(function () {
               let yearval = $('select[name="fiscal_year"]', context).val();
-              if(yearval < 2020){
-                $("#edit-catastrophic-event").attr('disabled', 'disabled');
-                $('select[name="catastrophic_event"]', context).val('0');
-              }
-              else{
-                $("#edit-catastrophic-event").removeAttr('disabled');
-              }
+              switch (true) {
+                case yearval < 2020:
+                  $('select[name="conditional_category"] option[value*="[1]"]', context).attr('disabled', 'disabled');
+                  break;
 
+                default:
+                  $('select[name="conditional_category"] option[value*="[1]"]', context).removeAttr('disabled');
+              }
            });
 
             $('#edit-nycha-budget-name', context).change(function () {
@@ -232,7 +231,7 @@
             let dept = ($('#edit-dept',context).val()) ? $('#edit-dept',context).val() : 0;
             let expcategory = ($('#edit-expense-category',context).val()) ? $('#edit-expense-category',context).val() : 0;
             let budgetcode = ($('#edit-budget-code',context).attr('disabled')) ? 0 : emptyToZero($('#edit-budget-code',context).val());
-            let event = emptyToZero($('#edit-catastrophic-event',context).val());
+            let event = emptyToZero($('#edit-conditional-category',context).val());
 
             let filters = {
                 object_class_code: expcategory,
@@ -254,7 +253,7 @@
                   let agency = emptyToZero($('#edit-agency',context).val());
                   let dept = emptyToZero($('#edit-dept',context).val()) ;
                   let expcategory =  emptyToZero($('#edit-expense-category',context).val());
-                  let event = emptyToZero($('#edit-catastrophic-event',context).val());
+                  let event = emptyToZero($('#edit-conditional-category',context).val());
 
                     let filters = {
                       object_class_code: expcategory,
@@ -291,44 +290,45 @@
         }
     }
 
-    //Function to retrieve values enclosed in brackets or return zero if none
-      function emptyToZero(input) {
-        let p = null;
-        let code = null;
-        if(input) {
-          p = /\[(.*?)]$/;
-          code = p.exec(input.trim());
-        }
-        if (code) {
-          return code[1];
-        }
-        return 0;
+    // Function to retrieve values enclosed in brackets or return zero if none.
+    function emptyToZero(input) {
+      let p = null;
+      let code = null;
+      if (input) {
+        p = /\[(.*?)]$/;
+        code = p.exec(input.trim());
       }
+      if (code) {
+        return code[1];
+      }
+      return 0;
+    }
 
-  // update year drop down when event is chosen
-    function updateYearValue(cevent) {
+    // Update year drop down when event is chosen.
+    function updateYearValue(event_id) {
       $('#edit-fiscal-year').find('option').each(function() {
-        var yval =  $(this).val();
-        if ( yval < 2020 && cevent != 0){
-          $(this).hide();
-        }
-        else{
-          $(this).show();
-        }
-      });
-  }
-
-    //Function to clear text fields and drop-downs
-     let clearInputFields = function (dataSource) {
-         $('.fieldset-wrapper').find(':input').each(function () {
-        switch (this.type) {
-          case 'select-one':
-            $(this).val( $(this).find('option:first').val());
+        var yearval =  $(this).val();
+        switch (emptyToZero(event_id)) {
+          case '1':
+            (yearval < 2020 ? $(this).hide() : $(this).show());
             break;
-          case 'text':
-            $(this).val('');
-            break;
+          default:
+            $(this).show();
         }
       });
     }
+
+    // Function to clear text fields and drop-downs.
+    let clearInputFields = function (dataSource) {
+      $('.fieldset-wrapper').find(':input').each(function () {
+      switch (this.type) {
+        case 'select-one':
+          $(this).val( $(this).find('option:first').val());
+          break;
+        case 'text':
+          $(this).val('');
+          break;
+      }
+    });
+  }
 }(jQuery));

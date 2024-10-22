@@ -13,7 +13,7 @@
     "filterName":"Payroll Type",
     "autocomplete":false,
     "urlParameterName":"payrolltype",
-    "autocompleteID":"fpayrolltype",
+    "autocompleteID":"fpayrollType",
     "adjustParameters":"
     if(function_exists('_checkbook_project_applyParameterFilters')){
     $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);

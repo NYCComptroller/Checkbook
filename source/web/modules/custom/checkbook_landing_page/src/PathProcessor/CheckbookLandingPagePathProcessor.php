@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CheckbookLandingPagePathProcessor implements InboundPathProcessorInterface {
   public function processInbound($path, Request $request) {
-    //need to check if path is not /budget/transactions since Transactions page uses that. see CheckbookTransactionsPathProcessor
+    // Need to check if path is not /budget/transactions since Transactions page uses that. see CheckbookTransactionsPathProcessor.
     if (!str_contains($path, '/budget/transactions')) {
       //now checking budget landing page paths
       if (str_starts_with($path, '/budget/')) {
@@ -37,15 +37,15 @@ class CheckbookLandingPagePathProcessor implements InboundPathProcessorInterface
       }
     }
 
-    //need to see if path is not a NYCHA Budget transaction page. see CheckbookTransactionsPathProcessor
+    // Need to see if path is not a NYCHA Budget transaction page. see CheckbookTransactionsPathProcessor.
     if (!str_contains($path, '/nycha_budget/transactions') &&
-      !str_contains($path, '/nycha_budget/details') &&
-      !str_contains($path, '/nycha_budget/fundsrc_details') &&
-      !str_contains($path, '/nycha_budget/project_details') &&
-      !str_contains($path, '/nycha_budget/program_details') &&
-      !str_contains($path, '/nycha_budget/respcenter_details') &&
-      !str_contains($path, '/nycha_budget/search/transactions')) {
-      //now checking NYCHA budget landing page paths
+        !str_contains($path, '/nycha_budget/details') &&
+        !str_contains($path, '/nycha_budget/fundsrc_details') &&
+        !str_contains($path, '/nycha_budget/project_details') &&
+        !str_contains($path, '/nycha_budget/program_details') &&
+        !str_contains($path, '/nycha_budget/respcenter_details') &&
+        !str_contains($path, '/nycha_budget/search/transactions')) {
+      // Now checking NYCHA budget landing page paths.
       if (str_starts_with($path, '/nycha_budget/')) {
         $path = preg_replace('|^\/nycha_budget\/|', '', $path);
         $urlPath = "/nycha_budget/";
@@ -54,103 +54,104 @@ class CheckbookLandingPagePathProcessor implements InboundPathProcessorInterface
 
     //need to see if path is not a NYC Revenue transaction page. see CheckbookTransactionsPathProcessor
     if (!str_contains($path, '/revenue/transactions') &&
-      !str_contains($path, '/revenue/agency_details') &&
-      !str_contains($path, '/revenue/revcat_details') &&
-      !str_contains($path, '/revenue/fundsrc_details')) {
-      //now checking NYCHA budget landing page paths
+        !str_contains($path, '/revenue/agency_details') &&
+        !str_contains($path, '/revenue/revcat_details') &&
+        !str_contains($path, '/revenue/fundsrc_details')) {
+      // Now checking NYCHA budget landing page paths.
       if (str_starts_with($path, '/revenue/')) {
         $path = preg_replace('|^\/revenue\/|', '', $path);
         $urlPath = "/revenue/";
       }
     }
 
-    //need to see if path is not a NYCHA Revenue transaction page. see CheckbookTransactionsPathProcessor
+    // Need to see if path is not a NYCHA Revenue transaction page. see CheckbookTransactionsPathProcessor.
     if (!str_contains($path, '/nycha_revenue/transactions') &&
-      !str_contains($path, '/nycha_revenue/search/transactions')) {
-      //now checking NYCHA budget landing page paths
+        !str_contains($path, '/nycha_revenue/search/transactions')) {
+      // Now checking NYCHA budget landing page paths.
       if (str_starts_with($path, '/nycha_revenue/')) {
         $path = preg_replace('|^\/nycha_revenue\/|', '', $path);
         $urlPath =  "/nycha_revenue/";
       }
     }
 
-    //need to see if path is not a NYCHA Spending transaction page. see CheckbookTransactionsPathProcessor
+    // Need to see if path is not a NYCHA Spending transaction page. see CheckbookTransactionsPathProcessor.
     if (!str_contains($path, '/nycha_spending/transactions') &&
-    !str_contains($path, '/nycha_spending/search/transactions'))
-    {
-      //now checking NYCHA budget landing page paths
+        !str_contains($path, '/nycha_spending/search/transactions')) {
+      // Now checking NYCHA budget landing page paths.
       if (str_starts_with($path, '/nycha_spending/')) {
         $path = preg_replace('|^\/nycha_spending\/|', '', $path);
         $urlPath = "/nycha_spending/";
       }
     }
 
-    //Spending paths
+    // Spending paths.
     if (!str_contains($path, '/spending/transactions') &&
-      !str_contains($path, '/spending/transactions/datasource') &&
-      !str_contains($path, '/spending/transactions/dashboard')){
+        !str_contains($path, '/spending/transactions/datasource') &&
+        !str_contains($path, '/spending/transactions/dashboard')) {
       if (str_starts_with($path, '/spending_landing/')) {
         $params = preg_replace('|^\/spending_landing\/|', '', $path);
         $params = str_replace('/', ':', $params);
         $params = "$params";
-        if ((!preg_match('*dashboard*', $path)) && preg_match('*datasource*', $path)) {
-          return "/spending_landing/datasource/$params";
-        } else if (preg_match('*dashboard/s*', $path)) {
-            if (preg_match('*dashboard:ss*', $params)){
-              $params = str_replace(":dashboard:ss", '', $params);
-              $params = "$params";
-              return "/spending_landing/dashboard/ss/$params";
-            }
-            else{
-              $params = str_replace(":dashboard:sp", '', $params);
-              $params = "$params";
-              return "/spending_landing/dashboard/sp/$params";
-            }
-        } else if (preg_match('*dashboard/ms*', $path)) {
-            $params = str_replace(":dashboard:ms", '', $params);
+        if (preg_match('*dashboard/s*', $path)) {
+          if (preg_match('*dashboard:ss*', $params)){
+            $params = str_replace(":dashboard:ss", '', $params);
             $params = "$params";
-            return "/spending_landing/dashboard/ms/$params";
-        } else if (preg_match('*dashboard/mp*', $path)) {
-            $params = str_replace(":dashboard:mp", '', $params);
+            return "/spending_landing/dashboard/ss/$params";
+          }
+          else {
+            $params = str_replace(":dashboard:sp", '', $params);
             $params = "$params";
-            return "/spending_landing/dashboard/mp/$params";
-        } else {
-            return "/spending_landing/$params";
+            return "/spending_landing/dashboard/sp/$params";
+          }
+        }
+        elseif (preg_match('*dashboard/ms*', $path)) {
+          $params = str_replace(":dashboard:ms", '', $params);
+          $params = "$params";
+          return "/spending_landing/dashboard/ms/$params";
+        }
+        elseif (preg_match('*dashboard/mp*', $path)) {
+          $params = str_replace(":dashboard:mp", '', $params);
+          $params = "$params";
+          return "/spending_landing/dashboard/mp/$params";
+        }
+        else {
+          return "/spending_landing/$params";
         }
       }
-
     }
-    //need to see if path is not a Citywide NYCHA Payroll transaction page. see CheckbookTransactionsPathProcessor
+
+    // Need to see if path is not a Citywide NYCHA Payroll transaction page. see CheckbookTransactionsPathProcessor.
     if (!str_contains($path, '/payroll/transactions') &&
-      !str_contains($path, '/payroll/payroll_title/transactions') &&
-      !str_contains($path, '/payroll/monthly/transactions') &&
-      !str_contains($path, '/payroll/agencywide/monthly/transactions') &&
-      !str_contains($path, '/payroll/agencywide/transactions') &&
-      !str_contains($path, '/payroll/search/transactions') &&
-      !str_contains($path, '/payroll/employee/transactions')) {
-      //now checking payroll landing page paths
+        !str_contains($path, '/payroll/payroll_title/transactions') &&
+        !str_contains($path, '/payroll/monthly/transactions') &&
+        !str_contains($path, '/payroll/agencywide/monthly/transactions') &&
+        !str_contains($path, '/payroll/agencywide/transactions') &&
+        !str_contains($path, '/payroll/search/transactions') &&
+        !str_contains($path, '/payroll/employee/transactions')) {
+      // Now checking payroll landing page paths.
       if (str_starts_with($path, '/payroll/')) {
         $path = preg_replace('|^\/payroll\/|', '', $path);
         $urlPath = "/payroll/";
       }
     }
 
-    // NYCHA Contracts Path Processor
+    // NYCHA Contracts Path Processor.
     if (CheckbookDomain::getCurrent() == CheckbookDomain::$NYCHA_CONTRACTS && PageType::getCurrent() == PageType::LANDING_PAGE){
       $path = preg_replace('|^\/nycha_contracts\/|', '', $path);
       $urlPath = "/nycha_contracts/";
     }
 
-    //NYC Contracts Landing Page path processor
+    // NYC Contracts Landing Page path processor.
     if (str_starts_with($path, '/contracts_landing/')) {
       $path = preg_replace('|^\/contracts_landing\/|', '', $path);
       if (preg_match('*dashboard/s*', $path)) {
         $path = str_replace('/contracts_landing/subvendor_landing','', $path);
         $urlPath = "/contracts_landing/subvendor_landing/";
       }
-      else if (preg_match('*dashboard/mp*', $path)) {
+      elseif (preg_match('*dashboard/mp*', $path)) {
         $urlPath = "/contracts_landing/mwbe_landing/";
-      } else if (preg_match('*dashboard/ms*', $path)) {
+      }
+      elseif (preg_match('*dashboard/ms*', $path)) {
         $urlPath = "/contracts_landing/mwbe_subvendor/";
       }
       else {
@@ -158,26 +159,27 @@ class CheckbookLandingPagePathProcessor implements InboundPathProcessorInterface
       }
     }
 
-    // Contracts Revenue Landing Page path processor
+    // Contracts Revenue Landing Page path processor.
     if (str_starts_with($path, '/contracts_revenue_landing/')) {
       $path = preg_replace('|^\/contracts_revenue_landing\/|', '', $path);
       $urlPath = "/contracts_revenue_landing/";
     }
 
-    if(str_starts_with($path, '/contracts_pending_exp_landing/')){
+    if (str_starts_with($path, '/contracts_pending_exp_landing/')) {
       $path = preg_replace('|^\/contracts_exp_pending_landing\/|', '', $path);
       $urlPath = "/contracts_pending_exp_landing/";
     }
 
-    if(str_starts_with($path, '/contracts_pending_rev_landing/')){
+    if (str_starts_with($path, '/contracts_pending_rev_landing/')) {
       $path = preg_replace('|^\/contracts_rev_pending_landing\/|', '', $path);
       $urlPath = "/contracts_pending_rev_landing/";
     }
-    if(isset($urlPath)) {
+
+    if (isset($urlPath)) {
       $params = RequestUtilities::replaceSlash($path);
       $path =  $urlPath . $params;
     }
 
-      return $path;
+    return $path;
   }
 }

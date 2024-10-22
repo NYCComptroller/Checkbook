@@ -50,7 +50,7 @@ class DataSetHandler {
     $request_limit = (isset($criteria['global']['max_records'])) ? $criteria['global']['max_records'] : NULL;
     $response_columns_criteria = $criteria['responseColumns'];
     $response_format = $criteria['global']['response_format'];
-    $required_columns = $criteria['required_columns'];
+    $required_columns = $criteria['required_columns'] ?? [];
 
     $data_set = $this->configuration->dataset;
     $data_set->configuration = $this->configuration;
@@ -68,7 +68,7 @@ class DataSetHandler {
         $columns = array_values($elements_columns);
       }
 
-      if(isset($required_columns)) {
+      if (!empty($required_columns)) {
         foreach ($required_columns as $required_column) {
           if (array_search($required_column, $columns) == FALSE) {
             $columns[] = $required_column;
@@ -103,17 +103,17 @@ class DataSetHandler {
     $column_types = $data_set->columnTypes;
 
     // Value based parameters:
-    if (is_array($criteria['value'])) {
+    if (is_array($criteria['value'] ?? NULL)) {
       foreach ($criteria['value'] as $parameter => $value) {
         $column = $search_criteria_map->$parameter;
         if (isset($column)) {
-          $this->prepareParameterConfiguration($parameters, $column, $value, (isset($column_types) ? $column_types->$column : NULL));
+          $this->prepareParameterConfiguration($parameters, $column, $value, ($column_types?->$column));
         }
       }
     }
 
     // Range based parameters:
-    if (is_array($criteria['range'])) {
+    if (is_array($criteria['range'] ?? NULL)) {
       foreach ($criteria['range'] as $parameter => $values) {
         $column = $search_criteria_map->$parameter;
 
@@ -162,6 +162,11 @@ class DataSetHandler {
           TRUE,
           TRUE,
         ));
+        break;
+      case "any":
+        //For value = ANY(string_to_array(event_id,','))
+        $pattern = "(^|,)".$value."(,|$)";
+        $parameters[$column] = data_controller_get_operator_factory_instance()->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
         break;
       case "contains":
         $value = _checkbook_regex_replace_pattern($value);

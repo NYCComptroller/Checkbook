@@ -37,9 +37,9 @@
     "preProcessConfiguration":"
     $datasource = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('datasource');
     $monthId = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('month');
-      if($datasource=='checkbook_nycha'){
-       $node->widgetConfig->dataset='checkbook_nycha:payroll_employee_agency_basis';
-      }
+    if($datasource=='checkbook_nycha'){
+      $node->widgetConfig->dataset='checkbook_nycha:payroll_employee_agency_basis';
+    }
     ",
     "uniqueSortColumn":["employee_employee"],
     "columns": ["agency.agency", "agency.agency.agency_short_name", "agency.agency.agency_name", "pay_date.pay_date","annual_salary.annual_salary",

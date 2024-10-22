@@ -24,6 +24,7 @@ use Drupal\checkbook_infrastructure_layer\Constants\Common\PageType;
 use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
 use Drupal\checkbook_project\CommonUtilities\RequestUtil;
 use Drupal\Core\Controller\ControllerBase;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Default controller for the widget module.
@@ -39,9 +40,9 @@ class DefaultController extends ControllerBase {
     RequestUtilities::resetUrl();
     $node = _widget_node_load_file($id);
     $node = widget_node_view($node);
-    //Render the custom template
-    //TODO: Move template rendering to phpparser module
-    //$template = $node->widgetConfig->summaryView->template ?? $node->widgetConfig->template;
+    // Render the custom template.
+    // TODO: Move template rendering to phpparser module.
+    // $template = $node->widgetConfig->summaryView->template ?? $node->widgetConfig->template;
     if (isset($node->widgetConfig->template)) {
       $output = [
         '#theme' => $node->widgetConfig->template,
@@ -50,7 +51,7 @@ class DefaultController extends ControllerBase {
     }
     else {
       // display the node body content
-      $output = $node->content['body'];
+      $output = $node->content['body'] ?? NULL;
     }
 
     if (!empty($output)) {
@@ -61,6 +62,9 @@ class DefaultController extends ControllerBase {
       $output += ['#prefix' => '', '#suffix' => ''];
       $output['#prefix'] = '<div id="node-widget-' . $id . '">' . $output['#prefix'];
       $output['#suffix'] .= '</div>';
+    }
+    elseif (is_null($output)) {
+      throw new NotFoundHttpException();
     }
 
     return $output;

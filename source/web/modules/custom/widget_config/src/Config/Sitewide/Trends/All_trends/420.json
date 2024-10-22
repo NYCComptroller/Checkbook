@@ -23,7 +23,7 @@
             jQuery('.trendsShowOnLoad').show();
             return true;
         }##",
-         "sScrollXInner": "1125px",
+         "sScrollXInner": "1200px",
           "aoColumns": [
         null,
         {"sWidth":"100px"},

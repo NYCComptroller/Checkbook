@@ -71,6 +71,7 @@ class DefaultController extends ControllerBase {
 
     //Get Export column Configuration
     $exportConfigNid = $node->widgetConfig->exportConfigNid ?? null;
+    $exportConfigNode = NULL;
     if(isset($exportConfigNid)){
         $exportConfigNode = _checkbook_export_get_node_config($exportConfigNid);
         $exportColumns = $exportConfigNode->widgetConfig->table_columns;

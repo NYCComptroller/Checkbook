@@ -178,7 +178,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     '#limit_validation_errors' => array(),
     '#attributes' => array("onclick" => "
              jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
   );
   $form['feeds_contract_next'] = array(
@@ -187,7 +187,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     '#submit' => array('checkbook_datafeeds_contracts_next_submit'),
     '#attributes' => array("onclick" => "
            jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
   );
   //</editor-fold>
@@ -206,7 +206,7 @@ function checkbook_datafeeds_contracts($form, &$form_state)
     );
     */
   $form['#validate'] = array('checkbook_datafeeds_contracts_validate');
-  $form['#attributes'] = array('class' => array('contracts', 'data-feeds-wizard',),);
+  $form['#attributes'] = array('class' => array('contracts', 'data-feeds-wizard', 'datafeeds-domain-form'));
   return $form;
 }
 
@@ -222,7 +222,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
   $agency_options = FormUtil::getAgencies($data_source);
   $contract_type_options = FormUtil::getContractTypes(true);
   $award_method_options = FormUtil::getAwardMethod(Datasource::CITYWIDE, true);
-  $sub_vendor_status_in_pip_options = FormUtil::getSubvendorStatusInPIP();
+  $sub_contract_status_options = FormUtil::getSubvendorStatusInPIP();
   $contract_includes_sub_vendors_options = FormUtil::getContractIncludesSubvendors();
   $form['filter']['fields_start'] = array(
     '#prefix' => '<div class="default-fields">',
@@ -345,18 +345,18 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
       ),
     )
   );
-  $form['filter']['sub_vendor_status_in_pip_id'] = array(
+  $form['filter']['sub_contract_status_id'] = array(
     '#type' => 'select',
-    '#title' => t('Sub Vendor Status in PIP:'),
-    '#options' => $sub_vendor_status_in_pip_options['options'],
-    '#options_attributes' => $sub_vendor_status_in_pip_options['options_attributes'],
+    '#title' => t('Subcontract Status:'),
+    '#options' => $sub_contract_status_options['options'],
+    '#options_attributes' => $sub_contract_status_options['options_attributes'],
     '#attributes' => array('class' => array('watch')),
-    '#prefix' => '<div class="datafield sub_vendor_status_in_pip_id">',
+    '#prefix' => '<div class="datafield sub_contract_status_id">',
     '#suffix' => '</div>',
-    '#id' => 'edit-sub_vendor_status_in_pip_id',
-    '#name' => 'sub_vendor_status_in_pip_id',
-//    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'sub_vendor_status_in_pip_id', $first_time_load, 0),
-    '#default_value' => $form_state->getValue('sub_vendor_status_in_pip_id', ''),
+    '#id' => 'edit-sub_contract_status_id',
+    '#name' => 'sub_contract_status_id',
+//    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'sub_contract_status_id', $first_time_load, 0),
+    '#default_value' => $form_state->getValue('sub_contract_status_id', ''),
     '#states' => array(
       'disabled' => array(
         array(
@@ -484,18 +484,18 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
 //   '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'category', $first_time_load, 'all'),
     '#default_value' => $form_state->getValue('category', ''),
   );
-  $form['filter']['catastrophic_event'] = array(
+  $form['filter']['conditional_category'] = array(
     '#type' => 'select',
-    '#title' => t('Catastrophic</br>Event:'),
+    '#title' => t('Conditional Category:'),
     '#options' => FormUtil::getEventNameAndId('attributes'),
-    '#prefix' => '<div class="datafield catastrophic_event">',
+    '#prefix' => '<div class="datafield conditional_category">',
     '#suffix' => '</div>',
     '#attributes' => array('class' => array('watch')),
     '#validated' => true,
-    '#id' => 'edit-catastrophic_event',
-    '#name' => 'catastrophic_event',
-//    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'catastrophic_event', $first_time_load, 0),
-    '#default_value' => $form_state->getValue('catastrophic_event', ''),
+    '#id' => 'edit-conditional_category',
+    '#name' => 'conditional_category',
+//    '#default_value' => checkbook_datafeeds_filter_get_default_value($form_state, 'conditional_category', $first_time_load, 0),
+    '#default_value' => $form_state->getValue('conditional_category', ''),
   );
 
   $form['filter']['purpose'] = array(
@@ -953,7 +953,7 @@ function checkbook_datafeeds_nycha_contracts_filter_data($form, $form_state, $fi
 function checkbook_datafeeds_contracts_next_submit($form, &$form_state)
 {
   $input = $form_state->getUserInput();
-  foreach (['contract_includes_sub_vendors_id', 'sub_vendor_status_in_pip_id'] as $key) {
+  foreach (['contract_includes_sub_vendors_id', 'sub_contract_status_id'] as $key) {
     if (!isset($input[$key])) {
       $form_state->unsetValue($key);
     }

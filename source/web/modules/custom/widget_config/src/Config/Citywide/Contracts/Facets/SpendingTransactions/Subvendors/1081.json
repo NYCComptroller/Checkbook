@@ -12,7 +12,7 @@
   "urlParameterName":"pscert",
   "urlParameterType":"cert",
   "urlParamMap": {
-    "doctype":"document_code.document_code.document_code"
+    "doctype":"document_code.document_code.document_code", "awdmethod":"award_method.award_method.award_method_code"
   },
   "autocompleteID":"fPrimeSubCert",
   "columns":["cert_women_count", "cert_emerging_count"],

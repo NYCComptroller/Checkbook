@@ -40,13 +40,13 @@ class RevenueFeedCitywide extends RevenueFeed{
     //Revenue Source
     $this->_process_user_criteria_by_datasource_single_field_and_check('revenue_source', 'revenue_source', 'Revenue Source');
 
-    //Catastrophic event filter
-    if ($this->form_state->getValue('catastrophic_event') && $this->form_state->getValue('budget_fiscal_year') >= 2020 ) {
-      $catastrophic_events = FormUtil::getEventNameAndId();
-      $catastrophic_event = $catastrophic_events[$this->form_state->getValue('catastrophic_event')]. "[" .$this->form_state->getValue('catastrophic_event'). "]";
-      $this->form['filter']['catastrophic_event'] = array('#markup' => '<div><strong>Catastrophic Event:</strong> ' . $catastrophic_event . '</div>');
-      $this->user_criteria['Catastrophic Event'] = $this->form_state->getValue('catastrophic_event');
-      $this->formatted_search_criteria['Catastrophic Event'] = $this->form_state->getValue('catastrophic_event');
+    // Conditional Category filter.
+    if ($this->form_state->getValue('conditional_category') && $this->form_state->getValue('budget_fiscal_year') >= 2020 ) {
+      $conditional_categories = FormUtil::getEventNameAndId();
+      $conditional_category = $conditional_categories[$this->form_state->getValue('conditional_category')]. "[" .$this->form_state->getValue('conditional_category'). "]";
+      $this->form['filter']['conditional_category'] = array('#markup' => '<div><strong>Conditional Category:</strong> ' . $conditional_category . '</div>');
+      $this->user_criteria['Conditional Category'] = $this->form_state->getValue('conditional_category');
+      $this->formatted_search_criteria['Conditional Category'] = $this->form_state->getValue('conditional_category');
     }
 
     //Adopted
@@ -91,7 +91,7 @@ class RevenueFeedCitywide extends RevenueFeed{
     if ($this->form_state->getValue('budget_fiscal_year') != 'All Years') {
       $this->criteria['value']['budget_fiscal_year'] = $this->form_state->getValue('budget_fiscal_year');
     }
-    
+
     if (!in_array($this->form_state->getValue('fiscal_year'), ['All Fiscal Years', ''])) {
       $this->criteria['value']['fiscal_year'] = $this->form_state->getValue('fiscal_year');
     }
@@ -111,11 +111,15 @@ class RevenueFeedCitywide extends RevenueFeed{
     }
     if ($this->form_state->getValue('revenue_source')) {
       preg_match($this->bracket_value_pattern, $this->form_state->getValue('revenue_source'), $rsmatches);
-       $this->criteria['value']['revenue_source'] = trim($rsmatches[1], '[ ]');
+      if ($rsmatches) {
+        $this->criteria['value']['revenue_source'] = trim($rsmatches[1], '[ ]');
+      }else{
+        $this->criteria['value']['revenue_source_name'] = $this->form_state->getValue('revenue_source');
+      }
     }
 
-    if ($this->form_state->getValue('catastrophic_event') && $this->form_state->getValue('budget_fiscal_year') >= 2020 ) {
-      $this->criteria['value']['catastrophic_event'] = $this->form_state->getValue('catastrophic_event');
+    if ($this->form_state->getValue('conditional_category') && $this->form_state->getValue('budget_fiscal_year') >= 2020 ) {
+      $this->criteria['value']['conditional_category'] = $this->form_state->getValue('conditional_category');
     }
 
     if ($this->form_state->getValue('funding_class') != 'All Funding Classes') {

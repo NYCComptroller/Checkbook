@@ -20,6 +20,7 @@
 
 use Drupal\checkbook_infrastructure_layer\Utilities\FormattingUtilities;
 use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_theme()
@@ -317,4 +318,16 @@ function checkbook_mwbe_agency_grading_page_title_alter(&$title) {
       $title = 'M/WBE Agency Summary';
       break;
   }
+}
+
+function checkbook_mwbe_agency_grading_link_alter(&$variables) {
+  $url = $variables['url'];
+  if ($url->isRouted() && $url->getRouteName() == 'checkbook_mwbe_agency_grading._checkbook_mwbe_agency_grading') {
+    $path = urldecode($url->setAbsolute()->toString());
+    $path_parts = explode('/', $path);
+    $last_part = &$path_parts[array_key_last($path_parts)];
+    $last_part = str_replace(':', '/', $last_part);
+    $new_url = Url::fromUri(implode('/', $path_parts));
+    $variables['url'] = $new_url;
+  };
 }

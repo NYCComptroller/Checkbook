@@ -14,7 +14,7 @@
   "autocompleteField":"agency_name",
   "autocomplete":false,
   "adjustParameters":"
-    $parameters = \\Drupal\\checkbook_project\\NychaContractUtilities\\NYCHAContractUtil::adjustYearParams($node, $parameters);
+    $parameters = \\Drupal\\checkbook_project\\NychaContractUtilities\\NYCHAContractUtil::adjustYearParams($parameters);
     $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
     $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
     return $adjustedParameters;

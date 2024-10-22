@@ -1,0 +1,12 @@
+services:
+  logger.checkbook_log:
+    class: Drupal\checkbook_log\Logger\CheckBookFileLog
+    decorates: logger.filelog
+    arguments:
+      - '@config.factory'
+      - '@state'
+      - '@datetime.time'
+      - '@logger.log_message_parser'
+      - '@filelog.file_manager'
+    tags:
+      - { name: logger }

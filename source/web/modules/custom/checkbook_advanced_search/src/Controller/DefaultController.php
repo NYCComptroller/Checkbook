@@ -68,7 +68,7 @@ class DefaultController extends ControllerBase {
    * @param $budget_code
    * @return mixed for budget name based on selected agency, department, expense category, year and budget code
    */
-  function checkbook_advanced_search_budget_budgetname($fiscal_year, $agency, $dept, $expcategory, $budget_code,$catastrophic_events) {
+  function checkbook_advanced_search_budget_budgetname($fiscal_year, $agency, $dept, $expcategory, $budget_code, $conditional_categories) {
     $params =  array("budget_fiscal_year_id"=>$fiscal_year);
     if($agency != '0' ) {
       $params["agency_id"] = $agency;
@@ -82,8 +82,8 @@ class DefaultController extends ControllerBase {
     if($budget_code != '0' ) {
       $params["budget_code"] = $budget_code;
     }
-    if($catastrophic_events != '0' ) {
-      $params["event_id"] = $catastrophic_events;
+    if($conditional_categories != '0' ) {
+      $params["event_id"] = $conditional_categories;
     }
     $results = get_db_results(false, 'checkbook:budget', array("budget_code_name.budget_code_name"), $params,"budget_code_name.budget_code_name");
     if((!$results || $results == 0) && $agency != '0'){
@@ -112,7 +112,7 @@ class DefaultController extends ControllerBase {
    * @param $budget_name
    * @return mixed for budget code based on selected agency, department, expense category, year and budget name
    */
-  function checkbook_advanced_search_budget_budgetcode($fiscal_year, $agency, $dept, $expcategory, $budget_name, $catastrophic_events) {
+  function checkbook_advanced_search_budget_budgetcode($fiscal_year, $agency, $dept, $expcategory, $budget_name, $conditional_categories) {
 
     $params =  array("budget_fiscal_year_id"=>$fiscal_year);
     if($agency != '0' ) {
@@ -127,8 +127,8 @@ class DefaultController extends ControllerBase {
     if($budget_name != '0' ) {
       $params["budget_code_name"] = str_replace('__','/',$budget_name);
     }
-    if($catastrophic_events != '0' ) {
-      $params["event_id"] = $catastrophic_events;
+    if($conditional_categories != '0' ) {
+      $params["event_id"] = $conditional_categories;
     }
     $results = get_db_results(false, 'checkbook:budget', array("budget_code_code.budget_code_code"), $params,"budget_code_code.budget_code_code");
     if((!$results || count($results) == 0) && $agency != '0'){

@@ -32,22 +32,14 @@
         $('#edit-oge-column-select', context).multiSelect('deselect_all');
       });
       $('.datafield.other_government_entity').hide();
-      var dataSource = $('input[name="datafeeds-payroll-domain-filter"]:checked', context).val();
+      let dataSource = $('input[name="datafeeds-payroll-domain-filter"]:checked', context).val();
       //Sets up jQuery UI datepickers
-      var currentYear = new Date().getFullYear();
-      /*
-      $('.datepicker', context).datepicker({
-        dateFormat: "yy-mm-dd",
-        changeMonth: true,
-        changeYear: true,
-        yearRange: '-' + (currentYear - 1900) + ':+' + (2500 - currentYear)
-      });
-      */
+      let currentYear = new Date().getFullYear();
 
       //Sets up autocompletes
-      var year = getYearValue($('#edit-year', context).val());
-      var agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : emptyToZero($('#edit-agency', context).val());
-      var payfrequency = ($('#edit-payfrequency', context).val() === 'All Pay Frequencies') ? 0 : $('#edit-payfrequency', context).val();
+      let year = getYearValue($('#edit-year', context).val());
+      let agency = ($('#edit-agency', context).val() === 'Citywide (All Agencies)') ? 0 : emptyToZero($('#edit-agency', context).val());
+      let payfrequency = ($('#edit-payfrequency', context).val() === 'All Pay Frequencies') ? 0 : $('#edit-payfrequency', context).val();
 
       $('.watch:input').each(function ()
       {
@@ -61,7 +53,7 @@
           if(agency){filter.set('agency_code',agency)}
           if(payfrequency){filter.set('pay_frequency', payfrequency)}
           // Set the correct autocomplete year fields
-          if(year[0] == 'CY') {
+          if(year[0] === 'CY') {
             filter.set('calendar_fiscal_year', year[2]);
           }else{
             filter.set('fiscal_year', year[2]);
@@ -90,14 +82,14 @@
         $('.error', context).removeClass('error');
 
         $('input:hidden[name="hidden_multiple_value"]', context).val("");
+        datafeedsPayrollOnDataSourceChange($(this, context).val());
         $.fn.clearInputFields();
-        datafeedsParyllOnDataSourceChange($(this, context).val());
       });
     }
   };
 
   //On Data Source Change
-  let datafeedsParyllOnDataSourceChange = function (dataSource)
+  let datafeedsPayrollOnDataSourceChange = function (dataSource)
   {
     //reset the selected columns
     $('#edit-column-select').multiSelect('deselect_all');
@@ -124,16 +116,15 @@
   let resetYearvalue = function (dataSource) {
     //let yearValue = lastYear.split(/\s+/);
     $("#edit-year > option").each(function() {
-      if(dataSource === 'checkbook_nycha') {
-        if (/^FY/.test(this.value)) {
-          // Hide FY for Nycha
-          $("#edit-year option[value='" + this.value + "']").hide();
+      if (dataSource === 'checkbook_nycha') {
+        if (/^CY/.test(this.value) || !$("#edit-year > option[value='" + this.value.replace('FY', 'CY') + "']").length) {
+          // Hide CY for NYCHA Payroll
+          $("#edit-year option[value='" + this.value + "']").attr('disabled','disabled').hide();
         }
-      }else{
-        if (/^FY/.test(this.value)) {
-          // Show FY
-          $("#edit-year option[value='" + this.value + "']").show();
-        }
+      }
+      else{
+        // Show all
+        $("#edit-year option[value='" + this.value + "']").removeAttr('disabled').show();
       }
     });
   };
@@ -143,7 +134,7 @@
     $('.fieldset-wrapper').find(':input').each(function () {
       switch (this.type) {
         case 'select-one':
-          $(this).val( $(this).find('option:first').val());
+          $(this).val( $(this).find('option:not([disabled]):first').val());
           break;
         case 'text':
           $(this).val('');
@@ -155,10 +146,11 @@
           break;
         case 'checkbox':
         case 'radio':
-          $('#edit-salary-type-').attr('checked', 'checked');
+          $("input:radio[name='salary_type'][value='']").prop('checked', true);
           break;
         case 'date':
           $(this).val('');
+          $('.date-item-label', $(this).parent()).html('');
           break;
       }
     });
@@ -181,7 +173,7 @@
   //Function to retrieve year values ignoring FY and CY
   function getYearValue(input)
   {
-    var yeardata = input.split(/(\s)/);
+    let yeardata = input.split(/(\s)/);
     return yeardata;
   }
 

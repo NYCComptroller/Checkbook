@@ -189,8 +189,8 @@
         var oAnnualSalary = getNamedFilterCriteria('fannualSalary');
         var oOvertimePayment = getNamedFilterCriteria('fovertimePayment');
         var oPayFrequency = getNamedFilterCriteria('fpayFrequency');
-        var oPayrollType = getNamedFilterCriteria('fpayrolltype');
-        var oRateType = getNamedFilterCriteria('fratetype');
+        var oPayrollType = getNamedFilterCriteria('fpayrollType');
+        var oRateType = getNamedFilterCriteria('frateType');
 
         var cUrl = oTable.fnSettings().sAjaxSource;
         var cUrlArray = cUrl.split('/');

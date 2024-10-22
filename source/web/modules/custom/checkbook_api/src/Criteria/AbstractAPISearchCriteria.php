@@ -114,7 +114,7 @@ abstract class AbstractAPISearchCriteria {
    * @param string $domain_config
    */
   private function validateRequiredCriteria($domain, $domain_config) {
-    $required_criteria_config = $domain_config->requiredCriteria;
+    $required_criteria_config = $domain_config->requiredCriteria ?? NULL;
     if (!isset($required_criteria_config)) {
       return;
     }
@@ -143,7 +143,9 @@ abstract class AbstractAPISearchCriteria {
   private function validateDomainLevelCriteria($domain, $domain_config) {
     $config_key = $this->getConfigKey();
 
-    $domain_validators_configuration = $domain_config->validators;
+    if(property_exists($domain_config, 'validators')) {
+      $domain_validators_configuration = $domain_config->validators;
+    }
     if (!isset($domain_validators_configuration)) {
       return;
     }
@@ -182,7 +184,7 @@ abstract class AbstractAPISearchCriteria {
 
               $validator_type_config = $validator_config->validatorTypeConfig;
               $filter_names = $validator_type_config->filterNames;
-              if (!isset($criteria_filter_names) && $validator_type_config->required) {
+              if (!isset($criteria_filter_names) && !empty($validator_type_config->required)) {
                 $this->addError(1000, array('@paramName' => implode(' or ', $filter_names)));
               }
               else {
@@ -584,7 +586,7 @@ abstract class AbstractAPISearchCriteria {
          }
         break;
       case "payroll_nycha":
-        $config_key .= "_calendar_year";
+        $config_key .= "_fiscal_year";
         break;
       case "contracts":
           $category = $this->criteria['value']['category'];
@@ -607,8 +609,8 @@ abstract class AbstractAPISearchCriteria {
           break;
       case "spending":
       case "spending_oge":
-          if($this->criteria['value']['spending_category'] == 'ts'){
-              unset($this->criteria['value']['spending_category']);
+          if (isset($this->criteria['value']['spending_category']) && $this->criteria['value']['spending_category'] == 'ts'){
+            unset($this->criteria['value']['spending_category']);
           }
           break;
       case "contracts_oge":

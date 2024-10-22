@@ -35,10 +35,10 @@
 "defaultParametersPending":{},
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year"],
 "cleanURLParametersPending":["agency","awdmethod","vendor","status","csize","cindustry","mwbe"],
-"urlParamMap":{"year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id",
+"urlParamMap":{"year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_code","vendor":"vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
 "urlParamMapPending":{"mwbe":"minority_type_id","agency":"document_agency_id","vendor":"vendor_id",
-			"awdmethod":"award_method_id",
+			"awdmethod":"award_method_code",
 			"csize":"award_size_id","cindustry":"industry_type_id"},
 "widgetPreprocessJSON":"
   if(preg_match('/pending/',\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getCurrentPageUrl()) ||
@@ -54,11 +54,17 @@
 "widgetDataLoader":"
 
     $where_filters = array();
-    foreach($node->widgetConfig->requestParams as $param=>$value){
-        $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
-    }
+foreach($node->widgetConfig->requestParams as $param=>$value){
+if(!(preg_match('/pending/',\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getCurrentPageUrl()) ||
+preg_match('/pending/',\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRefUrl())) && $param == 'award_method_code'){
+$where_filters[] = _widget_build_sql_condition(' am.' . $param, $value);
+}else{
+$where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+}
+}
 
-    if(count($where_filters) > 0){
+
+if(count($where_filters) > 0){
         $where_filter = ' where ' . implode(' and ' , $where_filters);
     }
 
@@ -84,6 +90,7 @@ preg_match('/pending/',\\Drupal\\checkbook_infrastructure_layer\\Utilities\\Requ
 		from {aggregateon_mwbe_contracts_cumulative_spending} a1
     	join {ref_agency} ra on ra.agency_id =  a1.agency_id
    	 	join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+      join {ref_award_method} am on am.award_method_id = a1.award_method_id
    		' . $where_filter . '
         and maximum_contract_amount != 0
    		group by ra.agency_name  ,a1.agency_id

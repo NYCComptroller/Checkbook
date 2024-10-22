@@ -162,6 +162,16 @@
   height: 25px;
 }
 
+.new-checkbook-advanced-search-form input[type="date"] {
+  padding-left: 77px;
+}
+
+.create-alert-schedule-form input[type="date"]::-webkit-inner-spin-button,
+.create-alert-schedule-form input[type="date"]::-webkit-calendar-picker-indicator {
+  display: initial;
+  -webkit-appearance: initial;
+}
+
 .new-checkbook-advanced-search-form .ranges .form-item {
   display: block;
   float: left;

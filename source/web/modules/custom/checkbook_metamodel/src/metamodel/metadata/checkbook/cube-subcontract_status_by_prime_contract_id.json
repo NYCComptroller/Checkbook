@@ -54,6 +54,16 @@
                     ]
                 },
                 {
+                  "name": "award_method",
+                  "levels": [
+                    {
+                      "name": "award_method",
+                      "datasetName": "award_method",
+                      "sourceColumnName": "award_method_id"
+                    }
+                  ]
+                },
+                {
                     "name": "contract_number",
                     "levels": [
                         {

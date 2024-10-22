@@ -11,7 +11,7 @@
     "calyear":"disb_fiscal_year_id","yeartype":"type_of_year","status":"status_flag","agency":"disb_agency_id",
     "category":"disb_spending_category_id","checkamtr":"disb_check_amount","syear":"disb_fiscal_year_id",
     "scalyear":"disb_fiscal_year_id","magid":"master_agreement_id","agid":"disb_agreement_id",
-    "cagency":"document_agency_id","awdmethod":"award_method_id","csize":"award_size_id",
+    "cagency":"document_agency_id","awdmethod":"award_method_code@checkbook:award_method","csize":"award_size_id",
     "cindustry":"industry_type_id","doctype":"document_code@checkbook:ref_document_code",
     "month":"disb_check_eft_issued_cal_month_id",
     "mwbe":"minority_type_id","industry":"industry_type_id",

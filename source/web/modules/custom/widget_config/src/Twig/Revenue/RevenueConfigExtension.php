@@ -89,6 +89,6 @@ class RevenueConfigExtension extends AbstractExtension
   // Nycha Revenue Title
   public function revenueNychaGridTitle(): ?string
   {
-    return RevenueBreacrumbs::getNYCHARevenuePageTitle();
+    return RevenueBreacrumbs::getNychaRevenuePageTitle();
   }
 }

@@ -4,7 +4,7 @@
 "no_results_content":"No Results Found",
 "cleanURLParameters":["mwbe","agency","vendor","awdmethod","contnum","contcat","pin","aptpin","csize","cindustry"],
 "defaultParameters":{"document_code.document_code.document_code":"RCT1"},
-"urlParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","contcat":"document_code@checkbook:ref_document_code","contnum":"contract_number.contract_number","awdmethod":"award_method_id.award_method_id","pin":"tracking_number.tracking_number","aptpin":"board_award_number.board_award_number","csize":"award_size.award_size","cindustry":"industry.industry"},
+"urlParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","contcat":"document_code@checkbook:ref_document_code","contnum":"contract_number.contract_number","awdmethod":"award_method_code.award_method_code","pin":"tracking_number.tracking_number","aptpin":"board_award_number.board_award_number","csize":"award_size.award_size","cindustry":"industry.industry"},
 "dataset": "checkbook:pending_contracts",
 "noDataInitialLoad":true,
 "columns": ["pending_contract_number.pending_contract_number","document_version.document_version","received_date.received_date","pending_contract_purpose.pending_contract_purpose","contract_number.contract_number","document_agency_name.document_agency_name","document_agency_id.document_agency_id","vendor_legal_name.vendor_legal_name","vendor.vendor","original_amount_sum","current_amount_sum","document_code.document_code.document_code","original_agreement_id.original_agreement_id"],

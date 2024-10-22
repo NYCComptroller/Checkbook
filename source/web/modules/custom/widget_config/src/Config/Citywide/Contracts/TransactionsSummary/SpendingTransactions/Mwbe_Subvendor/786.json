@@ -4,7 +4,7 @@
     "cleanURLParameters":["subvendor","mwbe","year","calyear","agency","yeartype","vendor","status","cagency","cvendor","csize","cindustry","awdmethod"],
     "urlParamMap":{"subvendor":"vendor_id","mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year",
         "vendor":"prime_vendor_id","status":"status_flag","cagency":"agency_id","cvendor":"prime_vendor_id","csize":"award_size_id",
-        "cindustry":"industry_type_id","awdmethod":"award_method_id"},
+        "cindustry":"industry_type_id","awdmethod":"award_method.award_method.award_method_code"},
     "dataset": "checkbook:subven_contracts_coa_aggregates",
     "noDataInitialLoad":true,
     "columns": ["total_contracts","agency.agency","agency.agency.agency_short_name","original_amount_sum","current_amount_sum","yeartype.yeartype","spending_amount_sum","agency.agency.agency_name"],

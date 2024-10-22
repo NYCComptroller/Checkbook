@@ -159,7 +159,7 @@ class BudgetFeedNycha extends BudgetFeed
     }
 
     //Set the hidden field values for Budget Name and Budget Type
-    $form_state->set(['complete form', 'nycha_budget_type_hidden', '#value'], $form_state->getValue('nycha_budget_type'));
-    $form_state->set(['complete form', 'nycha_budget_name_hidden', '#value'], $form_state->getValue('nycha_budget_name'));
+    $form_state->setValue(['complete form', 'nycha_budget_type_hidden', '#value'], $form_state->getValue(['values', 'nycha_budget_type']));
+    $form_state->setValue(['complete form', 'nycha_budget_name_hidden', '#value'], $form_state->getValue(['values', 'nycha_budget_name']));
   }
 }

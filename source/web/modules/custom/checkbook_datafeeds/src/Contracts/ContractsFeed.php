@@ -461,9 +461,9 @@ abstract class ContractsFeed
       $this->criteria['value']['industry'] = trim($imatches[1], '[ ]');
     }
 
-    if ($values_new['category'] != 'revenue' && ($values_new['catastrophic_event'] && ((substr($values_new['year'], -4) >= 2020) || $values_new['year'] == '0'))) {
-      preg_match($this->bracket_value_pattern, $values_new['catastrophic_event'], $ematches);
-      $this->criteria['value']['catastrophic_event'] = trim($ematches[1], '[ ]');
+    if ($values_new['category'] != 'revenue' && ($values_new['conditional_category'] && ((substr($values_new['year'], -4) >= 2020) || $values_new['year'] == '0'))) {
+      preg_match($this->bracket_value_pattern, $values_new['conditional_category'], $ematches);
+      $this->criteria['value']['conditional_category'] = trim($ematches[1], '[ ]');
     }
     $this->_process_datasource_values_citywide_subvendors();
   }
@@ -473,8 +473,8 @@ abstract class ContractsFeed
     if ($values_new['contract_includes_sub_vendors_id'] != '' && $values_new['contract_includes_sub_vendors_id'] != 0) {
       $this->criteria['value']['contract_includes_sub_vendors'] = $values_new['contract_includes_sub_vendors_id'];
     }
-    if ($values_new['sub_vendor_status_in_pip_id'] != 'Select Status' && $values_new['sub_vendor_status_in_pip_id'] != 0 && !empty($values_new['sub_vendor_status_in_pip_id'])) {
-      $this->criteria['value']['sub_vendor_status_in_pip'] = $values_new['sub_vendor_status_in_pip_id'];
+    if ($values_new['sub_contract_status_id'] != 'Select Status' && $values_new['sub_contract_status_id'] != 0 && !empty($values_new['sub_contract_status_id'])) {
+      $this->criteria['value']['sub_contract_status'] = $values_new['sub_contract_status_id'];
     }
   }
 
@@ -576,8 +576,8 @@ abstract class ContractsFeed
     }
 
     if (in_array(intval($form_state->getValue('contract_includes_sub_vendors_id')), array(1, 3, 4))) {
-      $form_state->setValue('sub_vendor_status_in_pip_id', 0);
-      $form_state->set(['complete form', 'sub_vendor_status_in_pip_id', '#value'], 0);
+      $form_state->setValue('sub_contract_status_id', 0);
+      $form_state->set(['complete form', 'sub_contract_status_id', '#value'], 0);
     }
   }
 

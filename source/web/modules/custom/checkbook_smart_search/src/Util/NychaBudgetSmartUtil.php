@@ -37,14 +37,12 @@ class NychaBudgetSmartUtil {
     ];
 
     $count = 1;
-    $row = [];
-    $rows = [];
     $out = "<div class=\"search-result-fields\"><div class=\"grid-row\">";
     foreach ($budget_parameter_mapping as $key => $title) {
       $key = ($key == 'modified_budget') ? "adopted_budget" : $key;
       $value = $budget_results[$key];
 
-      if ($searchTerm) {
+      if (!empty($searchTerm)) {
         $temp = substr($value, strpos(strtoupper($value), strtoupper($searchTerm)), strlen($searchTerm));
         $value = str_ireplace($searchTerm, '<em>' . $temp . '</em>', $value);
       }
@@ -59,8 +57,6 @@ class NychaBudgetSmartUtil {
         if ($title) {
           $out .= '<div class="field-label">' . $title . ':</div><div class="field-content">' . $value . '</div>';
         }
-        $rows[] = $row;
-        $row = [];
       }
       else {
         $out .= "<div class=\"grid-col-6\">";

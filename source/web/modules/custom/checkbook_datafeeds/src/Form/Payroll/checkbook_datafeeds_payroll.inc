@@ -322,7 +322,7 @@ function checkbook_datafeeds_payroll($form, &$form_state)
     '#limit_validation_errors' => array(),
     '#attributes' => array("onclick" => "
              jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
   );
 
@@ -332,7 +332,7 @@ function checkbook_datafeeds_payroll($form, &$form_state)
     '#submit' => array('checkbook_datafeeds_payroll_next_submit'),
     '#attributes' => array("onclick" => "
            jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
   );
 
@@ -350,8 +350,7 @@ function checkbook_datafeeds_payroll($form, &$form_state)
   );
   */
   $form['#validate'] = array('checkbook_datafeeds_payroll_validate');
-  $form['#attributes'] = array('class' => array('payroll', 'data-feeds-wizard',),
-  );
+  $form['#attributes'] = array('class' => array('payroll', 'data-feeds-wizard', 'datafeeds-domain-form'));
 
   return $form;
 }

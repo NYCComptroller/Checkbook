@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 function _checkbook_smart_search_submit($form, &$form_state) {
   $solr_datasource = Datasource::getCurrentSolrDatasource();
-  $search_term = trim($form['search_box']['#value']);
+  $search_term = trim($form_state->getValue('search_box'));
   if ($search_term == 'Type ahead search') {
     $search_term = '';
   }

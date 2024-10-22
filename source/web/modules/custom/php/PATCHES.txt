@@ -4,4 +4,5 @@ Patches applied to this directory:
 3363035 PHP Drupal 10
 Source: https://www.drupal.org/files/issues/2023-08-03/3363035-5-php-d10-rector.patch
 
-
+Text format with system name "php_code" is deleted when you view admin/modules/uninstall
+Source: https://www.drupal.org/files/issues/2019-01-04/php-remove_filter_validator_uninstall-3016061-21.patch

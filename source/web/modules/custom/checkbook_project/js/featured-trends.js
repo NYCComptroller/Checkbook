@@ -41,7 +41,7 @@
                   case 1:
                       return '<div id="property-tax" class="navigation">Property Tax Levies<br>and Collections</div>';
                   case 2:
-                      return '<div id="capital-projects" class="navigation">Capital Projects Fund<br>Aid Revenues</div>';
+                      return '<div id="capital-projects" class="navigation">Capital Projects Fund<br>Aid Revenues by Agency</div>';
                   case 3:
                       return '<div id="personal-income" class="navigation">Personal Income</div>';
                   case 4:
@@ -60,7 +60,7 @@
             breadcrumbElement.last().text("Property Tax Levies and Collections");
             break;
           case 'capital-projects':
-            breadcrumbElement.last().text("Capital Projects Fund Aid Revenues");
+            breadcrumbElement.last().text("Capital Projects Fund Aid Revenues by Agency");
             break;
           case 'personal-income':
             breadcrumbElement.text("Personal Income");

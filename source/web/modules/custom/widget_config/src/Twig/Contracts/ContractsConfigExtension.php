@@ -100,31 +100,31 @@ class ContractsConfigExtension extends AbstractExtension
         case '720':
         case '721':
           $title = "<h2 class='contract-title' class='title'>{$bottomNavigation} Transactions</h2>";
-          $checkbook_breadcrumb_title = "$bottomNavigation Transactions";
+          $_checkbook_breadcrumb_title = "$bottomNavigation Transactions";
           break;
         case '722':
           $title = "<h2 class='contract-title' class='title'>Amount Modifications by {$bottomNavigation} Transactions</h2>";
-          $checkbook_breadcrumb_title = "Amount Modifications by $bottomNavigation Transactions";
+          $_checkbook_breadcrumb_title = "Amount Modifications by $bottomNavigation Transactions";
           break;
         case '725':
           $title = "<h2 class='contract-title' class='title'>Prime Vendors with {$bottomNavigation} Transactions</h2>";
-          $checkbook_breadcrumb_title = "Prime Vendors with $bottomNavigation Transactions";
+          $_checkbook_breadcrumb_title = "Prime Vendors with $bottomNavigation Transactions";
           break;
         case '726':
           $title = "<h2 class='contract-title' class='title'>Award Methods by {$bottomNavigation} Transactions</h2>";
-          $checkbook_breadcrumb_title = "Award Methods by $bottomNavigation Transactions";
+          $_checkbook_breadcrumb_title = "Award Methods by $bottomNavigation Transactions";
           break;
         case '727':
           $title = "<h2 class='contract-title' class='title'>Agencies by {$bottomNavigation} Transactions</h2>";
-          $checkbook_breadcrumb_title = "Agencies by $bottomNavigation Transactions";
+          $_checkbook_breadcrumb_title = "Agencies by $bottomNavigation Transactions";
           break;
         case '728':
           $title = "<h2 class='contract-title' class='title'>Contracts by Industries by {$bottomNavigation} Transactions</h2>";
-          $checkbook_breadcrumb_title = "$bottomNavigation Transactions";
+          $_checkbook_breadcrumb_title = "$bottomNavigation Transactions";
           break;
         case '729':
           $title = "<h2 class='contract-title' class='title'>Contracts by Size by {$bottomNavigation} Transactions</h2>";
-          $checkbook_breadcrumb_title = "Contracts by Size by $bottomNavigation Transactions";
+          $_checkbook_breadcrumb_title = "Contracts by Size by $bottomNavigation Transactions";
           break;
       }
     }
@@ -133,35 +133,35 @@ class ContractsConfigExtension extends AbstractExtension
         case '781':
         case '784':
           $title = "<h2 class='contract-title' class='title'>{$bottomNavigation} Transactions</h2>";
-          $checkbook_breadcrumb_title = "$bottomNavigation Transactions";
+          $_checkbook_breadcrumb_title = "$bottomNavigation Transactions";
           break;
         case '782':
           $title = "<h2 class='contract-title' class='title'>Amount Modifications by {$bottomNavigation} Transactions</h2>";
-          $checkbook_breadcrumb_title = "Amount Modifications by $bottomNavigation Transactions";
+          $_checkbook_breadcrumb_title = "Amount Modifications by $bottomNavigation Transactions";
           break;
         case '783':
           $title = "<h2 class='contract-title' class='title'>Prime Vendors with {$bottomNavigation} Transactions</h2>";
-          $checkbook_breadcrumb_title = "Prime Vendors with $bottomNavigation Transactions";
+          $_checkbook_breadcrumb_title = "Prime Vendors with $bottomNavigation Transactions";
           break;
         case '785':
           $title = "<h2 class='contract-title' class='title'>Award Methods by {$bottomNavigation} Transactions</h2>";
-          $checkbook_breadcrumb_title = "Award Methods by $bottomNavigation Transactions";
+          $_checkbook_breadcrumb_title = "Award Methods by $bottomNavigation Transactions";
           break;
         case '786':
           $title = "<h2 class='contract-title' class='title'>Agencies by {$bottomNavigation} Transactions</h2>";
-          $checkbook_breadcrumb_title = "Agencies by $bottomNavigation Transactions";
+          $_checkbook_breadcrumb_title = "Agencies by $bottomNavigation Transactions";
           break;
         case '787':
           $title = "<h2 class='contract-title' class='title'>Contracts by Industries by {$bottomNavigation} Transactions</h2>";
-          $checkbook_breadcrumb_title = "$bottomNavigation Transactions";
+          $_checkbook_breadcrumb_title = "$bottomNavigation Transactions";
           break;
         case '788':
           $title = "<h2 class='contract-title' class='title'>Contracts by Size by {$bottomNavigation} Transactions</h2>";
-          $checkbook_breadcrumb_title = "Contracts by Size by $bottomNavigation Transactions";
+          $_checkbook_breadcrumb_title = "Contracts by Size by $bottomNavigation Transactions";
           break;
       }
     }
-    return array($title, $checkbook_breadcrumb_title);
+    return array($title, $_checkbook_breadcrumb_title);
   }
 
   public function ActiveRegisteredTotalAmount($node)
@@ -571,8 +571,8 @@ EOD;
       $summaryTitle = MappingUtil::getCurrenEthnicityName()." ";
     }
     $summaryTitle .= NodeSummaryUtil::getInitNodeSummaryTitle();
-    global $checkbook_breadcrumb_title;
-    $checkbook_breadcrumb_title =  "$summaryTitle Pending $contactCategoryLabel Contracts Transactions";
+    global $_checkbook_breadcrumb_title;
+    $_checkbook_breadcrumb_title =  "$summaryTitle Pending $contactCategoryLabel Contracts Transactions";
     return $summaryTitle;
   }
 
@@ -582,7 +582,7 @@ EOD;
     return $year;
   }
 
-  public function  isActiveExpenseContractsSubvendor() {
+  public function isActiveExpenseContractsSubvendor() {
     $is_active_expense_contracts = str_starts_with(RequestUtilities::getCurrentPageUrl(), "contracts_landing") && RequestUtilities::get("status") == "A"
       && RequestUtilities::get("bottom_slider") != "sub_vendor";
 

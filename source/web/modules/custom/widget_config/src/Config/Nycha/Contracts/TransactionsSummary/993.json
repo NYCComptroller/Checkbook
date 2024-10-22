@@ -21,7 +21,7 @@
   "dataset":"checkbook_nycha:all_agreement_transactions_hrcy",
   "columns": ["total_current_amount"],
   "adjustParameters":"
-  $parameters = \\Drupal\\checkbook_project\\NychaContractUtilities\\NYCHAContractUtil::adjustYearParams($node, $parameters);
+  $parameters = \\Drupal\\checkbook_project\\NychaContractUtilities\\NYCHAContractUtil::adjustYearParams($parameters);
   $parameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
 return $parameters;
 ",

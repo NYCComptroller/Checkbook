@@ -28,6 +28,11 @@ class MasterAgreementDetails {
   public function getData(&$node){
     $mag_id = RequestUtilities::_getRequestParamValueBottomURL('magid');
     $mag_id = $mag_id ?? RequestUtilities::get('magid');
+    $datasource = RequestUtilities::get('datasource');
+    if(!isset($datasource)){
+      $contract_class_where =", rcc.contract_class_description ";
+      $contract_class_join = " LEFT OUTER JOIN {ref_contract_class} AS rcc ON l1.contract_class_code = rcc.contract_class_code ";
+    }
 
     $query1 = "SELECT l1.contract_number,
     l2.vendor_id AS vendor_id_checkbook_vendor_history,
@@ -36,6 +41,7 @@ class MasterAgreementDetails {
     l5.agency_name AS agency_name_checkbook_agency,
     l5.agency_id AS agency_id_checkbook_agency,
     l656.award_method_name AS award_method_name_checkbook_award_method,
+    l1.oca_number,
     l1.document_version,
     l1.tracking_number,
     l1.number_responses,
@@ -47,7 +53,7 @@ class MasterAgreementDetails {
     l1040.date AS date_chckbk_dat_id_effctv_bgn_date_id_chckbk_hstr_mstr_agrmnt_0,
     l1124.date AS date_chckbk_date_id_effctv_end_dat_id_chckbk_hstr_mstr_agrmnt_1,
     l1208.date AS date_chckbk_date_id_rgstrd_date_id_chckbk_histr_master_agrmnt_2,
-    rat.agreement_type_name
+    rat.agreement_type_name".$contract_class_where."
     FROM {history_master_agreement} AS l1
     LEFT OUTER JOIN {vendor_history} AS l2 ON l2.vendor_history_id = l1.vendor_history_id
     LEFT OUTER JOIN {vendor} AS l3 ON l3.vendor_id = l2.vendor_id
@@ -58,7 +64,8 @@ class MasterAgreementDetails {
     LEFT OUTER JOIN {ref_date} AS l1040 ON l1040.date_id = l1.effective_begin_date_id
     LEFT OUTER JOIN {ref_date} AS l1124 ON l1124.date_id = l1.effective_end_date_id
     LEFT OUTER JOIN {ref_date} AS l1208 ON l1208.date_id = l1.registered_date_id
-    LEFT OUTER JOIN {ref_agreement_type} AS rat ON l1.agreement_type_id = rat.agreement_type_id
+    LEFT OUTER JOIN {ref_agreement_type} AS rat ON l1.agreement_type_id = rat.agreement_type_id".
+      $contract_class_join."
     WHERE l1.original_master_agreement_id = " . $mag_id . "
     AND l1.latest_flag = 'Y'
     ";

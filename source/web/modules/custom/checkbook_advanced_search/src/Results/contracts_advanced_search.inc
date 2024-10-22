@@ -38,8 +38,8 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
 
   $status = _checkbook_get_selected_value($form_state, $filter_dimension, 'status');
   $category = _checkbook_get_selected_value($form_state, $filter_dimension, 'category');
-  $catastrophic_event =  _checkbook_get_selected_value($form_state, $filter_dimension,'catastrophic_events');
-  $catastrophic_event = $catastrophic_event == "Select Event" ? 0 : $catastrophic_event;
+  $conditional_category =  _checkbook_get_selected_value($form_state, $filter_dimension,'conditional_categories');
+  $conditional_category = $conditional_category == "Select Event" ? 0 : $conditional_category;
   $vendor_name =  _checkbook_get_selected_value($form_state, $filter_dimension,'vendor_name');
   $vendor_name_exact =  _checkbook_get_selected_value($form_state, $filter_dimension,'vendor_name_exact');
   $purpose =  _checkbook_get_selected_value($form_state, $filter_dimension,'purpose');
@@ -95,8 +95,8 @@ function _checkbook_advanced_search_contracts_submit($form, &$form_state, $data_
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($mwbe_category, 'mwbe');
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($mwbe_category, 'psmwbe');
   }
-  if (!empty($catastrophic_event)) {
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($catastrophic_event, 'cevent');
+  if (!empty($conditional_category)) {
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($conditional_category, 'cevent');
   }
   if (!empty($industry_type_id)) {
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($industry_type_id, 'cindustry');

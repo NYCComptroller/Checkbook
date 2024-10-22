@@ -39,8 +39,8 @@ class BudgetFeedCitywide extends BudgetFeed{
     if ($this->form_state->getValue('budget_code')) {
       $this->_process_user_criteria_by_datasource_single_field('budget_code', 'budget_code', 'Budget Code');
     }
-    if ($this->form_state->getValue('catastrophic_event') !== "0" &&  $this->form_state->getValue('fiscal_year') >= 2020) {
-      $this->_process_user_criteria_by_datasource_single_field('catastrophic_event', 'catastrophic_event', 'Catastrophic Event');
+    if ($this->form_state->getValue('conditional_category') !== "0" &&  $this->form_state->getValue('fiscal_year') >= 2020) {
+      $this->_process_user_criteria_by_datasource_single_field('conditional_category', 'conditional_category', 'Conditional Category');
     }
     if ($this->form_state->getValue('fiscal_year')) {
       $this->_process_user_criteria_by_datasource_single_field('fiscal_year', 'fiscal_year', 'Year');
@@ -85,10 +85,10 @@ class BudgetFeedCitywide extends BudgetFeed{
         $this->criteria['value']['budget_code_name'] = $this->form_state->getValue('budget_code');
       }
     }
-    if ($this->form_state->getValue('catastrophic_event') !== '0' && $this->form_state->getValue('fiscal_year') >= 2020) {
-      preg_match($this->bracket_value_pattern, $this->form_state->getValue('catastrophic_event'), $evcmatches);
+    if ($this->form_state->getValue('conditional_category') !== '0' && $this->form_state->getValue('fiscal_year') >= 2020) {
+      preg_match($this->bracket_value_pattern, $this->form_state->getValue('conditional_category'), $evcmatches);
       if ($evcmatches) {
-        $this->criteria['value']['catastrophic_event'] = trim($evcmatches[1], '[ ]');
+        $this->criteria['value']['conditional_category'] = trim($evcmatches[1], '[ ]');
       }
     }
 
@@ -136,8 +136,8 @@ class BudgetFeedCitywide extends BudgetFeed{
       $form_state->setErrorByName('column_select_expense', t('You must select at least one column.'));
     }
 
-    //Set the hidden filed values on Budget form
-      $form_state->setValue(['complete form','dept_hidden','#value'], $form_state->getValue(['values','dept']));
-      $form_state->setValue(['complete form','expense_category_hidden','#value'], $form_state->getValue('expense_category'));
+    // Set the hidden field values on Budget form.
+    $form_state->setValue(['complete form','dept_hidden','#value'], $form_state->getValue(['values','dept']));
+    $form_state->setValue(['complete form','expense_category_hidden','#value'], $form_state->getValue('expense_category'));
   }
 }

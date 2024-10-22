@@ -111,6 +111,16 @@
                             "sourceColumnName": "minority_type_id"
                         }
                     ]
+                },
+                {
+                  "name": "award_method",
+                  "levels": [
+                    {
+                      "name": "award_method",
+                      "datasetName": "award_method",
+                      "sourceColumnName": "award_method_id"
+                    }
+                  ]
                 }
             ],
             "measures": {

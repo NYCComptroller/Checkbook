@@ -15,7 +15,7 @@ budget.expcategory:
     _permission: 'access content'
 
 budget.budgetcode:
-  path: '/advanced-search/autocomplete/budget/budgetcode/{fiscal_year}/{agency}/{dept}/{expcategory}/{budget_name}/{catastrophic_events}'
+  path: '/advanced-search/autocomplete/budget/budgetcode/{fiscal_year}/{agency}/{dept}/{expcategory}/{budget_name}/{conditional_categories}'
   defaults:
     _controller: 'Drupal\checkbook_advanced_search\Controller\DefaultController::checkbook_advanced_search_budget_budgetcode'
     _title: 'Budget Budget Code'
@@ -23,7 +23,7 @@ budget.budgetcode:
     _permission: 'access content'
 
 budget.budgetname:
-  path: '/advanced-search/autocomplete/budget/budgetname/{fiscal_year}/{agency}/{dept}/{expcategory}/{budget_code}/{catastrophic_events}'
+  path: '/advanced-search/autocomplete/budget/budgetname/{fiscal_year}/{agency}/{dept}/{expcategory}/{budget_code}/{conditional_categories}'
   defaults:
     _controller: 'Drupal\checkbook_advanced_search\Controller\DefaultController::checkbook_advanced_search_budget_budgetname'
     _title: 'Budget Budget Name'

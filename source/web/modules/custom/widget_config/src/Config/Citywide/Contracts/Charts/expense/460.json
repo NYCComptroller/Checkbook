@@ -52,7 +52,7 @@
             return $adjustedParameters;
 ",
 "cleanURLParameters":["agency","awdmethod","csize","cindustry","csize"],
-"urlParamMap":{"agency":"document_agency_id.document_agency_id","awdmethod":"award_method_id","csize":"award_size_id","cindustry":"industry_type_id","csize":"award_size.award_size"},
+"urlParamMap":{"agency":"document_agency_id.document_agency_id","awdmethod":"award_method_code","csize":"award_size_id","cindustry":"industry_type_id","csize":"award_size.award_size"},
 "transformationPHP": "
     $data = array();$categories=array();
     $nodeData =  array();

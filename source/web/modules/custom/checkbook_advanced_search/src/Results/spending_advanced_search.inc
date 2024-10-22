@@ -73,7 +73,7 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
 
   $spending_mwbe_category = _checkbook_get_selected_value($form_state, $filter_dimension, 'mwbe_category');
   $spending_mwbe_category = $spending_mwbe_category == "Select Category" ? 0 : $spending_mwbe_category;
-  $spending_catastrophic_event = _checkbook_get_selected_value($form_state, $filter_dimension, 'catastrophic_events');
+  $spending_conditional_category = _checkbook_get_selected_value($form_state, $filter_dimension, 'conditional_categories');
   $spending_industry_type_id = _checkbook_get_selected_value($form_state, $filter_dimension, 'industry');
   $spending_industry_type_id = $spending_industry_type_id == "Select Industry" ? 0 : $spending_industry_type_id;
 
@@ -90,8 +90,8 @@ function _checkbook_advanced_search_spending_submit($form, &$form_state, $data_s
   if (!empty($spending_mwbe_category)) {
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_mwbe_category, 'mwbe');
   }
-  if(!empty($spending_catastrophic_event) && strtolower($spending_catastrophic_event) != 'select event'){
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_catastrophic_event, 'cevent');
+  if(!empty($spending_conditional_category) && strtolower($spending_conditional_category) != 'select event'){
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_conditional_category, 'cevent');
   }
   if (!empty($spending_industry_type_id)) {
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($spending_industry_type_id, 'industry');
@@ -185,7 +185,7 @@ function generateNYCHASpendingSearchUrl($form, $form_state){
   $redirectUrl = '/nycha_spending/search/transactions/datasource/' . Datasource::NYCHA.'/agency/'.Datasource::getNYCHAId();
   //Department
   $department = _checkbook_get_selected_value($form_state, $filterDimension, 'department');
-  $redirectUrl .= ($department != "Select Department" && !empty($department)) ?  _checkbook_advanced_search_generate_redirect_url($department, 'deptnm'): "";
+  $redirectUrl .= ($department != "Select Department" && !empty($department)) ?  _checkbook_advanced_search_generate_redirect_url($department, 'dept'): "";
   //Expense Category
   $expenseCategory = _checkbook_get_selected_value($form_state, $filterDimension, 'expense_category');
   $redirectUrl .= ((!in_array($expenseCategory, ["Select Expense Category", "$"])) && ($expenseCategory === "0" || !empty($expenseCategory))) ?  _checkbook_advanced_search_generate_redirect_url($expenseCategory, 'expcategorycode'): "";

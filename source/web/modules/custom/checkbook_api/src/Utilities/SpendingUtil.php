@@ -74,7 +74,7 @@ class SpendingUtil {
 
     $sql_parts = explode("WHERE", $sql_query);
     $select_part = $sql_parts[0];
-    $where_part = $sql_parts[1];
+    $where_part = $sql_parts[1] ?? '';
     $select_part = str_replace("{$alias}prime_vendor_name", "CASE WHEN {$alias}is_prime_or_sub = 'S' THEN {$alias}prime_vendor_name ELSE 'N/A' END AS prime_vendor_name", $select_part);
     $select_part = str_replace("{$alias}vendor_type", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type", $select_part);
     $select_part = str_replace("{$alias}reporting_code", "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}reporting_code ELSE 'N/A' END AS reporting_code", $select_part);

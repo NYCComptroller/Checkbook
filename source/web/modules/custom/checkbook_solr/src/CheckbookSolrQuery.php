@@ -20,9 +20,9 @@
 
 namespace Drupal\checkbook_solr;
 
-require_once(\Drupal::service('extension.list.module')->getPath('checkbook_smart_search') . "/includes/checkbook_autocomplete_functions.inc");
+use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
 
-use Drupal\checkbook_solr\CheckbookSolrQueryBase;
+require_once(\Drupal::service('extension.list.module')->getPath('checkbook_smart_search') . "/includes/checkbook_autocomplete_functions.inc");
 
 /**
  * Class CheckbookSolrQuery
@@ -60,7 +60,7 @@ class CheckbookSolrQuery extends CheckbookSolrQueryBase
    * @param int $rows
    * @param int $page
    */
-  public function __construct($solr_datasource = '', $searchTerms = '', int $rows = 0, int $page = 0)
+  public function __construct(string $solr_datasource = '', $searchTerms = '', int $rows = 0, int $page = 0)
   {
     $this->paramMapping = (array)CheckbookSolr::getParamMapping();
     $this->facetsConfig = (array)CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
@@ -79,7 +79,6 @@ class CheckbookSolrQuery extends CheckbookSolrQueryBase
     $this
       ->setRows($rows)
       ->setPage($page);
-
     return $this;
   }
 
@@ -396,23 +395,25 @@ class CheckbookSolrQuery extends CheckbookSolrQueryBase
     $fq = [];
     foreach ($values as $value) {
       $minus = $exclude ? '-' : '';
-
       if (isset($this->facetsConfig[$param]->intervals)) {
         $value = $this->facetsConfig[$param]->intervals->$value;
         $value = str_replace(',', '%20TO%20', $value);
         $fq[] = $minus . $param . ':' . $value;
-      }
-      elseif ($param == 'agreement_start_year'){
+      } elseif ($param == 'agreement_start_year'){
         $fq[] = $value;
         unset($this->selectedFacets['agreement_start_year']);
       }
-      else {
+      //Adjust vendor count for contracts when subvendor is present for a prime vendor
+      elseif ($param == 'vendor_name' && $this->datasourcename == Datasource::SOLR_CITYWIDE){
+        $fq[] = $minus . $param . ':"' . self::escape($value) . '"OR%20contract_prime_vendor_name:"'.self::escape($value) . '"';
+      }else if($param == 'event_id'){
+        $fq[] = $minus . $param . ':*"' . self::escape($value) . '"*';
+      } else {
         $fq[] = $minus . $param . ':"' . self::escape($value) . '"';
       }
     }
 
     $this->setFq($param, join('%20' . ($exclude ? 'AND' : 'OR') . '%20', $fq));
-
     return $this;
   }
 
@@ -437,7 +438,6 @@ class CheckbookSolrQuery extends CheckbookSolrQueryBase
     $this->addFacet($facet);
     $this->setFacetLimit((int)$this->autoSuggestionsLimit);
     unset($this->sort);
-
     return $this;
   }
 

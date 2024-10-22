@@ -153,7 +153,8 @@ class CustomURLHelper
         $calYear = ($applyPreviousYear ? ($pathParams[($calyrIndex + 1)] - 1) : $pathParams[($calyrIndex + 1)]);
         return "/yeartype/C/" . $year_param_name . "/" . $calYear . ($applySpendingYear ? ('/scalyear/' . $calYear) : '');
       }
-      if ($yeartypeIndex && $pathParams[($yeartypeIndex + 1)] == "C") {
+
+      if ($yrIndex !== FALSE && $yeartypeIndex && $pathParams[($yeartypeIndex + 1)] == "C") {
         $calYear = ($applyPreviousYear ? ($pathParams[($yrIndex + 1)] - 1) : $pathParams[($yrIndex + 1)]);
         return $cyear . $calYear . ($applySpendingYear ? ($syear . $calYear) : '');
       }

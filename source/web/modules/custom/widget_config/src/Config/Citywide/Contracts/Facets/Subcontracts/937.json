@@ -9,7 +9,7 @@
     "columns":["aprv_sta.aprv_sta","aprv_sta_value.aprv_sta_value", "txcount"],
     "orderBy":"-txcount",
     "facetPager":true,
-    "filterName":"Sub Vendor Status in PIP",
+    "filterName":"Subcontract Status",
     "allowZeroValue":true,
     "allowFacetDeselect":true,
     "urlParameterName":"subvendorstatus",

@@ -158,7 +158,8 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state)
         try {
           //Make sure e-mail address is passed to the call.
           $details = $checkBookApi->queueImmediateRequest();
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
           LogHelper::log_error($e->getMessage());
         }
       } else {
@@ -451,7 +452,8 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
       '#type' => 'submit',
       '#value' => t('Cancel'),
     );
-  } elseif ($recordcount > 0 && $recordcount < $max_record_limit) {
+  }
+  elseif ($recordcount > 0 && $recordcount < $max_record_limit) {
     /**
      * see docs
      * http://wiki.reisys.com:8080/display/USASv2/Data+Feeds+Documentation
@@ -461,12 +463,14 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
         if ($recordcount <= $query_records_limit) {
           LogHelper::log_notice("DataFeeds :: <=" . $query_records_limit . " :: generatingData()");
           $form_state->set(['step_information', 'confirmation', 'response'], $checkBookApi->getData());
-        } else {
+        }
+        else {
           LogHelper::log_notice("DataFeeds :: >" . $query_records_limit . " :: generatingFile()");
           $filename = $checkBookApi->generateFile();
           $form_state->set(['step_information', 'confirmation', 'filename'], $filename);
         }
-      } else {  // invalid request
+      }
+      else {  // invalid request
         $form_state->set(['step_information', 'confirmation', 'response'], $checkBookApi->getErrorResponse());
       }
     }
@@ -481,7 +485,7 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
       '#limit_validation_errors' => array(),
       '#attributes' => array("onclick" => "
              jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
     );
     $form['download'] = array(
@@ -494,10 +498,11 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
       '#value' => t('Cancel'),
       '#attributes' => array("onclick" => "
              jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
     );
-  } else {  // > 200,000
+  }
+  else {  // > 200,000
     $form_state->set(['step_information', 'confirmation', 'stored_values', 'user_criteria', 'Record Count'], $recordcount);
     $form['count'] = array(
       '#type' => 'fieldset',
@@ -523,7 +528,7 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
       '#limit_validation_errors' => array(),
       '#attributes' => array("onclick" => "
              jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
     );
     $form['confirm'] = array(
@@ -533,7 +538,7 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
       '#submit' => array('checkbook_datafeeds_confirmation_queue_submit'),
       '#attributes' => array("onclick" => "
              jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
     );
     $form['cancel'] = array(
@@ -541,7 +546,7 @@ function checkbook_datafeeds_end_of_confirmation_form($form, &$form_state, $crit
       '#value' => t('Cancel'),
       '#attributes' => array("onclick" => "
              jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-             jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+             jQuery('#datafeeds-rotator').show();
         ")
     );
   }

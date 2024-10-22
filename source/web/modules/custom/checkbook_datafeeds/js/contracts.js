@@ -5,28 +5,6 @@
    */
   $.fn.showHideFields = function (datasource) {
     switch (datasource) {
-      case 'checkbook':
-        $('.default-fields').show();
-        $('.nycha-fields').hide();
-
-        $('.default-fields .datafield.commodityline').hide();
-        $('.default-fields .datafield.entity_contract_number').hide();
-        $('.default-fields .datafield.budgetname').hide();
-
-        $('.default-fields .datafield.mwbecategory').show();
-        $('.default-fields .datafield.scntrc_status').show();
-        $('.default-fields .datafield.regdate').show();
-        $('.default-fields .datafield.sub_vendor_status_in_pip_id').show();
-        $('.default-fields .datafield.catastrophic_event').show();
-        $('.default-fields .datafield.industry').show();
-
-        $("#edit-df-contract-status").children("option[value='pending']").show();
-        $("#edit-category").children("option[value='all']").show();
-        $("#edit-category").children("option[value='revenue']").show();
-        $("#edit-apt-pin").removeAttr('disabled');
-
-        break;
-
       case 'checkbook_oge':
         $('.default-fields').show();
         $('.nycha-fields').hide();
@@ -38,8 +16,9 @@
         $('.default-fields .datafield.mwbecategory').hide();
         $('.default-fields .datafield.scntrc_status').hide();
         $('.default-fields .datafield.regdate').hide();
-        $('.default-fields .datafield.sub_vendor_status_in_pip_id').hide();
-        $('.default-fields .datafield.catastrophic_event').hide();
+
+        $('.default-fields .datafield.sub_contract_status_id').hide();
+        $('.default-fields .datafield.conditional_category').hide();
         $('.default-fields .datafield.industry').hide();
 
         $("#edit-df-contract-status").children("option[value='pending']").hide();
@@ -47,18 +26,21 @@
         $("#edit-category").children("option[value='revenue']").hide();
         $("#edit-apt-pin").attr('disabled', 'disabled');
 
-        //Moving fields to match with Advanced search form order
+        // Moving fields to match with Advanced search form order.
         $('.default-fields .datafield.pin').insertAfter('.default-fields .datafield.purpose');
         $('.default-fields .datafield.receiveddate.datarange').insertAfter('.default-fields .datafield.currentamt.datarange');
         $('.default-fields .datafield.enddate.datarange').insertAfter('.default-fields .datafield.startdate.datarange');
         $('.datafield.agency').hide();
 
         break;
+
       case 'checkbook_nycha':
         $('.default-fields').hide();
         $('.nycha-fields').show();
         $('.datafield.agency').hide();
         break;
+
+      case 'checkbook':
       default:
         $('.default-fields').show();
         $('.nycha-fields').hide();
@@ -70,8 +52,9 @@
         $('.default-fields .datafield.mwbecategory').show();
         $('.default-fields .datafield.scntrc_status').show();
         $('.default-fields .datafield.regdate').show();
-        $('.default-fields .datafield.sub_vendor_status_in_pip_id').show();
-        $('.default-fields .datafield.catastrophic_event').show();
+        $('.default-fields .datafield.sub_contract_status_id').show();
+        $('.default-fields .datafield.conditional_category').show();
+
         $('.default-fields .datafield.industry').show();
 
         $("#edit-df-contract-status").children("option[value='pending']").show();
@@ -79,11 +62,10 @@
         $("#edit-category").children("option[value='revenue']").show();
         $("#edit-apt-pin").removeAttr('disabled');
 
-
-        //Moving fields to match with Advanced search form order
-        $('.default-fields .datafield.pin').insertBefore('.default-fields .datafield.currentamt.datarange');
-        $('.default-fields .datafield.enddate.datarange').insertAfter('.default-fields .datafield.currentamt.datarange');
+        // Moving fields to match with Advanced search form order.
+        $('.default-fields .datafield.pin').insertAfter('.default-fields .datafield.sub_contract_status_id');
         $('.default-fields .datafield.receiveddate.datarange').insertAfter('.default-fields .datafield.startdate.datarange');
+        $('.default-fields .datafield.enddate.datarange').insertAfter('.default-fields .datafield.currentamt.datarange');
         $('.datafield.agency').show();
     }
   };
@@ -98,7 +80,7 @@
     const mwbe_category = jQuery(".mwbecategory");
     const current_amt_from = jQuery(".currentamt");
     const category = jQuery(".category");
-    const sub_vendor_status_in_pip = jQuery(".sub_vendor_status_in_pip_id");
+    const sub_contract_status = jQuery(".sub_contract_status_id");
     const purpose = jQuery(".purpose");
     const industry = jQuery(".industry");
     const year = jQuery(".year");
@@ -110,7 +92,7 @@
     $.fn.removePrimeAndSubIcon(mwbe_category);
     $.fn.removePrimeAndSubIcon(current_amt_from);
     $.fn.removePrimeAndSubIcon(category);
-    $.fn.removePrimeAndSubIcon(sub_vendor_status_in_pip);
+    $.fn.removePrimeAndSubIcon(sub_contract_status);
     $.fn.removePrimeAndSubIcon(purpose);
     $.fn.removePrimeAndSubIcon(industry);
     $.fn.removePrimeAndSubIcon(year);
@@ -129,7 +111,7 @@
         $.fn.addPrimeAndSubIcon(mwbe_category);
         $.fn.addPrimeAndSubIcon(current_amt_from);
         $.fn.addPrimeAndSubIcon(category);
-        $.fn.addPrimeAndSubIcon(sub_vendor_status_in_pip);
+        $.fn.addPrimeAndSubIcon(sub_contract_status);
         $.fn.addPrimeAndSubIcon(purpose);
         $.fn.addPrimeAndSubIcon(industry);
         $.fn.addPrimeAndSubIcon(year);
@@ -177,7 +159,7 @@
     $('#edit-nycha-year').removeAttr('disabled');
 
     // Reset covid filter
-    $("#edit-catastrophic_event").removeAttr('disabled');
+    $("#edit-conditional_category").removeAttr('disabled');
     updateYearValue('0');
 
     if (dataSource !== 'checkbook_nycha') {
@@ -187,7 +169,7 @@
 
       //Clear text fields and drop-downs
       $.fn.clearInputFields(dataSource);
-      //Reset 'sub-vendor status in PIP' and 'contracts include sub-vendors' drop-downs
+      //Reset 'sub-contract status' and 'contracts include sub-vendors' drop-downs
       $.fn.subVendorStatusInPipChange(0, 0);
 
       //reset the selected columns
@@ -391,7 +373,7 @@
             $oge_expense.hide();
             $nycha.hide();
           } else {
-            $('.form-item-column-select-all label').html('Columns (All Registered)<span class="form-required">*</span>');
+            $('.form-item-column-select-all label').html('Columns (All Registered)<span class="form-required"></span>');
             $expense.hide();
             $revenue.hide();
             $pending.hide();
@@ -489,10 +471,13 @@
       if(csval === "pending") {
         $('#edit-year option:selected').removeAttr('selected');
         $('#edit-year').attr('disabled','disabled');
-        $("#edit-catastrophic_event").attr('disabled', 'disabled');
-        $("#edit-catastrophic_event").prop("selectedIndex", 0);
-        $("#edit-sub_vendor_status_in_pip_id").attr('disabled', 'disabled');
-        $("#edit-sub_vendor_status_in_pip_id").prop("selectedIndex", 0);
+
+        $("#edit-sub_contract_status_id").attr('disabled', 'disabled');
+        $("#edit-sub_contract_status_id").prop("selectedIndex", 0);
+
+        $("#edit-conditional_category").attr('disabled', 'disabled');
+        $("#edit-conditional_category").prop("selectedIndex", 0);
+
         $("#edit-contract_includes_sub_vendors_id").attr('disabled', 'disabled');
         $("#edit-contract_includes_sub_vendors_id").prop("selectedIndex", 0);
         $.fn.subVendorStatusInPipChange(0, 0);
@@ -510,29 +495,29 @@
       $.fn.showHidePrimeAndSubIcon();
 
       // disable if covid is not selected
-      if (year_value < 2020 || catval == 'revenue') {
-        $("#edit-catastrophic_event").attr('disabled', 'disabled');
-        $("#edit-catastrophic_event").val('0');
+      if (year_value < 2020 || catval === 'revenue') {
+        $("#edit-conditional_category").attr('disabled', 'disabled');
+        $("#edit-conditional_category").val('0');
       }
 
       //Reload year based on the event value
-      let cevent = $('#edit-catastrophic_event', context).val();
+      let cevent = $('#edit-conditional_category', context).val();
       updateYearValue(cevent);
 
       $(once('contracts_window_load',document)).ready(function () {
         $.fn.formatDatafeedsDatasourceRadio('edit-datafeeds-contracts-domain-filter');
         // Display multi-select. Run on document load
         $.fn.hideShow(csval, catval, datasource);
-        let cevent = $('#edit-catastrophic_event', context).val();
+        let cevent = $('#edit-conditional_category', context).val();
         $.fn.calculateMocsRegister(cevent, csval, catval);
       });
 
-      // Enable/disable and add/remove options in 'Contracts Include SubVendors' and 'SubVendor Status in PIP' drop-downs
-      $.fn.subVendorStatusInPipChange($('#edit-sub_vendor_status_in_pip_id', context).val(), $('#edit-contract_includes_sub_vendors_id', context).val());
+      // Enable/disable and add/remove options in 'Contracts Include SubVendors' and 'Sub Contract' drop-downs
+      $.fn.subVendorStatusInPipChange($('#edit-sub_contract_status_id', context).val(), $('#edit-contract_includes_sub_vendors_id', context).val());
 
-      //On change of "Sub Vendor Status in PIP" status
-      $('#edit-sub_vendor_status_in_pip_id', context).change(function () {
-        const sub_vendor_status = $('#edit-sub_vendor_status_in_pip_id', context).val();
+      //On change of "Subcontract Status" status
+      $('#edit-sub_contract_status_id', context).change(function () {
+        const sub_vendor_status = $('#edit-sub_contract_status_id', context).val();
         const includes_sub_vendors = $('#edit-contract_includes_sub_vendors_id', context).val();
         $.fn.subVendorStatusInPipChange(sub_vendor_status, includes_sub_vendors);
       });
@@ -553,17 +538,20 @@
         if (csval === 'pending') {
           $('#edit-year option:selected').removeAttr('selected');
           $('#edit-year').attr('disabled', 'disabled');
-          $('#edit-catastrophic_event option:selected').removeAttr('selected');
-          $('#edit-catastrophic_event').prop("selectedIndex", 0).attr('disabled', 'disabled');
-          $('#edit-sub_vendor_status_in_pip_id option:selected').removeAttr('selected');
-          $('#edit-sub_vendor_status_in_pip_id').prop("selectedIndex", 0);
+
+          $('#edit-sub_contract_status_id option:selected').removeAttr('selected');
+          $('#edit-sub_contract_status_id').prop("selectedIndex", 0);
+
+          $('#edit-conditional_category option:selected').removeAttr('selected');
+          $('#edit-conditional_category').prop("selectedIndex", 0).attr('disabled', 'disabled');
+
           $('#edit-contract_includes_sub_vendors_id option:selected').removeAttr('selected');
           $('#edit-contract_includes_sub_vendors_id').prop("selectedIndex", 0);
-        } else if (catval == 'revenue') {
-          $('#edit-catastrophic_event option:selected').removeAttr('selected');
-          $('#edit-catastrophic_event').prop("selectedIndex", 0).attr('disabled', 'disabled');
+        } else if (catval === 'revenue') {
+          $('#edit-conditional_category option:selected').removeAttr('selected');
+          $('#edit-conditional_category').prop("selectedIndex", 0).attr('disabled', 'disabled');
         } else {
-          $('#edit-catastrophic_event').removeAttr('disabled');
+          $('#edit-conditional_category').removeAttr('disabled');
         }
       });
 
@@ -574,27 +562,27 @@
         var year_value = getYearValue($('#edit-year', context).val());
         datasource = $('input[name="datafeeds-contracts-domain-filter"]:checked', context).val();
         // disable event filed when category is all
-        if (catval == 'revenue' || (year_value < 2020 && year_value != 0)) {
-          $('#edit-catastrophic_event option:selected').removeAttr('selected');
-          $('#edit-catastrophic_event').prop("selectedIndex", 0).attr('disabled', 'disabled');
-          let cevent = $('#edit-catastrophic_event', context).val();
+        if (catval === 'revenue' || (year_value < 2020 && year_value !== 0)) {
+          $('#edit-conditional_category option:selected').removeAttr('selected');
+          $('#edit-conditional_category').prop("selectedIndex", 0).attr('disabled', 'disabled');
+          let cevent = $('#edit-conditional_category', context).val();
           updateYearValue(cevent);
-        } else if (csval == 'pending') {
-          $('#edit-catastrophic_event option:selected').removeAttr('selected');
-          $('#edit-catastrophic_event').prop("selectedIndex", 0).attr('disabled', 'disabled');
+        } else if (csval === 'pending') {
+          $('#edit-conditional_category option:selected').removeAttr('selected');
+          $('#edit-conditional_category').prop("selectedIndex", 0).attr('disabled', 'disabled');
         } else {
-          $('#edit-catastrophic_event').removeAttr('disabled');
+          $('#edit-conditional_category').removeAttr('disabled');
         }
         $.fn.resetSelectedColumns();
         $.fn.hideShow(csval, catval, datasource);
         $.fn.showHidePrimeAndSubIcon();
-        let cevent = $('#edit-catastrophic_event', context).val();
+        let cevent = $('#edit-conditional_category', context).val();
         $.fn.calculateMocsRegister(cevent, csval, catval);
       })
 
-      // On Catastrophic event change reload year drop down
-      $('#edit-catastrophic_event', context).change(function () {
-        let cevent = $('#edit-catastrophic_event', context).val();
+      // On Conditional Category change reload year drop down.
+      $('#edit-conditional_category', context).change(function () {
+        let cevent = $('#edit-conditional_category', context).val();
         csval = $('select[name="df_contract_status"]', context).val();
         catval = $('#edit-category', context).val();
         updateYearValue(cevent);
@@ -638,8 +626,8 @@
         $('#edit-column-select-nycha option[value="Year"]').attr('disabled', 'disabled');
         $('#edit-column-select-nycha option[value="year"]').attr('disabled', 'disabled');
       } else {
-        $('#edit-column-select-nycha option[value="Year"]').removeAttr('disabled');;
-        $('#edit-column-select-nycha option[value="year"]').removeAttr('disabled');;
+        $('#edit-column-select-nycha option[value="Year"]').removeAttr('disabled');
+        $('#edit-column-select-nycha option[value="year"]').removeAttr('disabled');
       }
 
       //Set up multiselects/option transfers
@@ -732,7 +720,7 @@
 
       const status = $('select[name="df_contract_status"]', context).val();
       const category = $('#edit-category', context).val();
-      const catastrophic_event = $.fn.emptyToZero($('#edit-catastrophic_event', context).val());
+      const conditional_category = $.fn.emptyToZero($('#edit-conditional_category', context).val());
       const contract_type = $.fn.emptyToZero($('#edit-contract-type', context).val());
       const agency = $.fn.emptyToZero($('#edit-agency', context).val());
       const award_method = $.fn.emptyToZero($('#edit-award-method', context).val());
@@ -740,13 +728,13 @@
       const mwbecat = ($('#edit-mwbe-category').val()) ? $('#edit-mwbe-category').val() : 0;
       const industry = $.fn.emptyToZero($('#edit-industry', context).val());
       const includes_sub_vendors = $.fn.emptyToZero($('#edit-contract_includes_sub_vendors_id', context).val());
-      const sub_vendor_status = $.fn.emptyToZero($('#edit-sub_vendor_status_in_pip_id', context).val());
+      const sub_vendor_status = $.fn.emptyToZero($('#edit-sub_contract_status_id', context).val());
       // Refactoring autocomplete for citywide similar to Nycha to use common autocomplete function
       let filters = {
         "contract_status": status,
         "contract_category_name": category,
         "contract_type_id": contract_type,
-        "event_id": catastrophic_event,
+        "event_id": conditional_category,
         "agency_code": agency,
         "award_method_id": award_method,
         "fiscal_year": year,
@@ -847,7 +835,7 @@
           const status = $('select[name="df_contract_status"]', context).val();
           const category = $('#edit-category', context).val();
           const contract_type = $.fn.emptyToZero($('#edit-contract-type', context).val());
-          const catastrophic_event = $.fn.emptyToZero($('#edit-catastrophic_event', context).val());
+          const conditional_category = $.fn.emptyToZero($('#edit-conditional_category', context).val());
           const agency = $.fn.emptyToZero($('#edit-agency', context).val());
           const award_method = $.fn.emptyToZero($('#edit-award-method', context).val());
           const year = ($('#edit-year', context).attr('disabled')) ? 0 : getYearValue($('#edit-year', context).val());
@@ -856,13 +844,13 @@
           const industry = $.fn.emptyToZero($('#edit-industry', context).val());
           const datasource = $('input:radio[name=datafeeds-contracts-domain-filter]:checked').val();
           const includes_sub_vendors = $.fn.emptyToZero($('#edit-contract_includes_sub_vendors_id', context).val());
-          const sub_vendor_status = $.fn.emptyToZero($('#edit-sub_vendor_status_in_pip_id', context).val());
+          const sub_vendor_status = $.fn.emptyToZero($('#edit-sub_contract_status_id', context).val());
 
           let filters = {
             "contract_status": status,
             "contract_category_name": category,
             "contract_type_id": contract_type,
-            "event_id": catastrophic_event,
+            "event_id": conditional_category,
             "agency_code": agency,
             "award_method_id": award_method,
             "fiscal_year": year,
@@ -1001,11 +989,12 @@
           $('#edit-column-select-all option[value="Year"]', context).attr('disabled', 'disabled');
           $('#edit-column-select-all option[value="year"]', context).attr('disabled', 'disabled');
 
-          if (catval == 'revenue') {
-            $("#edit-catastrophic_event").attr('disabled', 'disabled');
-            $('select[name="catastrophic_event"]', context).val('0');
+          if (catval === 'revenue') {
+            $("#edit-conditional_category").attr('disabled', 'disabled');
+            $('select[name="conditional_category"]', context).val('0');
           } else {
-            $("#edit-catastrophic_event").removeAttr('disabled');
+            $('select[name="conditional_category"] option[value*="[2]"]').removeAttr('disabled', 'disabled');
+            $("#edit-conditional_category").removeAttr('disabled');
           }
         } else {
           let year_value = getYearValue($('#edit-year', context).val());
@@ -1017,12 +1006,18 @@
           $('#edit-column-select-oge-expense option[value="year"]', context).removeAttr('disabled');
           $('#edit-column-select-revenue option[value="year"]', context).removeAttr('disabled');
           $('#edit-column-select-all option[value="year"]', context).removeAttr('disabled');
-          // disable event field when category is all and year value is less than 2020
-          if (catval == 'revenue' || year_value < 2020) {
-            $("#edit-catastrophic_event").attr('disabled', 'disabled');
-            $('select[name="catastrophic_event"]', context).val('0');
+          //Disable Conditional Categories for the options FY < 2018 and Payroll&Others Spending Categories
+          if (catval === 'revenue' || year_value < 2018) {
+            $("#edit-conditional_category").attr('disabled', 'disabled');
+            $('select[name="conditional_category"]', context).val('0');
           } else {
-            $("#edit-catastrophic_event").removeAttr('disabled');
+            $("#edit-conditional_category").removeAttr('disabled');
+            //Disable COVID option for FY < 2020
+            if(year_value < 2020) {
+              $('select[name="conditional_category"] option[value*="[1]"]').attr('disabled', 'disabled');
+            }else {
+              $('select[name="conditional_category"] option[value*="[1]"]').removeAttr('disabled', 'disabled');
+            }
           }
         }
         $('#edit-column-select-expense', context).multiSelect('refresh');
@@ -1073,9 +1068,6 @@
           $('#edit-column-select-all', context).multiSelect('deselect_all');
         });
       });
-
-      //ToDo: check if needed
-      //$.fn.fixAutoCompleteWrapping($("#dynamic-filter-data-wrapper").children());
     }
   };
 
@@ -1091,7 +1083,8 @@
   };
 
   $.fn.calculateMocsRegister = function(cevent, csval, catval) {
-    if(cevent === "COVID-19[1]"){
+    cevent = $.fn.emptyToZero(cevent);
+    if(cevent === 1){
       if (csval === 'active' || csval === 'registered') {
         if (catval === 'expense') {
           $.fn.addColumnSelectMocsRegistered('edit-column-select-expense');
@@ -1135,7 +1128,7 @@
 
   $.fn.addColumnSelectMocsRegistered = function(columnSelectName) {
     let data_format = $('input:hidden[name="hidden_data_format"]').val();
-    if (data_format == 'xml') {
+    if (data_format === 'xml') {
       if ($('#' + columnSelectName + ' option[value="mocs_registered"]').length === 0) {
         $('#' + columnSelectName + ' option[value="document_code"]').before('<option value="mocs_registered">mocs_registered</option>');
       }
@@ -1158,15 +1151,6 @@
     $('#edit-column-select-all').multiSelect('deselect',"mocs_registered");
     $('#edit-column-select-all option[value="mocs_registered"]').remove();
   }
-
-  //Prevent the auto-complete from wrapping un-necessarily
-  $.fn.fixAutoCompleteWrapping = function (divWrapper) {
-    jQuery(divWrapper.children()).find('input.ui-autocomplete-input:text').each(function () {
-      $(this).data("autocomplete")._resizeMenu = function () {
-        (this.menu.element).outerWidth('100%');
-      }
-    });
-  };
 
   //Function to retrieve values enclosed in brackets or return zero if none
   $.fn.emptyToZero = function (input) {
@@ -1195,13 +1179,16 @@
 
   // update year drop down when event is chosen
   function updateYearValue(cevent) {
+    cevent = $.fn.emptyToZero(cevent);
     $("#edit-year option").each(function () {
-      let yearValue = (this.text).split(' ')[1];
-      if (yearValue < 2020 && cevent != 0) {
-        $(" option[value='" + $(this).val() + "']").hide();
-      } else {
-        $(" option[value='" + $(this).val() + "']").show();
+      let year = (this.text).split(' ')[1];
+      let include = true;
+      if(cevent === "1") {
+        include = (this.text === "All Years" || year >= 2020);
+      } else if(cevent === "2") {
+        include = (this.text === "All Years" || year >= 2018);
       }
+      this.style.display = include ? '':'none';
     });
   }
 
@@ -1217,14 +1204,15 @@
           break;
         case 'date':
           $(this).val('');
+          $('.date-item-label', $(this).parent()).html('');
           break;
       }
     });
 
-    //Enable "Contract includes sub vendors" and "Sub Vendor Status in PIP" drop-downs
+    //Enable "Contract includes sub vendors" and "Subcontract Status" drop-downs
     if (dataSource !== 'checkbook_oge') {
       $('#edit-contract_includes_sub_vendors_id').removeAttr('disabled');
-      $('#edit-sub_vendor_status_in_pip_id').removeAttr('disabled');
+      $('#edit-sub_contract_status_id').removeAttr('disabled');
     }
 
     //For OGE set 'Expense' as default category

@@ -1,0 +1,9 @@
+checkbook_path_validator.form:
+  path: '/admin/config/system/path-settings'
+  defaults:
+    _form: '\Drupal\checkbook_path_validator\Form\PathSettingsForm'
+    _title: 'Checkbook Path Settings'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE

@@ -47,8 +47,8 @@ abstract class PageType {
                  */
                 if(preg_match('/spending\/search\/transactions/',$urlPath) && is_null($bottomContURL)) {
                     $pageType = self::ADVANCED_SEARCH_PAGE;
-                } else if(preg_match('/spending\/transactions/',$urlPath) || preg_match('/spending\/transactions/',$ajaxPath) ||
-                    preg_match('/contract\/spending\/transactions/',$urlPath) || preg_match('/contract\/spending\/transactions/',$ajaxPath)) {
+                } else if(preg_match('/spending\/transactions/',$urlPath) || (isset($ajaxPath) && preg_match('/spending\/transactions/',$ajaxPath))||
+                    preg_match('/contract\/spending\/transactions/',$urlPath) || (isset($ajaxPath) && preg_match('/contract\/spending\/transactions/',$ajaxPath))) {
                     $pageType = self::TRANSACTION_PAGE;
                 }
                 else if(str_contains($urlPath, 'spending_landing') || str_contains($ajaxPath, 'spending_landing')) {

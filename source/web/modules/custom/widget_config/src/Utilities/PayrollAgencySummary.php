@@ -29,6 +29,10 @@ use Drupal\checkbook_project\WidgetUtilities\WidgetUtil;
 
 class PayrollAgencySummary
 {
+  /*
+   * @param $node
+   * @return string
+   */
   public static function payrollAgency($node)
   {
     $all_data = array();
@@ -146,7 +150,6 @@ class PayrollAgencySummary
         $total_overtime_pay = FormattingUtilities::custom_number_formatter_format($data['total_overtime_pay'], 2, '$');
         $number_employees = number_format($data['number_employees']);
         $total_employees = number_format($node->total_employees);
-        $agency_name = $data['agency_name'];
         $agency_url = Datasource::isNycha() ? $data['agency_name'] : $data['agency_url'];
         $lbl_total_number_employees =
           $employment_type == PayrollType::$SALARIED
@@ -161,7 +164,7 @@ class PayrollAgencySummary
         $lbl_overtime_pay_ytd = WidgetUtil::getLabel('combined_overtime_pay_ytd');
 
         //Details link from the agency landing page - don't display agency name
-        $show_agency = !(RequestUtilities::getTransactionsParams('dtsmnid') == 325);
+        $show_agency = (RequestUtilities::getTransactionsParams('dtsmnid') != 325);
 
 
         if (RequestUtilities::getTransactionsParams('smnid') == 322) {
@@ -297,6 +300,10 @@ class PayrollAgencySummary
     print $employeeData;
   }
 
+  /*
+   * @param $node
+   * @return string
+   */
   public static function payrollEmpAgency($node)
   {
     $year = RequestUtilities::getTransactionsParams('year')?RequestUtilities::getTransactionsParams('year'):RequestUtilities::getTransactionsParams('calyear');
@@ -325,7 +332,6 @@ class PayrollAgencySummary
       $title = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
       $agency_name = FormattingUtilities::_shorten_word_with_tooltip(strtoupper($data['agency_name_agency_name']),25);
 
-      //$record['title_url'] = "<a href='/payroll/title_landing/yeartype/$year_type/year/$year/title/$original_title'>{$title}</a>";
       $record['title'] = $title;
       $record['agency_name']=$data['agency_name_agency_name'];
       $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year/datasource/{$data_source}/agency/{$data['agency_agency']}'>{$agency_name}</a>";
@@ -344,18 +350,34 @@ class PayrollAgencySummary
 
       $ordered_data = array();
       $data = PayrollUtil::getDataByPayFrequency("BI-WEEKLY",$employment_data);
-      if(isset($data)) $ordered_data[] = $data;
-      $data = PayrollUtil::getDataByPayFrequency("SEMI-MONTHLY",$employment_data);
-      if(isset($data)) $ordered_data[] = $data;
-      $data = PayrollUtil::getDataByPayFrequency("WEEKLY",$employment_data);
-      if(isset($data)) $ordered_data[] = $data;
-      $data = PayrollUtil::getDataByPayFrequency("DAILY",$employment_data);
-      if(isset($data)) $ordered_data[] = $data;
-      $data = PayrollUtil::getDataByPayFrequency("HOURLY",$employment_data);
-      if(isset($data)) $ordered_data[] = $data;
-      $data = PayrollUtil::getDataByPayFrequency("SUPPLEMENTAL",$employment_data);
-      if(isset($data)) $ordered_data[] = $data;
+      if(isset($data)) {
+        $ordered_data[] = $data;
+      }
 
+      $data = PayrollUtil::getDataByPayFrequency("SEMI-MONTHLY",$employment_data);
+      if(isset($data)){
+        $ordered_data[] = $data;
+      }
+      $data = PayrollUtil::getDataByPayFrequency("WEEKLY",$employment_data);
+
+      if(isset($data)){
+        $ordered_data[] = $data;
+      }
+      $data = PayrollUtil::getDataByPayFrequency("DAILY",$employment_data);
+
+      if(isset($data)){
+        $ordered_data[] = $data;
+      }
+      $data = PayrollUtil::getDataByPayFrequency("HOURLY",$employment_data);
+
+      if(isset($data)){
+        $ordered_data[] = $data;
+      }
+      $data = PayrollUtil::getDataByPayFrequency("SUPPLEMENTAL",$employment_data);
+
+      if(isset($data)){
+        $ordered_data[] = $data;
+      }
       $all_data[$employment_type] = $ordered_data;
     }
 
@@ -436,9 +458,6 @@ class PayrollAgencySummary
       $employeeData .= "<div id='emp-agency-detail-records-$class'>";
 
       foreach($employment_data as $data) {
-
-        //$title_url = $data['title_url'];
-        $title = $data['title'];
         $agency_url = Datasource::isNycha()? $data['agency_name']:$data['agency_url'];
         $max_annual_salary =$data['max_annual_salary'];
         $pay_frequency = $data['pay_frequency'];

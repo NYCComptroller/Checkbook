@@ -76,7 +76,7 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
 
             case "award_method_name_link":
                 $column = $row['award_method_name'];
-                $url = ContractsUrlService::awardmethodUrl($row['award_method_id']);
+                $url = ContractsUrlService::awardmethodUrl($row['award_method_code']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
 
@@ -198,7 +198,7 @@ class ContractsWidgetService extends WidgetDataService implements IWidgetService
                 $column = $row['spending_amount_sum'];
                 $class = "new_window";
 
-                $spend_type_parameter = "/awdmethod/".$row['award_method_id'];
+                $spend_type_parameter = "/awdmethod/".$row['award_method_code'];
                 $url = ContractsUrlService::spentToDateUrl($spend_type_parameter,$legacy_node_id);
                 $value = "<a class='{$class}' href='{$url}'>{$column}</a>";
                 break;

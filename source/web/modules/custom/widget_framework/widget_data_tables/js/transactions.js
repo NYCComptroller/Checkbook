@@ -1,6 +1,4 @@
 
-
-
 /**
  * Functions to adjust url parameters
  *
@@ -29,113 +27,113 @@ function adjustUrlParameter(cUrl, name, value) {
   }
   var newUrl = cUrlArray.join('/');
   return newUrl;
-}   /**
+}
+
+/**
  * Function to get name of filter
  *
  * @param {String} filterName
  */
 function getNamedFilterCriteria(filterName){
-    var filterId = '';
-    var filterUrlValue = '';
+  var filterId = '';
+  var filterUrlValue = '';
 
-    var facetId = document.getElementById(filterName);
-    var oFilterIds = document.getElementsByName(filterName);
-    if(!eval(oFilterIds)){
-        return filterId;
-    }
-
-    //Get facet parameter value from URL
-    if(facetId) {
-        var filterUrlParam = facetId.getAttribute('title');
-        var url = oTable.fnSettings().sAjaxSource;
-        var urlParts = url.split('/');
-        var index = urlParts.indexOf(filterUrlParam);
-        if (index >= 0 && index < urlParts.length - 1) {
-          filterUrlValue = urlParts[index + 1];
-        }
-        var filterUrlValues = filterUrlValue.split('~');
-    }
-
-    //Get the new facet selected values
-    for(var i = 0; i < oFilterIds.length; i++)
-    {
-        if(oFilterIds[i].checked && filterUrlValues.indexOf(oFilterIds[i].value) == -1)
-        {
-            if(filterId.length>0){
-                filterId = filterId  +'~'+ oFilterIds[i].value;
-            }else{
-                filterId = oFilterIds[i].value;
-            }
-        }
-    }
-
-    //Append the selected filter values to URL value
-    if(filterUrlValue != ''){
-      if(filterId != ''){
-        filterId = filterUrlValue +'~'+ filterId;
-      }
-      else{
-        return filterUrlValue;
-      }
-    }
+  var facetId = document.getElementById(filterName);
+  var oFilterIds = document.getElementsByName(filterName);
+  if (!eval(oFilterIds)) {
     return filterId;
+  }
+
+  // Get facet parameter value from URL.
+  if (facetId) {
+    var filterUrlParam = facetId.getAttribute('title');
+    var url = oTable.fnSettings().sAjaxSource;
+    var urlParts = url.split('/');
+    var index = urlParts.indexOf(filterUrlParam);
+    if (index >= 0 && index < urlParts.length - 1) {
+      filterUrlValue = urlParts[index + 1];
+    }
+    var filterUrlValues = filterUrlValue.split('~');
+  }
+
+  // Get the new facet selected values.
+  for (var i = 0; i < oFilterIds.length; i++) {
+    if (oFilterIds[i].checked && filterUrlValues.indexOf(oFilterIds[i].value) == -1) {
+      if (filterId.length > 0) {
+        filterId = filterId  + '~' + oFilterIds[i].value;
+      } else {
+        filterId = oFilterIds[i].value;
+      }
+    }
+  }
+
+  // Append the selected filter values to URL value.
+  if (filterUrlValue != '') {
+    if (filterId != '') {
+      filterId = filterUrlValue +'~'+ filterId;
+    } else {
+      return filterUrlValue;
+    }
+  }
+  return filterId;
 }
 
-    function addPaddingToDataCells(table) {
-      (function ($) {
-        $(table).find("th").each(function (i, val) {
-            if ($(this).hasClass("number")) {
-              var colwidth = $(this).find("span").width();
-              var maxDataWidth = 0;
-              $(table).find("tr td:nth-child(" + (i + 1) + ")").each(
-                function () {
-                  if (maxDataWidth < $(this).find("div").width()) {
-                    maxDataWidth = $(this).find("div").width();
-                  }
-                }
-              );
-              if ((colwidth - maxDataWidth) / 2 > 1) {
-                $(table).find("tr td:nth-child(" + (i + 1) + ") div").css("margin-right", Math.floor((colwidth - maxDataWidth) / 2) + "px");
+function addPaddingToDataCells(table) {
+  (function ($) {
+    $(table).find("th").each(function (i, val) {
+        if ($(this).hasClass("number")) {
+          var colwidth = $(this).find("span").width();
+          var maxDataWidth = 0;
+          $(table).find("tr td:nth-child(" + (i + 1) + ")").each(
+            function () {
+              if (maxDataWidth < $(this).find("div").width()) {
+                maxDataWidth = $(this).find("div").width();
               }
+            }
+          );
+          if ((colwidth - maxDataWidth) / 2 > 1) {
+            $(table).find("tr td:nth-child(" + (i + 1) + ") div").css("margin-right", Math.floor((colwidth - maxDataWidth) / 2) + "px");
+          }
+        }
+      }
+    );
+
+    $(".DTFC_LeftHeadWrapper table").find("th").each(function (i, val) {
+        if ($(this).hasClass("number")) {
+          var colwidth = $(this).find("div").width();
+          var maxDataWidth = 0;
+          $(".DTFC_LeftBodyWrapper table").find("tr td:nth-child(" + (i + 1) + ")").each(
+            function () {
+              if (maxDataWidth < $(this).find("div").width()) {
+                maxDataWidth = $(this).find("div").width();
+              }
+            }
+          );
+          if ((colwidth - maxDataWidth) / 2 > 1) {
+            $(".DTFC_LeftBodyWrapper table").find("tr td:nth-child(" + (i + 1) + ") div").css("margin-right", Math.floor((colwidth - maxDataWidth) / 2) + "px");
+          }
+        }
+      }
+    );
+
+    $(".dataTables_scrollHeadInner table").find("th").each(function (i, val) {
+      if ($(this).hasClass("number")) {
+        var colwidth = $(this).find("div").width();
+        var maxDataWidth = 0;
+        $(".dataTables_scrollBody table").find("tr td:nth-child(" + (i + 1) + ")").each(
+          function () {
+            if (maxDataWidth < $(this).find("div").width()) {
+              maxDataWidth = $(this).find("div").width();
             }
           }
         );
-        $(".DTFC_LeftHeadWrapper table").find("th").each(function (i, val) {
-            if ($(this).hasClass("number")) {
-              var colwidth = $(this).find("div").width();
-              var maxDataWidth = 0;
-              $(".DTFC_LeftBodyWrapper table").find("tr td:nth-child(" + (i + 1) + ")").each(
-                function () {
-                  if (maxDataWidth < $(this).find("div").width()) {
-                    maxDataWidth = $(this).find("div").width();
-                  }
-                }
-              );
-              if ((colwidth - maxDataWidth) / 2 > 1) {
-                $(".DTFC_LeftBodyWrapper table").find("tr td:nth-child(" + (i + 1) + ") div").css("margin-right", Math.floor((colwidth - maxDataWidth) / 2) + "px");
-              }
-            }
-          }
-        );
-        $(".dataTables_scrollHeadInner table").find("th").each(function (i, val) {
-            if ($(this).hasClass("number")) {
-              var colwidth = $(this).find("div").width();
-              var maxDataWidth = 0;
-              $(".dataTables_scrollBody table").find("tr td:nth-child(" + (i + 1) + ")").each(
-                function () {
-                  if (maxDataWidth < $(this).find("div").width()) {
-                    maxDataWidth = $(this).find("div").width();
-                  }
-                }
-              );
-              if ((colwidth - maxDataWidth) / 2 > 1) {
-                $(".dataTables_scrollBody table").find("tr td:nth-child(" + (i + 1) + ") div").css("margin-right", Math.floor((colwidth - maxDataWidth) / 2) + "px");
-              }
-            }
-          }
-        );
-      }(jQuery));
-    }
+        if ((colwidth - maxDataWidth) / 2 > 1) {
+          $(".dataTables_scrollBody table").find("tr td:nth-child(" + (i + 1) + ") div").css("margin-right", Math.floor((colwidth - maxDataWidth) / 2) + "px");
+        }
+      }
+    });
+  }(jQuery));
+}
 
 /**
  *

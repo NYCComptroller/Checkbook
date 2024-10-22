@@ -114,6 +114,14 @@
                         }]
                 },
                 {
+                  "name":"award_method_code",
+                  "levels": [
+                    {
+                      "name":"award_method_code",
+                      "sourceColumnName":"award_method_code"
+                    }]
+                },
+                {
                     "name":"award_method_name",
                     "levels": [
                         {
@@ -215,6 +223,30 @@
                   {
                     "name":"is_sub_emerging",
                     "sourceColumnName":"is_sub_emerging"
+                  }]
+              },
+              {
+                "name":"percent_covid_spending",
+                "levels": [
+                  {
+                    "name":"percent_covid_spending",
+                    "sourceColumnName":"percent_covid_spending"
+                  }]
+              },
+              {
+                "name":"percent_asylum_spending",
+                "levels": [
+                  {
+                    "name":"percent_asylum_spending",
+                    "sourceColumnName":"percent_asylum_spending"
+                  }]
+              },
+              {
+                "name":"percent_other_spending",
+                "levels": [
+                  {
+                    "name":"percent_other_spending",
+                    "sourceColumnName":"percent_other_spending"
                   }]
               },
               {

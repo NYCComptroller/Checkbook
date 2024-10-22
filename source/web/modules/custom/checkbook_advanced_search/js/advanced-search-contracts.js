@@ -19,7 +19,7 @@
           'registration_date_from': 'input[type="date"][name="' + data_source + '_contracts_registration_date_from"]',
           'registration_date_to': 'input[type="date"][name="' + data_source + '_contracts_registration_date_to"]',
           'category': 'select[name=' + data_source + '_contracts_category]',
-          'catastrophic_events': 'select[name=' + data_source + '_contracts_catastrophic_events]',
+          'conditional_categories': 'select[name=' + data_source + '_contracts_conditional_categories]',
           'sub_vendor_status': 'select[name="' + data_source + '_contracts_sub_vendor_status"]',
           'purpose': 'input:text[name=' + data_source + '_contracts_purpose]',
           'agency': 'select[name=' + data_source + '_contracts_agency]',
@@ -98,7 +98,7 @@
         var mwbe_category = div.ele('mwbe_category').parent();
         var current_amt_from = div.ele('curremt_amount_from').parent().parent().parent();
         var category = div.ele('category').parent();
-        var sub_vendor_status_in_pip = div.ele('sub_vendor_status').parent();
+        var sub_contract_status = div.ele('sub_vendor_status').parent();
         var purpose = div.ele('purpose').parent();
         var industry = div.ele('industry').parent();
         var year = div.ele('year').parent();
@@ -110,7 +110,7 @@
         removePrimeAndSubIcon(mwbe_category);
         removePrimeAndSubIcon(current_amt_from);
         removePrimeAndSubIcon(category);
-        removePrimeAndSubIcon(sub_vendor_status_in_pip);
+        removePrimeAndSubIcon(sub_contract_status);
         removePrimeAndSubIcon(purpose);
         removePrimeAndSubIcon(industry);
         removePrimeAndSubIcon(year);
@@ -125,7 +125,7 @@
           addPrimeAndSubIcon(mwbe_category);
           addPrimeAndSubIcon(current_amt_from);
           addPrimeAndSubIcon(category);
-          addPrimeAndSubIcon(sub_vendor_status_in_pip);
+          addPrimeAndSubIcon(sub_contract_status);
           addPrimeAndSubIcon(purpose);
           addPrimeAndSubIcon(industry);
           addPrimeAndSubIcon(year);
@@ -206,7 +206,7 @@
             updateIncludeSubvendorsField(div_checkbook_contracts);
             showHidePrimeAndSubFields(div_checkbook_contracts);
             updateEventYearValue("select[name='checkbook_contracts_year'] option", '0');
-            enable_input(div_checkbook_contracts.ele('catastrophic_events'));
+            enable_input(div_checkbook_contracts.ele('conditional_categories'));
             break;
         }
       }
@@ -218,11 +218,11 @@
         let industry_type_id = div.ele('industry').val() || 0;
         let contract_type_id = div.ele('contract_type').val();
         let agency_id = div.ele('agency').val() || 0;
-        let award_method_id = div.ele('award_method').val() || 0;
+        let award_method_code = div.ele('award_method').val() || 0;
         let scntrc_status = div.ele('includes_sub_vendors').val() || 0;
         let aprv_sta = div.ele('sub_vendor_status').val() || 0;
         let data_source = $('input:radio[name=contracts_advanced_search_domain_filter]:checked').val();
-        let catastrophic_events_id = div.ele('catastrophic_events').val() || 0;
+        let conditional_categories_id = div.ele('conditional_categories').val() || 0;
         let solr_datasource = data_source;
         let year = div.ele('year').val();
         let year_id=0;
@@ -271,11 +271,11 @@
            });
         } else {
           let filters = {
-            event_id: catastrophic_events_id,
+            event_id: conditional_categories_id,
             contract_status: contract_status,
             contract_category_name: contract_category_name,
             agency_id: agency_id,
-            award_method_id: award_method_id,
+            award_method_code: award_method_code,
             minority_type_id: minority_type_id,
             industry_type_id: industry_type_id,
             scntrc_status: scntrc_status,
@@ -393,7 +393,7 @@
         if (contract_status === 'P') {
           if (data_source === 'checkbook') {
             disable_input(['.form-item-checkbook-contracts-registration-date-from :input', '.form-item-checkbook-contracts-registration-date-to :input']);
-            disable_input(div.ele('catastrophic_events'));
+            disable_input(div.ele('conditional_categories'));
             disable_input(div.ele('includes_sub_vendors'));
             disable_input(div.ele('sub_vendor_status'));
             disable_input(div.ele('year'));
@@ -404,16 +404,12 @@
         } else {
           if (data_source === 'checkbook') {
             enable_input(['.form-item-checkbook-contracts-registration-date-from :input', '.form-item-checkbook-contracts-registration-date-to :input']);
-            enable_input(div.ele('catastrophic_events'));
+            if (contract_category !== 'revenue' || yval > 2020) {
+              enable_input(div.ele('conditional_categories'));
+            }
             enable_input(div.ele('year'));
           }
-          enable_input(div.ele('year'));
           disable_input(['.form-item-checkbook-contracts-received-date-from :input', '.form-item-checkbook-contracts-received-date-to :input']);
-        }
-
-        if (contract_category === 'revenue' || yval < 2020) {
-          disable_input(div.ele('catastrophic_events'));
-          div.ele('catastrophic_events').val("");
         }
         updateSubVendorFields(div);
       }
@@ -461,7 +457,7 @@
         }
       }
 
-      //On change of "Sub Vendor Status in PIP" status -  NYCCHKBK-6187
+      //On change of "Subcontract Status" -  NYCCHKBK-6187
       div_checkbook_contracts.ele('sub_vendor_status').change(function () {
         onSubvendorStatusChange(div_checkbook_contracts);
       });
@@ -472,18 +468,18 @@
         let contract_status = div.ele('status').val();
 
         if (contract_category === 'revenue' || yval < 2020 || contract_status === 'P') {
-          disable_input(div.ele('catastrophic_events'));
-          let catas_event = div_checkbook_contracts.ele('catastrophic_events').val();
+          disable_input(div.ele('conditional_categories'));
+          let catas_event = div_checkbook_contracts.ele('conditional_categories').val();
           updateEventYearValue("select[name='checkbook_contracts_year'] option", '0');
         } else {
-          enable_input(div.ele('catastrophic_events'));
+          enable_input(div.ele('conditional_categories'));
         }
 
       }
 
-      //On change of event value update the the year options
-      div_checkbook_contracts.ele('catastrophic_events').change(function () {
-        let catas_event = div_checkbook_contracts.ele('catastrophic_events').val();
+      // On change of event value update the year options.
+      div_checkbook_contracts.ele('conditional_categories').change(function () {
+        let catas_event = div_checkbook_contracts.ele('conditional_categories').val();
         updateEventYearValue("select[name='checkbook_contracts_year'] option", catas_event);
       });
 
@@ -491,18 +487,12 @@
         updateIncludeSubvendorsField(div);
       }
 
-      //On year of "year" if chosen year is less than 2020 disable catastrophic event field
+      // On year of "year" if chosen year is less than 2020 disable conditional category field.
       div_checkbook_contracts.ele('year').change(function () {
         let yval = ($(this).find("option:selected").text()).split(' ')[1];
         let contract_category = div_checkbook_contracts.ele('category').val();
-        if (contract_category === 'revenue' || yval < 2020) {
-          disable_input(div_checkbook_contracts.ele('catastrophic_events'));
-          div_checkbook_contracts.ele('catastrophic_events').val('0');
-        } else {
-          enable_input(div_checkbook_contracts.ele('catastrophic_events'));
-        }
+        updateConditionalEventValue(div_checkbook_contracts.ele('conditional_categories'), yval, contract_category === 'revenue');
       });
-
 
       function updateIncludeSubvendorsField(div) {
         var sub_vendor_status = div.ele('sub_vendor_status').val();

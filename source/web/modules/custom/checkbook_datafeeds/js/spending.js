@@ -9,20 +9,20 @@
   let reloadSpendingDepartments = function () {
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
     //Departments drop-down is not applicable for NYCHA
-    if(data_source == 'checkbook_nycha'){
+    if(data_source === 'checkbook_nycha'){
       return;
     }
     let agency = $('#edit-agency').val();
     let html = '<option value="0" selected="selected">Select Department</option>';
     let dept_hidden = $('input:hidden[name="dept_hidden"]').val();
 
-    if(data_source === 'checkbook' && $.inArray(agency, ["", null, "0", 'Select One', 'Citywide (All Agencies)']) != -1){
+    if(data_source === 'checkbook' && $.inArray(agency, ["", null, "0", 'Select One', 'Citywide (All Agencies)']) !== -1){
       $('#edit-dept').html(html);
       disable_input($('#edit-dept'));
     }else{
       $('#edit-dept').addClass('loading');
       let year = 0;
-      if ($('input:radio[name=date_filter]:checked').val() == 0) {
+      if ($('input:radio[name=date_filter]:checked').val() === 0) {
         year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
       }
       //We need agency filter only for citywide
@@ -62,20 +62,20 @@
     let agency = $('#edit-agency').val();
     let html = '<option value="0" selected="selected">Select Expense Category</option>';
     let dept = 0;
-    if(data_source != 'checkbook_nycha') {
+    if(data_source !== 'checkbook_nycha') {
       dept = emptyToZero($('input:hidden[name="dept_hidden"]').val());
     }
     let expense_category_hidden = $('input:hidden[name="expense_category_hidden"]').val();
 
-    if(data_source == 'checkbook' && $.inArray(agency, ["", null, "0", 'Select One', 'Citywide (All Agencies)']) != -1){
+    if(data_source === 'checkbook' && $.inArray(agency, ["", null, "0", 'Select One', 'Citywide (All Agencies)']) !== -1){
       $('#edit-expense-category').html(html);
       disable_input($('#edit-expense-category'));
     }else{
       $('#edit-expense-category').addClass('loading');
 
       let year = 0;
-      if ($('input:radio[name=date_filter]:checked').val() == 0) {
-        if(data_source =='checkbook_nycha'){
+      if ($('input:radio[name=date_filter]:checked').val() === 0) {
+        if(data_source ==='checkbook_nycha'){
           year = ($('#edit-nycha-year').val()) ? $('#edit-nycha-year').val() : 0;
         }else{
           year = ($('#edit-year').val()) ? $('#edit-year').val() : 0;
@@ -114,26 +114,29 @@
     }
   };
 
-  //On Catastrophic Event filter change
+  // On Conditional Category filter change.
   function onCatastrophicEventChange(){
-    //Selecting 'COVID-19' option causes the following changes:
-    //Data within following fields update: Payee Name, Contract ID, Document ID, Capital Project
-    //Limit year filter options to 'FY 2020', 'FY 2021' and 'All years'
     let fiscal_year = document.getElementById("edit-year");
-    let catastrophic_event = document.getElementById("edit-catastrophic-event");
+    let conditional_category = document.getElementById("edit-conditional-category");
     let data_format = $('input:hidden[name="hidden_data_format"]').val();
     let exptype = $('select[name="expense_type"]').val();
 
-    if(catastrophic_event.value === "1"){
+    if(conditional_category.value !== "0"){
+      //Update Year list for COVID(1) and ASYLUM(2) selections
       for (let i = 0; i < fiscal_year.length; i++) {
         let year = fiscal_year.options[i].text.toLowerCase();
-        let include = (year === "all years" || removeFY(year) >= 2020);
+        let include = true;
+
+        if(conditional_category.value === "1") {
+          include = (year === "all years" || removeFY(year) >= 2020);
+        } else if(conditional_category.value === "2") {
+          include = (year === "all years" || removeFY(year) >= 2018);
+        }
         fiscal_year.options[i].style.display = include ? '':'none';
       }
-
-      //Add MOCS Registered column to response columns
-      if(exptype !== 'Others [o]' && exptype !== 'Payroll [p]') {
-        if (data_format == 'xml') {
+      //Add MOCS Registered column to response columns for Conditional Category selection
+      if (exptype !== 'Others [o]' && exptype !== 'Payroll [p]') {
+        if (data_format === 'xml') {
           if ($('#edit-column-select option[value="mocs_registered"]').length === 0) {
             $('#edit-column-select option[value="payee_name"]').before('<option value="mocs_registered">mocs_registered</option>');
           }
@@ -142,22 +145,18 @@
             $('#edit-column-select option[value="Payee Name"]').before('<option value="MOCS Registered">MOCS Registered</option>');
           }
         }
-      } else {
-        $('#edit-column-select').multiSelect('deselect',"MOCS Registered");
-        $('#edit-column-select option[value="MOCS Registered"]').remove();
-        $('#edit-column-select').multiSelect('deselect',"mocs_registered");
-        $('#edit-column-select option[value="mocs_registered"]').remove();
       }
-
-    }
-    else{
+    } else{
       for (let i = 0; i < fiscal_year.length; i++) {
         fiscal_year.options[i].style.display = '';
       }
-      //Remove MOCS Registered column from response columns
-      $('#edit-column-select').multiSelect('deselect',"MOCS Registered");
+    }
+
+    //MOCS Registered response column is available upon the selection of Conditional Category only
+    if((exptype === 'Others [o]' || exptype === 'Payroll [p]') && conditional_category.value === "0"){
+      $('#edit-column-select').multiSelect('deselect', "MOCS Registered");
       $('#edit-column-select option[value="MOCS Registered"]').remove();
-      $('#edit-column-select').multiSelect('deselect',"mocs_registered");
+      $('#edit-column-select').multiSelect('deselect', "mocs_registered");
       $('#edit-column-select option[value="mocs_registered"]').remove();
     }
 
@@ -177,37 +176,24 @@
   //On Year filter dropdown change
   let onYearFilterChange = function(){
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
-    if(data_source != 'checkbook') return;
-    //if fiscal year is other than all years, 2020, 2021, then disable COVID-19 dropdown field
-    //If no dropdown available, then disable catastrophic events dropdown
-    let fiscal_year = document.getElementById("edit-year").value.toLowerCase();
-    let catastrophic_event = document.getElementById("edit-catastrophic-event");
-    let enabled_count = catastrophic_event.length;
-    let spending_cat = ($('select[name="expense_type"]').val()) ? $('select[name="expense_type"]').val() : 0;
+    if(data_source !== 'checkbook') return;
+    let fiscal_year = removeFY($('#edit-year').val().toLowerCase());
+    let spending_category = $('select[name="expense_type"]').val();
+    let conditional_category = $('#edit-conditional-category');
 
-    if (spending_cat === "Payroll [p]" || spending_cat === "Others [o]"){
-      disable_input($('select[name="catastrophic_event"]'));
-      return;
+    // Disable Conditional Categories for the options FY < 2018 and Payroll&Others Spending Categories.
+    if ((fiscal_year < 2018 && fiscal_year > 0) || spending_category === "Payroll [p]" || spending_category === "Others [o]") {
+      disable_input(conditional_category);
     }
-    else if(fiscal_year !== "0" && removeFY(fiscal_year) < 2020){
-      for (let i = 0; i < catastrophic_event.length; i++) {
-        let event = catastrophic_event.options[i].text.toLowerCase();
-        catastrophic_event.options[i].style.display = (event === 'covid-19')? "none":"";
-        if(catastrophic_event.options[i].style.display === 'none') enabled_count--;
+    else {
+      enable_input(conditional_category);
+      // Disable COVID option for FY < 2020.
+      if (fiscal_year < 2020 && fiscal_year > 0) {
+        $('#edit-conditional-category option[value="1"]').attr('disabled', 'disabled');
       }
-      if(enabled_count <=1) {
-        disable_input($('select[name="catastrophic_event"]'));
+      else {
+        $('#edit-conditional-category option[value="1"]').removeAttr('disabled', 'disabled');
       }
-    }
-    else{
-      for (let i = 0; i < catastrophic_event.length; i++) {
-        let event = catastrophic_event.options[i].text.toLowerCase();
-        if(event === 'covid-19'){
-          catastrophic_event.options[i].style.display = "";
-          break;
-        }
-      }
-      enable_input($('select[name="catastrophic_event"]'));
     }
   }
 
@@ -280,18 +266,17 @@
         $('label[for=edit-agency]').text('Agency:');
     }
 
-    //Multi-select options
-     $('.form-item-column-select').hide();
-     $('.form-item-oge-column-select').hide();
-     $('.form-item-nycha-column-select').hide();
-     resetMultiselect(data_source);
+    // Multi-select options.
+    $('.form-item-column-select').hide();
+    $('.form-item-oge-column-select').hide();
+    $('.form-item-nycha-column-select').hide();
+    resetMultiselect(data_source);
 
-    //Reset enabling/disabling fields
-     onSpendingCategoryChange();
+    // Reset enabling/disabling fields.
+    onSpendingCategoryChange();
 
-    //Disable/Enable Date Filter fields
-     onDateFilterChange();
-
+    // Disable/Enable Date Filter fields.
+    onDateFilterChange();
   };
 
   // Reset Multi select option based on datasource
@@ -366,50 +351,52 @@
   let onSpendingCategoryChange = function() {
     //Data source value
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
+    let conditional_category = $('select[name="conditional_category"]');
+    let payee_name = $('#edit-payee-name');
+    let contract_number = $('#edit-contractno');
 
     if(data_source === 'checkbook_nycha') {
       let exptype = $('select[name="nycha_expense_type"]').val();
       //NYCHA - disabling fields based on Spending category selected
       if (exptype === "Payroll [PAYROLL]") {
-        disable_input([$('#edit-payee-name'), $('#edit-contractno'), $('#edit-document-id'),$('#edit-nycha-industry'),
+        disable_input([payee_name, contract_number, $('#edit-document-id'),$('#edit-nycha-industry'),
                        $('#edit-funding-source'),$('#edit-resp-center'), $('#edit-purchase-order-type'), $('#edit-spent_amt_from'),
                        $('#edit-spent_amt_to')]);
         enable_input([$('#edit-dept'), $('#edit-expense-category')]);
-        $('#edit-contractno').val("");
-        $('#edit-payee-name').val("");
-      }else if(exptype == "Section 8 [SECTION8]") {
-        disable_input([ $('#edit-dept'),$('#edit-contractno'), $('#edit-nycha-industry'), $('#edit-purchase-order-type'),]);
-        enable_input([$('#edit-payee-name'),$('#edit-document-id'),$('#edit-resp-center'), $('#edit-spent_amt_from'),
+        contract_number.val("");
+        payee_name.val("");
+      }else if(exptype === "Section 8 [SECTION8]") {
+        disable_input([ $('#edit-dept'),contract_number, $('#edit-nycha-industry'), $('#edit-purchase-order-type'),]);
+        enable_input([payee_name,$('#edit-document-id'),$('#edit-resp-center'), $('#edit-spent_amt_from'),
                       $('#edit-spent_amt_to'),$('#edit-expense-category'),$('#edit-funding-source')]);
-      }else if(exptype == "Other [OTHER]") {
-        disable_input([$('#edit-dept'),$('#edit-contractno')]);
-        enable_input([ $('#edit-expense-category'),$('#edit-payee-name'),$('#edit-document-id'),
+      }else if(exptype === "Other [OTHER]") {
+        disable_input([$('#edit-dept'),contract_number]);
+        enable_input([ $('#edit-expense-category'),payee_name,$('#edit-document-id'),
           $('#edit-nycha-industry'), $('#edit-funding-source'), $('#edit-resp-center'),
           $('#edit-purchase-order-type'), $('#edit-spent_amt_from'), $('#edit-spent_amt_to')]);
       }else{
-        enable_input([$('#edit-dept'), $('#edit-expense-category'),$('#edit-payee-name'),$('#edit-document-id'),
-          $('#edit-nycha-industry'), $('#edit-funding-source'),$('#edit-resp-center'), $('#edit-contractno'),
+        enable_input([$('#edit-dept'), $('#edit-expense-category'),payee_name,$('#edit-document-id'),
+          $('#edit-nycha-industry'), $('#edit-funding-source'),$('#edit-resp-center'), contract_number,
           $('#edit-purchase-order-type'), $('#edit-spent_amt_from'), $('#edit-spent_amt_to')]);
       }
     }else{
       //CITYWIDE and OGE - disabling fields based on Spending category selected
       let exptype = $('select[name="expense_type"]:visible, select[name="nycedc_expense_type"]:visible').val();
-      enable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('#edit-document-id')]);
-      if (exptype === 'Payroll [p]' && data_source === 'checkbook') {
-        //Disable Payee Name, ContractID, and Catastrophic event field for Payroll Spending Category
-        disable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('select[name="catastrophic_event"]')]);
-        $('select[name="catastrophic_event"]').prop("selectedIndex", 0);
+      enable_input([contract_number, payee_name, $('#edit-document-id')]);
+      if (exptype === 'Payroll [p]' && (data_source === 'checkbook' ||data_source === 'checkbook_oge' )) {
+        // Disable Payee Name, ContractID, and Conditional Category field for Payroll Spending Category.
+        disable_input([contract_number, payee_name, conditional_category]);
+        conditional_category.prop("selectedIndex", 0);
         onCatastrophicEventChange();
       }
-      else if (exptype === 'Others [o]'  && data_source === 'checkbook') {
-        //Disable ContractID and Catastrophic event field for Others Spending Category
-        disable_input([$('input[name="contractno"]'), $('select[name="catastrophic_event"]')]);
-        $('select[name="catastrophic_event"]').prop("selectedIndex", 0);
+      else if (exptype === 'Others [o]'  && (data_source === 'checkbook' ||data_source === 'checkbook_oge' )) {
+        // Disable ContractID and Conditional Category field for Others Spending Category.
+        disable_input([contract_number, conditional_category]);
+        conditional_category.prop("selectedIndex", 0);
         onCatastrophicEventChange();
-      }
-      else{
-        //For every other option, enable Payee Name, ContractID, and Catastrophic event field
-        enable_input([$('input[name="contractno"]'), $('input[name="payee_name"]'), $('select[name="catastrophic_event"]')]);
+      } else{
+        // For every other option, enable Payee Name, ContractID, and Conditional Category field.
+        enable_input([contract_number, contract_number, conditional_category]);
         onYearFilterChange();
       }
     }
@@ -417,23 +404,23 @@
 
   //On Date Filter change
   let onDateFilterChange = function(){
+    $('.date-item-label', $('input[type="date"][name="issuedfrom"]').parent()).html('');
+    $('.date-item-label', $('input[type="date"][name="issuedto"]').parent()).html('');
+
     let dateFilter = $('input:hidden[name="date_filter_hidden"]').val();
     if (dateFilter === null || dateFilter.trim() === "") {
       dateFilter = $('input:radio[name=date_filter]:checked').val();
     }
     let data_source = $('input[name="datafeeds-spending-domain-filter"]:checked').val();
+    let issue_date = $('input:radio[name=date_filter][value="1"]');
     switch(data_source) {
-      case 'checkbook_nycha':
-        //enable Issue date
-        enable_input($('input:radio[name=date_filter][value="1"]'));
-        break;
       case 'checkbook_oge':
         //Disable Issue date
-        disable_input($('input:radio[name=date_filter][value="1"]'));
+        disable_input(issue_date);
         break;
       default:
         //enable Issue date
-        enable_input($('input:radio[name=date_filter][value="1"]'));
+        enable_input(issue_date);
     }
 
     if (dateFilter === '1') {
@@ -454,8 +441,13 @@
 
   //Clear date filter input fields
   let clearDateFilterInputs = function(){
-    $('input[name="issuedfrom"]').val("");
-    $('input[name="issuedto"]').val("");
+    let issuedfrom = $('input[type="date"][name="issuedfrom"]');
+    let issuedto = $('input[type="date"][name="issuedto"]');
+    $(issuedfrom).val('');
+    $(issuedto).val('');
+    $('.date-item-label', $(issuedfrom).parent()).html('');
+    $('.date-item-label', $(issuedto).parent()).html('');
+
     $('select[name="year"]').val("0");
     $('select[name="nycha_year"]').val("0");
   };
@@ -563,8 +555,8 @@
         onSpendingCategoryChange();
       });
 
-      //On change of "Catastrophic event"
-      $('select[name="catastrophic_event"]', context).change(function(){
+      // On change of "Conditional Category".
+      $('select[name="conditional_category"]', context).change(function(){
         onCatastrophicEventChange();
       });
 
@@ -609,13 +601,11 @@
       let resp_center = $('#edit-resp-center', context).val() ? emptyToZero($('#edit-resp-center', context).val()) :0 ;
       let fund_src = $('#edit-funding-source', context).val() ? emptyToZero($('#edit-funding-source', context).val()) :0 ;
       let spend_cat = getSpendingExpenseType(data_source);
-      let catastrophic_event_id = $('#edit-catastrophic-event', context).val() ? $('#edit-catastrophic-event', context).val() : 0;
+      let conditional_category_id = $('#edit-conditional-category', context).val() ? $('#edit-conditional-category', context).val() : 0;
 
-      if(year.toString().toLowerCase().indexOf("fy") >= 0){
-        year = year.toLowerCase().split('fy')[1];
-      }
-      else if(year.toString().toLowerCase().indexOf("cy") >= 0){
-        year = year.toLowerCase().split('cy')[1];
+      year = year.toString().toLowerCase();
+      if(year.indexOf("fy") >= 0){
+        year = year.split('fy')[1];
       }
 
       //Sets up jQuery UI autocompletes and autocomplete filtering functionality
@@ -631,7 +621,7 @@
         "agreement_type_code":agg_type,
         "responsibility_center_code":resp_center,
         "funding_source_number":fund_src,
-        "event_id":catastrophic_event_id
+        "event_id":conditional_category_id
       };
 
       if (data_source === 'checkbook'){
@@ -719,13 +709,11 @@
           else{
             industry = emptyToZero($('#edit-industry', context).val());}
           spend_cat = getSpendingExpenseType(data_source);
-          catastrophic_event_id = $('#edit-catastrophic-event', context).val() ? $('#edit-catastrophic-event', context).val() : 0;
+          conditional_category_id = $('#edit-conditional-category', context).val() ? $('#edit-conditional-category', context).val() : 0;
 
-          if(year.toLowerCase().indexOf("fy") >= 0){
-            year = year.toLowerCase().split('fy')[1];
-          }
-          else if(year.toLowerCase().indexOf("cy") >= 0){
-            year = year.toLowerCase().split('cy')[1];
+          year = year.toString().toLowerCase();
+          if(year.indexOf("fy") >= 0){
+            year = year.split('fy')[1];
           }
 
           let filters = {
@@ -739,7 +727,7 @@
             "agreement_type_code":agg_type,
             "responsibility_center_code":resp_center,
             "funding_source_number":fund_src,
-            "event_id":catastrophic_event_id
+            "event_id":conditional_category_id
           };
 
           // No code display for edc payee name in datafeed (refer to 10131 for document with information on code display for necessary fields)
@@ -797,18 +785,8 @@
           });
         });
       });
-      fixAutoCompleteWrapping($("#dynamic-filter-data-wrapper").children());
     }
   };
-
-  //Prevent the auto-complete from wrapping un-necessarily
-  function fixAutoCompleteWrapping(divWrapper) {
-    jQuery(divWrapper.children()).find('input.ui-autocomplete-input:text').each(function () {
-      $(this).data("autocomplete")._resizeMenu = function () {
-        (this.menu.element).outerWidth('100%');
-      }
-    });
-  }
 
   //Function to retrieve values enclosed in brackets or return zero if none
   function emptyToZero(input) {
@@ -846,13 +824,13 @@
     $(selector).each(function () {
       $(this).attr('disabled','disabled');
       // store value
-      if ('text' == $(this).attr('type')) {
+      if ('text' === $(this).attr('type')) {
         if ($(this).val()){
           $(this).attr('storedvalue', $(this).val());
         }
         $(this).val('');
       }
-      if (this.type == 'select-one') {
+      if (this.type === 'select-one') {
         var default_option = $(this).attr('default_selected_value');
         if (!default_option)
           $(this).find('option:first').attr("selected", "selected");
@@ -872,7 +850,7 @@
       $(this).removeAttr('disabled');
 
       // restore value
-      if ('text' == $(this).attr('type')) {
+      if ('text' === $(this).attr('type')) {
         if ($(this).attr('storedvalue')){
           $(this).val($(this).attr('storedvalue'));
         }

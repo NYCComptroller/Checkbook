@@ -8,6 +8,7 @@
 "dataset": "checkbook:revenue_cross_year_collections",
 "columns": ["category.category.revenue_category_name","category.category",
             "current_recognized","recognized_1","recognized_2","other_years","remaining_amount"],
+"widgetTitle":"Revenue Category by Cross Year Collections Transactions",
 "summaryView":{
     "template":"revenue_transactions_summary",
     "templateTitle":"Revenue Category by Cross Year Collections Transactions",

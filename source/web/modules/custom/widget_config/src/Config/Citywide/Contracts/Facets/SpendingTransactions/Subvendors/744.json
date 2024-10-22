@@ -8,7 +8,7 @@
     "columns":["minority_type.minority_type", "minority_type.minority_type.minority_type_name", "txcount"],
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code",
-        "mwbe":"minority_type.minority_type"
+        "mwbe":"minority_type.minority_type", "awdmethod":"award_method.award_method.award_method_code"
     },
     "orderBy":"-txcount",
     "facetPager":true,

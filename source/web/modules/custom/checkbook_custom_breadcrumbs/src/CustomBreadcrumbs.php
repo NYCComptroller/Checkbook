@@ -1,8 +1,11 @@
 <?php
+
+namespace Drupal\checkbook_custom_breadcrumbs;
+
 /**
  * This file is part of the Checkbook NYC financial transparency software.
  *
- * Copyright (c) 2012 – 2023 New York City
+ * Copyright (c) 2012 – 2023 New York City.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,15 +21,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Drupal\checkbook_custom_breadcrumbs;
-
 use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\PageType;
 use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 
+/**
+ * Custom breadcrumb class.
+ */
 class CustomBreadcrumbs {
+
+  const API_URL = '/data-feeds/api';
+  const API_TITLE = 'API';
+  const NONE_URL = '<none>';
+  const ACFR_TITLE = 'ACFR Trends';
+  const ALL_TITLE = 'All Trends';
 
   /**
    * Breadcrumb links.
@@ -35,6 +45,12 @@ class CustomBreadcrumbs {
    */
   protected static $links;
 
+  /**
+   * Get links.
+   *
+   * @return array
+   *   The array of links.
+   */
   public static function getLinks() {
     if (!isset(self::$links)) {
       $path = self::getCurrentPath();
@@ -52,60 +68,64 @@ class CustomBreadcrumbs {
       $trends = TrendPageTitle::getAllTrends();
 
       if (preg_match('/(contract-api)/', $path)) {
-        self::$links[] = Link::fromTextAndUrl('API', Url::fromUserInput('/data-feeds/api'));
-        self::$links[] = Link::createFromRoute('Contracts API', '<none>');
+        self::$links[] = Link::fromTextAndUrl(self::API_TITLE, Url::fromUserInput(self::API_URL));
+        self::$links[] = Link::createFromRoute('Contracts API', self::NONE_URL);
       }
       elseif (preg_match('/(payroll-api)/', $path)) {
-        self::$links[] = Link::fromTextAndUrl('API', Url::fromUserInput('/data-feeds/api'));
-        self::$links[] = Link::createFromRoute('Payroll API', '<none>');
+        self::$links[] = Link::fromTextAndUrl(self::API_TITLE, Url::fromUserInput(self::API_URL));
+        self::$links[] = Link::createFromRoute('Payroll API', self::NONE_URL);
       }
       elseif (preg_match('/(spending-api)/', $path)) {
-        self::$links[] = Link::fromTextAndUrl('API', Url::fromUserInput('/data-feeds/api'));
-        self::$links[] = Link::createFromRoute('Spending API', '<none>');
+        self::$links[] = Link::fromTextAndUrl(self::API_TITLE, Url::fromUserInput(self::API_URL));
+        self::$links[] = Link::createFromRoute('Spending API', self::NONE_URL);
       }
       elseif (preg_match('/(budget-api)/', $path)) {
-        self::$links[] = Link::fromTextAndUrl('API', Url::fromUserInput('/data-feeds/api'));
-        self::$links[] = Link::createFromRoute('Budget API', '<none>');
+        self::$links[] = Link::fromTextAndUrl(self::API_TITLE, Url::fromUserInput(self::API_URL));
+        self::$links[] = Link::createFromRoute('Budget API', self::NONE_URL);
       }
       elseif (preg_match('/(revenue-api)/', $path)) {
-        self::$links[] = Link::fromTextAndUrl('API', Url::fromUserInput('/data-feeds/api'));
-        self::$links[] = Link::createFromRoute('Revenue API', '<none>');
+        self::$links[] = Link::fromTextAndUrl(self::API_TITLE, Url::fromUserInput(self::API_URL));
+        self::$links[] = Link::createFromRoute('Revenue API', self::NONE_URL);
       }
-      elseif (str_contains($path, 'featured-trends')){
+      elseif (str_contains($path, 'featured-trends')) {
         // From generalFundExpendOtherFinSourcesTop().
-        self::$links[] = Link::createFromRoute('ACFR Trends', '<none>');
+        self::$links[] = Link::createFromRoute(self::ACFR_TITLE, self::NONE_URL);
         self::$links[] = Link::fromTextAndUrl('Featured Trends', Url::fromUserInput('/featured-trends'));
-        self::$links[] = Link::createFromRoute('General Fund Revenues and General Fund Expenditures', '<none>');
+        self::$links[] = Link::createFromRoute('General Fund Revenues and General Fund Expenditures', self::NONE_URL);
       }
       elseif (str_contains($path, 'api')) {
-        self::$links[] = Link::createFromRoute('API', '<none>');
-      } elseif (str_contains($path, 'smart_search')) {
+        self::$links[] = Link::createFromRoute(self::API_TITLE, self::NONE_URL);
+      }
+      elseif (str_contains($path, 'smart_search')) {
         $datasource = Datasource::getCurrentSolrDatasource();
         $tail = match ($datasource) {
           'nycha' => ' NYCHA',
           'edc' => ' EDC',
           default => '',
         };
-        self::$links[] = Link::createFromRoute('Search Results' . $tail, '<none>');
-      }else if(str_contains($path, 'all-trends')){
-        self::$links[] = Link::createFromRoute('ACFR Trends', '<none>');
-        self::$links[] = Link::fromTextAndUrl('All Trends', Url::fromUserInput('/all-trends'));
-      } else if(array_key_exists($widgetId, $trends)){
+        self::$links[] = Link::createFromRoute('Search Results' . $tail, self::NONE_URL);
+      }
+      elseif (str_contains($path, 'all-trends')) {
+        self::$links[] = Link::createFromRoute(self::ACFR_TITLE, self::NONE_URL);
+        self::$links[] = Link::fromTextAndUrl(self::ALL_TITLE, Url::fromUserInput('/all-trends'));
+      }
+      elseif (array_key_exists($widgetId, $trends)) {
         $trendBreadCrumb = TrendPageTitle::getBreadCrumbTitle($widgetId);
-        self::$links[] = Link::createFromRoute('ACFR Trends', '<none>');
-        self::$links[] = Link::fromTextAndUrl('All Trends', Url::fromUserInput('/all-trends'));
-        self::$links[] = Link::createFromRoute($trendBreadCrumb['trend_type'],'<none>');
-        self::$links[] = Link::createFromRoute($trendBreadCrumb['trend_name'],'<none>');
-      } else if(!empty($widgetFeaturedId) && array_key_exists($widgetFeaturedId, $trends)){
+        self::$links[] = Link::createFromRoute(self::ACFR_TITLE, self::NONE_URL);
+        self::$links[] = Link::fromTextAndUrl(self::ALL_TITLE, Url::fromUserInput('/all-trends'));
+        self::$links[] = Link::createFromRoute($trendBreadCrumb['trend_type'], self::NONE_URL);
+        self::$links[] = Link::createFromRoute($trendBreadCrumb['trend_name'], self::NONE_URL);
+      }
+      elseif (!empty($widgetFeaturedId) && array_key_exists($widgetFeaturedId, $trends)) {
         $trendBreadCrumb = TrendPageTitle::getBreadCrumbTitle($widgetFeaturedId);
-        $slide = TrendPageTitle::$featured_trends_slide[$widgetFeaturedId] ?? NULL;
+        $slide = TrendPageTitle::$featuredTrendsSlide[$widgetFeaturedId] ?? NULL;
         $options = [];
         if ($slide) {
           $options['query']['slide'] = $slide;
         }
         self::$links[] = Link::fromTextAndUrl('Trends', Url::fromUserInput('/featured-trends'));
         self::$links[] = Link::fromTextAndUrl($trendBreadCrumb['trend_name'], Url::fromUri('internal:/featured-trends', $options));
-        self::$links[] = Link::createFromRoute($trendBreadCrumb['trend_title'],'<none>');
+        self::$links[] = Link::createFromRoute($trendBreadCrumb['trend_title'], self::NONE_URL);
       }
 
       // Add "Home" link.
@@ -120,21 +140,28 @@ class CustomBreadcrumbs {
   /**
    * Check if the current page is hierarchical.
    *
-   * @return boolean
+   * @return bool
+   *   Is hierarchical.
    */
   public static function isHierarchical() {
     $path = self::getCurrentPath();
 
     if (preg_match('/(contract-api)|(payroll-api)|(spending-api)|(budget-api)|(revenue-api)/', $path)) {
-      return true;
+      return TRUE;
     }
     elseif (preg_match('/(contract)|(payroll)|(spending)|(budget)|(revenue)|(newwindow)|(gridview)/', $path)) {
-      return false;
+      return FALSE;
     }
 
-    return true;
+    return TRUE;
   }
 
+  /**
+   * Get the current path.
+   *
+   * @return string
+   *   The current path.
+   */
   public static function getCurrentPath($alias = TRUE) {
     $current_path = \Drupal::service('path.current')->getPath();
     return $alias ? \Drupal::service('path_alias.manager')->getAliasByPath($current_path) : $current_path;

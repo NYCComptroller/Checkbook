@@ -59,7 +59,7 @@ class MwbeSpendingUtil
       unset($parameters['industry_type_id']);
     }
 
-    if (isset($parameters['vendor_id@checkbook:contracts_spending_transactions']) || isset($parameters['document_agency_id@checkbook:contracts_spending_transactions']) || isset($parameters['award_method_id@checkbook:contracts_spending_transactions'])
+    if (isset($parameters['vendor_id@checkbook:contracts_spending_transactions']) || isset($parameters['document_agency_id@checkbook:contracts_spending_transactions']) || isset($parameters['award_method_code@checkbook:contracts_spending_transactions'])
       || isset($parameters['award_size_id@checkbook:contracts_spending_transactions']) || isset($parameters['industry_type_id@checkbook:contracts_spending_transactions'])
     ) {
       $year = $parameters['check_eft_issued_nyc_year_id'];
@@ -85,11 +85,13 @@ class MwbeSpendingUtil
         default:
           if (RequestUtilities::get('dashboard') == null) {
             //Static Amount for Citywide = Prime Only
-            if ($current_node_nid == 775 || ($current_node_nid == 706 && isset($month)))
+            if ($current_node_nid == 775 && isset($month)) {
               $parameters['is_prime_or_sub'] = array('P');
-            //Static Amount for Citywide from the month visualization = Prime Only
-            else
+              //Static Amount for Citywide from the month visualization = Prime Only
+            }
+            else {
               $parameters['is_prime_or_sub'] = array('P', 'S');
+            }
           } else {
             $parameters['is_prime_or_sub'] = array('P');
           }
@@ -126,6 +128,8 @@ class MwbeSpendingUtil
       $year_type = RequestUtilities::get('yeartype');
     }
     if (!isset($spending_vendor_latest_mwbe_category)) {
+      $year_type = $year_type ?? 'B';
+      $year_id = $year_id ?? CheckbookDateUtil::getCurrentFiscalYearId();
       $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                       FROM spending_vendor_latest_mwbe_category
                       WHERE minority_type_id IN (" . MappingUtil::getTotalMinorityIds() . ") AND year_id = '" . $year_id . "' AND type_of_year = '" . $year_type . "'

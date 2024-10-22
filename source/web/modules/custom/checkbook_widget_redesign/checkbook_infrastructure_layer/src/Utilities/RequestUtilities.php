@@ -24,7 +24,7 @@ class RequestUtilities {
    */
   public static function getCurrentPageUrl()
   {
-    $url =\Drupal::service('path.current')->getPath();
+    $url = \Drupal::service('path.current')->getPath();
     if (empty($url)) {
       // that's AJAX
       return self::getAjaxPath();
@@ -112,13 +112,13 @@ class RequestUtilities {
       foreach ($params as $param) {
         $value = self::getSingleParam($param, $options);
         if (!is_null($value)) {
-          return $value;
+          return self::filterParamValue($paramName, $value);
         }
       }
     }
 
     if (isset($options['override'][$paramName])) {
-      return $options['override'][$paramName];
+      return self::filterParamValue($paramName, $options['override'][$paramName]);
     }
 
     $value = self::getFilteredQueryParam($paramName, $options);
@@ -176,14 +176,16 @@ class RequestUtilities {
   public static function filterParamValue($paramName, $value) {
     switch ($paramName) {
       case 'year':
+      case 'agency':
         // Keep only Numbers
-        $value = preg_replace('/\D/', '', $value);
+        $value = preg_replace('/[\D~]/', '', $value);
         break;
       case 'yeartype':
         // Keep only A-Z
-        $value = preg_replace('/[^a-zA-Z]/', '', $value);
+        $value = preg_replace('/[^a-zA-Z~]/', '', $value);
         break;
     }
+    $value = str_replace(['"', "'"], '', $value);
     return Xss::filter(htmlspecialchars_decode($value, ENT_QUOTES));
   }
 

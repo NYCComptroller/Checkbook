@@ -437,17 +437,26 @@ article[about="/payroll/employee/transactions/cy"] .block-checkbook-transactions
 [about="/nycha_spending/transactions"] .contract-id,
 [about="/contract/transactions/contcat/expense/datasource/checkbook_oge"] h2.contract-title,
 [about="/revenue/transactions/revenue_transactions"] .layout--two_columns_39_stacked > .grid-row:first-child,
+[about="/revenue/agency_details"] .layout--two_columns_39_stacked > .grid-row:first-child,
+[about="/revenue/revcat_details"] .layout--two_columns_39_stacked > .grid-row:first-child,
+[about="/revenue/fundsrc_details"] .layout--two_columns_39_stacked > .grid-row:first-child,
 [about="/contract/transactions/contcat/revenue"] .layout--two_columns_39_stacked > .grid-row:first-child,
 [about^="/contract/transactions/contcat/expense/dashboard"] .layout--two_columns_39_stacked > .grid-row:first-child {
   float: left;
   text-align: left;
 }
 
-[about="/revenue/transactions/revenue_transactions"] h2.contract-title {
+[about="/revenue/transactions/revenue_transactions"] h2.contract-title,
+[about="/revenue/agency_details"] h2.contract-title,
+[about="/revenue/revcat_details"] h2.contract-title,
+[about="/revenue/fundsrc_details"] h2.contract-title {
   margin-top: 0;
 }
 
 [about="/revenue/transactions/revenue_transactions"] h2.contract-title,
+[about="/revenue/agency_details"] h2.contract-title,
+[about="/revenue/revcat_details"] h2.contract-title,
+[about="/revenue/fundsrc_details"] h2.contract-title,
 [about^="/contract/transactions/contcat/expense/dashboard"] h2.contract-title {
   margin-bottom: 10px;
 }

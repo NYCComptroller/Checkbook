@@ -60,7 +60,7 @@
       "Status Code"
     ]
   },
-  "sub_vendor_status_in_pip_code_list": {
+  "sub_contract_status_code_list": {
     "sql": "SELECT DISTINCT aprv_sta_id \"Status Code\", aprv_sta_value \"Status Name\" FROM subcontract_approval_status ORDER BY aprv_sta_id",
     "force_quote": [
       "Status Code"
@@ -128,14 +128,14 @@
       "agreement_type_code"
     ]
   },
-  "catastrophic_event_code_list": {
+  "conditional_category_code_list": {
     "sql": "SELECT DISTINCT event_id, event_name from ref_event WHERE event_id IS NOT NULL and event_name IS NOT NULL ORDER BY event_id",
     "force_quote": [
       "event_id"
     ]
   },
   "award_method_code_list": {
-    "sql": "SELECT DISTINCT t1.award_method_code, t1.award_method_name FROM ref_award_method t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.award_method_id = t1.award_method_id ) ORDER BY t1.award_method_code",
+    "sql": "SELECT DISTINCT t1.award_method_code, t1.award_method_name FROM ref_award_method t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.award_method_id = t1.award_method_id ) and active_flag = 'Y' ORDER BY t1.award_method_code",
     "force_quote": [
       "award_method_code"
     ]

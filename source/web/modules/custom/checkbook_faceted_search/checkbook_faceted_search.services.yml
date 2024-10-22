@@ -3,7 +3,3 @@ services:
     class: Drupal\checkbook_faceted_search\Twig\CheckBookFacetExtension
     tags:
       - { name: twig.extension }
-  checkbook_faceted_search.path_processor:
-    class: Drupal\widget_controller\PathProcessor\WidgetControllerPathProcessor
-    tags:
-      - { name: path_processor_inbound, priority: 350 }

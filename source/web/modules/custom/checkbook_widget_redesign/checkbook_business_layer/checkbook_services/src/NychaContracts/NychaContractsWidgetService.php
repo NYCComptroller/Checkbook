@@ -54,7 +54,7 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
                 break;
             case "award_method_link":
                 $column = $row['award_method_name'];
-                $url = NychaContractsUrlService::generateLandingPageUrl('awdmethod',$row['award_method_id']);
+                $url = NychaContractsUrlService::generateLandingPageUrl('awdmethod',$row['award_method_code']);
                 $value = "<a href='{$url}'>{$column}</a>";
                 break;
             case "contract_id_link":
@@ -122,7 +122,7 @@ class NychaContractsWidgetService extends WidgetDataService implements IWidgetSe
               $awd_inv_amount = $row['spend_to_date'];
               $agreement_type="";
               $tcode = '/tcode/AWD';
-              $dynamic_parameter = "/awdmethod/" . $row['award_method_id'];
+              $dynamic_parameter = "/awdmethod/" . $row['award_method_code'];
               $class = "new_window";
               $url = NychaSpendingUrlService::invContractSpendingUrl($dynamic_parameter, 'inv_contract',$agreement_type,$tcode);
               $value = "<a class='{$class}' href='{$url}'>{$awd_inv_amount}</a>";
