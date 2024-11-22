@@ -1,6 +1,7 @@
 <?php
 namespace Drupal\checkbook_project\WidgetUtilities;
 use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
+use Drupal\checkbook_log\LogHelper;
 use Drupal\data_controller\Datasource\Formatter\Handler\ArrayResultFormatter;
 use Drupal\data_controller\Datasource\Formatter\Handler\SpecialCharacterResultFormatter;
 use Drupal\data_controller\Datasource\Operator\Handler\GreaterOrEqualOperatorHandler;
@@ -51,15 +52,19 @@ Class WidgetProcessor{
     if (str_contains(RequestUtilities::getCurrentPageUrl(), 'fvendor')) {
       //Vendor Facet
       if ($node->widgetConfig->filterName == 'Vendor') {
-        if (isset($node->widgetConfig->urlParamMap->fvendor))
+        if (isset($node->widgetConfig->urlParamMap->fvendor)) {
           unset($node->widgetConfig->urlParamMap->fvendor);
-        if (($key = array_search('fvendor', $node->widgetConfig->cleanURLParameters)) !== false)
+        }
+        if (($key = array_search('fvendor', $node->widgetConfig->cleanURLParameters)) !== false) {
           unset($node->widgetConfig->cleanURLParameters[$key]);
+        }
       } else {
-        if (isset($node->widgetConfig->urlParamMap->vendornm))
+        if (isset($node->widgetConfig->urlParamMap->vendornm)) {
           unset($node->widgetConfig->urlParamMap->vendornm);
-        if (($key = array_search('vendornm', $node->widgetConfig->cleanURLParameters)) !== false)
+        }
+        if (($key = array_search('vendornm', $node->widgetConfig->cleanURLParameters)) !== false) {
           unset($node->widgetConfig->cleanURLParameters[$key]);
+        }
       }
     }
   }
@@ -99,8 +104,9 @@ Class WidgetProcessor{
 
         foreach ($intersectKeys as $intersectKey => $keyValue) {
           if ($paramTypeConfig->$intersectKey && $urlParamMap[$intersectKey] == $param) {
-            if ((!isset($logicalOrFacet) || !$logicalOrFacet) && (!isset($unionOrFacet) || !$unionOrFacet))
+            if ((!isset($logicalOrFacet) || !$logicalOrFacet) && (!isset($unionOrFacet) || !$unionOrFacet)) {
               $configurationTypes[$param][$paramTypeConfig->$intersectKey] = explode("~", $originalRequestParams[$intersectKey]);
+            }
           }
         }
       }
@@ -149,6 +155,12 @@ Class WidgetProcessor{
               $vals[] = strtoupper($value);
             }
             $conditions[] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, $vals);
+            break;
+          case "any":
+            $localValue = (is_array($paramValues) && count($paramValues) > 1) ? implode('|', $paramValues) : $paramValues[0];
+            //For value = ANY(string_to_array(event_id,',')) - Multiple values '(?:^|,)(1|2)(?:,|$)'
+            $pattern = "(?:^|,)(".$localValue.")(?:,|$)";
+            $conditions[] = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
             break;
           case "like":
             $localValue = (is_array($paramValues) && count($paramValues) > 1) ? implode('~', $paramValues) : $paramValues[0];
@@ -238,6 +250,8 @@ Class WidgetProcessor{
                     $conditions[] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, 100000000);
                   }
                   break;
+                default:
+                  break;
               }
             }
             break;
@@ -276,6 +290,8 @@ Class WidgetProcessor{
                     $conditions[] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, 5000000000);
                   }
                   break;
+                default:
+                  break;
               }
             }
             break;
@@ -306,6 +322,53 @@ Class WidgetProcessor{
                   if (!in_array($i, $paramValues)) {
                     $conditions[] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, 250000);
                   }
+                  break;
+                default:
+                  break;
+              }
+            }
+            break;
+          case "rangeid4":
+            //Since support for for OR conditions is not present,
+            //currently negating the selection criteria is only alternative.
+            for ($i = 1; $i < 8; $i++) {
+              switch ($i) {
+                case 1:
+                  if (!in_array($i, $paramValues)) {
+                    $conditions[] = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, 1000000);
+                  }
+                  break;
+                case 2:
+                  if (!in_array($i, $paramValues)) {
+                    $conditions[] = $data_controller_instance->initiateHandler(NotInRangeOperatorHandler::$OPERATOR__NAME, array(1000000, 1500000));
+                  }
+                  break;
+                case 3:
+                  if (!in_array($i, $paramValues)) {
+                    $conditions[] = $data_controller_instance->initiateHandler(NotInRangeOperatorHandler::$OPERATOR__NAME, array(1500000.01, 10000000));
+                  }
+                  break;
+                case 4:
+                  if (!in_array($i, $paramValues)) {
+                    $conditions[] = $data_controller_instance->initiateHandler(NotInRangeOperatorHandler::$OPERATOR__NAME, array(10000000.01, 25000000));
+                  }
+                  break;
+                case 5:
+                  if (!in_array($i, $paramValues)) {
+                    $conditions[] = $data_controller_instance->initiateHandler(NotInRangeOperatorHandler::$OPERATOR__NAME, array(25000000.01, 50000000));
+                  }
+                  break;
+                case 6:
+                  if (!in_array($i, $paramValues)) {
+                    $conditions[] = $data_controller_instance->initiateHandler(NotInRangeOperatorHandler::$OPERATOR__NAME, array(50000000.01, 100000000));
+                  }
+                  break;
+                case 7:
+                  if (!in_array($i, $paramValues)) {
+                    $conditions[] = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, 100000000);
+                  }
+                  break;
+                default:
                   break;
               }
             }

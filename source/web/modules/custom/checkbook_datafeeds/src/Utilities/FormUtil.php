@@ -99,7 +99,7 @@ class FormUtil
         $menu_options[""] = $title;
       }
     }
-    foreach ($data as $row) {
+    foreach ($data ?? [] as $row) {
       if($feeds) {
         $option = $row['agency_name'] . ' [' . $row['agency_code'] . ']';
         //Menu options
@@ -162,10 +162,10 @@ class FormUtil
 
 
   /**
-   * Get Sub Vendor Status in PIP from Data Controller and format into a FAPI select input #options array.
+   * Get Sub Vendor Subcontract Status from Data Controller and format into a FAPI select input #options array.
    *
    * @return mixed
-   *   Sub Vendor Status In PIP ids and nammes
+   *   Sub Vendor Subcontract Status ids and nammes
    */
   public static function getSubvendorStatusInPIP($feeds = true)
   {
@@ -792,7 +792,13 @@ class FormUtil
    */
   public static function getAwardMethod($data_source = Datasource::CITYWIDE, $feeds = false){
     try {
-      $query = "SELECT DISTINCT award_method_id, award_method_code, award_method_name FROM ref_award_method ORDER BY award_method_name";
+      if($data_source != Datasource::NYCHA){
+        $query = "SELECT award_method_code, award_method_name FROM ref_award_method
+          WHERE active_flag = 'Y' ORDER BY award_method_name";
+      }else {
+        $query = "SELECT DISTINCT award_method_id, award_method_code, award_method_name FROM ref_award_method
+          ORDER BY award_method_name";
+      }
       $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
 
       $award_method_key_val_option_attributes = array('title' => 'Select Award Method');
@@ -804,7 +810,11 @@ class FormUtil
           $award_method_key_val_option_attributes[$text] = array('title' => $text);
           $award_method_key_val_options[$text] = FormattingUtilities::_ckbk_excerpt($text);
         }else {
-          $keys = 'id=>' . $value['award_method_id'] . '~code=>' . $value['award_method_code'];
+          if($data_source != Datasource::NYCHA) {
+            $keys = 'id=>' . $value['award_method_code'] . '~code=>' . $value['award_method_code'];
+          }else{
+            $keys = 'id=>' . $value['award_method_id'] . '~code=>' . $value['award_method_id'];
+          }
           $award_method_key_val_option_attributes[$keys] = array('title' => $value['award_method_name']);
           $award_method_key_val_options[$keys] = FormattingUtilities::_ckbk_excerpt($value['award_method_name']);
         }
@@ -851,7 +861,7 @@ class FormUtil
       $data = $dataController->queryDataset('checkbook:event', array(
         'event_id',
         'event_name'
-      ), NULL, 'event_name');
+      ), NULL, 'event_id');
       $results = array('0' => 'Select Event');
       foreach ($data as $row) {
         if ($attributes) {

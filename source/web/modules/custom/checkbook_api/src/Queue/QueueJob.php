@@ -22,6 +22,7 @@ namespace Drupal\checkbook_api\Queue;
 
 use Drupal\checkbook_api\config\ConfigUtil;
 use Drupal\checkbook_api\Criteria\SearchCriteria;
+use Drupal\checkbook_api\Utilities\APIUtil;
 use Drupal\checkbook_log\LogHelper;
 use Drupal\Core\File\FileSystemInterface;
 use Exception;
@@ -71,26 +72,34 @@ class QueueJob {
       $commands = NULL;
       switch($this->responseFormat) {
         case "csv":
-          if($this->recordCount > $this->csvFileLimit) {
-            $commands = $this->getCSVCommands();
+          if ($this->recordCount > $this->csvFileLimit) {
+            $this->runCSVCommands();
             $compressed_filename  = $this->prepareFileName();
             $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
           }
           else {
             $filename = $this->prepareFileName();
             $commands[$filename][] = $this->getCSVJobCommand($filename);
-            $commands[$filename][] = $this->getCSVHeaderCommand($filename);
+            //running the previous created command
+            $this->processCommands($commands);
+            //reset commands since previous line has run the commands that were there
+            $commands = array();
+
+            //adding header to file created in previous command above this
+            $this->addCSVHeader($filename);
+
             $commands[$filename][] = $this->getMoveCommand($filename);
           }
           break;
         case "xml":
-          if($this->recordCount > $this->xmlFileLimit) {
-            $commands = $this->getXMLJobCommands();
+          if ($this->recordCount > $this->xmlFileLimit) {
+            $this->runXMLJobCommands();
             $compressed_filename  = $this->prepareFileName();
             $commands[$compressed_filename][] = $this->getMoveCommand($compressed_filename, 'zip');
-          }else{
+          }
+          else{
             $filename = $this->prepareFileName();
-            $commands = $this->getXMLJobCommand($filename);
+            $this->runXMLJobCommand($filename);
             $commands[$filename][] = $this->getMoveCommand($filename, 'xml.zip');
           }
           break;
@@ -136,30 +145,32 @@ class QueueJob {
   }
 
   /**
-   * Generates the unix commands to create multiple files from the data source directly.
-   * @return array
+   * Generates the unix commands to create multiple files from the data source directly. Runs those as well.
    */
-  private function getCSVCommands() {
+  private function runCSVCommands() {
 
     $num_files = ceil($this->recordCount/$this->csvFileLimit);
     $commands = array();
 
     $compressed_filename  = $this->prepareFileName();
 
-    for($i=0;$i<$num_files;$i++) {
-      $offset = $i*$this->csvFileLimit;
-      $filename = $this->prepareFileName().'_part_'.$i;
+    for ($i = 0; $i < $num_files; $i++) {
+      $offset = $i * $this->csvFileLimit;
+      $filename = $this->prepareFileName() . '_part_' . $i;
 
-      //sql command
+      // SQL command.
       $commands[$filename][] = $this->getCSVJobCommand($filename, $this->csvFileLimit, $offset);
+      $this->processCommands($commands);
+      $commands = array();
 
-      //append header command
-      $commands[$filename][] = $this->getCSVHeaderCommand($filename);
+      // Append header command (used to be sed command returned).
+      $this->addCSVHeader($filename);
 
-      //append file to zip and delete the file
+      // Append file to zip and delete the file.
       $commands[$filename][] = $this->getAppendToZipAndRemoveCommand($filename, $compressed_filename);
+      $this->processCommands($commands);
+      $commands = array();
     }
-    return $commands;
   }
 
   /**
@@ -177,11 +188,11 @@ class QueueJob {
     $query .= " LIMIT " . $limit . " OFFSET " . $offset;
 
     $database = 'checkbook';
-    if(stripos($this->jobDetails['name'], '_nycha')) {
+    if (stripos($this->jobDetails['name'], '_nycha')) {
       $database = "checkbook_nycha";
     }
 
-    if(stripos($this->jobDetails['name'], '_oge')) {
+    if (stripos($this->jobDetails['name'], '_oge')) {
       $database = "checkbook_oge";
     }
 
@@ -194,11 +205,10 @@ class QueueJob {
   }
 
   /**
-   * Given the filename, will return an executable command ot add CSV header row.
+   * Given the filename, will add CSV header row.
    * @param $filename
-   * @return string
    */
-  private function getCSVHeaderCommand($filename) {
+  private function addCSVHeader($filename) {
     $response_format = $this->responseFormat;
     $request_criteria = $this->jobDetails['request_criteria'];
     $search_criteria = new SearchCriteria($request_criteria, $response_format);
@@ -207,23 +217,22 @@ class QueueJob {
     $response_columns = is_array($request_criteria['responseColumns']) ? $request_criteria['responseColumns'] : array_keys($configured_response_columns);
     $csv_headers = '"' . implode('","', $response_columns) . '"';
     $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
-    $command = "sed -i '1s;^;" . $csv_headers . "\\".PHP_EOL.";' " . $file;
-    LogHelper::log_notice("DataFeeds :: QueueJob::getCSVHeaderCommand() cmd: ".$command);
-    return $command;
+    //below replaces the following command:- " sed -i '1s;^;" . $csv_headers . "\\".PHP_EOL.";' " . $file;
+    APIUtil::prependToFile($file,$csv_headers . "\\".PHP_EOL.";");
+    LogHelper::log_notice("DataFeeds :: QueueJob::addCSVHeader() calling APIUtil::prependToFile with headers: ".$csv_headers);
   }
 
   /**
-   * Given the filename, returns an array of commands to execute for xml file creation,
+   * Given the filename, runs commands to execute for xml file creation,
    * This function modifies the sql to handle derived columns dynamically.
-   * @return array
    */
-  private function getXMLJobCommands() {
+  private function runXMLJobCommands() {
     $query = $this->jobDetails['data_command'];
     $request_criteria = $this->jobDetails['request_criteria'];
     $search_criteria = new SearchCriteria($request_criteria, $this->responseFormat);
     $config = ConfigUtil::getConfiguration($request_criteria['global']['type_of_data'], $search_criteria->getConfigKey());
 
-    //map tags and build sql
+    // Map tags and build SQL.
     $rowParentElement = $config->dataset->displayConfiguration->xml->rowParentElement;
     $elementsColumn = $config->dataset->displayConfiguration->xml->elementsColumn;
     $elementsColumn =  (array)$elementsColumn;
@@ -234,19 +243,19 @@ class QueueJob {
     $select_part = str_replace("SELECT", "", $select_part);
     $sql_parts = explode(",", $select_part);
 
-    $new_select_part = "'<".$rowParentElement.">'";
-    foreach($sql_parts as $sql_part) {
+    $new_select_part = "'<" . $rowParentElement . ">'";
+    foreach ($sql_parts as $sql_part) {
       $sql_part = trim($sql_part);
       $is_derived_column = strpos(strtoupper($sql_part), "CASE WHEN") !== FALSE;
 
       //get column and alias
       $alias = "";
-      if($is_derived_column) {
-        $pos = strpos($sql_part, " AS");
-        $column = trim(str_replace("AS","",substr($sql_part,$pos)));
+      if ($is_derived_column) {
+        $pos = strripos($sql_part, " AS");
+        $column = trim(str_replace("AS","", substr($sql_part, $pos)));
       }
       else {
-        $pos = strpos($sql_part, " AS");
+        $pos = strripos($sql_part, " AS");
         $pos = $pos !== FALSE ? $pos : strlen($sql_part);
         $column = substr($sql_part, 0, $pos);
       }
@@ -257,39 +266,41 @@ class QueueJob {
         $column = str_replace($alias,"",$column);
       }
 
-      //Handle derived columns
+      // Handle derived columns.
       $tag = $columnMappings[$column] == "" ? $column : $columnMappings[$column];
 
-      //column open tag
-      $new_select_part .= "\n||'<".$tag.">' || ";
-      if ($is_derived_column) {
-        $sql_part = substr_replace($sql_part, "", $pos);
-        $cast_section = "regexp_replace(COALESCE(CAST(" . $sql_part . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g')";
-        $new_select_part .= "REPLACE(REPLACE(REPLACE(". $cast_section .",'&','&amp;'),'>','&gt;'),'<','&lt;')";
-      }
-      else {
-        $new_select_part .= "REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g'),'&','&amp;'),'>','&gt;'),'<','&lt;')";
-      }
+      if ($tag) {
+        //column open tag
+        $new_select_part .= "\n || '<".$tag.">' || ";
+        if ($is_derived_column) {
+          $sql_part = substr_replace($sql_part, "", $pos);
+          $cast_section = "regexp_replace(COALESCE(CAST(" . $sql_part . " AS VARCHAR), ''), '[\u0080-\u00ff]', '', 'g')";
+          $new_select_part .= "REPLACE(REPLACE(REPLACE(". $cast_section .",'&','&amp;'), '>', '&gt;'), '<', '&lt;')";
+        }
+        else {
+          $new_select_part .= "REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR), ''), '[\u0080-\u00ff]', '', 'g'), '&', '&amp;'), '>', '&gt;'), '<', '&lt;')";
+        }
 
-      //column close tag
-      $new_select_part .= " || '</".$tag.">'";
+        //column close tag
+        $new_select_part .= " || '</" . $tag . ">'";
+      }
     }
-    $new_select_part .= "||'</".$rowParentElement.">'";
-    $new_select_part = "SELECT ".ltrim($new_select_part,"\n||")."\n";
+    $new_select_part .= " || '</" . $rowParentElement . ">'";
+    $new_select_part = "SELECT " . ltrim($new_select_part,"\n || ") . "\n";
     $query = substr_replace($query, $new_select_part, 0, $end);
 
-    //map tags and build sql
+    // Map tags and build SQL.
     $rootElement = $config->dataset->displayConfiguration->xml->rootElement;
 
-    //open/close tags
+    // Open/close tags.
     $open_tags = "<?xml version=\"1.0\"?><response><status><result>success</result></status>";
-    $open_tags .= "<result_records><record_count>".$this->getRecordCount()."</record_count><".$rootElement.">";
+    $open_tags .= "<result_records><record_count>" . $this->getRecordCount() . "</record_count><" . $rootElement . ">";
     $close_tags = "</".$rootElement."></result_records></response>";
 
     $commands = [];
 
     $database = 'checkbook';
-    if(stripos($this->jobDetails['name'], '_nycha')) {
+    if (stripos($this->jobDetails['name'], '_nycha')) {
       $database = "checkbook_nycha";
     }
 
@@ -300,13 +311,13 @@ class QueueJob {
     $num_files = ceil($this->recordCount/$this->xmlFileLimit);
     $compressed_filename  = $this->prepareFileName();
 
-    for($i=0;$i<$num_files;$i++) {
-      $offset = $i*$this->xmlFileLimit;
-      $filename = $this->prepareFileName().'_part_'.$i;
+    for ($i = 0; $i < $num_files; $i++) {
+      $offset = $i * $this->xmlFileLimit;
+      $filename = $this->prepareFileName() . '_part_' . $i;
       $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
       $updated_query = $query . " LIMIT " . $this->xmlFileLimit . " OFFSET " . $offset;
 
-      //sql command
+      // SQL command.
       $command = _checkbook_psql_command($database);
       $command .= " -c \"\\\\COPY (" . $updated_query . ") TO '"
         . $file
@@ -315,18 +326,20 @@ class QueueJob {
 
       $commands[$filename][] = $command;
 
-      //prepend open tags command
-      $command = "sed -i '1i " . $open_tags . "' " . $file;
-      $commands[$filename][] = $command;
+      $this->processCommands($commands);
+      $commands = array();
 
-      //append close tags command
-      $command = "sed -i '$"."a" . $close_tags . "' " . $file;
-      $commands[$filename][] = $command;
+      // Prepend open tags command (replaced -  " sed -i '1i " . $open_tags . "' " . $file;).
+      APIUtil::prependToFile($file,$open_tags);
 
-      //append file to zip and delete the file
+      // Append close tags command (replaced - " sed -i '$"."a" . $close_tags . "' " . $file;).
+      APIUtil::appendToFile($file,$close_tags);
+
+      // Append file to zip and delete the file.
       $commands[$filename][] = $this->getAppendToZipAndRemoveCommand($filename, $compressed_filename);
+      $this->processCommands($commands);
+      $commands = array();
     }
-    return $commands;
   }
 
   /**
@@ -334,9 +347,8 @@ class QueueJob {
    * This function modifies the sql to handle derived columns dynamically.
    *
    * @param $filename
-   * @return array
    */
-  private function getXMLJobCommand($filename) {
+  private function runXMLJobCommand($filename) {
     $query = $this->jobDetails['data_command'];
     $request_criteria = $this->jobDetails['request_criteria'];
     $search_criteria = new SearchCriteria($request_criteria, $this->responseFormat);
@@ -353,16 +365,16 @@ class QueueJob {
     $select_part = str_replace("SELECT", "", $select_part);
     $sql_parts = explode(",", $select_part);
 
-    $new_select_part = "'<".$rowParentElement.">'";
-    foreach($sql_parts as $sql_part) {
+    $new_select_part = "'<" . $rowParentElement . ">'";
+    foreach ($sql_parts as $sql_part) {
       $sql_part = trim($sql_part);
       $is_derived_column = strpos(strtoupper($sql_part), "CASE WHEN") !== FALSE;
 
       //get column and alias
       $alias = "";
-      if($is_derived_column) {
+      if ($is_derived_column) {
         $pos = strpos($sql_part, " AS");
-        $column = trim(str_replace("AS","",substr($sql_part,$pos)));
+        $column = trim(str_replace("AS", "", substr($sql_part,$pos)));
       }
       else {
         $pos = strpos($sql_part, " AS");
@@ -379,22 +391,24 @@ class QueueJob {
       //Handle derived columns
       $tag = $columnMappings[$column] == "" ? $column : $columnMappings[$column];
 
-      //column open tag
-      $new_select_part .= "\n||'<".$tag.">' || ";
-      if ($is_derived_column) {
-        $sql_part = substr_replace($sql_part, "", $pos);
-        $cast_section = "regexp_replace(COALESCE(CAST(" . $sql_part . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g')";
-        $new_select_part .= "REPLACE(REPLACE(REPLACE(". $cast_section .",'&','&amp;'),'>','&gt;'),'<','&lt;')";
-      }
-      else {
-        $new_select_part .= "REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g'),'&','&amp;'),'>','&gt;'),'<','&lt;')";
-      }
+      if ($tag) {
+        // Column open tag.
+        $new_select_part .= "\n || '<" . $tag . ">' || ";
+        if ($is_derived_column) {
+          $sql_part = substr_replace($sql_part, "", $pos);
+          $cast_section = "regexp_replace(COALESCE(CAST(" . $sql_part . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g')";
+          $new_select_part .= "REPLACE(REPLACE(REPLACE(". $cast_section .",'&','&amp;'),'>','&gt;'),'<','&lt;')";
+        }
+        else {
+          $new_select_part .= "REPLACE(REPLACE(REPLACE(regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g'),'&','&amp;'),'>','&gt;'),'<','&lt;')";
+        }
 
-      //column close tag
-      $new_select_part .= " || '</".$tag.">'";
+        // Column close tag.
+        $new_select_part .= " || '</" . $tag . ">'";
+      }
     }
-    $new_select_part .= "||'</".$rowParentElement.">'";
-    $new_select_part = "SELECT ".ltrim($new_select_part,"\n||")."\n";
+    $new_select_part .= " || '</" . $rowParentElement . ">'";
+    $new_select_part = "SELECT " . ltrim($new_select_part,"\n || ") . "\n";
     $query = substr_replace($query, $new_select_part, 0, $end);
 
     //map tags and build sql
@@ -402,18 +416,18 @@ class QueueJob {
 
     //open/close tags
     $open_tags = "<?xml version=\"1.0\"?><response><status><result>success</result></status>";
-    $open_tags .= "<result_records><record_count>".$this->getRecordCount()."</record_count><".$rootElement.">";
-    $close_tags = "</".$rootElement."></result_records></response>";
+    $open_tags .= "<result_records><record_count>" . $this->getRecordCount() . "</record_count><" . $rootElement . ">";
+    $close_tags = "</" . $rootElement . "></result_records></response>";
 
     $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
     $commands = [];
 
     $database = 'checkbook';
-    if(stripos($this->jobDetails['name'], '_nycha')) {
+    if (stripos($this->jobDetails['name'], '_nycha')) {
       $database = "checkbook_nycha";
     }
 
-    if(stripos($this->jobDetails['name'], '_oge')) {
+    if (stripos($this->jobDetails['name'], '_oge')) {
       $database = "checkbook_oge";
     }
 
@@ -424,20 +438,20 @@ class QueueJob {
       . "' \" ";
     LogHelper::log_notice("DataFeeds :: QueueJob::getXMLJobCommand() cmd: ".$command);
     $commands[$filename][] = $command;
+    $this->processCommands($commands);
+    //reset commands as previous line has run those
+    $commands = array();
 
-    //prepend open tags command
-    $command = "sed -i '1i " . $open_tags . "' " . $file;
-    $commands[$filename][] = $command;
+    //prepend open tags command. Replaced the following command:- "sed -i '1i " . $open_tags . "' " . $file;
+    APIUtil::prependToFile($file,$open_tags);
 
-    //append close tags command
-    $command = "sed -i '$"."a" . $close_tags . "' " . $file;
-    $commands[$filename][] = $command;
+    //append close tags command. Replaced the following command:- "sed -i '$"."a" . $close_tags . "' " . $file;
+    APIUtil::appendToFile($file,$close_tags);
 
     //Zip file
     $commands[$filename][] = "zip $file.zip $file";
     $commands[$filename][] = "rm $file";
-
-    return $commands;
+    $this->processCommands($commands);
   }
 
   /**
@@ -462,7 +476,7 @@ class QueueJob {
    */
   private function getAppendToZipAndRemoveCommand($file_name, $compressed_filename) {
 
-    $output_file = ' '.$this->getFullPathToFile($file_name, $this->tmpFileOutputDir);
+    $output_file = ' ' . $this->getFullPathToFile($file_name, $this->tmpFileOutputDir);
 
     $compressed_file = $this->tmpFileOutputDir . '/' . $compressed_filename . '.zip';
     /**

@@ -7,7 +7,7 @@
         <param name="mwbe" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <param name="is_modification" type="bool"/>
@@ -28,20 +28,20 @@
                 SUM(COALESCE(dollar_difference,0)) AS dollar_difference,
                 AVG(percent_difference) AS percent_difference
             FROM pending_contracts s0
-            JOIN ref_document_code s1 ON s1.document_code_id = s0.document_code_id 
+            JOIN ref_document_code s1 ON s1.document_code_id = s0.document_code_id
             <where>
                 <exp op="AND">
                     <exp op="IN" dbField="s1.document_code" paramName="doctype" />
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
                     <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="s0.award_size_id" paramName="csize" />
                     <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
             <exp op="IF" condition="=" paramName="is_modification" compareValue="true">
-                AND dollar_difference != 0 
+                AND dollar_difference != 0
             </exp>
             GROUP BY s0.cif_received_date, s0.vendor_id, s0.vendor_legal_name, s0.description,
                     s0.contract_number, s0.fms_contract_number, s1.document_code,s0.original_agreement_id,
@@ -57,7 +57,7 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="mwbe" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <param name="is_modification" type="bool"/>
@@ -71,7 +71,7 @@
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
                     <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="s0.award_size_id" paramName="csize" />
                     <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
                 </exp>
@@ -89,12 +89,12 @@
         <param name="mwbe" />
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <sql>
             SELECT
-            a.award_method_id,
+            a.award_method_code,
             a.award_method_name,
             SUM(COALESCE(original_maximum_amount,0)) AS original_amount_sum,
             SUM(COALESCE(revised_maximum_amount,0)) AS current_amount_sum,
@@ -107,12 +107,12 @@
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="a.document_agency_id" paramName="agency" />
                     <exp op="=" dbField="a.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="a.award_size_id" paramName="csize" />
                     <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
-            GROUP BY a.award_method_name, a.award_method_id
+            GROUP BY a.award_method_name, a.award_method_code
         </sql>
     </statement>
     <!--GetPendingContractsByIndustries,GetCountPendingContractsByIndustries-->
@@ -121,7 +121,7 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="mwbe" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <sql>
@@ -142,7 +142,7 @@
                     <exp op="=" dbField="c.agency_id" paramName="agency" />
                     <exp op="=" dbField="d.vendor_id" paramName="vendor" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
-                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="a.award_size_id" paramName="csize" />
                     <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
@@ -156,7 +156,7 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="mwbe" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <sql>
@@ -176,7 +176,7 @@
                     <exp op="=" dbField="a.document_agency_id" paramName="agency" />
                     <exp op="=" dbField="d.vendor_id" paramName="vendor" />
                     <exp op="IN" dbField="a.minority_type_id" paramName="mwbe" />
-                    <exp op="=" dbField="a.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="a.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="a.award_size_id" paramName="csize" />
                     <exp op="=" dbField="a.industry_type_id" paramName="cindustry" />
                 </exp>
@@ -193,7 +193,7 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="mwbe" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <sql>
@@ -213,7 +213,7 @@
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                     <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
                     <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="s0.award_size_id" paramName="csize" />
                     <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
                 </exp>
@@ -221,7 +221,7 @@
             GROUP BY s0.vendor_id, s0.vendor_legal_name
             <exp op="IF" condition="&lt;&gt;" paramName="mwbe" compareValue="">
                 ,s0.minority_type_id
-            </exp>        
+            </exp>
         </sql>
     </statement>
     <statement name="GetCountContractsByPrimeVendors" datasource="checkbook">
@@ -232,7 +232,7 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="mwbe" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <sql>
@@ -246,7 +246,7 @@
                     <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                     <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="s0.award_size_id" paramName="csize" />
                     <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
                 </exp>
@@ -262,7 +262,7 @@
         <param name="agency" type="int" />
         <param name="vendor" type="int" />
         <param name="mwbe" />
-        <param name="awdmethod" />
+        <param name="awdmethod" type="string" />
         <param name="csize" />
         <param name="cindustry" />
         <sql>
@@ -272,47 +272,19 @@
                 SUM(COALESCE(revised_maximum_amount,0)) AS current_amount_sum,
                 COUNT(contract_number) AS total_contracts
             FROM pending_contracts s0
-            JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id 
+            JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id
             <where>
                 <exp op="AND">
                     <exp op="=" dbField="s0.document_agency_id" paramName="agency" />
                     <exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />
                     <exp op="IN" dbField="rfd.document_code" paramName="doctype" />
                     <exp op="=" dbField="s0.vendor_id" paramName="vendor" />
-                    <exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />
+                    <exp op="=" dbField="s0.award_method_code" paramName="awdmethod" />
                     <exp op="=" dbField="s0.award_size_id" paramName="csize" />
                     <exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />
                 </exp>
             </where>
-            GROUP BY s0.document_agency_id, s0.document_agency_name 
+            GROUP BY s0.document_agency_id, s0.document_agency_name
         </sql>
     </statement>
-    <!--<statement name="GetCountPendingContractsByAgencies" datasource="checkbook">-->
-        <!--<param name="year" required ="true" type="int"/>-->
-        <!--<param name="yeartype" required ="true" type="string" />-->
-        <!--<param name="status" type="string"/>-->
-        <!--<param name="doctype" />-->
-        <!--<param name="agency" type="int" />-->
-        <!--<param name="vendor" type="int" />-->
-        <!--<param name="mwbe" />-->
-        <!--<param name="awdmethod" />-->
-        <!--<param name="csize" />-->
-        <!--<param name="cindustry" />-->
-        <!--<sql>-->
-            <!--SELECT COUNT(DISTINCT s0.document_agency_id) AS record_count-->
-            <!--FROM pending_contracts s0-->
-            <!--JOIN ref_document_code rfd ON rfd.document_code_id = s0.document_code_id -->
-            <!--<where>-->
-                <!--<exp op="AND">-->
-                    <!--<exp op="=" dbField="s0.document_agency_id" paramName="agency" />-->
-                    <!--<exp op="IN" dbField="s0.minority_type_id" paramName="mwbe" />-->
-                    <!--<exp op="IN" dbField="rfd.document_code" paramName="doctype" />-->
-                    <!--<exp op="=" dbField="s0.vendor_id" paramName="vendor" />-->
-                    <!--<exp op="=" dbField="s0.award_method_id" paramName="awdmethod" />-->
-                    <!--<exp op="=" dbField="s0.award_size_id" paramName="csize" />-->
-                    <!--<exp op="=" dbField="s0.industry_type_id" paramName="cindustry" />-->
-                <!--</exp>-->
-            <!--</where>-->
-        <!--</sql>-->
-    <!--</statement>-->
 </statements>

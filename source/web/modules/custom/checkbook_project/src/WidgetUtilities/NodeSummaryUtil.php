@@ -42,7 +42,8 @@ class NodeSummaryUtil
         $themekey = $node->widgetConfig->summaryView->template ?? $node->widgetConfig->template;
         $twigFilePath = \Drupal\widget_services\Common\CommonService::getTemplatePath($themekey);
         $twigService = \Drupal::service('twig');
-        $template = $twigService->loadTemplate($twigFilePath);
+        $templateClass = $twigService->getTemplateClass($twigFilePath);
+        $template = $twigService->loadTemplate($templateClass, $twigFilePath);
         $markup = [
         '#markup' => $template->render([ 'node' => $node])
         ];
@@ -54,17 +55,11 @@ class NodeSummaryUtil
    * @return mixed|null
    */
     public static function getInitNodeSummaryTitle($nid = null){
-        $smnid = RequestUtilities::getTransactionsParams("smnid");
-        if($nid == null) {
-          if (!empty($smnid)) {
-            $nid = $smnid;
-          } else {
-            $nid = self::getNodeId();
-          }
-        }
-        if(empty($nid)){
-            return NULL;
-        }
+      $nid = $nid ?? self::getNodeId();
+      if(empty($nid)){
+        return NULL;
+      }
+      $smnid = RequestUtilities::get('smnid');
         $node = _widget_node_load_file($nid);
         widget_config($node);
         $title = NULL;

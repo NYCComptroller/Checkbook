@@ -112,7 +112,17 @@
                             "sourceColumnName": "industry_type_id"
                         }
                     ]
-                }
+                },
+              {
+                "name": "award_method",
+                "levels": [
+                  {
+                    "name": "award_method",
+                    "datasetName": "award_method",
+                    "sourceColumnName": "award_method_id"
+                  }
+                ]
+              }
             ],
             "measures": {
                 "txcount": {
@@ -164,6 +174,10 @@
         "contracts_subven_spending_transactions__industry_type": [
             {"datasetName": "contracts_subven_spending_transactions", "columnNames": ["industry_type_id"]},
             {"datasetName": "industry_type", "columnNames": ["industry_type_id"]}
-        ]
+        ],
+      "contracts_subven_spending_transactions__award_method": [
+        {"datasetName": "contracts_subven_spending_transactions", "columnNames": ["award_method_id"]},
+        {"datasetName": "award_method", "columnNames": ["award_method_id"]}
+      ]
     }
 }

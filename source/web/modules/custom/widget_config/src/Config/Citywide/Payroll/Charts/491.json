@@ -105,13 +105,16 @@
     $allZero = true;
     $isAgencyPage = (strpos(\\Drupal::service('path.current')->getPath(),'payroll/agency_landing/') === 0);
     $pathParams = explode('/',\\Drupal::service('path.current')->getPath());
- //$data_source=\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_getUrlParamString('datasource');
-if (!empty(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRefUrl())) {
-$refURL = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRefUrl();
-$data_source = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('datasource', ['q' => $refURL]);
-} else {
-$data_source = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('datasource');
-}
+
+    //$data_source=\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_getUrlParamString('datasource');
+    $data_source_value = '';
+    if (!empty(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRefUrl())) {
+      $refURL = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRefUrl();
+      $data_source_value = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('datasource', ['q' => $refURL]);
+    } else {
+      $data_source_value = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('datasource');
+    }
+    $data_source = $data_source_value ? '/datasource/' . $data_source_value : '';
 
     foreach ($node->data as $row){
         $categories[]=html_entity_decode($row['month_month_month_name'],ENT_QUOTES);

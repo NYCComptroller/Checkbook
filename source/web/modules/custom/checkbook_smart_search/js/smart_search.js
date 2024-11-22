@@ -5,16 +5,16 @@
 (function ($, Drupal, once, drupalSettings) {
 
   // On back button reload page with the url parameters
-  var perfEntries = performance.getEntriesByType("navigation");
+  let perfEntries = performance.getEntriesByType("navigation");
   if (perfEntries[0].type === "back_forward") {
     window.location.reload(true);
   }
 
   Drupal.behaviors.disableOnClick = {
     attach: function (context, settings) {
-      $('.export', context).once('disableOnClick').click(function (event) {
+      $(once('disableOnClick', '.export', context)).click(function (event) {
         event.preventDefault();
-        var $this = $(this);
+        let $this = $(this);
         if (!$this.hasClass('clicked')) {
           $this.addClass('clicked').attr('disabled', 'disabled');
           setTimeout(function() {
@@ -41,7 +41,7 @@
             $.each(items, function(index, item){
               var li;
 
-              if ( item.category && item.category != currentCategory ) {
+              if ( item.category && item.category !== currentCategory ) {
                 ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
                 currentCategory = item.category;
               }
@@ -65,7 +65,7 @@
 
             return $( "<li>" )
               .attr( "data-value", item.value )
-              .append("<a href='" + item.url + "'>" + htmlEntities(item.label) + "</a>")
+              .append('<a href="' + item.url + '">' + htmlEntities(item.label) + '</a>')
               .appendTo( ul );
           }
         });
@@ -76,6 +76,14 @@
           minLength: 0,
           classes: {
             "ui-autocomplete": "smart-search-autocomplete"
+          },
+          select: function (event, ui) {
+            $(event.target).data('selected-label', ui.item.label);
+          },
+          close: function (event) {
+            if ($(event.target).data('selected-label')) {
+              $(event.target).val($(event.target).data('selected-label'));
+            }
           }
         });
       });
@@ -87,7 +95,7 @@
     attach: function(context, settings) {
       once('faceted_seach', 'body').forEach(function(el){
         $('.smart-search-right .filter-title').click(function(event) {
-          if ($(this).next().css('display') == 'block') {
+          if ($(this).next().css('display') === 'block') {
             $(this).next().css('display', 'none');
             $(this).children('span').removeClass('open');
           }
@@ -112,27 +120,25 @@
 
   Drupal.behaviors.mySearchBehaviors = {
     attach: function (context, settings) {
-
       // Add keypress handler to hide autocomplete suggestions on pressing enter key
       $("#edit-search-box", context).keypress(function (e) {
-        if (e.which == 13) {
+        if (e.which === 13) {
           $(this).autocomplete("off").autocomplete("close");
         }
       });
 
       // Add click handler for search button
-      $("#edit-submit", context).click(function (e) {
-        setTimeout(function () {
-          $("#edit-submit").addClass('disable_button')
-            .css('cursor', 'default');
-          $("#edit-search-box").addClass('transparent')
-            .addClass('loadinggif')
-            .focus()
-            .attr("disabled", "disabled");
-          // This is to fix the issue with chrome when trying to disable the
-          // search button
-          $('input[type=submit]').attr("disabled", "disabled");
-        }, 1);
+      $(".checkbook-smart-search-form", context).submit(function (e) {
+        $("#edit-search-box").addClass('transparent')
+          .addClass('loadinggif')
+          .addClass('disabled-element')
+          .attr('readonly', 'readonly')
+          .focus();
+        // This is to fix the issue with chrome when trying to disable the search button.
+        $('input[type=submit]')
+          .addClass('disable_button')
+          .attr('disabled', 'disabled')
+          .css('cursor', 'default');
       });
 
       $(window, context).on('dialogcreate', function (e, dialog, $element, settings) {
@@ -144,17 +150,17 @@
     }
   };
 
-
   Drupal.behaviors.exportSmartSearchTransactions = {
     attach: function (context, settings) {
 
-      $("span.exportSmartSearch").once("exportSmartSearch").each(function () {
+      $(once('exportSmartSearch', 'span.exportSmartSearch')).each(function () {
         $("span.exportSmartSearch").on("click", function () {
-          var dialog = $("#dialog");
+          let $that = $(this);
+          let dialog = $("#dialog");
           if (!dialog.length) {
             dialog = $('<div id="dialog" style="display:none"></div>');
           }
-          var domains = '';
+          let domains = '';
           $.each($('input[facet=domain]:checked'), function () {
             domains = domains + "~" + this.value;
           });
@@ -163,25 +169,25 @@
               domains = domains + "~" + this.value;
             });
           }
-          var solr_datasource = drupalSettings.solr_datasource || 'citywide';
-          var dialogUrl = '/exportSmartSearch/form/' + solr_datasource +
+          let solr_datasource = drupalSettings.solr_datasource || 'citywide';
+          let dialogUrl = '/exportSmartSearch/form/' + solr_datasource +
             '?search_term=' + getParameterByName("search_term") +
             '&totalRecords=' + $(this).attr("value") +
             '&resultsdomains=' + domains;
 
-          var checked_domains = '';
+          let checked_domains = '';
           $.each($('input[facet=domain]:checked'), function () {
             checked_domains = checked_domains === '' ? this.value : checked_domains + "~" + this.value;
           });
-          if (checked_domains == '') {
+          if (checked_domains === '') {
             $.each($('input[facet=domain]'), function () {
               checked_domains = checked_domains === '' ? this.value : checked_domains + "~" + this.value;
             });
           }
-          var array_domains = checked_domains.split('~');
+          let array_domains = checked_domains.split('~');
 
           //Re-order checked priority as doesn't match the facet order
-          var array_checked_domains = [];
+          let array_checked_domains = [];
           if ($.inArray('spending', array_domains) > -1) {
             array_checked_domains.push('spending');
           }
@@ -198,7 +204,7 @@
             array_checked_domains.push('revenue');
           }
 
-          var dialog_html = '';
+          let dialog_html = '';
           dialog_html += '<div id="loading_gif" class="loading_bigger_gif" style="display:none"></div>';
           dialog_html += '<div id="errorMessages"></div>';
           dialog_html += '<p>Type of Data:</p>';
@@ -225,12 +231,13 @@
             width: 700,
             open: function () {
               $("#dialog").html(dialog_html);
+              $that.removeClass('clicked').removeAttr('disabled');
             },
             buttons: {
               "Download Data": function () {
-                var solr_datasource = drupalSettings.solr_datasource || 'citywide';
-                var domain = $('input[name=domain]:checked').val();
-                var url = '/exportSmartSearch/download/' + solr_datasource;
+                let solr_datasource = drupalSettings.solr_datasource || 'citywide';
+                let domain = $('input[name=domain]:checked').val();
+                let url = '/exportSmartSearch/download/' + solr_datasource;
 
                 url += '?search_terms=' + encodeURIComponent(getParameterByName("search_term"));
                 url += '&domain=' + domain;
@@ -239,8 +246,8 @@
 
                 $.get(url, function(csvString) {
                   if (csvString) {
-                    var csvData = new Blob([csvString], { type: 'text/csv' });
-                    var csvUrl = URL.createObjectURL(csvData);
+                    let csvData = new Blob([csvString], { type: 'text/csv' });
+                    let csvUrl = URL.createObjectURL(csvData);
                     downloadAnchor(csvUrl, 'csv', solr_datasource + (domain && domain[0].toUpperCase() + domain.slice(1)))
                   }
                   $('.export #loading_gif').hide();
@@ -259,11 +266,11 @@
           });
 
           function onChangeDomain(domain) {
-            var totalRecords = 0;
-            var selectedRecords = 0;
-            var domainCounts = $('.exportSmartSearch').attr("value");
-            var arrayDomainCounts = domainCounts.split('~');
-            var selectedDomain = $('input[name=domain]:checked').val();
+            let totalRecords = 0;
+            let selectedRecords = 0;
+            let domainCounts = $('.exportSmartSearch').attr("value");
+            let arrayDomainCounts = domainCounts.split('~');
+            let selectedDomain = $('input[name=domain]:checked').val();
             $.each(arrayDomainCounts, function (i, val) {
               var domainCount = val.split('|');
               if (selectedDomain === domainCount[0]) {
@@ -271,7 +278,7 @@
               }
               totalRecords += parseInt(domainCount[1]);
             });
-            var message = '';
+            let message = '';
             if (selectedRecords <= 200000) {
               message = addCommas(selectedRecords) + " " + selectedDomain + " records available for download. ";
             }
@@ -286,7 +293,7 @@
           }
 
           function downloadAnchor(content, ext, filename) {
-            var anchor = document.createElement("a");
+            let anchor = document.createElement("a");
             anchor.style = "display:none !important";
             anchor.id = "downloadanchor";
             document.body.appendChild(anchor);
@@ -305,7 +312,7 @@
       });
 
 function getCheckboxAttributes(domain, array_domains) {
-        var checked_domain = array_domains[0];
+  let checked_domain = array_domains[0];
         return (checked_domain === domain ? ' checked' : '') + ($.inArray(domain, array_domains) > -1 ? '' : ' disabled');
       }
 
@@ -314,7 +321,7 @@ function getCheckboxAttributes(domain, array_domains) {
 
   Drupal.behaviors.narrowDownFilters = {
       attach: function (context, settings) {
-        var search_term = '?' + window.location.href.toString().split('?')[1];
+        let search_term = '?' + window.location.href.toString().split('?')[1];
 
         $('.smart-search-right input:checkbox', context).each(function () {
           $(this).click(applySearchFilters);
@@ -328,11 +335,11 @@ function getCheckboxAttributes(domain, array_domains) {
         // functionality for agency name facet
 
         $('.solr_autocomplete', context).each(function () {
-          var solr_datasource = window.location.pathname.split('/')[2];
-          var facet_name = $(this).attr('facet');
-          var initialValue = $(this).val(); // Store the initial search value
-          var recentTypedValue = $(this).val(); // Store the most recent typed value
-          var blockRewrite = false; // Initialize blockRewrite variable. Used to preserve values on click select.
+          let solr_datasource = window.location.pathname.split('/')[2];
+          let facet_name = $(this).attr('facet');
+          let initialValue = $(this).val(); // Store the initial search value
+          let recentTypedValue = $(this).val(); // Store the most recent typed value
+          let blockRewrite = false; // Initialize blockRewrite variable. Used to preserve values on click select.
 
           $(this).autocomplete({
             source: "/solr_autocomplete/" + solr_datasource + "/" + facet_name + search_term,
@@ -384,7 +391,7 @@ function getCheckboxAttributes(domain, array_domains) {
           let loc = window.location.href.indexOf("/smart_search/");
           if (loc > -1) {
             $(".filter-title").each(function (i, el) {
-              if (i == 0 || $(this).next().find(':checkbox').is(':checked')) {
+              if (i === 0 || $(this).next().find(':checkbox').is(':checked')) {
                 $(this).next().css('display', 'block');
                 $(this).children('span').addClass('open');
               }
@@ -397,7 +404,7 @@ function getCheckboxAttributes(domain, array_domains) {
         });
 
         function scroll_facet() {
-          var opts = {
+          let opts = {
             horizontalScroll: false,
             scrollButtons: {
               enable: false
@@ -435,17 +442,17 @@ function getCheckboxAttributes(domain, array_domains) {
     attach: function (context, settings) {
       $('.smart-search-left').off('click').on('click', 'a.page-link', function (e) {
         e.preventDefault();
-        var search_string = jQuery(this).attr('href').split("?")[1];
-        var search_term = search_string.split("*!*");
-        newURL = search_term[0];
+        let search_string = jQuery(this).attr('href').split("?")[1];
+        let search_term = search_string.split("*!*");
+        let newURL = search_term[0];
         for (var i = 1; i < search_term.length; i++) {
-          var search_filter = search_term[i].split("=");
-          var value = encodeURIComponent(search_filter[1]);
+          let search_filter = search_term[i].split("=");
+          let value = encodeURIComponent(search_filter[1]);
           newURL = newURL + '*!*' + search_filter[0] + '=' + value;
         }
-        var solr_datasource = drupalSettings.solr_datasource || 'citywide';
-        var curl = '/smart_search/ajax/results/' + solr_datasource + '?' + newURL;
-        var progress = jQuery('.smart-search-left .loading');
+        let solr_datasource = drupalSettings.solr_datasource || 'citywide';
+        let curl = '/smart_search/ajax/results/' + solr_datasource + '?' + newURL;
+        let progress = jQuery('.smart-search-left .loading');
         jQuery.ajax({
           url: curl,
           type: "GET",
@@ -497,8 +504,8 @@ function applySearchFilters() {
       fq[facet_name] = [];
     }
     //Remove subfacets from url query string when domain is unchecked
-    if (subFacet.includes(facet_name) == true) {
-      if (fq["domain"] == undefined) {
+    if (subFacet.includes(facet_name) === true) {
+      if (fq["domain"] === undefined) {
         delete fq[facet_name];
       }
       else {
@@ -517,8 +524,8 @@ function applySearchFilters() {
       fq[facet_name] = [];
     }
     //Remove sub-facets from url query string when domain is unchecked
-    if (subFacet.includes(facet_name) == true) {
-      if (fq["domain"] == undefined) {
+    if (subFacet.includes(facet_name) === true) {
+      if (fq["domain"] === undefined) {
         delete fq[facet_name];
       }
       else {
@@ -534,20 +541,20 @@ function applySearchFilters() {
   let contract_status_reg_flag = false;
   let contract_status_active_flag = false;
   for (let k in fq) {
-    if (k == 'contract_status' && fq[k].toString().toLowerCase() == 'registered') {
+    if (k === 'contract_status' && fq[k].toString().toLowerCase() === 'registered') {
       contract_status_reg_flag = true;
     }
-    if (k == 'contract_status' && fq[k].toString().toLowerCase() == 'active') {
+    if (k === 'contract_status' && fq[k].toString().toLowerCase() === 'active') {
       contract_status_active_flag = true;
     }
   }
   for (let k in fq) {
     //Year parameter changes for Contract Status selection
-    if (k == 'facet_year_array' && contract_status_reg_flag) {
+    if (k === 'facet_year_array' && contract_status_reg_flag) {
       fq['registered_fiscal_year'] = fq[k];
       k = 'registered_fiscal_year';
     }
-    else if (k == 'registered_fiscal_year' && contract_status_active_flag) {
+    else if (k === 'registered_fiscal_year' && contract_status_active_flag) {
       fq['facet_year_array'] = fq[k];
       k = 'facet_year_array';
     }
@@ -560,27 +567,26 @@ function applySearchFilters() {
   if (url.get('search_term')) {
     searchTerm = url.get('search_term').split('*!*')[0];
   }
-
   let cUrl = "?search_term=" + searchTerm;
   cUrl += fq_string;
   window.location = cUrl;
 }
 
 function getFacetAutocompleteUrl(category, value) {
-  var searchString = new URLSearchParams(window.location.search);
+  let searchString = new URLSearchParams(window.location.search);
   // var searchString = getQuerystringValues();
-  var newUrl = '?search_term=';
-  var found = 0;
+  let newUrl = '?search_term=';
+  let found = 0;
 
   if (searchString.get('search_term')) {
-    var searchTerms = searchString.get('search_term').split("*!*");
+    let searchTerms = searchString.get('search_term').split("*!*");
     // newUrl += searchTerms[0];
 
     for (var i = 1; i < searchTerms.length; i++) {
-      var params = searchTerms[i].split('=');
+      let params = searchTerms[i].split('=');
       if (params[0] === category) {
         found++;
-        var terms = params[1].split('~');
+        let terms = params[1].split('~');
         terms.push(value);
 
         searchTerms[i] = params[0] + '=' + terms.join('~');
@@ -601,12 +607,12 @@ function getFacetAutocompleteUrl(category, value) {
 
 function addCommas(nStr) {
   nStr += '';
-  c = nStr.split(',');
+  let c = nStr.split(',');
   nStr = c.join('');
-  x = nStr.split('.');
-  x1 = x[0];
-  x2 = x.length > 1 ? '.' + x[1] : '';
-  var rgx = /(\d+)(\d{3})/;
+  let x = nStr.split('.');
+  let x1 = x[0];
+  let x2 = x.length > 1 ? '.' + x[1] : '';
+  const rgx = /(\d+)(\d{3})/;
   while (rgx.test(x1)) {
     x1 = x1.replace(rgx, '$1' + ',' + '$2');
   }

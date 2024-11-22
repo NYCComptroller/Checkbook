@@ -36,21 +36,27 @@
 
         //Payroll Years
         $("select[name='payroll_year'] option").each(function() {
-          if(dataSource === 'checkbook_nycha') {
-            if((this.text).indexOf('FY') !== -1) {
-              // Hide Fiscal Years for NYCHA
-              $("select[name='payroll_year'] option[value='" + this.value + "']").hide();
+          if (dataSource === 'checkbook_nycha') {
+            if (!(/^cy/.test(this.value))) {
+              // Hide Calendar Years for NYCHA Payroll
+              $("select[name='payroll_year'] option[value='" + this.value + "']").attr('disabled','disabled').hide();
             }
-          }else{
-            if((this.text).indexOf('FY') > -1){
-              // Show Fiscal Years
-              $("select[name='payroll_year'] option[value='" + this.value + "']").show();
+            else {
+              this.text = this.text.replace('CY', 'FY');
+            }
+          }
+          else{
+            if (!(/^cy/.test(this.value))) {
+              // Show Calendar Years
+              $("select[name='payroll_year'] option[value='" + this.value + "']").removeAttr('disabled').show();
+            }
+            else {
+              this.text = this.text.replace('FY', 'CY');
             }
           }
         });
         clearInputFields("#payroll-advanced-search", 'payroll', dataSource);
       }
-
 
       function advanced_search_payroll_init_autocomplete() {
         let pay_frequency = $('select[name=payroll_pay_frequency]').val() || 0;

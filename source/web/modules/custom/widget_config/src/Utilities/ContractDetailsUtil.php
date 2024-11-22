@@ -56,7 +56,7 @@ class ContractDetailsUtil
       $queryVendorDetails = "SELECT cvlmc.minority_type_id, fa.contract_number, rb.business_type_code, fa.agreement_id,fa.original_agreement_id,
                                 fa.vendor_id, va.address_id, ve.legal_name AS vendor_name, a.address_line_1, a.address_line_2, a.city, a.state, a.zip, a.country,
                                 (CASE WHEN cvlmc.minority_type_id IN (". $minority_type_ids .") THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
-                                (CASE WHEN cvlmc.minority_type_id IN (4,5) then 'Asian American' ELSE rm.minority_type_name END) AS ethnicity
+                                (CASE WHEN cvlmc.minority_type_id IN (4,5,10) then 'Asian American' ELSE rm.minority_type_name END) AS ethnicity
 	                        FROM agreement_snapshot fa
 	                            LEFT JOIN vendor_history vh ON fa.vendor_history_id = vh.vendor_history_id
 	                            LEFT JOIN vendor as ve ON ve.vendor_id = vh.vendor_id

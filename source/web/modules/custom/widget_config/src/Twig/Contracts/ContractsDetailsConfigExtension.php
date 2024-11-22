@@ -51,6 +51,14 @@ class ContractsDetailsConfigExtension extends AbstractExtension
         $this,
         'contracts_oge_cta_spending_bottom_page',
       ]),
+      'contracts_ca_details_spending_link' => new TwigFunction('contracts_ca_details_spending_link', [
+        $this,
+        'contracts_ca_details_spending_link',
+      ]),
+      'contracts_ca_details_spending_table' => new TwigFunction('contracts_ca_details_spending_table', [
+        $this,
+        'contracts_ca_details_spending_table',
+      ]),
     ];
   }
 
@@ -123,6 +131,7 @@ class ContractsDetailsConfigExtension extends AbstractExtension
           $output .= "<table class='sub-table col9'>";
           $output .= "<thead>
                   <tr>
+                    <th class='number thVNum'>".WidgetUtil::generateLabelMapping("oca_number")."</th>
                     <th class='number thVNum'>".WidgetUtil::generateLabelMapping("version_number")."</th>
                     <th class='text thStartDate'>".WidgetUtil::generateLabelMapping("start_date")."</th>
                     <th class='text thEndDate'>".WidgetUtil::generateLabelMapping("end_date")."</th>
@@ -143,6 +152,7 @@ class ContractsDetailsConfigExtension extends AbstractExtension
               $class = "class=\"even\"";
             }
             $output .= "<tr " . $class . ">";
+            $output .= "<td class='number thVNum' ><div>" . $item['oca_number'] . "</div></td>";
             $output .= "<td class='number thVNum' ><div>" . $item['document_version'] . "</div></td>";
             $output .= "<td class='text thStartDate'><div>" . $item['start_date'] . "</div></td>";
             $output .= "<td class='text thEndDate'><div>" . $item['end_date'] . "</div></td>";
@@ -288,23 +298,23 @@ class ContractsDetailsConfigExtension extends AbstractExtension
       //Main table columns
 
       if(RequestUtilities::getTransactionsParams("doctype")=="CT1" || RequestUtilities::getTransactionsParams("doctype")=="CTA1"){
+        $vendor_where = isset($vendor_summary['sub_vendor_id'])? " AND a.vendor_id = '" . $vendor_summary['sub_vendor_id']."'" : "";
 
-        if (isset($vendor_summary['sub_vendor_id'])) {
           $querySubVendorStatusInPIP = "SELECT
                                         c.aprv_sta_id,
                                         c.aprv_sta_value AS sub_vendor_status_pip
                                     FROM sub_agreement_snapshot a
                                     LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(a.aprv_sta,6)
                                     WHERE a.latest_flag = 'Y'
-                                    AND a.contract_number = '" . $contract_number
-            . "' AND a.vendor_id = " . $vendor_summary['sub_vendor_id']
+                                    AND a.contract_number = '" . $contract_number ."'"
+            . $vendor_where
             . " ORDER BY c.sort_order ASC LIMIT 1";
 
           $results5 = _checkbook_project_execute_sql_by_data_source($querySubVendorStatusInPIP, Datasource::getCurrent());
           $result = new StdClass();
           $result->data = $results5;
           $subVendorStatusInPIP = ($result->data[0]['aprv_sta_id'] == 4 && $vendor_summary['check_amount'] == 0) ? "No Subcontract Payments Submitted" : $result->data[0]['sub_vendor_status_pip'];
-        }
+
         if((is_countable($sub_contract_reference[$vendor]) && count($sub_contract_reference[$vendor]) > 1) && $index_spending == 0){
           $viewAll = "<a class='subContractViewAll'>Hide All<<</a>";
         }else{
@@ -334,21 +344,21 @@ class ContractsDetailsConfigExtension extends AbstractExtension
       $tbl_subcontract_reference = array();
 
       foreach($sub_contract_reference[$vendor] as $reference_id => $value){
-        $querySubContractStatusInPIP = "SELECT
+
+          $querySubContractStatusInPIP = "SELECT
                                         c.aprv_sta_id, c.aprv_sta_value AS sub_contract_status_pip
                                     FROM sub_agreement_snapshot a
                                     LEFT JOIN subcontract_approval_status c ON c.aprv_sta_id = COALESCE(a.aprv_sta,6)
                                     WHERE a.latest_flag = 'Y'
-                                    AND a.contract_number = '". $contract_number
-          ."' AND a.vendor_id = ". $vendor_summary['sub_vendor_id']
-          ."  AND a.sub_contract_id ='".$reference_id
-          . "' ORDER BY c.sort_order ASC LIMIT 1";
+                                    AND a.contract_number = '" . $contract_number ."'"
+            . $vendor_where
+            . " AND a.sub_contract_id ='" . $reference_id
+            . "' ORDER BY c.sort_order ASC LIMIT 1";
 
-        $results6 = _checkbook_project_execute_sql_by_data_source($querySubContractStatusInPIP,Datasource::getCurrent());
-        $result = new StdClass();
-        $result->data = $results6;
-        $subContractStatusInPIP = ($result->data[0]['aprv_sta_id'] == 4 && $vendor_summary['check_amount'] == 0) ? "No Subcontract Payments Submitted" : $result->data[0]['sub_contract_status_pip'];
-
+          $results6 = _checkbook_project_execute_sql_by_data_source($querySubContractStatusInPIP, Datasource::getCurrent());
+          $result = new StdClass();
+          $result->data = $results6;
+          $subContractStatusInPIP = ($result->data[0]['aprv_sta_id'] == 4 && $vendor_summary['check_amount'] == 0) ? "No Subcontract Payments Submitted" : $result->data[0]['sub_contract_status_pip'];
         $ref_id = $reference_id;
         $open = $index_sub_contract_reference == 0 ? '' : 'open';
         $tbl_subcontract_reference['body']['rows'][$index_sub_contract_reference]['columns'] = array(
@@ -645,6 +655,9 @@ class ContractsDetailsConfigExtension extends AbstractExtension
 
           $output .= "<tr>";
           $output .=  "<th class='number thVNum'>";
+          $output .= WidgetUtil::generateLabelMapping("oca_number");
+          $output .=  "</th>";
+          $output .=  "<th class='number thVNum'>";
           $output .= WidgetUtil::generateLabelMapping("version_number");
           $output .=  "</th>";
           $output .=  "<th class='text thStartDate'>";
@@ -683,6 +696,7 @@ class ContractsDetailsConfigExtension extends AbstractExtension
               $class = "class=\"inner even\"";
             }
             $output .= "<tr " . $class . ">";
+            $output .= "<td class='number thVNum'><div>" . $item['oca_number'] . "</div></td>";
             $output .= "<td class='number thVNum'><div>" . $item['document_version'] . "</div></td>";
             $output .= "<td class='text thStartDate'><div>" . $item['start_date'] . "</div></td>";
             $output .= "<td class='text thEndDate'><div>" . $item['end_date'] . "</div></td>";
@@ -810,8 +824,6 @@ class ContractsDetailsConfigExtension extends AbstractExtension
       $vendor_spending_yearly_summary[$spending_row['vendor_name']][$spending_row['fiscal_year']]['amount_spent'] += $spending_row['check_amount'];
       $vendor_contract_summary[$spending_row['vendor_name']]['check_amount'] += $spending_row['check_amount'];
     }
-
-    //log_error($vendor_contract_yearly_summary);
 
     /* SPENDING BY PRIME VENDOR */
 
@@ -954,5 +966,88 @@ class ContractsDetailsConfigExtension extends AbstractExtension
     }
     $html = "<div class='contracts-oge-spending-bottom'>" . WidgetUtil::generateTable($tbl_spending) . "</div>" ;
     return $html;
+  }
+
+  public function contracts_ca_details_spending_link($node) {
+    $results = $this->_contracts_ca_details_spending_results($node);
+    $label = '% of contract expenses budgeted for Covid or Asylum Seekers';
+    echo $results ? '<a href="#" class="contracts-details-spending-link">' . $label . '</a>' : '<span class="contracts-details-spending-link">' . $label . '</span>';
+  }
+
+  public function contracts_ca_details_spending_table($node) {
+    $results = $this->_contracts_ca_details_spending_results($node);
+    if ($results) {
+      $header = [];
+      foreach ($results[0] as $key => $value) {
+        switch ($key) {
+          case 'contract_number':
+            $key = 'Contract number';
+            break;
+          case 'spending_amount':
+            $key = 'Spending amount';
+            break;
+          case 'maximum_contract_amount':
+            $key = 'Maximum contract amount';
+            break;
+          case 'budget_category':
+            $key = 'Budget category';
+            break;
+          case 'percent_spent':
+            $key = '% Spend';
+            break;
+          default:
+            break;
+        }
+        $header[] = $key;
+      }
+
+      $rows = [];
+      $index = 0;
+      foreach ($results as $result) {
+        $row = [];
+        foreach ($result as $key => $value) {
+          switch ($key) {
+            case 'budget_category':
+              $value = strtoupper($value);
+              break;
+            case 'spending_amount':
+            case 'maximum_contract_amount':
+              $value = number_format($value, 2);
+              break;
+            case 'percent_spent':
+              $value .= '%';
+              break;
+            default:
+              break;
+          }
+          $row[] = $value;
+        }
+        $rows[] = [
+          'data' => $row,
+          'class' => [$index % 2 ? 'odd' : 'even'],
+        ];
+        $index++;
+      }
+      $id = 'table_' . widget_unique_identifier($node);
+      $table = [
+        '#theme' => 'table',
+        '#header' => $header,
+        '#rows' => $rows,
+        '#attributes' => [
+          'id' => $id,
+          'class' => ['hidden','dataTable', 'outerTable', 'contracts-spending-table'],
+        ],
+      ];
+      echo \Drupal::service('renderer')->render($table);
+    }
+  }
+
+  public function _contracts_ca_details_spending_results($node) {
+    // Execute the query only for Citywide
+    if (!_checkbook_check_isEDCPage() && !empty($node->data[0]['contract_number'])) {
+      $query = "SELECT contract_number, budget_category, spending_amount, maximum_contract_amount, percent_spent
+                FROM event_contracts_spending WHERE contract_number = '" . $node->data[0]['contract_number'] . "'";
+      return _checkbook_project_execute_sql_by_data_source($query, Datasource::getCurrent());
+    }
   }
 }

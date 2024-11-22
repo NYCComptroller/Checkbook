@@ -25,13 +25,14 @@ use Drupal\data_controller\MetaModel\MetaData\DataSourceMetaData;
 
 class MemcachedHandler extends AbstractSharedCacheHandler {
 
+    const MEMCACHE_SIZE = 1000000;
+
     public static $CACHE__TYPE = 'Memcached';
 
     protected $accessible = FALSE;
 
     protected function initialize($prefix, DataSourceMetaData $datasource) {
-      $drupal_state = \Drupal::state();
-      $this->accessible = method_exists($drupal_state, 'get') && method_exists($drupal_state, 'set');
+      $this->accessible = function_exists('_checkbook_dmemcache_get') && function_exists('_checkbook_dmemcache_set');
 
       return TRUE;
     }
@@ -41,19 +42,26 @@ class MemcachedHandler extends AbstractSharedCacheHandler {
     }
 
     protected function getInternalValue($entryName) {
-        return \Drupal::state()->get($entryName);
+        return _checkbook_dmemcache_get($entryName);
     }
 
     protected function getInternalValues($entryNames) {
-        return \Drupal::state()->get($entryNames);
+        $result = [];
+        foreach ($entryNames as $entryName) {
+            $result[$entryName] = $this->getInternalValue($entryName);
+        }
+        return $result;
     }
 
     protected function setInternalValue($entryName, $value, $expiration) {
-        return \Drupal::state()->set($entryName, $value, $expiration);
+        return _checkbook_dmemcache_set($entryName, $value, $expiration);
     }
 
     protected function setInternalValues($values, $expiration) {
-        $unused = FALSE;
-        return \Drupal::state()->set($values, $unused, $expiration);
+        $result = [];
+        foreach ($values as $entryName => $value) {
+          $result[$entryName] = $this->setInternalValue($entryName, $value, $expiration);
+        }
+        return $result;
     }
 }

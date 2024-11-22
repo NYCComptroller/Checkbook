@@ -20,6 +20,7 @@
 
 use Drupal\checkbook_infrastructure_layer\Utilities\FormattingUtilities;
 use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_theme()
@@ -182,6 +183,7 @@ function _checkbook_mwbe_agency_grading_generate_sql($table){
        CASE
             WHEN minority_type_id = 4 THEN total_spending_amount
             WHEN minority_type_id = 5 THEN total_spending_amount
+            WHEN minority_type_id = 10 THEN total_spending_amount
             ELSE 0
 	END) aa_mwbe,
 	SUM(
@@ -215,10 +217,12 @@ function _checkbook_mwbe_agency_grading_generate_sql($table){
             ELSE 0
 	END) em_mwbe,
 	SUM(
-       CASE WHEN minority_type_id = 2 THEN total_spending_amount
+       CASE WHEN minority_type_id = 1 THEN total_spending_amount
+            WHEN minority_type_id = 2 THEN total_spending_amount
             WHEN minority_type_id = 3 THEN total_spending_amount
             WHEN minority_type_id = 4 THEN total_spending_amount
             WHEN minority_type_id = 5 THEN total_spending_amount
+            WHEN minority_type_id = 10 THEN total_spending_amount
             WHEN minority_type_id = 6 THEN total_spending_amount
             WHEN minority_type_id = 9 THEN total_spending_amount
             WHEN minority_type_id = 99 THEN total_spending_amount
@@ -240,7 +244,8 @@ function _checkbook_mwbe_agency_grading_generate_sql($table){
         }
         if(in_array("aa_mwbe", $mwbe_cats)){
             $sql .= ' WHEN minority_type_id = 4 THEN total_spending_amount
-                      WHEN minority_type_id = 5 THEN total_spending_amount';
+                      WHEN minority_type_id = 5 THEN total_spending_amount
+                      WHEN minority_type_id = 10 THEN total_spending_amount';
         }
         if(in_array("w_mwbe", $mwbe_cats)){
             $sql .= ' WHEN minority_type_id = 9 THEN total_spending_amount';
@@ -317,4 +322,16 @@ function checkbook_mwbe_agency_grading_page_title_alter(&$title) {
       $title = 'M/WBE Agency Summary';
       break;
   }
+}
+
+function checkbook_mwbe_agency_grading_link_alter(&$variables) {
+  $url = $variables['url'];
+  if ($url->isRouted() && $url->getRouteName() == 'checkbook_mwbe_agency_grading._checkbook_mwbe_agency_grading') {
+    $path = urldecode($url->setAbsolute()->toString());
+    $path_parts = explode('/', $path);
+    $last_part = &$path_parts[array_key_last($path_parts)];
+    $last_part = str_replace(':', '/', $last_part);
+    $new_url = Url::fromUri(implode('/', $path_parts));
+    $variables['url'] = $new_url;
+  };
 }

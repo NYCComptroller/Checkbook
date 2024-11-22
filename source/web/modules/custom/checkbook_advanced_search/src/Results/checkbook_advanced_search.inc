@@ -531,7 +531,7 @@ function _checkbook_advanced_search_get_expensetype_and_id($data_source = Dataso
   try {
     $dataController = data_controller_get_instance();
     if ($data_source == Datasource::NYCHA) {
-      $query = "SELECT spending_category_id, spending_category_code,  display_spending_category_name FROM ref_spending_category";
+      $query = "SELECT spending_category_id, spending_category_code,  display_spending_category_name FROM ref_spending_category ORDER BY display_spending_category_name";
       $data = _checkbook_project_execute_sql_by_data_source($query, $data_source);
       $results = array('' => "Total Spending");
       foreach ($data as $value) {
@@ -831,8 +831,10 @@ function _checkbook_advanced_search_encode_url($string)
 {
   $string = str_replace("%", "%25", $string);
   $string = str_replace("#", "%23", $string);
+  $string = str_replace("&", "%26", $string);
   $string = str_replace("<", "%3C", $string);
   $string = str_replace(">", "%3E", $string);
+  $string = str_replace("+", "%2B", $string);
   $string = str_replace("?", "\%3F", $string);
   return $string;
 }

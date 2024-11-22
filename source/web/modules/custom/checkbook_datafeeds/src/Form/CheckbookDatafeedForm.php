@@ -61,7 +61,7 @@ class CheckbookDatafeedForm extends FormBase
 
     $form['datafeeds-rotator'] = array(
       '#type' => 'markup',
-      '#markup' => '<div id="datafeeds-rotator" style="display: none;"><br><br></div>',
+      '#markup' => '<div id="datafeeds-rotator" style="display: none;" class="loading_bigger_gif"></div>',
     );
 
     if ($form_state->has('page_num') && $form_state->get('page_num') == 2) {
@@ -130,7 +130,7 @@ class CheckbookDatafeedForm extends FormBase
       '#attributes' => array("onclick" => "
               jQuery(this).attr('disabled', true);
               jQuery('#checkbook-datafeeds-form').addClass('disable_me');
-                jQuery('#datafeeds-rotator').css('display', 'block').addClass('loading_bigger_gif');
+                jQuery('#datafeeds-rotator').show();
               jQuery(this).parents('form').submit();
         ")
 

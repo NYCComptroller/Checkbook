@@ -20,9 +20,9 @@
 
 namespace Drupal\data_controller\MetaModel\MetaData;
 
-class LevelMetaData extends AbstractMetaData
-{
+class LevelMetaData extends AbstractMetaData {
 
+    public $key;
     public $sourceColumnName = NULL;
     public $datasetName = NULL;
     /**

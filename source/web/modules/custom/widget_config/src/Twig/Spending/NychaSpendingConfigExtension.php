@@ -134,7 +134,7 @@ if(isset($url)) {
 
   //Widget Invoiced Amount Link static text
   if ($widget == 'inv_contract') {
-    $inv_contractDetails = NYCHAContractUtil::getContractsTransactionsStaticSummary($widget, $url);
+    $inv_contractDetails = NYCHAContractUtil::getContractsTransactionsStaticSummary($url);
     $tcode = RequestUtil::getRequestKeyValueFromURL('tcode', $url);
     $spendtodateTitle = WidgetUtil::getLabel("contract_spend_to_date");
     $spendtodateAmount = '$' . FormattingUtilities::custom_number_formatter_format($inv_contractDetails['spend_to_date'], 2);
@@ -178,7 +178,7 @@ if(isset($url)) {
                         <div class='total-spending-amount' style='margin-left:14px'>{$totalAmount}
                           <div class='amount-title'>{$totalAmountTitle}
                         <div class='information'><span class='tooltiptext' style='width:490px;left:-190%;margi-left:-190px;padding-bottom: 0px;'>
-                        Amount displayed is the ‘Amount spent’ by NYCHA up until the selected FY</span></div></div>
+                        Amount displayed is the 'Amount spent' by NYCHA up until the selected FY</span></div></div>
                         </div>
                         <div class='spend-to-date' style='margin-left:14px'>{$spendtodateAmount}
                           <div class='amount-title'>{$spendtodateTitle}</div>
@@ -197,7 +197,7 @@ if(isset($url)) {
   //Contract ID detials link static text
   if ( $widget == 'inv_contract_id')
   {
-    $inv_contractDetails = NYCHAContractUtil::getContractsTransactionsStaticSummary($widget, $url);
+    $inv_contractDetails = NYCHAContractUtil::getContractsTransactionsStaticSummary($url);
     $id_title = 'NYCHA Spending Transactions';
     $spendtodateAmount = '$' . FormattingUtilities::custom_number_formatter_format($inv_contractDetails['spend_to_date'], 2);
     $totalAmountTitle ="NYCHA Amount Spent";
@@ -208,7 +208,7 @@ if(isset($url)) {
                         <div class='total-spending-amount' style='margin-left:14px'>{$totalAmount}
                           <div class='amount-title'>{$totalAmountTitle}
                         <div class='information'><span class='tooltiptext' style='width:490px;left:-190%;margi-left:-190px;padding-bottom: 0px;'>
-                        Amount displayed is the sum of ‘Amount spent’ by NYCHA across years</span></div></div>
+                        Amount displayed is the sum of 'Amount spent' by NYCHA across years</span></div></div>
                         </div>
                         <div class='spend-to-date' style='margin-left:14px'>{$spendtodateAmount}
                           <div class='amount-title'>{$spendtodateTitle}</div>
@@ -227,7 +227,7 @@ if ($amountsSummary == null) {
                         <div class='total-spending-amount'>{$totalSpendingAmount}
                           <div class='amount-title'>{$aggregatedAmountTitle}
                           <div class='information'><span class='tooltiptext' style='width:490px;left:-190%;margi-left:-190px;padding-bottom: 0px;'>
-                        Amount displayed is the sum of ‘Amount spent’ by NYCHA for the selected FY</span></div></div>
+                        Amount displayed is the sum of 'Amount spent' by NYCHA for the selected FY</span></div></div>
                         </div>" . $amountSummaryTotalContract .
     "</div></div>";
 }

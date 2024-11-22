@@ -11,10 +11,6 @@
         "contracts_mwbe_vendor_spending": {
             "datasourceName": "main",
             "source": "aggregateon_mwbe_spending_vendor"
-        },
-        "expenditure_mwbe_vendor_spending": {
-            "datasourceName": "main",
-            "source": "aggregateon_mwbe_spending_vendor_exp_object"
         }
     },
     "cubes": {
@@ -321,56 +317,6 @@
                 },
                 "vendor_count": {
                     "function": "COUNT(DISTINCT vendor_id)"
-                }
-            }
-        },
-        "expenditure_mwbe_vendor_spending": {
-            "sourceDatasetName": "expenditure_mwbe_vendor_spending",
-            "dimensions": [
-                {
-                    "name": "vendor",
-                    "levels": [
-                        {
-                            "name": "vendor",
-                            "datasetName": "vendor",
-                            "sourceColumnName": "vendor_id"
-                        }
-                    ]
-                },
-                {
-                    "name": "year",
-                    "levels": [
-                        {
-                            "name": "year",
-                            "datasetName": "year",
-                            "sourceColumnName": "year_id"
-                        }
-                    ]
-                },
-                {
-                    "name": "yeartype",
-                    "levels": [
-                        {
-                            "name": "yeartype",
-                            "datasetName": "year",
-                            "sourceColumnName": "type_of_year"
-                        }
-                    ]
-                },
-                {
-                    "name": "expenditure_object",
-                    "levels": [
-                        {
-                            "name": "expenditure_object",
-                            "datasetName": "expenditure_object",
-                            "sourceColumnName": "expenditure_object_id"
-                        }
-                    ]
-                }
-            ],
-            "measures": {
-                "check_amount_sum": {
-                    "function": "SUM(COALESCE(total_spending_amount,0))"
                 }
             }
         }

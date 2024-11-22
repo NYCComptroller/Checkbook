@@ -119,6 +119,15 @@
           ]
         },
         {
+          "name":"award_method_by_code",
+          "levels": [
+            {
+              "name":"award_method_by_code",
+              "datasetName":"award_method_by_code",
+              "sourceColumnName":"award_method_code"
+            }]
+        },
+        {
           "name": "award_method_name",
           "levels": [
             {

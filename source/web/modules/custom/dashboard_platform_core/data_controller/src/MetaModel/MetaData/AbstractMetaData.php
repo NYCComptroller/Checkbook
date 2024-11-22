@@ -25,6 +25,8 @@ use Drupal\data_controller\Common\Pattern\AbstractObject;
 
 abstract class AbstractMetaData extends AbstractObject {
 
+    public $loadedFromFile;
+
     public $name = NULL;
     public $publicName = NULL;
     public $description = NULL;

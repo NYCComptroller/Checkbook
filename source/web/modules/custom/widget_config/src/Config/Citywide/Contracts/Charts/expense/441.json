@@ -29,7 +29,7 @@
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MA1~CTA1~CT1","status_flag":"A","spending_amount_sum":null},
 "cleanURLParameters":["year","calyear","agency","yeartype","awdmethod","vendor","status","csize","cindustry"],
-"urlParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id","status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
+"urlParamMap":{"calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method.award_method.award_method_code","vendor":"vendor_id","status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
 "defaultParamTypeConfig":{"spending_amount_sum":"ne"},
 "adjustParameters":"
         $year = 'year_id';
@@ -57,14 +57,14 @@
         {
             "dataset": "checkbook:contracts_coa_spending_month",
             "orderBy":"","columns": ["spending_amount_sum","month.month", "month.month.month_value"],
-            "allowedParams":["fiscal_year_id","agency_id","type_of_year","award_method_id","vendor_id","spending_amount_sum","status_flag","document_code.document_code.document_code","award_size_id","industry_type_id"],
+            "allowedParams":["fiscal_year_id","agency_id","type_of_year","award_method.award_method.award_method_code","vendor_id","spending_amount_sum","status_flag","document_code.document_code.document_code","award_size_id","industry_type_id"],
             "columnPrefix": "previous_"
         },
         {
             "dataset": "checkbook:contracts_coa_spending_month",
             "orderBy":"",
             "columns": ["spending_amount_sum","month.month", "month.month.month_value"],
-            "allowedParams":["fiscal_year_id","agency_id","type_of_year","award_method_id","vendor_id","spending_amount_sum","status_flag","document_code.document_code.document_code","award_size_id","industry_type_id"],
+            "allowedParams":["fiscal_year_id","agency_id","type_of_year","award_method.award_method.award_method_code","vendor_id","spending_amount_sum","status_flag","document_code.document_code.document_code","award_size_id","industry_type_id"],
             "columnPrefix": "current_"
         }
     ]
@@ -85,14 +85,8 @@
 ],
 "transformationPHP":"
     $year = \\Drupal\\checkbook_project\\CommonUtilities\\CheckbookDateUtil::_getYearValueFromID($parameters['fiscal_year_id'][0]);
-    if($parameters['type_of_year'][0] == 'B'){
         $SeriesCurrentYearLabel = 'FY '   .  $year;
         $SeriesPreviousYearLabel = 'FY '.  ($year - 1);
-    }else{
-        $SeriesCurrentYearLabel = 'CY '   .  $year;
-        $SeriesPreviousYearLabel = 'CY '.  ($year - 1);
-    }
-
     foreach($node->data as $key=>$value){
         if($value['current_spending_amount_sum'] == 0)
             $value['current_spending_amount_sum'] = null;

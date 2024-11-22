@@ -29,10 +29,10 @@ class InitSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    return [KernelEvents::REQUEST => ['onEvent', 0]];
+    return [KernelEvents::REQUEST => ['onRequest', 0]];
   }
 
-  public function onEvent() {
+  public function onRequest() {
     require_once(\Drupal::service('extension.list.module')->getPath('checkbook_project') . "/includes/checkbook_database.inc");
     require_once(\Drupal::service('extension.list.module')->getPath('checkbook_project') . "/includes/checkbook_project.inc");
   }

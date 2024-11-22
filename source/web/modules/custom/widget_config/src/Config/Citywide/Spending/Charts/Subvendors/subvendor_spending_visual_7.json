@@ -47,7 +47,6 @@
     join {ref_year} ry on a1.year_id = ry.year_id
    ' . $where_filter . '
     group by rm.minority_type_id, rm.minority_type_name,year_value  ';
-
     $node->data  = _checkbook_project_execute_sql($sql);
 ",
 "widgetUpdateJSONConfig":"
@@ -60,17 +59,14 @@
     $mwbe_page_cats = $mwbe_param != null
         ? explode('~',$mwbe_param)
         : explode('~',\\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::$total_mwbe_cats);
-    if($mwbe_param == 4) {
-        $mwbe_page_cats[] = 5;
-    }
-    else if($mwbe_param == 5) {
-        $mwbe_page_cats[] = 4;
-    }
-
 	$year = \\Drupal\\checkbook_project\\CommonUtilities\\CheckbookDateUtil::_getYearValueFromID($year_id);
 	 foreach ($node->data as $row){
-
 	 	switch($row['minority_type_id']){
+      case '1':
+      if(in_array(1,$mwbe_page_cats))
+      $series[$row['year_value']]['y'] += $row['total_spending'];
+      $series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
+      break;
 	 		case '2':
 	 		if(in_array(2,$mwbe_page_cats))
 	 			$series[$row['year_value']]['y'] += $row['total_spending'];
@@ -91,6 +87,11 @@
 	 			$series[$row['year_value']]['y'] += $row['total_spending'];
 	 		$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
 	 		break;
+      case '10':
+      if(in_array(10,$mwbe_page_cats))
+      $series[$row['year_value']]['y'] += $row['total_spending'];
+      $series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
+      break;
             case '6':
 	 		if(in_array(6,$mwbe_page_cats))
 	 			$series[$row['year_value']]['y'] += $row['total_spending'];
@@ -121,11 +122,7 @@
 
 	foreach($series as $key=>$row){
 		if($key <= $year && $key >= $year - 4){
-			if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('yeartype') == 'C'){
-				 $year_display = 'CY ' . $key;
-			}else{
-				$year_display = 'FY ' . $key;
-			}
+      $year_display = 'FY ' . $key;
 	 		$tooltip_label =
 	 						'Year: ' . $year_display.  '<br/>' .
 	 						'Amount: '. \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($series[$key]['y'],2,'$')   . '<br/>' ;

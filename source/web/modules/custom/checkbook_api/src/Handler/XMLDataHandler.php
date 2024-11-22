@@ -141,12 +141,15 @@ class XMLDataHandler extends AbstractDataHandler
      * @return string
      */
     function getJobCommand($query) {
+        LogHelper::log_notice("DataFeeds :: xml::getJobCommand()");
+
         //Adjust query if applicable (adjustSQL functions have $sql_query as parameter)
         if (isset($this->requestDataSet->adjustSql)) {
           $sql_query = $query;
           eval($this->requestDataSet->adjustSql);
           $query = $sql_query;
         }
+
         //map tags and build sql
         $rootElement = $this->requestDataSet->displayConfiguration->xml->rootElement;
         $rowParentElement = $this->requestDataSet->displayConfiguration->xml->rowParentElement;
@@ -162,7 +165,7 @@ class XMLDataHandler extends AbstractDataHandler
         }
         $columnMappings = array_flip($columnMappings);
         $end = strpos($query, 'FROM');
-        $select_part = substr($query,0,$end);
+        $select_part = substr($query, 0, $end);
         $where_part = substr($query,$end,strlen($query)-1);
         $select_part = str_replace("SELECT", "", $select_part);
 
@@ -173,33 +176,36 @@ class XMLDataHandler extends AbstractDataHandler
 
         $new_select_part = "'<".$rowParentElement.">'";
         foreach($sql_parts as $sql_part) {
-            $sql_part = trim($sql_part);
-            $column = $sql_part;
-            $alias = "";
+          $sql_part = trim($sql_part);
+          $column = $sql_part;
 
-          //Remove "AS"
+          // Remove "AS".
           $selectColumn = NULL;
-          if (strpos($sql_part,"AS") !== false) {
-            $pos = strrpos($column, " AS");
+          if (strripos($sql_part," AS") !== FALSE) {
+            $pos = strripos($column, " AS");
             //Get Column name from derived columns
             $selectColumn = trim(substr($sql_part, $pos + strlen(" AS")));
-            $sql_part = substr($sql_part,0,$pos);
+            $sql_part = substr($sql_part, 0, $pos);
           }
 
-          //Get only column
-          if (strpos($sql_part,".") !== false) {
+          // Get only column.
+          if (strpos($sql_part,".") !== FALSE) {
             $select_column_parts = explode('.', trim($sql_part), 2);
-            $alias = $select_column_parts[0] . '.';
             $column = $select_column_parts[1];
-          }else{
+          }
+          else {
             $column = $sql_part;
           }
 
           $data_set_column = isset($selectColumn) ? $selectColumn : $column;
-          $tag = $columnMappings[$data_set_column];
-          $new_select_part .= "\n||'<".$tag.">' || ";
-          $new_select_part .= "regexp_replace(COALESCE(CAST(" . $alias . $column . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g')";
-          $new_select_part .= " || '</".$tag.">'";
+          $tag = $columnMappings[$data_set_column] ?? NULL;
+          if ($tag) {
+            $modified_select_part = "\n||'<".$tag.">' || ";
+            $modified_select_part .= "regexp_replace(COALESCE(CAST(" . $sql_part . " AS VARCHAR),''), '[\u0080-\u00ff]', '', 'g')";
+            $modified_select_part .= " || '</".$tag.">'";
+
+            $new_select_part .= $modified_select_part;
+          }
         }
 
         $new_select_part .= "||'</".$rowParentElement.">'";
@@ -250,33 +256,30 @@ class XMLDataHandler extends AbstractDataHandler
 
             LogHelper::log_notice("DataFeeds :: XML QUERY FOR > 10000 records: ".$command);
 
-            //prepend open tags command
-            $command = "sed -i '1i " . $open_tags . "' " . $tempOutputFile;
-            $commands[] = $command;
+            $this->processCommands($commands);
 
-            //append close tags command
-            $command = "sed -i '$"."a" . $close_tags . "' " . $tempOutputFile;
-            $commands[] = $command;
+            $commands = [];
 
-            //escape '&' for xml compatibility
-            $command = "sed -i 's/&/&amp;/g' " . $tempOutputFile;
-            $commands[] = $command;
+            //prepend open tags command - (replaces the following command:- "sed -i '1i " . $open_tags . "' " . $tempOutputFile;)
+            APIUtil::prependToFile($tempOutputFile,$open_tags);
 
-            //escape '<' for xml compatibility
-            $command = "sed -i 's/</\&lt;/g' " . $tempOutputFile;
-            $commands[] = $command;
+            //append close tags command - (replaces the following command:- "sed -i '$"."a" . $close_tags . "' " . $tempOutputFile;)
+            APIUtil::appendToFile($tempOutputFile,$close_tags);
 
-            //escape '>' for xml compatibility
-            $command = "sed -i 's/>/\&gt;/g' " . $tempOutputFile;
-            $commands[] = $command;
+            //escape '&' for xml compatibility - (replaces the following command:- "sed -i 's/&/&amp;/g' " . $tempOutputFile;)
+            APIUtil::replaceInFile($tempOutputFile, '&', '&amp;');
 
-            //put back the '<' tags
-            $command = "sed -i 's/|LT|/</g' " . $tempOutputFile;
-            $commands[] = $command;
+            //escape '<' for xml compatibility - (replaces the following command:- "sed -i 's/</\&lt;/g' " . $tempOutputFile;)
+            APIUtil::replaceInFile($tempOutputFile, '<', '&lt;');
 
-            //put back the '>' tags
-            $command = "sed -i 's/|GT|/>/g' " . $tempOutputFile;
-            $commands[] = $command;
+            //escape '>' for xml compatibility - (replaces the following command:- "sed -i 's/>/\&gt;/g' " . $tempOutputFile;)
+            APIUtil::replaceInFile($tempOutputFile, '>', '&gt;');
+
+            //put back the '<' tags - (replaces the following command:- "sed -i 's/|LT|/</g' " . $tempOutputFile;)
+            APIUtil::replaceInFile($tempOutputFile, '|LT|', '<');
+
+            //put back the '>' tags - (replaces the following command:- "sed -i 's/|GT|/>/g' " . $tempOutputFile;)
+            APIUtil::replaceInFile($tempOutputFile, '|GT|', '>');
 
             //xmllint command to format the xml
             $maxmem = 1024 * 1024 * 750;  // 750 MB

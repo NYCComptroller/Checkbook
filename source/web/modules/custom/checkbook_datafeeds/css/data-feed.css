@@ -63,6 +63,14 @@ form.data-feeds-wizard {
   width: 700px;
 }
 
+form.data-feeds-wizard.datafeeds-domain-form:not(.datafeeds-form-loaded) > * {
+  display: none;
+}
+
+form.data-feeds-wizard.datafeeds-domain-form:not(.datafeeds-form-loaded) > #datafeeds-rotator {
+  display: block;
+}
+
 form.data-feeds-wizard p {
   margin: 0;
 }
@@ -482,8 +490,4 @@ ul.ui-autocomplete {
 ul.ui-autocomplete .ui-menu-item div {
   padding: 0.2em 0.4em;
   line-height: 1.5;
-}
-
-label[for="edit-nycha-column-select"] {
-  margin-left: -100px;
 }

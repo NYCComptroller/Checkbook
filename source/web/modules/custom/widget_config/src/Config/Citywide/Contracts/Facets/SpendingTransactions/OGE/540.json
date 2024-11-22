@@ -13,7 +13,8 @@
     "autocompleteField":"disb_department_short_name",
     "maxSelect":5,
     "urlParamMap":{
-				"doctype":"document_code.document_code.document_code"
+				"doctype":"document_code.document_code.document_code",
+        "awdmethod":"award_method.award_method.award_method_code"
 			  }  ,
     "adjustParameters":"
 	checkbook_faceted_search_adjust_param($node);

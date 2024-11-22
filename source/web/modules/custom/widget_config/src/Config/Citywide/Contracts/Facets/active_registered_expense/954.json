@@ -6,20 +6,20 @@
     "startWith":0,
     "maxSelect":5,
     "showAllRecords":true,
-    "columns":["award_method_id.award_method_id", "award_method_name.award_method_name", "txcount"],
+    "columns":["award_method_by_code.award_method_by_code","award_method_by_code.award_method_by_code.award_method_name","txcount"],
     "orderBy":"-txcount",
     "facetPager":true,
     "filterName":"Award Method",
     "urlParameterName":"awdmethod",
     "autocompleteParamName":"awdmethod_auto",
     "autocompleteID":"fAwdMethodId",
-    "autocompleteField":"award_method_name",
+    "autocompleteField":"award_method_by_code.award_method_by_code.award_method_name",
     "allowFacetDeselect":true,
     "adjustParameters":"
         $parameters = \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::adjustActiveContractCommonParams($node, $parameters);
         //if(function_exists('\\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters')){
             $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
-            $adjustedParameters['award_method_id.award_method_id'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+            $adjustedParameters['award_method_by_code.award_method_by_code'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
             return $adjustedParameters;
         //}
         return $parameters;

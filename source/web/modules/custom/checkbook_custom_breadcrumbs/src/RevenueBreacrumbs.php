@@ -1,8 +1,11 @@
 <?php
+
+namespace Drupal\checkbook_custom_breadcrumbs;
+
 /**
  * This file is part of the Checkbook NYC financial transparency software.
  *
- * Copyright (c) 2012 – 2023 New York City
+ * Copyright (c) 2012 – 2023 New York City.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,21 +21,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Drupal\checkbook_custom_breadcrumbs;
-
-use Drupal;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\PageType;
 use Drupal\checkbook_project\CommonUtilities\RequestUtil;
 use Drupal\checkbook_project\RevenueUtilities\NychaRevenueUtil;
 use Drupal\checkbook_project\WidgetUtilities\NodeSummaryUtil;
 
-class RevenueBreacrumbs{
+/**
+ * Revenue breadcrumbs class.
+ */
+class RevenueBreacrumbs {
+
   /**
-   * Returns Revenue page title and Breadcrumb
+   * Returns Revenue page title and Breadcrumb.
+   *
    * @return string
+   *   The title.
    */
-  public static function getRevenueBreadcrumbTitle(): string
-  {
+  public static function getRevenueBreadcrumbTitle(): string {
     $current_path = \Drupal::service('path.current')->getPath();
     $expand_bottom_param = \Drupal::request()->query->get('expandBottomContURL');
     $bottomURL = $expand_bottom_param ?? FALSE;
@@ -63,24 +68,26 @@ class RevenueBreacrumbs{
         $title = "Revenue Transactions";
       }
       else {
-        $title =BudgetBreadcrumbs:: getBudgetPageTitle() . ' Revenue';
+        $title = BudgetBreadcrumbs:: getBudgetPageTitle() . ' Revenue';
       }
     }
     return html_entity_decode($title);
   }
 
   /**
-   * Custom function to get title for Revenue landing pages
+   * Custom function to get title for Revenue landing pages.
+   *
    * @return string|null
+   *   The title.
    */
-  public static function getRevenuePageTitle(): ?string
-  {
-    $current_path = Drupal::service('path.current')->getPath();
-    $expand_bottom_param = Drupal::request()->query->get('expandBottomContURL');
+  public static function getRevenuePageTitle(): ?string {
+    $current_path = \Drupal::service('path.current')->getPath();
+    $expand_bottom_param = \Drupal::request()->query->get('expandBottomContURL');
     $bottomURL = $expand_bottom_param;
     if (!$bottomURL && preg_match('/^revenue\/transactions/', $current_path)) {
       $title = NULL;
-    } else {
+    }
+    else {
       $lastReqParam = RequestUtil::_getLastRequestParamValue();
       $title = "New York City";
       foreach ($lastReqParam as $key => $value) {
@@ -88,40 +95,50 @@ class RevenueBreacrumbs{
           case 'agency':
             $title = _checkbook_project_get_name_for_argument("agency_id", $value);
             break;
+
           case 'revcat':
             $title = _checkbook_project_get_name_for_argument("revenue_category_id", $value);
             break;
+
           case 'fundsrccode':
             $title = _checkbook_project_get_name_for_argument("funding_class_code", $value);
             break;
+
           default:
+            break;
         }
       }
     }
     return $title;
-
   }
 
   /**
+   * The advanced search title.
+   *
    * @return string
+   *   The title.
    */
   public static function advancedSearchTitle() {
     return 'Revenue Transactions';
   }
 
   /**
+   * The NYCHA advanced search title.
+   *
    * @return string
+   *   The tile.
    */
   public static function nychaAdvancedSearchTitle() {
     return 'NYCHA Revenue Transactions';
   }
 
   /**
-   * Returns NYCHA Revenue page title and Breadcrumb
+   * Returns NYCHA Revenue page title and Breadcrumb.
+   *
    * @return string
+   *   The title.
    */
-  public static function getNYCHARevenueBreadcrumbTitle(): string
-  {
+  public static function getNychaRevenueBreadcrumbTitle(): string {
     $title = "";
     $expand_bottom_param = \Drupal::request()->query->get('expandBottomContURL');
     $bottomURL = $expand_bottom_param ?? FALSE;
@@ -131,7 +148,8 @@ class RevenueBreacrumbs{
     else {
       if ($bottomURL) {
         $title = NychaRevenueUtil::getTransactionsTitle();
-      } else {
+      }
+      else {
         $lastReqParam = RequestUtil::_getLastRequestParamValue();
         foreach ($lastReqParam as $key => $value) {
           $title = match ($key) {
@@ -150,15 +168,16 @@ class RevenueBreacrumbs{
   }
 
   /**
-   * Custom function to get title for NYCHA Revenu landing pages
+   * Custom function to get title for NYCHA Revenu landing pages.
+   *
    * @return string|null
+   *   The title.
    */
-  public static function getNYCHARevenuePageTitle(): ?string
-  {
-    $title = NULL;
+  public static function getNychaRevenuePageTitle(): ?string {
     if (PageType::getCurrent() == PageType::ADVANCED_SEARCH_PAGE) {
       $title = NULL;
-    } else {
+    }
+    else {
       $lastReqParam = RequestUtil::_getLastRequestParamValue();
       foreach ($lastReqParam as $key => $value) {
         $title = match ($key) {
@@ -171,7 +190,7 @@ class RevenueBreacrumbs{
         };
       }
     }
-    return $title;
+    return $title ?? NULL;
   }
 
 }

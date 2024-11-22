@@ -84,22 +84,14 @@
     ],
     "transformationPHP":"
         $year = \\Drupal\\checkbook_project\\CommonUtilities\\CheckbookDateUtil::_getYearValueFromID($parameters['year_id'][0]);
-        if($parameters['type_of_year'][0] == 'B'){
-            $SeriesCurrentYearLabel = 'FY '   .  $year;
-            $SeriesPreviousYearLabel = 'FY '.  ($year - 1);
-        }else{
-            $SeriesCurrentYearLabel = 'CY '   .  $year;
-            $SeriesPreviousYearLabel = 'CY '.  ($year - 1);
-        }
-
+        $SeriesCurrentYearLabel = 'FY '   .  $year;
+        $SeriesPreviousYearLabel = 'FY '.  ($year - 1);
         foreach($node->data as $key=>$value){
             if($value['current_check_amount_sum'] == 0)
                 $value['current_check_amount_sum'] = null;
             if($value['previous_check_amount_sum'] > 0)
                 $value['previous_check_amount_sum'] = null;
         }
-
-
         $node->widgetConfig->chartConfig->series[0]->name = $SeriesPreviousYearLabel;
         $node->widgetConfig->chartConfig->series[1]->name = $SeriesCurrentYearLabel;
 

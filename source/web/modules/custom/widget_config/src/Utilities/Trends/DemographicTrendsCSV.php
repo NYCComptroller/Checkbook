@@ -32,12 +32,12 @@ class DemographicTrendsCSV  {
     reset($node->data);
 
 
-    $header .= ",,,2001-{$last_year}*,,,\n";
+    $header .= ",,2001-{$last_year}*,,\n";
     $header .= 'Year';
     $header .=  ",United States" ;
-    $header .=  ",Percentage Change from Prior Period," ;
+    $header .=  ",Percentage Change from Prior Period" ;
     $header .=  ",City of New York";
-    $header .=  ",Percentage Change from Prior Period,";
+    $header .=  ",Percentage Change from Prior Period";
 
     $output .= $header . "\n";
 
@@ -46,15 +46,15 @@ class DemographicTrendsCSV  {
       $percent_sign = ($count == 1 ) ? '%' : '';
       $rowString = $row['fiscal_year'] ;
       $rowString .= ',' . '"' . (($row['united_states']>0)?FormattingUtilities::trendsNumberDisplay($row['united_states']):' - ') .'"';
-      $rowString .= ',' . '"' . (($row['percentage_change_from_prior_period']>0)?FormattingUtilities::trendsNumberDisplay($row['percentage_change_from_prior_period'],2):' - ') .'"'.','.$percent_sign;
+      $rowString .= ',' . '"' . (($row['percentage_change_from_prior_period']>0)?FormattingUtilities::trendsNumberDisplay($row['percentage_change_from_prior_period'],2):' - ') .'"'.$percent_sign;
       $rowString .= ',' . '"' . (($row['city_of_new_york']>0)?FormattingUtilities::trendsNumberDisplay($row['city_of_new_york']):' - ') .'"';
-      $rowString .= ',' . '"' . (($row['percentage_change_prior_period']!=0)?FormattingUtilities::trendsNumberDisplay($row['percentage_change_prior_period'],2):' - ').'"'.','.$percent_sign;
+      $rowString .= ',' . '"' . (($row['percentage_change_prior_period']!=0)?FormattingUtilities::trendsNumberDisplay($row['percentage_change_prior_period'],2):' - ').'"'.$percent_sign;
 
       $output .= $rowString . "\n";
       $count++;
     }
 
-    $output .= "\n"."\n".'"'."*Amounts as of December 2020".'"';
+    $output .= "\n"."\n"."Source: Bureau of Economic Analysis and US Census Bureau."."\n".'"'."*Figures as of July 2022".'"';
     return $output;
   }
 
@@ -83,11 +83,14 @@ class DemographicTrendsCSV  {
     }
     $output .= $header . "\n";
 
+    $count = 1;
     foreach( $table_rows as $row){
+      $dollar_sign = ($count == 1 ) ? '$' : '';
+      $count++;
       $rowString = $row['fips'] ;
       $rowString .= ','  . '"'. $row['area'] . '"' ;
       foreach ($years as $year){
-        $rowString .= ','  . '"'. FormattingUtilities::trendsNumberDisplay($row[$year]['amount']) . '"';
+        $rowString .= ','  . '"'. FormattingUtilities::trendsNumberDisplay($row[$year]['amount'], 0, $dollar_sign) . '"';
       }
       $output .= $rowString . "\n";
     }
@@ -118,10 +121,12 @@ class DemographicTrendsCSV  {
     $header .= ',,,,,,(average annual employment in thousands),,,,,'."\n";
 
     foreach ($years as $year){
-      if($year == 2021)
+      if($year == 2021 || $year == 2022 || $year == 2023) {
         $header = $header .  "," . $year .'(b)' ;
-      else
+      }
+      else {
         $header = $header .  "," . $year ;
+      }
     }
     $output .= $header . "\n";
     $i = 0;
@@ -133,11 +138,7 @@ class DemographicTrendsCSV  {
             $amount = $row[$year]['amount'] . "%";
           }
           else if($row[$year]['amount'] < 0) {
-            if($year == 2020) {
-              $amount = $row[$year]['amount'] . "%(b)";
-            }else {
-              $amount = '"' . "(" . abs($row[$year]['amount']) . "%)" . '"';
-            }
+            $amount = '"' . "(" . abs($row[$year]['amount']) . "%)" . '"';
           }
           else {
             $amount = "NA";
@@ -148,10 +149,12 @@ class DemographicTrendsCSV  {
           }else if($row[$year]['amount'] < 0){
             $amount = '"' . "(" . FormattingUtilities::trendsNumberDisplay(abs($row[$year]['amount'])) . ")" . '"';
           }else if($row[$year]['amount'] == 0){
-            if(strpos($row['category'], ':'))
+            if(strpos($row['category'], ':')) {
               $amount = '';
-            else
+            }
+            else {
               $amount = '"-"';
+            }
           }
 
         }
@@ -164,11 +167,11 @@ class DemographicTrendsCSV  {
     }
 
     $output .= "\n"."\n".'"'."(a) Includes rounding adjustment".'"';
-    $output .= "\n"."(b) Six months average".'"';
-    $output .= "\n"."\n".'"'."NOTES: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information.".'"';
-    $output .= "\n".'"'."Other than the City of New York, no single employer employs more than 2 percent of total nonagricultural employees.".'"';
+    $output .= "\n".'"'."(b) Six months average".'"';
+    $output .= "\n"."\n".'"'."NOTES: This Schedule is provided in lieu of a schedule of principal employee because it provides more meaningful information.".'"';
+    $output .= "\n".'"'."Other than the City of New York, no single employer employs more than 2 percent of total non agricultural employees.".'"';
     $output .= "\n"."\n".'"'."Data are not seasonally adjusted.".'"';
-    $output .= "\n"."\n".'"'."SOURCE: New York State Department of Labor, Division of Research and Statistics.".'"';
+    $output .= "\n"."\n".'"'."Source: New York State Department of Labor, Division of Research and Statistics.".'"';
     return $output;
   }
 
@@ -181,7 +184,7 @@ class DemographicTrendsCSV  {
 
     $output .= "\n".'2002-'.$last_year.' (annual averages in thousands)'."\n"."\n";
     $header = 'Year';
-    $header .=  ",Public Assistance (in thousands)" ;
+    $header .=  ",Public Assistance" ;
     $header .=  ",SSI(a)" ;
 
     $output .= $header . "\n";
@@ -208,14 +211,14 @@ class DemographicTrendsCSV  {
     $last_year = end($node->data)['fiscal_year'];
     reset($node->data);
 
-    $header = ",,,{$first_year}-{$last_year},,,"."\n";
-    $header .= 'year';
+    $header = ",,{$first_year}-{$last_year},,"."\n";
+    $header .= 'Year';
 
     $header .=  ",New York City Employed - Civilian Labor Force (in thousands)" ;
     $header .=  ",New York City Unemployed (a) - Civilian Labor Force (in thousands)"  ;
 
-    $header .=  ",New York City Unemployment Rate,";
-    $header .=  ",United States Unemployment Rate,";
+    $header .=  ",New York City Unemployment Rate";
+    $header .=  ",United States Unemployment Rate";
 
     $output .= $header . "\n";
     $count = 1;
@@ -224,8 +227,8 @@ class DemographicTrendsCSV  {
       $rowString = $row['fiscal_year'] ;
       $rowString .= ','  . '"'. FormattingUtilities::trendsNumberDisplay($row['civilian_labor_force_new_york_city_employed']) . '"';
       $rowString .= ','  . '"'. FormattingUtilities::trendsNumberDisplay($row['civilian_labor_force_unemployed']) . '"';
-      $rowString .= ','  . '"'. FormattingUtilities::trendsNumberDisplay($row['unemployment_rate_city_percent'],1) . '"'.','.$percent_sign;
-      $rowString .= ','  . '"'. FormattingUtilities::trendsNumberDisplay($row['unemployment_rate_united_states_percent'],1) . '"'.','.$percent_sign;
+      $rowString .= ','  . '"'. FormattingUtilities::trendsNumberDisplay($row['unemployment_rate_city_percent'],1) . '"'.$percent_sign;
+      $rowString .= ','  . '"'. FormattingUtilities::trendsNumberDisplay($row['unemployment_rate_united_states_percent'],1) . '"'.$percent_sign;
 
       $output .= $rowString . "\n";
       $count++;

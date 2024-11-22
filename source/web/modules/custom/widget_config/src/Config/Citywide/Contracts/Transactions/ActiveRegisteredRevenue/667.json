@@ -10,7 +10,7 @@
     "calyear":"fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates","yeartype":"type_of_year@checkbook:mwbe_contracts_coa_aggregates" ,
     "agency":"agency_id","vendor":"vendor_id","curamtr":"maximum_contract_amount","vendornm":"vendor_name","contdesc":"description",
     "agrmnttype":"agreement_type_id","agencyh":"agency_history_id","contnum":"contract_number","contnum_exact":"contract_number",
-    "aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_id","curamt":"maximum_contract_amount",
+    "aptpin":"brd_awd_no","pin":"tracking_number","awdmethod":"award_method_code","curamt":"maximum_contract_amount",
     "startdate":"effective_begin_date","enddate":"effective_end_date","regdate":"registered_date","cindustry":"industry_type_id",
     "csize":"award_size_id","modamt":"dollar_difference", "pscert":"is_women_owned","cevent":"event_id"},
   "allowRequestParams":["smnid","pscert"],
@@ -30,8 +30,39 @@
   "no_results_content":"No Results Found",
   "dataset": "checkbook:all_agreement_transactions",
   "uniqueSortColumn":"agreement_id",
-  "columns": ["agreement_id","prime_vendor_name","sub_contract_id","is_prime_or_sub","minority_type_id","minority_type_name","fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates","type_of_year@checkbook:mwbe_contracts_coa_aggregates", "contract_number","contract_original_agreement_id","description","document_version","original_contract_amount","maximum_contract_amount","vendor_name","agency_name","vendor_id","agency_id","agreement_type_name","award_method_name","effective_begin_date","effective_end_date","registered_date","brd_awd_no","tracking_number","document_code@checkbook:ref_document_code","industry_type_name","dollar_difference","percent_difference","is_women_owned",
-    "is_emerging"],
+  "columns": [
+    "agreement_id",
+    "prime_vendor_name",
+    "sub_contract_id",
+    "is_prime_or_sub",
+    "minority_type_id",
+    "minority_type_name",
+    "fiscal_year_id@checkbook:mwbe_contracts_coa_aggregates",
+    "type_of_year@checkbook:mwbe_contracts_coa_aggregates",
+    "contract_number","contract_original_agreement_id",
+    "description",
+    "oca_number",
+    "document_version",
+    "original_contract_amount",
+    "maximum_contract_amount",
+    "vendor_name",
+    "agency_name",
+    "vendor_id",
+    "agency_id",
+    "agreement_type_name",
+    "award_method_name",
+    "effective_begin_date",
+    "effective_end_date",
+    "registered_date",
+    "brd_awd_no",
+    "tracking_number",
+    "document_code@checkbook:ref_document_code",
+    "industry_type_name",
+    "dollar_difference",
+    "percent_difference",
+    "is_women_owned",
+    "is_emerging"
+  ],
   "caption":"",
   "derivedColumns": {
     "contract_link": {
@@ -96,6 +127,7 @@
 "table_columns": [
 {"labelAlias": "contract_id","column": "contract_link","sortSourceColumn":"contract_number"},
 {"labelAlias": "contract_purpose","column": "purpose_formatted","sortSourceColumn":"description"},
+{"labelAlias": "oca_number","column": "oca_number","headerClass":"centrig"},
 {"labelAlias": "version","column": "document_version","headerClass":"centrig"},
 {"labelAlias": "current_amount","column": "formatted_current_amount","sortSourceColumn":"maximum_contract_amount","headerClass":"centrig"},
 {"labelAlias": "original_amount","column": "formatted_original_amount","sortSourceColumn":"original_contract_amount","headerClass":"centrig"},
@@ -122,14 +154,15 @@
 "sourceColumn":"minority_type_id",
 "sql":"
 CASE
-WHEN minority_type_id = 2 THEN 'Black American'
-WHEN minority_type_id = 3 THEN 'Hispanic American'
-WHEN minority_type_id = 7 THEN 'Non-M/WBE'
-WHEN minority_type_id = 9 THEN 'Women (Non-Minority)'
-WHEN minority_type_id = 11 THEN 'Individuals and Others'
-WHEN minority_type_id = 6 THEN 'Native American'
-WHEN minority_type_id = 99 THEN 'Emerging (Non-Minority)'
-ELSE 'Asian American'
+WHEN disb_minority_type_id IN (4, 5, 10) THEN 'Asian American'
+WHEN disb_minority_type_id = 2 THEN 'Black American'
+WHEN disb_minority_type_id = 3 THEN 'Hispanic American'
+WHEN disb_minority_type_id = 6 THEN 'Native American'
+WHEN disb_minority_type_id = 7 THEN 'Non-M/WBE'
+WHEN disb_minority_type_id = 9 THEN 'Women (Non-Minority)'
+WHEN disb_minority_type_id = 11 THEN 'Individuals and Others'
+WHEN disb_minority_type_id = 99 THEN 'Emerging (Non-Minority)'
+ELSE 'Others'
 END AS minority_type_name
 "
 }
@@ -185,7 +218,8 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 "aoColumns":[
 {"sClass":"text","sWidth":"195px","asSorting": [ "asc","desc" ]},
 {"sClass":"text","sWidth":"165px","asSorting": [ "asc","desc" ]},
-{"sClass":"number pad-left","sWidth":"75px","asSorting": [ "desc","asc" ]},
+{"sClass":"number-center","sWidth":"90px","asSorting": [ "desc","asc" ]},
+{"sClass":"number-center","sWidth":"90px","asSorting": [ "desc","asc" ]},
 {"sClass":"number pad-left","sWidth":"120px","asSorting": [ "desc","asc" ]},
 {"sClass":"number pad-left","sWidth":"120px","asSorting": [ "desc","asc" ]},
 {"sClass":"text pad-left","sWidth":"120px","asSorting": [ "desc","asc" ]},
@@ -206,7 +240,7 @@ $adjustDataTableOptions->aoColumns = array_values($adjustDataTableOptions->aoCol
 {"bSortable":false,"sWidth":"30px"}
 ],
 
-"aaSorting":[[3,"desc"]],
+"aaSorting":[[4,"desc"]],
 "sScrollX": "100%",
 "bScrollCollapse": true,
 "fnInitComplete": "##function () { new $j.fn.dataTable.FixedColumns( oTable, {

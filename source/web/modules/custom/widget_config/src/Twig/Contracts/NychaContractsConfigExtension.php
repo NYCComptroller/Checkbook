@@ -29,7 +29,7 @@ class NychaContractsConfigExtension extends AbstractExtension
     $agreement_type = RequestUtilities::_getRequestParamValueBottomURL('agreement_type');
     $tcode = RequestUtilities::_getRequestParamValueBottomURL('tCode');
     $summaryTitle = '';
-    global $checkbook_breadcrumb_title;
+    global $_checkbook_breadcrumb_title;
 
     $summaryTitle = NYCHAContractUtil::getTitleByCode($tcode);
     if(empty($summaryTitle)){
@@ -37,7 +37,7 @@ class NychaContractsConfigExtension extends AbstractExtension
     }
 
     $summary = "<h2 class='contract-title' class='title'>{$summaryTitle} Contracts Transactions</h2>";
-    $checkbook_breadcrumb_title =  "$summaryTitle Contracts Transactions";
+    $_checkbook_breadcrumb_title =  "$summaryTitle Contracts Transactions";
 
     return $summary;
   }

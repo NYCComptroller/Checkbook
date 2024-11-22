@@ -24,6 +24,7 @@ namespace Drupal\checkbook_smart_search\Controller;
 require_once(\Drupal::service('extension.list.module')->getPath('checkbook_smart_search') . '/includes/checkbook_smart_search.inc');
 
 use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
+use Drupal\checkbook_log\LogHelper;
 use Drupal\checkbook_project\CommonUtilities\CheckbookDateUtil;
 use Drupal\checkbook_solr\CheckbookSolr;
 use Drupal\checkbook_solr\CheckbookSolrQuery;
@@ -68,7 +69,6 @@ class DefaultController extends ControllerBase {
     }
 
     $selected_facets = $solr_query->getSelectedFacets();
-
     $solr = CheckbookSolr::getInstance($solr_datasource);
     $query = $solr_query->buildQuery();
 
@@ -90,6 +90,19 @@ class DefaultController extends ControllerBase {
 
     //Search Results
     $search_results = $solr->request_phps('select/?' . $query);
+
+    //Adjust the vendor count when subvendor is present for contracts domain
+    if (isset($selected_facets['vendor_name']) && $solr_datasource == Datasource::SOLR_CITYWIDE){
+      foreach ($search_results['facet_counts']['facet_fields']['contract_prime_vendor_name'] as $key => $value) {
+        if (!array_key_exists($key, $search_results['facet_counts']['facet_fields']['vendor_name'])) {
+          //$search_results['facet_counts']['facet_fields']['vendor_name'][$key] += $value;
+          $search_results['facet_counts']['facet_fields']['vendor_name'][$key] = 0;
+        }
+        $search_results['facet_counts']['facet_fields']['vendor_name'][$key] += $value;
+      }
+      unset($search_results['facet_counts']['facet_fields']['contract_prime_vendor_name']);
+    }
+
     _inject_smart_search_drupal_settings($search_results);
 
     $search_results = _ckbk_ss_sort_results($search_results, $datasource_facets);
@@ -227,7 +240,7 @@ class DefaultController extends ControllerBase {
           "url" => $url,
           "category" => $autocomplete_categories[$term],
           "label" => $match,
-          "value" => $match,
+          "value" => urlencode($match),
         ];
       }
     }

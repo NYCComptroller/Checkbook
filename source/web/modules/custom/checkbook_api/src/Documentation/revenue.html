@@ -1,12 +1,14 @@
-<ul class="api-jump-links">
+<h1 class="title" id=page-title">Revenue API</h1>
+<ul class="api-jump-links add-list-reset">
   <li><a href="#global-parameters">Global Parameters</a></li>
   <li><a href="#revenue-parameters">Revenue Paraments</a></li>
   <li><a href="#possible-response">Possible Response Columns</a></li>
   <li><a href="#predefined-xml-entities">Predefined Entities in XML</a></li>
   <li><a href="#sample-xml">Sample XML Requests and Responses</a></li>
   <li><a href="#sample-request">Sample Request: Revenue Transactions</a></li>
-  <li><a href="#sample-response">Sample Response: Revenue Transactions</a>
-  </li>
+  <li><a href="#sample-response">Sample Response: Revenue Transactions</a>  </li>
+  <li><a href="#sample-request-nycha">Sample Request: Revenue Transactions(OTHER GOVERNMENT ENTITIES - NYCHA)</a></li>
+  <li><a href="#sample-response-ncyha">Sample Response: Revenue Transactions(OTHER GOVERNMENT ENTITIES - NYCHA)</a> </li>
   <li><a href="#status-codes-messages">Status Codes and Messages</a></li>
 </ul>
 <p>
@@ -30,8 +32,7 @@
     <td>String – Must be one of the following: Contracts, Budget, Revenue,
       Payroll, or Spending.
     </td>
-    <td>Allows user to select different types of data:<br/>Value must be one
-      of the following Contracts, Budget, Revenue, Payroll, or Spending.
+    <td>Allows user to select different types of data. Value must be one of the following:Contracts, Budget, Revenue, Payroll, Spending, Spending_OGE, Contracts_OGE, Spending_NYCHA, Contracts_NYCHA, Payroll_NYCHA,Budget_NYCHA, and Revenue_NYCHA
     </td>
     <td>Revenue</td>
   </tr>
@@ -73,6 +74,8 @@
     <th>Type of Criteria<br/>(Value/Range)</th>
     <th>Format/Value</th>
     <th>Description</th>
+    <th>Applicable Filters</th>
+    <th>Reference Codes</th>
     <th>Example</th>
   </tr>
   </thead>
@@ -83,7 +86,9 @@
     <td>value</td>
     <td>String - YYYY Maximum 4 Characters</td>
     <td>Budget Fiscal Year. Must be exactly four characters. If no fiscal year is selected, all years are displayed</td>
-    <td>2011</td>
+    <td>Citywide Agencies and Other Government Entities(NYCHA) </td>
+    <td>    </td>
+    <td>2020</td>
   </tr>
   <tr>
     <td class="bold">fiscal_year</td>
@@ -91,24 +96,30 @@
     <td>value</td>
     <td>String - YYYY Maximum 4 Characters</td>
     <td>Fiscal Year. Must be exactly four characters. If no fiscal year is selected, all years are displayed</td>
-    <td>2010</td>
+    <td>Citywide Agencies </td>
+    <td>    </td>
+    <td>2019</td>
   </tr>
   <tr>
     <td class="bold">agency_code</td>
     <td>N</td>
     <td>value</td>
     <td>String - Maximum 3 characters</td>
-    <td>Identification code associated with agency. See here for <a href="/ref_code_list/agency">agency codes list (CSV</a>, <a href="/ref_code_list_excel/agency">Excel</a>)
-    </td>
+    <td>Identification code associated with agency.     </td>
+    <td>Citywide Agencies</td>
+    <td> Citywide: <a href="/ref_code_list/agency">agency codes list</a></td>
     <td>127</td>
   </tr>
   <tr>
     <td class="bold">revenue_class</td>
     <td>N</td>
     <td>value</td>
-    <td>String - Maximum 3 characters</td>
-    <td>See here for <a href="/ref_code_list/revenue_class">revenue class codes
-      list (CSV</a>, <a href="/ref_code_list_excel/revenue_class">Excel</a>)</td>
+    <td>String - Maximum 3 characters(Citywide)
+      String - Maximum 50 characters(NYCHA)</td>
+    <td>Identification code assigned to the Revenue Class. For NYCHA it is searched by revenue class name.</td>
+    <td>Citywide Agencies and Other Government Entities(NYCHA) </td>
+    <td> Citywide: <a href="/ref_code_list/revenue_class">revenue class codes list</a>
+      NYCHA: <a href="/ref_code_list/nycha_revenue_class">revenue class list</a></td</td>
     <td>790</td>
   </tr>
   <tr>
@@ -117,9 +128,10 @@
     <td>value</td>
     <td>String - Maximum 4 characters</td>
     <td>The identification code assigned to the fund class. This code groups
-      the funds you defined on the Fund page for reporting purposes. See
-      here for <a href="/ref_code_list/fund_class">fund class codes
-        list (CSV</a>, <a href="/ref_code_list_excel/fund_class">Excel</a>)</td>
+      the funds you defined on the Fund page for reporting purposes. </td>
+    <td>Citywide Agencies </td>
+    <td>Citywide: <a href="/ref_code_list/fund_class">fund class codes
+      list</a>
     <td>001</td>
   </tr>
   <tr>
@@ -127,8 +139,10 @@
     <td>N</td>
     <td>value</td>
     <td>String - Maximum 4 characters</td>
-    <td>See here for <a href="/ref_code_list/funding_source">funding class
-      codes list (CSV</a>, <a href="/ref_code_list_excel/funding_source">Excel</a>).
+    <td>Identification code assigned to the Fund Class</td>
+    <td>Citywide Agencies </td>
+    <td>Citywide: <a href="/ref_code_list/funding_source">funding class
+      codes list</a>
     </td>
     <td>IF</td>
   </tr>
@@ -136,9 +150,12 @@
     <td class="bold">revenue_category</td>
     <td>N</td>
     <td>value</td>
-    <td>String - Maximum 2 characters</td>
-    <td>See here for <a href="/ref_code_list/revenue_category">revenue
-      category codes list (CSV</a>, <a href="/ref_code_list_excel/revenue_category">Excel</a>).
+    <td>String - Maximum 2 characters(Citywide)
+      String - Maximum 50 characters(NYCHA)</td>
+    <td>Identification code assigned to the Revenue Category. For NYCHA its searched  by revenue category name.</td>
+    <td>Citywide Agencies and Other Government Entities(NYCHA) </td>
+    <td>Citywide:  <a href="/ref_code_list/revenue_category">Revenue Category Codes List</a>
+      <br>NYCHA:  <a href="/ref_code_list/nycha_revenue_category">Revenue Category List</a>
     </td>
     <td>71</td>
   </tr>
@@ -147,10 +164,24 @@
     <td>N</td>
     <td>value</td>
     <td>String - Maximum 5 characters</td>
-    <td>See here for <a href="/ref_code_list/revenue_source">revenue source
-      codes list (CSV</a>, <a href="/ref_code_list_excel/revenue_source">Excel</a>).
+    <td>Identification code assigned to the Revenue Source</td>
+    <td>Citywide Agencies  </td>
+    <td>Citywide: <a href="/ref_code_list/revenue_source">Revenue Source Codes List</a>
     </td>
     <td>1008</td>
+  </tr>
+
+  <tr>
+    <td class="bold">revenue_expense_category</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String - Maximum 20 characters</td>
+    <td>Identification code association to expenditure type accounts.</td>
+    <td>Citywide Agencies and Other Government Entities(NYCHA) </td>
+    <td>
+      NYCHA:  <a href="/ref_code_list/nycha_revenue_expenditure_type">Revenue Expense Category Codes List</a>
+    </td>
+    <td>662</td>
   </tr>
   <tr>
     <td class="bold">adopted</td>
@@ -158,8 +189,9 @@
     <td>Range</td>
     <td>String - Maximum 18 Characters</td>
     <td>A dollar amount for the total amount of a budget that was officially
-      approved by the legislative body for a specified time period.
-    </td>
+      approved by the legislative body for a specified time period.</td>
+    <td>Citywide Agencies and Other Government Entities(NYCHA) </td>
+    <td>    </td>
     <td>250000.00</td>
   </tr>
   <tr>
@@ -168,6 +200,8 @@
     <td>Range</td>
     <td>String - Maximum 18 Characters</td>
     <td>A dollar amount for the current, to-date, budget amount.</td>
+    <td>Citywide Agencies and Other Government Entities(NYCHA) </td>
+    <td>  </td>
     <td>250000.00</td>
   </tr>
   <tr>
@@ -176,9 +210,105 @@
     <td>Range</td>
     <td>String - Maximum 18 Characters</td>
     <td>The dollar amount posted to the journals as a result of a
-      transaction.
-    </td>
+      transaction.</td>
+    <td>Citywide Agencies and Other Government Entities(NYCHA) </td>
+    <td>      </td>
     <td>250000.00</td>
+  </tr>
+  <tr>
+    <td class="bold">conditional_category</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String - Maximum 2 Characters</td>
+    <td>The identification id assigned to the conditional category. </td>
+    <td>Citywide Agencies </td>
+    <td> Citywide: <a href="/ref_code_list/conditional_category">Conditional Category Ids</a></td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td class="bold">remaining</td>
+    <td>N</td>
+    <td>Range</td>
+    <td>String - Maximum 18 Characters</td>
+    <td>A dollar amount for funds remaining.</td>
+    <td>Citywide Agencies and Other Government Entities(NYCHA) </td>
+    <td>      </td>
+    <td>250000.00</td>
+  </tr>
+
+  <tr>
+    <td class="bold">budget_type</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String - Maximum 50 characters</td>
+    <td>Is the account type.</td>
+    <td>Other Government Entities(NYCHA) </td>
+    <td> NYCHA:  <a href="/ref_code_list/nycha_revenue_budget_type">Budget Types List</a>
+    </td>
+    <td>Other Revenues</td>
+  </tr>
+
+
+  <tr>
+    <td class="bold">budget_name</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String - Maximum 100 characters</td>
+    <td>Is the account name under each account type.The lowest level within the
+      Authority’s chart of accounts that identifies the expenditure type.
+      Examples of Accounts are: supplies, equipment, contracts, travel, and utilities.</td>
+    <td>Other Government Entities(NYCHA) </td>
+    <td> NYCHA:  <a href="/ref_code_list/nycha_revenue_budget_name">Budget Names List</a>
+    </td>
+    <td>Other</td>
+  </tr>
+
+  <tr>
+    <td class="bold">funding_source</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String - Maximum 4 characters</td>
+    <td>Is the account type.</td>
+    <td>Other Government Entities(NYCHA) </td>
+    <td>NYCHA: <a href="/ref_code_list/nycha_revenue_funding_source">Funding source codes List</a>
+    </td>
+    <td>M016</td>
+  </tr>
+
+  <tr>
+    <td class="bold">responsibility_center</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String - Maximum 10 characters</td>
+    <td> A Development or Department where expenses will be budgeted and recorded.</td>
+    <td>Other Government Entities(NYCHA) </td>
+    <td>NYCHA: <a href="/ref_code_list/nycha_revenue_responsibility_center">Responsibility Center Codes List</a>
+    </td>
+    <td>PM21870</td>
+  </tr>
+  <tr>
+    <td class="bold">program</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String - Maximum 6 characters</td>
+    <td> Unique identifier used primarily to specify Grant Year for Funding Source.
+      Program to Eliminate the Gap (PEG) - Is a financial package of ideas to close a given financial deficit. </td>
+    <td>Other Government Entities(NYCHA) </td>
+    <td>NYCHA: <a href="/ref_code_list/nycha_revenue_program">Program Codes List</a>
+    </td>
+    <td>S18AHP</td>
+  </tr>
+
+  <tr>
+    <td class="bold">project</td>
+    <td>N</td>
+    <td>value</td>
+    <td>String - Maximum 6 characters</td>
+    <td> A budget line item identifier used for external reporting and billing purposes.. </td>
+    <td>Other Government Entities(NYCHA) </td>
+    <td>NYCHA: <a href="/ref_code_list/nycha_revenue_project">Project Codes List</a>
+    </td>
+    <td>CCF023</td>
   </tr>
   </tbody>
 </table>
@@ -192,39 +322,96 @@
   output. Below mentioned are the possible column names for budget domain. The
   user should include the required column names in the request xml in an
   element called &lt;response_columns&gt;</p>
-<table class="api-table">
-  <thead>
-  <tr>
-    <th class="bold" colspan="2">Response Column Names</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td>agency</td>
-    <td>budget_fiscal_year</td>
-  </tr>
-  <tr>
-    <td>fiscal_year</td>
-    <td>funding_class</td>
-  </tr>
-  <tr>
-    <td>revenue_category</td>
-    <td>revenue_class</td>
-  </tr>
-  <tr>
-    <td>revenue_source</td>
-    <td>fund_class</td>
-  </tr>
-  <tr>
-    <td>adopted</td>
-    <td>modified</td>
-  </tr>
-  <tr>
-    <td>recognized</td>
-    <td>closing_classification_name</td>
-  </tr>
-  </tbody>
-</table>
+<div class="api-response-columns-center">
+  <table>
+    <tr>
+      <td style="width: 5%"></td>
+      <td  class="api-td-left" style="width: 40%">
+        <table class="api-response-columns-table">
+          <thead>
+          <tr>
+            <th colspan="2">(Citywide)Response Column Names</th>
+          </tr>
+          <thead>
+          <tr>
+            <th class="bold" colspan="2">Response Column Names</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>agency</td>
+            <td>budget_fiscal_year</td>
+          </tr>
+          <tr>
+            <td>fiscal_year</td>
+            <td>funding_class</td>
+          </tr>
+          <tr>
+            <td>revenue_category</td>
+            <td>revenue_class</td>
+          </tr>
+          <tr>
+            <td>revenue_source</td>
+            <td>fund_class</td>
+          </tr>
+          <tr>
+            <td>adopted</td>
+            <td>modified</td>
+          </tr>
+          <tr>
+            <td>recognized</td>
+            <td>closing_classification_name</td>
+          </tr>
+          </tbody>
+        </table>
+      </td>
+
+      <td style="width: 5%">&nbsp;</td>
+      <td class="api-td-right" style="width:60">
+        <table class="api-response-columns-table">
+          <thead>
+          <tr>
+            <th colspan="2"> (Other Government Entities - NYCHA) Response Column Names</th>
+          </tr>
+          <thead>
+          <tr>
+            <td>budget_fiscal_year</td>
+            <td>project</td>
+          </tr>
+          <tr>
+            <td>adopted</td>
+            <td>program</td>
+          </tr>
+          <tr>
+            <td>modified</td>
+            <td>budget_type</td>
+          </tr>
+          <tr>
+            <td>recognized</td>
+            <td>budget_name</td>
+          </tr>
+          <tr>
+            <td>remaining</td>
+            <td>revenue_category</td>
+          </tr>
+          <tr>
+            <td>revenue_expense_category</td>
+            <td>revenue_class</td>
+          </tr>
+          <tr>
+            <td>funding_source</td>
+            <td>closing_classification_name</td>
+          </tr>
+          <tr>
+            <td>responsibility_center </td>
+            <td></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+
 <br />
 <div class="divider" style="clear: both;"></div>
 <a href="#top" class="float-right">Back to the top</a>
@@ -300,205 +487,416 @@
   <a name="sample-request"></a>
 </p>
 <h3>Sample Request: Revenue Transactions</h3>
-<pre class="prettyprint" id="xml">
-&lt;request&gt;
-    &lt;type_of_data&gt;Revenue&lt;/type_of_data&gt;
-    &lt;records_from&gt;1&lt;/records_from&gt;
-    &lt;max_records&gt;5&lt;/max_records&gt;
-    &lt;search_criteria&gt;
-        &lt;criteria&gt;
-            &lt;name&gt;budget_fiscal_year&lt;/name&gt;
-            &lt;type&gt;value&lt;/type&gt;
-            &lt;value&gt;2013&lt;/value&gt;
-        &lt;/criteria&gt;
+<pre class="prettyprint prettyprinted" id="xml" style=""><span class="tag">&lt;request&gt;</span><span class="pln">
+    </span><span class="tag">&lt;type_of_data&gt;</span><span class="pln">Revenue</span><span class="tag">&lt;/type_of_data&gt;</span><span class="pln">
+    </span><span class="tag">&lt;records_from&gt;</span><span class="pln">1</span><span class="tag">&lt;/records_from&gt;</span><span class="pln">
+    </span><span class="tag">&lt;max_records&gt;</span><span class="pln">5</span><span class="tag">&lt;/max_records&gt;</span><span class="pln">
+    </span><span class="tag">&lt;search_criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">budget_fiscal_year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">2013</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
 
-          &lt;criteria&gt;
-            &lt;name&gt;fiscal_year&lt;/name&gt;
-            &lt;type&gt;value&lt;/type&gt;
-            &lt;value&gt;2013&lt;/value&gt;
-        &lt;/criteria&gt;
+          </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">fiscal_year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">2013</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
 
-        &lt;criteria&gt;
-            &lt;name&gt;agency_code&lt;/name&gt;
-            &lt;type&gt;value&lt;/type&gt;
-            &lt;value&gt;040&lt;/value&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-            &lt;name&gt;revenue_category&lt;/name&gt;
-            &lt;type&gt;value&lt;/type&gt;
-            &lt;value&gt;22&lt;/value&gt;
-        &lt;/criteria&gt;
-        &lt;criteria&gt;
-            &lt;name&gt;revenue_source&lt;/name&gt;
-            &lt;type&gt;value&lt;/type&gt;
-            &lt;value&gt;00460&lt;/value&gt;
-        &lt;/criteria&gt;
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">agency_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">040</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">revenue_category</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">22</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">revenue_source</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">00460</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
 
-        &lt;criteria&gt;
-            &lt;name&gt;revenue_class&lt;/name&gt;
-            &lt;type&gt;value&lt;/type&gt;
-            &lt;value&gt;010&lt;/value&gt;
-        &lt;/criteria&gt;
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">revenue_class</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">010</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
 
-         &lt;criteria&gt;
-            &lt;name&gt;funding_class&lt;/name&gt;
-            &lt;type&gt;value&lt;/type&gt;
-            &lt;value&gt;C&lt;/value&gt;
-        &lt;/criteria&gt;
+         </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">funding_class</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">C</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
 
-         &lt;criteria&gt;
-            &lt;name&gt;fund_class&lt;/name&gt;
-            &lt;type&gt;value&lt;/type&gt;
-            &lt;value&gt;001&lt;/value&gt;
-        &lt;/criteria&gt;
-          &lt;criteria&gt;
-             &lt;name&gt;adopted&lt;/name&gt;
-              &lt;type&gt;range&lt;/type&gt;
-               &lt;start&gt;10000.00&lt;/start&gt;
-               &lt;end&gt;250000000.00&lt;/end&gt;
-         &lt;/criteria&gt;
-           &lt;criteria&gt;
-                &lt;name&gt;modified&lt;/name&gt;
-                 &lt;type&gt;range&lt;/type&gt;
-                 &lt;start&gt;10000.00&lt;/start&gt;
-                &lt;end&gt;250000000.00&lt;/end&gt;
-           &lt;/criteria&gt;
-         &lt;criteria&gt;
-           &lt;name&gt;recognized&lt;/name&gt;
-            &lt;type&gt;range&lt;/type&gt;
-            &lt;start&gt;10000.00&lt;/start&gt;
-           &lt;end&gt;2500000000.00&lt;/end&gt;
-         &lt;/criteria&gt;
-    &lt;/search_criteria&gt;
-    &lt;response_columns&gt;
-        &lt;column&gt;agency&lt;/column&gt;
-        &lt;column&gt;budget_fiscal_year&lt;/column&gt;
-        &lt;column&gt;fiscal_year&lt;/column&gt;
-        &lt;column&gt;fund_class&lt;/column&gt;
-        &lt;column&gt;funding_class&lt;/column&gt;
-        &lt;column&gt;revenue_category&lt;/column&gt;
-        &lt;column&gt;revenue_source&lt;/column&gt;
-        &lt;column&gt;revenue_class&lt;/column&gt;
-        &lt;column&gt;adopted&lt;/column&gt;
-        &lt;column&gt;modified&lt;/column&gt;
-        &lt;column&gt;recognized&lt;/column&gt;
-        &lt;column&gt;closing_classification_name&lt;/column&gt;
-    &lt;/response_columns&gt;
-  &lt;/request&gt;
-</pre>
+         </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">fund_class</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">001</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+             </span><span class="tag">&lt;name&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+               </span><span class="tag">&lt;start&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+               </span><span class="tag">&lt;end&gt;</span><span class="pln">250000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+         </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+           </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+                </span><span class="tag">&lt;name&gt;</span><span class="pln">modified</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+                 </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+                 </span><span class="tag">&lt;start&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+                </span><span class="tag">&lt;end&gt;</span><span class="pln">250000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+           </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+         </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+           </span><span class="tag">&lt;name&gt;</span><span class="pln">recognized</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;start&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+           </span><span class="tag">&lt;end&gt;</span><span class="pln">2500000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+         </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/search_criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;response_columns&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">agency</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_fiscal_year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">fiscal_year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">fund_class</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">funding_class</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">revenue_category</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">revenue_source</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">revenue_class</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">modified</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">recognized</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">closing_classification_name</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/response_columns&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/request&gt;</span></pre>
 <p>
   <a href="#top" class="float-right">Back to the top</a>
   <br>
   <a name="sample-response"></a>
 </p>
 <h3>Sample Response: Revenue Transactions</h3>
-<pre class="prettyprint" id="xml">
-&lt;response&gt;
-   &lt;status&gt;
-      &lt;result&gt;success&lt;/result&gt;
-   &lt;/status&gt;
-   &lt;request_criteria&gt;
-      &lt;request&gt;
-         &lt;type_of_data&gt;Revenue&lt;/type_of_data&gt;
-         &lt;records_from&gt;1&lt;/records_from&gt;
-         &lt;max_records&gt;5&lt;/max_records&gt;
-         &lt;search_criteria&gt;
-            &lt;criteria&gt;
-               &lt;name&gt;budget_fiscal_year&lt;/name&gt;
-               &lt;type&gt;value&lt;/type&gt;
-               &lt;value&gt;2013&lt;/value&gt;
-            &lt;/criteria&gt;
-            &lt;criteria&gt;
-               &lt;name&gt;fiscal_year&lt;/name&gt;
-               &lt;type&gt;value&lt;/type&gt;
-               &lt;value&gt;2013&lt;/value&gt;
-            &lt;/criteria&gt;
-            &lt;criteria&gt;
-               &lt;name&gt;agency_code&lt;/name&gt;
-               &lt;type&gt;value&lt;/type&gt;
-               &lt;value&gt;040&lt;/value&gt;
-            &lt;/criteria&gt;
-            &lt;criteria&gt;
-               &lt;name&gt;revenue_category&lt;/name&gt;
-               &lt;type&gt;value&lt;/type&gt;
-               &lt;value&gt;22&lt;/value&gt;
-            &lt;/criteria&gt;
-            &lt;criteria&gt;
-               &lt;name&gt;revenue_source&lt;/name&gt;
-               &lt;type&gt;value&lt;/type&gt;
-               &lt;value&gt;00460&lt;/value&gt;
-            &lt;/criteria&gt;
-            &lt;criteria&gt;
-               &lt;name&gt;revenue_class&lt;/name&gt;
-               &lt;type&gt;value&lt;/type&gt;
-               &lt;value&gt;010&lt;/value&gt;
-            &lt;/criteria&gt;
-            &lt;criteria&gt;
-               &lt;name&gt;funding_class&lt;/name&gt;
-               &lt;type&gt;value&lt;/type&gt;
-               &lt;value&gt;C&lt;/value&gt;
-            &lt;/criteria&gt;
-            &lt;criteria&gt;
-               &lt;name&gt;fund_class&lt;/name&gt;
-               &lt;type&gt;value&lt;/type&gt;
-               &lt;value&gt;001&lt;/value&gt;
-            &lt;/criteria&gt;
-            &lt;criteria&gt;
-               &lt;name&gt;adopted&lt;/name&gt;
-               &lt;type&gt;range&lt;/type&gt;
-               &lt;start&gt;10000.00&lt;/start&gt;
-               &lt;end&gt;250000000.00&lt;/end&gt;
-            &lt;/criteria&gt;
-            &lt;criteria&gt;
-               &lt;name&gt;modified&lt;/name&gt;
-               &lt;type&gt;range&lt;/type&gt;
-               &lt;start&gt;10000.00&lt;/start&gt;
-               &lt;end&gt;250000000.00&lt;/end&gt;
-            &lt;/criteria&gt;
-            &lt;criteria&gt;
-               &lt;name&gt;recognized&lt;/name&gt;
-               &lt;type&gt;range&lt;/type&gt;
-               &lt;start&gt;10000.00&lt;/start&gt;
-               &lt;end&gt;2500000000.00&lt;/end&gt;
-            &lt;/criteria&gt;
-         &lt;/search_criteria&gt;
-         &lt;response_columns&gt;
-            &lt;column&gt;agency&lt;/column&gt;
-            &lt;column&gt;budget_fiscal_year&lt;/column&gt;
-            &lt;column&gt;fiscal_year&lt;/column&gt;
-            &lt;column&gt;fund_class&lt;/column&gt;
-            &lt;column&gt;funding_class&lt;/column&gt;
-            &lt;column&gt;revenue_category&lt;/column&gt;
-            &lt;column&gt;revenue_source&lt;/column&gt;
-            &lt;column&gt;revenue_class&lt;/column&gt;
-            &lt;column&gt;adopted&lt;/column&gt;
-            &lt;column&gt;modified&lt;/column&gt;
-            &lt;column&gt;recognized&lt;/column&gt;
-            &lt;column&gt;closing_classification_name&lt;/column&gt;
-         &lt;/response_columns&gt;
-      &lt;/request&gt;
-   &lt;/request_criteria&gt;
-   &lt;result_records&gt;
-      &lt;record_count&gt;80&lt;/record_count&gt;
-      &lt;revenue_transactions&gt;
-         &lt;transaction&gt;
-            &lt;agency&gt;Department of Education&lt;/agency&gt;
-            &lt;revenue_category&gt;CHARGES FOR SERVICES&lt;/revenue_category&gt;
-            &lt;revenue_source&gt;EDUCATION SERVICES/FEES&lt;/revenue_source&gt;
-            &lt;fund_class&gt;General Fund&lt;/fund_class&gt;
-            &lt;funding_class&gt;CITY FUNDS&lt;/funding_class&gt;
-            &lt;revenue_class&gt;GENERAL GOVERNMENTAL CHARGES&lt;/revenue_class&gt;
-            &lt;budget_fiscal_year&gt;2013&lt;/budget_fiscal_year&gt;
-            &lt;fiscal_year&gt;2013&lt;/fiscal_year&gt;
-            &lt;adopted&gt;20073968&lt;/adopted&gt;
-            &lt;modified&gt;20073968&lt;/modified&gt;
-            &lt;recognized&gt;382808.58&lt;/recognized&gt;
-            &lt;closing_classification_name&gt;Collected Revenue&lt;/closing_classification_name&gt;
-         &lt;/transaction&gt;
-&lt;/revenue_transactions&gt;
-   &lt;/result_records&gt;
-&lt;/response&gt;
-</pre>
+<pre class="prettyprint prettyprinted" id="xml" style=""><span class="tag">&lt;response&gt;</span><span class="pln">
+   </span><span class="tag">&lt;status&gt;</span><span class="pln">
+      </span><span class="tag">&lt;result&gt;</span><span class="pln">success</span><span class="tag">&lt;/result&gt;</span><span class="pln">
+   </span><span class="tag">&lt;/status&gt;</span><span class="pln">
+   </span><span class="tag">&lt;request_criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;request&gt;</span><span class="pln">
+         </span><span class="tag">&lt;type_of_data&gt;</span><span class="pln">Revenue</span><span class="tag">&lt;/type_of_data&gt;</span><span class="pln">
+         </span><span class="tag">&lt;records_from&gt;</span><span class="pln">1</span><span class="tag">&lt;/records_from&gt;</span><span class="pln">
+         </span><span class="tag">&lt;max_records&gt;</span><span class="pln">5</span><span class="tag">&lt;/max_records&gt;</span><span class="pln">
+         </span><span class="tag">&lt;search_criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+               </span><span class="tag">&lt;name&gt;</span><span class="pln">budget_fiscal_year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+               </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+               </span><span class="tag">&lt;value&gt;</span><span class="pln">2013</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+               </span><span class="tag">&lt;name&gt;</span><span class="pln">fiscal_year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+               </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+               </span><span class="tag">&lt;value&gt;</span><span class="pln">2013</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+               </span><span class="tag">&lt;name&gt;</span><span class="pln">agency_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+               </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+               </span><span class="tag">&lt;value&gt;</span><span class="pln">040</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+               </span><span class="tag">&lt;name&gt;</span><span class="pln">revenue_category</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+               </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+               </span><span class="tag">&lt;value&gt;</span><span class="pln">22</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+               </span><span class="tag">&lt;name&gt;</span><span class="pln">revenue_source</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+               </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+               </span><span class="tag">&lt;value&gt;</span><span class="pln">00460</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+               </span><span class="tag">&lt;name&gt;</span><span class="pln">revenue_class</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+               </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+               </span><span class="tag">&lt;value&gt;</span><span class="pln">010</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+               </span><span class="tag">&lt;name&gt;</span><span class="pln">funding_class</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+               </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+               </span><span class="tag">&lt;value&gt;</span><span class="pln">C</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+               </span><span class="tag">&lt;name&gt;</span><span class="pln">fund_class</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+               </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+               </span><span class="tag">&lt;value&gt;</span><span class="pln">001</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+               </span><span class="tag">&lt;name&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+               </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+               </span><span class="tag">&lt;start&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+               </span><span class="tag">&lt;end&gt;</span><span class="pln">250000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+               </span><span class="tag">&lt;name&gt;</span><span class="pln">modified</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+               </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+               </span><span class="tag">&lt;start&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+               </span><span class="tag">&lt;end&gt;</span><span class="pln">250000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+               </span><span class="tag">&lt;name&gt;</span><span class="pln">recognized</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+               </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+               </span><span class="tag">&lt;start&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+               </span><span class="tag">&lt;end&gt;</span><span class="pln">2500000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+            </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+         </span><span class="tag">&lt;/search_criteria&gt;</span><span class="pln">
+         </span><span class="tag">&lt;response_columns&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">agency</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_fiscal_year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">fiscal_year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">fund_class</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">funding_class</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">revenue_category</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">revenue_source</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">revenue_class</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">modified</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">recognized</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">closing_classification_name</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+         </span><span class="tag">&lt;/response_columns&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/request&gt;</span><span class="pln">
+   </span><span class="tag">&lt;/request_criteria&gt;</span><span class="pln">
+   </span><span class="tag">&lt;result_records&gt;</span><span class="pln">
+      </span><span class="tag">&lt;record_count&gt;</span><span class="pln">80</span><span class="tag">&lt;/record_count&gt;</span><span class="pln">
+      </span><span class="tag">&lt;revenue_transactions&gt;</span><span class="pln">
+         </span><span class="tag">&lt;transaction&gt;</span><span class="pln">
+            </span><span class="tag">&lt;agency&gt;</span><span class="pln">Department of Education</span><span class="tag">&lt;/agency&gt;</span><span class="pln">
+            </span><span class="tag">&lt;revenue_category&gt;</span><span class="pln">CHARGES FOR SERVICES</span><span class="tag">&lt;/revenue_category&gt;</span><span class="pln">
+            </span><span class="tag">&lt;revenue_source&gt;</span><span class="pln">EDUCATION SERVICES/FEES</span><span class="tag">&lt;/revenue_source&gt;</span><span class="pln">
+            </span><span class="tag">&lt;fund_class&gt;</span><span class="pln">General Fund</span><span class="tag">&lt;/fund_class&gt;</span><span class="pln">
+            </span><span class="tag">&lt;funding_class&gt;</span><span class="pln">CITY FUNDS</span><span class="tag">&lt;/funding_class&gt;</span><span class="pln">
+            </span><span class="tag">&lt;revenue_class&gt;</span><span class="pln">GENERAL GOVERNMENTAL CHARGES</span><span class="tag">&lt;/revenue_class&gt;</span><span class="pln">
+            </span><span class="tag">&lt;budget_fiscal_year&gt;</span><span class="pln">2013</span><span class="tag">&lt;/budget_fiscal_year&gt;</span><span class="pln">
+            </span><span class="tag">&lt;fiscal_year&gt;</span><span class="pln">2013</span><span class="tag">&lt;/fiscal_year&gt;</span><span class="pln">
+            </span><span class="tag">&lt;adopted&gt;</span><span class="pln">20073968</span><span class="tag">&lt;/adopted&gt;</span><span class="pln">
+            </span><span class="tag">&lt;modified&gt;</span><span class="pln">20073968</span><span class="tag">&lt;/modified&gt;</span><span class="pln">
+            </span><span class="tag">&lt;recognized&gt;</span><span class="pln">382808.58</span><span class="tag">&lt;/recognized&gt;</span><span class="pln">
+            </span><span class="tag">&lt;closing_classification_name&gt;</span><span class="pln">Collected Revenue</span><span class="tag">&lt;/closing_classification_name&gt;</span><span class="pln">
+         </span><span class="tag">&lt;/transaction&gt;</span><span class="pln">
+</span><span class="tag">&lt;/revenue_transactions&gt;</span><span class="pln">
+   </span><span class="tag">&lt;/result_records&gt;</span><span class="pln">
+</span><span class="tag">&lt;/response&gt;</span></pre>
+<a href="#top" class="float-right">Back to the top</a>
+<a name="sample-request-nycha"></a>
+</p>
+<h3>Sample Request: Revenue Transactions(OTHER GOVERNMENT ENTITIES - NYCHA)</h3>
+<pre class="prettyprint prettyprinted" id="xml" style=""><span class="tag">&lt;request&gt;</span><span class="pln">
+    </span><span class="tag">&lt;type_of_data&gt;</span><span class="pln">Revenue_NYCHA</span><span class="tag">&lt;/type_of_data&gt;</span><span class="pln">
+    </span><span class="tag">&lt;records_from&gt;</span><span class="pln">1</span><span class="tag">&lt;/records_from&gt;</span><span class="pln">
+    </span><span class="tag">&lt;max_records&gt;</span><span class="pln">5</span><span class="tag">&lt;/max_records&gt;</span><span class="pln">
+    </span><span class="tag">&lt;search_criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">budget_fiscal_year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">2018</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">revenue_category</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">operating reserve</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">funding_source</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">L083</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">revenue_class</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">mixed finance</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+         </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">revenue_expense_category</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">57876</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+         </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">responsibility_center</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">K008300</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+ </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">budget_name</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">DWELLING RENT</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">budget_type</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">REVENUE FROM OPERATIONS</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">program</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">000000</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+         </span><span class="tag">&lt;name&gt;</span><span class="pln">project</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">000000</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+
+          </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+             </span><span class="tag">&lt;name&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+               </span><span class="tag">&lt;start&gt;</span><span class="pln">-10000000.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+               </span><span class="tag">&lt;end&gt;</span><span class="pln">250000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+         </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+           </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+                </span><span class="tag">&lt;name&gt;</span><span class="pln">modified</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+                 </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+                 </span><span class="tag">&lt;start&gt;</span><span class="pln">-10000000.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+                </span><span class="tag">&lt;end&gt;</span><span class="pln">250000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+           </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+         </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+           </span><span class="tag">&lt;name&gt;</span><span class="pln">recognized</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;start&gt;</span><span class="pln">-10000000.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+           </span><span class="tag">&lt;end&gt;</span><span class="pln">2500000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+         </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+  </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+           </span><span class="tag">&lt;name&gt;</span><span class="pln">remaining</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;start&gt;</span><span class="pln">-10000000.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+           </span><span class="tag">&lt;end&gt;</span><span class="pln">2500000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+         </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/search_criteria&gt;</span><span class="pln">
+       </span><span class="tag">&lt;response_columns&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_fiscal_year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_name</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_type</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">closing_classification_name</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">revenue_expense_category</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">funding_source</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">modified</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">program</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">project</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">recognized</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">remaining</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">responsibility_center</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">revenue_category</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">revenue_class</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+         </span><span class="tag">&lt;/response_columns&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/request&gt;</span></pre>
+<p>
+  <a href="#top" class="float-right">Back to the top</a>
+  <a name="sample-response-nycha"></a>
+</p>
+<h3>Sample Response: Revenue Transactions(OTHER GOVERNMENT ENTITIES - NYCHA)</h3>
+<pre class="prettyprint prettyprinted" id="xml" style=""><span class="tag">&lt;response&gt;</span><span class="pln">
+   </span><span class="tag">&lt;status&gt;</span><span class="pln">
+      </span><span class="tag">&lt;result&gt;</span><span class="pln">success</span><span class="tag">&lt;/result&gt;</span><span class="pln">
+   </span><span class="tag">&lt;/status&gt;</span><span class="pln">
+   </span><span class="tag">&lt;request_criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;request&gt;</span><span class="pln">
+         </span><span class="tag">&lt;type_of_data&gt;</span><span class="pln">Revenue_NYCHA</span><span class="tag">&lt;/type_of_data&gt;</span><span class="pln">
+         </span><span class="tag">&lt;records_from&gt;</span><span class="pln">1</span><span class="tag">&lt;/records_from&gt;</span><span class="pln">
+         </span><span class="tag">&lt;max_records&gt;</span><span class="pln">5</span><span class="tag">&lt;/max_records&gt;</span><span class="pln">
+        </span><span class="tag">&lt;search_criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">budget_fiscal_year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">2018</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">revenue_category</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">operating reserve</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">funding_source</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">L083</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">revenue_class</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">mixed finance</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+         </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">revenue_expense_category</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">57876</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+         </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+            </span><span class="tag">&lt;name&gt;</span><span class="pln">responsibility_center</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;value&gt;</span><span class="pln">K008300</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+             </span><span class="tag">&lt;name&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+              </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+               </span><span class="tag">&lt;start&gt;</span><span class="pln">-10000000.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+               </span><span class="tag">&lt;end&gt;</span><span class="pln">250000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+         </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+           </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+                </span><span class="tag">&lt;name&gt;</span><span class="pln">modified</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+                 </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+                 </span><span class="tag">&lt;start&gt;</span><span class="pln">-10000000.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+                </span><span class="tag">&lt;end&gt;</span><span class="pln">250000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+           </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+         </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+           </span><span class="tag">&lt;name&gt;</span><span class="pln">recognized</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;start&gt;</span><span class="pln">-10000000.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+           </span><span class="tag">&lt;end&gt;</span><span class="pln">2500000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+         </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+  </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+           </span><span class="tag">&lt;name&gt;</span><span class="pln">remaining</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+            </span><span class="tag">&lt;start&gt;</span><span class="pln">-10000000.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+           </span><span class="tag">&lt;end&gt;</span><span class="pln">2500000000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+         </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/search_criteria&gt;</span><span class="pln">
+         </span><span class="tag">&lt;response_columns&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_fiscal_year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_name</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_type</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">closing_classification_name</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">revenue_expense_category</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+             </span><span class="tag">&lt;column&gt;</span><span class="pln">funding_source</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">modified</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">program</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">project</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">recognized</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">remaining</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">responsibility_center</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">revenue_category</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+            </span><span class="tag">&lt;column&gt;</span><span class="pln">revenue_class</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+         </span><span class="tag">&lt;/response_columns&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/request&gt;</span><span class="pln">
+   </span><span class="tag">&lt;/request_criteria&gt;</span><span class="pln">
+   </span><span class="tag">&lt;result_records&gt;</span><span class="pln">
+      </span><span class="tag">&lt;record_count&gt;</span><span class="pln">1</span><span class="tag">&lt;/record_count&gt;</span><span class="pln">
+      </span><span class="tag">&lt;revenue_transactions&gt;</span><span class="pln">
+         </span><span class="tag">&lt;transaction&gt;</span><span class="pln">
+            </span><span class="tag">&lt;budget_fiscal_year&gt;</span><span class="pln">2018</span><span class="tag">&lt;/budget_fiscal_year&gt;</span><span class="pln">
+            </span><span class="tag">&lt;adopted&gt;</span><span class="pln">-192158</span><span class="tag">&lt;/adopted&gt;</span><span class="pln">
+            </span><span class="tag">&lt;modified&gt;</span><span class="pln">-192158</span><span class="tag">&lt;/modified&gt;</span><span class="pln">
+            </span><span class="tag">&lt;recognized&gt;</span><span class="pln">-80025.23</span><span class="tag">&lt;/recognized&gt;</span><span class="pln">
+            </span><span class="tag">&lt;remaining&gt;</span><span class="pln">-80025.23</span><span class="tag">&lt;/remaining&gt;</span><span class="pln">
+            </span><span class="tag">&lt;revenue_category&gt;</span><span class="pln">OPERATING RESERVE</span><span class="tag">&lt;/revenue_category&gt;</span><span class="pln">
+            </span><span class="tag">&lt;revenue_class&gt;</span><span class="pln">Mixed Finance</span><span class="tag">&lt;/revenue_class&gt;</span><span class="pln">
+         </span><span class="tag">&lt;responsibility_center&gt;</span><span class="pln">MARLBORO</span><span class="tag">&lt;/responsibility_center&gt;</span><span class="pln">
+            </span><span class="tag">&lt;revenue_expense_category&gt;</span><span class="pln">RENT COLLECTION LOSS</span><span class="tag">&lt;/revenue_expense_category&gt;</span><span class="pln">
+            </span><span class="tag">&lt;funding_source&gt;</span><span class="pln">LIHTC - MARLBORO</span><span class="tag">&lt;/funding_class&gt;</span><span class="pln">
+            </span><span class="tag">&lt;budget_name&gt;</span><span class="pln">DWELLING RENT</span><span class="tag">&lt;/budget_name&gt;</span><span class="pln">
+            </span><span class="tag">&lt;budget_type&gt;</span><span class="pln">REVENUE FROM OPERATIONS</span><span class="tag">&lt;/budget_type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;program&gt;</span><span class="pln">DEFAULT</span><span class="tag">&lt;/program&gt;</span><span class="pln">
+           </span><span class="tag">&lt;project&gt;</span><span class="pln">DEFAULT</span><span class="tag">&lt;/project&gt;</span><span class="pln">
+            </span><span class="tag">&lt;closing_classification_name&gt;</span><span class="pln">Collected Revenue</span><span class="tag">&lt;/closing_classification_name&gt;</span><span class="pln">
+         </span><span class="tag">&lt;/transaction&gt;</span><span class="pln">
+</span><span class="tag">&lt;/revenue_transactions&gt;</span><span class="pln">
+   </span><span class="tag">&lt;/result_records&gt;</span><span class="pln">
+</span><span class="tag">&lt;/response&gt;</span></pre>
 <p>
   <a href="#top" class="float-right">Back to the top</a>
   <br>
@@ -513,28 +911,24 @@
   for <a class="status-codes" href="#">list of status codes and messages</a>.
 </p>
 <strong>Example: Result is Success</strong>
-<pre class="prettyprint" id="xml">
-  &lt;status&gt;
-    &lt;result&gt;success&lt;/result&gt;
-    &lt;messages&gt;
-      &lt;message&gt; &lt;code&gt;1&lt;/code&gt;
-        &lt;description&gt; The status is still a success but there are no results found for given search criteria&lt;/description&gt;
-      &lt;/message&gt;
-    &lt;/messages&gt;
-  &lt;/status&gt;
-</pre>
+<pre class="prettyprint prettyprinted" id="xml" style=""><span class="pln">  </span><span class="tag">&lt;status&gt;</span><span class="pln">
+    </span><span class="tag">&lt;result&gt;</span><span class="pln">success</span><span class="tag">&lt;/result&gt;</span><span class="pln">
+    </span><span class="tag">&lt;messages&gt;</span><span class="pln">
+      </span><span class="tag">&lt;message&gt;</span><span class="pln"> </span><span class="tag">&lt;code&gt;</span><span class="pln">1</span><span class="tag">&lt;/code&gt;</span><span class="pln">
+        </span><span class="tag">&lt;description&gt;</span><span class="pln"> The status is still a success but there are no results found for given search criteria</span><span class="tag">&lt;/description&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/message&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/messages&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/status&gt;</span></pre>
 
 <strong>Example: Result is Failure</strong>
-<pre class="prettyprint" id="xml">
-  &lt;status&gt;
-    &lt;result&gt;error&lt;/result&gt;
-    &lt;messages&gt;
-      &lt;message&gt; &lt;code&gt;1000&lt;/code &gt;
-        &lt;description&gt;Required parameter 'type_of_data' is missing&lt;/description&gt;
-      &lt;/message&gt;
-    &lt;/messages&gt;
-  &lt;/status&gt;
-</pre>
+<pre class="prettyprint prettyprinted" id="xml" style=""><span class="pln">  </span><span class="tag">&lt;status&gt;</span><span class="pln">
+    </span><span class="tag">&lt;result&gt;</span><span class="pln">error</span><span class="tag">&lt;/result&gt;</span><span class="pln">
+    </span><span class="tag">&lt;messages&gt;</span><span class="pln">
+      </span><span class="tag">&lt;message&gt;</span><span class="pln"> </span><span class="tag">&lt;code&gt;</span><span class="pln">1000</span><span class="tag">&lt;/code</span><span class="pln"> </span><span class="tag">&gt;</span><span class="pln">
+        </span><span class="tag">&lt;description&gt;</span><span class="pln">Required parameter 'type_of_data' is missing</span><span class="tag">&lt;/description&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/message&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/messages&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/status&gt;</span></pre>
 <p>
   <a href="#top" class="float-right">Back to the top</a>
 </p>
@@ -579,7 +973,7 @@
       <td>1101</td>
       <td>Provided request parameter 'date' is not valid for 'Budget'
         domain. Valid values are 'year, agency_code,
-        department_code, budget_code, expense_category, adopted,
+        department_code, budget_code, revenue_expense_category, adopted,
         modified, pre_encumbered, encumbered,
         cash_expense, post_adjustment, accrued_expense
       </td>
@@ -610,7 +1004,7 @@
       <td>1106</td>
       <td>Provided response column 'agencyname' value is not allowed for
         'Budget' domain. Valid values are 'agency, department,
-        expense_category, budget_code, budget_name,
+        revenue_expense_category, budget_code, budget_name,
         modified, adopted, pre_encumbered,
         encumbered, cash_expense, post_adjustment, accrued_expense'.
       </td>

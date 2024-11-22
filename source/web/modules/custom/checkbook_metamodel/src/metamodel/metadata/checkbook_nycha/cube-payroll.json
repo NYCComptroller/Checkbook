@@ -222,7 +222,7 @@
                     "function": "MAX(CASE WHEN amount_basis_id = 1 THEN 'Salaried' ELSE 'Non-Salaried' END)"
                 },
                 "rate_type": {
-                    "function": "MAX(CASE WHEN amount_basis_id = 2 THEN 'Daily' WHEN amount_basis_id = 3 Then 'Hourly' Else 'Annual'END)"
+                    "function": "MAX(CASE WHEN amount_basis_id = 2 THEN 'Daily' WHEN amount_basis_id = 3 Then 'Hourly' Else 'Annual' END)"
                 },
                 "annual_salary_pay":{
                     "function": "CASE WHEN amount_basis_id = 1 AND annual_salary > 0 THEN cast(annual_salary as text) ELSE '-' END"

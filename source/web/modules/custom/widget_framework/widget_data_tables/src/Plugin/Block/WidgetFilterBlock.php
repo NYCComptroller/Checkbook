@@ -49,15 +49,18 @@ class WidgetFilterBlock extends BlockBase {
         return [
           '#markup' => "<h4>Block is Disabled.<br>Widget Filter Block for " . $this->configuration['widget_id'] . ". " . $this->getVisibilityRuleSettingString() . "</h4>",
         ];
-      } else {
+      }
+      else {
         return $this->emptyReturn();
       }
-    } else if (str_contains($current_route, 'layout_builder.')) {
+    }
+    elseif (str_contains($current_route, 'layout_builder.')) {
       $widget_id = $this->configuration['widget_id'] ?? NULL;
       return [
         '#markup' => "Widget Filter Block for $widget_id. " . $this->getVisibilityRuleSettingString(),
       ];
-    } else if($this->checkVisibility()) {
+    }
+    elseif ($this->checkVisibility()) {
       $id = $this->configuration['widget_id'];
       if (!(WidgetUtil::isWidgetJsonValid($id))) {
         return [
@@ -76,11 +79,13 @@ class WidgetFilterBlock extends BlockBase {
         $result['#attributes']['class'][] = 'node-widget-' . $id;
         $result['#cache']['contexts'] = ['url.path', 'url.query_args'];
         return $result;
-      } else {
+      }
+      else {
         LogHelper::log_warn("Widget ". $id . " did not return result.");
         return $this->emptyReturn();
       }
-    } else  {
+    }
+    else  {
       LogHelper::log_debug("Visibility Rule for widget " . $this->configuration['widget_id'] . " was not met.");
       return $this->emptyReturn();
     }

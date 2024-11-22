@@ -3,7 +3,7 @@
         "contract_transaction_vendor_facet_data":{
             "datasourceName":"main",
             "source":"SELECT prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, 'PRIME' as vendor_type_name,
-                        CASE WHEN prime_minority_type_id IN (2,3,4,5,9) THEN 'PM' ELSE 'P' END as vendor_type,
+                        CASE WHEN prime_minority_type_id IN (2,3,4,5,10,9) THEN 'PM' ELSE 'P' END as vendor_type,
                         prime_minority_type_id as minority_type_id, prime_minority_type_name as minority_type_name, *
                         FROM all_agreement_transactions_by_prime_vendor
                         WHERE prime_sub_vendor_code_by_type ~* '(^P:.*$)|(.*,P:.*$)|(^P:.*,.*)|(^PM:.*$)|(.*,PM:.*$)|(^PM:.*,.*)'
@@ -11,7 +11,7 @@
                         UNION ALL
 
                         SELECT sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, 'SUB' as vendor_type_name,
-                        CASE WHEN sub_minority_type_id IN (2,3,4,5,9) THEN 'SM' ELSE 'S' END as vendor_type,
+                        CASE WHEN sub_minority_type_id IN (2,3,4,5,10,9) THEN 'SM' ELSE 'S' END as vendor_type,
                         sub_minority_type_id as minority_type_id, sub_minority_type_name as minority_type_name, *
                         FROM all_agreement_transactions_by_prime_vendor
                         WHERE prime_sub_vendor_code_by_type ~* '(^S:.*$)|(.*,S:.*$)|(^S:.*,.*)|(^SM:.*$)|(.*,SM:.*$)|(^SM:.*,.*)'
@@ -19,16 +19,16 @@
         },
         "contract_transaction_vendor_type_facet_data":{
             "datasourceName":"main",
-            "source":"SELECT 'PRIME VENDOR' vendor_type_name, 'P' as vendor_type_id, prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_minority_type_id as minority_type_id, CASE WHEN prime_minority_type_id IN (2,3,4,5,9) THEN 'PM' ELSE 'P' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
+            "source":"SELECT 'PRIME VENDOR' vendor_type_name, 'P' as vendor_type_id, prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_minority_type_id as minority_type_id, CASE WHEN prime_minority_type_id IN (2,3,4,5,10,9) THEN 'PM' ELSE 'P' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
                         WHERE prime_sub_vendor_code_by_type ~* '(^P:.*$)|(.*,P:.*$)|(^P:.*,.*)|(^PM:.*$)|(.*,PM:.*$)|(^PM:.*,.*)'
                         UNION ALL
-                        SELECT 'SUB VENDOR' as vendor_type_name, 'S' as vendor_type_id, sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_minority_type_id as minority_type_id, CASE WHEN sub_minority_type_id IN (2,3,4,5,9) THEN 'SM' ELSE 'S' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
+                        SELECT 'SUB VENDOR' as vendor_type_name, 'S' as vendor_type_id, sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_minority_type_id as minority_type_id, CASE WHEN sub_minority_type_id IN (2,3,4,5,10,9) THEN 'SM' ELSE 'S' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
                         WHERE prime_sub_vendor_code_by_type ~* '(^S:.*$)|(.*,S:.*$)|(^S:.*,.*)|(^SM:.*$)|(.*,SM:.*$)|(^SM:.*,.*)'
                         UNION ALL
-                        SELECT 'M/WBE VENDOR' vendor_type_name, 'M' as vendor_type_id, prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_minority_type_id as minority_type_id, CASE WHEN prime_minority_type_id IN (2,3,4,5,9) THEN 'PM' ELSE 'P' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
+                        SELECT 'M/WBE VENDOR' vendor_type_name, 'M' as vendor_type_id, prime_vendor_code as vendor_code, prime_vendor_name as vendor_name, prime_minority_type_id as minority_type_id, CASE WHEN prime_minority_type_id IN (2,3,4,5,10,9) THEN 'PM' ELSE 'P' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
                         WHERE prime_sub_vendor_code_by_type ~* '(^PM:.*$)|(.*,PM:.*$)|(^PM:.*,.*)'
                         UNION ALL
-                        SELECT 'M/WBE VENDOR' as vendor_type_name, 'M' as vendor_type_id, sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_minority_type_id as minority_type_id, CASE WHEN sub_minority_type_id IN (2,3,4,5,9) THEN 'SM' ELSE 'S' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
+                        SELECT 'M/WBE VENDOR' as vendor_type_name, 'M' as vendor_type_id, sub_vendor_code as vendor_code, sub_vendor_name as vendor_name, sub_minority_type_id as minority_type_id, CASE WHEN sub_minority_type_id IN (2,3,4,5,10,9) THEN 'SM' ELSE 'S' END as vendor_type, * FROM all_agreement_transactions_by_prime_vendor
                         WHERE prime_sub_vendor_code_by_type ~* '(^SM:.*$)|(.*,SM:.*$)|(^SM:.*,.*)'
             "
         }

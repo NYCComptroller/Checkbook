@@ -26,13 +26,11 @@ use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
 /**
  * Class NychaContractDetails
  */
-class NychaContractDetails
-{
+class NychaContractDetails {
     /**
      * @param $node
      */
-    public function getData(&$node)
-    {
+    public function getData(&$node) {
 
         $contract_id = RequestUtilities::_getRequestParamValueBottomURL('contract');
         $contract_id = $contract_id ?? RequestUtilities::get('contract');
@@ -253,7 +251,7 @@ EOQ2;
     private function splitHistoryByYears($history)
     {
         $return = [];
-        if (!$history or !is_array($history) or !sizeof($history)) {
+        if (!$history || !is_array($history) || !sizeof($history)) {
             return [];
         }
         foreach ($history as $line) {
@@ -281,7 +279,6 @@ SQL;
         $total = _checkbook_project_execute_sql_by_data_source($releases_sql, Datasource::NYCHA);
         $node->assoc_releases_count = $total[0]['count'];
         $node->assoc_releases_pages = ceil($total[0]['count']/10.0);
-        return;
     }
 
 
@@ -292,7 +289,7 @@ SQL;
     private function getContractHistory(string $contract_id)
     {
         if (!$contract_id || !preg_match('/[A-Z]{2}[0-9]*/', $contract_id)) {
-            return;
+            return NULL;
         }
 
         $sql = <<<SQL
@@ -315,7 +312,6 @@ SQL;
 
         $history = _checkbook_project_execute_sql_by_data_source($sql, Datasource::NYCHA);
         return $this->splitHistoryByYears($history);
-
     }
 
 

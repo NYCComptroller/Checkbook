@@ -289,9 +289,6 @@ class ContractController extends ControllerBase
     }
     else{
       $result = TransactionsUtil::contractSpendingNodataTitle();
-      if ($result) {
-        $return['title'] = $result;
-      }
       $return['no_records_block'] = [
       '#markup' => $result.'<div id="no-records" class="clearfix">There are no spending transactions.</div>',
       ];

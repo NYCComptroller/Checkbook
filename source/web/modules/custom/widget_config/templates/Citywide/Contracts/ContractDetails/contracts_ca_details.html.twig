@@ -91,6 +91,7 @@
         <li><span class="gi-list-item">Purpose:</span> {{ node.data[0]['description'] }}</li>
         <li><span class="gi-list-item">Contract Type:</span> {{ node.data[0]['agreement_type_name'] }}</li>
         {% if RequestGet("datasource") != "checkbook_oge" %}
+          <li><span class="gi-list-item">Contract Class:</span> {{ node.data[0]['contract_class_description']|default('N/A') }}</li>
           <li>
             <span class="gi-list-item">Contracting Agency:</span>
             {% if not_preg_match_newwindow %}
@@ -102,9 +103,13 @@
         {% endif %}
         <li><span class="gi-list-item">Award Method:</span> {{ node.data[0]['award_method_name_checkbook_award_method'] }}</li>
         {% if RequestGet("datasource") != "checkbook_oge" %}
+          <li><span class="gi-list-item">OCA Number:</span> {{ node.data[0]['oca_number'] }}</li>
           <li><span class="gi-list-item">Version Number:</span> {{ node.data[0]['document_version'] }}</li>
         {% endif %}
         <li><span class="gi-list-item">FMS Document:</span> {{ node.data[0]['document_code_checkbook_ref_document_code'] }}</li>
+        {% if RequestGet("datasource") != "checkbook_oge" %}
+        <li><span class="gi-list-item">{{ contracts_ca_details_spending_link(node) }}</li>
+        {% endif %}
       </ul>
       <ul class="right">
         <li><span class="gi-list-item">Number of Solicitations per Contract:</span> {{ node.data[0]['number_solicitation'] }}</li>
@@ -131,6 +136,7 @@
       <div class="contract-vendor-details">
         {{ getWidgetNodeView(439) }}
       </div>
+      {{ contracts_ca_details_spending_table(node) }}
     {% endif %}
   </div>
 </div>

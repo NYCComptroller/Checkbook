@@ -40,7 +40,7 @@
             <th><div>&nbsp;</div></th>
             {% for year in data.years %}
                 <th><div>&nbsp;</div></th>
-                {% if year == 2021 %}
+                {% if year == 2021 or year == 2022 or year == 2023 %}
                   <th class='number'><div>{{ year }}<sup>(b)</sup></div></th>
                 {% else %}
                   <th class='number'><div>{{ year }}</div></th>
@@ -58,11 +58,10 @@
 </table>
     <div class="footnote">
         <p>(a) Includes rounding adjustment</p>
-        <p>(b) Six months average</p><br>
-       <p>NOTES: This schedule is provided in lieu of a schedule of principal employees because it provides more meaningful information. Other than the City of New York, no single
-       employer employs more than 2 percent of total nonagricultural employees.</p>
-       <p>Data are not seasonally adjusted.</p>
-        <p>SOURCE: New York State Department of Labor, Division of Research and Statistics.</p>
+        <p>(b) Six months average</p>
+        <p>NOTES: This Schedule is provided in lieu of a schedule of principal employee because it provides more meaningful information. Other than the City of New York, no single employer employs more than 2 percent of total non agricultural employees.</p>
+        <p>Data are not seasonally adjusted.</p>
+        <p>Source: New York State Department of Labor, Division of Research and Statistics.</p>
     </div>
 <script type="text/javascript">
     {{ addJs(node)|raw }}

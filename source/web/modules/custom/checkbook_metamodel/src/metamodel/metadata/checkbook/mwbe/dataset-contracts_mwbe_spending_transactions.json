@@ -296,6 +296,16 @@
                     "sourceColumnName": "budget_name_code"
                   }
                 ]
+              },
+              {
+                "name": "award_method",
+                "levels": [
+                  {
+                    "name": "award_method",
+                    "datasetName": "award_method",
+                    "sourceColumnName": "award_method_id"
+                  }
+                ]
               }
             ],
             "measures": {
@@ -340,6 +350,10 @@
         "contracts_all_spending_transactions__ref_document_code": [
             {"datasetName": "contracts_all_spending_transactions", "columnNames": ["document_code_id"]},
             {"datasetName": "ref_document_code", "columnNames": ["document_code_id"]}
+        ],
+        "contracts_all_spending_transactions_award_method": [
+          {"datasetName": "contracts_all_spending_transactions", "columnNames": ["award_method_id"]},
+          {"datasetName": "award_method", "columnNames": ["award_method_id"]}
         ],
         "contracts_all_spending_transactions__prime_vendor": [
             {"datasetName": "contracts_all_spending_transactions", "columnNames": ["prime_vendor_id"]},

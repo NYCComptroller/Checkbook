@@ -35,6 +35,7 @@ class DefaultCacheFactory extends CacheFactory {
 
     private $handlerConfigurations = NULL;
     private $handlerInstances = NULL;
+    public $handlers = [];
 
     public function __construct() {
         parent::__construct();
@@ -122,7 +123,7 @@ class DefaultCacheFactory extends CacheFactory {
         if (isset($this->handlerInstances[$handlerKey])) {
             $handler = $this->handlerInstances[$handlerKey];
         }
-     	else {
+     	  else {
             $handler = $this->prepareSharedCacheHandler($cacheDataSourceName);
             if (isset($handler)) {
                 $serverNamePrefix = '[' . strtoupper(\Drupal::request()->server->get('SERVER_NAME')) . ']';

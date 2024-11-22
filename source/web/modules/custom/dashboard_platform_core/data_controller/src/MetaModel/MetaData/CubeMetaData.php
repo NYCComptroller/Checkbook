@@ -24,8 +24,7 @@ use Drupal\data_controller\Common\Object\Exception\IllegalArgumentException;
 use Drupal\data_controller\Common\Object\Manipulation\ArrayHelper;
 use Drupal\data_controller\Common\Object\Manipulation\ObjectHelper;
 
-class CubeMetaData extends AbstractMetaData
-{
+class CubeMetaData extends AbstractMetaData {
 
   /**
    * @var null

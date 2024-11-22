@@ -155,6 +155,7 @@
         var oFundingSourceIds = getNamedFilterCriteria('ffundingSourceId');
         var oRevenueAmount = getNamedFilterCriteria('frevenueAmount');
         var oclsNms = getNamedFilterCriteria('fclsNm');
+        var oCondEvent = getNamedFilterCriteria('feventId');
 
         var  cUrl = oTable.fnSettings().sAjaxSource;
         cUrl = adjustUrlParameter(cUrl,'agency',agencyIds);
@@ -163,6 +164,8 @@
         cUrl = adjustUrlParameter(cUrl,'amtr',oRevenueAmount);
         cUrl = adjustUrlParameter(cUrl,'clsname',oclsNms);
         cUrl = adjustUrlParameter(cUrl,'fundsrccode',oFundingSourceIds);
+        cUrl = adjustUrlParameter(cUrl,'cevent',oCondEvent);
+
         return cUrl;
     }"
 }

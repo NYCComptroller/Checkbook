@@ -244,6 +244,12 @@
                 },
                 "less1m_count": {
                     "function": "SUM(CASE WHEN COALESCE(current_budget_amount,0) < 1000000 THEN 1 ELSE 0 END)"
+                },
+                "asylum_count":{
+                  "function": "SUM(CASE WHEN event_id ~* '(^|,)2(,|$)' THEN 1 ELSE 0 END)"
+                },
+                "covid_count":{
+                  "function": "SUM(CASE WHEN event_id ~* '(^|,)1(,|$)' THEN 1 ELSE 0 END)"
                 }
             }
         }

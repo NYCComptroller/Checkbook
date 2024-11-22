@@ -117,8 +117,8 @@ function widget_config_preprocess_contract_vendor_info(&$variables) {
     }
   }
   $variables['ethnicity'] = implode(',',$ethnicities);
-  if($variables['minority_type_id'] == "4" || $variables['minority_type_id'] == "5"){
-    $variables['minority_type_id'] = "4~5";
+  if($variables['minority_type_id'] == "4" || $variables['minority_type_id'] == "5" || $variables['minority_type_id'] == "10"){
+    $variables['minority_type_id'] = "4~5~10";
   }
 
   $datasource = RequestUtilities::_getRequestParamValueBottomURL('datasource');

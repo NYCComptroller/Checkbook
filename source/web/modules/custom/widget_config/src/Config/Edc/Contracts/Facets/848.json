@@ -8,7 +8,7 @@
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code",
         "vendornm":"display_vendor.display_vendor.legal_name",
-        "vendornm_exact":"display_vendor.display_vendor.legal_name"
+        "vendornm_exact":"display_vendor.display_vendor.legal_name","awdmethod" : "award_method.award_method.award_method_code"
     },
     "defaultParameters":{"status_flag":"A","is_vendor_flag":"N","type_of_year":"B","if_for_all_years":"N"},
     "columns":["industry.industry", "industry.industry.industry_type_name", "txcount"],

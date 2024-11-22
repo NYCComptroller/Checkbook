@@ -35,9 +35,11 @@ class BudgetFormUtil
    */
   public static function getBudgetType($domain, string $dataSource = Datasource::NYCHA, $budgetName = null, bool $json = false)
   {
-    $budgetName = str_replace("__", "/", $budgetName);
     $where = "WHERE budget_type IS NOT NULL";
-    $where .= (!in_array($budgetName, array('Select Budget Name', '', 0, '0', 'null'), true)) ? " AND budget_name = '". $budgetName ."' ":"";
+    if(!in_array($budgetName, array('Select Budget Name', '', 0, '0', 'null', null), true)){
+      $budgetName = str_replace("__", "/", $budgetName);
+      $where .= " AND budget_name = '". $budgetName ."' ";
+    }
     $query = "SELECT DISTINCT budget_type FROM {$domain} {$where} ORDER BY budget_type ASC";
     $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
     $title = 'Select Budget Type';
@@ -65,14 +67,13 @@ class BudgetFormUtil
    * @param bool $json
    * @return array|JsonResponse
    */
-  public static function getBudgetName($domain, string $dataSource = Datasource::NYCHA, string $budgetType = null, bool $json = false)
+  public static function getBudgetName($domain, string $dataSource = Datasource::NYCHA, $budgetType = null, bool $json = false)
   {
-    if ($budgetType == '0') {
-      $budgetType = null;
-    }
-    $budgetType = str_replace("__", "/", $budgetType);
     $where = "WHERE budget_name IS NOT NULL";
-    $where .= (!in_array($budgetType, array('Select Budget Type', '', 0, '0', 'null'), true)) ? " AND budget_type = '" . $budgetType . "' " : "";
+    if(!in_array($budgetType, array('Select Budget Name', '', 0, '0', 'null', null), true)){
+      $budgetType = str_replace("__", "/", $budgetType);
+      $where .=" AND budget_type = '" . $budgetType . "' " ;
+    }
     $query = "SELECT DISTINCT budget_name FROM {$domain} {$where} ORDER BY budget_name ASC";
     $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
     $title = 'Select Budget Name';
@@ -109,50 +110,49 @@ class BudgetFormUtil
    */
   public static function getBudgetExpCatOptions($domain, $year, $agency, $dept, string $dataSource = Datasource::CITYWIDE, bool $feeds = true)
   {
-    switch ($dataSource) {
-      case Datasource::NYCHA :
-        $query = "SELECT DISTINCT expenditure_type_description || ' [' || expenditure_type_code || ']' AS expenditure_object_code,
+    if ($dataSource == Datasource::NYCHA) {
+      $query = "SELECT DISTINCT expenditure_type_description || ' [' || expenditure_type_code || ']' AS expenditure_object_code,
                                   expenditure_type_id, expenditure_type_description
                   FROM {$domain} ORDER BY expenditure_object_code ASC";
-        $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
-        $title = ($domain == CheckbookDomain::$REVENUE) ? 'Select Revenue Expense Category' : 'Select Expense Category';
-        $options[''] = $title;
-        $option_attributes = array($title => array('title' => $title));
-        foreach ($results as $row) {
-          if ($feeds) {
-            $text = $row['expenditure_object_code'];
-            $option_attributes[$text] = array('title' => $text);
-            $options[$text] = FormattingUtilities::_ckbk_excerpt($text);
-          } else {
-            $text = $row['expenditure_type_description'];
-            $option_attributes[$row['expenditure_type_id']] = array('title' => $text);
-            $options[$row['expenditure_type_id']] = FormattingUtilities::_ckbk_excerpt($text);
-          }
+      $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
+      $title = ($domain == CheckbookDomain::$REVENUE) ? 'Select Revenue Expense Category' : 'Select Expense Category';
+      $options[''] = $title;
+      $option_attributes = array($title => array('title' => $title));
+      foreach ($results as $row) {
+        if ($feeds) {
+          $text = $row['expenditure_object_code'];
+          $option_attributes[$text] = array('title' => $text);
+          $options[$text] = FormattingUtilities::_ckbk_excerpt($text);
+        } else {
+          $text = $row['expenditure_type_description'];
+          $option_attributes[$row['expenditure_type_id']] = array('title' => $text);
+          $options[$row['expenditure_type_id']] = FormattingUtilities::_ckbk_excerpt($text);
         }
-        return array('options' => $options, 'option_attributes' => $option_attributes);
-      default:
-        $agency = FormattingUtilities::emptyToZero(urldecode($agency));
-        $dept = FormattingUtilities::emptyToZero(urldecode($dept));
-        $matches = [];
-        if ($agency) {
-          $agencyString = " agency_code = '" . $agency . "' ";
-          $yearString = ($year) ? " AND budget_fiscal_year = " . ltrim($year, 'FY') . " " : "";
-          $deptString = ($dept) ? " AND department_code = '" . $dept . "' " : "";
+      }
+      return array('options' => $options, 'option_attributes' => $option_attributes);
+    } else {
+      $agency = FormattingUtilities::emptyToZero(urldecode($agency));
+      $dept = FormattingUtilities::emptyToZero(urldecode($dept));
+      $matches = [];
+      if ($agency) {
+        $agencyString = " agency_code = '" . $agency . "' ";
+        $yearString = ($year) ? " AND budget_fiscal_year = " . ltrim($year, 'FY') . " " : "";
+        $deptString = ($dept) ? " AND department_code = '" . $dept . "' " : "";
 
-          $query = "SELECT DISTINCT object_class_name || ' [' || object_class_code || ']' expenditure_object_code  FROM {$domain} WHERE"
-            . $agencyString . $yearString . $deptString . "ORDER BY expenditure_object_code ASC";
-          $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
-          $options = array();
-          if (count($results) > 0) {
-            foreach ($results as $result) {
-              $options[$result['expenditure_object_code']] = $result['expenditure_object_code'];
-            }
-          }
-          foreach ($options as $key => $value) {
-            $matches[] = htmlentities($value);
+        $query = "SELECT DISTINCT object_class_name || ' [' || object_class_code || ']' expenditure_object_code  FROM {$domain} WHERE"
+          . $agencyString . $yearString . $deptString . "ORDER BY expenditure_object_code ASC";
+        $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
+        $options = array();
+        if (count($results) > 0) {
+          foreach ($results as $result) {
+            $options[$result['expenditure_object_code']] = $result['expenditure_object_code'];
           }
         }
-        return new JsonResponse($matches);
+        foreach ($options as $value) {
+          $matches[] = htmlentities($value);
+        }
+      }
+      return new JsonResponse($matches);
     }
   }
 
@@ -176,7 +176,7 @@ class BudgetFormUtil
             $options[$result['department_name']] = $result['department_name'];
         }
       }
-      foreach ($options as $key => $value) {
+      foreach ($options as $value) {
         $matches[] = htmlentities($value);
       }
     }

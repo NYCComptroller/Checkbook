@@ -1,12 +1,12 @@
 {
   "agency_code_list": {
-    "sql": "SELECT DISTINCT t1.agency_code, t1.agency_name FROM ref_agency t1 where t1.is_display = 'Y' AND EXISTS ( select 1 from all_disbursement_transactions t2 where t2.agency_id = t1.agency_id ) ORDER BY t1.agency_name",
+    "sql": "SELECT DISTINCT t1.agency_code, t1.agency_name FROM ref_agency t1 where t1.is_display = 'Y' AND EXISTS ( select 1 from all_disbursement_transactions_allyears t2 where t2.agency_id = t1.agency_id ) ORDER BY t1.agency_name",
     "force_quote": [
       "agency_code"
     ]
   },
   "vendor_code_list": {
-    "sql": "SELECT DISTINCT t1.vendor_customer_code, t1.legal_name FROM vendor t1 WHERE EXISTS ( select 1 from all_disbursement_transactions t2 where t2.vendor_id = t1.vendor_id ) ORDER BY t1.vendor_customer_code",
+    "sql": "SELECT DISTINCT t1.vendor_customer_code, t1.legal_name FROM vendor t1 WHERE EXISTS ( select 1 from all_disbursement_transactions_allyears t2 where t2.vendor_id = t1.vendor_id ) ORDER BY t1.vendor_customer_code",
     "force_quote": [
       "vendor_customer_code"
     ]
@@ -19,7 +19,7 @@
     ]
   },
   "spending_mwbe_code_list": {
-    "sql": "select minority_type_id,minority_type_name from (select minority_type_id::text,CASE WHEN minority_type_id = 2 THEN 'Black American' WHEN minority_type_id = 3 THEN 'Hispanic American' WHEN minority_type_id = 4 THEN 'Asian American' WHEN minority_type_id = 5 THEN 'Asian American'  WHEN minority_type_id = 6 THEN 'Native American' WHEN minority_type_id = 7 THEN 'Non-M/WBE' WHEN minority_type_id = 9 THEN 'Women (Non-Minority)' WHEN minority_type_id = 11 THEN 'Individuals & Others' WHEN minority_type_id = 99 THEN 'Emerging (Non-Minority)'  END AS minority_type_name FROM ref_minority_type where minority_type_id in (2,3,4,5,6,7,9,11,99) union SELECT  '2~3~4~5~6~9~99' as minority_type_id , 'Total M/WBE' as minority_type_name )A order by idx(array['2','3','4','5','6','7','9','11','99','2~3~4~5-6~9-99'],minority_type_id)"
+    "sql": "select minority_type_id,minority_type_name from (select minority_type_id::text,CASE WHEN minority_type_id = 2 THEN 'Black American' WHEN minority_type_id = 3 THEN 'Hispanic American' WHEN minority_type_id = 4 THEN 'Asian American' WHEN minority_type_id = 5 THEN 'Asian American' WHEN minority_type_id = 10 THEN 'Asian American'  WHEN minority_type_id = 6 THEN 'Native American' WHEN minority_type_id = 7 THEN 'Non-M/WBE' WHEN minority_type_id = 9 THEN 'Women (Non-Minority)' WHEN minority_type_id = 11 THEN 'Individuals & Others' WHEN minority_type_id = 99 THEN 'Emerging (Non-Minority)'  END AS minority_type_name FROM ref_minority_type where minority_type_id in (2,3,4,5,10,6,7,9,11,99) union SELECT  '1~2~3~4~5~10~6~9~99' as minority_type_id , 'Total M/WBE' as minority_type_name )A order by idx(array['1','2','3','4','5','10','6','7','9','11','99','1~2~3~4~5~10-6~9-99'],minority_type_id)"
   },
   "industry_code_list": {
     "sql": "SELECT DISTINCT t1.industry_type_id, t1.industry_type_name FROM ref_industry_type t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.industry_type_id = t1.industry_type_id ) ORDER BY t1.industry_type_id"
@@ -60,7 +60,7 @@
       "Status Code"
     ]
   },
-  "sub_vendor_status_in_pip_code_list": {
+  "sub_contract_status_code_list": {
     "sql": "SELECT DISTINCT aprv_sta_id \"Status Code\", aprv_sta_value \"Status Name\" FROM subcontract_approval_status ORDER BY aprv_sta_id",
     "force_quote": [
       "Status Code"
@@ -85,7 +85,7 @@
     ]
   },
   "payee_code_list": {
-    "sql": "SELECT DISTINCT t1.vendor_customer_code, t1.legal_name FROM vendor t1 WHERE EXISTS ( select 1 from all_disbursement_transactions t2 where t2.vendor_id = t1.vendor_id ) ORDER BY t1.legal_name",
+    "sql": "SELECT DISTINCT t1.vendor_customer_code, t1.legal_name FROM vendor t1 WHERE EXISTS ( select 1 from all_disbursement_transactions_allyears t2 where t2.vendor_id = t1.vendor_id ) ORDER BY t1.legal_name",
     "force_quote": [
       "vendor_customer_code"
     ]
@@ -98,7 +98,7 @@
     ]
   },
   "spending_expense_category_code_list": {
-    "sql": "SELECT DISTINCT t1.expenditure_object_code, t1.expenditure_object_name FROM ref_expenditure_object t1 WHERE EXISTS ( select 1 from all_disbursement_transactions t2 where t2.expenditure_object_id = t1.expenditure_object_id ) ORDER BY t1.expenditure_object_name",
+    "sql": "SELECT DISTINCT t1.expenditure_object_code, t1.expenditure_object_name FROM ref_expenditure_object t1 WHERE EXISTS ( select 1 from all_disbursement_transactions_allyears t2 where t2.expenditure_object_id = t1.expenditure_object_id ) ORDER BY t1.expenditure_object_name",
     "force_quote": [
       "expenditure_object_code"
     ]
@@ -128,14 +128,14 @@
       "agreement_type_code"
     ]
   },
-  "catastrophic_event_code_list": {
+  "conditional_category_code_list": {
     "sql": "SELECT DISTINCT event_id, event_name from ref_event WHERE event_id IS NOT NULL and event_name IS NOT NULL ORDER BY event_id",
     "force_quote": [
       "event_id"
     ]
   },
   "award_method_code_list": {
-    "sql": "SELECT DISTINCT t1.award_method_code, t1.award_method_name FROM ref_award_method t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.award_method_id = t1.award_method_id ) ORDER BY t1.award_method_code",
+    "sql": "SELECT DISTINCT t1.award_method_code, t1.award_method_name FROM ref_award_method t1 WHERE EXISTS ( select 1 from all_agreement_transactions t2 where t2.award_method_id = t1.award_method_id ) and active_flag = 'Y' ORDER BY t1.award_method_code",
     "force_quote": [
       "award_method_code"
     ]

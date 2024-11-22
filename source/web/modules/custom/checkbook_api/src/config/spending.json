@@ -10,7 +10,7 @@
             "department_code":"department_code",
             "check_amount":"check_amount",
             "expense_category":"expenditure_object_code",
-            "catastrophic_event":"event_id",
+            "conditional_category":"event_id",
             "contract_id":"reference_document_number",
             "contract_purpose":"purpose",
             "capital_project_code":"reporting_code",
@@ -30,7 +30,8 @@
                 "disbursement_number":"like",
                 "minority_type_id":"in",
                 "industry_type_id":"in",
-                "vendor_name":"contains"
+                "vendor_name":"contains",
+                "event_id": "any"
             },
             "displayConfiguration":{
                 "xml":{
@@ -147,7 +148,7 @@
                 "dataType":"date",
                 "format":"YYYY-MM-DD"
             },
-            "catastrophic_event":{
+            "conditional_category":{
                 "valueType":"value",
                 "dataType":"text",
                 "maxLength":"2"
@@ -185,7 +186,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"18"
+                "maxLength":"20"
             },
             "industry":{
                 "valueType":"value",

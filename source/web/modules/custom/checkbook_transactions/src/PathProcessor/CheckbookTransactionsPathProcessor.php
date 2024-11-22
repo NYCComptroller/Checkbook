@@ -28,12 +28,13 @@ use Symfony\Component\HttpFoundation\Request;
 class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterface {
 
   public function processInbound($path, Request $request) {
-    //budget paths
+    // Budget paths.
     if (strpos($path, '/budget/transactions/budget_transactions/') === 0) {
       $params = preg_replace('|^\/budget\/transactions\/budget_transactions\/|', '', $path);
       $params = str_replace('/',':', $params);
       return "/budget/transactions/budget_transactions/$params";
-    }else if (strpos($path, '/budget/transactions/') === 0) {
+    }
+    elseif (strpos($path, '/budget/transactions/') === 0) {
       $params = preg_replace('|^\/budget\/transactions\/|', '', $path);
       $params = str_replace('/',':', $params);
       return "/budget/transactions/$params";
@@ -45,11 +46,13 @@ class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterfac
         $params = preg_replace('|\/budgettype\/committed|', '', $path);
         $params = str_replace('/', ':', $params);
         return "/nycha_budget/transactions/budgettype/committed/$params";
-      } else if ($budgettype == 'remaining') {
+      }
+      elseif ($budgettype == 'remaining') {
         $params = preg_replace('|\/budgettype\/remaining|', '', $path);
         $params = str_replace('/', ':', $params);
         return "/nycha_budget/transactions/budgettype/remaining/$params";
-      } else {
+      }
+      else {
         $params = str_replace('/', ':', $path);
         return "/nycha_budget/transactions/$params";
       }
@@ -80,7 +83,7 @@ class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterfac
       return "/nycha_budget/search/transactions/$params";
     }
 
-    //revenue paths
+    // Revenue paths.
     if (strpos($path, '/revenue/transactions/revenue_transactions/') === 0) {
       $params = preg_replace('|^\/revenue\/transactions\/revenue_transactions\/|', '', $path);
       $params = str_replace('/',':', $params);
@@ -124,39 +127,38 @@ class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterfac
       $contCategory = RequestUtilities::get('contcat');
       $datasource = RequestUtilities::get('datasource');
 
-      if ($contSatus == 'P' && $datasource != 'checkbook_oge')
-      {
-        //if (_checkbook_project_recordsExists(714)) {
-          $params = preg_replace('|\/contstatus\/P|', '', $path);
-          $params = str_replace('/', ':', $params);
-          return "/contract/search/transactions/contstatus/P/$params";
-      //  }
+      if ($contSatus == 'P' && $datasource != 'checkbook_oge') {
+        // if (_checkbook_project_recordsExists(714)) {
+        $params = preg_replace('|\/contstatus\/P|', '', $path);
+        $params = str_replace('/', ':', $params);
+        return "/contract/search/transactions/contstatus/P/$params";
+        // }
       }
       elseif ($contSatus != 'P' && $contCategory == 'revenue' && $datasource != 'checkbook_oge'){
-       // if (_checkbook_project_recordsExists(667)) {
-          $params = preg_replace('|\/contcat\/revenue|', '', $path);
-          $params = str_replace('/', ':', $params);
-          return "/contract/search/transactions/contcat/revenue/$params";
-       // }
+        // if (_checkbook_project_recordsExists(667)) {
+        $params = preg_replace('|\/contcat\/revenue|', '', $path);
+        $params = str_replace('/', ':', $params);
+        return "/contract/search/transactions/contcat/revenue/$params";
+        // }
       }
       elseif ($contSatus != 'P' && $contCategory == 'expense' && $datasource != 'checkbook_oge'){
-       // if (_checkbook_project_recordsExists(939)) {
-          $params = preg_replace('|\/contcat\/expense|', '', $path);
-          $params = str_replace('/', ':', $params);
-          return "/contract/search/transactions/contcat/expense/$params";
-       // }
+        // if (_checkbook_project_recordsExists(939)) {
+        $params = preg_replace('|\/contcat\/expense|', '', $path);
+        $params = str_replace('/', ':', $params);
+        return "/contract/search/transactions/contcat/expense/$params";
+        // }
       }
       elseif ($contSatus != 'P' && $contCategory == 'all' && $datasource != 'checkbook_oge'){
-       // if (_checkbook_project_recordsExists(939)) {
-          $params = preg_replace('|\/contcat\/all|', '', $path);
-          $params = str_replace('/', ':', $params);
-          return "/contract/search/transactions/contcat/all/$params";
+        // if (_checkbook_project_recordsExists(939)) {
+        $params = preg_replace('|\/contcat\/all|', '', $path);
+        $params = str_replace('/', ':', $params);
+        return "/contract/search/transactions/contcat/all/$params";
         //}
       }
       elseif ($datasource == 'checkbook_oge'){
-          $params = preg_replace('|\/datasource\/checkbook_oge|', '', $path);
-          $params = str_replace('/', ':', $params);
-          return "/contract/search/transactions/datasource/checkbook_oge/$params";
+        $params = preg_replace('|\/datasource\/checkbook_oge|', '', $path);
+        $params = str_replace('/', ':', $params);
+        return "/contract/search/transactions/datasource/checkbook_oge/$params";
       }
     }
 
@@ -171,18 +173,19 @@ class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterfac
         $params = str_replace('/', ':', $params);
         return "/contract/search/transactions/datasource/checkbook_oge/$params";
       }
-      else if ($contcat == 'all') {
+      elseif ($contcat == 'all') {
         $params = preg_replace('|\/contcat\/all|', '', $path);
         $params = str_replace('/', ':', $params);
         //$params = str_replace('/', ':', $path);
         return "/contract/search/all/transactions/contcat/all/$params";
       }
-      else if ($contcat == 'expense') {
+      elseif ($contcat == 'expense') {
         $params = preg_replace('|\/contcat\/expense|', '', $path);
         $params = str_replace('/', ':', $params);
         //$params = str_replace('/', ':', $path);
         return "/contract/search/all/transactions/contcat/expense/$params";
-      } else if ($contcat == 'revenue') {
+      }
+      elseif ($contcat == 'revenue') {
         $params = preg_replace('|\/contcat\/revenue|', '', $path);
         $params = str_replace('/', ':', $params);
         //$params = str_replace('/', ':', $path);
@@ -190,7 +193,7 @@ class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterfac
       }
     }
     // Contract All year Advanced Search
-   /* if (strpos($path, '/contract/all/transactions/contcat/expense') === 0) {
+    /* if (strpos($path, '/contract/all/transactions/contcat/expense') === 0) {
       $params = preg_replace('|^\/contract\/search\/all\/transactions\/contcat\/expense\/|', '', $path);
       $params = str_replace('/',':', $params);
       return "/contract/search/all/transactions/contcat/expense/$params";
@@ -205,7 +208,7 @@ class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterfac
       $params = str_replace('/',':', $params);
       return "/subcontract/transactions/$params";
     }
-    //Contract Transactions paths
+    // Contract Transactions paths.
     if (strpos($path, '/contract/transactions/') === 0) {
       $contCategory = RequestUtilities::get('contcat');
       $isEDCPage = Datasource::isOGE();
@@ -219,66 +222,70 @@ class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterfac
             $path = str_replace('dashboard/'.$dashboard.'/', '', $path);
             $params = str_replace('/', ':', $path);
             return  "/contract/transactions/contcat/revenue/dashboard/".$dashboard."/".$params;
-          } else {
+          }
+          else {
             $params = str_replace('/', ':', $path);
             return "/contract/transactions/contcat/revenue/$params";
           }
         }
       }
-      //EDC  Active/Registered Expense Contracts
-      if($isEDCPage){
-          if(_checkbook_project_recordsExists(634)){
-            $params = str_replace('datasource/checkbook_oge/', '', $path);
-            $params = str_replace('/', ':', $params);
-            return "/contract/transactions/datasource/checkbook_oge/$params";
-          }
+      // EDC  Active/Registered Expense Contracts.
+      if ($isEDCPage) {
+        if (_checkbook_project_recordsExists(634)) {
+          $params = str_replace('datasource/checkbook_oge/', '', $path);
+          $params = str_replace('/', ':', $params);
+          return "/contract/transactions/datasource/checkbook_oge/$params";
         }
-      //Pending Contracts
+      }
+      // Pending Contracts.
       if ($contSatus == 'P'){
-          if(_checkbook_project_recordsExists(714)){
-            $params = str_replace('contstatus/P/', '', $path);
-            $params = str_replace('/', ':', $params);
-            return "/contract/transactions/contstatus/P/$params";
-          }
+        if (_checkbook_project_recordsExists(714)) {
+          $params = str_replace('contstatus/P/', '', $path);
+          $params = str_replace('/', ':', $params);
+          return "/contract/transactions/contstatus/P/$params";
         }
+      }
       //Citywide Active/Registered Expense Contracts
-      if($contCategory == 'expense' && $contSatus != 'P'){
+      if ($contCategory == 'expense' && $contSatus != 'P') {
         $path = str_replace('contcat/expense/', '', $path);
-            if(_checkbook_project_recordsExists(939)) {
-              //MWBE Active/Registered Expense Contracts
-              if (isset($dashboard)) {
-                $path = str_replace('dashboard/'.$dashboard.'/', '', $path);
-                $params = str_replace('/', ':', $path);
-                return  "/contract/transactions/contcat/expense/dashboard/".$dashboard."/".$params;
-              } else {
-                $params = str_replace('/', ':', $path);
-                return "/contract/transactions/contcat/expense/$params";
-              }
-            }
+        if (_checkbook_project_recordsExists(939)) {
+          //MWBE Active/Registered Expense Contracts
+          if (isset($dashboard)) {
+            $path = str_replace('dashboard/'.$dashboard.'/', '', $path);
+            $params = str_replace('/', ':', $path);
+            return  "/contract/transactions/contcat/expense/dashboard/".$dashboard."/".$params;
+          } else {
+            $params = str_replace('/', ':', $path);
+            return "/contract/transactions/contcat/expense/$params";
           }
         }
+      }
+    }
 
-    //contracts spending paths
+    // Contracts spending paths.
     if (strpos($path, '/contract/spending/transactions/') === 0) {
       $dashboard = RequestUtilities::get('dashboard');
       $path = preg_replace('|^\/contract/spending\/transactions\/|', '', $path);
       // SP ,SS, MS DASHBOARD
       if ($dashboard == 'sp' || $dashboard == 'ss' || $dashboard == 'ms') {
-        //$path = preg_replace('|^\/contract/spending\/transactions\/|', '', $path);
-          if ($dashboard == 'sp') {
-            $params = str_replace('dashboard/sp/', '', $path);
-            $params = str_replace('/', ':', $params);
-            return "/contract/spending/transactions/dashboard/sp/" . $params;
-          } else if ($dashboard == 'ss') {
-            $params = str_replace('dashboard/ss/', '', $path);
-            $params = str_replace('/', ':', $params);
-            return "/contract/spending/transactions/dashboard/ss/" . $params;
-          } else {
-            $params = str_replace('dashboard/ms/', '', $path);
-            $params = str_replace('/', ':', $params);
-            return "/contract/spending/transactions/dashboard/ms/" . $params;
-          }
-      } else if (!$dashboard && Datasource::isOGE()) {
+        // $path = preg_replace('|^\/contract/spending\/transactions\/|', '', $path);
+        if ($dashboard == 'sp') {
+          $params = str_replace('dashboard/sp/', '', $path);
+          $params = str_replace('/', ':', $params);
+          return "/contract/spending/transactions/dashboard/sp/" . $params;
+        }
+        elseif ($dashboard == 'ss') {
+          $params = str_replace('dashboard/ss/', '', $path);
+          $params = str_replace('/', ':', $params);
+          return "/contract/spending/transactions/dashboard/ss/" . $params;
+        }
+        else {
+          $params = str_replace('dashboard/ms/', '', $path);
+          $params = str_replace('/', ':', $params);
+          return "/contract/spending/transactions/dashboard/ms/" . $params;
+        }
+      }
+      elseif (!$dashboard && Datasource::isOGE()) {
         $params = str_replace('datasource/checkbook_oge/', '', $path);
         $params = str_replace('/', ':', $params);
         return "/contract/spending/transactions/datasource/checkbook_oge/" . $params;
@@ -290,13 +297,13 @@ class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterfac
       }
     }
 
-    //contract details paths
+    // Contract details paths.
     if (strpos($path, '/contract_details/') === 0) {
       $params = preg_replace('|^\/contract_details\/|', '', $path);
       $params = str_replace('/',':', $params);
       return "/contract_details/$params";
     }
-    //below is for pending_contract_transactions mini_panel from d7
+    // Below is for pending_contract_transactions mini_panel from d7.
     if (strpos($path, '/pending_contract_transactions/') === 0) {
       $params = preg_replace('|^\/pending_contract_transactions\/|', '', $path);
       $params = str_replace('/',':', $params);
@@ -329,7 +336,7 @@ class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterfac
       return "/nycha_contracts/all/transactions/$params";
     }
 
-    //payroll paths
+    // Payroll paths.
     if (strpos($path, '/payroll/transactions/') === 0) {
       $params = preg_replace('|^\/payroll\/transactions\/|', '', $path);
       $params = str_replace('/',':', $params);
@@ -364,7 +371,8 @@ class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterfac
 
       if ($index && $pathParams[($index+1)] == 'C') {
         return "/payroll/employee/transactions/cy/$params";
-      } else {
+      }
+      else {
         return "/payroll/employee/transactions/$params";
       }
     }
@@ -377,7 +385,8 @@ class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterfac
       $index = array_search('yeartype',$pathParams);
       if( $index &&  $pathParams[($index+1)] == 'C'){
         return "/payroll/search/transactionsCY/$params";
-      } else {
+      }
+      else {
         return "/payroll/search/transactionsFY/$params";
       }
     }
@@ -387,7 +396,7 @@ class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterfac
       $dashboard = RequestUtilities::get('dashboard');
 
       // SP AND SS DASHBOARD
-      if($dashboard == 'sp' || $dashboard == 'ss'){
+      if ($dashboard == 'sp' || $dashboard == 'ss') {
         $path = preg_replace('|^\/spending\/transactions\/|', '', $path);
         if (_checkbook_project_recordsExists(723)) {
           if ($dashboard == 'sp') {
@@ -401,20 +410,20 @@ class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterfac
         }
       }
       // Mwbe Subvendor Dashborad
-      else if ($dashboard == 'ms'){
+      elseif ($dashboard == 'ms'){
         $path = preg_replace('|^\/spending\/transactions\/|', '', $path);
         $params = str_replace('dashboard/ms/', '', $path);
         $params = str_replace('/', ':', $params);
         return  "/spending/transactions/dashboard/ms/".$params;
       }
-      else if (!$dashboard && Datasource::isOGE()) {
+      elseif (!$dashboard && Datasource::isOGE()) {
         $path = preg_replace('|^\/spending\/transactions\/|', '', $path);
         $params = str_replace('datasource/checkbook_oge/', '', $path);
         $params = str_replace('/', ':', $params);
         return  "/spending/transactions/datasource/checkbook_oge/".$params;
       }
       // Citywide and MWBE
-      else{
+      else {
         $path = preg_replace('|^\/spending\/transactions\/|', '', $path);
        // if (_checkbook_project_recordsExists(939)) {
           $params = str_replace('/', ':', $path);
@@ -425,28 +434,27 @@ class CheckbookTransactionsPathProcessor implements InboundPathProcessorInterfac
     // Spending Advanced Search Transactions
     if (strpos($path, '/spending/search/transactions') === 0) {
       $datasource = RequestUtilities::get('datasource');
-      if ($datasource == 'checkbook_oge')
-      {
+      if ($datasource == 'checkbook_oge') {
         $path = preg_replace('|^\/spending\/search\/transactions\/|', '', $path);
-          $params = str_replace('datasource/checkbook_oge/', '', $path);
-          $params = str_replace('/', ':', $params);
-          return "/spending/search/transactions/datasource/checkbook_oge/$params";
+        $params = str_replace('datasource/checkbook_oge/', '', $path);
+        $params = str_replace('/', ':', $params);
+        return "/spending/search/transactions/datasource/checkbook_oge/$params";
       }
       else{
-          $params = preg_replace('|^\/spending\/search\/transactions\/|', '', $path);
-          $params = str_replace('/', ':', $params);
-          return "/spending/search/transactions/".$params;
+        $params = preg_replace('|^\/spending\/search\/transactions\/|', '', $path);
+        $params = str_replace('/', ':', $params);
+        return "/spending/search/transactions/".$params;
       }
     }
 
-    // Nycha Spending Transactions
+    // Nycha Spending Transactions.
     if (strpos($path, '/nycha_spending/transactions/') === 0) {
       $params = preg_replace('|^\/nycha_spending\/transactions\/|', '', $path);
       $params = str_replace('/',':', $params);
       return "/nycha_spending/transactions/$params";
     }
 
-    //Nycha Spending Advanced Search
+    // Nycha Spending Advanced Search.
     if (strpos($path, '/nycha_spending/search/transactions/') === 0) {
       $params = preg_replace('|^\/nycha_spending\/search\/transactions\/|', '', $path);
       $params = str_replace('/',':', $params);

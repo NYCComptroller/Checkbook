@@ -20,14 +20,14 @@
                 "start_date",
                 "end_date",
                 "year_value@checkbook:ref_year/nyc_year_id@checkbook:date_id/cif_received_date_id@checkbook:pending_contracts",
-                "cif_received_date","document_version"
+                "cif_received_date","document_version","oca_number"
                       ]
            }           ,
               {"dataset": "checkbook:history_agreement",
              "seriesURLParamMap":{"agid":"original_agreement_id@checkbook:history_agreement"},
              "allowedParams":["original_agreement_id@checkbook:history_agreement"],
                  "orderBy":["-source_updated_fiscal_year","-document_version"],
-               "columns": [ "contract_number","document_version","maximum_contract_amount", "original_contract_amount",
+               "columns": [ "contract_number","oca_number","document_version","maximum_contract_amount", "original_contract_amount",
                 "source_updated_fiscal_year",
                 "date@checkbook:date_id/effective_begin_date_id@checkbook:history_agreement",
                 "date@checkbook:date_id/effective_end_date_id@checkbook:history_agreement",

@@ -7,29 +7,32 @@ use Drupal\checkbook_project\CommonUtilities\CheckbookDateUtil;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class AgenciesListConfigExtension extends AbstractExtension
-{
-public function getFunctions()
-{
+class AgenciesListConfigExtension extends AbstractExtension {
+  public function getFunctions() {
     return [
     'generateAgenciesList' => new TwigFunction('generateAgenciesList', [
       $this,
       'generateAgenciesList',
         ])
       ];
-}
+  }
 
   public function generateAgenciesList($node) {
     $city_agencies = array();
     $edc_agencies = array();
     $nycha_agencies= array();
-    foreach($node->data as $key=>$value){
-      if(isset($value['is_oge_agency']) && $value['is_oge_agency'] == 'Y'){
-        $edc_agencies[$key] = $value;
-      }else if(isset($value['is_oge_agency']) && $value['is_oge_agency'] == 'N'){
-        $city_agencies[$key] = $value;
-      }else{
-        $nycha_agencies[$key] = $value;
+
+    if (!empty($node->data)) {
+      foreach ($node->data as $key => $value) {
+        if (isset($value['is_oge_agency']) && $value['is_oge_agency'] == 'Y') {
+          $edc_agencies[$key] = $value;
+        }
+        elseif (isset($value['is_oge_agency']) && $value['is_oge_agency'] == 'N') {
+          $city_agencies[$key] = $value;
+        }
+        else {
+          $nycha_agencies[$key] = $value;
+        }
       }
     }
 
@@ -72,24 +75,26 @@ public function getFunctions()
     $agency_list .= "<div class='agency-list-content all-agency-list-content'>";
     $agency_list .= "<div class='listContainer1' id='allAgenciesList'>";
 
-    foreach($agencies as $key => $agencies_chunck){
-      $agency_list .= ((($key+1)%2 == 0)? "" : "<div class='agency-slide'>");
-      $agency_list .= "<ul class='listCol".($key+1)."'>";
-      foreach($agencies_chunck as $a => $agency){
-        $agency_url ="";
+    if ($agencies) {
+      foreach($agencies as $key => $agencies_chunck){
+        $agency_list .= ((($key+1)%2 == 0)? "" : "<div class='agency-slide'>");
+        $agency_list .= "<ul class='listCol".($key+1)."'>";
+        foreach($agencies_chunck as $a => $agency){
+          $agency_url ="";
 
-        $agency_url = ($current_url[1] == 'payroll')?'payroll/agency_landing/agency/'.$agency['agency_id'].'/yeartype/C/year/'.$current_cal_year
-          : $url.'/agency/'.$agency['agency_id'];
+          $agency_url = ($current_url[1] == 'payroll')?'payroll/agency_landing/agency/'.$agency['agency_id'].'/yeartype/C/year/'.$current_cal_year
+            : $url.'/agency/'.$agency['agency_id'];
 
-        $agency_list .= "<li id=agency-list-id-".$agency['agency_id'].">
+          $agency_list .= "<li id=agency-list-id-".$agency['agency_id'].">
                             <a href='/".$agency_url. "'>".$agency['agency_name']."</a>
                         </li>";
+        }
+        $agency_list .= "</ul>";
+        $agency_list .= (($key%2 == 1)? "</div>" : "");
       }
-      $agency_list .= "</ul>";
-      $agency_list .= (($key%2 == 1)? "</div>" : "");
+      $agency_list .= "</div>";
     }
 
-    $agency_list .= "</div>";
     $agency_list .= "</div>";
     $agency_list .= "<div class='agency-list-nav'><a id='prev1'>Prev</a><a  id='next1'>Next</a>";
     $agency_list .= "<a href='/".$all_agency_url."' id='citywide_all_agencies'>CITYWIDE ALL AGENCIES</a></div>";

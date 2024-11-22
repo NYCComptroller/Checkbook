@@ -13,7 +13,8 @@
     "maxSelect":5,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code",
-        "cagency":"agency.agency"
+        "cagency":"agency.agency",
+        "awdmethod":"award_method.award_method.award_method_code"
     },
     "adjustParameters":"
         if(isset($parameters['disb_vendor_type'])){

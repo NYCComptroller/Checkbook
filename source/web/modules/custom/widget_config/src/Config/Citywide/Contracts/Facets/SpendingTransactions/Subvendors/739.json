@@ -4,7 +4,7 @@
     "limit":100,
     "startWith":0,
     "urlParamMap":{
-        "doctype":"document_code.document_code.document_code"
+        "doctype":"document_code.document_code.document_code", "awdmethod":"award_method.award_method.award_method_code"
     },
     "columns":["vendor.vendor", "vendornm.vendornm", "txcount"],
     "orderBy":"-txcount",

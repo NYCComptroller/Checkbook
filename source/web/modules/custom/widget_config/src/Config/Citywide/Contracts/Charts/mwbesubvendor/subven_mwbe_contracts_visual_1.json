@@ -26,18 +26,19 @@
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry"],
-"urlParamMap":{"agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"prime_vendor_id","subvendor":"vendor_id",
+"urlParamMap":{"agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_code","vendor":"prime_vendor_id","subvendor":"vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
 "chartTitle":"M/WBE Active Expense Contracts Share",
 "widgetDataLoader":"
 
-    $where_filters = array();
-
-
-    	$where_filters2 = array();
-    	foreach($node->widgetConfig->requestParams as $param=>$value){
-       	 $where_filters2[] = _widget_build_sql_condition(' a1.' . $param, $value);
-    	}
+  $where_filters = array();
+  foreach($node->widgetConfig->requestParams as $param=>$value){
+  if($param == 'award_method_code'){
+  $where_filters[] = _widget_build_sql_condition(' am.' . $param, $value);
+}else{
+$where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+}
+}
 
     	if(count($where_filters2) > 0){
         	$where_filter2 = ' where ' . implode(' and ' , $where_filters2);
@@ -51,6 +52,7 @@
     		join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
     		join {ref_year} ry on a1.fiscal_year_id = ry.year_id
     		join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+        join {ref_award_method} am on a1.award_method_id = am.award_method_id
    			' . $where_filter2 . '
     		group by rm.minority_type_id, rm.minority_type_name,year_value  ';
     	$node->data  = _checkbook_project_execute_sql($sql2);
@@ -68,6 +70,11 @@
 	 foreach ($node->data as $row){
 
 	 	switch($row['minority_type_id']){
+      case '1':
+      if(in_array(2,$mwbe_page_cats))
+      $series[$row['year_value']]['y'] += $row['current_amount_sum'];
+      $series[$row['year_value']]['mwbe_total'] += $row['current_amount_sum'];
+      break;
 	 		case '2':
 	 		if(in_array(2,$mwbe_page_cats))
 	 			$series[$row['year_value']]['y'] += $row['current_amount_sum'];
@@ -88,6 +95,11 @@
 	 			$series[$row['year_value']]['y'] += $row['current_amount_sum'];
 	 		$series[$row['year_value']]['mwbe_total'] += $row['current_amount_sum'];
 	 		break;
+      case '10':
+      if(in_array(10,$mwbe_page_cats))
+      $series[$row['year_value']]['y'] += $row['current_amount_sum'];
+      $series[$row['year_value']]['mwbe_total'] += $row['current_amount_sum'];
+      break;
       case '6':
       if(in_array(6,$mwbe_page_cats))
         $series[$row['year_value']]['y'] += $row['current_amount_sum'];
@@ -117,11 +129,8 @@
 	$index = 0;
 	foreach($series as $key=>$row){
 		if($key <= $year && $key >= $year - 4){
-			if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('yeartype',['q'=>$url]) == 'C'){
-				 $year_display = 'CY ' . $key;
-			}else{
-				$year_display = 'FY ' . $key;
-			}
+      $year_display = 'FY ' . $key;
+      }
 	 		$tooltip_label =
 	 						'Year: ' . $year_display.  '<br/>' .
 	 						'Amount: '. \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($series[$key]['y'],2,'$')   . '<br/>' ;

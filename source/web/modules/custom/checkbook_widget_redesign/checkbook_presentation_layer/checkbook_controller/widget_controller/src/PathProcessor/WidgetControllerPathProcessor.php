@@ -15,8 +15,7 @@ class WidgetControllerPathProcessor implements InboundPathProcessorInterface
    * @param Request $request
    * @return string
    */
-  public function processInbound($path, Request $request): string
-  {
+  public function processInbound($path, Request $request): string {
     if (str_starts_with($path, '/widget_controller/')) {
       $urlParams = preg_replace('|^\/widget_controller\/|', '', $path);
       $urlParams = RequestUtilities::replaceSlash($urlParams);

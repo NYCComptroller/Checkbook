@@ -173,13 +173,13 @@ function _checkbook_faceted_search_update_data($node) {
     $disableFacet = true;
   }
 
-  if (isset($disableFacet)) { //only URL parameters count and can be disabled
+  if (isset($disableFacet) && $disableFacet) { //only URL parameters count and can be disabled
     $url_ref = RequestUtilities::getBottomContUrl();
     $url_ref = $url_ref ?? \Drupal::request()->server->get('HTTP_REFERER');
     $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
   }
 
-  if (isset($disableFacet)) {
+  if (isset($disableFacet) && $disableFacet) {
     $output['unchecked'] = null;
   } else {
     foreach ($data as $row) {
@@ -238,6 +238,53 @@ function _checkbook_faceted_search_update_cert_filter($node){
       $initial[0] = array('pswomen', 'Woman Owned', ($pWomenCount + $sWomenCount));
       $initial[1] = array('psemerg', 'Emerging', ($pEmergeCount + $sEmergeCount));
       break;
+  }
+
+  for ($i = 0; $i < 2; $i++) {
+    $checked = false;
+    foreach ($params as $param) {
+      if ($param == $initial[$i][0]) {
+        $checked = true;
+      }
+    }
+    if ($checked) {
+      $output['checked'][] = $initial[$i];
+    } else {
+      if ($initial[$i][2] > 0) {
+        $output['unchecked'][] = $initial[$i];
+      }
+    }
+  }
+  $output['autocomplete_id'] = $node->widgetConfig->autocompleteID ?? null;
+  return $output;
+}
+
+function _checkbook_faceted_search_update_event_filter($node){
+  $data = $node->data;
+
+  $output = array();
+  $output['filter_name'] = $node->widgetConfig->filterName;
+  //$params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  if (empty(RequestUtilities::getBottomContUrl())) {
+    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  } else {
+    $params = explode('~', RequestUtilities::_getRequestParamValueBottomURL($node->widgetConfig->urlParameterName));
+  }
+  if (!is_array($data[0])) {
+    $data = array(0 => array());
+  }
+
+  $covidCount = $data[0]['covid_count'] ?? 0;
+  $asylumCount = $data[0]['asylum_count'] ?? 0;
+
+  $initial = array();
+  $initial[0] = array('1', 'Covid-19', $covidCount);
+  $initial[1] = array('2', 'Asylum Seekers', $asylumCount);
+
+  // Sort by count.
+  if ($covidCount != $asylumCount) {
+    $keys = [$covidCount, $asylumCount];
+    array_multisort($keys, SORT_DESC, $initial);
   }
 
   for ($i = 0; $i < 2; $i++) {
@@ -482,6 +529,8 @@ function _checkbook_faceted_search_update_data_range2_filter($node) {
   return $output;
 }
 
+
+
 /**
  * @param $node
  * @return array
@@ -590,6 +639,48 @@ function _checkbook_faceted_search_update_data_range3_filter($node) {
   return $output;
 }
 
+function _checkbook_faceted_search_update_data_range4_filter($node) {
+  $data = $node->data;
+  $rangeColumnNameVariant = $node->widgetConfig->rangeColumnNameVariant ?? null;
+  $output = array();
+  $output['filter_name'] = $node->widgetConfig->filterName;
+  //$params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  if (empty(RequestUtilities::getBottomContUrl())) {
+    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+  } else {
+    $params = explode('~', RequestUtilities::_getRequestParamValueBottomURL($node->widgetConfig->urlParameterName));
+  }
+  if (!is_array($data[0])) {
+    $data = array(0 => array());
+  }
+
+
+        $initial[0] = array(7, 'Greater than $100M', $data[0]['g100m_' . $rangeColumnNameVariant . 'count']);
+        $initial[1] = array(6, '$51M - $100M', $data[0]['g50m_le100m_' . $rangeColumnNameVariant . 'count']);
+        $initial[2] = array(5, '$26M - $50M', $data[0]['g25m_le50m_' . $rangeColumnNameVariant . 'count']);
+        $initial[3] = array(4, '$11M - $25M', $data[0]['g10m_le25m_' . $rangeColumnNameVariant . 'count']);
+        $initial[4] = array(3, '$1.6M - $10M', $data[0]['ge15mm_le10m_' . $rangeColumnNameVariant . 'count']);
+        $initial[5] = array(2, '$1M - $1.5M', $data[0]['ge1m_le15mm_' . $rangeColumnNameVariant . 'count']);
+        $initial[6] = array(1, 'Less than $1M', $data[0]['less1m_' . $rangeColumnNameVariant . 'count']);
+
+  for ($i = 0; $i < 7; $i++) {
+    $checked = false;
+    foreach ($params as $param) {
+      if ($param == $initial[$i][0]) {
+        $checked = true;
+      }
+    }
+    if ($checked) {
+      $output['checked'][] = $initial[$i];
+    } else {
+      if ($initial[$i][2] > 0) {
+        $output['unchecked'][] = $initial[$i];
+      }
+    }
+  }
+  $output['autocomplete_id'] = $node->widgetConfig->autocompleteID;
+  return $output;
+}
 /**
  * @param $node
  */
@@ -617,17 +708,29 @@ function checkbook_faceted_search_preprocess_individual_filter(&$variables) {
 
   if (isset($node->widgetConfig->urlParameterType) && $node->widgetConfig->urlParameterType == "rangeid") {
     $data = _checkbook_faceted_search_update_data_range_filter($node);
-  } elseif (isset($node->widgetConfig->urlParameterType) && $node->widgetConfig->urlParameterType == "rangeid2") {
+  }
+  elseif (isset($node->widgetConfig->urlParameterType) && $node->widgetConfig->urlParameterType == "rangeid2") {
     $data = _checkbook_faceted_search_update_data_range2_filter($node);
-  } elseif (isset($node->widgetConfig->urlParameterType) && $node->widgetConfig->urlParameterType == "rangeid3") {
+  }
+  elseif (isset($node->widgetConfig->urlParameterType) && $node->widgetConfig->urlParameterType == "rangeid3") {
     $data = _checkbook_faceted_search_update_data_range3_filter($node);
-  } elseif (isset($node->widgetConfig->urlParameterType) && $node->widgetConfig->urlParameterType == "cert") {
+  }
+  elseif (isset($node->widgetConfig->urlParameterType) && $node->widgetConfig->urlParameterType == "rangeid4") {
+    $data = _checkbook_faceted_search_update_data_range4_filter($node);
+  }
+  elseif (isset($node->widgetConfig->urlParameterType) && $node->widgetConfig->urlParameterType == "cert") {
     $data = _checkbook_faceted_search_update_cert_filter($node);
-  } elseif (isset($logicalOrFacet) && $logicalOrFacet) {
+  }
+  elseif (isset($node->widgetConfig->urlParameterType) && $node->widgetConfig->urlParameterType == "any") {
+    $data = _checkbook_faceted_search_update_event_filter($node);
+  }
+  elseif (isset($logicalOrFacet) && $logicalOrFacet) {
     $data = _checkbook_faceted_search_update_data_logical_or_filter($node);
-  } elseif (isset($unionOrFacet) && $unionOrFacet) {
+  }
+  elseif (isset($unionOrFacet) && $unionOrFacet) {
     $data = _checkbook_faceted_search_update_data_union_or_filter($node);
-  } else {
+  }
+  else {
     $data = _checkbook_faceted_search_update_data($node);
   }
   $variables['filter_name'] = $data['filter_name'];
@@ -693,6 +796,8 @@ function checkbook_faceted_search_preprocess_pagination(&$variables) {
     $data = _checkbook_faceted_search_update_data_range3_filter($node);
   } elseif ($node->widgetConfig->urlParameterType == "cert") {
     $data = _checkbook_faceted_search_update_cert_filter($node);
+  } elseif (isset($node->widgetConfig->urlParameterType) && $node->widgetConfig->urlParameterType == "any") {
+    $data = _checkbook_faceted_search_update_event_filter($node);
   } elseif (isset($logicalOrFacet) && $logicalOrFacet) {
     $data = _checkbook_faceted_search_update_data_logical_or_filter($node);
   } elseif (isset($unionOrFacet) && $unionOrFacet) {

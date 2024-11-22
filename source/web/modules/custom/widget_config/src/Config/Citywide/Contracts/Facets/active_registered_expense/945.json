@@ -11,9 +11,9 @@
     "rangeColumnNameVariant":"prime_",
     "filterName":"Prime Current Amount",
     "urlParameterName":"pcuramtr",
-    "urlParameterType":"rangeid",
+    "urlParameterType":"rangeid4",
     "autocompleteID":"fPCurAmount",
-    "columns":["g100m_prime_count", "g50m_le100m_prime_count", "g25m_le50m_prime_count", "g10m_le25m_prime_count", "ge1m_le10m_prime_count", "less1m_prime_count"],
+    "columns":["g100m_prime_count", "g50m_le100m_prime_count", "g25m_le50m_prime_count", "g10m_le25m_prime_count", "ge15mm_le10m_prime_count","ge1m_le15mm_prime_count", "less1m_prime_count"],
     "orderBy":"",
     "adjustParameters":"
         $parameters = \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::adjustActiveContractCommonParams($node, $parameters);

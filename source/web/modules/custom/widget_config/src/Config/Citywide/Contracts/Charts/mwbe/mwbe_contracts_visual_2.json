@@ -33,14 +33,18 @@
 "no_results_content":"No Results Found",
 "defaultParameters":{"type_of_year":"B"},
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe"],
-"urlParamMap":{"mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_id","vendor":"vendor_id",
+"urlParamMap":{"mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_code","vendor":"vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
 "chartTitle":"M/WBE Spending by Active Expense Contracts",
 "widgetDataLoader":"
 
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
-        $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+  if($param == 'award_method_code'){
+  $where_filters[] = _widget_build_sql_condition(' am.' . $param, $value);
+}else{
+$where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+}
     }
 
     if(count($where_filters) > 0){
@@ -60,6 +64,7 @@
     join {ref_month} rmo on a1.month_id = rmo.month_id
     join {ref_year} ry on a1.fiscal_year_id = ry.year_id
     join {ref_document_code} rd on a1.document_code_id = rd.document_code_id
+    join {ref_award_method} am on a1.award_method_id = am.award_method_id
    ' . $where_filter . '
     group by year_value, rmo.month_value ,rmo.month_name,a1.month_id
     order by year_value,  rmo.month_value
@@ -122,11 +127,7 @@ $url = isset($refURL) ? $refURL: \\Drupal\\checkbook_infrastructure_layer\\Utili
 			$series_previous[] = $series_previous_temp[$category] ;
 		}
 	}
-	if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('yeartype',['q'=>$url]) == 'C'){
-				 $year_display = 'CY ';
-	}else{
-				$year_display = 'FY ' ;
-	}
+  $year_display = 'FY ' ;
 	$index = 0;
 	$node->widgetConfig->gridConfig->table_columns[1]->labelAlias = $year_display . ' ' .  ($year - 1);
 

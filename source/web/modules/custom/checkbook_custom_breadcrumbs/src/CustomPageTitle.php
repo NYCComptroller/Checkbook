@@ -1,8 +1,11 @@
 <?php
+
+namespace Drupal\checkbook_custom_breadcrumbs;
+
 /**
  * This file is part of the Checkbook NYC financial transparency software.
  *
- * Copyright (c) 2012 – 2023 New York City
+ * Copyright (c) 2012 – 2023 New York City.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,31 +21,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Drupal\checkbook_custom_breadcrumbs;
-
 use Drupal\checkbook_infrastructure_layer\Constants\Common\CheckbookDomain;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\PageType;
 use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
 
+/**
+ * Custom page title class.
+ */
 class CustomPageTitle {
 
   /**
    * The page title.
    *
-   * @var string|NULL
+   * @var string|null
    */
   protected static ?string $title;
 
   /**
+   * Get custom page title.
+   *
    * @return string
+   *   The title.
    */
-  public static function getCustomPageTitle(): ?string
-  {
+  public static function getCustomPageTitle(): ?string {
     if (!isset(self::$title)) {
       $domain = CheckbookDomain::getCurrent();
       $pageType = PageType::getCurrent();
       if ($pageType == PageType::ADVANCED_SEARCH_PAGE) {
-        //Advanced search titles
+        // Advanced search titles.
         self::$title = match ($domain) {
           CheckbookDomain::$BUDGET => BudgetBreadcrumbs::advancedSearchTitle(),
           CheckbookDomain::$NYCHA_BUDGET => BudgetBreadcrumbs::nychaAdvancedSearchTitle(),
@@ -51,24 +57,26 @@ class CustomPageTitle {
           CheckbookDomain::$SPENDING => SpendingBreadcrumbs::getSpendingTransactionTitle(),
           default => "",
         };
-      }else if($pageType == PageType::TRENDS_PAGE){
+      }
+      elseif ($pageType == PageType::TRENDS_PAGE) {
         $data = TrendPageTitle::getBreadCrumbTitle();
         $widgetId = RequestUtilities::get('widget');
         if (preg_match('/^\/trends-landing\/trends\/node\//', RequestUtilities::getCurrentPageUrl())) {
           $widgetId = RequestUtilities::get('node');
         }
         self::$title = $widgetId ? $data['trend_name'] ?? '' : 'Trends';
-      } else {
+      }
+      else {
         self::$title = match ($domain) {
           CheckbookDomain::$BUDGET => BudgetBreadcrumbs::getBudgetPageTitle(),
           CheckbookDomain::$NYCHA_BUDGET => BudgetBreadcrumbs::getNychaBudgetPageTitle(),
           CheckbookDomain::$REVENUE => RevenueBreacrumbs::getRevenuePageTitle(),
-          CheckbookDomain::$NYCHA_REVENUE => RevenueBreacrumbs::getNYCHARevenuePageTitle(),
-          CheckbookDomain::$PAYROLL => PayrollBreadcrumbs::getPayrollPageTitle(),
+          CheckbookDomain::$NYCHA_REVENUE => RevenueBreacrumbs::getNychaRevenuePageTitle(),
           CheckbookDomain::$SPENDING => SpendingBreadcrumbs::getSpendingPageTitle(),
           CheckbookDomain::$NYCHA_SPENDING => SpendingBreadcrumbs::getNychaSpendingPageTitle(),
-          CheckbookDomain::$NYCHA_CONTRACTS => ContractsBreadcrumbs::getNychaContractsPageTitle(),
           CheckbookDomain::$CONTRACTS => ContractsBreadcrumbs::getContractsPageTitle(),
+          CheckbookDomain::$NYCHA_CONTRACTS => ContractsBreadcrumbs::getNychaContractsPageTitle(),
+          CheckbookDomain::$PAYROLL => PayrollBreadcrumbs::getPayrollPageTitle(),
           default => "",
         };
       }
@@ -78,7 +86,5 @@ class CustomPageTitle {
     }
     return self::$title;
   }
-
-
 
 }

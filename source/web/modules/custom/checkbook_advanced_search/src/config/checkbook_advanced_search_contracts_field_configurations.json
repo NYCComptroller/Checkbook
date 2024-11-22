@@ -14,7 +14,7 @@
                 {"field_name":"end_date","column":"column-left"},
                 {"field_name":"registration_date","column":"column-left"},
                 {"field_name":"category","column":"column-right"},
-                {"field_name":"catastrophic_events","column":"column-right"},
+                {"field_name":"conditional_categories","column":"column-right"},
                 {"field_name":"purpose","column":"column-right"},
                 {"field_name":"agency","column":"column-right"},
                 {"field_name":"industry","column":"column-right"},

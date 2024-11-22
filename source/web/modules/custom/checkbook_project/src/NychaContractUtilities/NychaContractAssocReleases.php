@@ -26,13 +26,11 @@ use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
 /**
  * Class NychaContractAssocReleases
  */
-class NychaContractAssocReleases
-{
+class NychaContractAssocReleases {
     /**
      * @param $node
      */
-    public function getData(&$node)
-    {
+    public function getData(&$node) {
         $contract_id = RequestUtilities::get('contract');
         $page = (RequestUtilities::get('page')) ? RequestUtilities::get('page') : 0;
 
@@ -54,7 +52,7 @@ class NychaContractAssocReleases
     private function splitHistoryByYears($history)
     {
         $return = [];
-        if (!$history or !is_array($history) or !sizeof($history)) {
+        if (!$history || !is_array($history) || !sizeof($history)) {
             return [];
         }
         foreach ($history as $line) {
@@ -155,11 +153,11 @@ SQL;
       }
       sort($releases);
       $releases = array_unique($releases);
-      foreach($releases as $key => $release_number){
+      foreach($releases as $release_number){
           $data = [];
           $yearList = array_unique($years[$release_number]);
           arsort($yearList);
-          foreach($yearList as $key=>$year){
+          foreach($yearList as $year){
             $data[$year] = $releaseSpendingData[$release_number][$year];
           }
           $spendingByRelease[$release_number]['year_list'] = $yearList;

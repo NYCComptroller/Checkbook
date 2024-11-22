@@ -176,11 +176,11 @@ class ContractsUtil {
       }
 
       //Set Award method id for the selected OGE Award method code
-      if (isset($parameters['award_method_code@checkbook_oge:award_method'])) {
-        $award_method_id = _checkbook_project_querydataset('checkbook_oge:award_method', ['award_method_id'], ['award_method_code' => $parameters['award_method_code@checkbook_oge:award_method']]);
+      //if (isset($parameters['award_method_code@checkbook_oge:award_method'])) {
+        /*$award_method_id = _checkbook_project_querydataset('checkbook_oge:award_method', ['award_method_id'], ['award_method_code' => $parameters['award_method_code@checkbook_oge:award_method']]);
         $parameters['award_method_id'] = $award_method_id[0]['award_method_id'];
-        unset($parameters['award_method_code@checkbook_oge:award_method']);
-      }
+        unset($parameters['award_method_code@checkbook_oge:award_method']);*/
+      //}
     }
   }
 
@@ -195,12 +195,14 @@ class ContractsUtil {
   public static function checkbook_api_adjust_expense_contracts_params(&$parameters, $criteria, $contract_status, $category) {
     $data_controller_instance = data_controller_get_operator_factory_instance();
 
-    $req_year = $criteria['value']['fiscal_year'];
-    $req_years = _checkbook_project_querydataset('checkbook:year', [
-      'year_id',
-      'year_value'
-    ], ['year_value' => $req_year]);
-    $req_year = $req_years[0]['year_id'];
+    if(isset($criteria['value']['fiscal_year'])) {
+      $req_year = $criteria['value']['fiscal_year'];
+      $req_years = _checkbook_project_querydataset('checkbook:year', [
+        'year_id',
+        'year_value'
+      ], ['year_value' => $req_year]);
+      $req_year = $req_years[0]['year_id'] ?? null;
+    }
 
     if (isset($req_year)) {
       $parameters['type_of_year@checkbook:contracts_coa_aggregates_datafeeds'] = 'B';
@@ -380,6 +382,57 @@ class ContractsUtil {
     else {
       $order_by_part = str_replace("contract_number", "l4.contract_number", $order_by_part);
     }
+
+    $sql_query = (count($sql_parts) > 1) ? implode(' ORDER BY ', [
+      $select_part,
+      $order_by_part
+    ]) : $select_part;
+  }
+
+  /***
+   * @param $sql_query
+   *
+   * @return string
+   */
+  public static function checkbook_api_adjustContractPercentSql(&$sql_query) {
+    $sql_parts = explode("ORDER BY", $sql_query);
+    $select_part = $sql_parts[0];
+    $order_by_part = $sql_parts[1];
+
+    if (preg_match('/(?<alias>[a-zA-Z0-9]+?\.)?percent_covid_spending/', $select_part, $matches)) {
+      $alias = $matches['alias'];
+      $modified_select_part = "
+      CASE WHEN {$alias}vendor_record_type = 'Sub Vendor' THEN '-'
+        WHEN {$alias}event_id IS NULL THEN '-'
+        WHEN {$alias}event_id = '2' THEN '0'
+        ELSE CAST({$alias}percent_covid_spending AS VARCHAR)
+      END AS percent_covid_spending
+      ";
+      $select_part = str_replace($matches[0], $modified_select_part, $select_part);
+    }
+
+    if (preg_match('/(?<alias>[a-zA-Z0-9]+?\.)?percent_asylum_spending/', $select_part, $matches)) {
+      $alias = $matches['alias'];
+      $modified_select_part = "
+      CASE WHEN {$alias}vendor_record_type = 'Sub Vendor' THEN '-'
+        WHEN {$alias}event_id IS NULL THEN '-'
+        WHEN {$alias}event_id = '1' THEN '0'
+        ELSE CAST({$alias}percent_asylum_spending AS VARCHAR)
+      END AS percent_asylum_spending
+      ";
+      $select_part = str_replace($matches[0], $modified_select_part, $select_part);
+    }
+
+    if (preg_match('/(?<alias>[a-zA-Z0-9]+?\.)?percent_other_spending/', $select_part, $matches)) {
+      $alias = $matches['alias'];
+      $modified_select_part = "
+      CASE WHEN {$alias}vendor_record_type = 'Sub Vendor' THEN '-'
+        ELSE CAST({$alias}percent_other_spending AS VARCHAR)
+      END AS percent_other_spending
+      ";
+      $select_part = str_replace($matches[0], $modified_select_part, $select_part);
+    }
+
     $sql_query = (count($sql_parts) > 1) ? implode(' ORDER BY ', [
       $select_part,
       $order_by_part
@@ -510,6 +563,15 @@ class ContractsUtil {
       $select_part = str_replace('release_approved_date', "CASE WHEN record_type = 'Agreement' AND release_approved_date IS NULL THEN '-'
                                                     ELSE TO_CHAR(release_approved_date, 'MM/DD/YYYY')
                                                    END AS release_approved_date", $select_part);
+      // Set percent covid  hyphen when NULL, when vendor_type is subvendor and event_id !=0
+      $select_part = str_replace('percent_covid_spending', "CASE WHEN event_id IS NULL OR vendor_record_type = 'Sub Vendor' OR percent_covid_spending is NULL THEN CAST('-' AS TEXT)
+                                                                           END AS percent_covid_spending", $select_part);
+      // Set percent asylum  hyphen when NULL, when vendor_type is subvendor and event_id !=0
+      $select_part = str_replace('percent_asylum_spending', "CASE WHEN event_id IS NULL OR vendor_record_type = 'Sub Vendor' OR percent_asylum_spending is NULL THEN CAST('-' AS TEXT)
+                                                                           END AS percent_asylum_spending", $select_part);
+      // Set percent other  hyphen when NULL, when vendor_type is subvendor and event_id !=0
+      $select_part = str_replace('percent_other_spending', "CASE WHEN event_id IS NULL OR vendor_record_type = 'Sub Vendor' OR percent_other_spending is NULL THEN CAST('-' AS TEXT)
+                                                                           END AS percent_other_spending", $select_part);
       //Set '-' to Start Date and End Date to POs
       $po_date_columns = ['agreement_start_date', 'agreement_end_date'];
       foreach ($po_date_columns as $key => $value) {

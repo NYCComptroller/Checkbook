@@ -24,6 +24,20 @@ use Drupal\data_controller\Common\Object\Manipulation\ObjectHelper;
 
 class DataSourceMetaData extends AbstractMetaData {
 
+    public $database;
+    public $username;
+    public $password;
+    public $host;
+    public $port;
+    public $prefix;
+    public $schema;
+    public $namespace;
+    public $autoload;
+    public $pdo;
+    public $init_commands = [];
+    public $charset;
+    public $collation;
+
     public $parentName = NULL;
     public $type = NULL;
 

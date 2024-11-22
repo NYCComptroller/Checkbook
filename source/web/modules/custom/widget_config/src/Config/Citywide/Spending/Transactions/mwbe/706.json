@@ -29,7 +29,7 @@
         "scalyear":"calendar_fiscal_year_id","magid":"master_agreement_id","agid":"agreement_id",
         "cvendor":"vendor_id@checkbook:contracts_spending_transactions",
         "cagency":"document_agency_id@checkbook:contracts_spending_transactions",
-        "awdmethod":"award_method_id@checkbook:contracts_spending_transactions",
+        "awdmethod":"award_method_code@checkbook:contracts_spending_transactions",
         "status":"status_flag@checkbook:contracts_spending_transactions",
         "csize":"award_size_id@checkbook:contracts_spending_transactions",
         "cindustry":"industry_type_id@checkbook:contracts_spending_transactions",
@@ -80,7 +80,6 @@
         "budget_name",
         "reference_document_number",
         "purpose",
-        "purpose_cy",
         "reporting_code",
         "spending_category_name",
         "expenditure_object_id",
@@ -96,7 +95,8 @@
         "original_agreement_id@checkbook:sub_vendor_agid",
         "budget_name_code",
         "is_women_owned",
-        "is_emerging"
+        "is_emerging",
+        "check_eft_issued_nyc_year_id"
     ],
     "derivedColumns": {
         "associated_prime_vendor_name":{
@@ -209,16 +209,17 @@
             "column":"mwbe_category_name",
             "sourceColumn":"minority_type_id",
             "sql":"
-                case
-                when minority_type_id = 2 then 'Black American'
-                when minority_type_id = 3 then 'Hispanic American'
-                when minority_type_id = 6 THEN 'Native American'
-                when minority_type_id = 7 then 'Non-M/WBE'
-                when minority_type_id = 9 then 'Women (Non-Minority)'
-                when minority_type_id = 11 then 'Individuals and Others'
-                when minority_type_id = 99 THEN 'Emerging (Non-Minority)'
-                else 'Asian American'
-                end as minority_type_name
+                CASE
+                WHEN minority_type_id IN (4, 5, 10) THEN 'Asian American'
+                WHEN minority_type_id = 2 THEN 'Black American'
+                WHEN minority_type_id = 3 THEN 'Hispanic American'
+                WHEN minority_type_id = 6 THEN 'Native American'
+                WHEN minority_type_id = 7 THEN 'Non-M/WBE'
+                WHEN minority_type_id = 9 THEN 'Women (Non-Minority)'
+                WHEN minority_type_id = 11 THEN 'Individuals and Others'
+                WHEN minority_type_id = 99 THEN 'Emerging (Non-Minority)'
+                ELSE 'Others'
+                END AS minority_type_name
                 "
         },
         {
@@ -269,11 +270,6 @@
         $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
         return $adjustedParameters;
     ",
-    "summaryView":{
-        "template":"spending_date_summary",
-        "templateTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle();",
-        "catName":"return  \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getSpendingCategoryName();"
-    },
     "dataTableOptions":{
         "bRetrieve": true,
         "bServerSide": true,

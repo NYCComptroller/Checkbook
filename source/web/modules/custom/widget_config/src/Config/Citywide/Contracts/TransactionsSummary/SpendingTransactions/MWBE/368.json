@@ -15,7 +15,7 @@
      "cvendor":"vendor_id",
      "csize":"award_size_id",
      "cindustry":"industry_type_id",
-     "awdmethod":"award_method_id",
+     "awdmethod":"award_method.award_method.award_method_code",
     "contnum":"contract_number.contract_number"
  },
 "preProcessConfiguration":"

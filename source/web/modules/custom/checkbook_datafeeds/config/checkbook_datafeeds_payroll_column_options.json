@@ -41,7 +41,7 @@
         "csv": {
           "Annual Salary": "Annual Salary",
           "Base Pay": "Base Pay",
-          "Calendar Year":"Calendar Year",
+          "Fiscal Year":"Fiscal Year",
           "Daily Wage" : "Daily Wage",
           "Gross Pay": "Gross Pay",
           "Gross Pay YTD": "Gross Pay YTD",

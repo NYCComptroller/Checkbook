@@ -41,8 +41,8 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state, $dataSou
   $agency = _checkbook_get_selected_value($form_state, $filterDimension, 'agency');
   $revenue_category = _checkbook_get_selected_value($form_state, $filterDimension, 'revenue_category');
   $revenue_source = _checkbook_get_selected_value($form_state, $filterDimension, 'revenue_source');
-  $catastrophic_event = _checkbook_get_selected_value($form_state, $filterDimension, 'catastrophic_events');
-  $catastrophic_event = ($catastrophic_event == "Select Event") ? 0 : $catastrophic_event;
+  $conditional_category = _checkbook_get_selected_value($form_state, $filterDimension, 'conditional_categories');
+  $conditional_category = ($conditional_category == "Select Event") ? 0 : $conditional_category;
   $revenue_source_exact = _checkbook_get_selected_value($form_state, $filterDimension, 'revenue_source_exact');
   $adopted_from = _checkbook_get_selected_value($form_state, $filterDimension, 'adopted_budget_from');
   $adopted_to = _checkbook_get_selected_value($form_state, $filterDimension, 'adopted_budget_to');
@@ -82,13 +82,13 @@ function _checkbook_advanced_search_revenue_submit($form, &$form_state, $dataSou
 
   if (!empty($revenue_source)) {
     if ($revenue_source == $revenue_source_exact) {
-      $redirect_url .= _checkbook_advanced_search_generate_redirect_url(_checkbook_advanced_search_generate_redirect_url($revenue_source, 'revsrcnm_exact'));
+      $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_source, 'revsrcnm_exact');
     } else {
       $redirect_url .= _checkbook_advanced_search_generate_redirect_url($revenue_source, 'revsrcnm');
     }
   }
-  if(!empty($catastrophic_event)){
-    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($catastrophic_event, 'cevent');
+  if(!empty($conditional_category)){
+    $redirect_url .= _checkbook_advanced_search_generate_redirect_url($conditional_category, 'cevent');
   }
   if (!empty($funding_class)) {
     $redirect_url .= _checkbook_advanced_search_generate_redirect_url($funding_class, 'fundsrccode');

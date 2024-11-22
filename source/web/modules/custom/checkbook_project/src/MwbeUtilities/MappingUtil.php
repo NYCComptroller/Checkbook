@@ -34,7 +34,7 @@ class MappingUtil {
   /**
    * @var string
    */
-  static string $total_mwbe_cats = "2~3~4~5~6~9~99";
+  static string $total_mwbe_cats = "1~2~3~4~5~10~6~9~99";
 
   /**
    * @var array
@@ -64,6 +64,7 @@ class MappingUtil {
         3 => 'Hispanic American',
         4 => 'Asian American',
         5 => 'Asian American',
+        10 => 'Asian American',
         6 => 'Native American',
         7 => 'Non-M/WBE',
         9 => 'Women (Non-Minority)',
@@ -79,6 +80,7 @@ class MappingUtil {
       3 => 'Hispanic American',
       4 => 'Asian American',
       5 => 'Asian American',
+      10 => 'Asian American',
       6 => 'Native American',
       7 => 'Non-M/WBE',
       9 => 'Women (Non-Minority)',
@@ -106,7 +108,7 @@ class MappingUtil {
    * @var array
    */
     private static $minority_type_category_map_multi = array(
-        'Asian American' => array(4,5),
+        'Asian American' => array(4,5,10),
         'Black American' => array(2),
         'Women (Non-Minority)' => array(9),
         'Hispanic American' => array(3),
@@ -114,7 +116,7 @@ class MappingUtil {
         'Emerging (Non-Minority)' => array(99),
         'Non-M/WBE' => array(7),
         'Individuals and Others' => array(11),
-        'Total M/WBE' => array(2,3,4,5,6,9,99),
+        'Total M/WBE' => array(1,2,3,4,5,10,6,9,99),
     );
 
   /**
@@ -123,13 +125,13 @@ class MappingUtil {
     public static $minority_type_category_map_multi_chart = array(
         'Black American' => array(2),
         'Hispanic American' => array(3),
-        'Asian American' => array(4,5),
+        'Asian American' => array(4,5,10),
         'Non-M/WBE' => array(7),
         'Women (Non-Minority)' => array(9),
         'Individuals and Others' => array(11),
         'Native American' => array(6),
         'Emerging (Non-Minority)' => array(99),
-        'M/WBE' => array(2,3,4,5,6,9,99),
+        'M/WBE' => array(1,2,3,4,5,10,6,9,99),
     );
 
   /**
@@ -252,8 +254,8 @@ class MappingUtil {
   			<li class='no-click title'>M/WBE Category</li>
   					";
 
-        if(array_intersect($applicable_minority_types,array(4,5))){
-            $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/4~5'>Asian American</a></li>";
+        if(array_intersect($applicable_minority_types,array(4,5,10))){
+            $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/4~5~10'>Asian American</a></li>";
         }
         if(array_intersect($applicable_minority_types,array(2))){
             $filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/2'>Black American</a></li>";
@@ -316,8 +318,8 @@ class MappingUtil {
 
             $active_domain_link =  preg_replace('/\/mwbe\/[^\/]*/','',$active_domain_link);
 
-            if(array_intersect($applicable_minority_types,array(4,5))){
-                $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/4~5'>Asian American</a></li>";
+            if(array_intersect($applicable_minority_types,array(4,5,10))){
+                $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/4~5~10'>Asian American</a></li>";
             }
             if(array_intersect($applicable_minority_types,array(2))){
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/2'>Black American</a></li>";
@@ -328,15 +330,12 @@ class MappingUtil {
             if(array_intersect($applicable_minority_types,array(3))){
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/3'>Hispanic American</a></li>";
             }
-
             if(array_intersect($applicable_minority_types,array(6))){
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/6'>Native American</a></li>";
             }
-
             if(array_intersect($applicable_minority_types,array(99))){
                 $mwbe_filters_html .=  "<li class='no-click'><a href='/" . $active_domain_link . "/mwbe/99'>Emerging (Non-Minority)</a></li>";
             }
-
             if($mwbe_filters_html != "") {
               $mwbe_filters_html =  "<li class='no-click title'>M/WBE Category</li>" . $mwbe_filters_html;
             }

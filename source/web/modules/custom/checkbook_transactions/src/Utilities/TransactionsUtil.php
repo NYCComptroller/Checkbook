@@ -82,11 +82,11 @@ class TransactionsUtil
     $dashboard = RequestUtilities::getRequestParamValue('dashboard');
     if($dashboard == 'ss')
     {
-      $title = "Sub Contract Status by Prime Contract ID";
+      $title = "Subcontract Status by Prime Contract ID";
     }
     if($dashboard == 'ms' || $dashboard == 'sp')
     {
-      $title = "M/WBE Sub Contract Status by Prime Contract ID";
+      $title = "M/WBE Subcontract Status by Prime Contract ID";
     }
     echo  "<div class='contract-id'><h2 class='contract-title js-breadcrumb-title' class='title'>{$title}</h2></div>";
   }
@@ -179,30 +179,35 @@ class TransactionsUtil
 
   //title for /spending/transactions page and variants
   public static function spendingPageTitle($nid) {
-
     $title = SpendingBreadcrumbs::getSpendingTransactionTitle();
     $sumnid = RequestUtilities::getTransactionsParams('smnid');
     $dtsmnid = RequestUtilities::getTransactionsParams('dtsmnid');
-    if (_checkbook_project_recordsExists(706) || _checkbook_project_recordsExists(757) || _checkbook_project_recordsExists(723)) {
-      if (isset($sumnid)) {
-        echo $title;
-      } else if (isset($dtsmnid)) {
-        $amount = WidgetUtil::getWidgetTemplate($nid);
-        echo "<div class='contract-id'><h2 class='contract-title js-breadcrumb-title' class='title'>{$title}</h2></div>";
-        echo $amount;
-      } else {
-        echo '<h1 class="padding-x-10px">' . SpendingUtil::getSpendingTransactionsTitle() . '</h1>';
-      }
+    $month = RequestUtilities::getTransactionsParams('month');
+    if($month > 0){
+      $amount = WidgetUtil::getWidgetTemplate($nid);
+      echo $amount;
     }
     else {
-      if(isset($sumnid)) {
-        echo '<div class="contract-id"><h2 class="contract-title js-breadcrumb-title" class="title">'.NodeSummaryUtil::getInitNodeSummaryTitle($sumnid).'</h2></div>';
+      if (_checkbook_project_recordsExists(757) || _checkbook_project_recordsExists(723)) {
+        if (isset($sumnid)) {
+          echo $title;
+        } else if (isset($dtsmnid)) {
+          $amount = WidgetUtil::getWidgetTemplate($nid);
+          echo "<div class='contract-id'><h2 class='contract-title js-breadcrumb-title' class='title'>{$title}</h2></div>";
+          echo $amount;
+        } else {
+          echo '<h1 class="padding-x-10px">' . SpendingUtil::getSpendingTransactionsTitle() . '</h1>';
+        }
       }
-      else if(isset($dtsmnid)) {
-        echo '<div class="contract-id"><h2 class="contract-title js-breadcrumb-title" class="title">'.NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid).'</h2></div>';
+
+      else{
+        if (isset($sumnid) && !isset($month)) {
+          echo '<div class="contract-id"><h2 class="contract-title js-breadcrumb-title" class="title">' . NodeSummaryUtil::getInitNodeSummaryTitle($sumnid) . '</h2></div>';
+        } else if (isset($dtsmnid)) {
+          echo '<div class="contract-id"><h2 class="contract-title js-breadcrumb-title" class="title">' . NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid) . '</h2></div>';
+        }
       }
     }
-
   }
 
   /**

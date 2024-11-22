@@ -20,132 +20,30 @@
 
 namespace Drupal\checkbook_solr;
 
-require_once(\Drupal::service('extension.list.module')->getPath('checkbook_smart_search') . "/includes/checkbook_autocomplete_functions.inc");
-
 use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
-use Drupal\checkbook_log\LogHelper;
+
+require_once(\Drupal::service('extension.list.module')->getPath('checkbook_smart_search') . "/includes/checkbook_autocomplete_functions.inc");
 
 /**
  * Class CheckbookSolrQuery
  */
-class CheckbookSolrQuery
+class CheckbookSolrQuery extends CheckbookSolrQueryBase
 {
   /**
    *
    */
   const FACET_SORT_INDEX = 'index';
+
   /**
    *
    */
   const FACET_SORT_COUNT = 'count';
-  /**
-   * @var array
-   */
-  private $facets = [];
-
-  /**
-   * @var string
-   */
-  private $q = '*:*';
-
-  /**
-   * @var array
-   */
-  private $fq = [];
-
-  /**
-   * @var array
-   */
-  private $tags = [];
-
-  /**
-   * @var array
-   */
-  private $intervals = [];
-
-  /**
-   * @var string
-   */
-  private $sort = '';
-
-  /**
-   * @var int
-   */
-  private $page = 0;
-
-  /**
-   * @var int
-   */
-  private $rows = 10;
-
-  /**
-   * @var string
-   */
-  private $wt = 'phps';
-
-  /**
-   * @var array
-   */
-  private $termFields = [];
-
-  /**
-   * @var string
-   */
-  private $termsRegex = '';
-
-  /**
-   * @var string
-   */
-  private $query = '';
-
-  /**
-   * @var array
-   */
-  private $selectedFacets = [];
-
-  /**
-   * @var array
-   */
-  private $paramMapping = [];
-  /**
-   * @var array
-   */
-  private $facetsConfig = [];
-  /**
-   * @var array
-   */
-  private $autocompleteMapping = [];
-  /**
-   * @var string
-   */
-  private $sortConfig = '';
-
-  /**
-   * @var int
-   */
-  private $facetLimit = 500;
-
-  /**
-   * @var string
-   */
-  private $facetPrefix = '';
-
-  /**
-   * @var int
-   */
-  private $autoSuggestionsLimit = 10;
-
-  /**
-   * @var string
-   */
-  private $datasourcename = '';
-
 
   /**
    * @var string
    * count|index
    */
-  private $facetSort = self::FACET_SORT_COUNT;
+  protected $facetSort = self::FACET_SORT_COUNT;
 
   /**
    * @return string
@@ -162,7 +60,7 @@ class CheckbookSolrQuery
    * @param int $rows
    * @param int $page
    */
-  public function __construct($solr_datasource = '', $searchTerms = '', int $rows = 0, int $page = 0)
+  public function __construct(string $solr_datasource = '', $searchTerms = '', int $rows = 0, int $page = 0)
   {
     $this->paramMapping = (array)CheckbookSolr::getParamMapping();
     $this->facetsConfig = (array)CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
@@ -181,10 +79,8 @@ class CheckbookSolrQuery
     $this
       ->setRows($rows)
       ->setPage($page);
-
     return $this;
   }
-
 
   /**
    * @param string $termsRegex
@@ -234,13 +130,6 @@ class CheckbookSolrQuery
     }
     return $this;
   }
-  /**
-   * @return string
-   */
-  public function getWt()
-  {
-    return $this->wt;
-  }
 
   /**
    * @param int $page
@@ -269,16 +158,6 @@ class CheckbookSolrQuery
   public function setRows(int $num_rows)
   {
     $this->rows = $num_rows;
-    return $this;
-  }
-
-  /**
-   * @param string $wt
-   * @return CheckbookSolrQuery
-   */
-  public function setWt(string $wt)
-  {
-    $this->wt = $wt;
     return $this;
   }
 
@@ -332,7 +211,7 @@ class CheckbookSolrQuery
   {
     $this->query = '';
 
-    $query = [];
+    $pre_query = [];
     /**
      * NYCCHKBK-9184
      * somehow multivalued CSV export keeps over-escaping commas after csv joining values
@@ -346,75 +225,30 @@ class CheckbookSolrQuery
         $terms .= '&' . http_build_query(['terms.fl' => $termField]);
       }
 
-      $query['terms.regex.flag'] = 'case_insensitive';
-      $query['terms.regex'] = $this->termsRegex;
+      $pre_query['terms.regex.flag'] = 'case_insensitive';
+      $pre_query['terms.regex'] = $this->termsRegex;
 
-      $this->query = http_build_query($query) . $terms . '&wt=' . $this->wt . $csv_mv_separator;
+      $this->query = http_build_query($pre_query) . $terms . '&wt=' . $this->wt . $csv_mv_separator;
       return $this->query;
     }
 
-    $query = array_merge($query, [
+    $pre_query = array_merge($pre_query, [
       'start' => $this->page * $this->rows,
       'rows' => $this->rows,
     ]);
 
-    $fq = '';
-    if (sizeof($this->fq)) {
-      foreach ($this->fq as $f => $v) {
-        $tag = isset($this->tags[$f]) ? '{!tag=' . $this->tags[$f] . '}' : '';
-        $fq .= '&fq=' . $tag . $v;
-      }
-    }
-
-    $facets = '';
-    $intervals = '';
-    if (sizeof($this->facets) || sizeof($this->intervals)) {
-      $facets = '&' . http_build_query([
-          'facet' => 'true',
-          'facet.mincount' => 1,
-          'facet.sort' => $this->facetSort,
-          'facet.limit' => $this->facetLimit
-        ]);
-      if ($this->facets) {
-        foreach ($this->facets as $facet) {
-          $tag = isset($this->tags[$facet]) ? '{!ex=' . $this->tags[$facet] . '}' : '';
-          $facets .= '&' . http_build_query(['facet.field' => $tag . $facet]);
-        }
-      }
-
-      if ($this->facetPrefix != ''){
-        $facets .= '&facet.prefix='.$this->facetPrefix;
-      }
-      if ($this->intervals) {
-        foreach ($this->intervals as $facet => $intervalArray) {
-          $tag = isset($this->tags[$facet]) ? '{!ex=' . $this->tags[$facet] . '}' : '';
-          $intervals .= '&facet.interval=' . $tag . $facet;
-          foreach ($intervalArray as $key => $interval) {
-            $intervals .= "&f.{$facet}.facet.interval.set={!key={$key}}{$interval}";
-          }
-        }
-      }
-    }
+    $pre_fq = $this->getPreFq($tag);
+    $pre_facets = $this->getPreFacets($tag);
+    $pre_intervals = $this->getPreIntervals($tag);
 
 //    http://sdw6.reisys.com:18983/solr/checkbook_nycha_dev.public.solr_nycha/select/?q=*:*&fq={!tag=tg0}annual_salary:[*%20TO%2025000]&facet=true&facet.mincount=1&facet.sort=count&facet.limit=30&facet.field=domain&facet.field=agreement_type_name&facet.field=payroll_type&facet.field=vendor_name&facet.field=responsibility_center_name&facet.field=funding_source_name&facet.field=grant_name&facet.field=fiscal_year&facet.field=facet_year_array&facet.field=contract_number&facet.field=release_number&facet.field=record_type&facet.field=display_industry_type_name&facet.field=civil_service_title&{!ex=tg0}facet.interval=annual_salary&f.annual_salary.facet.interval.set={!ex=tg0%20key=>200,000}(200000,*]&f.annual_salary.facet.interval.set={!ex=tg0%20key=150,000-200,000}(150000,200000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=100,000-150,000}(100000,150000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=75,000-100,000}(75000,100000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=50,000-75,000}(50000,75000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=25,000-50,000}(25000,50000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=<25,000}[*,25000]&start=0&rows=0&sort=domain_ordering+asc%2Cdate_ordering+desc&wt=xml
 
-    $sort = '';
+    $pre_sort = '';
     if ($this->sort) {
-      $query['sort'] = $this->sort;
+      $pre_query['sort'] = $this->sort;
     }
 
-    // Construct the q for solr query
-    if ('*:*' == $this->q) {
-      $q = 'q=*:*';
-    }
-    else{
-      if(preg_match('/^[a-zA-Z_]+:/', $this->q)){
-        $q= 'q='.$this->q;
-      }
-      else {
-        $q = 'q=text:' . $this->q;
-      }
-    }
+    $pre_q = $this->getPreQ();
 
     /**
      * ex. old
@@ -427,7 +261,7 @@ class CheckbookSolrQuery
      * http://sdw4.reisys.com:18983/solr/checkbook_nycha_dev.public.solr_nycha/select/?q=facet_year_array:(2011*)&facet=true&facet.mincount=1&facet.sort=count&facet.limit=10&facet.field=facet_year_array&facet.prefix=2011&start=0&rows=0&wt=php
      */
 
-    $this->query = $q . $fq . $sort . $facets . $intervals . '&' . http_build_query($query) . '&wt=' . $this->wt . $csv_mv_separator;
+    $this->query = $pre_q . $pre_fq . $pre_sort . $pre_facets . $pre_intervals . '&' . http_build_query($pre_query) . '&wt=' . $this->wt . $csv_mv_separator;
 
     return $this->query;
   }
@@ -494,16 +328,6 @@ class CheckbookSolrQuery
   }
 
   /**
-   * @param string $param
-   */
-  public function mapParam(string &$param)
-  {
-    if (in_array($param, array_keys($this->paramMapping))) {
-      $param = $this->paramMapping[$param];
-    }
-  }
-
-  /**
    * @param string $term
    * @param bool $exclude
    * @return CheckbookSolrQuery
@@ -518,35 +342,52 @@ class CheckbookSolrQuery
     $this->mapParam($param);
     $this->selectedFacets[$param] = explode('~', $value);
 
-    if ('vendor_type' == $param) {
-      $value = $this->get_vendor_type_mapping($value);
-    }
-    elseif('spending_category_code' == $param){
-      $value = $this->get_spending_category_mapping($value,$this->datasourcename);
-      $param = 'spending_category_id';
-    }
-    elseif ('contract_status' == $param) {
-      $value = $this->get_contract_status_mapping($value);
-    } elseif ('year' == $param) {
-      $sub3 = substr($value, 0, 3);
-      if ('fy~' == $sub3) {
-        $param = 'fiscal_year_id';
-        $value = str_replace($sub3, '', $value);
-      } elseif ('cy~' == $sub3) {
-        $param = 'calendar_fiscal_year_id';
-        $value = str_replace($sub3, '', $value);
-      }
-    } elseif ('department_name' == $param) {
-      $value = str_replace('__', '/', $value);
-    }
-    elseif('agreement_start_year' == $param ){
-      if ($value != 'undefined'){
-        $value = '(agreement_start_year:[*%20TO%20'. $value.']%20AND%20agreement_end_year:['.$value .'%20TO%20*])';
-      }
-      else{
-        unset($this->selectedFacets['agreement_start_year']);
-        $value = '';
-      }
+    switch ($param) {
+      case 'vendor_type':
+        $value = $this->get_vendor_type_mapping($value);
+        break;
+
+      case 'spending_category_code':
+        $value = $this->get_spending_category_mapping($value,$this->datasourcename);
+        $param = 'spending_category_id';
+        break;
+
+      case 'contract_status':
+        $value = $this->get_contract_status_mapping($value);
+        break;
+
+      case 'year':
+        $sub3 = substr($value, 0, 3);
+        switch ($sub3) {
+          case 'fy~':
+            $param = 'fiscal_year_id';
+            $value = str_replace($sub3, '', $value);
+            break;
+          case 'cy~':
+            $param = 'calendar_fiscal_year_id';
+            $value = str_replace($sub3, '', $value);
+            break;
+          default:
+            break;
+        }
+        break;
+
+      case 'department_name':
+        $value = str_replace('__', '/', $value);
+        break;
+
+      case 'agreement_start_year':
+        if ($value != 'undefined'){
+          $value = '(agreement_start_year:[*%20TO%20'. $value.']%20AND%20agreement_end_year:['.$value .'%20TO%20*])';
+        }
+        else{
+          unset($this->selectedFacets['agreement_start_year']);
+          $value = '';
+        }
+        break;
+
+      default:
+        break;
     }
 
     $values = explode('~', $value);
@@ -554,28 +395,25 @@ class CheckbookSolrQuery
     $fq = [];
     foreach ($values as $value) {
       $minus = $exclude ? '-' : '';
-
       if (isset($this->facetsConfig[$param]->intervals)) {
         $value = $this->facetsConfig[$param]->intervals->$value;
         $value = str_replace(',', '%20TO%20', $value);
         $fq[] = $minus . $param . ':' . $value;
-        continue;
-      }
-      elseif ($param == 'agreement_start_year'){
+      } elseif ($param == 'agreement_start_year'){
         $fq[] = $value;
         unset($this->selectedFacets['agreement_start_year']);
       }
-      else {
+      //Adjust vendor count for contracts when subvendor is present for a prime vendor
+      elseif ($param == 'vendor_name' && $this->datasourcename == Datasource::SOLR_CITYWIDE){
+        $fq[] = $minus . $param . ':"' . self::escape($value) . '"OR%20contract_prime_vendor_name:"'.self::escape($value) . '"';
+      }else if($param == 'event_id'){
+        $fq[] = $minus . $param . ':*"' . self::escape($value) . '"*';
+      } else {
         $fq[] = $minus . $param . ':"' . self::escape($value) . '"';
       }
     }
 
-    if ($exclude) {
-      $this->setFq($param, join('%20AND%20', $fq));
-    } else {
-      $this->setFq($param, join('%20OR%20', $fq));
-    }
-
+    $this->setFq($param, join('%20' . ($exclude ? 'AND' : 'OR') . '%20', $fq));
     return $this;
   }
 
@@ -600,7 +438,6 @@ class CheckbookSolrQuery
     $this->addFacet($facet);
     $this->setFacetLimit((int)$this->autoSuggestionsLimit);
     unset($this->sort);
-
     return $this;
   }
 
@@ -628,126 +465,5 @@ class CheckbookSolrQuery
       $this->facets[] = $facet;
     }
     return $this;
-  }
-
-  /**
-   * @param string $facet
-   * @param array $intervals
-   * @return CheckbookSolrQuery
-   */
-  public function addInterval(string $facet, array $intervals)
-  {
-    $this->intervals[$facet] = $intervals;
-    return $this;
-  }
-
-
-  /**
-   * @param array $facets
-   * @return CheckbookSolrQuery
-   */
-  public function tagFacets(array $facets)
-  {
-    foreach (array_keys($facets) as $facet) {
-      $tag = 'tg' . sizeof($this->tags);
-      $this->tags[$facet] = $tag;
-    }
-    return $this;
-  }
-
-  /**
-   * @return array
-   */
-  public function getSelectedFacets()
-  {
-    return $this->selectedFacets;
-  }
-
-  /**
-   * @param $reqParams
-   * @return bool|string
-   */
-  private function get_vendor_type_mapping($reqParams)
-  {
-    $vendorTypeParam = explode('~', $reqParams);
-    $values = [];
-    foreach ($vendorTypeParam as $vendorType) {
-      switch (strtolower(trim($vendorType))) {
-        case 'pv':
-          $values[] = 'p';
-          $values[] = 'pm';
-          break;
-        case 'sv':
-          $values[] = 's';
-          $values[] = 'sm';
-          break;
-        case 'mv':
-          $values[] = 'sm';
-          $values[] = 'pm';
-          break;
-      }
-    }
-    return join('~', array_unique($values));
-  }
-
-  /**
-   * @param $reqParams
-   * @return string
-   */
-  private function get_contract_status_mapping($reqParams)
-  {
-    switch (strtolower($reqParams)) {
-
-      case 'p':
-      case 'pending':
-        return 'pending';
-        break;
-
-      case 'r':
-      case 'a':
-      case 'registered':
-      case 'active':
-      default:
-        return 'registered';
-        break;
-    }
-  }
-
-  /**
-   * @param $param,
-   * @param $value,
-   * @return string
-   */
-  private function get_facet_prefix($param,$value)
-  {
-    // Add array fields which need facet.prefix to be set
-    $prefix_fields = array("contract_entity_contract_number","contract_commodity_line","facet_year_array");
-     if(in_array($param, $prefix_fields)){
-     $fPrefix = $value;
-    }
-     return $fPrefix;
-  }
-
-  /**
-   * @param $param,
-   * @param $datasrouce,
-   * @return id
-   */
-  private function get_spending_category_mapping($exptype, $data_source = Datasource::CITYWIDE)
-  {
-    $spending_exptype = "'(^$exptype$)'";
-    try {
-      if ($data_source == Datasource::NYCHA) {
-        $query = "SELECT spending_category_id FROM ref_spending_category WHERE spending_category_code ~* " . $spending_exptype . " OR display_spending_category_name ~* " . $spending_exptype;
-      }
-      else{
-        $query = "SELECT spending_category_id FROM ref_spending_category WHERE spending_category_code ~* " . $spending_exptype . " OR spending_category_name ~* " . $spending_exptype;
-      }
-      $results = _checkbook_project_execute_sql_by_data_source($query, $data_source);
-      if ($results && $results[0]['spending_category_id']) return $results[0]['spending_category_id'];
-    } catch (Exception $e) {
-      LogHelper::log_error("Error getting data from controller: \n" . $e->getMessage());
-    }
-    return null;
   }
 }

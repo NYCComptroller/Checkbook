@@ -20,10 +20,14 @@
 
 namespace Drupal\checkbook_project\ContractsUtilities;
 
+use Drupal\checkbook_infrastructure_layer\Constants\Contract\ContractType;
 use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
 use Drupal\checkbook_project\CommonUtilities\CustomURLHelper;
 
 class pendingContractDetails {
+  const EXPAND_URL= "?expandBottomContURL=";
+  const PEND_REV ="contracts_pending_rev_landing";
+  const PEND_EXP ="contracts_pending_exp_landing";
 
   public function getData(&$node) {
     $contract_num = RequestUtilities::_getRequestParamValueBottomURL('contract');
@@ -84,18 +88,8 @@ class pendingContractDetails {
    */
   public static function _pending_contracts_link_contract_details($contract_number, $original_agreement_id, $doctype, $pending_contract_number = NULL, $version = NULL, $linktype = NULL,$path = NULL ) {
     $lower_doctype = strtolower($doctype);
-
-    if ($original_agreement_id) {
-      if (($lower_doctype == 'ma1') || ($lower_doctype == 'mma1') || ($lower_doctype == 'rct1')) {
-        $url = '/contract_details/magid/' . $original_agreement_id . '/doctype/' . $doctype;
-      }
-      else {
-        $url = '/contract_details/agid/' . $original_agreement_id . '/doctype/' . $doctype;
-      }
-    }
-    else {
-      $url = '/pending_contract_transactions/contract/' . $contract_number . '/version/' . $version;
-    }
+    $doctype_value = in_array($lower_doctype, array('ma1','mma1','rct1')) ? '/magid/' : '/agid/';
+    $url = $original_agreement_id ? '/contract_details'.$doctype_value . $original_agreement_id . '/doctype/' . $doctype : '/pending_contract_transactions/contract/' . $contract_number . '/version/' . $version;
 
     //Don't persist M/WBE parameter if there is no dashboard (this could be an advanced search parameter)
     $dashboard_param = RequestUtilities::_getRequestParamValueBottomURL('dashboard');
@@ -106,36 +100,26 @@ class pendingContractDetails {
     $request_method = \Drupal::request()->server->get('HTTP_REFERER');
     $concat = RequestUtilities::get('contcat',['q'=>$request_method]);
 
-    if ($linktype == 'bar') {
-      if ($path == 'contracts_pending_exp_landing') {
-        return '/contracts_pending_exp_landing' . CustomURLHelper::_checkbook_project_get_year_url_param_string() . $mwbe_parameter
-          . RequestUtilities::buildUrlFromParam('dashboard') . '?expandBottomContURL=' . $url;
-      }
-      if ($path == 'contracts_pending_rev_landing') {
-        return '/contracts_pending_rev_landing' . CustomURLHelper::_checkbook_project_get_year_url_param_string() . $mwbe_parameter
-          . RequestUtilities::buildUrlFromParam('dashboard') . '?expandBottomContURL=' . $url;
-      }
-    }
+     if ($linktype == 'bar') {
+        return '/'.ContractType::getCurrentContractsLandingPage() . CustomURLHelper::_checkbook_project_get_year_url_param_string() . $mwbe_parameter
+          . RequestUtilities::buildUrlFromParam('dashboard') . self::EXPAND_URL . $url;
+     }
       else {
         if ($concat == 'expense') {
-          $url = '/contracts_pending_exp_landing' . CustomURLHelper::_checkbook_project_get_year_url_param_string() . $mwbe_parameter . '?expandBottomContURL=' . $url;
+          $url = '/'.self::PEND_EXP . CustomURLHelper::_checkbook_project_get_year_url_param_string() . $mwbe_parameter . self::EXPAND_URL . $url;
           return "<a href='{$url}'>{$pending_contract_number}</a>";
         }
         else {
+
           if ($concat == 'revenue') {
-            $url = '/contracts_pending_rev_landing' . CustomURLHelper::_checkbook_project_get_year_url_param_string() . $mwbe_parameter . '?expandBottomContURL=' . $url;
-           return "<a href='{$url}'>{$pending_contract_number}</a>";
+            $url = '/'.self::PEND_REV . CustomURLHelper::_checkbook_project_get_year_url_param_string() . $mwbe_parameter . self::EXPAND_URL . $url;
+            return "<a href='{$url}'>{$pending_contract_number}</a>";
           }
           else {
             if ($concat == 'all') {
-              if (ContractUtil::_get_contract_cat($lower_doctype) == 'revenue') {
-                $url = '/contracts_pending_rev_landing' . CustomURLHelper::_checkbook_project_get_year_url_param_string() . $mwbe_parameter . '?expandBottomContURL=' . $url;
-                return "<a href='{$url}'>{$pending_contract_number}</a>";
-              }
-              else {
-                $url = '/contracts_pending_exp_landing' . CustomURLHelper::_checkbook_project_get_year_url_param_string() . $mwbe_parameter . '?expandBottomContURL=' . $url;
-                return "<a href='{$url}'>{$pending_contract_number}</a>";
-              }
+              $cont_url = (ContractUtil::_get_contract_cat($lower_doctype) == 'revenue') ? self::PEND_REV : self::PEND_EXP;
+              $url = '/'.$cont_url . CustomURLHelper::_checkbook_project_get_year_url_param_string() . $mwbe_parameter . self::EXPAND_URL . $url;
+              return "<a href='{$url}'>{$pending_contract_number}</a>";
             }
             else {
               return "<a class=\"bottomContainerReload\" href='{$url}'>{$pending_contract_number}</a>";

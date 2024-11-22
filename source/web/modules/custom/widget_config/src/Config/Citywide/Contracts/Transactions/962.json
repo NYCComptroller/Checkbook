@@ -18,6 +18,7 @@
     {"label":"Prime Woman Owned Business","column":"is_prime_women_owned"},
     {"label":"Prime Emerging Business","column":"is_prime_emerging"},
     {"label":"Prime Contracting Agency","column":"agency_name"},
+    {"label":"OCA Number","column":"prime_oca_number"},
     {"label":"Prime Contract Version","column":"prime_document_version"},
     {"label":"FMS Document/Parent Contract ID","column":"master_contract_number_export"},
     {"label":"Prime Contract Type","column":"agreement_type_name"},
@@ -26,10 +27,13 @@
     {"label":"Prime Contract Industry","column":"prime_industry_type_name"},
     {"label":"Prime Contract PIN","column":"prime_pin"},
     {"label":"Prime Contract APT PIN","column":"prime_apt_pin"},
+    {"label":"% COVID Spending","column":"percent_covid_spending"},
+    {"label":"% Asylum Spending","column":"percent_asylum_spending"},
+    {"label":"% Other Spending","column":"percent_other_spending"},
     {"label":"Sub Vendor","column":"sub_vendor_name_export"},
     {"label":"Sub Vendor M/WBE Category","column":"sub_minority_type_name_export"},
     {"label":"Sub Contract Purpose","column":"sub_purpose_export"},
-    {"label":"Sub Vendor Status in PIP","column":"aprv_sta_name_export"},
+    {"label":"Subcontract Status","column":"aprv_sta_name_export"},
     {"label":"Sub Contract Industry","column":"sub_industry_type_name_export"},
     {"label":"Sub Contract Current Amount","column":"sub_maximum_contract_amount"},
     {"label":"Sub Contract Original Amount","column":"sub_original_contract_amount"},
@@ -49,6 +53,43 @@
   $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722);
   $node->show_moc_registered = ($cevent > 0 );
   $node->show_spend_to_date = (!isset($mocs));
-  "
+  ",
+  "exportColumnSqlOverride":[
+    {
+      "column":"percent_covid_spending",
+      "sourceColumn":"percent_covid_spending",
+      "sql":"
+      CASE
+        WHEN vendor_record_type = 'Sub Vendor' THEN '-'
+        WHEN event_id IS NULL THEN '-'
+        WHEN event_id = '2' THEN '0'
+        ELSE CAST(percent_covid_spending AS VARCHAR)
+      END AS percent_covid_spending
+      "
+    },
+    {
+      "column":"percent_asylum_spending",
+      "sourceColumn":"percent_asylum_spending",
+      "sql":"
+      CASE
+        WHEN vendor_record_type = 'Sub Vendor' THEN '-'
+        WHEN event_id IS NULL THEN '-'
+        WHEN event_id = '1' THEN '0'
+        ELSE CAST(percent_asylum_spending AS VARCHAR)
+      END AS percent_asylum_spending
+      "
+    },
+    {
+      "column":"percent_other_spending",
+      "sourceColumn":"percent_other_spending",
+      "sql":"
+      CASE
+        WHEN vendor_record_type = 'Sub Vendor' THEN '-'
+        ELSE CAST(percent_other_spending AS VARCHAR)
+      END AS percent_other_spending
+      "
+    }
+
+  ]
 }
 

@@ -69,14 +69,11 @@
       }
 
       function advanced_search_bootstrap_domains() {
-        var dataSourceDomains = ["spending", "contracts", "payroll", "budget", "revenue"];
+        let dataSourceDomains = ["spending", "contracts", "payroll", "budget", "revenue"];
         $.each(dataSourceDomains, function (index, value) {
           let dataSourceDiv = "div_" + value + "_data_source";
-          //let dataSourceDiv = value + "_advanced_search_domain_filter";
-         // console.log('here ' + dataSourceDiv);
           if ($("#" + dataSourceDiv).length <= 0) {
             let editFilter = "edit-" + value + "-advanced-search-domain-filter";
-            // $("#edit-" + value + "-advanced-search-domain-filter").wrap("<div id='div_" + value + "_data_source'></div>");
             $('div[id^=' + editFilter + ']')
               .wrap("<div id='" + dataSourceDiv + "'></div>")
               .prepend("<span class='data_source-label'>Data Source</span><br/>");

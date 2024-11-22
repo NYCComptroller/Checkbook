@@ -58,6 +58,8 @@ class CheckbookAdvancedSearchForm extends FormBase
   public function buildForm(array $form, FormStateInterface $form_state, $isAlert=false)
   {
     $requesting_page_datasource = RequestUtilities::get('datasource',['q' => RequestUtilities::getAjaxPath()]);
+    //if requesting_page_datsource is not set, then default to checkbook
+    $requesting_page_datasource = !isset($requesting_page_datasource) ? 'checkbook' : $requesting_page_datasource;
 
     $create_alert_view = "<div class='accordion' id='accordionAdvancedSearch'>";
     $agency_options = FormUtil::getAgencies(Datasource::CITYWIDE, false, false);
@@ -156,16 +158,9 @@ class CheckbookAdvancedSearchForm extends FormBase
 
     if ($requesting_page_datasource != Datasource::OGE) {
       $form = $this->_checkbook_advanced_search_get_form($form, CheckbookDomain::$BUDGET, $agencies, $agency_attributes, $year_range);
-      $form['checkbook_budget']['budget_advanced_search_domain_filter']['#default_value'] = !isset($requesting_page_datasource) ? 'checkbook' : $requesting_page_datasource;
+      $form['checkbook_budget']['budget_advanced_search_domain_filter']['#default_value'] = $requesting_page_datasource;
     }
 
-    if ($isAlert) {
-      $form['checkbook_budget']['budget_submit']['#attributes'] = array('style'=>"$display_none_style");
-      $form['checkbook_nycha_budget']['budget_submit']['#attributes'] = array('style'=>"$display_none_style");
-    } else {
-      $form['checkbook_budget']['budget_next']['#attributes'] = array('style'=>"$display_none_style");
-      $form['checkbook_nycha_budget']['budget_next']['#attributes'] = array('style'=>"$display_none_style");
-    }
     $form['budget_sufix'] = array(
       '#type' => 'markup',
       '#markup' => "</div></div></div>",
@@ -188,14 +183,7 @@ class CheckbookAdvancedSearchForm extends FormBase
 
     if ($requesting_page_datasource != Datasource::OGE) {
       $form = $this->_checkbook_advanced_search_get_form($form, CheckbookDomain::$REVENUE, $agencies, $agency_attributes, $year_range);
-      $form['checkbook_revenue']['revenue_advanced_search_domain_filter']['#default_value'] = !isset($requesting_page_datasource) ? 'checkbook' : $requesting_page_datasource;
-    }
-    if ($isAlert) {
-      $form['checkbook_revenue']['revenue_submit']['#attributes'] = array('style'=>"$display_none_style");
-      $form['checkbook_nycha_revenue']['revenue_submit']['#attributes'] = array('style'=>"$display_none_style");
-    } else {
-      $form['checkbook_revenue']['revenue_next']['#attributes'] = array('style'=>"$display_none_style");
-      $form['checkbook_nycha_revenue']['revenue_next']['#attributes'] = array('style'=>"$display_none_style");
+      $form['checkbook_revenue']['revenue_advanced_search_domain_filter']['#default_value'] = $requesting_page_datasource;
     }
 
     $form['revenue_sufix'] = array(
@@ -217,19 +205,9 @@ class CheckbookAdvancedSearchForm extends FormBase
       '#markup' => $spending_pref,
       '#allowed_tags' => ['div', 'button', 'h1', 'h2', 'h3', 'span'],
     );
-    $form = $this->_checkbook_advanced_search_get_form($form, CheckbookDomain::$SPENDING, $agencies, $agency_attributes, $year_range);
-    $form['checkbook_spending']['spending_advanced_search_domain_filter']['#default_value'] = !isset($requesting_page_datasource) ? 'checkbook' : $requesting_page_datasource;
 
-    //If parameter IsAlerts is passed to FormBuild and is true then keep Next button, else keep submit
-    if ($isAlert) {
-      $form['checkbook_spending']['spending_submit']['#attributes'] = array('style'=>"$display_none_style");
-      $form['checkbook_oge_spending']['spending_submit']['#attributes'] = array('style'=>"$display_none_style");
-      $form['checkbook_nycha_spending']['spending_submit']['#attributes'] = array('style'=>"$display_none_style");
-    } else {
-      $form['checkbook_spending']['spending_next']['#attributes'] = array('style'=>"$display_none_style");
-      $form['checkbook_oge_spending']['spending_next']['#attributes'] = array('style'=>"$display_none_style");
-      $form['checkbook_nycha_spending']['spending_next']['#attributes'] = array('style'=>"$display_none_style");
-    }
+    $form = $this->_checkbook_advanced_search_get_form($form, CheckbookDomain::$SPENDING, $agencies, $agency_attributes, $year_range);
+    $form['checkbook_spending']['spending_advanced_search_domain_filter']['#default_value'] = $requesting_page_datasource;
 
     $form['spending_sufix'] = array(
       '#type' => 'markup',
@@ -252,19 +230,7 @@ class CheckbookAdvancedSearchForm extends FormBase
     );
 
     $form = $this->_checkbook_advanced_search_get_form($form, CheckbookDomain::$CONTRACTS, $agencies, $agency_attributes, $year_range);
-    $form['checkbook_contracts']['contracts_advanced_search_domain_filter']['#default_value'] = !isset($requesting_page_datasource) ? 'checkbook' : $requesting_page_datasource;
-
-    //If parameter IsAlerts is passed to FormBuild and is true then keep Next button, else keep submit
-    if ($isAlert) {
-      $form['checkbook_contracts']['contracts_submit']['#attributes'] = array('style'=>"$display_none_style");
-      $form['checkbook_oge_contracts']['contracts_submit']['#attributes'] = array('style'=>"$display_none_style");
-      $form['checkbook_nycha_contracts']['contracts_submit']['#attributes'] = array('style'=>"$display_none_style");
-    } else {
-      $form['checkbook_contracts']['contracts_next']['#attributes'] = array('style'=>"$display_none_style");
-      $form['checkbook_oge_contracts']['contracts_next']['#attributes'] = array('style'=>"$display_none_style");
-      $form['checkbook_nycha_contracts']['contracts_next']['#attributes'] = array('style'=>"$display_none_style");
-    }
-
+    $form['checkbook_contracts']['contracts_advanced_search_domain_filter']['#default_value'] = $requesting_page_datasource;
 
     $form['contracts_sufix'] = array(
       '#type' => 'markup',
@@ -293,7 +259,7 @@ class CheckbookAdvancedSearchForm extends FormBase
           'checkbook' => 'Citywide Agencies',
           'checkbook_nycha' => 'New York City Housing Authority'
         ],
-        '#default_value' => !isset($requesting_page_datasource) ? 'checkbook' : $requesting_page_datasource,
+        '#default_value' => $requesting_page_datasource,
         '#prefix' => '<div id="payroll-advanced-search">',
       ];
 
@@ -465,6 +431,40 @@ class CheckbookAdvancedSearchForm extends FormBase
       '#markup' => '</div>',
     );
 
+    //show hide Submit and Next buttons
+    if ($isAlert) {
+      //budget
+      $form['checkbook_budget']['budget_submit']['#attributes'] = array('style'=>"$display_none_style");
+      $form['checkbook_nycha_budget']['budget_submit']['#attributes'] = array('style'=>"$display_none_style");
+      //revenue
+      $form['checkbook_revenue']['revenue_submit']['#attributes'] = array('style'=>"$display_none_style");
+      $form['checkbook_nycha_revenue']['revenue_submit']['#attributes'] = array('style'=>"$display_none_style");
+      //spending
+      $form['checkbook_spending']['spending_submit']['#attributes'] = array('style'=>"$display_none_style");
+      $form['checkbook_oge_spending']['spending_submit']['#attributes'] = array('style'=>"$display_none_style");
+      $form['checkbook_nycha_spending']['spending_submit']['#attributes'] = array('style'=>"$display_none_style");
+      //contracts
+      $form['checkbook_contracts']['contracts_submit']['#attributes'] = array('style'=>"$display_none_style");
+      $form['checkbook_oge_contracts']['contracts_submit']['#attributes'] = array('style'=>"$display_none_style");
+      $form['checkbook_nycha_contracts']['contracts_submit']['#attributes'] = array('style'=>"$display_none_style");
+    } else {
+      //budget
+      $form['checkbook_budget']['budget_next']['#attributes'] = array('style'=>"$display_none_style");
+      $form['checkbook_nycha_budget']['budget_next']['#attributes'] = array('style'=>"$display_none_style");
+      //revenue
+      $form['checkbook_revenue']['revenue_next']['#attributes'] = array('style'=>"$display_none_style");
+      $form['checkbook_nycha_revenue']['revenue_next']['#attributes'] = array('style'=>"$display_none_style");
+      //spending
+      $form['checkbook_spending']['spending_next']['#attributes'] = array('style'=>"$display_none_style");
+      $form['checkbook_oge_spending']['spending_next']['#attributes'] = array('style'=>"$display_none_style");
+      $form['checkbook_nycha_spending']['spending_next']['#attributes'] = array('style'=>"$display_none_style");
+      //contracts
+      $form['checkbook_contracts']['contracts_next']['#attributes'] = array('style'=>"$display_none_style");
+      $form['checkbook_oge_contracts']['contracts_next']['#attributes'] = array('style'=>"$display_none_style");
+      $form['checkbook_nycha_contracts']['contracts_next']['#attributes'] = array('style'=>"$display_none_style");
+    }
+
+
     //<editor-fold desc="Create Alert Fields">
     $form['#attached']['library'][] = 'checkbook_advanced_search/search-iframe';
     //</editor-fold>
@@ -511,7 +511,7 @@ class CheckbookAdvancedSearchForm extends FormBase
           LogHelper::log_error('Could not find field definition for ' . $domain . ' domain field: ' . $field_name);
         } else {
           $disabled = $field_def['disabled'] ?? null;
-          $disabled = ((is_null($disabled))) ? FALSE : $disabled;
+          $disabled = (is_null($disabled)) ? FALSE : $disabled;
           $field = new Field($field_def['field_name'], $field_def['field_type'], $field_def['attributes'] ?? null, $disabled);
           $checkbook_content->add_field($field, $column);
         }
@@ -527,8 +527,7 @@ class CheckbookAdvancedSearchForm extends FormBase
     $checkbook_advanced_search_path = Drupal::service('extension.list.module')->getPath('checkbook_advanced_search');
     $config_str = file_get_contents(realpath($checkbook_advanced_search_path) . "/src/config/checkbook_advanced_search_" . strtolower($domain) . "_field_configurations.json");
     $converter = new Json2PHPArray();
-    $configuration = $converter->convert($config_str);
-    return $configuration;
+    return $converter->convert($config_str);
   }
 
   function checkbook_advanced_search_get_domain_field_value($form_state, $filter_dimension, $field) {
@@ -549,7 +548,7 @@ class CheckbookAdvancedSearchForm extends FormBase
       $fundsrc_attributes = checkbook_advanced_search_get_nycha_funding_sources($data_source);
 
       $year_attribute = _checkbook_advanced_search_get_year($domain, NULL, $data_source);
-      if ($domain == CheckbookDomain::$BUDGET || $domain == CheckbookDomain::$REVENUE) {
+      if (in_array($domain, [CheckbookDomain::$BUDGET, CheckbookDomain::$REVENUE])) {
         $expense_category_attributes = $this->_budget_expcat_options($domain, NULL, NULL, NULL, Datasource::NYCHA, false);
         $program_attributes = $this->_budget_program_options(Datasource::NYCHA, false);
         $project_attributes = $this->_budget_project_options(Datasource::NYCHA, false);
@@ -606,7 +605,7 @@ class CheckbookAdvancedSearchForm extends FormBase
               $field_definition_configs[$i]['attributes']['option_attributes'] = $contract_type_attribute['option_attributes'] ?? null;
               break;
             case'$event_type_attributes':
-              $field_definition_configs[$i]['attributes']['options'] = $this->event_type_attributes ?? null;
+              $field_definition_configs[$i]['attributes']['options'] = $event_type_attributes ?? null;
               break;
             case '$mwbe_category_attributes':
               $field_definition_configs[$i]['attributes']['options'] = $mwbe_category_attributes ?? null;
@@ -703,50 +702,49 @@ class CheckbookAdvancedSearchForm extends FormBase
    */
   function _budget_expcat_options($domain, $year, $agency, $dept, $dataSource = Datasource::CITYWIDE, $feeds = true)
   {
-    switch ($dataSource) {
-      case Datasource::NYCHA :
-        $query = "SELECT DISTINCT expenditure_type_description || ' [' || expenditure_type_code || ']' AS expenditure_object_code,
+    if ($dataSource == Datasource::NYCHA) {
+      $query = "SELECT DISTINCT expenditure_type_description || ' [' || expenditure_type_code || ']' AS expenditure_object_code,
                                   expenditure_type_id, expenditure_type_description
                   FROM {$domain} ORDER BY expenditure_object_code ASC";
-        $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
-        $title = ($domain == CheckbookDomain::$REVENUE) ? 'Select Revenue Expense Category' : 'Select Expense Category';
-        $options[''] = $title;
-        $option_attributes = array($title => array('title' => $title));
-        foreach ($results as $row) {
-          if ($feeds) {
-            $text = $row['expenditure_object_code'];
-            $option_attributes[$text] = array('title' => $text);
-            $options[$text] = FormattingUtilities::_ckbk_excerpt($text);
-          } else {
-            $text = $row['expenditure_type_description'];
-            $option_attributes[$row['expenditure_type_id']] = array('title' => $text);
-            $options[$row['expenditure_type_id']] = FormattingUtilities::_ckbk_excerpt($text);
-          }
+      $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
+      $title = ($domain == CheckbookDomain::$REVENUE) ? 'Select Revenue Expense Category' : 'Select Expense Category';
+      $options[''] = $title;
+      $option_attributes = array($title => array('title' => $title));
+      foreach ($results as $row) {
+        if ($feeds) {
+          $text = $row['expenditure_object_code'];
+          $option_attributes[$text] = array('title' => $text);
+          $options[$text] = FormattingUtilities::_ckbk_excerpt($text);
+        } else {
+          $text = $row['expenditure_type_description'];
+          $option_attributes[$row['expenditure_type_id']] = array('title' => $text);
+          $options[$row['expenditure_type_id']] = FormattingUtilities::_ckbk_excerpt($text);
         }
-        return array('options' => $options, 'option_attributes' => $option_attributes);
-      default:
-        $agency = emptyToZero(urldecode($agency));
-        $dept = emptyToZero(urldecode($dept));
-        if ($agency) {
-          $agencyString = " agency_code = '" . $agency . "' ";
-          $yearString = ($year) ? " AND budget_fiscal_year = " . ltrim($year, 'FY') . " " : "";
-          $deptString = ($dept) ? " AND department_code = '" . $dept . "' " : "";
+      }
+      return array('options' => $options, 'option_attributes' => $option_attributes);
+    } else {
+      $agency = emptyToZero(urldecode($agency));
+      $dept = emptyToZero(urldecode($dept));
+      if ($agency) {
+        $agencyString = " agency_code = '" . $agency . "' ";
+        $yearString = ($year) ? " AND budget_fiscal_year = " . ltrim($year, 'FY') . " " : "";
+        $deptString = ($dept) ? " AND department_code = '" . $dept . "' " : "";
 
-          $query = "SELECT DISTINCT object_class_name || ' [' || object_class_code || ']' expenditure_object_code  FROM {$domain} WHERE"
-            . $agencyString . $yearString . $deptString . "ORDER BY expenditure_object_code ASC";
-          $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
-          $options = array();
-          if (count($results) > 0) {
-            foreach ($results as $result) {
-              $options[$result['expenditure_object_code']] = $result['expenditure_object_code'];
-            }
+        $query = "SELECT DISTINCT object_class_name || ' [' || object_class_code || ']' expenditure_object_code  FROM {$domain} WHERE"
+          . $agencyString . $yearString . $deptString . "ORDER BY expenditure_object_code ASC";
+        $results = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
+        $options = array();
+        if (count($results) > 0) {
+          foreach ($results as $result) {
+            $options[$result['expenditure_object_code']] = $result['expenditure_object_code'];
           }
-          $matches = array();
-          foreach ($options as $key => $value) {
-            $matches[] = htmlentities($value);
-          }
-          drupal_json_output($matches);
         }
+        $matches = array();
+        foreach ($options as $value) {
+          $matches[] = htmlentities($value);
+        }
+        drupal_json_output($matches);
+      }
     }
   }
 
@@ -758,30 +756,26 @@ class CheckbookAdvancedSearchForm extends FormBase
    */
   function _budget_program_options($dataSource = Datasource::CITYWIDE, $feeds = true)
   {
-    switch ($dataSource) {
-      case Datasource::NYCHA :
-        $query = "SELECT DISTINCT program_phase_description || ' [' || program_phase_code  || ']' AS program,
+    if ($dataSource == Datasource::NYCHA) {
+      $query = "SELECT DISTINCT program_phase_description || ' [' || program_phase_code  || ']' AS program,
                   program_phase_description, program_phase_id
                 FROM ref_program_phase WHERE program_phase_description NOT iLIKE '%default%' ORDER BY program ASC";
-        $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
-        $title = 'Select Program';
-        $options[''] = $title;
-        $option_attributes = array($title => array('title' => $title));
-        foreach ($data as $row) {
-          if ($feeds) {
-            $text = $row['program'];
-            $option_attributes[$text] = array('title' => $text);
-            $options[$text] = FormattingUtilities::_ckbk_excerpt($text);
-          } else {
-            $text = $row['program_phase_description'];
-            $option_attributes[$row['program_phase_id']] = array('title' => $text);
-            $options[$row['program_phase_id']] = FormattingUtilities::_ckbk_excerpt($text);
-          }
+      $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
+      $title = 'Select Program';
+      $options[''] = $title;
+      $option_attributes = array($title => array('title' => $title));
+      foreach ($data as $row) {
+        if ($feeds) {
+          $text = $row['program'];
+          $option_attributes[$text] = array('title' => $text);
+          $options[$text] = FormattingUtilities::_ckbk_excerpt($text);
+        } else {
+          $text = $row['program_phase_description'];
+          $option_attributes[$row['program_phase_id']] = array('title' => $text);
+          $options[$row['program_phase_id']] = FormattingUtilities::_ckbk_excerpt($text);
         }
-        return array('options' => $options, 'option_attributes' => $option_attributes);
-        break;
-      default:
-        //do nothing
+      }
+      return array('options' => $options, 'option_attributes' => $option_attributes);
     }
   }
 
@@ -792,30 +786,26 @@ class CheckbookAdvancedSearchForm extends FormBase
    */
   function _budget_project_options($dataSource = Datasource::CITYWIDE, $feeds = true)
   {
-    switch ($dataSource) {
-      case Datasource::NYCHA :
-        $query = "SELECT gl_project_description || ' [' || gl_project_code  || ']' AS project,
+    if ($dataSource == Datasource::NYCHA) {
+      $query = "SELECT gl_project_description || ' [' || gl_project_code  || ']' AS project,
                 gl_project_description, gl_project_id FROM ref_gl_project
                 WHERE gl_project_description NOT iLIKE '%Default%' ORDER BY gl_project_description ASC";
-        $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
-        $title = 'Select Project';
-        $options[''] = $title;
-        $option_attributes[''] = array('title' => $title);
-        foreach ($data as $row) {
-          if ($feeds) {
-            $text = $row['project'];
-            $option_attributes[$text] = array('title' => $text);
-            $options[$text] = FormattingUtilities::_ckbk_excerpt($text);
-          } else {
-            $text = $row['gl_project_description'];
-            $option_attributes[$row['gl_project_id']] = array('title' => $text);
-            $options[$row['gl_project_id']] = FormattingUtilities::_ckbk_excerpt($text);
-          }
+      $data = _checkbook_project_execute_sql_by_data_source($query, $dataSource);
+      $title = 'Select Project';
+      $options[''] = $title;
+      $option_attributes[''] = array('title' => $title);
+      foreach ($data as $row) {
+        if ($feeds) {
+          $text = $row['project'];
+          $option_attributes[$text] = array('title' => $text);
+          $options[$text] = FormattingUtilities::_ckbk_excerpt($text);
+        } else {
+          $text = $row['gl_project_description'];
+          $option_attributes[$row['gl_project_id']] = array('title' => $text);
+          $options[$row['gl_project_id']] = FormattingUtilities::_ckbk_excerpt($text);
         }
-        return array('options' => $options, 'option_attributes' => $option_attributes);
-        break;
-      default:
-        //do nothing
+      }
+      return array('options' => $options, 'option_attributes' => $option_attributes);
     }
   }
 

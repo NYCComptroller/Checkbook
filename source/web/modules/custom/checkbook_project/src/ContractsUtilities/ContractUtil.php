@@ -334,26 +334,12 @@ class ContractUtil{
        */
         static public function getLatestMwbeCategoryByVendor($vendor_id, $agency_id = null, $year_id = null, $year_type = null, $is_prime_or_sub = "P"){
           STATIC $contract_vendor_latest_mwbe_category = array();
-        	if($agency_id == null){
-        		$agency_id =  RequestUtilities::get('agency');
-        	}
 
-          if($year_type == null){
-              $year_type =  RequestUtilities::get('yeartype');
-          }
+        		$agency_id =  $agency_id ?? RequestUtilities::get('agency');
+            $year_type =  $year_type ?? RequestUtilities::get('yeartype');
+            $year_id =  $year_id ? RequestUtilities::get('year') : CheckbookDateUtil::getCurrentFiscalYearId();
+            $year_type = "B";
 
-        	if($year_id == null){
-        		$year_id =  RequestUtilities::get('year');
-        	}
-
-          if($year_id == null){
-              $year_id =  RequestUtilities::get('calyear');
-          }
-
-          if($year_id == null){
-              $year_type = "B";
-              $year_id = CheckbookDateUtil::getCurrentFiscalYearId();
-          }
           $agency_query = isset($agency_id) ? "agency_id = " . $agency_id : "agency_id IS NULL";
         	if(!isset($contract_vendor_latest_mwbe_category)){
         		$query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
@@ -388,13 +374,8 @@ class ContractUtil{
        * @return bool
        */
         public static function getLatestMwbeCategoryByVendorByTransactionYear($vendor_id, $year_id = null, $year_type = null){
-          if($year_id == null){
-              $year_id =  RequestUtilities::get('year');
-          }
-
-          if($year_type == null){
-              $year_type =  RequestUtilities::get('yeartype');
-          }
+          $year_id =  $year_id ?? RequestUtilities::get('year');
+          $year_type =  $year_type ?? RequestUtilities::get('yeartype');
 
           $query = "SELECT vendor_id, agency_id, year_id, type_of_year, minority_type_id, is_prime_or_sub
                 FROM contract_vendor_latest_mwbe_category
@@ -542,7 +523,7 @@ class ContractUtil{
        */
         public static function getMWBECategoryLinkUrl($minority_type_id){
             $current_url = explode('/',$_SERVER['HTTP_REFERER']);
-            $minority_type_id = ($minority_type_id == 4 || $minority_type_id == 5) ? '4~5': $minority_type_id;
+            $minority_type_id = ($minority_type_id == 4 || $minority_type_id == 5 || $minority_type_id == 10) ? '4~5~10': $minority_type_id;
             $url =  '/'. $current_url[3].CustomURLHelper::_checkbook_project_get_year_url_param_string()
                     . RequestUtilities::buildUrlFromParam('agency')
                     . RequestUtilities::buildUrlFromParam('cindustry')
@@ -625,14 +606,9 @@ class ContractUtil{
        * @return string
        */
         public static function getRevenueLandingPageUrl($vendor_id,$row,$year_id=null,$type=null){
-            if($year_id == null){
-              $year_id =  RequestUtilities::get('year');
-            }
 
-            if($type == null){
-              $type =  RequestUtilities::get('yeartype');
-            }
-
+              $year_id = $year_id ?? RequestUtilities::get('year');
+              $type = $type ?? RequestUtilities::get('yeartype');
             $sql= "SELECT COUNT(l1.contract_number) total_contracts
             FROM aggregateon_mwbe_contracts_cumulative_spending l1
             JOIN ref_document_code l2 ON l2.document_code_id = l1.document_code_id
@@ -653,7 +629,6 @@ class ContractUtil{
               $vendor_id = $row["prime_vendor_id"];
             }
 
-            $year_id = RequestUtilities::get("year");
             $year_type = $row["yeartype_yeartype"];
             $is_prime_or_sub = $row["is_prime_or_sub"] != null ? $row["is_prime_or_sub"] : "P";
             $agency_id = null;
@@ -787,7 +762,7 @@ class ContractUtil{
 
         /**
          * Function to handle common facet/transaction page parameters for the page
-         * "Summary of Sub Contract Status by Prime Contract ID Transactions"
+         * "Summary of Subcontract Status by Prime Contract ID Transactions"
          * @param $node
          * @param $parameters
          * @return mixed
@@ -852,31 +827,30 @@ class ContractUtil{
          * @param $parameters
          * @return mixed
          */
-        public static function adjustActiveContractCommonParams(&$node, &$parameters)
-        {
-          //Handle status and year parameter
+        public static function adjustActiveContractCommonParams(&$node, &$parameters) {
+          // Handle status and year parameter.
           $contractStatus = RequestUtilities::getTransactionsParams('contstatus');
           $reqYear = RequestUtilities::getTransactionsParams('year');
           $data_controller_instance = data_controller_get_operator_factory_instance();
           $dashboard = RequestUtilities::getTransactionsParams('dashboard');
           $smnid = RequestUtilities::getTransactionsParams('smnid');
 
-          //Display contracts which are active from 2011
+          // Display contracts which are active from 2011.
           $parameters['is_active_eft_2011'] = 1;
 
           if (isset($reqYear)) {
-              $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
-
-              $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
-
+            $geCondition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
+            $leCondition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, array($reqYear));
 
             if (self::showSubVendorData()) {
               $parameters['sub_starting_year_id'] = $leCondition;
               $parameters['sub_ending_year_id'] = $geCondition;
-            } else if (!isset($dashboard) && !isset($smnid)) {
+            }
+            elseif (!isset($dashboard) && !isset($smnid)) {
               $parameters['starting_year_id'] = $leCondition;
               $parameters['ending_year_id'] = $geCondition;
-            } else {
+            }
+            else {
               $parameters['prime_starting_year_id'] = $leCondition;
               $parameters['prime_ending_year_id'] = $geCondition;
               $parameters['sub_latest_flag'] = 'Y';
@@ -884,20 +858,24 @@ class ContractUtil{
 
             if ($contractStatus == 'R') {
               $parameters['registered_year_id'] = array($reqYear);
-            } else if ($contractStatus == 'A') {
+            }
+            elseif ($contractStatus == 'A') {
               if (self::showSubVendorData()) {
                 $parameters['sub_effective_begin_year_id'] = $leCondition;
                 $parameters['sub_effective_end_year_id'] = $geCondition;
-              } else if (!isset($dashboard) && !isset($smnid)) {
+              }
+              elseif (!isset($dashboard) && !isset($smnid)) {
                 $parameters['effective_begin_year_id'] = $leCondition;
                 $parameters['effective_end_year_id'] = $geCondition;
-              } else {
+              }
+              else {
                 $parameters['prime_effective_begin_year_id'] = $leCondition;
                 $parameters['prime_effective_end_year_id'] = $geCondition;
                 $parameters['sub_latest_flag'] = 'Y';
               }
             }
-          } else {
+          }
+          else {
             $parameters['latest_flag'] = 'Y';
           }
 
@@ -916,25 +894,22 @@ class ContractUtil{
           if (isset($parameters['vendor_name'])) {
             $vendornm_exact = RequestUtilities::get('vendornm_exact');
             $vendornm = RequestUtilities::get('vendornm');
-            $vendor_name = implode("",$parameters['vendor_name']);
-
             if (isset($vendornm_exact)) {
-              $vendornm_exact = explode('~', $vendor_name);
+              $vendornm_exact = explode('~', $vendornm_exact);
               $vendornm_exact = implode('|', $vendornm_exact);
               $vendornm_exact = self::_replaceSlashCharacter($vendornm_exact);
-              $pattern = "(^" . FormattingUtilities::_checkbook_regex_replace_pattern($vendornm_exact) . "$)";
-
+              $pattern = "(^".trim(FormattingUtilities::_checkbook_regex_replace_pattern($vendornm_exact))."$)";
               $condition = $data_controller_instance->initiateHandler(RegularExpressionOperatorHandler::$OPERATOR__NAME, $pattern);
               $parameters['prime_vendor_name'] = $condition;
               $parameters['sub_vendor_name'] = $condition;
-            } else if (isset($vendornm)) {
-              $vendornm = explode('~', $vendor_name);
+            }
+            elseif (isset($vendornm)) {
+              $vendornm = explode('~', $vendornm);
               $vendornm = implode('|', $vendornm);
               $condition = $data_controller_instance->initiateHandler(WildcardOperatorHandler::$OPERATOR__NAME, array($vendornm, FALSE, TRUE));
               $parameters['prime_vendor_name'] = $condition;
               $parameters['sub_vendor_name'] = $condition;
             }
-
             unset($parameters['vendor_name']);
           }
 
@@ -961,7 +936,8 @@ class ContractUtil{
             if (!isset($dashboard) && !isset($smnid)) {
               $node->widgetConfig->logicalOrColumns[] = array("prime_mwbe_adv_search_id", "sub_minority_type_id");
               $parameters['prime_mwbe_adv_search_id'] = $condition;
-            } else {
+            }
+            else {
               $node->widgetConfig->logicalOrColumns[] = array("prime_minority_type_id", "sub_minority_type_id");
               $parameters['prime_minority_type_id'] = $condition;
             }
@@ -969,25 +945,23 @@ class ContractUtil{
             unset($parameters['minority_type_id']);
           }
 
-
-
-
           //if ONLY Prime or ONLY Sub amount selected, need to filter only that type
-            $prime_cur_amt = RequestUtilities::getTransactionsParams('pcuramtr');
-            $sub_cur_amt = RequestUtilities::getTransactionsParams('scuramtr');
+          $prime_cur_amt = RequestUtilities::getTransactionsParams('pcuramtr');
+          $sub_cur_amt = RequestUtilities::getTransactionsParams('scuramtr');
 
-            if(isset($prime_cur_amt) && !isset($sub_cur_amt)) {
-                $parameters['prime_amount_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
-            } elseif(isset($sub_cur_amt) && !isset($prime_cur_amt)) {
-                $parameters['sub_amount_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
-            }
+          if(isset($prime_cur_amt) && !isset($sub_cur_amt)) {
+            $parameters['prime_amount_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
+          }
+          elseif (isset($sub_cur_amt) && !isset($prime_cur_amt)) {
+            $parameters['sub_amount_id'] = $data_controller_instance->initiateHandler(NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
+          }
 
-            //Adjust Certification parameters
-            $parameters = self::adjustPrimeSubCertificationFacetParameters($node, $parameters);
-            unset($parameters['year']);
-            unset($parameters['status_flag']);
+          //Adjust Certification parameters
+          $parameters = self::adjustPrimeSubCertificationFacetParameters($node, $parameters);
+          unset($parameters['year']);
+          unset($parameters['status_flag']);
 
-            return $parameters;
+          return $parameters;
         }
 
       /**
@@ -996,8 +970,7 @@ class ContractUtil{
        * @return mixed
        */
       public static function adjustPrimeSubCertificationFacetParameters($node, $parameters){
-        if ($node->widgetConfig->filterName != "Prime Certification") {
-          if (isset($parameters['prime_cert'])) {
+          if (($node->widgetConfig->filterName != "Prime Certification") && isset($parameters['prime_cert'])) {
             foreach ($parameters['prime_cert'] as $key => $value) {
               if ($value == 'pemerg') {
                 $parameters['is_prime_emerging'] = 'Yes';
@@ -1008,10 +981,8 @@ class ContractUtil{
             }
             $node->widgetConfig->logicalOrColumns[] = array("is_prime_emerging", "is_prime_women_owned");
           }
-        }
 
-        if ($node->widgetConfig->filterName != "Sub Certification") {
-          if (isset($parameters['sub_cert'])) {
+          if (($node->widgetConfig->filterName != "Sub Certification") && isset($parameters['sub_cert'])) {
             foreach ($parameters['sub_cert'] as $key => $value) {
               if ($value == 'semerg') {
                 $parameters['is_sub_emerging'] = 'Yes';
@@ -1022,7 +993,6 @@ class ContractUtil{
             }
             $node->widgetConfig->logicalOrColumns[] = array("is_sub_emerging", "is_sub_women_owned");
           }
-        }
 
         if ($node->widgetConfig->filterName != "Certification") {
           $women = FALSE;
@@ -1050,19 +1020,18 @@ class ContractUtil{
             }
           }
         }
-
         unset($parameters['prime_cert']);
         unset($parameters['sub_cert']);
         unset($parameters['prime_sub_cert']);
-
         return $parameters;
       }
+
       /**
        * @param $node
        * @param $parameters
        * @return mixed
        */
-        public static function adjustCertificationFacetParameters($node, $parameters){
+        public static function adjustCertificationFacetParameters($node, $parameters) {
           //Mapped certification parameter to a existing column in DB before altering
           if ($node->widgetConfig->filterName != "Certification") {
             if (isset($parameters['is_women_owned'])) {
@@ -1085,13 +1054,15 @@ class ContractUtil{
 
         private static function _replaceSlashCharacter($string) {
           $string = str_replace('@Q', ':', $string);
+          $string = str_replace('amp;', '', $string);
+          $string = str_replace("'", "''", $string);
             return str_replace('__', '/', $string);
         }
 
-      /**
-       * @param bool $subvendor_widget
-       * @return string
-       */
+        /**
+        * @param bool $subvendor_widget
+        * @return string
+        */
         public static function expenseContractsFooterUrl($subvendor_widget = false) {
             $subvendor = RequestUtilities::get('subvendor');
             $vendor = RequestUtilities::get('vendor');
@@ -1100,23 +1071,24 @@ class ContractUtil{
             $mwbe = RequestUtilities::get('mwbe');
             $industry = RequestUtilities::get('cindustry');
 
-            if($subvendor) {
+            if ($subvendor) {
               $subvendor_code = self::getSubVendorCustomerCode($subvendor);
             }
 
-            if($vendor) {
+            if ($vendor) {
               $vendor_code = self::getVendorCustomerCode($vendor);
             }
             $subvendorURLString = (isset($subvendor) ? '/subvendor/'. $subvendor : '') .(isset($subvendor_code) ? '/vendorcode/'.$subvendor_code  : '');
             $vendorURLString = (isset($vendor) ? '/vendor/'. $vendor : '') . (isset($vendor_code) ? '/vendorcode/'.$vendor_code : '');
             $detailsPageURL  = (($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms') && !isset($status))? 'sub_contracts_transactions' : 'contract_details';
 
-            $mwbe_param = "";
-            //pmwbe & smwbe
-            if(isset($status) && isset($mwbe)) {
+            $mwbe_param = '';
+            // pmwbe & smwbe.
+            if (isset($status) && isset($mwbe)) {
                 $mwbe_param = self::showSubVendorData() || $subvendor_widget ? '/smwbe/'.$mwbe : '/pmwbe/'.$mwbe;
             }
-            if(isset($industry)) {
+
+            if (isset($industry)) {
                 $industry_param = self::showSubVendorData() || $subvendor_widget ? '/scindustry/'.$industry : '/pcindustry/'.$industry;
             }
 
@@ -1236,10 +1208,12 @@ class ContractUtil{
             $parameters['ending_year_id'] = $geCondition;
           }
           if ($contractStatus == 'R') {
-            if (isset($dimension))
+            if (isset($dimension)) {
               $parameters[$dimension . '.' . $dimension . '.registered_year_id'] = array($reqYear);
-            else
+            }
+            else {
               $parameters['registered_year_id'] = array($reqYear);
+            }
           } else if ($contractStatus == 'A') {
             if (isset($dimension)) {
               $parameters[$dimension . '.' . $dimension . '.effective_begin_year_id'] = $leCondition;

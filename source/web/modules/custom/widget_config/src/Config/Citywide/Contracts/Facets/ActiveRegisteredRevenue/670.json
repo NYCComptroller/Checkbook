@@ -4,7 +4,7 @@
     "no_results_content":"No Results Found",
     "defaultParameters":{
         "cum_spend.cum_spend.status_flag":"A",
-        "minority_type_id":"2~3~4~5~6~9~99"
+        "minority_type_id":"1~2~3~4~5~10~6~9~99"
     },
     "limit":100,
     "startWith":0,

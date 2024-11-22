@@ -1,10 +1,10 @@
 {
     "widgetType": "phpparser",
-    "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MA1~CTA1~CT1","status_flag":"A","minority_type_id":"2~3~4~5~6~9~99"},
+    "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"MA1~CTA1~CT1","status_flag":"A","minority_type_id":"1~2~3~4~5~10~6~9~99"},
     "cleanURLParameters":["subvendor","mwbe","year","calyear","agency","yeartype","vendor","status","cagency","cvendor","csize","cindustry","awdmethod"],
     "urlParamMap":{"subvendor":"vendor_id","mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id","yeartype":"type_of_year",
-        "awdmethod":"award_method_id","vendor":"prime_vendor_id","status":"status_flag","cagency":"agency_id","cvendor":"prime_vendor_id",
-        "csize":"award_size_id","cindustry":"industry_type_id","awdmethod":"award_method_id"},
+        "awdmethod":"award_method.award_method.award_method_code","vendor":"prime_vendor_id","status":"status_flag","cagency":"agency_id","cvendor":"prime_vendor_id",
+        "csize":"award_size_id","cindustry":"industry_type_id"},
     "dataset": "checkbook:subven_contracts_coa_aggregates",
     "noDataInitialLoad":true,
     "enableExpand":true,

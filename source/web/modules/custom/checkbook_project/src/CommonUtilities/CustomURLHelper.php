@@ -131,10 +131,11 @@ class CustomURLHelper
    */
   public static function _checkbook_project_get_year_url_param_string($applySpendingYear = false, $applyPreviousYear = false, $spendingTransactions = false, $landing_page_link = false){
 
-    //$urlPath =\Drupal::request()->query->get('q');
     $urlPath = RequestUtilities::getCurrentPageUrl();
-    //var_dump($urlPath);
     $pathParams = explode('/', $urlPath);
+    $byear = "/yeartype/B/year/";
+    $cyear = "/yeartype/C/calyear/";
+    $syear = "/syear/";
 
     $calyrIndex = array_search("calyear", $pathParams);
     $yeartypeIndex = array_search("yeartype", $pathParams);
@@ -142,9 +143,9 @@ class CustomURLHelper
     if ($spendingTransactions) {
       $yearId = $calyrIndex ? $pathParams[($calyrIndex + 1)] : $pathParams[($yrIndex + 1)];
       if ($calyrIndex || $pathParams[$yeartypeIndex + 1] == "C") {
-        return "/yeartype/C/calyear/" . $yearId;
+        return $cyear . $yearId;
       } else {
-        return "/yeartype/B/year/" . $yearId;
+        return $byear . $yearId;
       }
     } else {
       if ($calyrIndex) {
@@ -152,19 +153,20 @@ class CustomURLHelper
         $calYear = ($applyPreviousYear ? ($pathParams[($calyrIndex + 1)] - 1) : $pathParams[($calyrIndex + 1)]);
         return "/yeartype/C/" . $year_param_name . "/" . $calYear . ($applySpendingYear ? ('/scalyear/' . $calYear) : '');
       }
-      if ($yeartypeIndex && $pathParams[($yeartypeIndex + 1)] == "C") {
+
+      if ($yrIndex !== FALSE && $yeartypeIndex && $pathParams[($yeartypeIndex + 1)] == "C") {
         $calYear = ($applyPreviousYear ? ($pathParams[($yrIndex + 1)] - 1) : $pathParams[($yrIndex + 1)]);
-        return "/yeartype/C/year/" . $calYear . ($applySpendingYear ? ('/syear/' . $calYear) : '');
+        return $cyear . $calYear . ($applySpendingYear ? ($syear . $calYear) : '');
       }
 
       if ($yrIndex) {
         $year = ($applyPreviousYear ? ($pathParams[($yrIndex + 1)] - 1) : $pathParams[($yrIndex + 1)]);
-        return "/yeartype/B/year/" . $year . ($applySpendingYear ? ('/syear/' . $year) : '');
+        return $byear . $year . ($applySpendingYear ? ($syear . $year) : '');
       }
 
       $curYear = CheckbookDateUtil::getCurrentFiscalYearId();
       $curYear = ($applyPreviousYear ? ($curYear - 1) : $curYear);
-      return "/yeartype/B/year/" . $curYear . ($applySpendingYear ? ('/syear/' . $curYear) : '');
+      return $byear . $curYear . ($applySpendingYear ? ($syear . $curYear) : '');
     }
   }
 
@@ -197,12 +199,14 @@ class CustomURLHelper
       case 786:
       case 787:
       case 788:
-        if ($subvendor != null)
+        if ($subvendor != null) {
           $fvendor = $subvendor;
+        }
         break;
       default:
-        if ($vendor != null)
+        if ($vendor != null) {
           $fvendor = $vendor;
+        }
         break;
     }
     return $fvendor != null ? '/fvendor/' . $fvendor : '';

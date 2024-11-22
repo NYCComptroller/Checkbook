@@ -261,7 +261,7 @@ class FormattingUtilities
     $matches = array();
     if ($input) {
       preg_match($p, $input, $matches);
-      $output = trim($matches[1], '[ ]');
+      $output = trim($matches[1] ?? '', '[ ]');
     } else {
       $output = 0;
     }
@@ -279,11 +279,12 @@ class FormattingUtilities
 
   /**
    * @param $number
+   * @param $decimals
    *
    * @return mixed|string Returns negative number wrapped in parenthesis
    */
-  public static function trendsNumberDisplay($number){
-    return ($number > 0) ? number_format($number) : "(" . number_format(abs($number)).")";
+  public static function trendsNumberDisplay($number, $decimals = 0, $prefix = '', $suffix = ''){
+    return $number >= 0 ? $prefix . number_format($number, $decimals) . $suffix : "(" . $prefix . number_format(abs($number), $decimals) . $suffix . ")";
   }
 
 }

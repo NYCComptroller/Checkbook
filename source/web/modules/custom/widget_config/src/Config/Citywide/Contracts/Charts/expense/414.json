@@ -36,7 +36,7 @@
   $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
 return $adjustedParameters;
 ",
-"urlParamMap":{"cindustry":"industry_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","contcat":"document_code@checkbook:ref_document_code","contnum":"contract_number.contract_number","awrdmthd":"award_method_id.award_method_id","csize":"award_size.award_size"},
+"urlParamMap":{"cindustry":"industry_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","contcat":"document_code@checkbook:ref_document_code","contnum":"contract_number.contract_number","awrdmthd":"award_method_code.award_method_code","csize":"award_size.award_size"},
 "dataset": "checkbook:pending_contracts",
 "columns":["pending_contract_number.pending_contract_number","document_version.document_version","version_number.version_number","contract_number.contract_number","document_agency_name.document_agency_name","document_agency_code.document_agency_code","vendor_legal_name.vendor_legal_name","vendor.vendor","total_revised_maximum_amount","original_agreement_id.original_agreement_id","document_code.document_code.document_code"],
 "derivedColumns": {

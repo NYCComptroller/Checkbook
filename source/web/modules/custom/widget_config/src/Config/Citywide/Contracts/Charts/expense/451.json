@@ -36,7 +36,7 @@
             return $adjustedParameters;
 ",
 "cleanURLParameters":["year","status","yeartype","agency","awdmethod","csize","cindustry"],
-"urlParamMap":{"year":"fiscal_year_id","status":"contract_status.contract_status","yeartype":"yeartype.yeartype","agency":"agency.agency","awdmethod":"award_method_id","csize":"award_size_id","cindustry":"industry_type_id"},
+"urlParamMap":{"year":"fiscal_year_id","status":"contract_status.contract_status","yeartype":"yeartype.yeartype","agency":"agency.agency","awdmethod":"award_method.award_method.award_method_code","csize":"award_size_id","cindustry":"industry_type_id"},
 "transformationPHP": "
     $data = array();
     $categories=array();

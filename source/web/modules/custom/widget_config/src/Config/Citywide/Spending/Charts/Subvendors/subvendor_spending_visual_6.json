@@ -52,7 +52,6 @@ echo '<div class=\"chart-right\">
 "urlParamMapSubVendor":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "chartTitle":"Sub Spending by M/WBE Share",
 "widgetDataLoader":"
-
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
@@ -80,8 +79,10 @@ echo '<div class=\"chart-right\">
 	}
 	$mwbe_data = array();
 	 foreach ($node->data as $row){
-
 	 	switch($row['minority_type_id']){
+      case '1':
+      $mwbe_data['oa'] += $row['total_spending'];
+      break;
 	 		case '2':
 	 		$mwbe_data['ba'] += $row['total_spending'];
 	 		break;
@@ -93,8 +94,10 @@ echo '<div class=\"chart-right\">
 	 		break;
 	 		case '5':
 	 		$mwbe_data['aa'] += $row['total_spending'];
+      case '10':
+      $mwbe_data['aa'] += $row['total_spending'];
 	 		break;
-            case '6':
+      case '6':
 	 		$mwbe_data['na'] += $row['total_spending'];
 	 		break;
 	 		case '7':
@@ -112,80 +115,75 @@ echo '<div class=\"chart-right\">
 	 	}
 	 }
 
+  if(isset($row['total_spending']) && $row['total_spending'] != null){
 
-	$total_mwbe = $mwbe_data['ba'] + $mwbe_data['ha'] + $mwbe_data['aa'] + $mwbe_data['w'] + $mwbe_data['em'] + $mwbe_data['na'];
-	$toal_non_mwbe = $mwbe_data['nm'];
+$total_mwbe = $mwbe_data['oa']+$mwbe_data['ba'] + $mwbe_data['ha'] + $mwbe_data['aa'] + $mwbe_data['w'] + $mwbe_data['em'] + $mwbe_data['na'];
+$toal_non_mwbe = $mwbe_data['nm'];
 
-	$mwbe_filter = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('mwbe');
+$mwbe_filter = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities:: getRequestParamValue('mwbe');
 
-	$amount_column = 'total_mwbe';
-    switch($mwbe_filter){
-        case '4~5' :
-        case '4' :
-        case '5' :
-            $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['aa']/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
-        break;
-        case '2' :
-            $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['ba']/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
-        break;
-        case '3' :
-            $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['ha']/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
-        break;
-        case '6' :
-            $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['na']/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
-        break;
-        case '9' :
-            $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['w']/( $toal_non_mwbe+ $total_mwbe) *100,1,null,'%') ;
-        break;
-        case '99' :
-            $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['em']/( $toal_non_mwbe+ $total_mwbe) *100,1,null,'%') ;
-        break;
-        case '2~3~4~5~9' :
-            $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($total_mwbe/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
-        break;
-        case '2~3~4~5~6~9~99' :
-            $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($total_mwbe/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') ;
-        break;
-    }
+$amount_column = 'total_mwbe';
+switch($mwbe_filter){
+case '4~5~10':
+case '4': case '5': case '10': $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['aa']/($toal_non_mwbe + $total_mwbe) *100, 1, null, '%') ;
+break;
+case '2': $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['ba']/($toal_non_mwbe + $total_mwbe) *100, 1, null, '%') ;
+break;
+case '3': $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['ha']/($toal_non_mwbe + $total_mwbe) *100, 1, null, '%') ;
+break;
+case '6': $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['na']/($toal_non_mwbe + $total_mwbe) *100, 1, null, '%') ;
+break;
+case '9': $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['w']/( $toal_non_mwbe+ $total_mwbe) *100, 1, null,'%') ;
+break;
+case '99': $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['em']/( $toal_non_mwbe+ $total_mwbe) *100, 1, null,'%') ;
+break;
+case '1~2~3~4~5~10~9': $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($total_mwbe/($toal_non_mwbe + $total_mwbe) *100, 1, null, '%') ;
+break;
+case '1~2~3~4~5~10~6~9~99' : $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($total_mwbe/($toal_non_mwbe + $total_mwbe) *100, 1, null, '%') ;
+break;
+}
 
-	$node->widgetConfig->chartConfig->series[0]->data[0]->y = $total_mwbe;
-	$node->widgetConfig->chartConfig->series[0]->data[0]->custom_label = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($total_mwbe,2,'$') . ' (' .
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format(($total_mwbe)/($toal_non_mwbe + $total_mwbe) *100,1,null,'%') . ')';
-    $node->widgetConfig->chartConfig->series[0]->data[0]->tooltip_label =
-        'Asian American: ' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['aa'],2,'$')  . ' (' .
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format(($mwbe_data['aa'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' .  '<br/>'
-        . 'Black American: ' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['ba'],2,'$')  . ' (' .
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format(($mwbe_data['ba'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>'
-        . 'Women (Non-Minority): ' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['w'],2,'$')  . ' (' .
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format(($mwbe_data['w'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>'
-        . 'Hispanic American: ' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['ha'],2,'$')  . ' (' .
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format(($mwbe_data['ha'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>'
-        . 'Native American: ' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['na'],2,'$')  . ' (' .
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format(($mwbe_data['na'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>'
-        . 'Emerging (Non-Minority): ' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['em'],2,'$')  . ' (' .
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format(($mwbe_data['em'])/($total_mwbe + $toal_non_mwbe)*100,1,null,'%') . ')' . '<br/>'
-        ;
-	$node->widgetConfig->chartConfig->series[0]->data[1]->y = $toal_non_mwbe;
+$node->widgetConfig->chartConfig->series[0]->data[0]->y = $total_mwbe;
+$node->widgetConfig->chartConfig->series[0]->data[0]->custom_label = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($total_mwbe, 2,'$') . ' (' .
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format(($total_mwbe)/($toal_non_mwbe + $total_mwbe) *100, 1, null, '%') . ')';
+$node->widgetConfig->chartConfig->series[0]->data[0]->tooltip_label =
+'Asian American: ' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['aa'], 2, '$')  . ' (' .
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format(($mwbe_data['aa'])/($total_mwbe + $toal_non_mwbe)*100, 1, null, '%') . ')' .  '<br/>'
+. 'Black American: ' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['ba'], 2, '$')  . ' (' .
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format(($mwbe_data['ba'])/($total_mwbe + $toal_non_mwbe)*100, 1, null, '%') . ')' . '<br/>'
+. 'Women (Non-Minority): ' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['w'], 2, '$')  . ' (' .
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format(($mwbe_data['w'])/($total_mwbe + $toal_non_mwbe)*100, 1, null, '%') . ')' . '<br/>'
+. 'Hispanic American: ' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['ha'], 2, '$')  . ' (' .
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format(($mwbe_data['ha'])/($total_mwbe + $toal_non_mwbe)*100, 1, null, '%') . ')' . '<br/>'
+. 'Native American: ' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['na'], 2, '$')  . ' (' .
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format(($mwbe_data['na'])/($total_mwbe + $toal_non_mwbe)*100, 1, null, '%') . ')' . '<br/>'
+. 'Emerging (Non-Minority): ' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['em'], 2, '$')  . ' (' .
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format(($mwbe_data['em'])/($total_mwbe + $toal_non_mwbe)*100, 1, null, '%') . ')' . '<br/>'
+;
+$node->widgetConfig->chartConfig->series[0]->data[1]->y = $toal_non_mwbe;
 
-	$node->widgetConfig->chartConfig->series[0]->data[1]->custom_label = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($toal_non_mwbe,2,'$') . ' (' .
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($toal_non_mwbe/($total_mwbe + $toal_non_mwbe) *100,1,null,'%') . ')';
+$node->widgetConfig->chartConfig->series[0]->data[1]->custom_label = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($toal_non_mwbe, 2,'$') . ' (' .
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($toal_non_mwbe/($total_mwbe + $toal_non_mwbe) *100, 1, null, '%') . ')';
 
 
-	$node->widgetConfig->gridConfig->data[] = array('Asian American',$mwbe_data['aa'] ,
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['aa']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
-	$node->widgetConfig->gridConfig->data[] = array('Black American',$mwbe_data['ba'] ,
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['ba']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
-	$node->widgetConfig->gridConfig->data[] = array('Women (Non-Minority)',$mwbe_data['w'],
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['w']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
-	$node->widgetConfig->gridConfig->data[] = array('Hispanic American',$mwbe_data['ha'],
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['ha']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
-    $node->widgetConfig->gridConfig->data[] = array('Native American',$mwbe_data['na'] ,
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['na']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
-    $node->widgetConfig->gridConfig->data[] = array('Emerging (Non-Minority)',$mwbe_data['em'] ,
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($mwbe_data['em']/($total_mwbe + $toal_non_mwbe)*100,1,null,'%'));
+$node->widgetConfig->gridConfig->data[] = array('Asian American', $mwbe_data['aa'] ,
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['aa']/($total_mwbe + $toal_non_mwbe)*100, 1, null, '%'));
+$node->widgetConfig->gridConfig->data[] = array('Black American', $mwbe_data['ba'] ,
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['ba']/($total_mwbe + $toal_non_mwbe)*100, 1, null, '%'));
+$node->widgetConfig->gridConfig->data[] = array('Women (Non-Minority)', $mwbe_data['w'],
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['w']/($total_mwbe + $toal_non_mwbe)*100, 1, null, '%'));
+$node->widgetConfig->gridConfig->data[] = array('Hispanic American', $mwbe_data['ha'],
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['ha']/($total_mwbe + $toal_non_mwbe)*100, 1, null, '%'));
+$node->widgetConfig->gridConfig->data[] = array('Native American', $mwbe_data['na'] ,
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['na']/($total_mwbe + $toal_non_mwbe)*100, 1, null, '%'));
+$node->widgetConfig->gridConfig->data[] = array('Emerging (Non-Minority)', $mwbe_data['em'] ,
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['em']/($total_mwbe + $toal_non_mwbe)*100, 1, null, '%'));
 $node->widgetConfig->gridConfig->data[] = array('Non-M/WBE', $toal_non_mwbe,
-\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format(($toal_non_mwbe)/($total_mwbe + $toal_non_mwbe)*100,1, null, '%'));
-
+\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format(($toal_non_mwbe)/($total_mwbe + $toal_non_mwbe)*100, 1, null, '%'));
+}
+else{
+$node->widgetConfig->html_class = '';
+}
 ",
 "chartConfig": {
 "colors":["#7DB7E5"],

@@ -160,10 +160,8 @@ class NychaContractsSmartUtil {
         $value = $linkable_fields[$key];
       }
 
-      if (isset($hyphen_fields) && in_array($key, $hyphen_fields)) {
-        if ($value == NULL) {
-          $value = '-';
-        }
+      if (isset($hyphen_fields) && in_array($key, $hyphen_fields) && $value == NULL) {
+        $value = '-';
       }
 
       if ($count % 2 == 0) {

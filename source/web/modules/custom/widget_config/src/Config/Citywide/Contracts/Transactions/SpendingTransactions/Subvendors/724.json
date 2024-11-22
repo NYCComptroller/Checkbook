@@ -11,7 +11,7 @@
     "calyear":"disb_fiscal_year_id","yeartype":"type_of_year","status":"status_flag","agency":"disb_agency_id",
     "category":"disb_spending_category_id","checkamtr":"disb_check_amount","syear":"disb_fiscal_year_id",
     "scalyear":"disb_fiscal_year_id","magid":"master_agreement_id","agid":"disb_agreement_id",
-    "cagency":"document_agency_id","awdmethod":"award_method_id","csize":"award_size_id",
+    "cagency":"document_agency_id","awdmethod":"award_method_code@checkbook:award_method","csize":"award_size_id",
     "cindustry":"industry_type_id","doctype":"document_code@checkbook:ref_document_code",
     "month":"disb_check_eft_issued_cal_month_id",
     "mwbe":"minority_type_id","industry":"industry_type_id",
@@ -141,16 +141,17 @@
         "column":"mwbe_category_name",
         "sourceColumn":"disb_minority_type_id",
         "sql":"
-            case
-            when disb_minority_type_id = 2 then 'Black American'
-            when disb_minority_type_id = 3 then 'Hispanic American'
-            when disb_minority_type_id = 6 then 'Native American'
-            when disb_minority_type_id = 7 then 'Non-M/WBE'
-            when disb_minority_type_id = 9 then 'Women (Non-Minority)'
-            when disb_minority_type_id = 11 then 'Individuals and Others'
-            when disb_minority_type_id = 99 then 'Emerging (Non-Minority)'
-            else 'Asian American'
-            end as minority_type_name
+          case
+          WHEN disb_minority_type_id IN (4, 5, 10) THEN 'Asian American'
+          WHEN disb_minority_type_id = 2 THEN 'Black American'
+          WHEN disb_minority_type_id = 3 THEN 'Hispanic American'
+          WHEN disb_minority_type_id = 6 THEN 'Native American'
+          WHEN disb_minority_type_id = 7 THEN 'Non-M/WBE'
+          WHEN disb_minority_type_id = 9 THEN 'Women (Non-Minority)'
+          WHEN disb_minority_type_id = 11 THEN 'Individuals and Others'
+          WHEN disb_minority_type_id = 99 THEN 'Emerging (Non-Minority)'
+          ELSE 'Others'
+          end as minority_type_name
         "
     },
     {

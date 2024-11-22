@@ -6,7 +6,7 @@
     "startWith":0,
     "columns":["vendor_type.vendor_type", "txcount"],
     "urlParamMap":{
-        "doctype":"document_code.document_code.document_code"
+        "doctype":"document_code.document_code.document_code", "awdmethod":"award_method.award_method.award_method_code"
     },
     "orderBy":"-txcount",
     "autocomplete":false,

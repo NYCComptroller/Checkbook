@@ -16,7 +16,8 @@
     "maxSelect":5,
     "urlParamMap":{
         "doctype":"document_code.document_code.document_code",
-        "mwbe":"minority_type.minority_type"
+        "mwbe":"minority_type.minority_type",
+        "awdmethod":"award_method.award_method.award_method_code"
     },
     "adjustParameters":"
         checkbook_faceted_search_adjust_param($node);

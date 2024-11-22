@@ -4,10 +4,12 @@
 "no_results_content":"No Results Found",
 "cleanURLParameters":["mwbe","agency","vendor","awdmethod","contnum","contcat","pin","aptpin","csize","cindustry"],
 "defaultParameters":{"document_code.document_code.document_code":"MMA1~MA1~MAR~CT1~CTA1~CTR"},
-"urlParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","contcat":"document_code@checkbook:ref_document_code","contnum":"contract_number.contract_number","awdmethod":"award_method_id","pin":"tracking_number.tracking_number","aptpin":"board_award_number.board_award_number","csize":"award_size.award_size","cindustry":"industry.industry"},
+"urlParamMap":{"mwbe":"minority_type_id","agency":"document_agency_id.document_agency_id","vendor":"vendor.vendor","contcat":"document_code@checkbook:ref_document_code","contnum":"contract_number.contract_number",
+  "awdmethod":"award_method_code","pin":"tracking_number.tracking_number","aptpin":"board_award_number.board_award_number","csize":"award_size.award_size",
+  "cindustry":"industry.industry"},
 "dataset": "checkbook:pending_contracts",
 "noDataInitialLoad":true,
-"columns": ["award_method_name.award_method_name","original_amount_sum","current_amount_sum","total_contracts","award_method_id.award_method_id"],
+"columns": ["award_method_name.award_method_name","original_amount_sum","current_amount_sum","total_contracts","award_method_code.award_method_code"],
 "adjustParameters":"
     $dashboard = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('dashboard');
 if($dashboard == 'ss' || $dashboard == 'sp' || $dashboard == 'ms'){
@@ -21,7 +23,7 @@ $parameters['minority_type_id'] = 1000;
 "enableExpand":true,
 "derivedColumns": {
 "award_method_name_link": {
-  "expression": "'<a href=\"/contracts_pending_exp_landing'.\\Drupal\\checkbook_project\\CommonUtilities\\CustomURLHelper::_checkbook_project_get_year_url_param_string() . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string('dashboard') . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string(\"mwbe\") . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string(\"agency\")  .  \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string(\"cindustry\")  .  \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string(\"csize\") .    \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string(\"vendor\") .  \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string(\"status\") .  '/awdmethod/'.$row['award_method_id_award_method_id']. '?expandBottomCont=true\">' .$row['award_method_name_award_method_name']. '</a>'"
+  "expression": "'<a href=\"/contracts_pending_exp_landing'.\\Drupal\\checkbook_project\\CommonUtilities\\CustomURLHelper::_checkbook_project_get_year_url_param_string() . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string('dashboard') . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string(\"mwbe\") . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string(\"agency\")  .  \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string(\"cindustry\")  .  \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string(\"csize\") .    \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string(\"vendor\") .  \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string(\"status\") .  '/awdmethod/'.$row['award_method_code_award_method_code']. '?expandBottomCont=true\">' .$row['award_method_name_award_method_name']. '</a>'"
     } ,
 "formatted_original_amount_sum": {
       "expression": " '$' . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($row['original_amount_sum'],2)"
