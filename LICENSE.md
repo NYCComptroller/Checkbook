@@ -1,4 +1,4 @@
-Copyright (C) 2012 - 2023 New York City
+Copyright (C) 2012 - 2025 New York City
 
 Checkbook NYC is free software: you can redistribute it and modify
 it under the terms of the GNU Affero General Public License (AGPL)
