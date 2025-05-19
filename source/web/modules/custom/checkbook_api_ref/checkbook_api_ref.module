@@ -24,9 +24,7 @@ use Drupal\checkbook_log\LogHelper;
 /**
  * Implements hook_cron().
  */
-
-function checkbook_api_ref_cron()
-{
+function checkbook_api_ref_cron() {
   LogHelper::log_notice("Running checkbook_api_ref_cron");
   $CES = new \Drupal\checkbook_api_ref\API\CheckbookApiRef();
   return $CES->api_ref_cron();
@@ -38,7 +36,7 @@ function checkbook_api_ref_cron()
  * @param $message
  * @param $params
  */
-function checkbook_api_ref_mail($key, &$message, $params){
+function checkbook_api_ref_mail($key, &$message, $params) {
   $CES = new \Drupal\checkbook_api_ref\API\CheckbookApiRef();
   $CES->gatherData($message);
   $message['body'] = array_merge($message['body'], $params);
@@ -51,18 +49,18 @@ function checkbook_api_ref_mail($key, &$message, $params){
  * @param $message
  * @throws Exception
  */
-function checkbook_api_ref_mail_alter(&$message)
-{
-
+function checkbook_api_ref_mail_alter(&$message) {
   // Apply this hook only for `checkbook_etl_status` module
   if ('checkbook_api_ref' !== $message['module']) {
     return;
   }
+
   if (stripos($message['subject'], 'Fail') || stripos($message['subject'], 'not Found')) {
     $message['headers']['X-Priority'] = '1 (Highest)';
     $message['headers']['X-MSMail-Priority'] = 'High';
     $message['headers']['Importance'] = 'High';
   }
+
   $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
   $body_data = array (
     '#theme' => 'api-ref-mail',
@@ -81,8 +79,7 @@ function checkbook_api_ref_mail_alter(&$message)
  * @param $path
  * @return array
  */
-function checkbook_api_ref_theme($existing, $type, $theme, $path)
-{
+function checkbook_api_ref_theme($existing, $type, $theme, $path) {
   return [
     'api-ref-mail'=>[
       'template'=>'api-ref.email',
@@ -93,8 +90,3 @@ function checkbook_api_ref_theme($existing, $type, $theme, $path)
     ],
   ];
 }
-
-
-
-
-

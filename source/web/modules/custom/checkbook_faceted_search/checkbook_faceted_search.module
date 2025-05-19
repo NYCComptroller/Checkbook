@@ -39,16 +39,19 @@ function _checkbook_faceted_search_update_data($node) {
   $output['filter_name'] = $node->widgetConfig->filterName;
   if (empty(RequestUtilities::getBottomContUrl())) {
     $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
-  } else {
+  }
+  else {
     $params = explode('~', RequestUtilities::_getRequestParamValueBottomURL($node->widgetConfig->urlParameterName));
   }
 
-  //The value in this facet can be 0
+  // The value in this facet can be 0.
   if (isset($node->widgetConfig->allowZeroValue) && $node->widgetConfig->allowZeroValue) {
     $filter = $params[0] != "";
-  } else {
+  }
+  else {
     $filter = $params[0];
   }
+
   if ($filter) {
     foreach ($params as $param) {
       try {
@@ -168,15 +171,19 @@ function _checkbook_faceted_search_update_data($node) {
   $setAutoDeselect= RequestUtil::isNychaAmountLinks();
   $pagetype = PageType::getCurrent();
 
-  //Facets that have Url parameters that match the current Url will be disabled and show only the default checked items
-  if (($pagetype != PageType::ADVANCED_SEARCH_PAGE) && (!(isset($node->widgetConfig->allowFacetDeselect)) || ($setAutoDeselect == 1))){
+  // Facets that have Url parameters that match the current Url will be disabled and show only the default checked items.
+  if (($pagetype != PageType::ADVANCED_SEARCH_PAGE) && (!(isset($node->widgetConfig->allowFacetDeselect)) || ($setAutoDeselect == 1))) {
     $disableFacet = true;
   }
 
-  if (isset($disableFacet) && $disableFacet) { //only URL parameters count and can be disabled
+  // Only URL parameters count and can be disabled.
+  if (!empty($disableFacet)) {
     $url_ref = RequestUtilities::getBottomContUrl();
     $url_ref = $url_ref ?? \Drupal::request()->server->get('HTTP_REFERER');
     $disableFacet = preg_match('"/' . $node->widgetConfig->urlParameterName . '/"', $url_ref);
+    if (preg_match("/newwindow/", RequestUtilities::getCurrentPageUrl())) {
+      $disableFacet = $disableFacet && empty($data);
+    }
   }
 
   if (isset($disableFacet) && $disableFacet) {
@@ -273,7 +280,10 @@ function _checkbook_faceted_search_update_event_filter($node){
   if (!is_array($data[0])) {
     $data = array(0 => array());
   }
-
+  //Unset Asylum for facet
+  if(isset($data[0]['asylum_count'])){
+    unset($data[0]['asylum_count']);
+  }
   $covidCount = $data[0]['covid_count'] ?? 0;
   $asylumCount = $data[0]['asylum_count'] ?? 0;
 

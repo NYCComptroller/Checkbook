@@ -20,8 +20,8 @@
 
 namespace Drupal\checkbook_services\VendorUtil;
 
-require_once(\Drupal::service('extension.list.module')->getPath('checkbook_project') . "/includes/checkbook_database.inc");
-require_once(\Drupal::service('extension.list.module')->getPath('checkbook_project') . "/includes/checkbook_project.inc");
+require_once(dirname(__FILE__) . "/../../../../../checkbook_project/includes/checkbook_database.inc");
+require_once(dirname(__FILE__) . "/../../../../../checkbook_project/includes/checkbook_project.inc");
 
 use Drupal\checkbook_infrastructure_layer\Utilities\FormattingUtilities;
 use Drupal\data_controller\Datasource\Operator\Handler\RegularExpressionOperatorHandler;

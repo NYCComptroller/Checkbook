@@ -578,23 +578,6 @@ function checkbook_datafeeds_spending_filter_data($form, $form_state, $data_sour
   return $form;
 }
 
-/**
- * Implements hook_element_info_alter().
- */
-function checkbook_datafeeds_element_info_alter(array &$types)
-{
-  $types['datetime']['#process'][] = 'datetime_tweaks_datetime_set_format';
-}
-
-/**
- * Element process callback for datetime fields.
- */
-function datetime_tweaks_datetime_set_format($element)
-{
-  // Use d/m/Y format.
-  $element['date']['#date_date_format'] = 'Y-m-d';
-  return $element;
-}
 
 /**
  * Column options for Spending CheckbookDomain.

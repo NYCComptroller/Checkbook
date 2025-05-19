@@ -186,7 +186,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"18"
+                "maxLength":"20"
             },
             "industry":{
                 "valueType":"value",

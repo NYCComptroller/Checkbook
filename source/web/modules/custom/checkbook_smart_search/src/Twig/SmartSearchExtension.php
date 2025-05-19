@@ -289,6 +289,12 @@ class SmartSearchExtension extends AbstractExtension {
         if( strtolower($facet_name) == 'registered_fiscal_year'){
           continue;
         }
+
+        // Hide contract prime vendor..
+        if( strtolower($facet_name) == 'contract_prime_vendor_name'){
+          continue;
+        }
+
       }
 
       $output .= '<div class="filter-content-' . $facet_name . ' filter-content">'.

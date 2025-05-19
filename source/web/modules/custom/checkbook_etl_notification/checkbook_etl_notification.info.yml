@@ -1,5 +1,5 @@
 name: "Checkbook ETL Status Mailing"
 description: "Module to email Prod/UAT ETL Status every morning"
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'NYC Checkbook'
 type: module

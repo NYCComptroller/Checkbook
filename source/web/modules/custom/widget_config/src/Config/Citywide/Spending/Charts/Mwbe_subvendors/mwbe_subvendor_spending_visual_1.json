@@ -43,8 +43,8 @@
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     }
-    $isRefUrl = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRefUrl();
-    $mwbe_filter = isset( $isRefUrl) ? \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('mwbe',['q'=>$isRefUrl ]) : \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('mwbe');
+
+    $mwbe_filter = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('mwbe');
     $where_filters_mwbe = $where_filters;
     $where_filters_mwbe[] = _widget_build_sql_condition('minority_type_id', $mwbe_filter);
 
@@ -57,12 +57,14 @@
 
     $sort_column = 4;
     switch($mwbe_filter){
-        case '4~5' :
+        case '4~5~10' :
         case '4' :
         case '5' :
+        case '10' :
             $sort_column = 3;
             $ethinicty_case = ' WHEN minority_type_id = 4 THEN total_spending_amount
-            WHEN minority_type_id = 5 THEN total_spending_amount ';
+            WHEN minority_type_id = 5 THEN total_spending_amount
+            WHEN minority_type_id = 10 THEN total_spending_amount';
         break;
         case '2' :
             $sort_column = 3;
@@ -89,12 +91,14 @@
             $ethinicty_case = ' WHEN minority_type_id = 7 THEN total_spending_amount
             ';
         break;
-        case '2~3~4~5~9' :
+        case '1~2~3~4~5~10~9' :
             $sort_column = 4;
-            $ethinicty_case = ' WHEN minority_type_id = 2 THEN total_spending_amount
+            $ethinicty_case = ' WHEN minority_type_id = 1 THEN total_spending_amount
+            WHEN minority_type_id = 2 THEN total_spending_amount
             WHEN minority_type_id = 3 THEN total_spending_amount
             WHEN minority_type_id = 4 THEN total_spending_amount
             WHEN minority_type_id = 5 THEN total_spending_amount
+            WHEN minority_type_id = 10 THEN total_spending_amount
             WHEN minority_type_id = 9 THEN total_spending_amount
             ';
         break;
@@ -108,12 +112,14 @@
             $ethinicty_case = ' WHEN minority_type_id = 99 THEN total_spending_amount
             ';
         break;
-        case '2~3~4~5~6~9~99' :
+        case '1~2~3~4~5~10~6~9~99' :
             $sort_column = 4;
-            $ethinicty_case = ' WHEN minority_type_id = 2 THEN total_spending_amount
+            $ethinicty_case = ' WHEN minority_type_id = 1 THEN total_spending_amount
+            WHEN minority_type_id = 2 THEN total_spending_amount
             WHEN minority_type_id = 3 THEN total_spending_amount
             WHEN minority_type_id = 4 THEN total_spending_amount
             WHEN minority_type_id = 5 THEN total_spending_amount
+            WHEN minority_type_id = 10 THEN total_spending_amount
             WHEN minority_type_id = 6 THEN total_spending_amount
             WHEN minority_type_id = 9 THEN total_spending_amount
             WHEN minority_type_id = 99 THEN total_spending_amount
@@ -138,10 +144,13 @@
 
     $sql .= '(select  agency_name , a1.agency_id,
     SUM(
-    CASE WHEN minority_type_id = 2 THEN total_spending_amount
+    CASE
+    WHEN minority_type_id = 1 THEN total_spending_amount
+    WHEN minority_type_id = 2 THEN total_spending_amount
     WHEN minority_type_id = 3 THEN total_spending_amount
     WHEN minority_type_id = 4 THEN total_spending_amount
     WHEN minority_type_id = 5 THEN total_spending_amount
+    WHEN minority_type_id = 10 THEN total_spending_amount
     WHEN minority_type_id = 6 THEN total_spending_amount
     WHEN minority_type_id = 9 THEN total_spending_amount
     WHEN minority_type_id = 99 THEN total_spending_amount
@@ -169,8 +178,6 @@
 
 	$mwbe_filter = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('mwbe');
 	$amount_column = $mwbe_filter != null ? 'ethinicty_mwbe' : 'total_mwbe';
-
-	$mwbe_filter = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('mwbe');
   $is_mwbe_certified = \\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::isMWBECertified(array($mwbe_filter));
   if($is_mwbe_certified){
 		$node->widgetConfig->chartTitle = \\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::getCurrenEthnicityName()  . ' Sub Spending';

@@ -20,7 +20,7 @@
 
 namespace Drupal\checkbook_services\Contracts;
 
-require_once(\Drupal::service('extension.list.module')->getPath('checkbook_project') . "/includes/checkbook_project.inc");
+require_once(dirname(__FILE__) . "/../../../../../checkbook_project/includes/checkbook_project.inc");
 
 use Drupal\checkbook_infrastructure_layer\Constants\Common\CheckbookDomain;
 use Drupal\checkbook_infrastructure_layer\Constants\Common\Dashboard;
@@ -241,7 +241,7 @@ class ContractsUrlService {
     $url = NULL;
     if (MappingUtil::isMWBECertified($minority_type_id)) {
       $currentUrl = ContractType::getCurrentContractsLandingPage();
-      $minority_type_id = ($minority_type_id == 4 || $minority_type_id == 5) ? '4~5' : $minority_type_id;
+      $minority_type_id = ($minority_type_id == 4 || $minority_type_id == 5 || $minority_type_id == 10) ? '4~5~10' : $minority_type_id;
       $url = '/' . $currentUrl
         . RequestUtilities::buildUrlFromParam('syear|year')
         . CustomURLHelper::_checkbook_project_get_year_url_param_string()
@@ -268,7 +268,7 @@ class ContractsUrlService {
   public static function agencyUrl($agency_id, $original_agreement_id = null): string {
     $currentUrl = ContractType::getCurrentContractsLandingPage();
     return '/' . $currentUrl
-      . (isset($original_agreement_id) ? (self::MAGID . $original_agreement_id) : '')
+      . ($original_agreement_id ? self::MAGID . $original_agreement_id : '')
       . RequestUtilities::_appendMWBESubVendorDatasourceUrlParams()
       . RequestUtilities::buildUrlFromParam([
         'vendor',

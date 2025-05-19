@@ -86,7 +86,7 @@ class SqlUtil {
   public static function executeSqlFetchAssoc($query, $data_source = 'checkbook', $db_name = "main") {
     $results = NULL;
 
-    //Get connection
+    // Get connection.
     try {
       $connection = Database::getConnection($db_name, $data_source);
     } catch (\Exception $e) {

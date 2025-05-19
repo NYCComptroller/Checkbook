@@ -154,14 +154,15 @@
 "sourceColumn":"minority_type_id",
 "sql":"
 CASE
-WHEN minority_type_id = 2 THEN 'Black American'
-WHEN minority_type_id = 3 THEN 'Hispanic American'
-WHEN minority_type_id = 7 THEN 'Non-M/WBE'
-WHEN minority_type_id = 9 THEN 'Women (Non-Minority)'
-WHEN minority_type_id = 11 THEN 'Individuals and Others'
-WHEN minority_type_id = 6 THEN 'Native American'
-WHEN minority_type_id = 99 THEN 'Emerging (Non-Minority)'
-ELSE 'Asian American'
+WHEN disb_minority_type_id IN (4, 5, 10) THEN 'Asian American'
+WHEN disb_minority_type_id = 2 THEN 'Black American'
+WHEN disb_minority_type_id = 3 THEN 'Hispanic American'
+WHEN disb_minority_type_id = 6 THEN 'Native American'
+WHEN disb_minority_type_id = 7 THEN 'Non-M/WBE'
+WHEN disb_minority_type_id = 9 THEN 'Women (Non-Minority)'
+WHEN disb_minority_type_id = 11 THEN 'Individuals and Others'
+WHEN disb_minority_type_id = 99 THEN 'Emerging (Non-Minority)'
+ELSE 'Others'
 END AS minority_type_name
 "
 }

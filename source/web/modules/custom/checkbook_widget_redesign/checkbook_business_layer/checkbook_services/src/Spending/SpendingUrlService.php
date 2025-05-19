@@ -256,7 +256,7 @@ class SpendingUrlService
    */
   static function mwbeUrl($minority_type_id, $dashboard)
   {
-    $minority_type_id = $minority_type_id == 4 || $minority_type_id == 5 ? '4~5' : $minority_type_id;
+    $minority_type_id = $minority_type_id == 4 || $minority_type_id == 5 || $minority_type_id == 10 ? '4~5~10' : $minority_type_id;
     $url = '/spending_landing'
       . CustomURLHelper::_checkbook_project_get_year_url_param_string()
       . RequestUtilities::buildUrlFromParam('agency')

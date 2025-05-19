@@ -95,11 +95,11 @@ class ContractsSmartUtil {
           }
           else {
             if ($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'No') {
-              $vendor_link = "/contracts_landing/status/" . $status . "/yeartype/B/year/" . $fiscal_year_id . "/mwbe/2~3~4~5~6~9~99/dashboard/mp/vendor/" . $contracts_results["vendor_id"];
+              $vendor_link = "/contracts_landing/status/" . $status . "/yeartype/B/year/" . $fiscal_year_id . "/mwbe/1~2~3~4~5~10~6~9~99/dashboard/mp/vendor/" . $contracts_results["vendor_id"];
             }
             else {
               if ($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'Yes') {
-                $vendor_link = "/contracts_landing/status/" . $status . "/yeartype/B/year/" . $fiscal_year_id . "/mwbe/2~3~4~5~6~9~99/dashboard/ms/subvendor/" . $contracts_results["vendor_id"];
+                $vendor_link = "/contracts_landing/status/" . $status . "/yeartype/B/year/" . $fiscal_year_id . "/mwbe/1~2~3~4~5~10~6~9~99/dashboard/ms/subvendor/" . $contracts_results["vendor_id"];
               }
               else {
                 if ($contracts_results["is_minority_vendor"] == 'N' && $contracts_results["is_prime_or_sub"] == 'Yes') {
@@ -127,11 +127,11 @@ class ContractsSmartUtil {
           }
           else {
             if ($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'No') {
-              $vendor_link = "/contracts_revenue_landing/status/" . $status . "/yeartype/B/year/" . $fiscal_year_id . "/mwbe/2~3~4~5~6~9~99/dashboard/mp/vendor/" . $contracts_results["vendor_id"];
+              $vendor_link = "/contracts_revenue_landing/status/" . $status . "/yeartype/B/year/" . $fiscal_year_id . "/mwbe/1~2~3~4~5~10~6~9~99/dashboard/mp/vendor/" . $contracts_results["vendor_id"];
             }
             else {
               if ($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'Yes') {
-                $vendor_link = "/contracts_revenue_landing/status/" . $status . "/yeartype/B/year/" . $fiscal_year_id . "/mwbe/2~3~4~5~6~9~99/dashboard/ms/subvendor/" . $contracts_results["vendor_id"];
+                $vendor_link = "/contracts_revenue_landing/status/" . $status . "/yeartype/B/year/" . $fiscal_year_id . "/mwbe/1~2~3~4~5~10~6~9~99/dashboard/ms/subvendor/" . $contracts_results["vendor_id"];
               }
               else {
                 if ($contracts_results["is_minority_vendor"] == 'N' && $contracts_results["is_prime_or_sub"] == 'Yes') {
@@ -377,7 +377,7 @@ class ContractsSmartUtil {
       elseif ($key == "minority_type_name" && $contracts_results["minority_type_name"]) {
         $id = $contracts_results["minority_type_id"];
         if ($id == '4' || $id == '5' || $id == '10') {
-          $id = '4~5';
+          $id = '4~5~10';
         }
         if ($contracts_results['minority_type_id'] != '7' && $contracts_results['minority_type_id'] != '11') {
           if ($contracts_results['is_prime_or_sub'] == 'Yes') {

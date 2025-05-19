@@ -15,8 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DefaultController extends ControllerBase
 {
-  public function _landing_page_widget_view_ajaxdata($key)
-  {
+  public function _landing_page_widget_view_ajaxdata($key) {
     $id = RequestUtil::_getnodeid($key);
     RequestUtilities::resetUrl();
     $node = landing_page_widget_config_load_data($id);

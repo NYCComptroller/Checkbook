@@ -24,8 +24,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Layout\LayoutDefault;
 use Drupal\Core\Plugin\PluginFormInterface;
 
-require_once(\Drupal::service('extension.list.module')->getPath('checkbook_project') . "/includes/checkbook_database.inc");
-
+require_once(dirname(__FILE__) . "/../../../checkbook_project/includes/checkbook_database.inc");
 
 /**
  * Alternate class for custom three columns layout.

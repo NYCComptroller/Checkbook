@@ -43,7 +43,7 @@ class PayrollAgencySummary
       $year_type = $data['type_of_year'];
       $employment_type = $data['type_of_employment'];
       $agency_name = FormattingUtilities::_shorten_word_with_tooltip(strtoupper($data['agency_name']), 25);
-      $data_source = RequestUtilities::_getUrlParamString('datasource');
+      $data_source = Datasource::isNycha() ? RequestUtilities::_getUrlParamString('datasource'):null;
 
       $record['total_annual_salary'] = $node->total_annual_salary;
       $record['total_gross_pay'] = $data['total_gross_pay'];
@@ -55,7 +55,6 @@ class PayrollAgencySummary
       $record['number_employees'] = $data['number_employees'];
       $record['agency_name'] = $data['agency_name'];
       $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year{$data_source}/agency/{$data['agency_id']}'>{$agency_name}</a>";
-
       $all_data[$employment_type][] = $record;
     }
 
@@ -310,7 +309,7 @@ class PayrollAgencySummary
     $year_type = RequestUtilities::getTransactionsParams('yeartype');
     $employeeID = RequestUtilities::getTransactionsParams('abc');
     $agencyId =RequestUtilities::getTransactionsParams('agency');
-    $data_source =RequestUtilities::getTransactionsParams('datasource');
+    $data_source = Datasource::isNycha() ? RequestUtilities::_getUrlParamString('datasource') :null;
     $original_title= PayrollUtil::getTitleByEmployeeId($employeeID,$agencyId,$year_type,$year);
     $titleLatest = mb_convert_case(strtolower($original_title), MB_CASE_TITLE, "UTF-8");
     $all_data = array();
@@ -334,7 +333,7 @@ class PayrollAgencySummary
 
       $record['title'] = $title;
       $record['agency_name']=$data['agency_name_agency_name'];
-      $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year/datasource/{$data_source}/agency/{$data['agency_agency']}'>{$agency_name}</a>";
+      $record['agency_url'] = "<a href='/payroll/agency_landing/yeartype/$year_type/year/$year{$data_source}/agency/{$data['agency_agency']}'>{$agency_name}</a>";
       $record['employment_type'] = $employment_type;
       $record['max_annual_salary'] = $data['max_annual_salary'];
       $record['pay_frequency'] = $data['pay_frequency_pay_frequency'];

@@ -165,8 +165,8 @@ class SpendingSmartUtil {
       }
       elseif ($key == "minority_type_name" && $spending_results["minority_type_name"]) {
         $id = $spending_results["minority_type_id"];
-        if ($id == '4' || $id == '5') {
-          $id = '4~5';
+        if ($id == '4' || $id == '5' || $id == '10') {
+          $id = '4~5~10';
         }
         if ($spending_results['minority_type_id'] != '7' && $spending_results['minority_type_id'] != '11') {
           if ($spending_results['is_prime_or_sub'] == 'Yes') {

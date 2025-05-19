@@ -135,6 +135,9 @@
                     $('.export-range-input').click(function(){
                       $('#export-dc-range').attr("checked", "checked").trigger("click");
                     });
+                  },
+                  close: function(){
+                    $(this).dialog('destroy').remove();
                   }
               });
           }
@@ -253,7 +256,7 @@
                           resizable: false,
                           dialogClass: 'noTitleDialog',
                           close: function () {
-                            $(this).dialog('close');
+                            $(this).dialog('destroy').remove();
                           }
                         });
                       } else {
@@ -265,6 +268,9 @@
                 "Cancel": function () {
                   $(this).dialog('close');
                 }
+              },
+              close: function () {
+                $(this).dialog('destroy').remove();
               }
             });
           }

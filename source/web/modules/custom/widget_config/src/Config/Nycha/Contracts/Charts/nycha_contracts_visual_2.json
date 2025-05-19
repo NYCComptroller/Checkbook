@@ -36,14 +36,6 @@
 
   "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
   "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id","industry":"industry_type_id"},
-  "widgetPreprocessJSON":"
-  if(preg_match('/pending/',\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getCurrentPageUrl())){
-  $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
-  $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
-  $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
-}
-
-",
 "chartTitle":"Top Ten Blanket Agreements by Current Amount",
 "widgetDataLoader":"
   $where_filters = [];

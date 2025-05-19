@@ -1,0 +1,21 @@
+parameters:
+  monolog.channel_handlers:
+    php:
+      handlers:
+        - name: 'rotating_file_php'
+          formatter: 'json'
+    default:
+      handlers:
+        - name: 'rotating_file_all'
+        - name: 'drupal.dblog'
+
+services:
+  # Rotating file handler for PHP logs (WARNING and above)
+  monolog.handler.rotating_file_php:
+    class: Monolog\Handler\RotatingFileHandler
+    arguments: ['sites/default/files/logs/php.log', 10, 'WARNING']
+
+  # Rotating file handler for all logs (DEBUG and above)
+  monolog.handler.rotating_file_all:
+    class: Monolog\Handler\RotatingFileHandler
+    arguments: ['sites/default/files/logs/debug.log', 10, 'DEBUG']

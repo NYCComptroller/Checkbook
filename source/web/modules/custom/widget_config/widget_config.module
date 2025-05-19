@@ -49,7 +49,7 @@ function widget_config_preprocess_contracts_mma_details(&$variables) {
 
   $magid = RequestUtilities::getTransactionsParams('magid');
   $variables['spending_link'] = "/spending/transactions/magid/" . $magid . $variables['datasource'] . "/newwindow";
-  if(!preg_match("/newwindow/",\Drupal::service('path.current')->getPath())){
+  if (!preg_match("/newwindow/", \Drupal::service('path.current')->getPath())) {
     $variables['newwindowclass'] = 'class="new_window"';
   }
 
@@ -117,8 +117,8 @@ function widget_config_preprocess_contract_vendor_info(&$variables) {
     }
   }
   $variables['ethnicity'] = implode(',',$ethnicities);
-  if($variables['minority_type_id'] == "4" || $variables['minority_type_id'] == "5"){
-    $variables['minority_type_id'] = "4~5";
+  if($variables['minority_type_id'] == "4" || $variables['minority_type_id'] == "5" || $variables['minority_type_id'] == "10"){
+    $variables['minority_type_id'] = "4~5~10";
   }
 
   $datasource = RequestUtilities::_getRequestParamValueBottomURL('datasource');
@@ -161,16 +161,15 @@ function widget_config_preprocess_pending_contract_details(&$variables) {
     else{
       $variables['mwbe']='';
     }
-    $variables['agency_link'] = '/contracts_pending_exp_landing/year/' . $current_year_id . '/yeartype/B/agency/'. $variables['node']->data[0]['agency_id_checkbook_agency'] .$variables['mwbe']. '?expandBottomCont=true';
-    $variables['vendor_link'] = '/contracts_pending_exp_landing/year/' . $current_year_id . '/yeartype/B/vendor/'.$variables['node']->data[0]['vendor_vendor'] .$variables['mwbe'].'?expandBottomCont=true';
+    $variables['agency_link'] = '/contracts_pending_exp_landing/year/' . $current_year_id . '/yeartype/B/agency/' . $variables['node']->data[0]['agency_id_checkbook_agency'] . $variables['mwbe'] . '?expandBottomCont=true';
+    $variables['vendor_link'] = '/contracts_pending_exp_landing/year/' . $current_year_id . '/yeartype/B/vendor/' .$variables['node']->data[0]['vendor_vendor'] . $variables['mwbe'] .'?expandBottomCont=true';
   }
   $datasource = RequestUtilities::get('datasource');
   if(isset($variables['node']->original_master_agreement_id)){
-    if(!preg_match("/newwindow/",RequestUtilities::getCurrentPageUrl())){
-      $variables['master_link_html'] = '<span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href=/panel_html/contract_transactions/contract_details/magid/' .  $variables['node']->original_master_agreement_id . '/doctype/' . $variables['node']->document_code. $datasource . ' class=\"bottomContainerReload\">' .  $variables['node']->contract_number . '</a></span>';
+    if (!preg_match("/newwindow/", RequestUtilities::getCurrentPageUrl())) {
+      $variables['master_link_html'] = '<span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href=/panel_html/contract_transactions/contract_details/magid/' . $variables['node']->original_master_agreement_id . '/doctype/' . $variables['node']->document_code. $datasource . ' class=\"bottomContainerReload\">' . $variables['node']->contract_number . '</a></span>';
     }
-    else
-    {
+    else {
       $variables['master_link_html'] = '<span class="master-contract-link">Parent Contract: '.  $variables['node']->contract_number . '</span>';
     }
   }

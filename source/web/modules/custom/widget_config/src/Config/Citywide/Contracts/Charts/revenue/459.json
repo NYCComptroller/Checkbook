@@ -32,7 +32,7 @@
             {
                 "dataset": "checkbook:pending_contracts",
                 "columns": ["vendor.vendor","vendor_legal_name.vendor_legal_name","total_contract_amount","total_contracts"],
-                "defaultParameters":{"document_code_id.document_code_id":"7","latest_flag":"Y"},
+                "defaultParameters":{"document_code.document_code.document_code_id":"7","latest_flag":"Y"},
                 "orderBy": "-total_contract_amount"
 
             },

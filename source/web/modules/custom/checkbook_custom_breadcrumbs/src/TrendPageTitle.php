@@ -37,7 +37,7 @@ class TrendPageTitle {
   public static array $financialTrendsMmap = [
     392 => ["Changes in Net Position"],
     393 => ["Fund Balances-Governmental Funds"],
-    394 => ["Changes in Fund Balances"],
+    394 => ["Changes in Fund Balances-Governmental Funds"],
     316 => ["General Fund Revenues and Other Financing Sources"],
     347 => ["General Fund Expenditures and Other Financing Uses"],
     354 => ["Capital Projects Fund Aid Revenues by Agency"],

@@ -43,7 +43,7 @@
 	$mwbe_filter = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('mwbe');
     $sort_column = 10;
 	switch($mwbe_filter){
-		case '4~5' :
+		case '4~5~10' :
 			$sort_column = 3;
 			break;
 		case '2' :
@@ -76,6 +76,7 @@
        CASE
             WHEN minority_type_id = 4 THEN total_spending_amount
             WHEN minority_type_id = 5 THEN total_spending_amount
+            WHEN minority_type_id = 10 THEN total_spending_amount
             ELSE 0
 	END) aa_mwbe,
 	SUM(
@@ -109,10 +110,12 @@
             ELSE 0
 	END) em_mwbe,
 	SUM(
-       CASE WHEN minority_type_id = 2 THEN total_spending_amount
+       CASE WHEN minority_type_id = 1 THEN total_spending_amount
+            WHEN minority_type_id = 2 THEN total_spending_amount
             WHEN minority_type_id = 3 THEN total_spending_amount
             WHEN minority_type_id = 4 THEN total_spending_amount
             WHEN minority_type_id = 5 THEN total_spending_amount
+            WHEN minority_type_id = 10 THEN total_spending_amount
              WHEN minority_type_id = 9 THEN total_spending_amount
             ELSE 0
 	END) total_mwbe,
@@ -139,7 +142,7 @@
 
 	$amount_column = 'total_mwbe';
 	switch($mwbe_filter){
-		case '4~5' :
+		case '4~5~10' :
 			$amount_column = 'aa_mwbe';
 			break;
 		case '2' :

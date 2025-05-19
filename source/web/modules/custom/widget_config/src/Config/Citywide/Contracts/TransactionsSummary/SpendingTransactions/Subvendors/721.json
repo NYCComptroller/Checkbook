@@ -1,7 +1,7 @@
 {
     "widgetType": "phpparser",
     "getTotalDataCount":true,
-    "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"CTA1~CT1","status_flag":"A","minority_type_id":"2~3~4~5~6~9~99"},
+    "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"CTA1~CT1","status_flag":"A","minority_type_id":"1~2~3~4~5~10~6~9~99"},
     "cleanURLParameters":["subvendor","mwbe","year","calyear","agency","yeartype","vendor","status","agid","cagency","cvendor",
                           "csize","cindustry","awdmethod","contnum"],
     "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id",
@@ -43,5 +43,7 @@ if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTra
     $node->data[0]['current_amount_sum'] = $temp['current_amount_sum'];
     $node->data[0]['spending_amount_sum'] = $temp['spending_amount_sum'];
     $node->widgetConfig->templateTitle = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getSpentToDateTitle('Sub Contract Spending');
-"
+",
+"entityColumnLabel":"Associated Prime Vendor",
+"entityColumnName":"vendor_vendor_legal_name"
 }

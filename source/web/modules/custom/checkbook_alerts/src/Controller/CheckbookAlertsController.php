@@ -28,8 +28,7 @@ use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-require_once(\Drupal::service('extension.list.module')->getPath('checkbook_advanced_search') . "/src/Results/checkbook_advanced_search.inc");
-
+require_once(dirname(__FILE__) . "/../../../checkbook_advanced_search/src/Results/checkbook_advanced_search.inc");
 
 class CheckbookAlertsController extends ControllerBase {
   public function checkbook_alerts_form_display() {
@@ -256,7 +255,7 @@ class CheckbookAlertsController extends ControllerBase {
       '#alert2' => $alert,
       '#link_expire_date' => date("m-d-Y", strtotime($link_expire_date)),
     ];
-    $msg = \Drupal::service('renderer')->renderPlain($renderable);
+    $msg = \Drupal::service('renderer')->renderInIsolation($renderable);
 
     $params['message'] = $msg;
     $params['title'] = "Checkbook NYC Alert Activation";
@@ -275,7 +274,7 @@ class CheckbookAlertsController extends ControllerBase {
     $renderable_theme = [
       '#theme' => \Drupal::request()->query->get('alert_theme_file'),
     ];
-    $html = \Drupal::service('renderer')->renderPlain($renderable_theme);
+    $html = \Drupal::service('renderer')->renderInIsolation($renderable_theme);
 
 
     $res=array(

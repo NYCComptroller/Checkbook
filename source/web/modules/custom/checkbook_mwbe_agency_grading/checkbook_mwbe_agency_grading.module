@@ -183,6 +183,7 @@ function _checkbook_mwbe_agency_grading_generate_sql($table){
        CASE
             WHEN minority_type_id = 4 THEN total_spending_amount
             WHEN minority_type_id = 5 THEN total_spending_amount
+            WHEN minority_type_id = 10 THEN total_spending_amount
             ELSE 0
 	END) aa_mwbe,
 	SUM(
@@ -216,10 +217,12 @@ function _checkbook_mwbe_agency_grading_generate_sql($table){
             ELSE 0
 	END) em_mwbe,
 	SUM(
-       CASE WHEN minority_type_id = 2 THEN total_spending_amount
+       CASE WHEN minority_type_id = 1 THEN total_spending_amount
+            WHEN minority_type_id = 2 THEN total_spending_amount
             WHEN minority_type_id = 3 THEN total_spending_amount
             WHEN minority_type_id = 4 THEN total_spending_amount
             WHEN minority_type_id = 5 THEN total_spending_amount
+            WHEN minority_type_id = 10 THEN total_spending_amount
             WHEN minority_type_id = 6 THEN total_spending_amount
             WHEN minority_type_id = 9 THEN total_spending_amount
             WHEN minority_type_id = 99 THEN total_spending_amount
@@ -241,7 +244,8 @@ function _checkbook_mwbe_agency_grading_generate_sql($table){
         }
         if(in_array("aa_mwbe", $mwbe_cats)){
             $sql .= ' WHEN minority_type_id = 4 THEN total_spending_amount
-                      WHEN minority_type_id = 5 THEN total_spending_amount';
+                      WHEN minority_type_id = 5 THEN total_spending_amount
+                      WHEN minority_type_id = 10 THEN total_spending_amount';
         }
         if(in_array("w_mwbe", $mwbe_cats)){
             $sql .= ' WHEN minority_type_id = 9 THEN total_spending_amount';

@@ -28,12 +28,6 @@
   "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
   "urlParamMap":{"year":"fiscal_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id",
     "industry":"industry_type_id"},
-  "widgetPreprocessJSON":"
-  if(preg_match('/pending/',\\Drupal::service('path.current')->getPath())){
-  $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
-  $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
-  $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
-}",
 "chartTitle":"Top Ten Responsibility Centers by Current Amount",
 "widgetDataLoader":"
 $year_id = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('year');

@@ -74,7 +74,8 @@
                     }
                 }
             },
-          "adjustSql":"if(method_exists('\\Drupal\\checkbook_api\\Utilities\\RevenueUtil', 'checkbook_api_adjustNYCHARevenueSql')){\\Drupal\\checkbook_api\\Utilities\\RevenueUtil::checkbook_api_adjustNYCHARevenueSql($sql_query);}"
+          "adjustSql":"if(method_exists('\\Drupal\\checkbook_api\\Utilities\\RevenueUtil', 'checkbook_api_adjustNYCHARevenueSql')){\\Drupal\\checkbook_api\\Utilities\\RevenueUtil::checkbook_api_adjustNYCHARevenueSql($sql_query);}",
+          "adjustParameters":"if(method_exists('\\Drupal\\checkbook_api\\Utilities\\RevenueUtil', 'checkbook_api_adjustNYCHARevenueParameters')){\\Drupal\\checkbook_api\\Utilities\\RevenueUtil::checkbook_api_adjustNYCHARevenueParameters($data_set,$parameters,$criteria);}"
         },
         "requestParameters":{
           "budget_fiscal_year":{"valueType":"value", "dataType":"year", "maxLength":4},

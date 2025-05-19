@@ -1063,94 +1063,94 @@
   Sample Request: Budget Transactions (Citywide)
 </h3>
 <pre class="prettyprint prettyprinted" id="xml"><span class="tag">&lt;request&gt;</span><span class="pln">
-    </span><span class="tag">&lt;type_of_data&gt;</span><span class="pln">Budget</span><span class="tag">&lt;/type_of_data&gt;</span><span class="pln">
-    </span><span class="tag">&lt;records_from&gt;</span><span class="pln">1</span><span class="tag">&lt;/records_from&gt;</span><span class="pln">
-    </span><span class="tag">&lt;max_records&gt;</span><span class="pln">1</span><span class="tag">&lt;/max_records&gt;</span><span class="pln">
-    </span><span class="tag">&lt;search_criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-            </span><span class="tag">&lt;name&gt;</span><span class="pln">year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-            </span><span class="tag">&lt;value&gt;</span><span class="pln">2018</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-            </span><span class="tag">&lt;name&gt;</span><span class="pln">budget_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-            </span><span class="tag">&lt;value&gt;</span><span class="pln">5802</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-            </span><span class="tag">&lt;name&gt;</span><span class="pln">agency_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-            </span><span class="tag">&lt;value&gt;</span><span class="pln">846</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-            </span><span class="tag">&lt;name&gt;</span><span class="pln">department_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-            </span><span class="tag">&lt;value&gt;</span><span class="pln">006</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-            </span><span class="tag">&lt;name&gt;</span><span class="pln">expense_category</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-            </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-            </span><span class="tag">&lt;value&gt;</span><span class="pln">100</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-            </span><span class="tag">&lt;name&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-            </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-            </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-            </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-            </span><span class="tag">&lt;name&gt;</span><span class="pln">modified</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-            </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-            </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-            </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-            </span><span class="tag">&lt;name&gt;</span><span class="pln">pre_encumbered</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-            </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-            </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-            </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-            </span><span class="tag">&lt;name&gt;</span><span class="pln">encumbered</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-            </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-            </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-            </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-            </span><span class="tag">&lt;name&gt;</span><span class="pln">cash_expense</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-            </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-            </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-            </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-            </span><span class="tag">&lt;name&gt;</span><span class="pln">post_adjustment</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-            </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-            </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-            </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-            </span><span class="tag">&lt;name&gt;</span><span class="pln">accrued_expense</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-            </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-            </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-            </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-    </span><span class="tag">&lt;/search_criteria&gt;</span><span class="pln">
-    </span><span class="tag">&lt;response_columns&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">agency</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">department</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">expense_category</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_code</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_name</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">modified</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-       </span><span class="tag">&lt;column&gt;</span><span class="pln">committed</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">pre_encumbered</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">encumbered</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">cash_expense</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">post_adjustment</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">accrued_expense</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-    </span><span class="tag">&lt;/response_columns&gt;</span><span class="pln">
+  </span><span class="tag">&lt;type_of_data&gt;</span><span class="pln">Budget</span><span class="tag">&lt;/type_of_data&gt;</span><span class="pln">
+  </span><span class="tag">&lt;records_from&gt;</span><span class="pln">1</span><span class="tag">&lt;/records_from&gt;</span><span class="pln">
+  </span><span class="tag">&lt;max_records&gt;</span><span class="pln">1</span><span class="tag">&lt;/max_records&gt;</span><span class="pln">
+  </span><span class="tag">&lt;search_criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;value&gt;</span><span class="pln">2018</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">budget_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;value&gt;</span><span class="pln">5802</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">agency_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;value&gt;</span><span class="pln">846</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">department_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;value&gt;</span><span class="pln">006</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">expense_category</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;value&gt;</span><span class="pln">100</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+      </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">modified</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+      </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">pre_encumbered</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+      </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">encumbered</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+      </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">cash_expense</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+      </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">post_adjustment</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+      </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">accrued_expense</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+      </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/search_criteria&gt;</span><span class="pln">
+  </span><span class="tag">&lt;response_columns&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">agency</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">department</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">expense_category</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_code</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_name</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">modified</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">committed</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">pre_encumbered</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">encumbered</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">cash_expense</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">post_adjustment</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">accrued_expense</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/response_columns&gt;</span><span class="pln">
 </span><span class="tag">&lt;/request&gt;</span></pre>
 <p>
   <a class="float-right" href="#top">Back to the top</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
@@ -1161,104 +1161,104 @@
   Sample Response: Budget Transactions(Citywide)
 </h3>
 <pre class="prettyprint prettyprinted" id="xml"><span class="tag">&lt;response&gt;</span><span class="pln">
-    </span><span class="tag">&lt;status&gt;</span><span class="pln">
-        </span><span class="tag">&lt;result&gt;</span><span class="pln">success</span><span class="tag">&lt;/result&gt;</span><span class="pln">
-    </span><span class="tag">&lt;/status&gt;</span><span class="pln">
-    </span><span class="tag">&lt;request_criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;request&gt;</span><span class="pln">
-            </span><span class="tag">&lt;type_of_data&gt;</span><span class="pln">Budget</span><span class="tag">&lt;/type_of_data&gt;</span><span class="pln">
-            </span><span class="tag">&lt;records_from&gt;</span><span class="pln">1</span><span class="tag">&lt;/records_from&gt;</span><span class="pln">
-            </span><span class="tag">&lt;max_records&gt;</span><span class="pln">1</span><span class="tag">&lt;/max_records&gt;</span><span class="pln">
-            </span><span class="tag">&lt;search_criteria&gt;</span><span class="pln">
-                </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;name&gt;</span><span class="pln">year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;value&gt;</span><span class="pln">2018</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-                </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-                </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;name&gt;</span><span class="pln">budget_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;value&gt;</span><span class="pln">5802</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-                </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-                </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;name&gt;</span><span class="pln">agency_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;value&gt;</span><span class="pln">846</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-                </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-                </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;name&gt;</span><span class="pln">department_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;value&gt;</span><span class="pln">006</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-                </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-                </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;name&gt;</span><span class="pln">expense_category</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;value&gt;</span><span class="pln">100</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-                </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-                </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;name&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-                </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-                </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;name&gt;</span><span class="pln">modified</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-                </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-                </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;name&gt;</span><span class="pln">pre_encumbered</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-                </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-                </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;name&gt;</span><span class="pln">encumbered</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-                </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-                </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;name&gt;</span><span class="pln">cash_expense</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-                </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-                </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;name&gt;</span><span class="pln">post_adjustment</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-                </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-                </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;name&gt;</span><span class="pln">accrued_expense</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-                    </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-                </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-            </span><span class="tag">&lt;/search_criteria&gt;</span><span class="pln">
-            </span><span class="tag">&lt;response_columns&gt;</span><span class="pln">
-                </span><span class="tag">&lt;column&gt;</span><span class="pln">agency</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-                </span><span class="tag">&lt;column&gt;</span><span class="pln">year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-                </span><span class="tag">&lt;column&gt;</span><span class="pln">department</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-                </span><span class="tag">&lt;column&gt;</span><span class="pln">expense_category</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-                </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_code</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-                </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_name</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-                </span><span class="tag">&lt;column&gt;</span><span class="pln">modified</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-                </span><span class="tag">&lt;column&gt;</span><span class="pln">committed</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-                </span><span class="tag">&lt;column&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-                </span><span class="tag">&lt;column&gt;</span><span class="pln">pre_encumbered</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-                </span><span class="tag">&lt;column&gt;</span><span class="pln">encumbered</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-                </span><span class="tag">&lt;column&gt;</span><span class="pln">cash_expense</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-                </span><span class="tag">&lt;column&gt;</span><span class="pln">post_adjustment</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-                </span><span class="tag">&lt;column&gt;</span><span class="pln">accrued_expense</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-            </span><span class="tag">&lt;/response_columns&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/request&gt;</span><span class="pln">
-    </span><span class="tag">&lt;/request_criteria&gt;</span><span class="pln">
+  </span><span class="tag">&lt;status&gt;</span><span class="pln">
+    </span><span class="tag">&lt;result&gt;</span><span class="pln">success</span><span class="tag">&lt;/result&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/status&gt;</span><span class="pln">
+  </span><span class="tag">&lt;request_criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;request&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type_of_data&gt;</span><span class="pln">Budget</span><span class="tag">&lt;/type_of_data&gt;</span><span class="pln">
+      </span><span class="tag">&lt;records_from&gt;</span><span class="pln">1</span><span class="tag">&lt;/records_from&gt;</span><span class="pln">
+      </span><span class="tag">&lt;max_records&gt;</span><span class="pln">1</span><span class="tag">&lt;/max_records&gt;</span><span class="pln">
+      </span><span class="tag">&lt;search_criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">2018</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">budget_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">5802</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">agency_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">846</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">department_code</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">006</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">expense_category</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;value&gt;</span><span class="pln">100</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">modified</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">pre_encumbered</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">encumbered</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">cash_expense</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">post_adjustment</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+          </span><span class="tag">&lt;name&gt;</span><span class="pln">accrued_expense</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+          </span><span class="tag">&lt;end&gt;</span><span class="pln">10000.00</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/search_criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;response_columns&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">agency</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">department</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">expense_category</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_code</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_name</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">modified</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">committed</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">pre_encumbered</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">encumbered</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">cash_expense</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">post_adjustment</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+        </span><span class="tag">&lt;column&gt;</span><span class="pln">accrued_expense</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+      </span><span class="tag">&lt;/response_columns&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/request&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/request_criteria&gt;</span><span class="pln">
   </span><span class="tag">&lt;result_records&gt;</span><span class="pln">
-     </span><span class="tag">&lt;record_count&gt;</span><span class="pln">1</span><span class="tag">&lt;/record_count&gt;</span><span class="pln">
-  </span><span class="tag">&lt;budget_transactions&gt;</span><span class="pln">
+    </span><span class="tag">&lt;record_count&gt;</span><span class="pln">1</span><span class="tag">&lt;/record_count&gt;</span><span class="pln">
+    </span><span class="tag">&lt;budget_transactions&gt;</span><span class="pln">
       </span><span class="tag">&lt;transaction&gt;</span><span class="pln">
         </span><span class="tag">&lt;agency&gt;</span><span class="pln">Department of Parks and Recreation</span><span class="tag">&lt;/agency&gt;</span><span class="pln">
         </span><span class="tag">&lt;year&gt;</span><span class="pln">2018</span><span class="tag">&lt;/year&gt;</span><span class="pln">
@@ -1267,7 +1267,7 @@
         </span><span class="tag">&lt;budget_code&gt;</span><span class="pln">5802</span><span class="tag">&lt;/budget_code&gt;</span><span class="pln">
         </span><span class="tag">&lt;budget_name&gt;</span><span class="pln">Columbia University W Harlem Piers Park</span><span class="tag">&lt;/budget_name&gt;</span><span class="pln">
         </span><span class="tag">&lt;budget_amounts&gt;</span><span class="pln">
-          </span><span class="tag">&lt;modified&gt;</span><span class="pln">1831</span><span class="tag">&lt;/modified&gt;</span><span class="pln">
+          </span><span class="tag">&lt;modified&gt;</span><span class="pln">0</span><span class="tag">&lt;/modified&gt;</span><span class="pln">
           </span><span class="tag">&lt;committed&gt;&lt;/committed&gt;</span><span class="pln">0
           </span><span class="tag">&lt;adopted&gt;</span><span class="pln">0</span><span class="tag">&lt;/adopted&gt;</span><span class="pln">
         </span><span class="tag">&lt;/budget_amounts&gt;</span><span class="pln">
@@ -1280,9 +1280,8 @@
         </span><span class="tag">&lt;/expenditure_amounts&gt;</span><span class="pln">
       </span><span class="tag">&lt;/transaction&gt;</span><span class="pln">
     </span><span class="tag">&lt;/budget_transactions&gt;</span><span class="pln">
-   </span><span class="tag">&lt;/result_records&gt;</span><span class="pln">
-</span><span class="tag">&lt;/response&gt;</span><span class="pln">
-</span></pre>
+  </span><span class="tag">&lt;/result_records&gt;</span><span class="pln">
+</span><span class="tag">&lt;/response&gt;</span></pre>
 <p>
   <a class="float-right" href="#top">Back to the top</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
   <a name="sample-request-expense-budget-nycha"></a>
@@ -1290,99 +1289,99 @@
 <h3 class="title">
   Sample Request: Budget Transactions(OTHER GOVERNMENT ENTITIES - NYCHA)
 </h3>
-<pre class="prettyprint prettyprinted"><span class="pln">   </span><span class="tag">&lt;request&gt;</span><span class="pln">
-      </span><span class="tag">&lt;type_of_data&gt;</span><span class="pln">Budget_NYCHA</span><span class="tag">&lt;/type_of_data&gt;</span><span class="pln">
-      </span><span class="tag">&lt;records_from&gt;</span><span class="pln">1</span><span class="tag">&lt;/records_from&gt;</span><span class="pln">
-      </span><span class="tag">&lt;max_records&gt;</span><span class="pln">1</span><span class="tag">&lt;/max_records&gt;</span><span class="pln">
-      </span><span class="tag">&lt;search_criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-          </span><span class="tag">&lt;name&gt;</span><span class="pln">year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-          </span><span class="tag">&lt;value&gt;</span><span class="pln">2018</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-          </span><span class="tag">&lt;name&gt;</span><span class="pln">expense_category</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-          </span><span class="tag">&lt;value&gt;</span><span class="pln">58059</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-     </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-          </span><span class="tag">&lt;name&gt;</span><span class="pln">funding_source</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-          </span><span class="tag">&lt;value&gt;</span><span class="pln">F006</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-          </span><span class="tag">&lt;name&gt;</span><span class="pln">responsibility_center</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-          </span><span class="tag">&lt;value&gt;</span><span class="pln">9900500</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-     </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-          </span><span class="tag">&lt;name&gt;</span><span class="pln">project</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-          </span><span class="tag">&lt;value&gt;</span><span class="pln">V00160</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-       </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-          </span><span class="tag">&lt;name&gt;</span><span class="pln">program</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-          </span><span class="tag">&lt;value&gt;</span><span class="pln">FPABNX</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+<pre class="prettyprint prettyprinted"><span class="pln"></span><span class="tag">&lt;request&gt;</span><span class="pln">
+  </span><span class="tag">&lt;type_of_data&gt;</span><span class="pln">Budget_NYCHA</span><span class="tag">&lt;/type_of_data&gt;</span><span class="pln">
+  </span><span class="tag">&lt;records_from&gt;</span><span class="pln">1</span><span class="tag">&lt;/records_from&gt;</span><span class="pln">
+  </span><span class="tag">&lt;max_records&gt;</span><span class="pln">1</span><span class="tag">&lt;/max_records&gt;</span><span class="pln">
+  </span><span class="tag">&lt;search_criteria&gt;</span><span class="pln">
     </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-          </span><span class="tag">&lt;name&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-          </span><span class="tag">&lt;start&gt;</span><span class="pln">0</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-          </span><span class="tag">&lt;end&gt;</span><span class="pln">10000000</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-          </span><span class="tag">&lt;name&gt;</span><span class="pln">modified</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-          </span><span class="tag">&lt;end&gt;</span><span class="pln">10000000</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-          </span><span class="tag">&lt;name&gt;</span><span class="pln">encumbered</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-          </span><span class="tag">&lt;end&gt;</span><span class="pln">10000000</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-          </span><span class="tag">&lt;name&gt;</span><span class="pln">committed</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-          </span><span class="tag">&lt;end&gt;</span><span class="pln">10000000</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-          </span><span class="tag">&lt;name&gt;</span><span class="pln">actual_amount</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-          </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-          </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
-          </span><span class="tag">&lt;end&gt;</span><span class="pln">10000000</span><span class="tag">&lt;/end&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-          </span><span class="tag">&lt;name&gt;</span><span class="pln">budget_type</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-          </span><span class="tag">&lt;value&gt;</span><span class="pln">O.T.P.S.</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-        </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
-          </span><span class="tag">&lt;name&gt;</span><span class="pln">budget_name</span><span class="tag">&lt;/name&gt;</span><span class="pln">
-          </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
-          </span><span class="tag">&lt;value&gt;</span><span class="pln">LEASES</span><span class="tag">&lt;/value&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
-      </span><span class="tag">&lt;/search_criteria&gt;</span><span class="pln">
-      </span><span class="tag">&lt;response_columns&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">actual_amount</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-       </span><span class="tag">&lt;column&gt;</span><span class="pln">modified</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-      </span><span class="tag">&lt;column&gt;</span><span class="pln">remaining</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_name</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_type</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">committed</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">encumbered</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">expense_category</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">project</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">responsibility_center</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-         </span><span class="tag">&lt;column&gt;</span><span class="pln">funding_source</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">program</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-        </span><span class="tag">&lt;column&gt;</span><span class="pln">year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
-      </span><span class="tag">&lt;/response_columns&gt;</span><span class="pln">
-    </span><span class="tag">&lt;/request&gt;</span></pre>
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">year</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;value&gt;</span><span class="pln">2018</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">expense_category</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;value&gt;</span><span class="pln">58059</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">funding_source</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;value&gt;</span><span class="pln">F006</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">responsibility_center</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;value&gt;</span><span class="pln">9900500</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">project</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;value&gt;</span><span class="pln">V00160</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">program</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;value&gt;</span><span class="pln">FPABNX</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;start&gt;</span><span class="pln">0</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+      </span><span class="tag">&lt;end&gt;</span><span class="pln">10000000</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">modified</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+      </span><span class="tag">&lt;end&gt;</span><span class="pln">10000000</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">encumbered</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+      </span><span class="tag">&lt;end&gt;</span><span class="pln">10000000</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">committed</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+      </span><span class="tag">&lt;end&gt;</span><span class="pln">10000000</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">actual_amount</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">range</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;start&gt;</span><span class="pln">0.00</span><span class="tag">&lt;/start&gt;</span><span class="pln">
+      </span><span class="tag">&lt;end&gt;</span><span class="pln">10000000</span><span class="tag">&lt;/end&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">budget_type</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;value&gt;</span><span class="pln">O.T.P.S.</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+    </span><span class="tag">&lt;criteria&gt;</span><span class="pln">
+      </span><span class="tag">&lt;name&gt;</span><span class="pln">budget_name</span><span class="tag">&lt;/name&gt;</span><span class="pln">
+      </span><span class="tag">&lt;type&gt;</span><span class="pln">value</span><span class="tag">&lt;/type&gt;</span><span class="pln">
+      </span><span class="tag">&lt;value&gt;</span><span class="pln">LEASES</span><span class="tag">&lt;/value&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/criteria&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/search_criteria&gt;</span><span class="pln">
+  </span><span class="tag">&lt;response_columns&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">actual_amount</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">adopted</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">modified</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">remaining</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_name</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">budget_type</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">committed</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">encumbered</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">expense_category</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">project</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">responsibility_center</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">funding_source</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">program</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+    </span><span class="tag">&lt;column&gt;</span><span class="pln">year</span><span class="tag">&lt;/column&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/response_columns&gt;</span><span class="pln">
+</span><span class="tag">&lt;/request&gt;</span></pre>
 <p>
   <a class="float-right" href="#top">Back to the top</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
   <a name="sample-response-expense-budget-nycha"></a>
@@ -1513,8 +1512,7 @@
     </span><span class="tag">&lt;/transaction&gt;</span><span class="pln">
   </span><span class="tag">&lt;/budget_transactions&gt;</span><span class="pln">
   </span><span class="tag">&lt;/result_records&gt;</span><span class="pln">
-</span><span class="tag">&lt;/response&gt;</span><span class="pln">
-</span></pre>
+</span><span class="tag">&lt;/response&gt;</span></pre>
 <p>
   <a class="float-right" href="#top">Back to the top</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
   <br>
@@ -1531,34 +1529,30 @@
 </h3>
 <ul>
   <li>
-    <p>
-      Result is Success:
-    </p>
+    <p>Result is Success:</p>
     <pre class="prettyprint prettyprinted">
-    <span class="tag">&lt;status&gt;</span><span class="pln">
-      </span><span class="tag">&lt;result&gt;</span><span class="pln">success</span><span class="tag">&lt;/result&gt;</span><span class="pln">
-      </span><span class="tag">&lt;messages&gt;</span><span class="pln">
-        </span><span class="tag">&lt;message&gt;</span><span class="pln">
-          </span><span class="tag">&lt;code&gt;</span><span class="pln">1</span><span class="tag">&lt;/code&gt;</span><span class="pln">
-          </span><span class="tag">&lt;description&gt;</span><span class="pln"> The request is a success but there are no results found for given search criteria</span><span class="tag">&lt;/description&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/message&gt;</span><span class="pln">
-      </span><span class="tag">&lt;/messages&gt;</span><span class="pln">
-    </span><span class="tag">&lt;/status&gt;</span></pre>
+<span class="tag">&lt;status&gt;</span><span class="pln">
+  </span><span class="tag">&lt;result&gt;</span><span class="pln">success</span><span class="tag">&lt;/result&gt;</span><span class="pln">
+  </span><span class="tag">&lt;messages&gt;</span><span class="pln">
+    </span><span class="tag">&lt;message&gt;</span><span class="pln">
+      </span><span class="tag">&lt;code&gt;</span><span class="pln">1</span><span class="tag">&lt;/code&gt;</span><span class="pln">
+      </span><span class="tag">&lt;description&gt;</span><span class="pln"> The request is a success but there are no results found for given search criteria</span><span class="tag">&lt;/description&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/message&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/messages&gt;</span><span class="pln">
+</span><span class="tag">&lt;/status&gt;</span></pre>
   </li>
   <li>
-    <p>
-      Result is Failure:
-    </p>
+    <p>Result is Failure:</p>
     <pre class="prettyprint prettyprinted">
-    <span class="tag">&lt;status&gt;</span><span class="pln">
-      </span><span class="tag">&lt;result&gt;</span><span class="pln">failure</span><span class="tag">&lt;/result&gt;</span><span class="pln">
-      </span><span class="tag">&lt;messages&gt;</span><span class="pln">
-        </span><span class="tag">&lt;message&gt;</span><span class="pln">
-          </span><span class="tag">&lt;code&gt;</span><span class="pln">1000</span><span class="tag">&lt;/code&gt;</span><span class="pln">
-          </span><span class="tag">&lt;description&gt;</span><span class="pln">Required parameter 'type_of_data' is missing</span><span class="tag">&lt;/description&gt;</span><span class="pln">
-        </span><span class="tag">&lt;/message&gt;</span><span class="pln">
-      </span><span class="tag">&lt;/messages&gt;</span><span class="pln">
-    </span><span class="tag">&lt;/status&gt;</span><span class="pln"></span></pre>
+<span class="tag">&lt;status&gt;</span><span class="pln">
+  </span><span class="tag">&lt;result&gt;</span><span class="pln">failure</span><span class="tag">&lt;/result&gt;</span><span class="pln">
+  </span><span class="tag">&lt;messages&gt;</span><span class="pln">
+    </span><span class="tag">&lt;message&gt;</span><span class="pln">
+      </span><span class="tag">&lt;code&gt;</span><span class="pln">1000</span><span class="tag">&lt;/code&gt;</span><span class="pln">
+      </span><span class="tag">&lt;description&gt;</span><span class="pln">Required parameter 'type_of_data' is missing</span><span class="tag">&lt;/description&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/message&gt;</span><span class="pln">
+  </span><span class="tag">&lt;/messages&gt;</span><span class="pln">
+</span><span class="tag">&lt;/status&gt;</span></pre>
   </li>
 </ul>
 <p>

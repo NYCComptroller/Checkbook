@@ -6,8 +6,8 @@ use Drupal\checkbook_project\CommonUtilities\CustomURLHelper;
 use Drupal\checkbook_project\ContractsUtilities\ContractUtil;
 use Drupal\checkbook_project\MwbeUtilities\VendorType;
 
+require_once(dirname(__FILE__) . "/../../../../checkbook_project/includes/checkbook_project.inc");
 
-require_once(\Drupal::service('extension.list.module')->getPath('checkbook_project') . "/includes/checkbook_project.inc");
 class SpendingService  {
 
 

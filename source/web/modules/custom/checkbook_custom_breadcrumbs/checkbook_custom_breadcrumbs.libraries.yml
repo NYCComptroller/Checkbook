@@ -3,4 +3,4 @@ cookie:
     js/cookie_breadcrumbs.js: {}
   dependencies:
     - core/drupal
-    - core/js-cookie
+    - js_cookie/js-cookie

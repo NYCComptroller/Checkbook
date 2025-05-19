@@ -4,6 +4,7 @@
 "header":"
     $header = '<h2 class=\"chart-title\" style=\"display:none;\">' . $node->widgetConfig->chartTitle . '</h2>
     <div class=\"pieCount\">'. $node->widgetConfig->chartSubTitle .'</div>';
+    $header .= \\Drupal\\checkbook_project\\WidgetUtilities\\ChartUtil::generateGridViewLink($node);
     return $header;
 ",
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year","subvendor"],
@@ -51,7 +52,7 @@
             }
             $node->widgetConfig->chartConfig->series[0]['data'] = $series;
         }else{
-            $node->data = null;
+            $node->data = array();
         }
         $node->widgetConfig->chartTitle =  \\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::getCurrenEthnicityName() . ' Sub Vendor Reporting by Prime Contracts';
 $node->widgetConfig->chartSubTitle =  'Total Number of Contracts: '.number_format($total_contracts);

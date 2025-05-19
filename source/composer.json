@@ -1,6 +1,6 @@
 {
     "name": "drupal/recommended-project",
-    "description": "Project template for Drupal 9 projects with a relocated document root",
+    "description": "Project template for Drupal 11 project with a relocated document root",
     "type": "project",
     "license": "GPL-2.0-or-later",
     "homepage": "https://www.drupal.org/project/drupal",
@@ -18,35 +18,34 @@
         "composer/installers": "^1.9",
         "cweagans/composer-patches": "*",
         "drupal/addtoany": "^2.0",
-        "drupal/admin_toolbar": "^3.4",
+        "drupal/admin_toolbar": "^3.5",
         "drupal/coder": "^8.3",
-        "drupal/color": "^1.0",
-        "drupal/context": "^5.0@RC",
-        "drupal/core-composer-scaffold": "^10",
-        "drupal/core-project-message": "^10",
-        "drupal/core-recommended": "^10",
+        "drupal/color": "^2.0@dev",
+        "drupal/core-composer-scaffold": "^11",
+        "drupal/core-project-message": "^11",
+        "drupal/core-recommended": "^11",
         "drupal/ctools": "^4.0",
-        "drupal/dblog_filter": "^3.2",
         "drupal/devel": "^5.2",
-        "drupal/diff": "^1.3",
+        "drupal/diff": "^2.0@beta",
         "drupal/easy_breadcrumb": "^2.0",
-        "drupal/filelog": "^2.0.2",
         "drupal/form_options_attributes": "^2.0",
         "drupal/google_tag": "^2.0",
         "drupal/jquery_ui_autocomplete": "^2.0",
         "drupal/jquery_ui_button": "^2.0",
         "drupal/jquery_ui_checkboxradio": "^2.0",
         "drupal/jquery_ui_dialog": "^2.0",
+        "drupal/js_cookie": "^1.0",
         "drupal/memcache": "^2.5",
-        "drupal/mimemail": "^1.0@alpha",
-        "drupal/mini_layouts": "^2.0@alpha",
+        "drupal/mimemail": "^2.0@dev",
+        "drupal/monolog": "*",
         "drupal/page_manager": "^4.0@beta",
         "drupal/quickedit": "^1.0",
-        "drupal/rdf": "^2.0",
+        "drupal/rdf": "^3.0@beta",
         "drupal/seckit": "^2.0",
         "drupal/superfish": "^1.7",
         "drupal/token": "^1.14",
-        "drush/drush": "^12.0"
+        "drupal/upgrade_status": "^4.3",
+        "drush/drush": "^13.3"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -127,11 +126,14 @@
             "drupal/core": {
                 "3162699 - Improve debugability of block plugins returning NULL in Layout Builder": "https://www.drupal.org/files/issues/2020-08-10/3162699-blockbuild-13.patch"
             },
-            "drupal/dblog_filter": {
-                "3354111 - Declaration of SyslogFilter::log": "https://www.drupal.org/files/issues/2024-01-25/syslogfilter%3A%3Alog-compatible-with-sysLog%3A%3Alog-3354111-6.patch"
+            "drupal/mini_layouts": {
+                "3433456 - Automated Drupal 11 compatibility fixes for mini_layouts": "https://www.drupal.org/files/issues/2024-03-24/mini_layouts.2.0.0-alpha1.rector.patch"
             },
-            "drupal/mimemail": {
-                "3373074 - Call to a member function has() on null Error": "https://www.drupal.org/files/issues/2023-06-26/mimemail-3357841-11.patch"
+            "drupal/context": {
+                "3429553 - Automated Drupal 11 compatibility fixes for context": "https://www.drupal.org/files/issues/2025-01-02/d11-3429553-15.patch"
+            },
+            "drupal/filelog": {
+                "Automated Drupal 11 compatibility fixes for filelog": "https://www.drupal.org/files/issues/2024-07-28/filelog.3.0.x-dev.rector.patch"
             }
         }
     }

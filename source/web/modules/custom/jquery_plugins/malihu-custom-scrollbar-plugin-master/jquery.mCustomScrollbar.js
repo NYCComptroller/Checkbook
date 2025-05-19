@@ -2438,7 +2438,7 @@ and dependencies (minified).
 		/* extend jQuery expressions */
 		$.extend($.expr[":"],{
 			/* checks if element is within scrollable viewport */
-			mcsInView:$.expr[":"].mcsInView || function(el){
+			mcsInView: function(el){
 				var $el=$(el),content=$el.parents(".mCSB_container"),wrapper,cPos;
 				if(!content.length){return;}
 				wrapper=content.parent();
@@ -2447,7 +2447,7 @@ and dependencies (minified).
 						cPos[1]+_childPos($el)[1]>=0 && cPos[1]+_childPos($el)[1]<wrapper.width()-$el.outerWidth(false);
 			},
 			/* checks if element or part of element is in view of scrollable viewport */
-			mcsInSight:$.expr[":"].mcsInSight || function(el,i,m){
+			mcsInSight: function(el,i,m){
 				var $el=$(el),elD,content=$el.parents(".mCSB_container"),wrapperView,pos,wrapperViewPct,
 					pctVals=m[3]==="exact" ? [[1,0],[1,0]] : [[0.9,0.1],[0.6,0.4]];
 				if(!content.length){return;}

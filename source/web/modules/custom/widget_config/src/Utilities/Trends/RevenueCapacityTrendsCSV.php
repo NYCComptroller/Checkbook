@@ -250,7 +250,7 @@ class RevenueCapacityTrendsCSV  {
     $output .= "\n"."\n".'"'."(3) In fiscal year 2014 The Annual Report, the New York City Property Tax Fiscal Year 2014, reported various ".'"';
     $output .= "\n".'"'."    classifications of condos as class four real property for the first time.".'"';
     $output .= "\n"."\n".'"'."Note: Property in New York City is reassessed once a year. The City assesses property at approximately 40 percent of".'"';
-    $output .= "\n".'"'."      Market Value for commercial and industrial property and 20 percent of Market Value for residential property.".'"';
+    $output .= "\n".'"'."      Fair Value for commercial and industrial property and 20 percent of Fair Value for residential property.".'"';
     $output .= "\n"."\n".'"'."Sources: Resolutions of the City Council and The Annual Report, The New York City Property Tax Fiscal Year " . $last_year . ".".'"';
     return $output;
   }
@@ -290,7 +290,7 @@ class RevenueCapacityTrendsCSV  {
 
     $output .= "\n"."\n".'"'."(1) Abatements and Discounts include SCRIE Abatements (Senior citizen rent increase exemption), J-51 Abatements,".'"';
     $output .= "\n"."\n".'"'."Section 626 Abatements and other minor discounts offered by the City to property owners.".'"';
-    $output .= "\n"."\n".'"'."(2) The Tax Levy amounts are the amount from the City Council Resolution.".'"';
+    $output .= "\n"."\n".'"'."(2) The Tax Levy amounts are the amount from the City Council Resolution and is included in each year following.".'"';
     $output .= "\n"."\n".'"'."Notes: Total uncollected balance at June 30, " . $last_year . " less allowance for uncollectible amounts equals net realizable amount".'"';
     $output .= "\n".'"'."(real estate taxes receivable).".'"';
     $output .= "\n"."\n".'"'."Levy may total over 100 percent due to imposed charges that include ICIP deferred charges (Industrial and Commercial".'"';

@@ -188,7 +188,7 @@
   $cond = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('cond');
   $node->show_difference = ($smnid == 480 || $smnid == 366 || $smnid == 722);
   $node->show_moc_registered= ($cevent > 0 && $ceventh > 0 );
-  $node->show_spend_to_date = (isset($mocs));
+  $node->show_spend_to_date = (!isset($mocs));
   $node->dashboard = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('dashboard');
   ",
 
@@ -298,13 +298,13 @@
 "expression": "(isset($row['aprv_sta_name']) ? \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['aprv_sta_name'],36) : 'N/A')"
 },
 "subvendor_status_pip_exp2":{
-"expression":"(($row['vendor_record_type'] == 'Prime Vendor') ? $subvendor_status_pip_exp1 :\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['aprv_sta_name'],36))"
+"expression":"(($row['vendor_record_type'] == 'Prime Vendor') ? $row['subvendor_status_pip_exp1'] :\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['aprv_sta_name'],36))"
 },
 "subvendor_status_pip_exp3":{
-"expression":"(in_array($row['scntrc_status'], array(0,1,3)) ? $subvendor_status_pip_exp1 : $subvendor_status_pip_exp2)"
+"expression":"(in_array($row['scntrc_status'], array(0,1,3)) ? $row['subvendor_status_pip_exp1'] : $row['subvendor_status_pip_exp2'])"
 },
-"subvendor_status_pip":{
-"expression":"(in_array($row['document_code'], array('MA1','MMA1')))? 'N/A' : $subvendor_status_pip_exp3"
+"formatted_aprv_sta_name":{
+"expression":"(in_array($row['document_code'], array('MA1','MMA1'))) ? 'N/A' : $row['subvendor_status_pip_exp3']"
 },
 "formatted_percent_covid":{
 "expression":"strtolower($row['vendor_record_type']) == 'sub vendor' || empty($row['event_id']) ? 'N/A' : ($row['event_id'] == 2 ? '0' : $row['percent_covid_spending'])"
@@ -381,7 +381,7 @@ return $headerConfig;
 {"labelAlias":"pin","column":"prime_pin"},
 {"labelAlias":"apt_pin","column":"prime_apt_pin"},
 {"labelAlias":"percent_covid_spending","column":"formatted_percent_covid", "sortSourceColumn":"percent_covid_spending"},
-{"labelAlias":"percent_asylum_spending","column":"formatted_percent_asylum", "sortSourceColumn":"percent_asylum_spending"},
+//{"labelAlias":"percent_asylum_spending","column":"formatted_percent_asylum", "sortSourceColumn":"percent_asylum_spending"},
 {"labelAlias":"percent_other_spending","column":"formatted_percent_other", "sortSourceColumn":"percent_other_spending"},
 //END PRIME
 
@@ -389,7 +389,7 @@ return $headerConfig;
 {"labelAlias":"sub_vendor_name","column":"subvendor_name","sortSourceColumn":"sub_vendor_name"},
 {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name","sortSourceColumn":"sub_minority_type_name"},
 {"labelAlias":"contract_purpose","column":"sub_purpose_formatted","sortSourceColumn":"sub_purpose"},
-{"labelAlias":"subvendor_status_pip","column":"subvendor_status_pip","sortSourceColumn":"aprv_sta_name"},
+{"labelAlias":"subvendor_status_pip","column":"formatted_aprv_sta_name","sortSourceColumn":"aprv_sta_name"},
 {"labelAlias":"contract_industry","column":"sub_industry_name_formatted","sortSourceColumn":"sub_industry_type_name"},
 {"labelAlias":"current_amount","column":"formatted_sub_current_amount","sortSourceColumn":"sub_maximum_contract_amount"},
 {"labelAlias":"original_amount","column":"formatted_sub_original_contract_amount","sortSourceColumn":"sub_original_contract_amount"},
@@ -464,7 +464,7 @@ $adjustDataTableOptions->fnInitComplete = '##function () { new $j.fn.dataTable.F
 {"sClass":"text","sWidth":"230px","asSorting":["asc","desc"]},
 {"sClass":"text","sWidth":"220px","asSorting":["asc","desc"]},
 {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
-{"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
+//{"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
 {"sClass":"text","sWidth":"150px","asSorting":["asc","desc"]},
 //START SUB
 {"sClass":"text","sWidth":"230px","asSorting":["asc","desc"]},

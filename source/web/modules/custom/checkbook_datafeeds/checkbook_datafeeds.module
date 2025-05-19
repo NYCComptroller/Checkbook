@@ -175,7 +175,8 @@ function checkbook_datafeeds_confirmation_download_submit($form, &$form_state)
       $response->headers->set('Content-Type', 'text/csv; utf-8');
       $response->headers->set('Content-Disposition', 'attachment; filename="nyc-data-feed.csv"');
     }
-    $response->setContent($data);
+    // Remove special chars from the file.
+    $response->setContent(preg_replace('/[^\x00-\x7F]/', '', $data));
     $response->send();
   } else {
     LogHelper::log_notice("DataFeeds :: >" . $query_records_limit);

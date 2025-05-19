@@ -41,7 +41,7 @@ class WidgetUtil
                                  "percent_spending", "ytd_spending_sub_vendors", "sub_vendors_percent_paid",
                                  "num_sub_vendors", "ytd_spending_agency");
 
-        if(in_array($labelAlias,$dynamic_labelAlias)){
+        if (in_array($labelAlias,$dynamic_labelAlias)) {
             $year = (int)CheckbookDateUtil::_getYearValueFromID(RequestUtilities::get('year'));
             $dynamic_labels = array("current_modified" => self::MODIFIED.$year,
                                     "previous_modified" => self::MODIFIED.($year-1),
@@ -53,9 +53,11 @@ class WidgetUtil
                                     "recognized_3" => self::RECOGNIZED.($year+3));
 
             return str_replace(array('<br/>','<br>'),' ',$dynamic_labels[$labelAlias]);
-        }else if(in_array($labelAlias,$labelAliases_br)){
+        }
+        elseif (in_array($labelAlias,$labelAliases_br)) {
             return self::$labels[$labelAlias];
-        }else{
+        }
+        else {
             return str_replace(array('<br/>','<br>'),' ',self::$labels[$labelAlias]);
         }
     }
@@ -349,7 +351,7 @@ class WidgetUtil
         "emerging_business" => "Emerging<br/> Business",
         "mocs_registered" => "MOCS<br/> Registered",
         "percent_covid_spending" => "% Covid<br/> Spending",
-        "percent_asylum_spending" => "% Asylum Seekers<br/> Spending",
+        "percent_asylum_spending" => "% Asylum<br/> Spending",
         "percent_other_spending" => "% Other<br/> Spending",
     );
 
@@ -627,7 +629,7 @@ class WidgetUtil
       $template = $twigService->loadTemplate($templateClass, $twigFilePath);
       $markup =[
         '#markup' => $template->render(['node' => $node]),
-        '#allowed_tags' => ['select', 'div', 'input', 'option', 'ul', 'li', 'a', 'span', 'img', 'script']
+        '#allowed_tags' => ['select', 'div','h2','b','br', 'input', 'option', 'ul', 'li', 'a', 'span', 'img', 'script']
       ];
       return \Drupal::service('renderer')->render($markup);
     }

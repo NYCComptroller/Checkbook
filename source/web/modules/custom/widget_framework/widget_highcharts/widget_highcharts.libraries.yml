@@ -11,13 +11,22 @@ highstocks:
     Highcharts-Stock-10.0.0/code/highstock.js: {}
     js/featured-trends.js: {}
 
-highcharts-globals:
+highcharts-globals-stocks:
   header: true
   js:
     js/highcharts-globals.js: {}
   dependencies:
     - core/jquery
     - core/drupalSettings
+    - widget_highcharts/highstocks
+highcharts-globals-charts:
+  header: true
+  js:
+    js/highcharts-globals.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
+    - widget_highcharts/highcharts
 # jQuery is used, but not required, so set the dependency
 chart:
   header: true

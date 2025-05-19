@@ -81,8 +81,7 @@ class RequestUtil {
   }
 
   /** Checks if the current URL is opened in a new window */
-  public static function isNewWindow()
-  {
+  public static function isNewWindow() {
     $referer = $_SERVER['HTTP_REFERER'] ?? \Drupal::request()->query->get('q');
     return preg_match('/newwindow/i', $referer);
   }
@@ -91,8 +90,7 @@ class RequestUtil {
    * @param $path
    * @return bool
    */
-  public static function isPendingExpenseContractPath($path)
-  {
+  public static function isPendingExpenseContractPath($path) {
     return TRUE === str_contains($path, 'contracts_pending_exp_landing');
   }
 
@@ -267,7 +265,7 @@ class RequestUtil {
           $path .= RequestUtilities::buildUrlFromParam('agency');
           $path .= RequestUtilities::buildUrlFromParam('datasource');
         }
-        else if (str_contains(Url::fromRoute("<current>")->toString(), 'title_landing')) {
+        elseif (str_contains(Url::fromRoute("<current>")->toString(), 'title_landing')) {
           $path = "/payroll/title_landing/yeartype/" . $yearType . self::YEAR . $year;
           $path .= RequestUtilities::buildUrlFromParam('agency');
           $path .= RequestUtilities::buildUrlFromParam('title');
@@ -283,13 +281,13 @@ class RequestUtil {
             $path .= RequestUtilities::buildUrlFromParam('title');
             $path .= RequestUtilities::buildUrlFromParam('agency');
           }
-          else if (isset($last_parameter['title']) && $last_parameter['title'] > 0) {
+          elseif (isset($last_parameter['title']) && $last_parameter['title'] > 0) {
             $path = "/payroll/title_landing/yeartype/" . $yearType . self::YEAR . $year;
             $path .= RequestUtilities::buildUrlFromParam('datasource');
             $path .= RequestUtilities::buildUrlFromParam('agency');
             $path .= RequestUtilities::buildUrlFromParam('title');
           }
-          else if (RequestUtilities::get('agency')) {
+          elseif (RequestUtilities::get('agency')) {
             $path = "/payroll/agency_landing/yeartype/" . $yearType . self::YEAR . $year;
             $path .= RequestUtilities::buildUrlFromParam('datasource');
             $path .= RequestUtilities::buildUrlFromParam('title');

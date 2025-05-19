@@ -19,5 +19,5 @@ name: 'Checkbook View Configs'
 type: module
 description: 'Module to centralize the configuration files used in define widget views'
 package: REI Checkbook Widget Redesign
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 

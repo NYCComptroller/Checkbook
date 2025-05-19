@@ -25,8 +25,8 @@
             <td>{{ datarow.contract_number_contract_number }}</td>
             <td>{{ datarow.total_revised_maximum_amount }}</td>
             <td></td>
-            <td>{{ datarow.vendor_legal_name_vendor_legal_name }}</td>
-            <td>{{ datarow.document_agency_name_document_agency_name }}</td>
+            <td>{{ datarow.vendor_legal_name_vendor_legal_name |raw}}</td>
+            <td>{{ datarow.document_agency_name_document_agency_name |raw}}</td>
             <td></td>
           </tr>
         {% endfor %}

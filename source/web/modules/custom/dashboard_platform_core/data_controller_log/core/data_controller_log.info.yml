@@ -1,7 +1,7 @@
 name: 'Core Logging API implementation'
 description: 'Provides core functionality for logging'
 package: 'REI Dashboard Platform (Core)'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 dependencies:
   - data_controller
 type: module

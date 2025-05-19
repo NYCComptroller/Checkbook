@@ -1,7 +1,7 @@
 name: PHP Filter
 type: module
 description: Allows embedded PHP code/snippets to be evaluated. Enabling this can cause security and performance issues as it allows users to execute PHP code on your site.
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'Filters'
 configure: filter.admin_overview
 dependencies:

@@ -97,7 +97,11 @@ function _checkbook_project_get_name_for_argument($keyword, $id, $data_source = 
       $award_methods = _checkbook_project_querydataset($data_source . ':award_method', array('award_method_id', 'award_method_name'), array($keyword => $id));
       return isset($award_methods[0]['award_method_name']) ? ucwords(strtolower($award_methods[0]['award_method_name'])) : NULL;
     case "award_method_code":
-      $award_methods = _checkbook_project_querydataset($data_source . ':award_method', array('award_method_code', 'award_method_name'), array($keyword => $id, 'active_flag' => 'Y'));
+      $parameters = array($keyword => $id);
+      if ($data_source != 'checkbook_nycha') {
+        $parameters['active_flag'] = 'Y';
+      }
+      $award_methods = _checkbook_project_querydataset($data_source . ':award_method', array('award_method_code', 'award_method_name'), $parameters);
       return isset($award_methods[0]['award_method_name']) ? ucwords(strtolower($award_methods[0]['award_method_name'])) : NULL;
     case "award_size_id":
       $award_sizes = _checkbook_project_querydataset($data_source . ':award_size', array('award_size_id', 'award_size_name'), array($keyword => $id));

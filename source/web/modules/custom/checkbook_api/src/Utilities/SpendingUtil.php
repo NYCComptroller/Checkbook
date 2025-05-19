@@ -89,6 +89,7 @@ class SpendingUtil {
 WHEN {$alias}{$column}= 3 THEN 'Hispanic American'
 WHEN {$alias}{$column}= 4 THEN 'Asian American'
 WHEN {$alias}{$column}= 5 THEN 'Asian American'
+WHEN {$alias}{$column}= 10 THEN 'Asian American'
 WHEN {$alias}{$column}= 7 THEN 'Non-M/WBE'
 WHEN {$alias}{$column}= 9 THEN 'Women'
 WHEN {$alias}{$column}= 11 THEN 'Individuals and Others'

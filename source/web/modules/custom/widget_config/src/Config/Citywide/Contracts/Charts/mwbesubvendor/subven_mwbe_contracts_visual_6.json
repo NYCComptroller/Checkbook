@@ -76,7 +76,7 @@ $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
 			//$link= CustomURLHelper::prepareUrl(strstr($_GET['q'],'\/',true), ContractURLHelper::$landingPageParams, array('expandBottomCont'=>'true'),
 			//			array('subvendor'=>$row['vendor_id']) );
 
-			$link = strstr(\\Drupal::request()->query->get('q'),'/',true) .  \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::get_contracts_vendor_link_sub($row['vendor_id'],\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('year'),
+			$link = '/contracts_landing' .  \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::get_contracts_vendor_link_sub($row['vendor_id'],\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('year'),
 \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('yeartype'), \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('agency'));
 			$series_new[$index]['url'] = 	$link;
 

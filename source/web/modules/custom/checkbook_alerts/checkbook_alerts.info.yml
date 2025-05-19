@@ -1,6 +1,6 @@
 name: 'Checkbook Alerts'
 description: 'Module to display the checkbook alerts form in a dialog box with accordion to identify different buckets.'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'NYC Checkbook - Alerts'
 type: module
 dependencies:

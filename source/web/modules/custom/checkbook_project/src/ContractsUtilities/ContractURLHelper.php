@@ -50,7 +50,6 @@ use Drupal\checkbook_services\VendorUtil\PrimeVendorService;
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 class ContractURLHelper {
 
   static array $landingPageParams = array("status" => "status", "vendor" => "vendor", "agency" => "agency", "awdmethod" => "awdmethod", "cindustry" => "cindustry", "csize" => "csize","mwbe" => "mwbe" , "dashboard"=> "dashboard");
@@ -608,7 +607,9 @@ class ContractURLHelper {
       if (stripos($url, 'dashboard/ss')) {
         $issubvendor = true;
       }
-
+      if($dashboard =='/contracts_pending_rev_landing' || $dashboard == '/contracts_pending_exp_landing'){
+        $status = '';
+      }
       $mwbe = (VendorType::_is_mwbe_vendor(RequestUtilities::get("magid")) || VendorType::_is_mwbe_vendor(RequestUtilities::get("agid"))
         || $issubvendor)  ? RequestUtilities::_appendMWBESubVendorDatasourceUrlParams() : '';
 
@@ -648,14 +649,16 @@ class ContractURLHelper {
         $page = '/contracts_revenue_landing';
       }
       $minority_type_id = PrimeVendorService::getLatestMinorityTypeByYear($vendor_id, $current_year_id, 'B');
-      if ($minority_type_id == "4" || $minority_type_id == "5") {
-        $minority_type_id = "4~5";
+      if ($minority_type_id == "4" || $minority_type_id == "5" || $minority_type_id == "10") {
+        $minority_type_id = "4~5~10";
       }
       $mwbe = (VendorType::_is_mwbe_vendor(RequestUtilities::get("agid")) || VendorType::_is_mwbe_vendor(RequestUtilities::get("magid"))
         || $minority_type_id) ?
         '/dashboard/mp/mwbe/'.$minority_type_id : '';
     }
-
+    if($page == '/contracts_pending_rev_landing' || $page == '/contracts_pending_exp_landing'){
+      $status = '';
+    }
     return $page . $status . '/year/' . $current_year_id . '/yeartype/B/vendor/' . $vendor_id . $mwbe;
   }
 }

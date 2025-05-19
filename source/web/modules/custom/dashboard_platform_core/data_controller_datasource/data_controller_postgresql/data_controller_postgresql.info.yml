@@ -1,7 +1,7 @@
 name: 'PostgreSQL integration'
 description: 'Integrates Data Controller with PostgreSQL database'
 package: 'REI Dashboard Platform (Adapter)'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 dependencies:
   data_controller_sql: 'data_controller_sql:data_controller_sql'
 type: module

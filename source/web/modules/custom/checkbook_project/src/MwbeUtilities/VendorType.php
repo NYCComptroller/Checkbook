@@ -212,7 +212,7 @@ class VendorType
       return false;
     }
     $query1 = "SELECT (CASE WHEN fa.minority_type_id IN (".MappingUtil::getTotalMinorityIds().")  THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
-	                 (CASE WHEN fa.minority_type_id in (4,5) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
+	                 (CASE WHEN fa.minority_type_id in (4,5,10) then 'Asian American' ELSE fa.minority_type_name END)AS ethnicity
               FROM {agreement_snapshot} fa
 	          WHERE fa.latest_flag = 'Y' and fa.original_agreement_id = " . $agreement_id . " limit 1";
     $results1 = _checkbook_project_execute_sql_by_data_source($query1);

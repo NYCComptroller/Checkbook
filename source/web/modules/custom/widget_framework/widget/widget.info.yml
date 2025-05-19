@@ -1,7 +1,7 @@
 name: Widget
 type: module
 description: 'Module to add base support for widgets'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'REI Dashboard Platform (Visualization)'
 dependencies:
   - data_controller

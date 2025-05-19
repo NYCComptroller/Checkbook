@@ -51,7 +51,7 @@ class LogHelper {
     }
 
     public static function log_notice($message) {
-      \Drupal::logger('NYC Checkbook')->warning('<pre><code>' . print_r($message, TRUE) . '</code></pre>');
+      \Drupal::logger('NYC Checkbook')->notice('<pre><code>' . print_r($message, TRUE) . '</code></pre>');
     }
 
     public static function log_info($message) {

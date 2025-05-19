@@ -155,7 +155,7 @@ class NychaSpendingUrlService{
     $industry = str_replace("industry", "industry_inv", $industry);
     $dynamic_parameter = $dynamic_parameter ?? '';
     $agreement_type = $agreement_type ?? '';
-    $newwindow='/newwindow'; // open content in new window and also strip menu contents
+    $newwindow = '/newwindow'; // open content in new window and also strip menu contents
     $tcode = $tcode ?? '';
     return "/nycha_spending/transactions"
       .$vendor.$industry
@@ -166,8 +166,8 @@ class NychaSpendingUrlService{
       . RequestUtilities::buildUrlFromParam('csize')
       . RequestUtilities::buildUrlFromParam('awdmethod')
       . RequestUtilities::buildUrlFromParam('datasource')
-      . '/widget/'. $widget
-      . $dynamic_parameter.$agreement_type.$tcode.$newwindow;
+      . '/widget/' . $widget
+      . $dynamic_parameter . $agreement_type . $tcode . $newwindow;
   }
 
       /**
@@ -176,12 +176,11 @@ class NychaSpendingUrlService{
      * @param null $year_id
      * @return string
      */
-      public static function generateContractIdLink($contract_id, $year_id = null): string
-      {
+      public static function generateContractIdLink($contract_id, $year_id = null): string {
         $year_id = (isset($year_id)) ? $year_id : RequestUtilities::get('year');
         $year_id = (isset($year_id)) ? $year_id : CheckbookDateUtil::getCurrentFiscalYear(Datasource::NYCHA);
         $class = "new_window";
-        $url ='/nycha_contract_details' . '/year/'.$year_id.'/contract/' . $contract_id .'/newwindow';
+        $url ='/nycha_contract_details' . '/year/'.$year_id.'/contract/' . $contract_id . '/newwindow';
         return "<a class='{$class}' href='{$url}'>{$contract_id}</a>";
       }
 }

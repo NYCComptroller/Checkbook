@@ -1,4 +1,13 @@
 (function ($, Drupal, drupalSettings) {
+
+  // Add isFunction.
+  $.fn.isFunction = function(fn) {
+    return (typeof fn === 'function');
+  };
+  $.isFunction = function(item) {
+    return (typeof item === 'function');
+  };
+
   // Show loader.
   Drupal.checkbook_advanced_search = Drupal.checkbook_advanced_search ?? {};
   Drupal.checkbook_advanced_search.show_loading_spinner = function() {

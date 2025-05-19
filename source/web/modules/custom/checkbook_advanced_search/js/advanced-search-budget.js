@@ -123,7 +123,7 @@
         let budget_code_div = div.ele('budget_code');
         let budget_code = cevent_changed ? 0 : (budget_code_div.val() || 0);
         let budget_name = cevent_changed ? 0 : (div.ele('budget_name').val() || 0);
-        let budget_code_selected = budget_code_div.val() || 0;
+        let budget_code_selected = (budget_code_div.val() || 0).toString();
         let conditional_categories = div.ele('conditional_categories').val() || 0;
         let url = '/advanced-search/autocomplete/budget/budgetcode/' + fiscal_year + '/' + agency + '/' +
           dept.toString().replace(/\//g, "__") + '/' +
@@ -172,7 +172,7 @@
         let budget_name_div = div.ele('budget_name');
         let budget_code = cevent_changed ? 0 : (div.ele('budget_code').val() || 0);
         let budget_name = cevent_changed ? 0 : (budget_name_div.val() || 0);
-        let budget_name_selected = budget_name_div.val() || 0;
+        let budget_name_selected = (budget_name_div.val() || 0).toString();
         let conditional_categories = div.ele('conditional_categories').val() || 0;
         //  path: '/data-feeds/budget_type/{domain}/{dataSource}/{budgetName}/{json}'
         let url = '/advanced-search/autocomplete/budget/budgetname/' + fiscal_year + '/' + agency + '/' +

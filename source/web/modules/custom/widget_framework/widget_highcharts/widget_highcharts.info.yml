@@ -1,7 +1,7 @@
 name: 'Widget Highcharts'
 type: module
 description: 'Module to support Highcharts'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'REI Dashboard Platform (Visualization)'
 dependencies:
   widget: 'drupal:widget'

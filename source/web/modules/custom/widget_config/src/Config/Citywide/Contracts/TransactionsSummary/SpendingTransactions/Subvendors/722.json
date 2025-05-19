@@ -1,6 +1,6 @@
 {
     "widgetType": "phpparser",
-    "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"CTA1~CT1","dollar_difference":"0","status_flag":"A","minority_type_id":"2~3~4~5~6~9~99"},
+    "defaultParameters":{"type_of_year":"B","document_code.document_code.document_code":"CTA1~CT1","dollar_difference":"0","status_flag":"A","minority_type_id":"1~2~3~4~5~10~6~9~99"},
     "cleanURLParameters":["mwbe","year","calyear","agency","yeartype","vendor","status","agid","cagency","cvendor",
                            "subvendor","csize","cindustry","awdmethod"],
     "urlParamMap":{"mwbe":"minority_type_id","calyear":"fiscal_year_id","year":"fiscal_year_id","agency":"agency_id",

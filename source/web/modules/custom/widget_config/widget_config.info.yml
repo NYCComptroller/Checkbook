@@ -1,6 +1,6 @@
 name: Widget Configurations
 type: module
 description: 'Json Configuration files for Landing page Tables, Transaction tables, Facets, Custom Template files and High Charts'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'Widget Framework'
 

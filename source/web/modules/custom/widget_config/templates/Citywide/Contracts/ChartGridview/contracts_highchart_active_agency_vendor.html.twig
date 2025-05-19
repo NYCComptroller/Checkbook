@@ -30,7 +30,7 @@
         {% if node.data %}
           {% for datarow in node.data %}
             <tr>
-              <td><div>{{ attribute(datarow, rowname) }}</div></td>
+              <td><div>{{ attribute(datarow, rowname) | raw }}</div></td>
               <td>{{ datarow.total_contracts }}</td>
               <td>{{ datarow.current_amount_sum }}</td>
               <td>&nbsp;</td>

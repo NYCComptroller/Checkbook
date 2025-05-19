@@ -81,7 +81,7 @@
     $node->data_sub_ven  = array();
 ",
 "widgetUpdateJSONConfig":"
-
+  $series_oa =  [];
 	$series_ba =  [];
 	$series_ha =  [];
 	$series_w =  [];
@@ -94,6 +94,9 @@
 	 foreach ($node->data as $row){
 
 	 	switch($row['minority_type_id']){
+      case '1':
+      $series_oa[$row['month_value'] - 1]['y'] += $row['total_spending'];
+      break;
 	 		case '2':
         $series_ba[$row['month_value'] - 1]['y'] += $row['total_spending'];
         break;
@@ -106,6 +109,9 @@
 	 		case '5':
         $series_aa[$row['month_value'] - 1]['y'] += $row['total_spending'];
         break;
+      case '10':
+      $series_aa[$row['month_value'] - 1]['y'] += $row['total_spending'];
+      break;
             case '6':
         $series_na[$row['month_value'] - 1]['y'] += $row['total_spending'];
         break;

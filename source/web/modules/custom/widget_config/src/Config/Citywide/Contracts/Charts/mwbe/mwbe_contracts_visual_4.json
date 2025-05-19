@@ -34,7 +34,7 @@
 },
 "no_results_content":"No Results Found",
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year"],
-"cleanURLParametersPending":["agency","awdmethod","vendor","status","csize","cindustry","mwbe"],
+"cleanURLParametersPending":["agency","awdmethod","vendor","csize","cindustry","mwbe"],
 "urlParamMap":{"year":"fiscal_year_id","mwbe":"minority_type_id","agency":"agency_id","yeartype":"type_of_year","awdmethod":"award_method_code","vendor":"vendor_id",
 	"status":"status_flag","csize":"award_size_id","cindustry":"industry_type_id"},
 "urlParamMapPending":{"mwbe":"minority_type_id","agency":"document_agency_id","vendor":"vendor_id",
@@ -76,7 +76,7 @@ preg_match('/pending/',\\Drupal\\checkbook_infrastructure_layer\\Utilities\\Requ
 			vendor_legal_name legal_name,
 			document_code,
 			original_master_agreement_id original_agreement_id,
-			version_number
+			document_version
 		from {pending_contracts} a1
     	join {vendor} v on v.vendor_id =  a1.vendor_id
     	join {ref_agency} ra on ra.agency_id =  a1.document_agency_id
@@ -129,7 +129,7 @@ $url = isset($refURL) ? $refURL: \\Drupal\\checkbook_infrastructure_layer\\Utili
         preg_match('/pending/',\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRefUrl())){
 
 	 			$link_url = \\Drupal\\checkbook_project\\ContractsUtilities\\pendingContractDetails::_pending_contracts_link_contract_details($row['pending_contract_number'], $row['original_agreement_id'], $row['document_code'],
-	 							$row['contract_number'] , $row['version_number'], 'bar',$path);
+	 							$row['contract_number'] , $row['document_version'], 'bar',$path);
 	 		}else{
 
        $path = explode('/',$currentPage);

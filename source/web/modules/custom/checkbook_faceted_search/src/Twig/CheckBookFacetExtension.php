@@ -308,8 +308,7 @@ class CheckBookFacetExtension extends AbstractExtension
     return $final_output;
   }
 
-  public function checkbook_faceted_search_uncheck($unchecked, $disabled, $autocomplete_id, $filter_name)
-  {
+  public function checkbook_faceted_search_uncheck($unchecked, $disabled, $autocomplete_id, $filter_name) {
     $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
     $ct = 0;
     if (isset($unchecked) && $unchecked) {

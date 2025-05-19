@@ -29,11 +29,11 @@ use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
-require_once(Drupal::service('extension.list.module')->getPath('checkbook_datafeeds') . "/src/Form/Budget/checkbook_datafeeds_budget.inc");
-require_once(Drupal::service('extension.list.module')->getPath('checkbook_datafeeds') . "/src/Form/Contracts/checkbook_datafeeds_contracts.inc");
-require_once(Drupal::service('extension.list.module')->getPath('checkbook_datafeeds') . "/src/Form/Payroll/checkbook_datafeeds_payroll.inc");
-require_once(Drupal::service('extension.list.module')->getPath('checkbook_datafeeds') . "/src/Form/Revenue/checkbook_datafeeds_revenue.inc");
-require_once(Drupal::service('extension.list.module')->getPath('checkbook_datafeeds') . "/src/Form/Spending/checkbook_datafeeds_spending.inc");
+require_once(dirname(__FILE__) . "/Budget/checkbook_datafeeds_budget.inc");
+require_once(dirname(__FILE__) . "/Contracts/checkbook_datafeeds_contracts.inc");
+require_once(dirname(__FILE__) . "/Payroll/checkbook_datafeeds_payroll.inc");
+require_once(dirname(__FILE__) . "/Revenue/checkbook_datafeeds_revenue.inc");
+require_once(dirname(__FILE__) . "/Spending/checkbook_datafeeds_spending.inc");
 
 /**
  * Provides a form with three steps.

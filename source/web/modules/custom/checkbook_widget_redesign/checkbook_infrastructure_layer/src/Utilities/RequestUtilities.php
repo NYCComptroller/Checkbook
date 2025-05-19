@@ -178,12 +178,20 @@ class RequestUtilities {
       case 'year':
       case 'agency':
         // Keep only Numbers
-        $value = preg_replace('/[\D~]/', '', $value);
+        // '/[\D~]/' breaks facet search functionality with ~ in params
+        //$value = preg_replace('/[\D~]/', '', $value);
+        $value = preg_replace('/[^[0-9~]+]/', '', $value);
         break;
       case 'yeartype':
         // Keep only A-Z
         $value = preg_replace('/[^a-zA-Z~]/', '', $value);
         break;
+      case 'dtsmnid':
+        // Keep only Numbers
+        $value = preg_replace('/[\D~]/', '', $value);
+      case 'smnid':
+        // Keep only Numbers
+        $value = preg_replace('/[\D~]/', '', $value);
     }
     $value = str_replace(['"', "'"], '', $value);
     return Xss::filter(htmlspecialchars_decode($value, ENT_QUOTES));

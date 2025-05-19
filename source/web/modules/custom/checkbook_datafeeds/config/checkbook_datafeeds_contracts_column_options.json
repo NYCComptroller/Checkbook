@@ -12,7 +12,6 @@
                   "Award Method":"Award Method",
                   "Contract ID":"Contract ID",
                   "Contract Type":"Contract Type",
-                  "Contract Class":"Contract Class",
                   "Current Amount":"Current Amount",
                   "Document Code":"Document Code",
                   "End Date":"End Date",
@@ -37,7 +36,6 @@
                   "award_method":"award_method",
                   "contract_id":"contract_id",
                   "contract_type":"contract_type",
-                  "contract_class":"contract_class",
                   "current_amount":"current_amount",
                   "document_code":"document_code",
                   "end_date":"end_date",
@@ -65,7 +63,7 @@
             "expense":{
               "data_type":{
                 "csv":{
-                  "% Asylum Seekers Spending":"% Asylum Seekers Spending",
+                  //"% Asylum Spending":"% Asylum Spending",
                   "% Covid Spending": "% Covid Spending",
                   "% Other Spending":"% Other Spending",
                   "Contract Class":"Contract Class",
@@ -116,7 +114,7 @@
                   "mocs_registered": "mocs_registered",
                   "document_code":"document_code",
                   "parent_contract_id":"parent_contract_id",
-                  "percent_asylum_spending":"percent_asylum_spending",
+                  //"percent_asylum_spending":"percent_asylum_spending",
                   "percent_covid_spending":"percent_covid_spending",
                   "percent_other_spending":"percent_other_spending",
                   "prime_contract_apt_pin":"prime_contract_apt_pin",
@@ -213,7 +211,7 @@
             "all":{
               "data_type":{
                 "csv":{
-                  "% Asylum Seekers Spending":"% Asylum Seekers Spending",
+                  //"% Asylum Spending":"% Asylum Spending",
                   "% Covid Spending": "% Covid Spending",
                   "% Other Spending":"% Other Spending",
                   "Contract Class":"Contract Class",
@@ -264,7 +262,7 @@
                   "mocs_registered": "mocs_registered",
                   "document_code":"document_code",
                   "parent_contract_id":"parent_contract_id",
-                  "percent_asylum_spending":"percent_asylum_spending",
+                  //"percent_asylum_spending":"percent_asylum_spending",
                   "percent_covid_spending":"percent_covid_spending",
                   "percent_other_spending":"percent_other_spending",
                   "prime_contract_apt_pin":"prime_contract_apt_pin",

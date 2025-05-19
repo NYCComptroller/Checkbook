@@ -315,7 +315,7 @@ class ContractsBreadcrumbs {
 
               case 'awdmethod':
               case 'award_method':
-                $title = _checkbook_project_get_name_for_argument("award_method_code", $value);
+                $title = _checkbook_project_get_name_for_argument("award_method_id", $value);
                 break;
 
               case 'csize':
@@ -356,7 +356,7 @@ class ContractsBreadcrumbs {
       foreach ($lastReqParam as $key => $value) {
         $title = match ($key) {
           'vendor' => _checkbook_project_get_name_for_argument("vendor_id", $value),
-          'awdmethod' => _checkbook_project_get_name_for_argument("award_method_code", $value),
+          'awdmethod' => _checkbook_project_get_name_for_argument("award_method_id", $value),
           'csize' => _checkbook_project_get_name_for_argument("award_size_id", $value),
           'industry' => _checkbook_project_get_name_for_argument("industry_type_id", $value),
           default => self::NYCHA,

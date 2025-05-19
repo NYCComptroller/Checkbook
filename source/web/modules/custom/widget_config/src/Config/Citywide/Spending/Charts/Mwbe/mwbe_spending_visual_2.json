@@ -29,122 +29,116 @@
 "urlParamMapSubVendor":{"yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "chartTitle":"M/WBE Total Prime Spending Share",
 "widgetDataLoader":"
-
-    $where_filters = array();
-    foreach($node->widgetConfig->requestParams as $param=>$value){
-        $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
-    }
-
-    if(count($where_filters) > 0){
-        $where_filter = ' where ' . implode(' and ' , $where_filters);
-    }
-
-    $sql = 'select rm.minority_type_id, rm.minority_type_name ,year_value, sum(total_spending_amount) total_spending
-    from {aggregateon_mwbe_spending_coa_entities} a1
-    join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
-    join {ref_year} ry on a1.year_id = ry.year_id
-   ' . $where_filter . '
-    group by rm.minority_type_id, rm.minority_type_name,year_value  ';
-
-    $node->data  = _checkbook_project_execute_sql($sql);
+  $year = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('year');
+  $validYear = \\Drupal\\checkbook_project\\CommonUtilities\\CheckbookDateUtil::getCurrentFiscalYearId();
+  if($year <= $validYear){
+  $where_filters = array();
+  foreach($node->widgetConfig->requestParams as $param=>$value){
+  $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
+  }
+  if(count($where_filters) > 0){
+  $where_filter = ' where ' . implode(' and ', $where_filters);
+  }
+  $sql = 'select rm.minority_type_id, rm.minority_type_name ,year_value, sum(total_spending_amount) total_spending
+  from {aggregateon_mwbe_spending_coa_entities} a1
+  join {ref_minority_type} rm on rm.minority_type_id = a1.minority_type_id
+  join {ref_year} ry on a1.year_id = ry.year_id ' . $where_filter . ' group by rm.minority_type_id, rm.minority_type_name,year_value  ';
+  $node->data  = _checkbook_project_execute_sql($sql);
+}
+  else{
+    $node->totalDataCount  = 0;
+}
 ",
 "widgetUpdateJSONConfig":"
 
-	$series =  array();
-	$non_mwbe_data = array();
-  $isRefUrl = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRefUrl();
-	//$year_id = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('year');
-  $year_id = isset( $isRefUrl) ? \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('year',['q'=>$isRefUrl ]) : \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('year');
-  $mwbe = isset( $isRefUrl) ? \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('mwbe',['q'=>$isRefUrl ]) : \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('mwbe');
-  $mwbe_page_cats = explode('~', $mwbe);
-	$year = \\Drupal\\checkbook_project\\CommonUtilities\\CheckbookDateUtil::_getYearValueFromID($year_id);
-	 foreach ($node->data as $row){
+$series =  array();
+$non_mwbe_data = array();
+$year_id = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities:: get('year');
+$mwbe = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities:: get('mwbe');
+$mwbe_page_cats = explode('~', $mwbe);
+$year = \\Drupal\\checkbook_project\\CommonUtilities\\CheckbookDateUtil:: _getYearValueFromID($year_id);
+foreach ($node->data as $row){
+switch($row['minority_type_id']){
+case '1': if(in_array(1, $mwbe_page_cats))
+$series[$row['year_value']]['y'] += $row['total_spending'];
+$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
+break;
+case '2': if(in_array(2, $mwbe_page_cats))
+$series[$row['year_value']]['y'] += $row['total_spending'];
+$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
+break;
+case '3': if(in_array(3, $mwbe_page_cats))
+$series[$row['year_value']]['y'] += $row['total_spending'];
+$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
+break;
+case '4': if(in_array(4, $mwbe_page_cats))
+$series[$row['year_value']]['y'] += $row['total_spending'];
+$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
+break;
+case '5': if(in_array(5, $mwbe_page_cats))
+$series[$row['year_value']]['y'] += $row['total_spending'];
+$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
+break;
+case '10': if(in_array(10, $mwbe_page_cats))
+$series[$row['year_value']]['y'] += $row['total_spending'];
+$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
+break;
+case '6': if(in_array(6, $mwbe_page_cats))
+$series[$row['year_value']]['y'] += $row['total_spending'];
+$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
+break;
+case '9': if(in_array(9, $mwbe_page_cats))
+$series[$row['year_value']]['y'] += $row['total_spending'];
+$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
+break;
+case '99': if(in_array(99, $mwbe_page_cats))
+$series[$row['year_value']]['y'] += $row['total_spending'];
+$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
+break;
+case '7': $non_mwbe_data[$row['year_value']] = $row['total_spending'];
+break;
+}
+}
 
-	 	switch($row['minority_type_id']){
-	 		case '2':
-	 		if(in_array(2,$mwbe_page_cats))
-	 			$series[$row['year_value']]['y'] += $row['total_spending'];
-	 		$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
-	 		break;
-	 		case '3':
-	 		if(in_array(3,$mwbe_page_cats))
-	 			$series[$row['year_value']]['y'] += $row['total_spending'];
-	 		$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
-	 		break;
-	 		case '4':
-	 		if(in_array(4,$mwbe_page_cats))
-	 			$series[$row['year_value']]['y'] += $row['total_spending'];
-	 		$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
-	 		break;
-	 		case '5':
-	 		if(in_array(5,$mwbe_page_cats))
-	 			$series[$row['year_value']]['y'] += $row['total_spending'];
-	 		$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
-	 		break;
-            case '6':
-	 		if(in_array(6,$mwbe_page_cats))
-	 			$series[$row['year_value']]['y'] += $row['total_spending'];
-	 		$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
-	 		break;
-	 		case '9':
-	 		if(in_array(9,$mwbe_page_cats))
-	 			$series[$row['year_value']]['y'] += $row['total_spending'];
-	 		$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
-	 		break;
-            case '99':
-	 		if(in_array(99,$mwbe_page_cats))
-	 			$series[$row['year_value']]['y'] += $row['total_spending'];
-	 		$series[$row['year_value']]['mwbe_total'] += $row['total_spending'];
-	 		break;
-	 		case '7':
-	 		$non_mwbe_data[$row['year_value']] = $row['total_spending'];
-	 		break;
-	 	}
-	 }
+$i = 0;
+$categories = array();
+ksort($series);
 
-	$i = 0;
-	$categories = array();
-	ksort($series);
+$series_new = array();
+$index = 0;
 
-	$series_new = array();
-	$index = 0;
 
-	foreach($series as $key=>$row){
-		if($key <= $year && $key >= $year - 4){
-			if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('yeartype') == 'C'){
-				 $year_display = 'CY ' . $key;
-			}else{
-				$year_display = 'FY ' . $key;
-			}
-	 		$tooltip_label =
-	 						'Year: ' . $year_display.  '<br/>' .
-	 						'Amount: '. \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($series[$key]['y'],2,'$')   . '<br/>' ;
+foreach($series as $key=>$row){
+if($key <= $year && $key >= $year - 4){
+$year_display = 'FY ' . $key;
+$tooltip_label =
+'Year: ' . $year_display.  '<br/>' .
+'Amount: '. \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($series[$key]['y'], 2, '$')   . '<br/>' ;
 
-			$series_new[$index]['y'] = $series[$key]['y']/($series[$key]['mwbe_total'] + $non_mwbe_data[$key] ) * 100;
-			$series_new[$index]['tooltip_label'] = $tooltip_label;
-			$series_new[$index]['custom_label'] = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::custom_number_formatter_format($series[$key]['y']/($series[$key]['mwbe_total'] + $non_mwbe_data[$key] ) *100,2,null,'%') ;
-			$categories[] = $key ;
-			$node->widgetConfig->gridConfig->data[] = array($year_display,$series[$key]['y'] );
-			$index += 1;
-		}
-	}
+$series_new[$index]['y'] = $series[$key]['y'] ? ($series[$key]['y']) /($series[$key]['mwbe_total'] + $non_mwbe_data[$key] ) * 100: 0;
+$series_new[$index]['tooltip_label'] = $tooltip_label;
+$series_new[$index]['custom_label'] = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($series[$key]['y'] ? ($series[$key]['y']) / ($series[$key]['mwbe_total'] + $non_mwbe_data[$key] ) *100: 0, 2, null, '%') ;
+$categories[] = $key ;
+$node->widgetConfig->gridConfig->data[] = array($year_display, $series[$key]['y'] );
+$index += 1;
+}
+}
 
-    $categoryId = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('category');
-    if(isset($categoryId)){
-        $categoryDetails = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getSpendingCategoryDetails($categoryId,'display_name');
-        if(is_array($categoryDetails)){
-            $spend_cat = $categoryDetails[0]['display_name'];
-            $spend_cat = str_replace('Spending', 'Prime Spending', $spend_cat);
-        }
-    }
-    else $spend_cat = 'Total Prime Spending';
-	$node->widgetConfig->chartTitle = \\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::getCurrenEthnicityName() . ' ' . $spend_cat . ' Share';
-	$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
-	$node->widgetConfig->chartConfig->series[0]->type = 'column';
-	$node->widgetConfig->chartConfig->series[0]->pointWidth = 80;
-	$node->widgetConfig->chartConfig->series[0]->data = $series_new;
-	$node->widgetConfig->chartConfig->xAxis->categories = $categories;
-
+$categoryId = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities:: getRequestParamValue('category');
+if(isset($categoryId)){
+$categoryDetails = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil:: getSpendingCategoryDetails($categoryId, 'display_name');
+if(is_array($categoryDetails)){
+$spend_cat = $categoryDetails[0]['display_name'];
+$spend_cat = str_replace('Spending', 'Prime Spending', $spend_cat);
+}
+}
+else $spend_cat = 'Total Prime Spending';
+$node->widgetConfig->chartTitle = \\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil:: getCurrenEthnicityName() . ' ' . $spend_cat . ' Share';
+$node->widgetConfig->chartConfig->series[0]->name = 'Fiscal Years';
+$node->widgetConfig->chartConfig->series[0]->type = 'column';
+$node->widgetConfig->chartConfig->series[0]->pointWidth = 80;
+$node->widgetConfig->chartConfig->series[0]->data = $series_new;
+$node->widgetConfig->chartConfig->xAxis->categories = $categories;
 
 ",
 "chartConfig" : {
