@@ -36,11 +36,16 @@ use Drupal\data_controller_sql\Logger\Listener\StatementLogMessageKeeper;
 function _checkbook_project_querydataset($dataset, $columns, $parameters = null){
   try {
     if (function_exists('_checkbook_project_execute_dataset_test')) {
-      // the following function is only avalable when phpunit runs
+      // the following function is only available when phpunit runs
       return _checkbook_project_execute_dataset_test();
     }
     $dataController = data_controller_get_instance();
     $dataset = _update_dataset_datasource($dataset);
+    if(isset($parameters) && is_array($parameters)){
+      foreach ($parameters as $param => $value){
+        $parameters[$param] = pg_escape_string ($value);
+      }
+    }
     $data = $dataController->queryDataset($dataset, $columns, $parameters, NULL, 0, NULL, NULL);
   } catch (Exception $exception) {
     LogHelper::log_error("Error getting data from the controller: \n" . $exception->getMessage()/*, $e*/);
@@ -115,42 +120,45 @@ function get_db_results($isList, $datasetName, $columns = NULL, $parameters = NU
  * @param string $data_source
  * @return array|bool|mixed|void
  */
-function _checkbook_project_execute_sql($sql, string $db_name = "main", string $data_source = Datasource::CITYWIDE){
-  $cacheKey = '_checkbook_query_' . $data_source . '_' . md5($sql . $db_name . $data_source);
-  if ($result = _checkbook_dmemcache_get($cacheKey)) {
-    LogHelper::log_info($sql);
-    LogHelper::log_info(' PROCESSED CACHED (' . sizeof($result) . ' records)');
-    return $result;
-  }
-
-  if (!(bool) Database::getConnectionInfo($data_source)) {
-    LogHelper::log_error("No DB configuration found for: \$databases['$data_source']['$db_name']");
-  }else {
-    $connection = Database::getConnection($db_name, $data_source);
-    $connectionOptions = $connection->getConnectionOptions();
-    LogHelper::log_notice("Querying database \$databases['$data_source']['$db_name'] (" . $connectionOptions['host'] . ')');
-    LogHelper::log_notice($sql);
-
-    try {
-      $results = $connection->query($sql, [], ['allow_delimiter_in_query' => TRUE, 'allow_square_brackets' => TRUE])->fetchAll();
-    } catch (Exception $e) {
-      LogHelper::log_error("Error executing DB query for generating: " . $sql . ". Exception is: " . $e);
-      return;
+function _checkbook_project_execute_sql($sql, string $db_name = "main", string $data_source = Datasource::CITYWIDE) {
+  if(isset($sql)) {
+    $cacheKey = '_checkbook_query_' . $data_source . '_' . md5($sql . $db_name . $data_source);
+    if ($result = _checkbook_dmemcache_get($cacheKey)) {
+      LogHelper::log_info($sql);
+      LogHelper::log_info(' PROCESSED CACHED (' . sizeof($result) . ' records)');
+      return $result;
     }
 
-    $output = array();
-    if ($results) {
-      foreach ($results as $row) {
-        $output[] = get_object_vars($row);
+    if (!(bool)Database::getConnectionInfo($data_source)) {
+      LogHelper::log_error("No DB configuration found for: \$databases['$data_source']['$db_name']");
+    } else {
+      $connection = Database::getConnection($db_name, $data_source);
+      $connectionOptions = $connection->getConnectionOptions();
+      LogHelper::log_notice("Querying database \$databases['$data_source']['$db_name'] (" . $connectionOptions['host'] . ')');
+      LogHelper::log_notice($sql);
+
+      try {
+        $results = $connection->query($sql, [], ['allow_delimiter_in_query' => TRUE, 'allow_square_brackets' => TRUE])->fetchAll();
+      } catch (Exception $e) {
+        LogHelper::log_error("Error executing DB query for generating: " . $sql . ". Exception is: " . $e);
+        return;
       }
-    }
 
-    LogHelper::log_info("Processed " . sizeof($output) . " records (_checkbook_project_execute_sql)");
-    if (13 > sizeof($output) || (13 > sizeof($output[0]) && 1000 > sizeof($output))) {
-      LogHelper::log_info("Calling _checkbook_dmemcache_set in _checkbook_project_execute_sql with cachekey " . $cacheKey);
-      _checkbook_dmemcache_set($cacheKey, $output);
+      $output = array();
+      if ($results) {
+        foreach ($results as $row) {
+          $output[] = get_object_vars($row);
+        }
+      }
+
+      LogHelper::log_info("Processed " . sizeof($output) . " records (_checkbook_project_execute_sql)");
+      if (13 > sizeof($output) || (13 > sizeof($output[0]) && 1000 > sizeof($output))) {
+        LogHelper::log_info("Calling _checkbook_dmemcache_set in _checkbook_project_execute_sql with cachekey " . $cacheKey);
+        _checkbook_dmemcache_set($cacheKey, $output);
+      }
+      return $output;
     }
-    return $output;
+    return null;
   }
 }
 

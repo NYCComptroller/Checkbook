@@ -6,6 +6,7 @@
                        SELECT 3 as minority_type_id, 'Hispanic American' as mwbe_category_name UNION
                        SELECT 4 as minority_type_id, 'Asian American' as mwbe_category_name UNION
                        SELECT 5 as minority_type_id, 'Asian American' as mwbe_category_name UNION
+                       SELECT 10 as minority_type_id, 'Asian American' as mwbe_category_name UNION
                        SELECT 6 as minority_type_id, 'Native American' as mwbe_category_name UNION
                        SELECT 7 as minority_type_id, 'Non-M/WBE' as mwbe_category_name UNION
                        SELECT 9 as minority_type_id, 'Women (Non-Minority)' as mwbe_category_name UNION

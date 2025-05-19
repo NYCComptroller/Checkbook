@@ -37,26 +37,31 @@
         "contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le","scalyear":"le",
         "budname":"like","comline":"like","entcontnum":"like","scomline":"le",
         "entcontnum_exact":"eqignorecase","comline_exact":"eqignorecase","budname_exact":"eqignorecase"},
-    "dataset": "checkbook:spending_transactions_all",
+  "preProcessConfiguration":"
+       $month = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('month');
+       $title = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle();
+       if($month >0){
+       $node->widgetConfig->template='spending_date_summary';
+       $node->widgetConfig->templateTitleEval= $title;
+       }
+      else{
+      $node->widgetConfig->template='spending_transaction_total_amount';
+      }
+  ",
+  "dataset": "checkbook:spending_transactions_all",
     "adjustParameters":"
         $cat = $parameters['spending_category_id'];
         if(isset($parameters['ctx.ctx.vendor_id'])  ||  isset($parameters['ctx.ctx.document_agency_id'])  ||  isset($parameters['ctx.ctx.award_method_id'])  || isset($parameters['ctx.ctx.award_size_id'])  ||  isset($parameters['ctx.ctx.industry_type_id']) ){
             $year = $parameters['check_eft_issued_nyc_year_id'];
-            $calyear = $parameters['calendar_fiscal_year_id'];
             if(isset($year)){
                 $parameters['ctx.ctx.fiscal_year_id'] = $year;
                 $parameters['ctx.ctx.type_of_year'] = 'B';
-            }else if(isset($calyear )){
-                $parameters['ctx.ctx.fiscal_year_id'] = $calyear ;
-                $parameters['ctx.ctx.type_of_year'] = 'C';
             }
         }
 
         $parameters = \\Drupal\\checkbook_project\\SpendingUtilities\\MwbeSpendingUtil::_checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
-        $adjustedParameters = $parameters;
         $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
         return $adjustedParameters;
     ",
-    "columns": ["check_amount_sum"],
-    "template":"spending_transaction_total_amount"
+    "columns": ["check_amount_sum"]
 }

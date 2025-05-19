@@ -35,7 +35,7 @@
       {% endif %}
         {% for datarow in node.data %}
           <tr>
-            <td><div>{{ datarow[rowname]}}</div></td>
+            <td><div>{{ datarow[rowname] |raw}}</div></td>
             <td>{{ datarow[total]}}</td>
             <td>{{ datarow.total_contract_amount }}</td>
             <td></td>

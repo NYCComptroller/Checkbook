@@ -9,7 +9,7 @@ use Drupal\Component\Utility\Html;
 class ChartUtil
 {
     static function generateGridViewLink($node){
-        if(empty($node->data) || (isset($node->disableGridViewLink) && $node->disableGridViewLink)) {
+        if (empty($node->data) || (isset($node->totalDataCount) && ($node->totalDataCount == 0)) || (isset($node->disableGridViewLink) && $node->disableGridViewLink)) {
             return '<a class="chart-grid-view no-data" style="display:none" oncontextmenu="return false;">Grid View</a>';
         }
         return '<a class="chart-grid-view gridpopup" style="display:none"
@@ -17,7 +17,7 @@ class ChartUtil
     }
 
     static function generateWidgetGridViewLink($node){
-        if(empty($node->data) || isset($node->disableGridViewLink)) {
+        if (empty($node->data) || (isset($node->totalDataCount) && ($node->totalDataCount == 0)) || isset($node->disableGridViewLink)) {
             return '<a class="chart-grid-view no-data" style="display:none" oncontextmenu="return false;">Grid View</a>';
         }
     	return '<a class="chart-grid-view gridpopup" style="display:none"

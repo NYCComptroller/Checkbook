@@ -1,6 +1,7 @@
 name: Checkbook Custom Breadcrumbs
 type: module
 description: Custom Breadcrumbs and Page Titles
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 dependencies:
   - data_controller:data_controller
+  - js_cookie:js_cookie

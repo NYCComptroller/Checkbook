@@ -1,7 +1,7 @@
 {
     "serviceName":"ContractsWidgetService",
     "dataFunc":"GetSubContractsByAwardMethods",
-    "defaultParameters":{"type_of_year":"B","status_flag":"A","minority_type_id":"2~3~4~5~9"},
+    "defaultParameters":{"type_of_year":"B","status_flag":"A","minority_type_id":"1~2~3~4~5~10~9"},
     "headerTitle":"Award Methods",
     "headerSubTitle":"Award Methods",
     "table_columns":[

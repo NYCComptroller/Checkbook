@@ -34,8 +34,7 @@ use Drupal\data_controller_sql\Logger\Listener\StatementLogMessageKeeper;
 use Drupal\join_controller\Controller\JoinController_SourceConfiguration;
 use Drupal\widget\Path\WidgetUrlPath;
 
-
-require_once(\Drupal::service('extension.list.module')->getPath('checkbook_project') . "/includes/checkbook_database.inc");
+require_once(dirname(__FILE__) . "/../../checkbook_project/includes/checkbook_database.inc");
 
 /***************************************/
 /* Implementation of Widget Node Type  */
@@ -666,7 +665,8 @@ function load_widget_data($node, $resultFormatter=null) {
           $alterFunction = $node->widgetConfig->queryAlterFunction;
           $query = eval($alterFunction);
           $node->data = _checkbook_project_execute_sql_by_data_source($query,_get_current_datasource());
-        }else {
+        }
+        else {
           $node->data = $isList
             ? $dataQueryController->queryDataset(
               $datasetName,
@@ -715,13 +715,11 @@ function load_widget_data($node, $resultFormatter=null) {
           if (isset($node->widgetConfig->queryAlterFunction)) {
             $alterFunction = $node->widgetConfig->queryAlterFunction;
             $query = eval($alterFunction);
-          }
-          else {
+          } else {
             $replace_string = "(SELECT ";
-            $query = substr_replace($query, $replace_string . "DISTINCT ", strpos($query, $replace_string), strlen($replace_string));
+            $query = isset($query) ? substr_replace($query, $replace_string . "DISTINCT ", strpos($query, $replace_string), strlen($replace_string)) : null;
           }
-
-          $results = _checkbook_project_execute_sql_by_data_source($query,_get_current_datasource());
+          $results = _checkbook_project_execute_sql_by_data_source($query, _get_current_datasource());
           $node->totalDataCount = $results[0]['record_count'];
         }
         else {
@@ -824,8 +822,7 @@ function widget_get_db_query($isList, $dataSetName, $columns = NULL, $parameters
   return $sqlQuery;
 }
 
-function widget_data(&$node)
-{
+function widget_data(&$node) {
   $config = $node->widgetConfig ?? null;
   $requestParams = $config->requestParams ?? null;
   $originalReqParams = $config->originalRequestParams ?? null;
@@ -855,8 +852,8 @@ function widget_data(&$node)
 
   if (isset($node->widgetConfig->widgetDataLoader)) {
     eval($node->widgetConfig->widgetDataLoader);
-
-  } elseif (isset($node->widgetConfig->dataset) || isset($node->widgetConfig->model)) {
+  }
+  elseif (isset($node->widgetConfig->dataset) || isset($node->widgetConfig->model)) {
     LogHelper::log_notice("Loading widget node # " . $node->nid);
     load_widget_data($node, $resultFormatter);
   }
@@ -1189,21 +1186,22 @@ function widget_define_exclude_params($node) {
   return $output;
 }
 
-function _replaceSpecialCharactersDecode($string){
+function _replaceSpecialCharactersDecode($string) {
   $string = str_replace('__','/',$string);
   $string = str_replace('@Q',':',$string);
   return str_replace('^^','.',$string);
 }
 
-function _update_node_data($data,$keepOriginalDatasource = false){
-  if($keepOriginalDatasource == true){
+function _update_node_data($data,$keepOriginalDatasource = FALSE){
+  if ($keepOriginalDatasource == TRUE) {
     return $data;
   }
+
   $returnData = array();
-  if ($data){
-    foreach((Array)$data as $key=>$value){
+  if ($data) {
+    foreach((array)$data as $key => $value){
       $arrayValues = array();
-      foreach((Array)$value as $a=>$b){
+      foreach ((array)$value as $a => $b) {
         $a = str_replace('@checkbook_oge:',"@checkbook:",$a);
         $a = str_replace('@checkbook_nycha:',"@checkbook:",$a);
         $arrayValues[$a] = $b;
@@ -1215,22 +1213,24 @@ function _update_node_data($data,$keepOriginalDatasource = false){
   return $returnData;
 }
 
-function _update_columns_by_datasource($node_columns, $datasource_mapping = null, $keepOriginalDatasource= false){
-  if($keepOriginalDatasource == true){
+function _update_columns_by_datasource($node_columns, $datasource_mapping = NULL, $keepOriginalDatasource= FALSE){
+  if ($keepOriginalDatasource == TRUE) {
     return $node_columns;
   }
+
   $columns = array();
   $database = RequestUtilities::get('datasource');
-  $datasource_mapping = ($datasource_mapping != null) ? get_object_vars($datasource_mapping) : null;
+  $datasource_mapping = ($datasource_mapping != null) ? get_object_vars($datasource_mapping) : NULL;
   if (isset($node_columns) && $node_columns) {
-    foreach($node_columns as $column){
-      if($datasource_mapping == null){
+    foreach ($node_columns as $column) {
+      if ($datasource_mapping == NULL) {
         $columns[] = _update_dataset_datasource($column);
-      }else{
-        if(!array_key_exists($column, $datasource_mapping)){
+      }
+      else {
+        if (!array_key_exists($column, $datasource_mapping)) {
           $columns[] = _update_dataset_datasource($column);
         }
-        else if($datasource_mapping[$column] == $database){
+        elseif ($datasource_mapping[$column] == $database) {
           $columns[] = _update_dataset_datasource($column);
         }
       }
@@ -1239,41 +1239,46 @@ function _update_columns_by_datasource($node_columns, $datasource_mapping = null
   return $columns;
 }
 
-function _get_current_datasource(){
+function _get_current_datasource() {
   $datasource = RequestUtilities::get('datasource');
-  if(isset($datasource)){
+  if (isset($datasource)) {
     return $datasource;
-  }else{
+  }
+  else {
     return _get_default_datasource();
   }
 }
 
-function _get_default_datasource(){
+function _get_default_datasource() {
   return Datasource::CITYWIDE;
 }
 
 function _widget_build_sql_condition($column, $value){
-  $values_array = explode('~',$value);
-  if(count($values_array) > 1){
+  $values_array = explode('~', $value);
+  if (count($values_array) > 1) {
     return  $column . ' in ' . '(\'' . implode('\',\'', $values_array) . '\')';
-  }else{
+  }
+  else {
     return  $column . '=' . '\'' . $value . '\'';
   }
 }
-function _widget_build_sql_not_condition($column, $value){
-  $values_array = explode('~',$value);
-  if(count($values_array) > 1){
+
+function _widget_build_sql_not_condition($column, $value) {
+  $values_array = explode('~', $value);
+  if (count($values_array) > 1) {
     return  $column . ' in ' . '(\'' . implode('\',\'', $values_array) . '\')';
-  }else{
+  }
+  else {
     return  $column . '!=' . '\'' . $value . '\'';
   }
 }
 
-function _widget_build_sql_add_null($column, $value){
-  $values_array = explode('~',$value);
-  if(count($values_array) > 1){
+function _widget_build_sql_add_null($column, $value) {
+  $values_array = explode('~', $value);
+  if (count($values_array) > 1) {
     return  $column . ' in ' . '(\'' . implode('\',\'', $values_array) . '\')';
-  }else{
+  }
+  else {
     return   '\'' . $value . '\''. ' AS '. $column;
   }
 }

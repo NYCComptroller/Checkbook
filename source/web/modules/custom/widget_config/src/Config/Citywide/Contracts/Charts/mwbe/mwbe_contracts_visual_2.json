@@ -127,11 +127,7 @@ $url = isset($refURL) ? $refURL: \\Drupal\\checkbook_infrastructure_layer\\Utili
 			$series_previous[] = $series_previous_temp[$category] ;
 		}
 	}
-	if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('yeartype',['q'=>$url]) == 'C'){
-				 $year_display = 'CY ';
-	}else{
-				$year_display = 'FY ' ;
-	}
+  $year_display = 'FY ' ;
 	$index = 0;
 	$node->widgetConfig->gridConfig->table_columns[1]->labelAlias = $year_display . ' ' .  ($year - 1);
 

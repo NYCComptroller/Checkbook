@@ -28,7 +28,7 @@
     {"label":"Prime Contract PIN","column":"prime_pin"},
     {"label":"Prime Contract APT PIN","column":"prime_apt_pin"},
     {"label":"% COVID Spending","column":"percent_covid_spending"},
-    {"label":"% Asylum Seekers Spending","column":"percent_asylum_spending"},
+    //{"label":"% Asylum Spending","column":"percent_asylum_spending"},
     {"label":"% Other Spending","column":"percent_other_spending"},
     {"label":"Sub Vendor","column":"sub_vendor_name_export"},
     {"label":"Sub Vendor M/WBE Category","column":"sub_minority_type_name_export"},

@@ -30,14 +30,7 @@
   "no_results_content":"No Results Found",
   "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
   "urlParamMap":{"year":"agreement_start_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id","industry":"industry_type_id"},
-  "widgetPreprocessJSON":"
-  if(preg_match('/pending/',\\Drupal::request()->query->get('q'))){
-  $node->widgetConfig->urlParamMap = $node->widgetConfig->urlParamMapPending;
-  $node->widgetConfig->defaultParameters = $node->widgetConfig->defaultParametersPending;
-  $node->widgetConfig->cleanURLParameters = $node->widgetConfig->cleanURLParametersPending;
-}",
-
-"chartTitle":"Year Comparison by Agreement Types",
+  "chartTitle":"Year Comparison by Agreement Types",
 "widgetDataLoader":"
       $where_filters = array();
       foreach($node->widgetConfig->requestParams as $param=>$value){

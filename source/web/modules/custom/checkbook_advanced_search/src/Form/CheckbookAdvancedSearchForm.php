@@ -34,12 +34,12 @@ use Drupal\Core\Render\Markup;
 use Drupal\data_controller\Common\Object\Converter\Handler\Json2PHPArray;
 use Exception;
 
-require_once(Drupal::service('extension.list.module')->getPath('checkbook_advanced_search') . "/src/Results/checkbook_advanced_search.inc");
-require_once(Drupal::service('extension.list.module')->getPath('checkbook_advanced_search') . "/src/Results/budget_advanced_search.inc");
-require_once(Drupal::service('extension.list.module')->getPath('checkbook_advanced_search') . "/src/Results/payroll_advanced_search.inc");
-require_once(Drupal::service('extension.list.module')->getPath('checkbook_advanced_search') . "/src/Results/revenue_advanced_search.inc");
-require_once(Drupal::service('extension.list.module')->getPath('checkbook_advanced_search') . "/src/Results/contracts_advanced_search.inc");
-require_once(Drupal::service('extension.list.module')->getPath('checkbook_advanced_search') . "/src/Results/spending_advanced_search.inc");
+require_once(dirname(__FILE__) . "/../Results/checkbook_advanced_search.inc");
+require_once(dirname(__FILE__) . "/../Results/budget_advanced_search.inc");
+require_once(dirname(__FILE__) . "/../Results/payroll_advanced_search.inc");
+require_once(dirname(__FILE__) . "/../Results/revenue_advanced_search.inc");
+require_once(dirname(__FILE__) . "/../Results/contracts_advanced_search.inc");
+require_once(dirname(__FILE__) . "/../Results/spending_advanced_search.inc");
 
 class CheckbookAdvancedSearchForm extends FormBase
 {

@@ -1,7 +1,7 @@
 name: 'Checkbook Project'
 description: 'Checkbook 2.0-specific code and overrides'
 package: 'Custom'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 dependencies:
   #checkbook_services: 'drupal:checkbook_services'
 scripts:

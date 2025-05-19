@@ -70,7 +70,7 @@
     "is_sub_women_owned",
     "is_sub_emerging",
     "percent_covid_spending",
-    "percent_asylum_spending",
+    //"percent_asylum_spending",
     "percent_other_spending"
   ],
   "logicalOrColumns":[
@@ -210,9 +210,9 @@
 "formatted_percent_covid":{
 "expression":"strtolower($row['vendor_record_type']) == 'sub vendor' || empty($row['event_id']) ? 'N/A' : ($row['event_id'] == 2 ? '0' : $row['percent_covid_spending'])"
 },
-"formatted_percent_asylum":{
+/*"formatted_percent_asylum":{
 "expression":"strtolower($row['vendor_record_type']) == 'sub vendor' || empty($row['event_id']) ? 'N/A' : ($row['event_id'] == 1 ? '0' : $row['percent_asylum_spending'])"
-},
+},*/
 "formatted_percent_other":{
 "expression":"strtolower($row['vendor_record_type']) == 'sub vendor' ? 'N/A' : $row['percent_other_spending']"
 }
@@ -247,7 +247,7 @@
 {"labelAlias":"pin","column":"tracking_number"},
 {"labelAlias":"apt_pin","column":"brd_awd_no"},
 {"labelAlias":"percent_covid_spending","column":"formatted_percent_covid"},
-{"labelAlias":"percent_asylum_spending","column":"formatted_percent_asylum"},
+//{"labelAlias":"percent_asylum_spending","column":"formatted_percent_asylum"},
 {"labelAlias":"percent_other_spending","column":"formatted_percent_other"},
 {"labelAlias":"sub_vendor_name","column":"subvendor_name"},
 {"labelAlias":"sub_mwbe_category","column":"sub_mwbe_category_name"},

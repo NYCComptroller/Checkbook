@@ -2,7 +2,7 @@ name: NYC Checkbook
 type: theme
 base theme: stable9
 description: 'NYC Checkbook Theme'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 
 libraries:
   - nyccheckbook/global-styling

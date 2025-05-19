@@ -209,16 +209,17 @@
             "column":"mwbe_category_name",
             "sourceColumn":"minority_type_id",
             "sql":"
-                case
-                when minority_type_id = 2 then 'Black American'
-                when minority_type_id = 3 then 'Hispanic American'
-                when minority_type_id = 6 THEN 'Native American'
-                when minority_type_id = 7 then 'Non-M/WBE'
-                when minority_type_id = 9 then 'Women (Non-Minority)'
-                when minority_type_id = 11 then 'Individuals and Others'
-                when minority_type_id = 99 THEN 'Emerging (Non-Minority)'
-                else 'Asian American'
-                end as minority_type_name
+                CASE
+                WHEN minority_type_id IN (4, 5, 10) THEN 'Asian American'
+                WHEN minority_type_id = 2 THEN 'Black American'
+                WHEN minority_type_id = 3 THEN 'Hispanic American'
+                WHEN minority_type_id = 6 THEN 'Native American'
+                WHEN minority_type_id = 7 THEN 'Non-M/WBE'
+                WHEN minority_type_id = 9 THEN 'Women (Non-Minority)'
+                WHEN minority_type_id = 11 THEN 'Individuals and Others'
+                WHEN minority_type_id = 99 THEN 'Emerging (Non-Minority)'
+                ELSE 'Others'
+                END AS minority_type_name
                 "
         },
         {
@@ -269,11 +270,6 @@
         $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
         return $adjustedParameters;
     ",
-    "summaryView":{
-        "template":"spending_date_summary",
-        "templateTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle();",
-        "catName":"return  \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getSpendingCategoryName();"
-    },
     "dataTableOptions":{
         "bRetrieve": true,
         "bServerSide": true,

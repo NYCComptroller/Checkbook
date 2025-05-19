@@ -636,7 +636,8 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
 
       list($isSubqueryRequired, $assembledJoinSections) = $joinStatement->prepareSections(NULL);
       $sql = Statement::assemble($isSubqueryRequired, NULL, $assembledJoinSections);
-    } else {
+    }
+    else {
       $sql = Statement::assemble($isSubqueryRequired, NULL, $assembledAggregationSections);
     }
 
@@ -645,7 +646,7 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
     // applying pagination
     $this->applyPagination($request, $sql);
 
-    // processing prepared sql and returning data
+    // Processing prepared sql and returning data.
     LogHelper::log_notice(new StatementLogMessage('cube.query', $sql));
 
     $cacheKey = $cubeName . md5($sql);
@@ -656,8 +657,6 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
     }
 
     //@ToDo
-    //var_dump($sql);
-    //die();
     StatementLogMessageKeeper::$statements['cube.query'][] = preg_replace('/\s+/', ' ', str_replace("\r","",str_replace("\n","",$sql)));
 
     $return = $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);

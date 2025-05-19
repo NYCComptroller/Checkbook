@@ -18,14 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(\Drupal::service('extension.list.module')->getPath('checkbook_project') . "/includes/checkbook_project.inc");
-require_once(\Drupal::service('extension.list.module')->getPath('checkbook_project') . "/includes/checkbook_database.inc");
+require_once(dirname(__FILE__) . "/../../checkbook_project/includes/checkbook_project.inc");
+require_once(dirname(__FILE__) . "/../../checkbook_project/includes/checkbook_database.inc");
 
 use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
 use Drupal\checkbook_log\LogHelper;
 use Drupal\checkbook_project\CommonUtilities\CustomURLHelper;
 use Drupal\checkbook_project\WidgetUtilities\WidgetUtil;
-
 
 /*************************************************************************************/
 /* Widget Hooks                                                                      */
@@ -367,7 +366,7 @@ function widget_data_tables_widget_view(&$node) {
       $node->widgetConfig->dataTableOptions->fnServerData= "##function ( sSource, aoData, fnCallback ) {
       aoData.push( {
       'name': 'data_type', 'value': 'json' } );".
-      "debugger;\$j".".ajax( {
+      "\$j".".ajax( {
       dataType: 'json',
       type: 'GET',
       url: sSource,

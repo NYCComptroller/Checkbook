@@ -7,8 +7,7 @@ use Drupal\checkbook_log\LogHelper;
 use Drupal\Core\File\FileSystemInterface;
 use Exception;
 
-class CheckbookApiRef
-{
+class CheckbookApiRef {
 
   /**
    * @var string
@@ -27,16 +26,14 @@ class CheckbookApiRef
 
   const CRON_LAST_RUN_DRUPAL_VAR = 'checkbook_api_ref_last_run';
 
-  public function get_date($format)
-  {
+  public function get_date($format) {
     return date($format, self::timeNow());
   }
 
   /**
    * @return int
    */
-  public function timeNow()
-  {
+  public function timeNow() {
     return time();
   }
 
@@ -45,8 +42,7 @@ class CheckbookApiRef
    * @param $message
    * @return array
    */
-  public function gatherData(&$message)
-  {
+  public function gatherData(&$message) {
     $result = self::generateRefFiles();
     $msg['body'] =
       [
@@ -56,18 +52,17 @@ class CheckbookApiRef
       ];
 
     $date = self::get_date('m-d-Y');
-    $CHECKBOOK_ENV = \Drupal::config('check_book')->get('CHECKBOOK_ENV') ?? null;
+    $CHECKBOOK_ENV = \Drupal::config('check_book')->get('CHECKBOOK_ENV') ?? NULL;
     $msg['subject'] = "[".$CHECKBOOK_ENV."] API Ref Files Generated: " . $this->successSubject . " ($date)";
     $message = array_merge($message, $msg);
-    $checkbook_dev_group_email = \Drupal::config('check_book')->get('checkbook_dev_group_email') ?? null;
+    $checkbook_dev_group_email = \Drupal::config('check_book')->get('checkbook_dev_group_email') ?? NULL;
     $message['to'] = $checkbook_dev_group_email;
     //var_dump($message['body']['files']);
     return $message;
   }
 
-// Process mysql results array and write to csv file
-  public function generateCsvFiles($csvfile,$result,$flag,$total_records,$force_quote=null)
-  {
+  // Process mysql results array and write to csv file
+  public function generateCsvFiles($csvfile,$result,$flag,$total_records,$force_quote = NULL) {
     //Get the column names.
     $columnNames = array();
     if (!empty($result) && $flag == 0) {
@@ -91,24 +86,23 @@ class CheckbookApiRef
     return($total_records);
   }
 
-  public function generateRefFiles()
-  {
-
+  public function generateRefFiles() {
+    // Default return.
     $return = [
-      'error' => false,
+      'error' => FALSE,
       'files' => [],
     ];
 
     ini_set('max_execution_time',60*60);
 
     $dir = \Drupal::state()->get('file_public_path','sites/default/files') . '/' . \Drupal::config('check_book')->get('data_feeds')['output_file_dir'];
-    if(!\Drupal::service('file_system')->preparedirectory($dir, \Drupal\Core\File\FileSystemInterface::CREATE_DIRECTORY)){
+    if (!\Drupal::service('file_system')->preparedirectory($dir, \Drupal\Core\File\FileSystemInterface::CREATE_DIRECTORY)) {
       $return['error'] = "Could not prepare directory $dir for generating reference data.";
       return $return;
     }
 
     $dir .= '/' . \Drupal::config('check_book')->get('ref_data_dir');
-    if(!\Drupal::service('file_system')->preparedirectory($dir, \Drupal\Core\File\FileSystemInterface::CREATE_DIRECTORY)){
+    if (!\Drupal::service('file_system')->preparedirectory($dir, \Drupal\Core\File\FileSystemInterface::CREATE_DIRECTORY)) {
       $return['error'] = "Could not prepare directory $dir for generating reference data.";
       return $return;
     }
@@ -135,7 +129,7 @@ class CheckbookApiRef
       if ($total_records <= 100000) {
         $result = _checkbook_project_execute_sql_by_data_source($ref_file->sql, $data_source);
         $file = fopen($new_file, 'w');
-        self::generateCsvFiles($file,$result,$flag,$total_records,$ref_file->force_quote[0]??null);
+        self::generateCsvFiles($file,$result,$flag,$total_records,$ref_file->force_quote[0] ?? NULL);
         fclose($file);
         unset($result);
       }
@@ -159,7 +153,7 @@ class CheckbookApiRef
       }
 
       $file_info = [];
-      $file_info['error'] = false;
+      $file_info['error'] = FALSE;
       $file_info['old_timestamp'] = file_exists($old_file) ? filemtime($old_file) : filemtime($new_file);
       if ($file_info['old_timestamp']) {
         $file_info['old_timestamp'] = date('Y-m-d', $file_info['old_timestamp']);
@@ -172,14 +166,14 @@ class CheckbookApiRef
         if ($file_info['new_filesize']) {
           $file_info['new_timestamp'] = date('Y-m-d', $file_info['new_timestamp']);
           if ($file_info['new_filesize'] !== $file_info['old_filesize']) {
-            $file_info['updated'] = true;
+            $file_info['updated'] = TRUE;
             if ('No changes' == $this->successSubject) {
               $this->successSubject = 'Updated';
             }
           }
           else {
             $file_info['info'] = 'New file is same as old one, no changes needed';
-            $file_info['updated'] = false;
+            $file_info['updated'] = FALSE;
             if(file_exists($old_file)){
               rename($old_file, $new_file);
             }
@@ -191,12 +185,13 @@ class CheckbookApiRef
             rename($old_file, $new_file);
           }
         }
-      } catch(Exception $ex){
+      }
+      catch (Exception $ex) {
         $file_info['error'] = "Error:".$ex->getMessage();
         $this->successSubject = 'Fail';
       }
 
-      if(file_exists($old_file)){
+      if (file_exists($old_file)) {
         unlink($old_file);
       }
 
@@ -208,48 +203,45 @@ class CheckbookApiRef
     return $return;
   }
 
-  public function api_ref_cron()
-  {
+  public function api_ref_cron() {
     //For cron timings details refer to https://tracker.reisystems.com/browse/NYCCHKBK-9894
     date_default_timezone_set('America/New_York');
 
     //always run cron for developer
-    $CHECKBOOK_ENV = \Drupal::config('check_book')->get('CHECKBOOK_ENV') ?? null;
+    $CHECKBOOK_ENV = \Drupal::config('check_book')->get('CHECKBOOK_ENV') ?? NULL;
 
-    $checkbook_dev_group_email = \Drupal::config('check_book')->get('checkbook_dev_group_email') ?? null;
+    $checkbook_dev_group_email = \Drupal::config('check_book')->get('checkbook_dev_group_email') ?? NULL;
     if (!isset($checkbook_dev_group_email)) {
-      return false;
+      return FALSE;
     }
 
     $today = self::get_date('Y-m-d');
     $monday_of_current_week = date('Y-m-d', strtotime("monday this week"));
-    $config = \Drupal::service('config.factory')->getEditable('variable_get_set.api');
-    $cron_last_run_week = new DateTime($config->get(self::CRON_LAST_RUN_DRUPAL_VAR));
-    $cron_last_run_week = $cron_last_run_week->format("W");
     $current_hour = (int)self::get_date('H');
     $first_monday_of_current_month = date('Y-m-d', strtotime("first monday of this month"));
 
     //If it is staging or production environment, then run cron only on the first monday of every month
     if (isset($CHECKBOOK_ENV) && ($CHECKBOOK_ENV === "PROD" || $CHECKBOOK_ENV === "STAGE") && $today !== $first_monday_of_current_month) {
-     return false;
+     return FALSE;
     }
 
     //If it is an internal environment, then run cron only once every Monday
     $internal_environments = array("DEV","QA","UAT");
     if (isset($CHECKBOOK_ENV) && in_array($CHECKBOOK_ENV, $internal_environments) && $today !== $monday_of_current_week) {
-      return false;
+      return FALSE;
     }
 
+    // Get config.
     $config = \Drupal::service('config.factory')->getEditable('variable_get_set.api');
+
     if ($config->get(self::CRON_LAST_RUN_DRUPAL_VAR) == $today) {
-      return false;
+      return FALSE;
     }
 
     if ($current_hour < 9 || $current_hour > 10) {
-      return false;
+      return FALSE;
     }
 
-    $config = \Drupal::service('config.factory')->getEditable('variable_get_set.api');
     $config->set(self::CRON_LAST_RUN_DRUPAL_VAR, $today);
     $config->save();
 
@@ -257,21 +249,21 @@ class CheckbookApiRef
   }
 
   /**
-     * @return bool
-     */
-    public function sendmail()
-    {
-      $from = \Drupal::config('system.site')->get('mail');
-      $checkbook_dev_group_email = \Drupal::config('check_book')->get('checkbook_dev_group_email') ?? null;
-      LogHelper::log_warn("checkbook_dev_group_email is: $checkbook_dev_group_email");
-      if (isset($checkbook_dev_group_email)) {
-        $to = $checkbook_dev_group_email;
-        try{
-          \Drupal::service('plugin.manager.mail')->mail('checkbook_api_ref', 'send-status', $to, null, array('dev_mode'=> false));
-        } catch(Exception $ex2){
-          LogHelper::log_error($ex2->getMessage());
-        }
+   * @return bool
+   */
+  public function sendmail() {
+    $from = \Drupal::config('system.site')->get('mail');
+    $checkbook_dev_group_email = \Drupal::config('check_book')->get('checkbook_dev_group_email') ?? NULL;
+    LogHelper::log_warn("checkbook_dev_group_email is: $checkbook_dev_group_email");
+    if (isset($checkbook_dev_group_email)) {
+      $to = $checkbook_dev_group_email;
+      try {
+        \Drupal::service('plugin.manager.mail')->mail('checkbook_api_ref', 'send-status', $to, NULL, array('dev_mode'=> FALSE));
       }
-      return true;
+      catch (Exception $ex2) {
+        LogHelper::log_error($ex2->getMessage());
+      }
     }
+    return TRUE;
+  }
 }

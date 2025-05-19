@@ -18,24 +18,23 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Common/Pattern/AbstractObject.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Common/Object/Comparator/Comparator.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Common/Object/Comparator/Handler/AbstractComparator.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Common/Object/Comparator/Handler/AbstractValueComparator.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Common/Object/Comparator/Handler/PropertyBasedComparator_DefaultSortingConfiguration.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Common/Object/Comparator/Handler/DefaultPropertyBasedComparator.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Common/Object/Exception/UnsupportedOperationException.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Datasource/Formatter/ResultFormatter.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Datasource/Formatter/Handler/SpecialCharacterResultFormatter.php');
 
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Common/Pattern/AbstractObject.php');
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Common/Object/Comparator/Comparator.php');
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Common/Object/Comparator/Handler/AbstractComparator.php');
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Common/Object/Comparator/Handler/AbstractValueComparator.php');
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Common/Object/Comparator/Handler/PropertyBasedComparator_DefaultSortingConfiguration.php');
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Common/Object/Comparator/Handler/DefaultPropertyBasedComparator.php');
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Common/Object/Exception/UnsupportedOperationException.php');
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Datasource/Formatter/ResultFormatter.php');
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) . '/src/Datasource/Formatter/Handler/SpecialCharacterResultFormatter.php');
-
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) .'/src/Common/Object/Converter/DataConverter.php');
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) .'/src/Common/Object/Converter/Handler/AbstractDataConverter.php');
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) .'/src/Common/Object/Converter/Handler/AbstractJson2PHP.php');
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) .'/src/Common/Object/Converter/Handler/PHP2Json.php');
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) .'/src/Common/Object/Converter/Handler/AbstractJson2PHP.php');
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) .'/src/Common/Object/Converter/Handler/Json2PHPArray.php');
-require_once(\Drupal::service('file_system')->realpath(\Drupal::service('extension.path.resolver')->getPath('module', 'data_controller')) .'/src/Common/Object/Converter/Handler/Json2PHPObject.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Common/Object/Converter/DataConverter.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Common/Object/Converter/Handler/AbstractDataConverter.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Common/Object/Converter/Handler/AbstractJson2PHP.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Common/Object/Converter/Handler/PHP2Json.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Common/Object/Converter/Handler/AbstractJson2PHP.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Common/Object/Converter/Handler/Json2PHPArray.php');
+require_once(dirname(__FILE__) . '/../../../../dashboard_platform_core/data_controller/src/Common/Object/Converter/Handler/Json2PHPObject.php');
 
 
 use Drupal\checkbook_infrastructure_layer\Utilities\FormattingUtilities;
@@ -63,7 +62,9 @@ function _widget_controller_node_load($key, $type='node'){
  */
 function _widget_controller_node_view($key){
     $viewName = WidgetController::getInstance()->getWidgetViewConfigName($key);
-    if(!isset($viewName)) return;
+    if (!isset($viewName)) {
+      return;
+    }
     $legacy_node_id = WidgetController::getInstance()->getWidgetLegacyNodeId($key);
     $param_config = WidgetController::getInstance()->getWidgetParamConfig($key);
     $node = _widget_controller_node_load_file($viewName);
@@ -129,9 +130,8 @@ function widget_controller_node_validate(&$node) {
 }
 
 function widget_controller_node_view($node, $nodata = true) {
-  if (isset($node->type)) {
-    if ($node->type != 'widget_controller')
-      return;
+  if (isset($node->type) && $node->type != 'widget_controller') {
+    return;
   }
 
 	//make sure configuration is loaded
@@ -143,33 +143,34 @@ function widget_controller_node_view($node, $nodata = true) {
 	//invoke widget specific prepare
 	widget_controller_invoke($node, 'widget_controller_prepare');
 
-	//load data
-	if(!isset($node->widgetConfig->noDataInitialLoad) || !$nodata ){
-	    widget_controller_data($node);
+	// Load data.
+	if (!isset($node->widgetConfig->noDataInitialLoad) || !$nodata ) {
+    widget_controller_data($node);
 	}
 
 	if (isset($node->error)) {
 		//dont call the specific module. Display generic error message and return
 		//message needs to be set on the widget configuration. not hardcoded.
 		$errorMsg = 'There was an error processing your request. Please try again in a few minutes.';
-		$node->content['body'] = array(
-                  '#value' => $errorMsg,
-                  '#weight' => 0,
-		);
+		$node->content['body'] = [
+      '#value' => $errorMsg,
+      '#weight' => 0,
+		];
 		return $node;
 	}
 
-	//invoke widget specific post-load function
-    widget_controller_invoke($node, 'widget_controller_data');
+	// Invoke widget specific post-load function.
+  widget_controller_invoke($node, 'widget_controller_data');
 
 	if (isset($node->widgetConfig->dataOnly) && $node->widgetConfig->dataOnly) {
 		$node->content['body'] = array(
 			'#value' => $node->data,
 			'#weight' => 0,
 		);
-	} else {
+	}
+  else {
 		$val = widget_controller_invoke($node, 'widget_controller_view');
-    if($val != false){
+    if ($val != FALSE) {
       $node->content['body'] = array(
         '#markup' => $val,
         '#weight' => 0,
@@ -197,7 +198,7 @@ function widget_controller_invoke(&$node, $hook, $a2 = NULL, $a3 = NULL, $a4 = N
 		if ($module == 'widget controller') {
 			$module = 'widget_controller_content'; // Avoid function name collisions.
 		}
-		$function = $module .'_'. $hook;
+		$function = $module . '_' . $hook;
 		return ($function($node, $a2, $a3, $a4));
 	}
 }
@@ -307,18 +308,16 @@ function load_widget_controller_data_count($node) {
  * @param $node
  */
 function widget_controller_data(&$node) {
+  // Prepare service.
+  $service = _widget_controller_load_data_service($node);
 
-    //Prepare service
-    $service = _widget_controller_load_data_service($node);
+  // Load widget data.
+  _load_widget_controller_data($node, $service);
 
-    //Load widget data
-    _load_widget_controller_data($node, $service);
-
-    //Format widget data
-  if(isset($node->data)) {
+  // Format widget data.
+  if (isset($node->data)) {
     $node->data = _widget_controller_format_widget_data($node, $service);
   }
-
 }
 
 
@@ -374,8 +373,7 @@ function _widget_controller_load_data_service($node) {
  * @param $service
  */
 function _load_widget_controller_data($node, $service) {
-
-    $results = null;
+    $results = NULL;
     $orderBy = _prepare_order_by($node);
     $limit = $node->widgetConfig->limit ?? null;
     $parameters = _prepare_input_parameters($node);
@@ -394,20 +392,18 @@ function _load_widget_controller_data($node, $service) {
         $results = $service->getWidgetData($parameters, $limit, $orderBy);
       }
     }
-    catch(Exception $e) {
-        LogHelper::log_error("Error getting data from the controller: \n" . $e->getMessage()/*, $e*/);
-        $node->error = $e;
-        return;
+    catch (Exception $e) {
+      LogHelper::log_error("Error getting data from the controller: \n" . $e->getMessage()/*, $e*/);
+      $node->error = $e;
+      return;
     }
-    if(isset($results)) {
+    if (isset($results)) {
       $node->data = $results;
     }
 
-  if(isset($results)) {
+  if (isset($results)) {
     $node->nodeAdjustedParamaterConfig = $parameters;
   }
-
-
 }
 
 /**
@@ -436,9 +432,9 @@ function _load_widget_controller_row_count($service, $parameters) {
  * @return mixed
  */
 function _widget_controller_footer_url($node) {
-    $parameters = _prepare_input_parameters($node);
-    $service = _widget_controller_load_data_service($node);
-    return $service->getWidgetFooterUrl($parameters);
+  $parameters = _prepare_input_parameters($node);
+  $service = _widget_controller_load_data_service($node);
+  return $service->getWidgetFooterUrl($parameters);
 }
 
 /**
@@ -449,7 +445,6 @@ function _widget_controller_footer_url($node) {
  * @throws Exception
  */
 function _widget_controller_format_widget_data($node, $service){
-
   $formatColumns = $tooltipColumns = $derivedColumns = [];
     if (isset($node->widgetConfig->table_columns)) {
       $formatColumns = array_filter($node->widgetConfig->table_columns,
@@ -466,40 +461,39 @@ function _widget_controller_format_widget_data($node, $service){
         });
     }
 
-    if((is_countable($formatColumns) && count($formatColumns) > 0) || (is_countable($tooltipColumns) && count($tooltipColumns) > 0) || (is_countable($derivedColumns) && count($derivedColumns) > 0)) {
-        foreach($node->data as $key=>&$columnArray) {
-
-            //Handle special characters
-            array_walk($columnArray, function (&$value) {
-                $value = htmlentities($value);
-            });
-            //formatting
-            foreach($formatColumns as $column) {
-                switch($column->format) {
-                    case "dollar":
-                        $node->data[$key][$column->column] = FormattingUtilities::custom_number_formatter_format($node->data[$key][$column->column],2,'$');
-                        break;
-                    case "date":
-                        $node->data[$key][$column->column] = FormattingUtilities::custom_date_format($node->data[$key][$column->column]);
-                        break;
-                    case "number":
-                        $node->data[$key][$column->column] = number_format((float)$node->data[$key][$column->column]);
-                        break;
-                    case "percent":
-                        $node->data[$key][$column->column] = number_format((float)$node->data[$key][$column->column],2) . '%';
-                        break;
-                }
-            }
-            //tooltip
-            foreach($tooltipColumns as $column) {
-                $node->data[$key][$column->column] = FormattingUtilities::_get_tooltip_markup($node->data[$key][$column->column], $column->tooltip);
-            }
-            //derived
-            $original_row = $node->data[$key];
-            foreach($derivedColumns as $column) {
-                $node->data[$key][$column->column] = $service->implementDerivedColumn($column->derivedColumn,$original_row);
-            }
+    if ((is_countable($formatColumns) && count($formatColumns) > 0) || (is_countable($tooltipColumns) && count($tooltipColumns) > 0) || (is_countable($derivedColumns) && count($derivedColumns) > 0)) {
+      foreach($node->data as $key=>&$columnArray) {
+        //Handle special characters
+        array_walk($columnArray, function (&$value) {
+            $value = htmlentities($value);
+        });
+        //formatting
+        foreach($formatColumns as $column) {
+          switch($column->format) {
+            case "dollar":
+              $node->data[$key][$column->column] = FormattingUtilities::custom_number_formatter_format($node->data[$key][$column->column],2,'$');
+              break;
+            case "date":
+              $node->data[$key][$column->column] = FormattingUtilities::custom_date_format($node->data[$key][$column->column]);
+              break;
+            case "number":
+              $node->data[$key][$column->column] = number_format((float)$node->data[$key][$column->column]);
+              break;
+            case "percent":
+              $node->data[$key][$column->column] = number_format((float)$node->data[$key][$column->column],2) . '%';
+              break;
+          }
         }
+        //tooltip
+        foreach($tooltipColumns as $column) {
+          $node->data[$key][$column->column] = FormattingUtilities::_get_tooltip_markup($node->data[$key][$column->column], $column->tooltip);
+        }
+        //derived
+        $original_row = $node->data[$key];
+        foreach($derivedColumns as $column) {
+          $node->data[$key][$column->column] = $service->implementDerivedColumn($column->derivedColumn,$original_row);
+        }
+      }
     }
     return $node->data;
 }

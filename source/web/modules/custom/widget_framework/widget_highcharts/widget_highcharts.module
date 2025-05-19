@@ -257,8 +257,8 @@ function widget_highcharts_widget_view(&$node)
       } else {
         // Grid View link display
         $gridViewLink = eval($node->widgetConfig->header);
-        //Check if there is data in chart datasets
-        if(isset($node->totalDataCount) && ($node->totalDataCount == 0) || (is_countable($node->data) && count($node->data) == 0) ){
+        // Check if there is data in chart datasets,
+        if (isset($node->totalDataCount) && ($node->totalDataCount == 0) || (is_countable($node->data) && count($node->data) == 0)) {
           $node->dataCount = 0;
         }
         $node->widgetConfig->gridViewLink = $gridViewLink;

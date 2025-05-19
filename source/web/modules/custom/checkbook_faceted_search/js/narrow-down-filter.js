@@ -82,7 +82,7 @@ function filterWidgetAutocomplete(container) {
       let nid = jQuery(this.element).attr("nodeid");
       let filter_column = jQuery("#node-widget-" + nid).find('input.autocomplete').attr('autocomplete_param_name');
 
-      let request_term = jQuery.trim(request.term);
+      let request_term = (request.term).trim();
       if(request_term === ''){
         respone(["No Matches Found"]);
         return true;

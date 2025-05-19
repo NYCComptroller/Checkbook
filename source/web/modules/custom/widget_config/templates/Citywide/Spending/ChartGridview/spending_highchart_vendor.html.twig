@@ -19,7 +19,7 @@
     {% if node.data %}
       {% for datarow in node.data %}
             <tr>
-            <td><div>{{ datarow.vendor_vendor_legal_name }}</div></td>
+            <td><div>{{ datarow.vendor_vendor_legal_name |raw }}</div></td>
             <td>{{ datarow.check_amount_sum }}</td>
             <td>&nbsp;</td>
             </tr>

@@ -281,7 +281,7 @@ class FacetUtil
         $id = $value[0];
         $name = $value[1];
         $count = $value[2];
-        if($id == 4 || $id == 5){
+        if($id == 4 || $id == 5 || $id == 10){
           $asian_american_count = $asian_american_count + $count;
           unset($variables['unchecked'][$key]);
         }
@@ -296,7 +296,7 @@ class FacetUtil
       }
 
       if($asian_american_count > 0) {
-        array_push($variables['unchecked'],array("4~5","Asian American",$asian_american_count));
+        array_push($variables['unchecked'],array("4~5~10","Asian American",$asian_american_count));
         usort($variables['unchecked'],
           function($a, $b)
           {
@@ -316,7 +316,7 @@ class FacetUtil
           $id = $value[0];
           $name = $value[1];
           $count = $value[2];
-          if($id == 4 || $id == 5){
+          if($id == 4 || $id == 5 || $id == 10){
             $asian_american_count = $asian_american_count + $count;
             unset($variables['checked'][$key]);
           }
@@ -331,7 +331,7 @@ class FacetUtil
         }
 
       if($asian_american_count > 0) {
-        array_push($variables['checked'],array("4~5","Asian American",$asian_american_count));
+        array_push($variables['checked'],array("4~5~10","Asian American",$asian_american_count));
         usort($variables['checked'],
           function($a, $b)
           {
@@ -361,9 +361,9 @@ class FacetUtil
       }
       if(isset($variables['checked']) && $variables['checked']) {
         foreach ($variables['checked'] as $key => $value) {
-          if ($value[0] == 4 || $value[0] == 5) {
+          if ($value[0] == 4 || $value[0] == 5 || $value[0] == 10) {
             $count = $count + $value[2];
-            $id = "4~5";
+            $id = "4~5~10";
             unset($variables['checked'][$key]);
           } else {
             array_push($variables['checked'], array($value[0], MappingUtil::getMinorityCategoryById($value[0], true), $value[2]));

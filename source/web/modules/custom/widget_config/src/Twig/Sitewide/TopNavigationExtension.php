@@ -256,7 +256,7 @@ class TopNavigationExtension extends AbstractExtension
       );
     }
 
-    if ($svendor_amount == 0 && (isset($svendor_amount_active_inc) && $svendor_amount_active_inc == 0)) {
+    if (empty($svendor_amount) && empty($svendor_amount_active_inc)) {
       if (str_contains($currentPageUrl, 'contract') && !Datasource::isOGE() && ContractUtil::checkStatusOfSubVendorByPrimeCounts()) {
         $dashboard = (isset($featured_dashboard) && $featured_dashboard == 'mp') ? 'sp' : 'ss';
         $svendor_active_domain_link = ContractURLHelper::prepareSubvendorContractsSliderFilter($svendor_active_domain_link, $dashboard, ContractURLHelper::thirdBottomSliderValue());
@@ -268,7 +268,7 @@ class TopNavigationExtension extends AbstractExtension
 
       } else {
         $subvendors_link = array(
-          'link' => false,
+          'link' => FALSE,
           'dollar_amount' => FormattingUtilities::custom_number_formatter_format(0, 1, '$')
         );
       }
@@ -322,7 +322,7 @@ class TopNavigationExtension extends AbstractExtension
       'mwbe' => [
         'label' => RequestUtil::getDashboardTopNavTitle("mwbe"),
         'dollar_amount' => $mwbe_link['dollar_amount'],
-        'link' => str_replace(["'", '"'], ['%27', '%22'], Xss::filter('/' . ltrim($mwbe_link['link'],"/"))),
+        'link' => !empty($mwbe_link['link']) ? str_replace(["'", '"'], ['%27', '%22'], Xss::filter('/' . ltrim($mwbe_link['link'],"/"))) : '',
         'active' => $mwbeclass,
         'menu' => _checkbook_check_isEDCPage() ? false : $mwbe_filters,
         'indicator' => $featured_dashboard == "mp" || $featured_dashboard == "ms"
@@ -330,7 +330,7 @@ class TopNavigationExtension extends AbstractExtension
       'sub_vendors' => [
         'label' => RequestUtil::getDashboardTopNavTitle("subvendor"),
         'dollar_amount' => $subvendors_link['dollar_amount'],
-        'link' => str_replace(["'", '"'], ['%27', '%22'], Xss::filter('/' . ltrim($subvendors_link['link'],"/"))),
+        'link' => !empty($subvendors_link['link']) ? str_replace(["'", '"'], ['%27', '%22'], Xss::filter('/' . ltrim($subvendors_link['link'],"/"))) : '',
         'active' => $svclass,
         'menu' => _checkbook_check_isEDCPage() ? false : $svendor_filters,
         'indicator' => $featured_dashboard == "sp" || $featured_dashboard == "ss"

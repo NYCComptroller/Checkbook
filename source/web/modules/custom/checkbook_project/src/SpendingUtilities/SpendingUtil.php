@@ -61,8 +61,7 @@ class SpendingUtil
    * @param array $columns
    * @return array|null
    */
-  public static function getSpendingCategoryDetails($categoryId, $columns = array('spending_category_id', 'display_name'))
-  {
+  public static function getSpendingCategoryDetails($categoryId, $columns = array('spending_category_id', 'display_name')) {
     if (!isset($categoryId)) {
       return NULL;
     }
@@ -445,54 +444,55 @@ class SpendingUtil
     return false;
   }
 
-  public static function subvendorStaticText($node)
-  {
+  public static function subvendorStaticText($node) {
     $agency = RequestUtilities::getTransactionsParams('agency');
     $year = RequestUtilities::getTransactionsParams('year');
     $yearType =RequestUtilities::getTransactionsParams('yeartype');
     $where_filters = array();
-    //var_dump($node->widgetConfig->requestParams);
+
     foreach ($node->widgetConfig->requestParams as $param => $value) {
       $where_filters[] = _widget_build_sql_condition('s0.' . $param, $value);
     }
-      if (count($where_filters) > 0) {
-        $where_filter = ' where ' . implode(' and ', $where_filters);
-      }
-      $sql = "SELECT j1.agency_name AS agency_agency_agency_name,
-       j.yeartype_yeartype,
-       j.year_year,
-       j.agency_agency,
-       j.sub_vendor_count,
-       j.ytd_spending_sub_vendors,
-       j.ytd_spending_vendors,
-       r2.check_amount_sum_checkbook_spending_data,
-       r2.check_amount_sum_no_payroll_checkbook_spending_data
-  FROM (SELECT s0.type_of_year AS yeartype_yeartype,
-               s0.year_id AS year_year,
-               s0.agency_id AS agency_agency,
-               COUNT(DISTINCT vendor_id) AS sub_vendor_count,
-               SUM(total_spending_amount) AS ytd_spending_sub_vendors,
-               SUM(total_spending_amount) AS ytd_spending_vendors
-          FROM aggregateon_subven_spending_coa_entities s0".
-         $where_filter."
-         GROUP BY s0.agency_id, s0.year_id, s0.type_of_year) j
-       LEFT OUTER JOIN (SELECT s0.agency_id AS agency_checkbook_spending_data_agency,
-                               s0.year_id AS year_checkbook_spending_data_year,
-                               s0.type_of_year AS yeartype_checkbook_spending_data_yeartype,
-                               SUM(total_spending_amount) AS check_amount_sum_checkbook_spending_data,
-                               SUM(CASE WHEN spending_category_id !=2 THEN total_spending_amount ELSE 0 END) AS check_amount_sum_no_payroll_checkbook_spending_data
-                          FROM aggregateon_spending_coa_entities s0
-                         WHERE s0.agency_id = ".$agency."
-                           AND s0.year_id = ".$year."
-                           AND s0.type_of_year = '".$yearType."'
-                         GROUP BY s0.agency_id, s0.year_id, s0.type_of_year) r2 ON r2.agency_checkbook_spending_data_agency = j.agency_agency AND r2.year_checkbook_spending_data_year = j.year_year AND r2.yeartype_checkbook_spending_data_yeartype = j.yeartype_yeartype
-       LEFT OUTER JOIN ref_agency j1 ON j1.agency_id = j.agency_agency
-       ORDER BY ytd_spending_sub_vendors DESC
-       LIMIT 1";
 
-      $node->data = _checkbook_project_execute_sql($sql, 'main', 'checkbook');
-      $node->data['sub_vendors_percent_paid'] = self::calculatePercent($node->data[0]['ytd_spending_sub_vendors'], $node->data[0]['check_amount_sum_no_payroll_checkbook_spending_data']);
-      return $node;
+    if (count($where_filters) > 0) {
+      $where_filter = ' where ' . implode(' and ', $where_filters);
     }
+
+    $sql = "SELECT j1.agency_name AS agency_agency_agency_name,
+     j.yeartype_yeartype,
+     j.year_year,
+     j.agency_agency,
+     j.sub_vendor_count,
+     j.ytd_spending_sub_vendors,
+     j.ytd_spending_vendors,
+     r2.check_amount_sum_checkbook_spending_data,
+     r2.check_amount_sum_no_payroll_checkbook_spending_data
+FROM (SELECT s0.type_of_year AS yeartype_yeartype,
+             s0.year_id AS year_year,
+             s0.agency_id AS agency_agency,
+             COUNT(DISTINCT vendor_id) AS sub_vendor_count,
+             SUM(total_spending_amount) AS ytd_spending_sub_vendors,
+             SUM(total_spending_amount) AS ytd_spending_vendors
+        FROM aggregateon_subven_spending_coa_entities s0".
+       $where_filter."
+       GROUP BY s0.agency_id, s0.year_id, s0.type_of_year) j
+     LEFT OUTER JOIN (SELECT s0.agency_id AS agency_checkbook_spending_data_agency,
+                             s0.year_id AS year_checkbook_spending_data_year,
+                             s0.type_of_year AS yeartype_checkbook_spending_data_yeartype,
+                             SUM(total_spending_amount) AS check_amount_sum_checkbook_spending_data,
+                             SUM(CASE WHEN spending_category_id !=2 THEN total_spending_amount ELSE 0 END) AS check_amount_sum_no_payroll_checkbook_spending_data
+                        FROM aggregateon_spending_coa_entities s0
+                       WHERE s0.agency_id = ".$agency."
+                         AND s0.year_id = ".$year."
+                         AND s0.type_of_year = '".$yearType."'
+                       GROUP BY s0.agency_id, s0.year_id, s0.type_of_year) r2 ON r2.agency_checkbook_spending_data_agency = j.agency_agency AND r2.year_checkbook_spending_data_year = j.year_year AND r2.yeartype_checkbook_spending_data_yeartype = j.yeartype_yeartype
+     LEFT OUTER JOIN ref_agency j1 ON j1.agency_id = j.agency_agency
+     ORDER BY ytd_spending_sub_vendors DESC
+     LIMIT 1";
+
+    $node->data = _checkbook_project_execute_sql($sql, 'main', 'checkbook');
+    $node->data['sub_vendors_percent_paid'] = self::calculatePercent($node->data[0]['ytd_spending_sub_vendors'], $node->data[0]['check_amount_sum_no_payroll_checkbook_spending_data']);
+    return $node;
+  }
 
 }

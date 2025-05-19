@@ -41,33 +41,38 @@ class WidgetControllerFilterBlock extends BlockBase {
   public function build() {
     $expandBottomContURL = \Drupal::request()->get('expandBottomContURL');
     $current_route = \Drupal::routeMatch()->getRouteName();
-    if(!isset($expandBottomContURL)) {
+    if (!isset($expandBottomContURL)) {
       $widget_id = $this->configuration['widget_id'] ?? NULL;
       $php_setting = $this->configuration['php_setting'] ?? NULL;
       if (isset($widget_id) && !empty($widget_id)) {
         $result = _widget_controller_node_view($widget_id);
-      } else if (isset($php_setting) && !empty($php_setting)) {
+      }
+      elseif (isset($php_setting) && !empty($php_setting)) {
         $result = _widget_controller_node_view($this->runWidgetControllerWidgetPhp($php_setting));
       }
       if (isset($result) && !empty($result)) {
         return [
           '#markup' => $result,
           '#cache' => ['contexts' => ['url.path', 'url.query_args']]
-          ];
-      } else if (str_contains($current_route, 'layout_builder.')) {
+        ];
+      }
+      elseif (str_contains($current_route, 'layout_builder.')) {
         return [
           '#markup' => "Widget Controller Block for <br> $widget_id $php_setting",
         ];
-      } else {
+      }
+      else {
         return [
           '#markup' => "",
         ];
       }
-    } else if (str_contains($current_route, 'layout_builder.')) {
+    }
+    elseif (str_contains($current_route, 'layout_builder.')) {
       return [
         '#markup' => "expandBottomContURL is set, so no display",
       ];
-    } else {
+    }
+    else {
       return [
         '#markup' => "",
       ];

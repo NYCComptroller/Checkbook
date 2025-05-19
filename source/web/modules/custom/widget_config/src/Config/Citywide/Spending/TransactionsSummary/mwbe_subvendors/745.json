@@ -27,7 +27,7 @@
         "industry_type_id",
         "minority_type_id"
     ],
-    "WidgetTitleEval":"return SpendingUtil::getTransactionPageTitle('Checks');",
+    "WidgetTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Checks');",
     "adjustParameters":"
         $yearType = $parameters['year_type'][0];
         $year = $parameters['year_id'][0];

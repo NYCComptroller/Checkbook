@@ -109,7 +109,7 @@ use Drupal\Core\Ajax\ReplaceCommand;
       '#link_expire_date' => date("m-d-Y", strtotime($link_expire_date)),
     ];
 
-    $msg = \Drupal::service('renderer')->renderPlain($renderable);
+    $msg = \Drupal::service('renderer')->renderInIsolation($renderable);
 
     $params['message'] = $msg;
     $params['title'] = "Checkbook NYC Alert Activation";
@@ -508,7 +508,7 @@ function checkbook_alerts_create_alert_results_ajax_back_button($form, &$form_st
     '#link_expire_date' => date("m-d-Y", strtotime($link_expire_date)),
   ];
 
-  $msg = \Drupal::service('renderer')->renderPlain($renderable);
+  $msg = \Drupal::service('renderer')->renderInIsolation($renderable);
 
   $params['message'] = $msg;
   $params['title'] = "Checkbook NYC Alert Activation";

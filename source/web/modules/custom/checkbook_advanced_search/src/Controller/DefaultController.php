@@ -25,7 +25,8 @@ use Drupal\checkbook_infrastructure_layer\Utilities\FormattingUtilities;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\Response;
 
-require_once(Drupal::service('extension.list.module')->getPath('checkbook_advanced_search') . "/src/Results/checkbook_advanced_search.inc");
+require_once(dirname(__FILE__) . "/../Results/checkbook_advanced_search.inc");
+
 /**
  * Default controller for the checkbook_advanced_search module.
  */

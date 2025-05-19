@@ -52,7 +52,6 @@ echo '<div class=\"chart-right\">
 "urlParamMapSubVendor":{"year":"year_id","yeartype":"type_of_year","agency":"agency_id","vendor":"prime_vendor_id","category":"spending_category_id","industry":"industry_type_id"},
 "chartTitle":"Sub Spending by M/WBE Share",
 "widgetDataLoader":"
-
     $where_filters = array();
     foreach($node->widgetConfig->requestParams as $param=>$value){
         $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
@@ -81,6 +80,9 @@ echo '<div class=\"chart-right\">
 	$mwbe_data = array();
 	 foreach ($node->data as $row){
 	 	switch($row['minority_type_id']){
+      case '1':
+      $mwbe_data['oa'] += $row['total_spending'];
+      break;
 	 		case '2':
 	 		$mwbe_data['ba'] += $row['total_spending'];
 	 		break;
@@ -92,8 +94,10 @@ echo '<div class=\"chart-right\">
 	 		break;
 	 		case '5':
 	 		$mwbe_data['aa'] += $row['total_spending'];
+      case '10':
+      $mwbe_data['aa'] += $row['total_spending'];
 	 		break;
-            case '6':
+      case '6':
 	 		$mwbe_data['na'] += $row['total_spending'];
 	 		break;
 	 		case '7':
@@ -113,15 +117,15 @@ echo '<div class=\"chart-right\">
 
   if(isset($row['total_spending']) && $row['total_spending'] != null){
 
-$total_mwbe = $mwbe_data['ba'] + $mwbe_data['ha'] + $mwbe_data['aa'] + $mwbe_data['w'] + $mwbe_data['em'] + $mwbe_data['na'];
+$total_mwbe = $mwbe_data['oa']+$mwbe_data['ba'] + $mwbe_data['ha'] + $mwbe_data['aa'] + $mwbe_data['w'] + $mwbe_data['em'] + $mwbe_data['na'];
 $toal_non_mwbe = $mwbe_data['nm'];
 
 $mwbe_filter = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities:: getRequestParamValue('mwbe');
 
 $amount_column = 'total_mwbe';
 switch($mwbe_filter){
-case '4~5':
-case '4': case '5': $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['aa']/($toal_non_mwbe + $total_mwbe) *100, 1, null, '%') ;
+case '4~5~10':
+case '4': case '5': case '10': $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['aa']/($toal_non_mwbe + $total_mwbe) *100, 1, null, '%') ;
 break;
 case '2': $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['ba']/($toal_non_mwbe + $total_mwbe) *100, 1, null, '%') ;
 break;
@@ -133,9 +137,9 @@ case '9': $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\
 break;
 case '99': $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($mwbe_data['em']/( $toal_non_mwbe+ $total_mwbe) *100, 1, null,'%') ;
 break;
-case '2~3~4~5~9': $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($total_mwbe/($toal_non_mwbe + $total_mwbe) *100, 1, null, '%') ;
+case '1~2~3~4~5~10~9': $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($total_mwbe/($toal_non_mwbe + $total_mwbe) *100, 1, null, '%') ;
 break;
-case '2~3~4~5~6~9~99' : $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($total_mwbe/($toal_non_mwbe + $total_mwbe) *100, 1, null, '%') ;
+case '1~2~3~4~5~10~6~9~99' : $node->mwbe_share_percent = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities:: custom_number_formatter_format($total_mwbe/($toal_non_mwbe + $total_mwbe) *100, 1, null, '%') ;
 break;
 }
 

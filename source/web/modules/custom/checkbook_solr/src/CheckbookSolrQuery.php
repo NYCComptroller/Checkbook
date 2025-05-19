@@ -22,7 +22,7 @@ namespace Drupal\checkbook_solr;
 
 use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
 
-require_once(\Drupal::service('extension.list.module')->getPath('checkbook_smart_search') . "/includes/checkbook_autocomplete_functions.inc");
+require_once(dirname(__FILE__) . "/../../checkbook_smart_search/includes/checkbook_autocomplete_functions.inc");
 
 /**
  * Class CheckbookSolrQuery

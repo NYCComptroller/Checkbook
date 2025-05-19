@@ -329,7 +329,7 @@ class CheckbookAlertsHelper {
       '#theme' => 'checkbook_alerts_email_theme',
       '#alerts' => $alerts,
     ];
-    $msg = \Drupal::service('renderer')->renderPlain($renderable);
+    $msg = \Drupal::service('renderer')->renderInIsolation($renderable);
 
     $params['message'] = $msg;
     $params['title'] = "Checkbook NYC Alert";

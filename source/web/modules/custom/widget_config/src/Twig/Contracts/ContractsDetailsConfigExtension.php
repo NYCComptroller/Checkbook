@@ -63,13 +63,14 @@ class ContractsDetailsConfigExtension extends AbstractExtension
   }
 
   public function contracts_details_mma_master_agreement($node) {
-    if ( RequestUtilities::get("datasource") == "checkbook_oge" && !preg_match('/newwindow/',\Drupal::request()->query->get('q')) && $node->data_source_amounts_differ) {
+    if (RequestUtilities::get('datasource') == 'checkbook_oge' && !preg_match('/newwindow/', \Drupal::request()->query->get('q')) && $node->data_source_amounts_differ) {
       $alt_txt = "This master agreement has additional information as a prime vendor.<br><br> Click this icon to view this contract as a prime vendor. ";
-      $url="/contract_details/magid/" .  RequestUtilities::getTransactionsParams("magid") . "/doctype/MMA1/newwindow";
+      $url = "/contract_details/magid/" . RequestUtilities::getTransactionsParams('magid') . "/datasource/checkbook_oge/doctype/MMA1/newwindow";
       return  "<div class='contractLinkNote contractIcon'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' >Open in New Window</a></div>";
-    }elseif( !preg_match('/newwindow/',\Drupal::request()->query->get('q')) && EdcUtilities::_checkbook_is_oge_parent_contract($node->data[0]['contract_number'])  && $node->data_source_amounts_differ){
+    }
+    elseif (!preg_match('/newwindow/', \Drupal::request()->query->get('q')) && EdcUtilities::_checkbook_is_oge_parent_contract($node->data[0]['contract_number']) && $node->data_source_amounts_differ) {
       $alt_txt = "This master agreement has additional information as an agency <br><br> Click this icon to view this contract as an agency ";
-      $url="/contract_details/magid/" .  RequestUtilities::getTransactionsParams("magid") . "/doctype/MMA1/datasource/checkbook_oge/newwindow";
+      $url = "/contract_details/magid/" .  RequestUtilities::getTransactionsParams('magid') . "/doctype/MMA1/datasource/checkbook_oge/newwindow";
       return "<div class='contractLinkNote contractIcon'><a class='new_window' href='". $url ."' alt='" . $alt_txt . "' >Open in New Window</a></div>";
     }
   }
@@ -969,9 +970,11 @@ class ContractsDetailsConfigExtension extends AbstractExtension
   }
 
   public function contracts_ca_details_spending_link($node) {
-    $results = $this->_contracts_ca_details_spending_results($node);
-    $label = '% of contract expenses budgeted for Covid or Asylum Seekers';
-    echo $results ? '<a href="#" class="contracts-details-spending-link">' . $label . '</a>' : '<span class="contracts-details-spending-link">' . $label . '</span>';
+    if(Datasource::getCurrent() != Datasource::CITYWIDE && !_checkbook_check_isEDCPage()) {
+      $results = $this->_contracts_ca_details_spending_results($node);
+      $label = '% of contract expenses budgeted for Covid or Asylum Seekers';
+      echo $results ? '<a href="#" class="contracts-details-spending-link">' . $label . '</a>' : '<span class="contracts-details-spending-link">' . $label . '</span>';
+    }
   }
 
   public function contracts_ca_details_spending_table($node) {
@@ -1044,7 +1047,7 @@ class ContractsDetailsConfigExtension extends AbstractExtension
 
   public function _contracts_ca_details_spending_results($node) {
     // Execute the query only for Citywide
-    if (!_checkbook_check_isEDCPage() && !empty($node->data[0]['contract_number'])) {
+    if (Datasource::getCurrent() != Datasource::CITYWIDE && !_checkbook_check_isEDCPage() && !empty($node->data[0]['contract_number'])) {
       $query = "SELECT contract_number, budget_category, spending_amount, maximum_contract_amount, percent_spent
                 FROM event_contracts_spending WHERE contract_number = '" . $node->data[0]['contract_number'] . "'";
       return _checkbook_project_execute_sql_by_data_source($query, Datasource::getCurrent());

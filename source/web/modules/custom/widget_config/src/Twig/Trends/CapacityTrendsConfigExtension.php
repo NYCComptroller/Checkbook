@@ -455,11 +455,11 @@ class CapacityTrendsConfigExtension extends AbstractExtension
         $amount_class = " amount-" . $row['amount_display_type'];
       }
 
-      $sup_script = ($row['amount_display_type'] == 'G') ? "<sup class='endItem'>(1)</sup>" : "<sup class='endItem' style='visibility: hidden;'>(1)</sup>";
+      $sup_script = ($row['amount_display_type'] == 'G') ? "<sup class='endItem'>(1)</sup>" : "";
 
       $amount_class .= ' number';
       echo "<tr>
-			    <td class='text " . $cat_class . "' ><div>" . (isset($row['category'])?$row['category']:'&nbsp;') . "</div></td>";
+			    <td class='text " . $cat_class . "' ><div>" . (isset($row['category']) ? $row['category'] : '&nbsp;') . "</div></td>";
       foreach ($years as $year){
         if(isset($row[$year]['assesed_value_million_amount'])){
           if($row[$year]['assesed_value_million_amount'] == -1) {

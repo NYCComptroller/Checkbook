@@ -49,7 +49,7 @@
                         "parent_contract_id":"master_contract_number_export",
                         "prime_contract_apt_pin":"prime_apt_pin",
                         "percent_covid_spending":"percent_covid_spending",
-                        "percent_asylum_spending":"percent_asylum_spending",
+                        //"percent_asylum_spending":"percent_asylum_spending",
                         "percent_other_spending":"percent_other_spending",
                         "prime_contract_award_method":"award_method_name",
                         "prime_contract_current_amount":"prime_maximum_contract_amount",
@@ -117,7 +117,7 @@
                         "prime_woman_owned_business":"prime_woman_owned_business",
                         "prime_emerging_business": "prime_emerging_business",
                         "percent_covid_spending":"percent_covid_spending",
-                        "percent_asylum_spending":"percent_asylum_spending",
+                        //"percent_asylum_spending":"percent_asylum_spending",
                         "percent_other_spending":"percent_other_spending",
                         "sub_vendor":"sub_vendor",
                         "sub_vendor_mwbe_category":"sub_vendor_mwbe_category",
@@ -162,7 +162,7 @@
                         "prime_woman_owned_business",
                         "prime_emerging_business",
                         "percent_covid_spending",
-                        "percent_asylum_spending",
+                        //"percent_asylum_spending",
                         "percent_other_spending",
                         "sub_vendor",
                         "sub_vendor_mwbe_category",
@@ -188,7 +188,7 @@
                         "Parent Contract ID":"master_contract_number_export",
                         "Prime Contract APT PIN":"prime_apt_pin",
                         "% Covid Spending": "percent_covid_spending",
-                        "% Asylum Seekers Spending": "percent_asylum_spending",
+                        //"% Asylum Spending": "percent_asylum_spending",
                         "% Other Spending": "percent_other_spending",
                         "Prime Contract Award Method":"award_method_name",
                         "Prime Contract Current Amount":"prime_maximum_contract_amount",
@@ -254,7 +254,7 @@
                         "Prime Contract PIN":                            "Prime Contract PIN",
                         "Prime Contract APT PIN":                    "Prime Contract APT PIN",
                         "% Covid Spending":                                "% Covid Spending",
-                        "% Asylum Seekers Spending":              "% Asylum Seekers Spending",
+                        //"% Asylum Spending":                              "% Asylum Spending",
                         "% Other Spending":                                "% Other Spending",
                         "Prime Woman Owned Business":            "Prime Woman Owned Business",
                         "Prime Emerging Business":                  "Prime Emerging Business",
@@ -317,7 +317,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"15"
+                "maxLength":"20"
             },
             "industry":{
                 "valueType":"value",
@@ -382,7 +382,7 @@
                         "parent_contract_id":"master_contract_number_export",
                         "prime_contract_apt_pin":"prime_apt_pin",
                         "percent_covid_spending": "percent_covid_spending",
-                        "percent_asylum_spending":"percent_asylum_spending",
+                        //"percent_asylum_spending":"percent_asylum_spending",
                         "percent_other_spending":"percent_other_spending",
                         "prime_contract_award_method":"award_method_name",
                         "prime_contract_current_amount":"prime_maximum_contract_amount",
@@ -447,7 +447,7 @@
                         "prime_contract_pin":"prime_contract_pin",
                         "prime_contract_apt_pin":"prime_contract_apt_pin",
                         "percent_covid_spending": "percent_covid_spending",
-                        "percent_asylum_spending":"percent_asylum_spending",
+                        //"percent_asylum_spending":"percent_asylum_spending",
                         "percent_other_spending":"percent_other_spending",
                         "prime_woman_owned_business":"prime_woman_owned_business",
                         "prime_emerging_business": "prime_emerging_business",
@@ -492,7 +492,7 @@
                         "prime_contract_pin",
                         "prime_contract_apt_pin",
                         "percent_covid_spending",
-                        "percent_asylum_spending",
+                        //"percent_asylum_spending",
                         "percent_other_spending",
                         "prime_woman_owned_business",
                         "prime_emerging_business",
@@ -520,7 +520,7 @@
                         "Parent Contract ID":"master_contract_number_export",
                         "Prime Contract APT PIN":"prime_apt_pin",
                         "% Covid Spending": "percent_covid_spending",
-                        "% Asylum Seekers Spending": "percent_asylum_spending",
+                        //"% Asylum Spending": "percent_asylum_spending",
                         "% Other Spending": "percent_other_spending",
                         "Prime Contract Award Method":"award_method_name",
                         "Prime Contract Current Amount":"prime_maximum_contract_amount",
@@ -585,7 +585,7 @@
                         "Prime Contract PIN":                            "Prime Contract PIN",
                         "Prime Contract APT PIN":                    "Prime Contract APT PIN",
                         "% Covid Spending":                                "% Covid Spending",
-                        "% Asylum Seekers Spending":              "% Asylum Seekers Spending",
+                        //"% Asylum Spending":                              "% Asylum Spending",
                         "% Other Spending":                                "% Other Spending",
                         "Prime Woman Owned Business":            "Prime Woman Owned Business",
                         "Prime Emerging Business":                  "Prime Emerging Business",
@@ -696,7 +696,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"15"
+                "maxLength":"20"
             },
             "industry":{
                 "valueType":"value",
@@ -908,7 +908,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"15"
+                "maxLength":"20"
             },
             "industry":{
                 "valueType":"value",
@@ -1111,7 +1111,7 @@
             "mwbe_category":{
                 "valueType":"range",
                 "dataType":"text",
-                "maxLength":"15"
+                "maxLength":"20"
             },
             "industry":{
                 "valueType":"value",
@@ -1171,7 +1171,7 @@
                         "parent_contract_id":"master_contract_number_export",
                         "prime_contract_apt_pin":"prime_apt_pin",
                         "percent_covid_spending": "percent_covid_spending",
-                        "percent_asylum_spending":"percent_asylum_spending",
+                        //"percent_asylum_spending":"percent_asylum_spending",
                         "percent_other_spending":"percent_other_spending",
                         "prime_contract_award_method":"award_method_name",
                         "prime_contract_current_amount":"prime_maximum_contract_amount",
@@ -1237,7 +1237,7 @@
                         "prime_contract_pin":"prime_contract_pin",
                         "prime_contract_apt_pin":"prime_contract_apt_pin",
                         "percent_covid_spending": "percent_covid_spending",
-                        "percent_asylum_spending":"percent_asylum_spending",
+                        //"percent_asylum_spending":"percent_asylum_spending",
                         "percent_other_spending":"percent_other_spending",
                         "prime_woman_owned_business":"prime_woman_owned_business",
                         "prime_emerging_business": "prime_emerging_business",
@@ -1282,7 +1282,7 @@
                         "prime_contract_pin",
                         "prime_contract_apt_pin",
                         "percent_covid_spending",
-                        "percent_asylum_spending",
+                        //"percent_asylum_spending",
                         "percent_other_spending",
                         "prime_woman_owned_business",
                         "prime_emerging_business",
@@ -1310,7 +1310,7 @@
                         "Parent Contract ID":"master_contract_number_export",
                         "Prime Contract APT PIN":"prime_apt_pin",
                         "% Covid Spending": "percent_covid_spending",
-                        "% Asylum Seekers Spending": "percent_asylum_spending",
+                        //"% Asylum Spending": "percent_asylum_spending",
                         "% Other Spending": "percent_other_spending",
                         "Prime Contract Award Method":"award_method_name",
                         "Prime Contract Current Amount":"prime_maximum_contract_amount",
@@ -1377,7 +1377,7 @@
                         "Prime Contract PIN":                            "Prime Contract PIN",
                         "Prime Contract APT PIN":                    "Prime Contract APT PIN",
                         "% Covid Spending":                                "% Covid Spending",
-                        "% Asylum Seekers Spending":              "% Asylum Seekers Spending",
+                        //"% Asylum Spending":                              "% Asylum Spending",
                         "% Other Spending":                                "% Other Spending",
                         "Prime Woman Owned Business":            "Prime Woman Owned Business",
                         "Prime Emerging Business":                  "Prime Emerging Business",
@@ -1444,7 +1444,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"15"
+                "maxLength":"20"
             },
             "industry":{
                 "valueType":"value",
@@ -1511,7 +1511,7 @@
                         "parent_contract_id":"master_contract_number_export",
                         "prime_contract_apt_pin":"prime_apt_pin",
                         "percent_covid_spending": "percent_covid_spending",
-                        "percent_asylum_spending":"percent_asylum_spending",
+                        //"percent_asylum_spending":"percent_asylum_spending",
                         "percent_other_spending":"percent_other_spending",
                         "prime_contract_award_method":"award_method_name",
                         "prime_contract_current_amount":"prime_maximum_contract_amount",
@@ -1576,7 +1576,7 @@
                         "prime_contract_pin":"prime_contract_pin",
                         "prime_contract_apt_pin":"prime_contract_apt_pin",
                         "percent_covid_spending":"percent_covid_spending",
-                        "percent_asylum_spending":"percent_asylum_spending",
+                        //"percent_asylum_spending":"percent_asylum_spending",
                         "percent_other_spending":"percent_other_spending",
                         "prime_woman_owned_business":"prime_woman_owned_business",
                         "prime_emerging_business": "prime_emerging_business",
@@ -1621,7 +1621,7 @@
                         "prime_contract_pin",
                         "prime_contract_apt_pin",
                         "percent_covid_spending",
-                        "percent_asylum_spending",
+                        //"percent_asylum_spending",
                         "percent_other_spending",
                         "prime_woman_owned_business",
                         "prime_emerging_business",
@@ -1649,7 +1649,7 @@
                         "Parent Contract ID":"master_contract_number_export",
                         "Prime Contract APT PIN":"prime_apt_pin",
                         "% Covid Spending": "percent_covid_spending",
-                        "% Asylum Seekers Spending": "percent_asylum_spending",
+                        //"% Asylum Spending": "percent_asylum_spending",
                         "% Other Spending": "percent_other_spending",
                         "Prime Contract Award Method":"award_method_name",
                         "Prime Contract Current Amount":"prime_maximum_contract_amount",
@@ -1714,7 +1714,7 @@
                         "Prime Contract PIN":                            "Prime Contract PIN",
                         "Prime Contract APT PIN":                    "Prime Contract APT PIN",
                         "% Covid Spending":                                "% Covid Spending",
-                        "% Asylum Seekers Spending":              "% Asylum Seekers Spending",
+                        //"% Asylum Spending":                              "% Asylum Spending",
                         "% Other Spending":                                "% Other Spending",
                         "Prime Woman Owned Business":            "Prime Woman Owned Business",
                         "Prime Emerging Business":                  "Prime Emerging Business",
@@ -1824,7 +1824,7 @@
             "mwbe_category":{
                 "valueType":"value",
                 "dataType":"text",
-                "maxLength":"15"
+                "maxLength":"20"
             },
             "industry":{
                 "valueType":"value",
@@ -1883,7 +1883,6 @@
                         "prime_vendor":"vendor_legal_name",
                         "agency":"document_agency_name",
                         "contract_type":"contract_type_name",
-                        "contract_class":"contract_class_description",
                         "award_method":"award_method_name",
                         "start_date":"start_date",
                         "end_date":"end_date",
@@ -1937,7 +1936,6 @@
                         "Received Date":"cif_received_date",
                         "Agency":"document_agency_name",
                         "Contract Type":"contract_type_name",
-                        "Contract Class":"contract_class_description",
                         "Award Method":"award_method_name",
                         "Start Date":"start_date",
                         "End Date":"end_date",
@@ -2036,7 +2034,7 @@
             "mwbe_category":{
                 "valueType":"range",
                 "dataType":"text",
-                "maxLength":"15"
+                "maxLength":"20"
             },
             "industry":{
                 "valueType":"value",

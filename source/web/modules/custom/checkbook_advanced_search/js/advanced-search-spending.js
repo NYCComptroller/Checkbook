@@ -452,7 +452,7 @@
           let year_id = 0;
           if (div.ele('date_filter_checked').val() === '0') {
             year = (div.ele('fiscal_year').val()) ? div.ele('fiscal_year').val() : 0;
-            if ($.isFunction(year.indexOf) && year.indexOf("fy") >= 0) {
+            if (typeof year.indexOf == 'function' && year.indexOf("fy") >= 0) {
               year_id = year.split('~')[1];
             }
           }

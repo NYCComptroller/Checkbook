@@ -1,5 +1,5 @@
 name: 'Checkbook Api Ref Files'
 description: 'API CSV Ref files generation every week'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^10 || ^11
 package: 'Custom'
 type: module

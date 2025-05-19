@@ -2,7 +2,7 @@
   "datasets": {
     "event": {
       "datasourceName": "main",
-      "source": "ref_event",
+      "source": "SELECT * from ref_event WHERE is_display = 'Y'",
       "columns": [
         {
           "name": "event_id",

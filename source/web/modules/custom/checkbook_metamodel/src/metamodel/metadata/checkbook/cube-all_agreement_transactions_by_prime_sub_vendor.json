@@ -534,7 +534,7 @@
             ],
             "measures": {
                 "txcount": {
-                    "function":"COUNT(DISTINCT (CASE WHEN vendor_code IN ('P','PM') THEN vendor_name||contract_number ELSE vendor_name||contract_number||sub_contract_id END )) "
+                    "function":"COUNT(*) "
                 },
                 "count_vendorcode":{
                     "function":"COUNT(DISTINCT (legal_name||contract_number||sub_contract_id))"

@@ -233,7 +233,7 @@ class MwbeSpendingUtil
     }
     $custom_params = array(
       'dashboard' => $dashboard,
-      'mwbe' => $mwbe == 4 || $mwbe == 5 ? '4~5' : $mwbe
+      'mwbe' => $mwbe == 4 || $mwbe == 5 || $mwbe == 10? '4~5~10' : $mwbe
     );
     return  SpendingUrlHelper::getLandingPageWidgetUrl($custom_params);
   }
@@ -267,7 +267,7 @@ class MwbeSpendingUtil
     $custom_params = array(
       'category' => $row["spending_category_id"],
       'dashboard' => $row["is_sub_vendor"] == "No" ? "mp" : "ms",
-      'mwbe' => $mwbe == 4 || $mwbe == 5 ? '4~5' : $mwbe,
+      'mwbe' => $mwbe == 4 || $mwbe == 5 || $mwbe == 10? '4~5~10' : $mwbe,
       'year' => $row['check_eft_issued_nyc_year_id'] ?? CheckbookDateUtil::getCurrentFiscalYearId()
     );
     return '/' . SpendingUrlHelper::getLandingPageWidgetUrl($custom_params);
@@ -297,6 +297,7 @@ class MwbeSpendingUtil
         case '3':
         case '4':
         case '5':
+        case '10':
         case '9':
           $mwbe_spending_prime += (int)$row['total_spending'];
           break;
@@ -342,6 +343,7 @@ class MwbeSpendingUtil
         case '3':
         case '4':
         case '5':
+        case '10':
         case '9':
           $mwbe_spending_sub += $row['total_spending'];
           break;
@@ -370,7 +372,7 @@ class MwbeSpendingUtil
   public static function _show_mwbe_custom_legend()
   {
     $mwbe_cats = RequestUtilities::get('mwbe');
-    if (($mwbe_cats == '4~5' || $mwbe_cats == '4' || $mwbe_cats == '5' || $mwbe_cats == '2' || $mwbe_cats == '3' || $mwbe_cats == '9') && !(RequestUtilities::get('vendor') > 0)) {
+    if (($mwbe_cats == '4~5~10' || $mwbe_cats == '4' || $mwbe_cats == '5' || $mwbe_cats == '10' || $mwbe_cats == '2' || $mwbe_cats == '3' || $mwbe_cats == '9') && !(RequestUtilities::get('vendor') > 0)) {
       return true;
     }
 

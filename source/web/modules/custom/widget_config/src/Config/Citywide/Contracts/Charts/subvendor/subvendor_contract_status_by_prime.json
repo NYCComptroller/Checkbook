@@ -5,6 +5,7 @@
 "header":"
     $header = '<h2 class=\"chart-title\" style=\"display:none;\">' . $node->widgetConfig->chartTitle . '</h2>
     <div class=\"pieCount\">'. $node->widgetConfig->chartSubTitle .'</div>';
+    $header .= \\Drupal\\checkbook_project\\WidgetUtilities\\ChartUtil::generateGridViewLink($node);
     return $header;
 ",
 "no_results_content":"No Results Found",

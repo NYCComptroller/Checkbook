@@ -21,7 +21,7 @@
 
 namespace Drupal\checkbook_smart_search\Controller;
 
-require_once(\Drupal::service('extension.list.module')->getPath('checkbook_smart_search') . '/includes/checkbook_smart_search.inc');
+require_once(dirname(__FILE__) . '/../../includes/checkbook_smart_search.inc');
 
 use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
 use Drupal\checkbook_log\LogHelper;

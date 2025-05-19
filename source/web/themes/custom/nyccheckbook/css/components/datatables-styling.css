@@ -20,6 +20,7 @@
 
 .block-widget-filter-block .dataTables_wrapper .dataTables_processing {
   top: -30px;
+  z-index: 99;
 }
 
 .block-widget-filter-block .dataTables_wrapper > div:nth-child(2) {
@@ -220,6 +221,9 @@ td.pad-left div{
 }
 #gridprint .dataTable thead tr {
   height: 28px;
+  border-right: 1px solid #CACACA !important;
+  border-left: 1px solid #CACACA !important;
+  border-bottom: 1px solid #CACACA !important;
 }
 .dataTable th div {
   margin: 8px 0 8px 5px;

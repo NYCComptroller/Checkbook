@@ -400,7 +400,7 @@ EOD;
        a.address_line_2,
        a.city, a.state, a.zip, a.country,
       (CASE WHEN (rb.business_type_code = 'MNRT' OR rb.business_type_code = 'WMNO') THEN 'Yes' ELSE 'NO' END) AS mwbe_vendor,
-      (CASE WHEN p.minority_type_id in (4,5) then 'Asian American' ELSE p.minority_type_name END)AS ethnicity
+      (CASE WHEN p.minority_type_id in (4,5,10) then 'Asian American' ELSE p.minority_type_name END)AS ethnicity
 	                        FROM {pending_contracts} p
 	                            LEFT JOIN {vendor} v ON p.vendor_id = v.vendor_id
 	                            LEFT JOIN (SELECT vendor_id, MAX(vendor_history_id) AS vendor_history_id
@@ -461,8 +461,8 @@ EOD;
       }
     }
     $ethnicity = implode(',',array_unique($ethnicities));
-    if($minority_type_id == "4" || $minority_type_id == "5"){
-      $minority_type_id = "4~5";
+    if($minority_type_id == "4" || $minority_type_id == "5" || $minority_type_id == "10"){
+      $minority_type_id = "4~5~10";
     }
 
     $return_value .= "
@@ -497,8 +497,10 @@ EOD;
       $dynamicLabel = $node->widgetConfig->entityColumnLabel;
       $dynamicValue = strtoupper($row[$node->widgetConfig->entityColumnName]);
 
-      if (!isset($dynamicLabel))
+      if (!isset($dynamicLabel)) {
         $dynamicLabel = WidgetUtil::getLabel("vendor_name");
+      }
+
       $agency_value = strtoupper($row['agency_agency_agency_name']);
       $purpose_value = strtoupper($row['contract_purpose_contract_purpose']);
       $summaryContent = <<<EOD
@@ -577,7 +579,7 @@ EOD;
   }
 
   public function getTransactionYearVal($yearLabel) {
-    $year = CheckbookDateUtil::_getYearValueFromID(RequestUtilities::getTransactionsParams('calyear') ?? RequestUtilities::getTransactionsParams('year'));
+    $year = CheckbookDateUtil::_getYearValueFromID( RequestUtilities::getTransactionsParams('year'));
     $year = $yearLabel.$year;
     return $year;
   }

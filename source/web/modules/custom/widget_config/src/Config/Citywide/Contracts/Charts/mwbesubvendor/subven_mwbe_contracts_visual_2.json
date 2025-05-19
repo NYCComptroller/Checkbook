@@ -120,11 +120,7 @@ $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
 		$series_current[] = $series_current_temp[$category];
 		$series_previous[] = $series_previous_temp[$category] ;
 	}
-	if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('yeartype',['q'=>$url]) == 'C'){
-				 $year_display = 'CY ';
-	}else{
-				$year_display = 'FY ' ;
-	}
+  $year_display = 'FY ' ;
 	$index = 0;
 	$node->widgetConfig->gridConfig->table_columns[1]->labelAlias = $year_display . ' ' .  ($year -1);
 
