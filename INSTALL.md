@@ -51,8 +51,8 @@ two separate databases simultaneously:
 The full list of dependencies is:
 
  * GNU/Linux or similar operating system
- * Drupal 9.5  _(Note: Checkbook includes Drupal, so you don't need to download Drupal separately.)_
- * PHP 8.1.6 or higher with the following extensions enabled:
+ * Drupal 11  _(Note: Checkbook includes Drupal, so you don't need to download Drupal separately.)_
+ * PHP 8.3 or higher with the following extensions enabled:
    - PHP Intl extension (<https://www.php.net/manual/en/intl.setup.php>)
    - PHP PostgreSQL extension (<https://www.php.net/manual/en/pgsql.setup.php>)
  * MySQL 5.7.8 or higher (<https://www.mysql.com/>) or
