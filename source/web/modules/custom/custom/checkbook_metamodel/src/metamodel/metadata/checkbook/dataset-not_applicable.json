@@ -1,0 +1,14 @@
+{
+    "datasets": {
+        "prime_not_applicable": {
+            "datasourceName": "main",
+            "source": "SELECT 'NOT_APPLICABLE_COLUMN'::varchar(50) as not_applicable_column, 'P' as is_prime_or_sub",
+            "columns": [
+                {
+                    "name": "is_prime_or_sub",
+                    "key": true
+                }
+            ]
+        }
+    }
+}

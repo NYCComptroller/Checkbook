@@ -1,0 +1,81 @@
+services:
+  widget_config.Twig.WidgetConfigExtension:
+    class: Drupal\widget_config\Twig\Widget\WidgetConfigExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.AgenciesListConfigExtension:
+    class: Drupal\widget_config\Twig\Sitewide\AgenciesListConfigExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.TopNavigationExtension:
+    class: Drupal\widget_config\Twig\Sitewide\TopNavigationExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.EdcTopNavigationExtension:
+    class: Drupal\widget_config\Twig\Sitewide\EdcTopNavigationExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.NychaTopNavigationExtension:
+    class: Drupal\widget_config\Twig\Sitewide\NychaTopNavigationExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.YearListConfigExtension:
+    class: Drupal\widget_config\Twig\Sitewide\YearListConfigExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.SpendingConfigExtension:
+    class: Drupal\widget_config\Twig\Spending\SpendingConfigExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.SpendingBottomSliderExtension:
+    class: Drupal\widget_config\Twig\Spending\SpendingBottomSliderExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.NychaSpendingConfigExtension:
+    class: Drupal\widget_config\Twig\Spending\NychaSpendingConfigExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.PayrollConfigExtension:
+    class: Drupal\widget_config\Twig\Payroll\PayrollConfigExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.ContractsConfigExtension:
+    class: Drupal\widget_config\Twig\Contracts\ContractsConfigExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.ContractsBottomSliderExtension:
+    class: Drupal\widget_config\Twig\Contracts\ContractsBottomSliderExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.SubvendorsBottomSliderExtension:
+    class: Drupal\widget_config\Twig\Contracts\SubvendorsBottomSliderExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.ContractsDetailsConfigExtension:
+    class: Drupal\widget_config\Twig\Contracts\ContractsDetailsConfigExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.NychaContractsConfigExtension:
+    class: Drupal\widget_config\Twig\Contracts\NychaContractsConfigExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.BudgetConfigExtension:
+    class: Drupal\widget_config\Twig\Budget\BudgetConfigExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.NychaBudgetConfigExtension:
+    class: Drupal\widget_config\Twig\Budget\NychaBudgetConfigExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.RevenueConfigExtension:
+    class: Drupal\widget_config\Twig\Revenue\RevenueConfigExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.CapacityTrendsConfigExtension:
+    class: Drupal\widget_config\Twig\Trends\CapacityTrendsConfigExtension
+    tags:
+      - { name: twig.extension }
+  widget_config.Twig.CommonTrendsConfigExtension:
+    class: Drupal\widget_config\Twig\Trends\CommonTrendsConfigExtension
+    tags:
+      - { name: twig.extension }

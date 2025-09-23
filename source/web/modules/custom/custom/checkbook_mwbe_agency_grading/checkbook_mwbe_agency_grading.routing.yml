@@ -1,0 +1,21 @@
+checkbook_mwbe_agency_grading._checkbook_mwbe_agency_grading:
+  path: '/mwbe_agency_grading/prime_vendor_data/year/{filters}'
+  defaults:
+    _controller: '\Drupal\checkbook_mwbe_agency_grading\Controller\DefaultController::_checkbook_mwbe_agency_grading'
+  requirements:
+    key: '^[^\?]*$'
+    _permission: 'access content'
+checkbook_mwbe_agency_grading._checkbook_mwbe_agency_grading0:
+    path: '/mwbe_agency_grading/sub_vendor_data/year/{filters}'
+    defaults:
+      _controller: '\Drupal\checkbook_mwbe_agency_grading\Controller\DefaultController::_checkbook_mwbe_agency_grading'
+    requirements:
+      key: '^[^\?]*$'
+      _permission: 'access content'
+checkbook_mwbe_agency_grading.csv:
+  path: '/mwbe_agency_grading_csv/{filters}'
+  defaults:
+    _controller: '\Drupal\checkbook_mwbe_agency_grading\Controller\DefaultController::_checkbook_mwbe_agency_grading_csv'
+  requirements:
+    key: '^[^\?]*$'
+    _permission: 'access content'

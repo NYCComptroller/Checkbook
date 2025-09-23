@@ -1,0 +1,14 @@
+{
+  "datasets": {
+    "proj_budget": {
+      "datasourceName": "main",
+      "source": "ref_gl_project",
+      "columns": [
+        {
+          "name": "gl_project_id",
+          "key": true
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":932,
+    "autocomplete":false,
+    "no_results_content":"No Results Found",
+    "startWith":0,
+    "maxSelect":5,
+    "columns":["prime_minority_type_id.prime_minority_type_id","prime_minority_type_name.prime_minority_type_name", "count_prime_mwbe"],
+    "orderBy":"-count_prime_mwbe",
+    "getTotalDataCount":true,
+    "facetPager":true,
+    "filterName":"Prime M/WBE Category",
+    "allowZeroValue":true,
+    "urlParameterName":"pmwbe",
+    "autocompleteID":"fPrimeMinorityTypeId",
+    "adjustParameters":"
+        $parameters = \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::adjustSubContractTransactionsCommonParams($node, $parameters);
+        $parameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+        return $parameters;
+    ",
+    "template":"individual_filter"
+}

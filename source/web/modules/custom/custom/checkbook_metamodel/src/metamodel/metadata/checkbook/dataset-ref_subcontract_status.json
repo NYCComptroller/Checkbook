@@ -1,0 +1,14 @@
+{
+  "datasets": {
+    "ref_subcontract_status": {
+      "datasourceName": "main",
+      "source": "ref_subcontract_status",
+      "columns": [
+        {
+          "name":"scntrc_status",
+          "key":true
+        }
+      ]
+    }
+  }
+}

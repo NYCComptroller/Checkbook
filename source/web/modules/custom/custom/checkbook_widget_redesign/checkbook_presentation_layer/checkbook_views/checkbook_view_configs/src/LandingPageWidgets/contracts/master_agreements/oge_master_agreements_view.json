@@ -1,0 +1,4 @@
+{
+    "defaultConfigKey": "master_agreements_view",
+    "dataFunc":"GetOgeMasterAgreementContracts"
+}

@@ -1,0 +1,137 @@
+{
+  "widgetType":"highcharts",
+  "widgetSubType":"ajaxSimple",
+  "header":"
+  $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+  $header .= \\Drupal\\checkbook_project\\WidgetUtilities\\ChartUtil::generateWidgetGridViewLink($node);
+  return $header;
+  ",
+  "gridConfig":{
+    "template":"highchart_nycha_budget_fundsrc_grid_view",
+    "html_class":"chart-grid-view-table",
+    "table_columns": [
+      {
+        "labelAlias": "funding_source",
+        "column": "display_funding_source_descr_display_funding_source_descr",
+        "sortColumn": "display_funding_source_descr_display_funding_source_descr"
+      },
+      {
+        "colLabel": "committed",
+        "column": "budget_committed"
+      },
+      {
+        "colLabel": "remaining",
+        "column": "budget_remaining"
+      }
+    ]
+  },
+  "dataset":"checkbook_nycha:budget",
+  "columns":[
+    "year_id.year_id",
+    "funding_source_id.funding_source_id",
+    "display_funding_source_descr.display_funding_source_descr",
+    "budget_committed",
+    "budget_remaining"
+  ],
+  "orderBy":"-budget_committed",
+  "limit": 10,
+  "defaultParameters":{
+    "year_id.year_id":119
+  },
+  "cleanURLParameters":[
+    "year",
+    "expcategory",
+    "project",
+    "program",
+    "respcenter"
+  ],
+  "urlParamMap":{
+    "year":"year_id.year_id",
+    "expcategory": "expenditure_type_id.expenditure_type_id",
+    "project": "gl_project_id.gl_project_id",
+    "program": "program_phase_id.program_phase_id",
+    "respcenter" : "responsibility_center_id.responsibility_center_id"
+  },
+  "transformationPHP":"
+  $landing_page =  \\Drupal::service('path.current')->getPath()  ;
+  $allZero = TRUE;
+  foreach ($node->data as $row) {
+  if (abs($row['budget_committed']) > 0){$allZero = FALSE;}
+if (abs($row['budget_remaining']) > 0){$allZero = FALSE;}
+$exp = $node->widgetConfig->requestParams['expenditure_type_id.expenditure_type_id'];
+$prog = $node->widgetConfig->requestParams['program_phase_id.program_phase_id'];
+$resp = $node->widgetConfig->requestParams['responsibility_center_id.responsibility_center_id'];
+$proj = $node->widgetConfig->requestParams['gl_project_id.gl_project_id'];
+if(($exp != null) && ($prog != null) && ($proj!= null) && ($resp != null)){
+$url = null;
+}
+else{
+$url = $landing_page .  '/fundsrc/' . $row['funding_source_id_funding_source_id'];
+}
+$categories[] = html_entity_decode($row['display_funding_source_descr_display_funding_source_descr'],ENT_QUOTES);
+$committed_data[] = array('name' => html_entity_decode($row['display_funding_source_descr_display_funding_source_descr'],ENT_QUOTES), 'y' => $row['budget_committed'], 'url' => $url);
+$remaining_data[] = array('name' => html_entity_decode($row['display_funding_source_descr_display_funding_source_descr'],ENT_QUOTES), 'y' => $row['budget_remaining'], 'url' => $url);
+}
+if($allZero){$node->totalDataCount = 0;}
+$node->widgetConfig->chartTitle = 'Top Ten Funding Sources by Expense Budget';
+$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+if($url){
+$cursor = 'pointer';
+} else {
+$cursor = null;
+}
+$node->widgetConfig->chartConfig->plotOptions->series->cursor = $cursor;
+$node->widgetConfig->chartConfig->series = array(array('name' => 'Committed', 'data' => $committed_data),array('name' => 'Remaining', 'data' => $remaining_data));
+return $node->data;
+",
+"chartConfig":{
+"chart":{
+"defaultSeriesType":"column"
+},
+"legend":{
+"align":"left",
+"verticalAlign":"bottom"
+},
+"xAxis":{
+"categories":[]
+},
+"yAxis":{
+"title":{
+"text":""
+},
+"labels":{
+"function":"yAxisFormatter"
+}
+},
+"tooltip":{
+"function":"budgetTooltip"
+},
+"plotOptions":{
+"column":{
+"minPointLength":3,
+"pointWidth":17
+},
+"series":{
+"cursor":"pointer",
+"point":{
+"events":{
+"function":"clickEvent"
+}
+}
+}
+},
+"series":[],
+"title":{
+"text":""
+}
+}
+}
+<function>
+yAxisFormatter^^"formatter" : function(){return yAxisLabelFormatter(this);}##
+budgetTooltip^^"formatter" : function() {return 'Funding Source: '+this.point.name + '<br>Amount: ' + abbrNum(this.y, 2, '$')}##
+clickEvent^^"click": function(){
+if (this.options.url){
+location.href = this.options.url
+}
+}
+</function>

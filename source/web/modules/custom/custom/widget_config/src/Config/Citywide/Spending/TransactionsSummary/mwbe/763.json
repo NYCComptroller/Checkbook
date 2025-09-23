@@ -1,0 +1,59 @@
+{
+    "widgetType":"phpparser",
+    "cleanURLParameters":[
+        "agency",
+        "vendor",
+        "category",
+        "year",
+        "yeartype",
+        "check_eft_issued_nyc_year_id",
+        "calendar_fiscal_year_id",
+        "mwbe",
+        "industry",
+        "subvendor"
+    ],
+    "defaultParameters":{"type_of_year":"B"},
+    "urlParamMap":{
+        "agency":"agency_id",
+        "vendor":"prime_vendor.prime_vendor",
+        "category":"spending_category_id",
+        "year":"year_id",
+        "yeartype":"type_of_year",
+        "check_eft_issued_nyc_year_id":"check_eft_issued_date",
+        "calendar_fiscal_year_id":"calendar_fiscal_year_id",
+        "industry":"industry_type_id",
+        "mwbe":"minority_type_id",
+        "subvendor":"sub_vendor.sub_vendor"
+    },
+    "dataset":"checkbook:contracts_subven_vendor_spending",
+    "totalAggregateColumns":["check_amount_sum"],
+    "adjustTotalAggregateColumnsParameters":"
+        if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('smnid') == 763) {
+            unset($parameters['sub_vendor.sub_vendor']);
+        }
+        return $parameters;
+        ",
+    "columns":[
+        "sub_vendor.sub_vendor",
+        "sub_vendor.sub_vendor.legal_name",
+        "minority_type.minority_type",
+        "total_sub_contracts",
+        "total_contract_amount_sum",
+        "ytd_spending_sub_vendors",
+        "check_amount_sum"
+    ],
+   "adjustParameters":"
+        $parameters['is_all_categories'] = isset($parameters['spending_category_id']) ? 'N' : 'Y';
+        $adjustedParameters = $parameters;
+        $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+        return $adjustedParameters;
+    ",
+        "WidgetTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Sub Vendors');",
+    "template":"spending_sub_vendor_summary",
+    "templateTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Sub Vendor');",
+    "templateLabel":"Sub Vendor",
+    "templateId":"
+      $sumnid = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('smnid');
+      return $sumnid;
+    "
+}

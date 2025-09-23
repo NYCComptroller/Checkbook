@@ -1,0 +1,43 @@
+
+/**** Styles for Prime and Sub icon for Contracts***/
+
+.prime-and-sub,
+.prime-and-sub-datafeeds
+{
+  height: 22px;
+  float: left;
+  padding-right:4px;
+  margin-top: -2px;
+}
+
+.prime-and-sub-note,
+.prime-and-sub-note-datafeeds p {
+  font-family: Verdana,Geneva,sans-serif;
+  font-size: 11px;
+  font-style: italic;
+  position: relative;
+  text-align: right;
+}
+.prime-and-sub-note-datafeeds p {
+  text-align: left;
+}
+.prime-and-sub-note{
+  margin-bottom: 20px;
+  margin-top: -15px;
+}
+.prime-and-sub-note > img,
+.prime-and-sub-note-datafeeds p > img {
+  height: 20px;
+  position: relative;
+}
+.prime-and-sub-note > img{
+  margin-bottom: -4px;
+}
+.prime-and-sub-note-datafeeds p > img {
+  margin-bottom: -7px;
+}
+
+.contracts .form-required::after {
+  position: relative;
+  top: 3px;
+}

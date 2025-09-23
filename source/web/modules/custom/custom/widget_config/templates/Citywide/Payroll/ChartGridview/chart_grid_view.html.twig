@@ -1,0 +1,19 @@
+{{ attach_library('widget_highcharts/grid-view') }}
+
+
+{{ gridPrintExport(node) |raw }}
+{% set domain = node.widgetConfig.gridConfig.domain|capitalize %}
+<div id="gridprint">
+  <h3 class="grid_title">{{ chartGridTitle(domain)|raw }}</h3>
+  <h3 class="grid_chart_title">{{ node.widgetConfig.chartTitle |raw }}</h3>
+  {{ pageGridTitle(domain)|raw }}
+
+  <div id="table_{{ node.nid }}_wrapper">
+    <table id="table_{{ node.nid }}" class=" {{ node.widgetConfig.gridConfig.html_class }} ">
+      {{ chartGrid(node) |raw }}
+      <script type="text/javascript">
+        {{ widget_highcharts_add_datatable_js(node.widgetConfig.gridConfig.dataTableOptions,node) |raw }}
+      </script>
+    </table>
+  </div>
+</div>

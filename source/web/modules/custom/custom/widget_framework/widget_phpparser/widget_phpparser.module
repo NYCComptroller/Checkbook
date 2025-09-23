@@ -1,0 +1,526 @@
+<?php
+/**
+ * This file is part of the Checkbook NYC financial transparency software.
+ *
+ * Copyright (c) 2012 – 2023 New York City
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*************************************************************************************/
+/* Widget Hooks                                                                      */
+/*************************************************************************************/
+
+function widget_phpparser_widget_metadata() {
+	return [
+    'phpparser' => [
+      'name' => t('PHPParser'),
+      'module' => 'widget_phpparser',
+      'description' => t("This widget type implements PHP parsing.")
+    ]
+  ];
+}
+
+function widget_phpparser_widget_prepare(&$node) {
+  if (isset($node->widgetConfig->prepareConfig)) {
+      eval($node->widgetConfig->prepareConfig);
+  }
+}
+
+function widget_phpparser_widget_validate(&$node) {
+
+}
+
+function widget_phpparser_widget_data(&$node) {
+
+}
+
+function widget_phpparser_widget_view(&$node) {
+    $code = $node->widgetConfig->phpcode ?? null;
+    if(isset($code)){
+      return eval($code);
+    }
+
+    if(isset($node->widgetConfig->customDataHandlerClass)) {
+      $customDataHandlerClass = $node->widgetConfig->customDataHandlerClass;
+      $class = new $customDataHandlerClass();
+      $class->getData($node);
+    }
+
+    return [
+      'template' => $node->widgetConfig->template,
+      'node' => $node
+  ];
+}
+
+function widget_phpparser_theme($existing, $type, $theme, $path) {
+  return [
+    'agencies_list' => [
+      'template' => 'agencies_list',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/AgencyList'
+    ],
+    'nycha_top_navigation' => [
+      'template' => 'nycha_top_navigation',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/TopNavigation'
+    ],
+    'edc_top_navigation' => [
+      'template' => 'edc_top_navigation',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/TopNavigation'
+    ],
+    'top_navigation' => [
+      'template' => 'top_navigation',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/TopNavigation'
+    ],
+    'year_list' => [
+      'template' => 'year_list',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Sitewide/YearList'
+    ],
+    'budget_expense_transaction_total_amount' => [
+      'template' => 'expense_transaction_total_amount',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Budget/TransactionsSummary'
+    ],
+    'budget_expense_transactions_summary' => [
+      'template' => 'expense_transactions_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Budget/TransactionsSummary'
+    ],
+    'budget_revenue_transaction_total_amount' => [
+      'template' => 'revenue_transaction_total_amount',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Budget/TransactionsSummary'
+    ],
+    'revenue_recognized_cross_year_total_amount' => [
+      'template' => 'recognized_cross_year_total_amount',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Revenue/TransactionsSummary'
+    ],
+    'revenue_transaction_cross_year_total_amount' => [
+      'template' => 'transactions_cross_year_total_amount',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Revenue/TransactionsSummary'
+    ],
+    'revenue_transaction_total_amount' => [
+      'template' => 'transactions_total_amount',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Revenue/TransactionsSummary'
+    ],
+    'revenue_transactions_summary' => [
+      'template' => 'transactions_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Revenue/TransactionsSummary'
+    ],
+    'nycha_revenue_transactions_summary' => [
+      'template' => 'transactions_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Revenue/TransactionsSummary'
+    ],
+    'nycha_budget_transactions_summary' => [
+      'template' => 'transactions_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Budget/TransactionsSummary'
+    ],
+    'spending_agency_summary' => [
+      'template' => 'agency_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/TransactionsSummary'
+    ],
+    'spending_exp_category_summary' => [
+      'template' => 'exp_category_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/TransactionsSummary'
+    ],
+    'spending_vendor_summary' => [
+      'template' => 'vendor_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/TransactionsSummary'
+    ],
+    'spending_sub_vendor_summary' => [
+    'template' => 'sub_vendor_summary',
+    'variables' => [
+      'node' => []
+    ],
+    'path' => '/modules/custom/widget_config/templates/Citywide/Spending/TransactionsSummary'
+  ],
+    'spending_contract_summary' => [
+      'template' => 'contract_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/TransactionsSummary'
+    ],
+    'spending_industry_summary' => [
+      'template' => 'industry_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/TransactionsSummary'
+    ],
+    'nycha_spending_transactions_summary' => [
+      'template' => 'transactions_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Spending/TransactionsSummary'
+    ],
+     'payroll_title_payroll_summary' => [
+    'template' => 'title_payroll_summary',
+    'variables' => [
+      'node' => []
+    ],
+    'path' => '/modules/custom/widget_config/templates/Citywide/Payroll/TransactionsSummary'
+  ],
+    'payroll_agency_payroll_summary' => [
+      'template' => 'agency_payroll_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Payroll/TransactionsSummary'
+    ],
+    'payroll_employee_payroll_summary' => [
+      'template' => 'employee_payroll_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Payroll/TransactionsSummary'
+    ],
+    'payroll_employee_agency_payroll_summary' => [
+      'template' => 'employee_agency_payroll_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Payroll/TransactionsSummary'
+    ],
+
+    'payroll_title_agency_payroll_summary' => [
+      'template' => 'title_agency_payroll_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Payroll/TransactionsSummary'
+    ],
+    'payroll_nyc_title_payroll_summary' => [
+      'template' => 'nyc_title_payroll_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Payroll/TransactionsSummary'
+    ],
+    'payroll_nyc_payroll_summary_by_month' => [
+      'template' => 'nyc_payroll_summary_by_month',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Payroll/TransactionsSummary'
+    ],
+    'active_registered_transaction_title' => [
+      'template' => 'active_registered_transaction_title',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/TransactionsSummary/ActiveRegisteredExpense'
+    ],
+    'active_registered_contract_transaction_total_amount' => [
+      'template' => 'active_registered_transaction_total_amount',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/TransactionsSummary/ActiveRegisteredExpense'
+    ],
+    'contracts_ca_details' => [
+      'template' => 'contracts_ca_details',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'contracts_cta_history' => [
+      'template' => 'contracts_cta_history',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'contracts_cta_spending_top' => [
+      'template' => 'contracts_cta_spending_top',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'contracts_cta_spending_bottom' => [
+      'template' => 'contracts_cta_spending_bottom',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'contracts_cta_spending_by_exp_cat' => [
+      'template' => 'contracts_cta_spending_by_exp_cat',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'contracts_cta_spending_history' => [
+      'template' => 'contracts_cta_spending_history',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'contracts_ma_assoc_contracts' => [
+      'template' => 'contracts_ma_assoc_contracts',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'contracts_ma_history' => [
+      'template' => 'contracts_ma_history',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'contracts_mma_details' => [
+      'template' => 'contracts_mma_details',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'contracts_bottom_slider' => [
+      'template' => 'contracts_bottom_slider',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/Slider'
+    ],
+    'subvendors_bottom_slider' => [
+      'template' => 'subvendors_bottom_slider',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/Slider'
+    ],
+    'contracts_oge_cta_all_vendor_info' => [
+      'template' => 'contracts_oge_cta_all_vendor_info',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'contracts_oge_cta_spending_bottom' => [
+      'template' => 'contracts_oge_cta_spending_bottom',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'contracts_oge_ma_assoc_contracts' => [
+      'template' => 'contracts_oge_ma_assoc_contracts',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'contract_summary_expense_expense' => [
+      'template' => 'expense',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/TransactionsSummary'
+    ],
+    'contract_summary_expense_contract' => [
+      'template' => 'contract',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/TransactionsSummary'
+    ],
+    'contract_summary_expense_contract_modification' => [
+      'template' => 'contract_modification',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/TransactionsSummary'
+    ],
+    'sub_contract_summary_expense_contract' => [
+      'template' => 'sub_contract',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/TransactionsSummary'
+    ],
+    'contract_vendor_info' => [
+      'template' => 'contract_vendor_info',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'mini_panel_contracts_cta_history' => [
+      'template' => 'mini_panel_contracts_cta_history',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'contract_date_summary' => [
+      'template' => 'date_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/TransactionsSummary'
+    ],
+    'nycha_contract_assoc_releases' => [
+      'template' => 'nycha_contract_assoc_releases',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'nycha_contract_details' => [
+      'template' => 'nycha_contract_details',
+      'variables' => [
+        'node' => []
+      ],//\Drupal\checkbook_project\NychaContractsUtilities\NychaContractDetails
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/ContractDetails'
+    ],
+    'pending_contract_details' => [
+      'template' => 'pending_contract_details',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/Pending'
+    ],
+    'pending_contract_vendor_info' => [
+      'template' => 'pending_contract_vendor_info',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/Pending'
+    ],
+    'nycha_contract_transaction_total_amount' => [
+      'template' => 'nycha_contract_transaction_total_amount',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Contracts/TransactionsSummary'
+    ],
+    'nycha_contracts_summary' => [
+      'template' => 'nycha_contracts_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Contracts/TransactionsSummary'
+    ],
+    'spending_bottom_slider' => [
+      'template' => 'spending_bottom_slider',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/Slider'
+    ],
+    'nycha_spending_bottom_slider' => [
+      'template' => 'nycha_spending_bottom_slider',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Nycha/Spending/Slider'
+    ],
+    'spending_date_summary' => [
+      'template' => 'date_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/TransactionsSummary'
+    ],
+    'spending_transaction_total_amount' => [
+      'template' => 'transaction_total_amount',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/TransactionsSummary'
+    ],
+    'spending_prime_vendor_summary' => [
+      'template' => 'prime_vendor_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/TransactionsSummary'
+    ],
+    'spending_dept_summary' => [
+      'template' => 'dept_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/TransactionsSummary'
+    ],
+    'spending_sub_contract_summary' => [
+      'template' => 'sub_contract_summary',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Spending/TransactionsSummary'
+    ],
+    'pending_transaction_title' => [
+      'template' => 'pending_transaction_title',
+      'variables' => [
+        'node' => []
+      ],
+      'path' => '/modules/custom/widget_config/templates/Citywide/Contracts/TransactionsSummary'
+    ],
+  ];
+}

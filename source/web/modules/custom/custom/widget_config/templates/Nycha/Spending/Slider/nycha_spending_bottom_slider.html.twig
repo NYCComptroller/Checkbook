@@ -1,0 +1,38 @@
+{% macro item(label, dollar_amount, link, active_class, indicator) %}
+  <div class="bottom-navigation--item {{ active_class }}">
+    {% if link == false %}
+      <div class="bottom-navigation--item-label">
+        {{ label }}
+        <div class="bottom-navigation--item-dollar_amount">
+          {{ dollar_amount }}
+        </div>
+      </div>
+    {% else %}
+      <a class="bottom-navigation--item-label display-block text-no-underline" href="{{ link }}">
+        {{ label }}<br/>Spending
+        <div class="bottom-navigation--item-dollar_amount">
+          {{ dollar_amount }}
+        </div>
+      </a>
+    {% endif %}
+
+    {# Show indicator if item is active or by force (indicator == true in array) #}
+    {% if indicator == true or active_class|length > 0 %}
+      <div class="indicator-active"></div>
+    {% endif %}
+  </div>
+{% endmacro item %}
+
+{% set render = generateNychaSpendingBottomSlider(node) | raw %}
+{% set first_section = render['bottom_navigation'] %}
+
+<div class="nycha bottom-navigation">
+  <!-- Items -->
+  <div class="display-flex flex-justify">
+    <div class="display-flex bottom-navigation--section">
+      {% for item in first_section %}
+        {{ _self.item(item.label, item.dollar_amount, item.link, item.active_class) }}
+      {% endfor %}
+    </div>
+  </div>
+</div>

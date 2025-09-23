@@ -1,0 +1,24 @@
+{
+"widgetType": "phpparser",
+"defaultParameters":{"type_of_year":"B"},
+"cleanURLParameters":["year","agency","yeartype","calyear","category","vendor","mwbe","fvendor"],
+ "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","fvendor":"vendor_id","vendor":"vendor_id","mwbe":"minority_type_id"},
+"dataset": "checkbook:spending_data",
+"preProcessConfiguration":"
+    $mwbe = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('mwbe');
+    $node->is_mwbe = ($mwbe != null ) ?  true: false;
+    if($node->is_mwbe){
+        $node->widgetConfig->dataset = 'checkbook:spending_mwbe_data';
+    }
+",
+"totalAggregateColumns":["check_amount_sum"],
+"columns": ["yeartype.yeartype","check_amount_sum","agency.agency","agency.agency.agency_short_name","year.year","agency.agency.agency_name"],
+"template":"spending_agency_summary",
+"WidgetTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Agencies');",
+"templateTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Agency');",
+"templateLabel":"Agency",
+"templateId":"
+  $sumnid = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('smnid');
+  return $sumnid;
+"
+}

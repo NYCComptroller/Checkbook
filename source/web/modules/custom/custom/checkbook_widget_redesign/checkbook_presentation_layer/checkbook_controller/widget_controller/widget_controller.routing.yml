@@ -1,0 +1,12 @@
+widget_controller.ajax_get_node:
+  path: /widget_controller_ajax_data/node/%widget_controller/%
+  defaults: {  }
+  requirements:
+    _access: 'true'
+widget_controller.node_view_page:
+  path: '/widget_controller/{key}'
+  defaults:
+    _controller: '\Drupal\widget_controller\Controller\DefaultController::_widget_controller_node_view_page'
+  requirements:
+    key: '^[^\?]*$'
+    _permission: 'access content'

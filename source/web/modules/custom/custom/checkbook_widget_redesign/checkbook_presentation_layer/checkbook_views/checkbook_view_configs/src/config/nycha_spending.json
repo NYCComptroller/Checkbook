@@ -1,0 +1,62 @@
+{
+  "nycha": {
+    "landing_page_widgets": {
+      "checks":{
+        "widget_config":"nycha_checks_view",
+        "visibility_parameters":["-category:2"]
+      },
+      "vendors": {
+        "widget_config":"nycha_vendor_view",
+        "visibility_parameters":["-vendor", "-category:2"]
+      },
+      "contracts": {
+        "widget_config":"nycha_contracts_view",
+        "visibility_parameters":["-category:2", "-category:1", "-category:4"]
+      },
+      "expense_categories": {
+        "widget_config":"nycha_expense_categories_view",
+        "visibility_parameters":["category","-category:1", "-category:4","-category:3"]
+      },
+      "resp_centers": {
+        "widget_config":"nycha_resp_centers_view",
+        "visibility_parameters":["-category", "-category:2"]
+      },
+      "resp_centers_cat": {
+        "widget_config":"nycha_resp_centers_view",
+        "visibility_parameters":["category", "-category:2"]
+      },
+      "expense_categories_sideby_fundsrc": {
+        "widget_config":"nycha_expense_categories_view",
+        "visibility_parameters":["category","-category:2", "-category:3"]
+      },
+      "expense_categories_horizontal":{
+        "widget_config":"nycha_expense_categories_view",
+        "visibility_parameters":["-category", "-category:1", "-category:2", "-category:3", "-category:4"]
+      },
+      "expense_categories_contracts":{
+        "widget_config":"nycha_expense_categories_view",
+        "visibility_parameters":["category","category:3"]
+      },
+      "industries": {
+        "widget_config":"nycha_spending_by_industries_view",
+        "visibility_parameters":["-industry", "-category:1", "-category:2", "-category:4","-fundsrc"]
+      },
+      "industries_horizantal": {
+        "widget_config":"nycha_spending_by_industries_view",
+        "visibility_parameters":["-industry", "-category","fundsrc"]
+      },
+      "funding_source": {
+        "widget_config":"nycha_spending_by_funding_source_view",
+        "visibility_parameters":["-category:2","-fundsrc","-industry"]
+      },
+      "funding_source_horizantal": {
+        "widget_config":"nycha_spending_by_funding_source_view",
+        "visibility_parameters":["-category:2","-fundsrc","industry"]
+      },
+      "departments": {
+        "widget_config":"nycha_departments_view",
+        "visibility_parameters":["-dept", "-category:1", "-category:4","-category:3"]
+      }
+    }
+  }
+}

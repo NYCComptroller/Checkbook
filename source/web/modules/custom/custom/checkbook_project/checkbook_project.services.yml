@@ -1,0 +1,5 @@
+services:
+  checkbook_project.event_subscriber:
+    class: Drupal\checkbook_project\EventSubscriber\InitSubscriber
+    tags:
+      - { name: event_subscriber }

@@ -1,0 +1,28 @@
+{
+    "widgetType":"phpparser",
+    "defaultParameters":{"type_of_year":"B"},
+    "cleanURLParameters":["year","agency","yeartype","calyear","category","vendor","industry","mwbe"],
+    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","category":"spending_category_id","vendor":"vendor_id","mwbe":"minority_type_id","industry":"industry_type_id"},
+    "dataset": "checkbook:spending_mwbe_data",
+    "totalAggregateColumns":["check_amount_sum"],
+    "adjustTotalAggregateColumnsParameters":"
+        if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('smnid') == 765) {
+            unset($parameters['industry_type_id']);
+            $data_controller_instance = data_controller_get_operator_factory_instance();
+            $parameters['industry_type_id'] = $data_controller_instance->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
+        }
+        return $parameters;
+    ",
+    "columns": ["yeartype.yeartype","check_amount_sum","year.year","industry.industry.industry_type_id","industry.industry.industry_type_name"],
+    "adjustParameters":"
+        if(null != \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('industry')) return $parameters;
+        $data_controller_instance = data_controller_get_operator_factory_instance();
+        $parameters['industry_type_id'] = $data_controller_instance->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEqualOperatorHandler::$OPERATOR__NAME, NULL);
+        return $parameters;
+    ",
+    "WidgetTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Spending by Industries');",
+    "template":"spending_industry_summary",
+    "templateTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Spending by Industry');",
+    "templateLabel":"Industry",
+    "templateLabelEval":"return $node->data[0]['industry_industry_industry_type_name'];"
+}

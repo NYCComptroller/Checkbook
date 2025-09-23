@@ -1,0 +1,24 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":1034,
+  "startWith":0,
+  "limit":100,
+  "maxSelect":50,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "facetPager":true,
+  "columns":["budget_name.budget_name", "txcount"],
+  "orderBy":"-txcount",
+  "filterName":"Budget Name",
+  "urlParameterName":"bdgnm",
+  "urlParameterNameType":"eqtext",
+  "autocompleteParamName":"bdgname_auto",
+  "autocompleteID":"fbdgnm",
+  "autocompleteField":"budget_name",
+  "adjustParameters":"
+    $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+    $adjustedParameters['budget_name.budget_name'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+    return $adjustedParameters;
+  ",
+  "template":"individual_filter"
+}

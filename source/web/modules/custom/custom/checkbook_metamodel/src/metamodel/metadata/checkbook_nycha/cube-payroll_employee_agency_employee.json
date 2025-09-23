@@ -1,0 +1,227 @@
+{
+    "datasets":{
+        "payroll_employee_agency_employee":{
+            "datasourceName":"main",
+            "source":"aggregateon_payroll_employee_agency_employee",
+            "columns": [
+                {
+                    "name": "agency_id"},
+                {
+                    "name": "fiscal_year_id"},
+                {
+                    "name": "type_of_year"}
+            ]
+        }
+    },
+    "cubes":{
+        "payroll_employee_agency_employee":{
+            "sourceDatasetName":"payroll_employee_agency_employee",
+            "dimensions":[
+                {
+                    "name": "agency",
+                    "levels": [
+                                {
+                                    "name": "agency",
+                                    "datasetName": "agency",
+                                    "sourceColumnName": "agency_id"
+                                }
+                    ]
+                },
+                {
+                    "name": "employee",
+                    "levels": [
+                                {
+                                    "name": "employee",
+                                    "datasetName": "employee",
+                                    "sourceColumnName": "employee_id"
+                                }
+                    ]
+                },
+                {
+                    "name": "employment_type",
+                    "levels": [
+                                {
+                                    "name": "employment_type",
+                                    "sourceColumnName": "type_of_employment"
+                                }
+                    ]
+                },
+                {
+                    "name":"year",
+                    "levels":[
+                        {
+                            "name":"year",
+                            "datasetName":"year",
+                            "sourceColumnName":"fiscal_year_id"
+                        }
+                    ]
+                },
+                {
+                    "name":"year_type",
+                    "levels":[
+                        {
+                            "name":"year_type",
+                            "sourceColumnName":"type_of_year"
+                        }
+                    ]
+                },
+                {
+                    "name": "max_annual_salary",
+                    "levels": [
+                        {
+                            "name": "max_annual_salary",
+                            "sourceColumnName": "max_annual_salary"
+                        }
+                    ]
+                },
+                {
+                    "name": "total_gross_pay",
+                    "levels": [
+                        {
+                            "name": "total_gross_pay",
+                            "sourceColumnName": "total_gross_pay"
+                        }
+                    ]
+                },
+                {
+                    "name": "total_base_salary",
+                    "levels": [
+                        {
+                            "name": "total_base_salary",
+                            "sourceColumnName": "total_base_salary"
+                        }
+                    ]
+                },
+                {
+                    "name": "total_other_payments",
+                    "levels": [
+                        {
+                            "name": "total_other_payments",
+                            "sourceColumnName": "total_other_payments"
+                        }
+                    ]
+                },
+                {
+                    "name": "total_overtime_amount",
+                    "levels": [
+                        {
+                            "name": "total_overtime_amount",
+                            "sourceColumnName": "total_overtime_amount"
+                        }
+                    ]
+                },
+                {
+                    "name": "civil_service_title",
+                    "levels": [
+                        {
+                            "name": "civil_service_title",
+                            "sourceColumnName": "civil_service_title"
+                        }
+                    ]
+                },
+                {
+                    "name": "civil_service_title_code",
+                    "levels": [
+                        {
+                            "name": "civil_service_title_code",
+                            "sourceColumnName": "civil_service_title_code"
+                        }
+                    ]
+                }
+            ],
+            "measures":{
+                "txcount": {
+                    "function": "COUNT(*)"
+                },
+                "title_count": {
+                    "function": "COUNT(DISTINCT civil_service_title)"
+                },
+                "emp_count": {
+                    "function": "COUNT(DISTINCT employee_number)"
+                },
+                "annual_salary_max":{
+                    "function":"MAX(max_annual_salary)"
+                },
+                "combined_max_annual_salary":{
+                    "function":"SUM(max_annual_salary)"
+                },
+                "combined_total_gross_pay":{
+                    "function":"SUM(total_gross_pay)"
+                },
+                "combined_total_base_salary":{
+                    "function":"SUM(total_base_salary)"
+                },
+                "combined_total_other_payments":{
+                    "function":"SUM(total_other_payments)"
+                },
+                "combined_total_overtime_amount":{
+                    "function":"SUM(total_overtime_amount)"
+                },
+                "gross_pay_g250k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(total_gross_pay,0) > 250000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_g101k_le250k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(total_gross_pay,0) > 100000 AND COALESCE(total_gross_pay,0) <= 250000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_g51k_le100k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(total_gross_pay,0) > 50000 AND COALESCE(total_gross_pay,0) <= 100000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_ge20k_le50k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(total_gross_pay,0) >= 20000 AND COALESCE(total_gross_pay,0) <= 50000 THEN 1 ELSE 0 END)"
+                },
+                "gross_pay_less20k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(total_gross_pay,0) < 20000 THEN 1 ELSE 0 END)"
+                },
+                "overtime_pay_g250k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(total_overtime_amount,0) > 250000 THEN 1 ELSE 0 END)"
+                },
+                "overtime_pay_g101k_le250k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(total_overtime_amount,0) > 100000 AND COALESCE(total_overtime_amount,0) <= 250000 THEN 1 ELSE 0 END)"
+                },
+                "overtime_pay_g51k_le100k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(total_overtime_amount,0) > 50000 AND COALESCE(total_overtime_amount,0) <= 100000 THEN 1 ELSE 0 END)"
+                },
+                "overtime_pay_ge20k_le50k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(total_overtime_amount,0) >= 20000 AND COALESCE(total_overtime_amount,0) <= 50000 THEN 1 ELSE 0 END)"
+                },
+                "overtime_pay_less20k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(total_overtime_amount,0) < 20000 THEN 1 ELSE 0 END)"
+                },
+                "annual_salary_g250k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(max_annual_salary,0) > 250000 THEN 1 ELSE 0 END)"
+                },
+                "annual_salary_g101k_le250k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(max_annual_salary,0) > 100000 AND COALESCE(max_annual_salary,0) <= 250000 THEN 1 ELSE 0 END)"
+                },
+                "annual_salary_g51k_le100k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(max_annual_salary,0) > 50000 AND COALESCE(max_annual_salary,0) <= 100000 THEN 1 ELSE 0 END)"
+                },
+                "annual_salary_ge20k_le50k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(max_annual_salary,0) >= 20000 AND COALESCE(max_annual_salary,0) <= 50000 THEN 1 ELSE 0 END)"
+                },
+                "annual_salary_less20k_count": {
+                    "function": "SUM(CASE WHEN COALESCE(max_annual_salary,0) < 20000 THEN 1 ELSE 0 END)"
+                }
+            }
+        }
+    },
+    "references": {
+        "payroll_employee_agency_employee__payroll_agency": [
+                {"datasetName": "payroll_employee_agency_employee", "columnNames": ["agency_id", "fiscal_year_id", "type_of_year"]},
+                {"datasetName": "payroll_agency", "columnNames": ["agency_id", "fiscal_year_id", "type_of_year"]}
+        ],
+        "payroll_employee_agency_employee__payroll_agency__payroll_year": [
+                {"datasetName": "payroll_employee_agency_employee", "columnNames": ["fiscal_year_id", "type_of_year"]},
+                {"datasetName": "payroll_agency", "columnNames": ["fiscal_year_id", "type_of_year"]},
+                {"datasetName": "payroll_year", "columnNames": ["fiscal_year_id", "type_of_year"]}
+        ],
+        "payroll_employee_agency_employee__payroll_employment_type": [
+            {"datasetName": "payroll_employee_agency_employee", "columnNames": ["fiscal_year_id", "type_of_year"]},
+            {"datasetName": "payroll_employment_type", "columnNames": ["fiscal_year_id", "type_of_year"]}
+        ],
+        "payroll_employee_agency_employee__payroll_agency_employment_type": [
+            {"datasetName": "payroll_employee_agency_employee", "columnNames": ["agency_id", "fiscal_year_id", "type_of_year"]},
+            {"datasetName": "payroll_agency_employment_type", "columnNames": ["agency_id", "fiscal_year_id", "type_of_year"]}
+        ]
+    }
+}

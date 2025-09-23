@@ -1,0 +1,5 @@
+{
+    "defaultConfigKey":"prime_contract_subven_report_view",
+    "dataFunc":"GetPrimeContractSubVenReportingSubLevel",
+    "countFunc":"GetCountContractsReported"
+}

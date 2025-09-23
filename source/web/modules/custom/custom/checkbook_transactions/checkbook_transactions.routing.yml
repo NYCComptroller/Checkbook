@@ -1,0 +1,519 @@
+checkbook_transactions.budget_transactions:
+  path: '/budget/transactions/budget_transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::budgetTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.advanced_budget_transactions:
+  path: '/budget/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::advancedBudgetTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_budget_transactions:
+  path: '/nycha_budget/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_budget_transactions_budgettype_committed:
+  path: '/nycha_budget/transactions/budgettype/committed/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_budget_transactions_budgettype_remaining:
+  path: '/nycha_budget/transactions/budgettype/remaining/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_budget_fundsrc_details_transactions:
+  path: '/nycha_budget/fundsrc_details/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetFundsrcDetailsTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_budget_project_details_transactions:
+  path: '/nycha_budget/project_details/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetProjectDetailsTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_budget_program_details_transactions:
+  path: '/nycha_budget/program_details/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetProgramDetailsTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_budget_respcenter_details_transactions:
+  path: '/nycha_budget/respcenter_details/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetRespcenterDetailsTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_contract_assoc_releases:
+  path: '/nycha_contract_assoc_releases/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::nychaContractAssocReleases
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_contract_details:
+  path: '/nycha_contract_details/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::nychaContractDetails
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_revenue_transactions:
+  path: '/nycha_revenue/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\RevenueController::nychaRevenueTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.revenue_transactions:
+  path: '/revenue/transactions/revenue_transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\RevenueController::revenueTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.payroll_transactions:
+  path: '/payroll/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\PayrollController::payrollTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.payroll_title_transactions:
+  path: '/payroll/payroll_title/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\PayrollController::payrollTitleTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.payroll_monthly_transactions:
+  path: '/payroll/monthly/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\PayrollController::payrollMonthlyTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.payroll_agencywide_monthly_transactions:
+  path: '/payroll/agencywide/monthly/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\PayrollController::payrollAgencywideMonthlyTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.payroll_agencywide_transactions:
+  path: '/payroll/agencywide/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\PayrollController::payrollAgencywideTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.payroll_employee_transactions_fy:
+  path: '/payroll/employee/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\PayrollController::payrollEmployeeFYTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.payroll_employee_transactions_cy:
+  path: '/payroll/employee/transactions/cy/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\PayrollController::payrollEmployeeCYTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.spending_transactions_dashboard_ms:
+  path: '/spending/transactions/dashboard/ms/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\SpendingController::spendingDashboardMsTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.spending_transactions_dashboard_ss:
+  path: '/spending/transactions/dashboard/ss/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\SpendingController::spendingDashboardSPTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.spending_transactions_dashboard_sp:
+  path: '/spending/transactions/dashboard/sp/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\SpendingController::spendingDashboardSPTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.spending_transactions_datasource:
+  path: '/spending/transactions/datasource/checkbook_oge/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\SpendingController::spendingDatasourceTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.spending_transactions:
+  path: '/spending/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\SpendingController::spendingTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_spending_transactions:
+  path: '/nycha_spending/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\SpendingController::nychaSpendingTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contract_details:
+  path: '/contract_details/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::contractDetails
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contract_transactions_citywide_expense:
+  path: '/contract/transactions/contcat/expense/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideExpenseContractTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contract_transactions_citywide_revenue:
+  path: '/contract/transactions/contcat/revenue/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideRevenueContractTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contract_transactions_mwbe_mp_expense:
+  path: '/contract/transactions/contcat/expense/dashboard/mp/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeExpenseContractTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contract_transactions_mwbe_ms_expense:
+  path: '/contract/transactions/contcat/expense/dashboard/ms/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeExpenseContractTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contract_transactions_mwbe_sp_expense:
+  path: '/contract/transactions/contcat/expense/dashboard/sp/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeExpenseContractTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contract_transactions_mwbe_ss_expense:
+  path: '/contract/transactions/contcat/expense/dashboard/ss/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeExpenseContractTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contract_transactions_mwbe_sp_revenue:
+  path: '/contract/transactions/contcat/revenue/dashboard/sp/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeRevenueContractTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contract_transactions_mwbe_ms_revenue:
+  path: '/contract/transactions/contcat/revenue/dashboard/ms/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeRevenueContractTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contract_transactions_mwbe_ss_revenue:
+  path: '/contract/transactions/contcat/revenue/dashboard/ss/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeRevenueContractTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contract_transactions_mwbe_mp_revenue:
+  path: '/contract/transactions/contcat/revenue/dashboard/mp/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeRevenueContractTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.subcontract_transactions:
+  path: '/subcontract/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::subcontractTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_contracts_transactions:
+  path: '/nycha_contracts/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::nychaContractsTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contracts_spending_transactions:
+  path: '/contract/spending/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::contractSpendingTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.subvendor_ss_contracts_spending_transactions:
+  path: '/contract/spending/transactions/dashboard/ss/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::subvendorContractSpendingTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.mwbe_subvendor_contracts_spending_transactions:
+  path: '/contract/spending/transactions/dashboard/ms/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::subvendorContractSpendingTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.subvendor_sp_contracts_spending_transactions:
+  path: '/contract/spending/transactions/dashboard/sp/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::subvendorContractSpendingTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.oge_contracts_spending_transactions:
+  path: '/contract/spending/transactions/datasource/checkbook_oge/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::ogeContractSpendingTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contract_transactions_citywide_pending:
+  path: '/contract/transactions/contstatus/P/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywidePendingContractTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contract_transactions_mwbe_pending:
+  path: '/contract/transactions/mwbe_pending_contracts/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbePendingContractTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contract_transactions_edc:
+  path: '/contract/transactions/contcat/expense/datasource/checkbook_oge/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::EdcContractTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nychaBudget_advanced_search:
+  path: '/nycha_budget/search/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetSearchTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.revenue_agency_details_transactions:
+  path: '/revenue/agency_details/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\RevenueController::revenueAgencyDetails
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.revenue_revcat_details_transactions:
+  path: '/revenue/revcat_details/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\RevenueController::revenueRevcatDetails
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.revenue_funding_details_transactions:
+  path: '/revenue/fundsrc_details/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\RevenueController::revenueFundSrcDetails
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.revenue_advanced_search_transactions:
+  path: '/revenue/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\RevenueController::AdvancedSearchRevenueTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_revenue_advanced_search_transactions:
+  path: '/nycha_revenue/search/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\RevenueController::NychaRevenueAdvancedSearchTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+
+checkbook_transactions.contracts_advanced_search_expense:
+  path: '/contract/search/transactions/contcat/expense/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideContractsAdvancedSearchExpense
+    params: ''
+  requirements:
+    _permission: 'access content'
+
+checkbook_transactions.contracts_advanced_search_status_all:
+  path: '/contract/search/transactions/contcat/all/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideContractsAdvancedSearchStatusAll
+    params: ''
+  requirements:
+    _permission: 'access content'
+
+checkbook_transactions.contracts_advanced_search_revenue:
+  path: '/contract/search/transactions/contcat/revenue/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideContractsAdvancedSearchRevenue
+    params: ''
+  requirements:
+    _permission: 'access content'
+
+checkbook_transactions.contracts_advanced_search_expense_all_years:
+  path: '/contract/search/all/transactions/contcat/expense/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideContractsAdvancedSearchExpenseAllYears
+    params: ''
+  requirements:
+    _permission: 'access content'
+
+checkbook_transactions.contracts_advanced_search_all_years:
+  path: '/contract/search/all/transactions/contcat/all/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideContractsAdvancedSearchExpenseAllYears
+    params: ''
+  requirements:
+    _permission: 'access content'
+
+checkbook_transactions.contracts_advanced_search_revenue_all_years:
+  path: '/contract/search/all/transactions/contcat/revenue/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideContractsAdvancedSearchRevenueAllYears
+    params: ''
+  requirements:
+    _permission: 'access content'
+
+checkbook_transactions.edc_contracts_expense_advanced_search:
+  path: '/contract/search/transactions/datasource/checkbook_oge/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::EdcContractsExpenseAdvancedSearch
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.edc_contracts_expense_advanced_search_all_years:
+  path: '/contract/all/transactions/datasource/chkeckbook_oge/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::EdcContractsExpenseAdvancedSearchAllYears
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contracts_pending_advanced_search:
+  path: '/contract/search/transactions/contstatus/P/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::ContractsPendingAdvancedSearch
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.contracts_pending_transaction_mini_panel:
+  path: '/pending_contract_transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::ContractsPendingTransactionsMiniPanel
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.spending_search_advanced_search:
+  path: '/spending/search/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\SpendingController::SpendingAdvancedSearch
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.spending_edc_search_advanced_search:
+  path: '/spending/search/transactions/datasource/checkbook_oge/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\SpendingController::SpendingEDCAdvancedSearch
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_contracts_search_advanced_search:
+  path: '/nycha_contracts/search/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::ContractsNychaAdvancedSearch
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_contracts_search_all_advanced_search:
+  path: '/nycha_contracts/all/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\ContractController::ContractsNychaAllAdvancedSearch
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.payroll_fy_search_advanced_search:
+  path: '/payroll/search/transactionsFY/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\PayrollController::PayrollFyAdvancedSearch
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.payroll_cy_search_advanced_search:
+  path: '/payroll/search/transactionsCY/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\PayrollController::PayrollCyAdvancedSearch
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.nycha_spending_advanced_search_transactions:
+  path: '/nycha_spending/search/transactions/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\SpendingController::NychSpendingAdvancedSearchTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.budget_agency_percent_transactions:
+  path: '/budget_agency_perecent_difference_transactions/budget/agency_details/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::BudgetAgencyPercentTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.budget_dept_percent_transactions:
+  path: '/department_budget_details/budget/dept_details/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::BudgetDeptPercentTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+checkbook_transactions.budget_expense_percent_transactions:
+  path: '/expense_category_budget_details/budget/expcategory_details/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::BudgetExpCatPercentTransactions
+    params: ''
+  requirements:
+    _permission: 'access content'
+

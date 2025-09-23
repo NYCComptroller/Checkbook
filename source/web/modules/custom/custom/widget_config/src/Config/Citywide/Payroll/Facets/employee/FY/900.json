@@ -1,0 +1,29 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":310,
+    "startWith":0,
+    "maxSelect":5,
+    "limit":100,
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
+    "columns":["civil_service_title.civil_service_title", "txcount"],
+    "urlParamMap":{"title":"civil_service_title.civil_service_title"},
+    "orderBy":"-txcount",
+    "filterName":"Title",
+    "facetPager":true,
+    "urlParameterName":"title",
+    "urlParameterNameType":"eqtext",
+    "autocompleteParamName":"ftitle_auto",
+    "autocompleteID":"ftitle",
+    "autocompleteField":"civil_service_title.civil_service_title",
+    "adjustParameters":"
+        $monthId = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('month');
+        if(isset($monthId)){
+            $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+        }
+        $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+        $adjustedParameters['civil_service_title.civil_service_title'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+    }

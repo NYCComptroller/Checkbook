@@ -1,0 +1,14 @@
+{
+  "datasets": {
+    "subcontract_approval_status": {
+      "datasourceName": "main",
+      "source": "subcontract_approval_status",
+      "columns": [
+        {
+          "name":"aprv_sta_id",
+          "key":true
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,34 @@
+
+{% set ytdspending = customWidgetLabel("ytd_spending") %}
+{% set percent_spending_value = spendingSummaryTitle(node.widgetConfig.totalAggregateColumns['check_amount_sum'] ,node.data[0]['check_amount_sum'] )%}
+{% set percent_spending = customWidgetLabel("percent_spending")  %}
+{% set snmid = RequestGet("smnid") %}
+{% set spending_category_value= RequestGet("category") %}
+{% if (snmid == 29 or snmid == 760) %}
+  {% set percent_spending_value = '' %}
+  {% set percent_spending = '' %}
+  {% set agency_id = RequestGet("agency") %}
+  {% set yeartype = RequestGet("yeartype") %}
+  {% set year_id = RequestGet("year") %}
+  {% set deptcode = RequestGet("dept") %}
+  {% set datasource = RequestGet("datasource") %}
+{% endif %}
+{% set value = spendingDeptName(agency_id,spending_category_value,year_id,deptcode,datasource) %}
+
+
+<div class="contract-details-heading">
+  <div class="contract-id">
+    <h2 class="contract-title">{{customFunctionEvaluate(node.widgetConfig.templateTitleEval)}}</h2>
+    <div class="spending-tx-subtitle"><b>{{node.widgetConfig.templateLabel}}</b>: {{value}}</div>
+  </div>
+  <div class="dollar-amounts">
+    <div class="ytd-spending-amount">
+    {{customAmount(node.data[0]['check_amount_sum'],2,'$') |raw }}
+      <div class="amount-title">{{ ytdspending|raw}}</div>
+    </div>
+    <div class="percent-spending-amount">
+      {{percent_spending_value}}
+      <div class="amount-title">{{ percent_spending |raw}}</div>
+    </div>
+  </div>
+</div>

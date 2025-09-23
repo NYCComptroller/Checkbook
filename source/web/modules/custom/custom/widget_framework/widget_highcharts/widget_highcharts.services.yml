@@ -1,0 +1,5 @@
+services:
+  widget_highcharts.Twig.HighChartsExtension:
+    class: Drupal\widget_highcharts\Twig\HighChartsExtension
+    tags:
+      - { name: twig.extension }

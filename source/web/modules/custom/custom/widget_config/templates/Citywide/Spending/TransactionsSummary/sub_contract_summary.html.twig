@@ -1,0 +1,40 @@
+
+{% set ytdspending = customWidgetLabel("ytd_spending") %}
+{% set cid = customWidgetLabel("contract_id") %}
+{% set sub_contract_purpose = customWidgetLabel("sub_contract_purpose") %}
+{% set sub_vendor_name= customWidgetLabel("sub_vendor_name") %}
+{% set prime_vendor_name= customWidgetLabel("prime_vendor") %}
+{% set sub_contract_purpose_value = node.data[0]['sub_contract_purpose_sub_contract_purpose'] |upper %}
+{% set snmid = RequestGet("smnid") %}
+{% if (snmid == 718 or snmid == 749) %}
+{%  set prime_vendor_name = customWidgetLabel("associated_prime_vendor")  %}
+{% endif %}
+
+<div class="contract-details-heading">
+  <div class="contract-id">
+    <h2 class="contract-title">{{customFunctionEvaluate(node.widgetConfig.templateTitleEval)}}</h2>
+  </div>
+  <div class="dollar-amounts">
+    <div class="ytd-spending-amount">
+      {{ customAmount(node.data[0]['check_amount_sum'],2,'$')}}
+      <div class="amount-title">{{ytdspending|raw}}</div>
+    </div>
+  </div>
+  <div><br/></div>
+</div>
+<div class="contract-information">
+  <ul>
+    <li class="spendingtxsubtitle">
+      <span class="gi-list-item">{{cid|raw}}:</span> {{ node.data[0]['document_id_document_id']}}
+    </li>
+    <li class="contract-purpose">
+      <span class="gi-list-item">{{sub_vendor_name|raw}}:</span> {{node.data[0]['sub_vendor_sub_vendor_legal_name']}}
+    </li>
+    <li class="agency">
+      <span class="gi-list-item">{{sub_contract_purpose|raw}}:</span> {{sub_contract_purpose_value}}
+    </li>
+    <li class="vendor">
+      <span class="gi-list-item">{{prime_vendor_name|raw}}:</span> {{ node.data[0]['prime_vendor_prime_vendor_legal_name']}}
+    </li>
+  </ul>
+</div>

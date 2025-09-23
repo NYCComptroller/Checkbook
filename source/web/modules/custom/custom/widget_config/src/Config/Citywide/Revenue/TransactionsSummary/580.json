@@ -1,0 +1,18 @@
+{
+  "widgetType": "phpparser",
+  "no_results_content":"No Results Found",
+  "cleanURLParameters":["year","agency","revcat","fundsrccode"],
+  "urlParamMap":{"year":"year.year","agency":"agency_id","revcat":"revenue_category_id","fundsrccode":"funding_class_code"},
+  "defaultParameters":{"year.year":113},
+  "noDataInitialLoad":true,
+  "dataset": "checkbook:aggregate_revenue",
+  "columns": ["category.category.revenue_category_name","category.category",
+    "adopted_budget","current_modified_budget","revenue_amount_sum","remaining_amount"],
+  "limit":1,
+  "widgetTitle":"Revenue Categories Revenue Transactions",
+    "template":"revenue_transactions_summary",
+    "templateTitle":"Revenue Category Revenue Transactions",
+    "templateLabel":"Revenue Category",
+    "templateLabelEval":"return $node->data[0]['category_category_revenue_category_name'];"
+
+}

@@ -1,0 +1,35 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":317,
+    "startWith":0,
+    "maxSelect":5,
+    "autocomplete":false,
+    "filterName":"Annual Salary",
+    "urlParameterName":"annualsalary",
+    "defaultParameters":{"type_of_employment":"Salaried"},
+    "urlParameterType":"rangeid3",
+    "showAllRecords":true,
+    "autocompleteID":"fannualSalary",
+    "dataset": "checkbook:payroll_ranged_data",
+    "columns":["annual_salary_g250k_count", "annual_salary_g101k_le250k_count", "annual_salary_g51k_le100k_count", "annual_salary_ge20k_le50k_count", "annual_salary_less20k_count"],
+   "urlParamMap":{
+        "title":"civil_service_title_code",
+        "grosspayytd":"gross_pay",
+        "annualsalary":"annual_salary",
+        "overtimepayment":"overtime_pay"
+    },
+    "orderBy":"",
+    "adjustParameters":"
+        $monthId = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('month');
+        $datasource = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('datasource');
+       if(isset($monthId) && $datasource=='checkbook_nycha' ){
+         $node->widgetConfig->dataset = 'checkbook_nycha:payroll_employee_agency_month_basis';
+         }
+        else if(isset($monthId)){
+       $node->widgetConfig->dataset = 'checkbook:payroll_employee_agency_month';
+         }
+        $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

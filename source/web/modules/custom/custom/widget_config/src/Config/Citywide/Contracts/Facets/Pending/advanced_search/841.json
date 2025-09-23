@@ -1,0 +1,33 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":714,
+    "no_results_content":"No Results Found",
+    "allowRequestParams":["contstatus"],
+    "limit":100,
+    "urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
+    "columns":["industry.industry", "industry.industry.industry_type_name", "txcount"],
+    "orderBy":"-txcount"  ,
+	"facetPager":true,
+    "filterName":"Industry",
+    "urlParameterName":"cindustry",
+    "autocompleteParamName":"cindustry_auto",
+    "autocompleteID":"fIndustryTypeId",
+    "autocompleteField":"industry.industry.industry_type_name",
+    "maxSelect":5,
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
+    "adjustParameters":"
+        if(isset($parameters['vendor_type'])){
+            $parameters['vendor_type'] = \\Drupal\\checkbook_project\\MwbeUtilities\\VendorType::getVendorTypeValue($parameters['vendor_type']);
+        }
+        if(isset($parameters['cont_type_code'][0])){
+            $parameters['cont_type_code'] = (int)$parameters['cont_type_code'][0];
+        }
+        checkbook_faceted_search_adjust_param($node);
+        \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::_checkbook_project_adjustContractParameterFilters($node,$parameters,'pending');
+            $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+            $adjustedParameters['industry.industry'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+            return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

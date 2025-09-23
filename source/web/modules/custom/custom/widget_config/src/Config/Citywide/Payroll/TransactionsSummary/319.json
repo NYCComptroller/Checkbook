@@ -1,0 +1,6 @@
+{
+    "widgetType": "phpparser",
+    "template":"payroll_agency_payroll_summary",
+    "customDataHandlerClass":"\\Drupal\\checkbook_project\\PayrollUtilities\\payrollDetails",
+    "noDataInitialLoad":true
+}

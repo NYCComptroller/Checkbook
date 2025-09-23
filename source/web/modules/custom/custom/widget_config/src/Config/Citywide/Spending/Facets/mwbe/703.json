@@ -1,0 +1,26 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":706,
+    "startWith":0,
+    "limit":100,
+    "maxSelect":5,
+    "columns":["vendor.vendor", "vendornm.vendornm", "txcount"],
+    "orderBy":"-txcount",
+    "facetPager":true,
+    "filterName":"Vendor",
+    "urlParameterName":"fvendor",
+    "autocompleteParamName":"vendor_auto",
+    "autocompleteID":"fvendorId",
+    "autocompleteField":"vendornm.vendornm",
+    "urlParamMap":{"dept":"dept.dept","fvendor":"vendor.vendor"},
+    "adjustParameters":"
+      $parameters = \\Drupal\\checkbook_project\\SpendingUtilities\\MwbeSpendingUtil::_checkbook_project_adjust_mwbe_spending_parameter_filters($node, $parameters);
+      $parameters = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::_checkbook_project_adjust_date_spending_parameter_filters($node, $parameters);
+      checkbook_faceted_search_adjust_param($node);
+      $parameters = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::_checkbook_project_adjust_spending_parameter_filters($node, $parameters);
+      $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+      $adjustedParameters['vendornm.vendornm'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+      return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

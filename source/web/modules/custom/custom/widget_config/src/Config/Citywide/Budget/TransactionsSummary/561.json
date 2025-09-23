@@ -1,0 +1,13 @@
+{
+"widgetType": "phpparser",
+"cleanURLParameters":["year","expcategory","agency","dept"],
+"urlParamMap":{"year":"year_id.year_id","expcategory":"object_class_id","agency":"agency_id","dept":"department_code"},
+"defaultParameters":{"year_id.year_id":113},
+"noDataInitialLoad":true,
+"dataset": "checkbook:budget_percent_difference",
+"columns": ["year_id.year_id","object_class.object_class","object_class.object_class.object_class_name",
+            "current_amount","previous_amount","previous_1_amount","previous_2_amount",
+            "percent_difference1","percent_difference2","percent_difference3"],
+"limit":1,
+"widgetTitle":"Expense Categories by Percent Difference Expense Budget Transactions"
+}

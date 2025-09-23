@@ -1,0 +1,5 @@
+{% for datarow in node.data %}
+  <div class="field-label">Adopted</div><div class="field-items">{{ customAmount(datarow['adopted_budget'],2,'$') }}</div>
+  <div class="field-label">Modified</div><div class="field-items">{{customAmount(datarow['current_modified_budget'],2,'$')}}</div>
+  <div class="field-label">Revenue Collected</div><div class="field-items">{{ customAmount(datarow['revenue_amount_sum'],2,'$') }}</div>
+{% endfor %}

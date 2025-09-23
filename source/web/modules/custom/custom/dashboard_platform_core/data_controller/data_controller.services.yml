@@ -1,0 +1,6 @@
+services:
+  init_subscriber:
+    class: Drupal\data_controller\EventSubscriber\InitSubscriber
+    tags:
+      -
+        name: event_subscriber

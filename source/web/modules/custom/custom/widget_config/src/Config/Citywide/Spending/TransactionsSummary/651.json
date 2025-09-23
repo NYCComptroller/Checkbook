@@ -1,0 +1,29 @@
+{
+    "widgetType": "phpparser",
+    "cleanURLParameters":["agency","vendor","category","year","yeartype","check_eft_issued_nyc_year_id","calendar_fiscal_year_id"],
+    "urlParamMap":{"agency":"agency_id","vendor":"vendor_id","category":"spending_category_id","year":"year_id","yeartype":"year_type",
+        "check_eft_issued_nyc_year_id":"check_eft_issued_nyc_year_id","calendar_fiscal_year_id":"calendar_fiscal_year_id"},
+    "limit":"1",
+    "dataset": "checkbook:fact_disbursement_line_item",
+    "columns": ["check_eft_issued_date","vendor_name","agency_name","check_amount","expenditure_object_name",
+        "agency_id","vendor_id","expenditure_object_id","department_name"],
+    "adjustParameters":"
+
+    $yearType = $parameters['year_type'][0];
+$year = $parameters['year_id'][0];
+
+if(isset($yearType)){
+if($yearType == 'B')
+$parameters['check_eft_issued_nyc_year_id'] = $year;
+else if($yearType == 'C')
+$parameters['calendar_fiscal_year_id'] = $year;
+}
+
+unset($parameters['year_type']);
+unset($parameters['year_id']);
+
+return $parameters;
+",
+
+"WidgetTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Checks');"
+}

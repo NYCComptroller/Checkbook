@@ -1,0 +1,26 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":688,
+  "autocomplete":false,
+  "no_results_content":"No Results Found",
+  "defaultParameters":{"latest_flag":"Y"},
+  "limit":10,
+  "startWith":0,
+  "maxSelect":5,
+  "allowFacetDeselect":true,
+  "urlParamMap":{"doctype":"document_code.document_code.document_code"},
+  "filterName":"Certification",
+  "urlParameterName":"pscert",
+  "urlParameterType":"cert",
+  "autocompleteID":"fPrimeSubCert",
+  "columns":["cert_women_count", "cert_emerging_count"],
+  "adjustParameters":"
+    if(isset($parameters['vendor_type'])){
+      $parameters['vendor_type'] = \\Drupal\\checkbook_project\\MwbeUtilities\\VendorType::getVendorTypeValue($parameters['vendor_type']);
+    }
+\\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::_checkbook_project_adjustContractParameterFilters($node,$parameters,'active_registered');
+$adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+return $adjustedParameters;
+  ",
+"template":"individual_filter"
+}

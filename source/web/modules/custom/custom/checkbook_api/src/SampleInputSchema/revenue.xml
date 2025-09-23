@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<request>
+    <type_of_data>Revenue</type_of_data>
+    <records_from>1</records_from>
+    <max_records>500</max_records>
+    <search_criteria>
+        <criteria>
+            <name>fiscal_year</name>
+            <type>value</type>
+            <value>2015</value>
+        </criteria>
+    </search_criteria>
+    <response_columns>
+        <column>agency</column>
+        <column>budget_fiscal_year</column>
+        <column>fiscal_year</column>
+        <column>funding_class</column>
+        <column>revenue_class</column>
+        <column>revenue_category</column>
+        <column>fund_class</column>
+        <column>revenue_source</column>
+        <column>adopted</column>
+        <column>modified</column>
+        <column>recognized</column>
+        <column>closing_classification_name</column>
+    </response_columns>
+</request>
