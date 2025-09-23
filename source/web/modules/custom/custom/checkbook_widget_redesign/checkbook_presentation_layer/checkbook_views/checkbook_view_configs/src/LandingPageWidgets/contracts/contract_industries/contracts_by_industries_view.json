@@ -1,0 +1,35 @@
+{
+    "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetContractsByIndustries",
+    "countFunc":"GetCountContracts",
+    "table_title":"Contracts by Industries",
+    "headerSubTitle":"Contracts",
+    "table_columns":[
+        {"labelAlias":"contract_industry","column":"industry_type_name","derivedColumn":"industry_name_link"},
+        {"labelAlias":"no_of_contracts","column":"total_contracts","format":"number"},
+        {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
+        {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
+        {"labelAlias":"spent_to_date","column":"spending_amount_sum","format":"dollar","derivedColumn":"industry_spent_to_date_link"},
+        {"label":"","column":""}
+    ],
+    "dataTableOptions":{
+        "aoColumns":[
+            {"sClass":"text","sWidth":"249px","bSortable":false},
+            {"sClass":"number","sWidth":"120px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"177px","asSorting":["desc","asc"]},
+            {"sClass":"number","sWidth":"217px","asSorting":["desc","asc"]},
+            {"sClass":"number", "sWidth":"160px","asSorting":["desc","asc" ]},
+            {"sWidth":"15px","bSortable":false}
+        ],
+        "bServerSide":true,
+        "bFilter":false,
+        "bPaginate":false,
+        "bProcessing":true,
+        "bLengthChange":false,
+        "bInfo":false,
+        "bAutoWidth":false,
+        "aaSorting":[[2,"desc"]],
+        "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+        "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+   }
+}

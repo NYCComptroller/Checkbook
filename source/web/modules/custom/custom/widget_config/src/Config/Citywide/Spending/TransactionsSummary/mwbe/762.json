@@ -1,0 +1,32 @@
+{
+    "widgetType":"phpparser",
+    "defaultParameters":{"type_of_year":"B","spending_category_id":""},
+    "cleanURLParameters":["year","agency","yeartype","calyear","vendor","category","mwbe","industry"],
+    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","vendor":"vendor_id","category":"spending_category_id","mwbe":"minority_type_id","industry":"industry_type_id"},
+    "dataset": "checkbook:contracts_mwbe_vendor_spending",
+    "totalAggregateColumns":["check_amount_sum"],
+    "adjustTotalAggregateColumnsParameters":"
+        if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('smnid') == 762) {
+            unset($parameters['vendor_id']);
+        }
+        return $parameters;
+    ",
+    "columns":[
+        "check_amount_sum",
+        "total_contract_amount_sum",
+        "vendor.vendor",
+        "vendor.vendor.legal_name",
+        "year.year",
+        "yeartype.yeartype",
+        "minority_type.minority_type"
+    ],
+    "totalDataColumnConfig":{"distinctColumn":"vendor.vendor","distinctColumnMap":"vendor_id"},
+    "WidgetTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Prime Vendors');",
+    "template":"spending_vendor_summary",
+    "templateTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Prime Vendor');",
+    "templateLabel":"Prime Vendor",
+    "templateId":"
+      $sumnid = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('smnid');
+      return $sumnid;
+    "
+}

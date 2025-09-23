@@ -1,0 +1,6 @@
+{
+  "widgetType": "phpparser",
+  "noDataInitialLoad":true,
+  "customDataHandlerClass":"\\Drupal\\checkbook_project\\NychaContractUtilities\\NychaContractDetails",
+  "template":"nycha_contract_details"
+}

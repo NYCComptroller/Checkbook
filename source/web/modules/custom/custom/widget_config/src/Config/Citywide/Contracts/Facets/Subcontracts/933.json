@@ -1,0 +1,24 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":932,
+    "no_results_content":"No Results Found",
+    "startWith":0,
+    "limit":100,
+    "maxSelect":5,
+    "columns":["agency.agency", "agency.agency.agency_name", "txcount"],
+    "orderBy":"-txcount",
+    "facetPager":true,
+    "filterName":"Agency",
+    "urlParameterName":"agency",
+    "autocompleteParamName":"agency_auto",
+    "autocompleteID":"fagencyId",
+    "autocompleteField":"agency_name",
+    "showAllRecords":true,
+    "adjustParameters":"
+        $parameters = \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::adjustSubContractTransactionsCommonParams($node, $parameters);
+        $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+        $adjustedParameters['agency.agency'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

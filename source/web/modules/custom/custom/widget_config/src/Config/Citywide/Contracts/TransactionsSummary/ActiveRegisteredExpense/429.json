@@ -1,0 +1,10 @@
+{
+	"widgetType": "phpparser",
+	"static_data":"Y",
+	"template":"active_registered_transaction_title",
+  "smnid":"return \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_getRequestParamValueBottomURL('smnid');",
+  "dashboard" : "return \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_getRequestParamValueBottomURL('dashboard');",
+  "contactStatus" : "return \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_getRequestParamValueBottomURL('contstatus');",
+  "mocsContracts" : "return \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_getRequestParamValueBottomURL('mocs');",
+  "contactCategory" : "return \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_getRequestParamValueBottomURL('contcat');"
+}

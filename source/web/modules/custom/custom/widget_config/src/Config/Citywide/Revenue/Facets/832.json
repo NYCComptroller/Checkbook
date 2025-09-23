@@ -1,0 +1,24 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":280,
+    "startWith":0,
+    "limit":100,
+    "maxSelect":5,
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
+	"columns":["category.category","category.category.revenue_category_name", "txcount"],
+	"orderBy":"-txcount",
+    "filterName":"Revenue Category",
+    "facetPager":true,
+    "urlParameterName":"revcat",
+    "autocompleteParamName":"frevenueCategoryId_auto",
+    "autocompleteID":"frevenueCategoryId",
+    "autocompleteField":"category.category.revenue_category_name",
+    "adjustParameters":"
+      checkbook_faceted_search_adjust_param($node);
+      $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+      $adjustedParameters['category.category'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+      return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

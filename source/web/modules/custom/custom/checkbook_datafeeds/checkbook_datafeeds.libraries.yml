@@ -1,0 +1,51 @@
+datafeeds.multi-select:
+  version: 1.0.0
+  css:
+    theme:
+      js/multi-select/css/multi-select.css: {}
+  js:
+    js/multi-select/js/jquery.multi-select.js: {}
+datafeeds.datafeeds:
+  version: 1.0.2
+  js:
+    js/datafeeds.js: {}
+datafeeds.budget:
+  version: 1.0.2
+  js:
+    js/budget.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    - checkbook_datafeeds/datafeeds.multi-select
+datafeeds.contracts:
+  version: 1.0.3
+  js:
+    js/contracts.js: {}
+  css:
+    theme:
+      css/contracts.css: {}
+  dependencies:
+    - checkbook_datafeeds/datafeeds.multi-select
+datafeeds.page:
+  version: 1.0.3
+  css:
+    theme:
+      css/data-feed.css: {}
+datafeeds.payroll:
+  version: 1.0.0
+  js:
+    js/payroll.js: {}
+  dependencies:
+    - checkbook_datafeeds/datafeeds.multi-select
+datafeeds.revenue:
+  version: 1.0.2
+  js:
+    js/revenue.js: {}
+  dependencies:
+    - checkbook_datafeeds/datafeeds.multi-select
+datafeeds.spending:
+  version: 1.0.3
+  js:
+    js/spending.js: {}
+  dependencies:
+    - checkbook_datafeeds/datafeeds.multi-select

@@ -1,0 +1,60 @@
+{{ attach_library('widget_config/toggel-pay') }}
+
+
+{% set agencyId = customFunctionEvaluate(node.widgetConfig.templateAgency) %}
+
+<div id='payroll-emp-trans-name'>
+  <span class='payroll-label'>Title: </span>
+  <span class='payroll-value'>{{ payrollTitleUrl(node.data[0]['civil_service_title_civil_service_title']) |raw }}</span>
+</div>
+
+<div id='payroll-tx-static-content'>
+  <table id='payroll-tx-static-content-table'>
+    {% if  agencyId |default  %}
+      <tr>
+        <td width='60%'><strong>{{customWidgetLabel('agency_name') | raw }}</strong>: {{node.data[0]['agency_agency_agency_name'] | raw }} </td>
+        <td><strong>{{customWidgetLabel('payroll_type') | raw }}</strong>: {{ node.data[0]['employment_type_employment_type'] | raw }}</td>
+      </tr>
+      <tr>
+        <td> <strong>{{customWidgetLabel('combined_annual_salary') | raw }}</strong>: {{  customAmount(node.data[0]['total_annual_salary'],2,'$') }}</td>
+        <td><strong>{{customWidgetLabel('total_no_of_sal_employees') | raw }}</strong>:{{ customNumber(node.data[0]['employee_count'],2) }} </td>
+      </tr>
+      <tr>
+        <td> <strong>{{customWidgetLabel('combined_gross_pay_ytd') | raw }}</strong>:{{ customAmount(node.data[0]['total_gross_pay'],2,'$') }}</td>
+        <td></td>
+      </tr>
+           <tr>
+      <td><strong>{{customWidgetLabel('combined_base_pay_ytd') | raw }}</strong>: {{ customAmount(node.data[0]['total_base_salary'],2,'$') }}</td>
+      <td></td>
+    </tr>
+      <tr>
+        <td><strong>{{customWidgetLabel('combined_other_pay_ytd')| raw }}</strong>: {{ customAmount(node.data[0]['total_other_payments'],2,'$') }}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>{{customWidgetLabel('combined_overtime_pay_ytd') | raw }}</strong>:{{  customAmount(node.data[0]['total_overtime_amount'],2,'$')}}</td>
+        <td></td>
+      </tr>
+    {% else %}
+      <tr>
+        <td width='60%'><strong>{{customWidgetLabel('combined_annual_salary')| raw }}</strong>: {{  customAmount(node.data[0]['total_annual_salary'],2,'$') }} </td>
+        <td><strong>{{customWidgetLabel('payroll_type') | raw }}</strong>: {{node.data[0]['employment_type_employment_type'] | upper}}</td>
+      </tr>
+      <tr>
+        <td> <strong>{{customWidgetLabel('combined_gross_pay_ytd') | raw }}</strong>: {{ customAmount(node.data[0]['total_gross_pay'],2,'$') }}</td>
+        <td><strong>{{customWidgetLabel('total_no_of_sal_employees') | raw }}</strong>: {{ customNumber(node.data[0]['employee_count'],2) }} </td>
+      </tr>
+      <tr>
+        <td><strong>{{customWidgetLabel('combined_base_pay_ytd') | raw }}</strong>: {{ customAmount(node.data[0]['total_base_salary'],2,'$') }}</td>
+        <td></td>
+      </tr>
+          <tr>
+      <td><strong>{{customWidgetLabel('combined_other_pay_ytd') | raw }}</strong>: {{ customAmount(node.data[0]['total_other_payments'],2,'$') }}</td>
+      <td></td>
+    </tr>
+      <tr>
+        <td><strong>{{customWidgetLabel('combined_overtime_pay_ytd') | raw }}</strong>: {{ customAmount(node.data[0]['total_overtime_amount'],2,'$')}}</td>
+        <td></td>
+      </tr>
+    {% endif %}
+  </table></div>

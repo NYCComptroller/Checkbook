@@ -1,0 +1,192 @@
+.tab_content_container {
+  width: 940px;
+  height: 20px;
+  float: left;
+  background: #fff;
+  padding: 20px;
+  margin-top: 1px;
+  font-size: 14px;
+  border-radius: 0 0 10px 10px;
+  -moz-border-radius: 0 0 10px 10px;
+  -webkit-border-radius: 0 0 10px 10px;
+  display: block;
+}
+
+.tab_content {
+  display: none;
+  position: absolute;
+  width: 940px;
+  height: 20px;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.tab_content_active {
+  display: block;
+  position: absolute;
+  width: 940px;
+  height: 20px;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.tab_content_active span {
+  float: left;
+  width: 100px;
+  margin-right: 20px;
+}
+
+.checkbook-mwbe-agency-grading .panel-panel {
+  display: inline;
+  width: 700px;
+  float: left;
+  position: relative;
+}
+
+.checkbook-mwbe-agency-grading .grid-9 {
+  width: 700px;
+}
+
+.checkbook-mwbe-agency-grading .grid-3 {
+  width: 218px;
+  float: right;
+}
+
+.checkbook-mwbe-agency-grading label {
+  display: block;
+}
+
+.checkbook-mwbe-agency-grading #section-header {
+  margin-bottom: 0;
+}
+.checkbook-mwbe-agency-grading .dataTables_scrollBody {
+  overflow:hidden !important;
+}
+.checkbook-mwbe-agency-grading .checkbook-grading-left .dataTable td div {
+  margin-top: 5px;
+}
+.checkbook-mwbe-agency-grading .panel-panel.grid-3 {
+  margin-top: 60px;
+}
+.checkbook-mwbe-agency-grading .panel-panel.grid-3 .right-side-bar-summary-items div {
+  margin-bottom: 20px;
+}
+.checkbook-mwbe-agency-grading .panel-panel.grid-3 {
+  border: 1px solid #CACACA;
+  padding-bottom: 10px;
+  width: 218px;
+}
+
+.checkbook-mwbe-agency-grading .grid-3 .legend .title {
+  color: #2E2E2E;
+  text-align: left;
+  background-color: #E9E9E9;
+  border-bottom: 1px solid #CACACA;
+  padding: 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.checkbook-mwbe-agency-grading .grid-3 .legend_entry td {
+  padding: 10px 10px 0 10px;
+  height: 18px;
+}
+.checkbook-mwbe-agency-grading .grid-3 .desc span {
+  text-align: left;
+  padding: 0 5px;
+  max-width: 88px;
+  text-transform: uppercase;
+}
+.checkbook-mwbe-agency-grading .grid-3 .checkbook-grading-right .label {
+  font-size: 11px;
+  font-weight: normal;
+  line-height: 16px;
+  margin-top: 5px;
+  text-transform: uppercase;
+  text-align: center;
+}
+.checkbook-mwbe-agency-grading .grid-3 .checkbook-grading-right .value {
+  color: #5C5C5C;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  width: 105px;
+  margin-right: 32px;
+  display: block;
+  margin: 0 auto;
+}
+.checkbook-mwbe-agency-grading #grading_table {
+  width: 700px !important;
+  border: 1px solid #cacaca;
+}
+.checkbook-mwbe-agency-grading #grading_table .number {
+  padding-right:20px;
+}
+.checkbook-mwbe-agency-grading .checkbook-grading-left .dataTables_paginate {
+  padding-top: 2px;
+  margin-top: -12px;
+}
+.checkbook-mwbe-agency-grading .dataTables_wrapper {
+  border:none;
+}
+
+.checkbook-mwbe-agency-grading ul.primary li.active a,
+.checkbook-mwbe-agency-grading ul.primary li a {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.checkbook-mwbe-agency-grading ul.tabs li a {
+  font-size: 14px;
+  font-weight: bold;
+}
+h1.title {
+  font-family: "RobotoCondensed", serif !important;
+  font-size: 28px !important;
+  color: #3c5e7c !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  text-align: left !important;
+  text-transform: none !important;
+}
+
+.checkbook-mwbe-agency-grading .dataTable td div {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.checkbook-mwbe-agency-grading .dataTable td div div {
+  margin: 0;
+}
+
+.checkbook-mwbe-agency-grading .dataTables_wrapper thead tr {
+  height: auto;
+}
+
+.checkbook-grading-right input[type=checkbox] {
+  display: none;
+}
+
+.checkbook-grading-right input[type=checkbox] + label:before {
+  content: "";
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  vertical-align: middle;
+  margin-right: 8px;
+  background-color: #fff;
+  box-shadow: inset 0 0 1px rgb(0 0 0 / 77%);
+  border-radius: 4px;
+}
+
+.checkbook-grading-right input[type=checkbox]:checked:enabled + label:before {
+  color: white;
+  background-color: #209AD6;
+  background-image: url(/themes/custom/nyccheckbook/images/check_white.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  text-align: center;
+  line-height: 15px;
+  text-shadow: 0px 0px 3px #eee;
+  box-shadow: none;
+}

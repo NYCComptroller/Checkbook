@@ -1,0 +1,10 @@
+
+
+
+{% set catname = customFunctionEvaluate('return  \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getSpendingCategoryName();') %}
+
+<div class="dollar-amounts">
+  <div class="total-spending-amount">{{customAmount(node.data[0]['check_amount_sum'],2,'$')}}
+    <div class="amount-title"> {{catname}} Amount </div>
+  </div>
+</div>

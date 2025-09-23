@@ -1,0 +1,17 @@
+{{ attach_library('widget_highcharts/grid-view') }}
+{{ attach_library('widget_highcharts/printjs') }}
+
+{{ gridPrintExport(node) |raw }}
+
+<div id="gridprint">
+  <h3 class="grid_title">{{ spendingTitle()|raw }}</h3>
+  <h3 class="grid_chart_title">{{ node.widgetConfig.chartTitle |raw}}</h3>
+  {{ pageGridTitle('Spending')|raw }}
+  <div>
+    <table id="table_{{ node.nid }}" class=" {{node.widgetConfig.gridConfig.html_class}} ">
+      {{ spendingFyGrid(node) |raw }}
+      <script type="text/javascript">
+        {{ widget_highcharts_add_datatable_js(node.widgetConfig.gridConfig.dataTableOptions,node) |raw}}
+      </script>
+  </div>
+</div>

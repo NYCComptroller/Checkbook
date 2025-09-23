@@ -1,0 +1,5 @@
+{
+  "widgetType": "phpparser",
+  "template":"mini_panel_contracts_cta_history",
+  "noDataInitialLoad":true
+}

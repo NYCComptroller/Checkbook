@@ -1,0 +1,10 @@
+landing_page_data_table:
+  header: true
+  js:
+    /modules/custom/jquery_plugins/data_tables/1.13.4/js/jquery.dataTables1.13.4.min.js: {}
+    /modules/custom/jquery_plugins/data_tables/1.13.4/extensions/full_numbers_no_ellipses/full_numbers_no_ellipses.js: {}
+    /modules/custom/checkbook_widget_redesign/checkbook_presentation_layer/checkbook_views/landing_page_widget_view/js/landing_page_widget.js: {}
+  dependencies:
+    - core/jquery
+    - core/once
+    - core/drupal

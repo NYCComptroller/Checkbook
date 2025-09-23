@@ -1,0 +1,57 @@
+{% macro item(label, link, dollar_amount, count, active_class, tab_style, tooltip, indicator = true) %}
+  <div class="bottom-navigation--item {{ active_class }}">
+    {% if(item.tooltip|length > 0) %}
+      <div class="activeExpenseContractNote toolTip">
+        {{ item.tooltip }}
+      </div>
+    {% endif %}
+    {% if link == false %}
+      <div class="bottom-navigation--item-label">
+        <div class="bottom-navigation--item-count">
+          {{ count }}
+        </div>
+        {{ label|raw }}
+        <div class="bottom-navigation--item-dollar_amount">
+          {{ dollar_amount }}
+        </div>
+      </div>
+    {% else %}
+      <a class="bottom-navigation--item-label display-block text-no-underline" href="{{ link }}">
+        <div class="bottom-navigation--item-count">
+          {% if count == false %}
+            &nbsp;
+          {% else %}
+            {{ count }}
+          {% endif %}
+        </div>
+        {{ label|raw }}
+        <div class="bottom-navigation--item-dollar_amount">
+          {% if dollar_amount == false %}
+            &nbsp;
+          {% else %}
+            {{ dollar_amount }}
+          {% endif %}
+        </div>
+      </a>
+    {% endif %}
+
+    {# Show indicator if item is active or by force (indicator == true in array) #}
+    {% if active_class|length > 0 %}
+      <div class="indicator-active"></div>
+    {% endif %}
+  </div>
+{% endmacro item %}
+
+{% set render = generateSubvendorBottomSlider(node) | raw %}
+{% set first_section = render['bottom_navigation'] %}
+
+<div class="contracts subvendors bottom-navigation">
+  <!-- Items -->
+  <div class="display-flex flex-justify">
+    <div class="display-flex bottom-navigation--section">
+      {% for item in first_section %}
+        {{ _self.item(item.label, item.link, item.dollar_amount, item.count, item.active_class, item.tab_style, item.tooltip) }}
+      {% endfor %}
+    </div>
+  </div>
+</div>

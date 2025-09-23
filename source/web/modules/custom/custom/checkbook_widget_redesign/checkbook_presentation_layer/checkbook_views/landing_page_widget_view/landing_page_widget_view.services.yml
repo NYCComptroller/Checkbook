@@ -1,0 +1,10 @@
+services:
+  init_subscriber:
+    class: Drupal\landing_page_widget_view\EventSubscriber\InitSubscriber
+    tags:
+      -
+        name: event_subscriber
+  landing_page_widget_view.Twig.LandingPageExtension:
+    class: Drupal\landing_page_widget_view\Twig\LandingPageExtension
+    tags:
+      - { name: twig.extension }

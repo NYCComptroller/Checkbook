@@ -1,0 +1,22 @@
+{
+    "widgetType": "phpparser",
+    "no_results_content":"No Results Found",
+    "defaultParameters":{},
+    "cleanURLParameters":["year","agency","calyear","yeartype","vendor","category","dept","mwbe","industry"],
+    "urlParamMap":{"year":"year_id","agency":"agency_id","yeartype":"type_of_year","calyear":"year_id","vendor":"vendor_id","category":"spending_category_id","dept":"department.department","mwbe":"minority_type_id","industry":"industry_type_id"},
+    "dataset": "checkbook:spending_mwbe_data",
+    "noDataInitialLoad":true,
+    "totalAggregateColumns":["check_amount_sum"],
+    "adjustTotalAggregateColumnsParameters":"
+        if(\\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('smnid') == 760) {
+            unset($parameters['department.department']);
+        }
+        return $parameters;
+    ",
+        "WidgetTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Departments');",
+    "columns": ["check_amount_sum","agency.agency","department.department","department.department.department_name","year.year"],
+        "template":"spending_dept_summary",
+        "templateTitleEval":"return \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle('Department');",
+        "templateLabel":"Department",
+        "templateLabelEval":"return $node->data[0]['department_department_department_name'];"
+}

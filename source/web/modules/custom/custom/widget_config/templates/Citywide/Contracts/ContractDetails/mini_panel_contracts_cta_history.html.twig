@@ -1,0 +1,19 @@
+{% if RequestGet("datasource") == "checkbook_oge" %}
+  <div id = "oge_cta_spending_bottom">
+    {{ getWidgetNodeView('oge_cta_spending_bottom') | raw }}
+  </div>
+{% else %}
+  <div id = "contracts_cta_spending_top">
+    {{ getWidgetNodeView('contracts_cta_spending_top') | raw }}
+  </div>
+  {% set agid =  RequestHas('agid')  %}
+  {% if agid == 1 %}
+    <div id = "contracts_cta_spending_bottom">
+      {{ getWidgetNodeView('contracts_cta_spending_bottom') | raw }}
+    </div>
+  {% endif %}
+{% endif %}
+
+<div id = "contracts_cta_spending_by_exp_cat">
+  {{ getWidgetNodeView(428) | raw }}
+</div>

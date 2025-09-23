@@ -1,0 +1,6 @@
+{
+    "defaultConfigKey": "spending_by_contracts_view",
+    "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSpendingByContracts",
+    "countFunc":"GetCountContracts"
+}

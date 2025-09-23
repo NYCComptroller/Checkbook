@@ -1,0 +1,5 @@
+services:
+  checkbook_path_validator.path_processor:
+    class: Drupal\checkbook_path_validator\PathProcessor\CheckbookPathProcessor
+    tags:
+      - { name: path_processor_inbound, priority: 999 }

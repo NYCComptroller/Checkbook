@@ -1,0 +1,29 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":714,
+    "no_results_content":"No Results Found",
+    "limit":100,
+    "startWith":0,
+    "maxSelect":5,
+    "showAllRecords":true,
+    "allowFacetDeselect":true,
+    "urlParamMap":{"doctype":"document_code.document_code.document_code"},
+    "columns":["pending_contract_number.pending_contract_number","txcount"],
+    "orderBy":"-txcount",
+    "facetPager":true,
+    "filterName":"Contract ID",
+    "urlParameterName":"contnum_exact",
+    "autocompleteParamName":"contnum_exact_auto",
+    "autocompleteID":"fContractNumber",
+    "autocompleteField":"contract_number",
+    "adjustParameters":"
+        if(isset($parameters['vendor_type'])){
+            $parameters['vendor_type'] = \\Drupal\\checkbook_project\\MwbeUtilities\\VendorType::getVendorTypeValue($parameters['vendor_type']);
+        }
+       \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::_checkbook_project_adjustContractParameterFilters($node,$parameters,'pending');
+        $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+        $adjustedParameters['pending_contract_number.pending_contract_number'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

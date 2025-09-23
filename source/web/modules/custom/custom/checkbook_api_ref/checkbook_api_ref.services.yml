@@ -1,0 +1,5 @@
+services:
+  checkbook_api_ref.Twig.CheckbookApiRefExtension:
+    class: Drupal\checkbook_api_ref\Twig\CheckbookApiRefExtension
+    tags:
+      - { name: twig.extension }

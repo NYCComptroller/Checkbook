@@ -1,0 +1,116 @@
+<?php
+
+use Drupal\checkbook_etl_notification\Includes\CheckbookEtlStatistics;
+
+
+/**
+ * Implements hook_cron().
+ */
+function checkbook_etl_notification_cron() {
+  $CES = new CheckbookEtlStatistics();
+  return $CES->run_cron();
+}
+
+/**
+ * Implements hook_mail().
+ * @param $key
+ * @param $message
+ * @param $params
+ */
+function checkbook_etl_notification_mail($key, &$message, $params){
+  $CES = new CheckbookEtlStatistics();
+  $CES->gatherData($message);
+
+  $message['body'] = array_merge($message['body'], $params);
+}
+
+/**
+ * Implements hook_mail_alter().
+ *
+ * Adds priority headers to messages passing condition.
+ * @param $message
+ * @throws Exception
+ */
+function checkbook_etl_notification_mail_alter(&$message)
+{
+  // Apply this hook only for `checkbook_etl_status` module
+  if ('checkbook_etl_notification' !== $message['module']) {
+    return;
+  }
+  if (stripos($message['subject'], 'Fail') || stripos($message['subject'], 'not Found')) {
+    $message['headers']['X-Priority'] = '1 (Highest)';
+    $message['headers']['X-MSMail-Priority'] = 'High';
+    $message['headers']['Importance'] = 'High';
+  }
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+  //$message['body'] = theme('etl_status_notification_mail', $message['body']);
+ // if (defined('CHECKBOOK_DEV')) {
+ //   echo($message['body']);
+  //  $message['send'] = false;
+  //}
+ /// $message['body'] = [
+ //   '#theme' => 'etl_status_notification_mail',
+  //  '#message' => $message['body']
+  //];
+
+  $body_data = array (
+    '#theme' => 'etl_status_notification_mail',
+    '#message' => $message['body'],
+    '#allowed_tags' => ['html','head', 'body', 'main','style', 'header', 'footer','table','tbody','tr','th','td','main','br','a','img'],
+  );
+  //$message['body']['#theme'] = 'etl_status_notification_mail';
+  $message['body'] = [\Drupal::service('renderer')->render($body_data)];
+
+  return $message;
+}
+
+/**
+ * Implements hook_theme()
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
+ */
+function checkbook_etl_notification_theme($existing, $type, $theme, $path)
+{
+  return [
+    'etl_status_notification_mail'=>[
+      'template'=>'etl-status.email',
+      'variables' => [
+        'uat_status' => NULL,
+        'prod_status' => NULL,
+        'message' => []
+      ],
+    ],
+  ];
+}
+
+/**
+ * Preprocess function for etl-status.email.html.twig
+ *
+ * @param $variables
+ */
+function checkbook_etl_notification_preprocess_etl_status_notification_mail(&$variables) {
+  $variables['message']['prod_process_errors'] = FALSE;
+  if(isset($variables['message']['prod_stats'])) {
+    foreach ($variables['message']['prod_stats'] as $prod_stat) {
+      if ($prod_stat['Last Run Success?'] == 'Fail') {
+        if ($prod_stat['All Files Processed?'] == 'N' && $prod_stat['Shards Refreshed?'] == 'Y' && $prod_stat['Solr Refreshed?'] == 'Y') {
+          $variables['message']['prod_process_errors'] = TRUE;
+        }
+      }
+    }
+  }
+
+  $variables['message']['uat_process_errors'] = FALSE;
+  if(isset($variables['message']['uat_stats'])) {
+    foreach ($variables['message']['uat_stats'] as $uat_stat) {
+      if ($uat_stat['Last Run Success?'] == 'Fail') {
+        if ($uat_stat['All Files Processed?'] == 'N' && $uat_stat['Shards Refreshed?'] == 'Y' && $uat_stat['Solr Refreshed?'] == 'Y') {
+          $variables['message']['uat_process_errors'] = TRUE;
+        }
+      }
+    }
+  }
+}

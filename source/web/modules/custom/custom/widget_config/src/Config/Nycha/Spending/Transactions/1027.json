@@ -1,0 +1,178 @@
+{
+  "table_columns": [
+    {"labelAlias":"issue_date","column":"issue_date"},
+    {"labelAlias":"document_id","column":"document_id"},
+    {"labelAlias":"section8_flag","column":"section8_flag"},
+    {"labelAlias":"purchase_order_type","column":"agreement_type_name"},
+    {"labelAlias":"contract_id","column":"contract_id"},
+    {"labelAlias":"release_number","column":"release_number"},
+    {"labelAlias":"invoice_number", "column":"invoice_number"},
+    {"labelAlias":"invoice_line_number", "column":"invoice_line_number"},
+    {"labelAlias":"distribution_line_number", "column":"distribution_line_number"},
+    {"labelAlias":"check_status","column":"check_payment_status"},
+    {"labelAlias":"check_amount", "column":"check_amount"},
+    {"labelAlias":"amount_spent","column":"adj_distribution_line_amount"},
+    {"labelAlias":"vendor","column":"vendor_name"},
+    {"labelAlias":"contract_purpose","column":"contract_purpose"},
+    {"labelAlias":"spending_category","column":"display_spending_category_name"},
+    {"labelAlias":"industry_name","column":"display_industry_type_name"},
+    //{"labelAlias":"dept_name","column":"department_name"},
+    {"labelAlias":"funding_source","column":"display_funding_source_descr"},
+    {"labelAlias":"responsibility_center", "column":"responsibility_center_description"},
+    {"labelAlias":"expense_category","column":"expenditure_type_description"},
+    {"labelAlias":"program", "column":"program_phase_description"},
+    {"labelAlias":"project", "column":"gl_project_description"}
+  ],
+  "exportColumnSqlOverride":[
+    {
+      "column":"agreement_type_name",
+      "sourceColumn":"agreement_type_name",
+      "sql":"
+      CASE
+      WHEN agreement_type_name IS NULL THEN '-'
+      ELSE agreement_type_name
+      END AS agreement_type_name
+      "
+    },
+    {
+      "column":"contract_id",
+      "sourceColumn":"contract_id",
+      "sql":"
+      CASE
+      WHEN contract_id IS NULL THEN '-'
+      ELSE contract_id
+      END AS contract_id
+      "
+    },
+    {
+      "column":"document_id",
+      "sourceColumn":"document_id",
+      "sql":"
+      CASE
+      WHEN document_id IS NULL THEN 'N/A'
+      ELSE document_id
+      END AS document_id
+      "
+    },
+    {
+      "column":"release_number",
+      "sourceColumn":"release_number",
+      "sql":"
+      CASE
+      WHEN release_number IS NULL THEN '-'
+      ELSE CAST(release_number AS TEXT)
+      END AS release_number
+      "
+    },
+    {
+      "column": "invoice_number",
+      "sourceColumn": "invoice_number",
+      "sql": " CASE WHEN invoice_number IS NULL THEN '-' ELSE CAST(invoice_number AS TEXT) END AS invoice_number "
+    },
+    {
+      "column": "invoice_line_number",
+      "sourceColumn": "invoice_line_number",
+      "sql": " CASE WHEN invoice_line_number IS NULL THEN '-' ELSE CAST(invoice_line_number AS TEXT) END AS invoice_line_number "
+    },
+    {
+      "column": "distribution_line_number",
+      "sourceColumn": "distribution_line_number",
+      "sql": " CASE WHEN distribution_line_number IS NULL THEN '-' ELSE CAST(distribution_line_number AS TEXT) END AS distribution_line_number "
+    },
+    {
+      "column": "check_payment_status",
+      "sourceColumn": "check_payment_status",
+      "sql": " CASE WHEN check_payment_status IS NULL THEN '-' ELSE CAST(check_payment_status AS TEXT) END AS check_payment_status "
+    },
+    {
+      "column":"check_amount",
+      "sourceColumn":"check_amount",
+      "sql":"
+      CASE
+      WHEN check_amount IS NULL THEN '-'
+      ELSE CAST(check_amount AS TEXT)
+      END AS check_amount
+      "
+    },
+    {
+      "column":"adj_distribution_line_amount",
+      "sourceColumn":"adj_distribution_line_amount",
+      "sql":"
+      CASE
+      WHEN adj_distribution_line_amount IS NULL THEN '-'
+      ELSE CAST(adj_distribution_line_amount AS TEXT)
+      END AS adj_distribution_line_amount
+      "
+    },
+    {
+      "column":"contract_purpose",
+      "sourceColumn":"contract_purpose",
+      "sql":"
+      CASE
+      WHEN contract_purpose IS NULL THEN '-'
+      ELSE contract_purpose
+      END AS contract_purpose
+      "
+    },
+    {
+      "column":"display_industry_type_name",
+      "sourceColumn":"display_industry_type_name",
+      "sql":"
+      CASE
+      WHEN display_industry_type_name IS NULL THEN '-'
+      ELSE display_industry_type_name
+      END AS display_industry_type_name
+      "
+    },
+    {
+      "column":"display_funding_source_descr",
+      "sourceColumn":"display_funding_source_descr",
+      "sql":"
+      CASE
+      WHEN display_funding_source_descr IS NULL THEN '-'
+      ELSE display_funding_source_descr
+      END AS display_funding_source_descr
+      "
+    },
+    {
+      "column":"responsibility_center_description",
+      "sourceColumn":"responsibility_center_description",
+      "sql":"
+      CASE
+      WHEN responsibility_center_description IS NULL THEN '-'
+      ELSE responsibility_center_description
+      END AS responsibility_center_description
+      "
+    },
+    {
+      "column":"expenditure_type_description",
+      "sourceColumn":"expenditure_type_description",
+      "sql":"
+      CASE
+      WHEN expenditure_type_description IS NULL THEN '-'
+      ELSE expenditure_type_description
+      END AS expenditure_type_description
+      "
+    },
+    {
+      "column":"program_phase_description",
+      "sourceColumn":"program_phase_description",
+      "sql":"
+      CASE
+      WHEN program_phase_description IS NULL THEN '-'
+      ELSE program_phase_description
+      END AS program_phase_description
+      "
+    },
+    {
+      "column":"gl_project_description",
+      "sourceColumn":"gl_project_description",
+      "sql":"
+      CASE
+      WHEN gl_project_description IS NULL THEN '-'
+      ELSE gl_project_description
+      END AS gl_project_description
+      "
+    }
+  ]
+}

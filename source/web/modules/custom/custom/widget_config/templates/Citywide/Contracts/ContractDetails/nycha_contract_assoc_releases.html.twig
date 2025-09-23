@@ -1,0 +1,406 @@
+{{ attach_library('widget_config/checkbook_project.contracts') }}
+
+<table class="nycha_assoc_contracts_list">
+  <tbody>
+    {% set first = (not node.page) %}
+    {% set spendingByRelease = node.spendingByRelease %}
+    {% for release in node.assocReleases %}
+      <tr>
+        <td class="assoc_item">
+          <div class="contract-title clearfix">
+            <div class="assoc-release-link">
+              <div>
+                <a class="contract-title-text showHide {{ first ? '' : 'open' }}"></a>
+                <span>Release Spending for <strong>{{ release['release_id'] }}</strong></span>
+              </div>
+            </div>
+            <div class="dollar-amounts">
+              <div class="spent-to-date">
+                {{ customAmount(release['release_spend_to_date'] ,2,'$') }}
+                <div class="amount-title">
+                  {{ customWidgetLabel('invoiced_amount') | replace({'<br/>': ' ',}) | raw }}
+                </div>
+              </div>
+              <div class="original-amount">
+                {{ customAmount(release['release_original_amount'] ,2,'$') }}
+                <div class="amount-title">
+                  {{ customWidgetLabel('original_amount') | replace({'<br/>': ' ',}) | raw }}
+                </div>
+              </div>
+              <div class="current-amount">
+                {{ customAmount(release['release_total_amount'] ,2,'$') }}
+                <div class="amount-title">
+                  {{ customWidgetLabel('current_amount') | replace({'<br/>': ' ',}) | raw }}
+                </div>
+              </div>
+              <div class="approved-date">
+                {{ customStringToDate(release['release_approved_date']) }}
+                <div class="amount-title">
+                  {{ customWidgetLabel('approved_date') | replace({'<br/>': ' ',}) | raw }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="showHide" style="display: {{ first ? 'block' : 'none' }};">
+            <div class="panel-display omega-grid omega-12-onecol">
+              <div class="panel-panel">
+                <div class="inside">
+                  <div class="panel-pane pane-custom pane-1">
+                    <div class="contracts-spending-top">
+                      <h3>SPENDING BY VENDOR</h3>
+                      <table class="dataTable cta-spending-history outerTable">
+                        <thead>
+                          <tr>
+                            <th class="text">
+                              {{ customWidgetLabel('vendor_name') | raw }}
+                            </th>
+                            <th>
+                              {{ customWidgetLabel('current_amount') | raw }}
+                            </th>
+                            <th>
+                              {{ customWidgetLabel('original_amount') | raw }}
+                            </th>
+                            <th>
+                              {{ customWidgetLabel('invoiced_amount') | raw }}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="even outer">
+                            <td>
+                              <div>
+                                <a class="showHide  expandTwo"></a>{{ release['vendor_name'] }}
+                              </div>
+                            </td>
+                            <td class="number-center">
+                              <div>
+                                {{ customAmount(release['release_total_amount'] ,2,'$') }}
+                              </div>
+                            </td>
+                            <td class="number-center">
+                              <div>
+                                {{ customAmount(release['release_original_amount'] ,2,'$') }}
+                              </div>
+                            </td>
+                            <td class="number-center">
+                              <div>
+                                {{ customAmount(release['release_spend_to_date'] ,2,'$') }}
+                              </div>
+                            </td>
+                          </tr>
+                          <tr class="showHide">
+                            <td colspan="4">
+                              <div>
+                                <div id="contract_history">
+                                  <div>
+                                    <h3>Shipment and Distribution Details</h3>
+                                    <div class="scroll">
+                                      <table class="dataTable cta-history outerTable">
+                                        <thead>
+                                          <tr>
+                                            <th class="text item_category">
+                                              {{ customWidgetLabel('item_category') | raw }}
+                                            </th>
+                                            <th class="text item_description">
+                                              {{ customWidgetLabel('item_description') | raw }}
+                                            </th>
+                                            <th class="number shipment_number">
+                                              {{ customWidgetLabel('shipment_number') | raw }}
+                                            </th>
+                                            <th class="number">
+                                              {{ customWidgetLabel('current_amount') | raw }}
+                                            </th>
+                                            <th class="number endCol">
+                                              {{ customWidgetLabel('original_amount') | raw }}
+                                            </th>
+                                            <th class="number endCol">
+                                              {{ customWidgetLabel('invoiced_amount') | raw }}
+                                            </th>
+                                            <th class="number endCol">
+                                              {{ customWidgetLabel('responsibility_center') | raw }}
+                                            </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {% set z = 0 %}
+                                          {% for shipment in release['shipments'] %}
+                                            <tr class="outer n_assoc_rel_shipments {{ z % 2 ? 'even' : 'odd' }}">
+                                              <td class="text item_category_descr">
+                                                <div>{{ getTooltipMarkup(shipment['commodity_category_descr'], 40) | raw }}</div>
+                                              </td>
+                                              <td class="text item_description">
+                                                <div>{{ getTooltipMarkup(shipment['item_description'], 20) | raw }}</div>
+                                              </td>
+                                              <td class="number-center shipment_number">
+                                                <div>{{ shipment['shipment_number'] }}</div>
+                                              </td>
+                                              <td class="number total_amount">
+                                                <div>{{ customAmount(shipment['release_line_total_amount'] ,2,'$') | raw }}</div>
+                                              </td>
+                                              <td class="number endCol original_amount">
+                                                <div>{{ customAmount(shipment['release_line_original_amount'] ,2,'$') | raw }}</div>
+                                              </td>
+                                              <td class="number endCol spend_to_date">
+                                                <div>{{ customAmount(shipment['release_line_spend_to_date'] ,2,'$') | raw }}</div>
+                                              </td>
+                                              <td class="text responsibility_center_descr">
+                                                <div>{{ getTooltipMarkup(shipment['responsibility_center_descr'], 24) | raw }}</div>
+                                              </td>
+                                            </tr>
+                                            {% set z = z + 1 %}
+                                          {% endfor %}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="panel-separator"></div>
+
+                    <div id="spending_transactions">
+                      <div>
+                        <h3>Release History</h3>
+                        <table class="dataTable cta-spending-history outerTable">
+                          <thead>
+                            <tr>
+                              <th class="text">
+                                {{ customWidgetLabel('fiscal_year') | raw }}
+                              </th>
+                              <th class="text">
+                                {{ customWidgetLabel('no_of_mod') | raw }}
+                              </th>
+                              <th class="number endCol">
+                                {{ customWidgetLabel('current_amount') | raw }}
+                              </th>
+                              <th class="number endCol">
+                                {{ customWidgetLabel('original_amount') | raw }}
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% if release['history'] %}
+                              {% set year_cnt = 0 %}
+                              {% for year, revisions in release['history'] %}
+                                <tr class="outer {{ (year_cnt % 2) ? 'even' : 'odd' }}">
+                                  <td class="text">
+                                    <div>
+                                      <a class="showHide {{ year_cnt ? 'open' : '' }}"></a>
+                                      FY {{ year }}
+                                    </div>
+                                  </td>
+                                  <td class="text">
+                                    <div>{{ revisions|length }}</div>
+                                  </td>
+                                  <td class="number endCol">
+                                    <div>{{ customAmount(revisions[getKey(revisions)]['revised_total_amount'] ,2,'$') | raw }}</div>
+                                  </td>
+                                  <td class="number endCol">
+                                    <div>{{ customAmount(revisions[getKey(revisions)]['release_original_amount'] ,2,'$') | raw }}</div>
+                                  </td>
+                                </tr>
+                                <tr id="showHidectaspe{{ year }}"
+                                    class="showHide {{ (year_cnt % 2) ? 'even' : 'odd' }}"
+                                    style="{{ year_cnt ? 'display:none' : '' }}">
+                                  <td colspan="4">
+                                    <div class="scroll" style="padding-left:20px">
+                                      <table class="dataTable outerTable">
+                                        <thead>
+                                          <tr>
+                                            <th class="text th1">
+                                              {{ customWidgetLabel('version_number') | raw }}
+                                            </th>
+                                            <th class="text th2">
+                                              {{ customWidgetLabel('approved_date') | raw }}
+                                            </th>
+                                            <th class="text th3">
+                                              {{ customWidgetLabel('last_mod_date') | raw }}
+                                            </th>
+                                            <th class="text th4">
+                                              {{ customWidgetLabel('current_amount') | raw }}
+                                            </th>
+                                            <th class="text th5">
+                                              {{ customWidgetLabel('original_amount') | raw }}
+                                            </th>
+                                            <th class="text th6">
+                                              {{ customWidgetLabel('increase_decrease') | raw }}
+                                            </th>
+                                            <th class="text th7">
+                                              {{ customWidgetLabel('transaction_status') | raw }}
+                                            </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {% set revision_cnt = 0 %}
+                                          {% for revision in revisions %}
+                                            <tr class="{{ revision_cnt % 2 ? 'even' : 'odd' }}">
+                                              <td class="text td1">
+                                                <div>{{ revision['revision_number'] }}</div>
+                                              </td>
+                                              <td class="text td2">
+                                                <div>{{ customStringToDate(revision['revision_approved_date'] ?? revision['approved_date']) }}</div>
+                                              </td>
+                                              <td class="text td3">
+                                                <div>{{ customStringToDate(revision['revision_approved_date'] ?? revision['approved_date']) }}</div>
+                                              </td>
+                                              <td class="text td4">
+                                                <div>{{ customAmount(revision['revised_total_amount'] ,2,'$') }}</div>
+                                              </td>
+                                              <td class="text td5">
+                                                <div>{{ customAmount(revision['release_original_amount'] ,2,'$') }}</div>
+                                              </td>
+                                              <td class="text td6">
+                                                <div>{{ customAmount((revision['revision_total_amount'] - revision['release_original_amount']) ,2,'$') }}</div>
+                                              </td>
+                                              <td class="text td7">
+                                                <div>{{ revision['transaction_status_name'] }}</div>
+                                              </td>
+                                            </tr>
+                                            {% set revision_cnt = revision_cnt + 1 %}
+                                          {% endfor %}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </td>
+                                </tr>
+                                {% set year_cnt = year_cnt + 1 %}
+                              {% endfor %}
+                            {% else %}
+                              <tr>
+                                <td class="dataTables_empty" valign="top" colspan="4">
+                                  <div id="no-records-datatable" class="clearfix">
+                                    <span>No Matching Records Found</span>
+                                  </div>
+                                </td>
+                              </tr>
+                            {% endif %}
+                          </tbody>
+                        </table>
+
+                        <div class="panel-separator"></div>
+
+                        <div>
+                          <h3>Spending Transactions by Release</h3>
+                          <table class="dataTable cta-spending-history outerTable">
+                            <thead>
+                              <tr>
+                                <th class="text">
+                                  {{ customWidgetLabel('fiscal_year') | raw }}
+                                </th>
+                                <th class="text">
+                                  {{ customWidgetLabel('no_of_transactions') | raw }}
+                                </th>
+                                <th class="number endCol">
+                                  {{ customWidgetLabel('amount_spent') | raw }}
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% set yearList = spendingByRelease[release['release_number']]['year_list'] %}
+                              {% set spendingData = spendingByRelease[release['release_number']]['spending_by_release'] %}
+                              {% set year_cnt = 0 %}
+                              {% if spendingData is not empty %}
+                                {% for year in yearList %}
+                                  {% set yearSpending = spendingData[year] %}
+                                  <tr class="outer {{ year_cnt % 2 ? 'even' : 'odd' }}">
+                                    <td class="text">
+                                      <div>
+                                        <a class="showHide {{ year_cnt ? 'open' : '' }}"></a>
+                                        FY {{ year }}</div>
+                                    </td>
+                                    <td class="text">
+                                      <div>{{ yearSpending|length }} Transactions</div>
+                                    </td>
+                                    <td class="number endCol">
+                                      <div>
+                                        {% set amount_spent = 0 %}
+                                        {% for key,value in yearSpending %}
+                                          {% set amount_spent = amount_spent + value['amount_spent'] %}
+                                        {% endfor %}
+                                        {{ customAmount(amount_spent ,2,'$') | raw }}
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr id="showHidectaspe{{ year }}" class="showHide odd cta-r-data" style="{{ year_cnt ? 'display:none' : '' }}">
+                                    <td colspan="3">
+                                      <div class="scroll">
+                                        <table class="dataTable outerTable">
+                                          <thead>
+                                            <tr>
+                                              <th class="text th1">
+                                                {{ customWidgetLabel('issue_date') | raw }}
+                                              </th>
+                                              <th class="text th2">
+                                                {{ customWidgetLabel('document_id') | raw }}
+                                              </th>
+                                              <th class="number th3">
+                                                {{ customWidgetLabel('check_amount') | raw }}
+                                              </th>
+                                              <th class="number th4">
+                                                {{ customWidgetLabel('amount_spent') | raw }}
+                                              </th>
+                                              <th><div></div></th>
+                                              <th class="text th5">
+                                                {{ customWidgetLabel('expense_category') | raw }}
+                                              </th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {% set revision_cnt = 0 %}
+                                            {% for i in range(0, ((yearSpending|length) - 1)) %}
+                                              <tr class="{{ i % 2 ? 'odd' : 'even' }}">
+                                                <td class="text td1">
+                                                  <div>{{ customStringToDate(yearSpending[i]['issue_date']) }}</div>
+                                                </td>
+                                                <td class="text td2">
+                                                  <div>{{ yearSpending[i]['document_id'] }}</div>
+                                                </td>
+                                                <td class="number td3">
+                                                  <div>{{ customAmount(yearSpending[i]['check_amount'] ,2,'$') }}</div>
+                                                </td>
+                                                <td class="number td4">
+                                                  <div>{{ customAmount(yearSpending[i]['amount_spent'] ,2,'$') }}</div>
+                                                </td>
+                                                <td><div></div></td>
+                                                <td class="text td5">
+                                                  <div>{{ yearSpending[i]['expense_category'] }}</div>
+                                                </td>
+                                              </tr>
+                                            {% endfor %}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  {% set year_cnt = year_cnt + 1 %}
+                                {% endfor %}
+                              {% else %}
+                                <tr>
+                                  <td class="dataTables_empty" valign="top" colspan="3">
+                                    <div id="no-records-datatable" class="clearfix">
+                                      <span>No Matching Records Found</span>
+                                    </div>
+                                  </td>
+                                </tr>
+                              {% endif %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% set first = false %}
+    {% endfor %}
+  </tbody>
+</table>

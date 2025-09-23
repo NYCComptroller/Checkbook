@@ -1,0 +1,25 @@
+
+{% set title = customFunctionEvaluate(node.widgetConfig.summaryView.templateTitleEval) %}
+
+{% if customFunctionEvaluate(node.widgetConfig.summaryView.templateYearType) == 'C' %}
+  {% set yearLabel = 'CY' %}
+{% else %}
+  {% set yearLabel = 'FY' %}
+{% endif %}
+
+{% set year  = getTransactionYearVal(yearLabel) %}
+
+{% set amount = customFunctionEvaluate("return \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::get('amt');") %}
+
+{% set month = getMonthDetailFromURL() %}
+
+<div class="contract-details-heading">
+  <div class="contract-id">
+    <h2 class="contract-title">{{title | raw}}</h2>
+    <div class="spending-tx-subtitle"><b>Year</b>: {{ year }}<br><b>Month</b>: {{ month }}</div>
+  </div>
+  <div class="dollar-amounts">
+    <div class="total-spending-amount">{{customAmount(amount,2,'$')}}<div class="amount-title">Total Spending Amount</div></div>
+  </div>
+</div>
+

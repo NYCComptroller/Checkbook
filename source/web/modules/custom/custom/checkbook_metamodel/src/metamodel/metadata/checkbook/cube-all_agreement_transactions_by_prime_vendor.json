@@ -1,0 +1,126 @@
+{
+    "datasets": {
+        "all_agreement_transactions_by_prime_vendor": {
+            "datasourceName":"main",
+            "source":"all_agreement_transactions_by_prime_vendor"
+        }
+    },
+    "cubes":   {
+        "all_agreement_transactions_by_prime_vendor": {
+            "sourceDatasetName":"all_agreement_transactions_by_prime_vendor",
+            "dimensions": [
+                {
+                    "name":"agency_id",
+                    "levels": [
+                        {
+                            "name":"agency_id",
+                            "sourceColumnName":"agency_id"
+                        }]
+                },
+                {
+                    "name":"agency_name",
+                    "levels": [
+                        {
+                            "name":"agency_name",
+                            "sourceColumnName":"agency_name"
+                        }]
+                },
+                {
+                    "name":"aprv_sta",
+                    "levels": [
+                        {
+                            "name":"aprv_sta",
+                            "sourceColumnName":"aprv_sta"
+                        }]
+                },
+                {
+                    "name":"aprv_sta_name",
+                    "levels": [
+                        {
+                            "name":"aprv_sta_name",
+                            "sourceColumnName":"aprv_sta_name"
+                        }]
+                },
+                {
+                    "name":"contract_number",
+                    "levels": [
+                        {
+                            "name":"contract_number",
+                            "sourceColumnName":"contract_number"
+                        }]
+                },
+                {
+                    "name":"scntrc_status",
+                    "levels": [
+                        {
+                            "name":"scntrc_status",
+                            "sourceColumnName":"scntrc_status"
+                        }]
+                },
+                {
+                    "name":"scntrc_status_name",
+                    "levels": [
+                        {
+                            "name":"scntrc_status_name",
+                            "sourceColumnName":"scntrc_status_name"
+                        }]
+                },
+                {
+                    "name":"industry_type_id",
+                    "levels": [
+                        {
+                            "name":"industry_type_id",
+                            "sourceColumnName":"industry_type_id"
+                        }]
+                },
+                {
+                    "name":"industry_type_name",
+                    "levels": [
+                        {
+                            "name":"industry_type_name",
+                            "sourceColumnName":"industry_type_name"
+                        }]
+                },
+                {
+                    "name":"award_method_id",
+                    "levels": [
+                        {
+                            "name":"award_method_id",
+                            "sourceColumnName":"award_method_id"
+                        }]
+                },
+                {
+                    "name":"award_method_name",
+                    "levels": [
+                        {
+                            "name":"award_method_name",
+                            "sourceColumnName":"award_method_name"
+                        }]
+                }
+            ],
+            "measures": {
+                "txcount": {
+                    "function":"COUNT(*)"
+                },
+                "g100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) > 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g50m_le100m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) > 50000000 AND COALESCE($COLUMN{maximum_contract_amount},0) <= 100000000 THEN 1 ELSE 0 END)"
+                },
+                "g25m_le50m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) > 25000000 AND COALESCE($COLUMN{maximum_contract_amount},0) <= 50000000 THEN 1 ELSE 0 END)"
+                },
+                "g10m_le25m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) > 10000000 AND COALESCE($COLUMN{maximum_contract_amount},0) <= 25000000 THEN 1 ELSE 0 END)"
+                },
+                "ge1m_le10m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) >= 1000000 AND COALESCE($COLUMN{maximum_contract_amount},0) <= 10000000 THEN 1 ELSE 0 END)"
+                },
+                "less1m_count": {
+                    "function": "SUM(CASE WHEN COALESCE($COLUMN{maximum_contract_amount},0) < 1000000 THEN 1 ELSE 0 END)"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,5 @@
+{
+    "defaultConfigKey": "revenue_award_methods_view",
+    "dataFunc":"GetContractsByAwardMethods",
+    "defaultParameters":{"type_of_year":"B"}
+}

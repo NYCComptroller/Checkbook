@@ -1,0 +1,16 @@
+{
+  "widgetType": "phpparser",
+"cleanURLParameters":["year","expcategory","agency","dept"],
+"urlParamMap":{"year":"year_id.year_id","expcategory":"object_class_id","agency":"agency_id","dept":"department_code"},
+"defaultParameters":{"year_id.year_id":113},
+"noDataInitialLoad":true,
+"dataset": "checkbook:budget",
+"columns": ["year_id.year_id","department_name.department_name","dept.dept",
+            "budget_adopted","budget_remaining","budget_committed","budget_current"],
+  "widgetTitle":"Departments Expense Budget Transactions",
+
+    "template":"budget_expense_transactions_summary",
+    "templateTitle":"Department Expense Budget Transactions",
+    "templateLabel":"Department"
+
+}

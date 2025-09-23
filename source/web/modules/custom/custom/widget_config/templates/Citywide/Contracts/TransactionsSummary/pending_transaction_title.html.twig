@@ -1,0 +1,13 @@
+
+{% set contactCategory = RequestGet("contcat") %}
+{% if contactCategory == 'expense' %}
+{% set contactCategoryLabel = 'Expense'  %}
+{% elseif contactCategory == 'revenue' %}
+{% set contactCategoryLabel = 'Revenue'  %}
+{% elseif contactCategory == 'all' %}
+{% set contactCategoryLabel = ''  %}
+{% endif %}
+{% set summaryTitle = PendingTransactionTitle(contactCategoryLabel) %}
+<h2 class='contract-title' class='title'>
+  {{summaryTitle}} Pending {{contactCategoryLabel}} Contracts Transactions
+</h2>

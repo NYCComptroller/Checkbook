@@ -1,0 +1,25 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":723,
+    "limit":100,
+    "startWith":0,
+    "maxSelect":5,
+    "columns":["category.category", "category.category.spending_category_name", "txcount"],
+    "defaultParameters":{"is_prime_or_sub":"S"},
+    "orderBy":"-txcount",
+    "autocomplete":false,
+    "filterName":"Spending Category",
+    "urlParameterName":"category",
+    "autocompleteID":"fSpendCategoryId",
+    "adjustParameters":"
+        if(isset($parameters['vendor_type'])){
+            $parameters['vendor_type'] = \\Drupal\\checkbook_project\\MwbeUtilities\\VendorType::getVendorTypeValue($parameters['vendor_type']);
+        }
+        $parameters = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::_checkbook_project_adjust_date_spending_parameter_filters($node, $parameters);
+        $parameters = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::_checkbook_project_adjust_spending_parameter_filters($node, $parameters);
+        $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+        $adjustedParameters['category.category'][] = data_controller_get_operator_factory_instance()->initiateHandler(\\Drupal\\data_controller\\Datasource\\Operator\\Handler\\NotEmptyOperatorHandler::$OPERATOR__NAME);
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

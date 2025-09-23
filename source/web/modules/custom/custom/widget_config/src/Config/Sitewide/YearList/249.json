@@ -1,0 +1,10 @@
+{
+"widgetType": "phpparser",
+"template":"year_list",
+"adjustParameters":"
+            $adjustedParameters = $parameters;
+            if(method_exists('\\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters')){
+                  $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+            }
+            return $adjustedParameters; "
+}

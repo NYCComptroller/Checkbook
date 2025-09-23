@@ -1,0 +1,43 @@
+checkbook_alerts.form:
+  path: '/checkbook-alerts'
+  defaults:
+    _title: 'Checkbook Alerts Form'
+    _controller:  'Drupal\checkbook_alerts\Controller\CheckbookAlertsController::checkbook_alerts_form_display'
+  requirements:
+    _permission: 'access content'
+checkbook_alerts.alert_transactions:
+  path: '/alert/transactions'
+  defaults:
+    _title: 'Checkbook Alerts'
+    _controller: 'Drupal\checkbook_alerts\Controller\CheckbookAlertsController::checkbook_alerts_transactions'
+  requirements:
+    _permission: 'access content'
+checkbook_alerts.alert_transactions_form:
+  path: '/alert/transactions/form'
+  defaults:
+    _title: 'Checkbook Alerts'
+    _controller: 'Drupal\checkbook_alerts\Controller\CheckbookAlertsController::checkbook_alerts_transactions_form'
+  requirements:
+    _permission: 'access content'
+checkbook_alerts.alert_transactions_advanced_search_form:
+  path: '/alert/transactions/advanced/search/form'
+  defaults:
+    _title: 'Checkbook Alerts'
+    _controller: 'Drupal\checkbook_alerts\Controller\CheckbookAlertsController::checkbook_alerts_transactions_advanced_search_form'
+  requirements:
+    _permission: 'access content'
+checkbook_alerts.alert_activate:
+  path: '/alert/activate/{token}'
+  defaults:
+    _title: 'Checkbook Alerts'
+    _controller: 'Drupal\checkbook_alerts\Controller\CheckbookAlertsController::checkbook_alerts_activate'
+  requirements:
+    _permission: 'access content'
+checkbook_alerts.alert_unsubscribe:
+  path: '/alert/unsubscribe/{token}'
+  defaults:
+    _title: 'Checkbook Alerts'
+    _controller: 'Drupal\checkbook_alerts\Controller\CheckbookAlertsController::checkbook_alerts_unsubscribe'
+  requirements:
+    _permission: 'access content'
+

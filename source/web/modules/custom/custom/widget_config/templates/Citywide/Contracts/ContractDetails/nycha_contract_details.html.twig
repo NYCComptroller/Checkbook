@@ -1,0 +1,553 @@
+{{ attach_library('widget_config/checkbook_project.contracts') }}
+{{ attach_library('widget_config/simple-pagination') }}
+
+{% set contract = node.data %}
+{% set agreement_type='/agg_type/' ~ contract['agreement_type_code'] %}
+{% set tcode = '/tcode/' ~ contract['agreement_type_code'] %}
+{% set dynamic_parameter = "/po_num_inv/" ~ contract['contract_id'] %}
+{% set spendingByVendor = node.spendingByVendor %}
+
+{% set invIDContractSpendingUrl = customFunctionEvaluate("return \\Drupal\\checkbook_services\\NychaSpending\\NychaSpendingUrlService::invIDContractSpendingUrl('" ~ dynamic_parameter ~ "', 'inv_contract_id', '" ~ agreement_type ~ "', '" ~ tcode ~ "');") %}
+{% set vendorUrl = customFunctionEvaluate("return \\Drupal\\checkbook_services\\NychaContracts\\NychaContractsUrlService::vendorUrl( '" ~ contract['vendor_id'] ~ "');") %}
+{% set agencyUrl = customFunctionEvaluate("return \\Drupal\\checkbook_services\\NychaContracts\\NychaContractsUrlService::agencyUrl();") %}
+
+{% set preg_match_newwindow = customFunctionEvaluate("return preg_match('/newwindow/',\Drupal::request()->query->get('q'));") %}
+
+<div class="content clearfix {{ preg_match_newwindow ? 'newwindow' : '' }}">
+  <div class="contract-details-heading cb-ma-details">
+    <div class="contract-id">
+      <h2 class='contract-title'>{{ customWidgetUtilGetLabel('contract_id') }}: <span
+          class="contract-number">{{ contract['contract_id'] }}</span></h2>
+    </div>
+    <div class="dollar-amounts">
+      <div class="spent-to-date"><a class="new_window" href="{{ invIDContractSpendingUrl }}">
+          {{ customAmount(contract['spend_to_date'] ,2,'$') }}</a>
+        <div class="amount-title">{{ customWidgetUtilGetLabel('invoiced_amount') }}</div>
+      </div>
+      <div class="original-amount">
+        {{ customAmount(contract['original_amount'] ,2,'$') }}
+        <div class="amount-title">{{ customWidgetUtilGetLabel('static_original_amount') }}</div>
+      </div>
+      <div class="current-amount">
+        {{ customAmount(contract['current_amount'] ,2,'$') }}
+        <div class="amount-title">{{ customWidgetUtilGetLabel('static_current_amount') }}</div>
+      </div>
+      {% if node.total_associated_releases %}
+        <div class="total-contracts">
+          {{ node.total_associated_releases }}
+          <div class="amount-title" >{{ customWidgetUtilGetLabel('assoc_releases') }}</div>
+        </div>
+      {% endif %}
+    </div>
+    <div class="contract-information">
+      <div class="contract-details">
+        <h4>General Information</h4>
+        <ul class="left">
+          <li>
+            <span class="gi-list-item">{{ customWidgetUtilGetLabel('vendor_name') }}:</span>
+            &nbsp;<a href="{{ vendorUrl }}">{{ contract['vendor_name'] }}</a>
+          </li>
+          <li>
+            <span class="gi-list-item">{{ customWidgetUtilGetLabel('contract_purpose') }}:</span>
+            &nbsp;{{ contract['purpose'] }}
+          </li>
+          <li>
+            <span class="gi-list-item">{{ customWidgetUtilGetLabel('contract_type') }}:</span>
+            &nbsp;{{ contract['contract_type_descr'] }}
+          </li>
+          <li>
+            <span class="gi-list-item">{{ customWidgetUtilGetLabel('contract_agency') }}:</span>
+            &nbsp;<a href="{{ agencyUrl }}">{{ contract['agency_name'] }}</a>
+          </li>
+          <li>
+            <span class="gi-list-item">{{ customWidgetUtilGetLabel('award_method') }}:</span>
+            &nbsp;{{ contract['award_method_name'] }}
+          </li>
+          <li>
+            <span class="gi-list-item">{{ customWidgetUtilGetLabel('version_number') }}:</span>
+            &nbsp;{{ contract['revision_count'] ?? contract['release_revision_count'] }}
+          </li>
+        </ul>
+        <ul class="right">
+          {% if contract['start_date'] %}
+            <li>
+              <span class="gi-list-item">{{ customWidgetUtilGetLabel('start_date') }}:</span>
+              &nbsp;{{ customStringToDate(contract['start_date']) }}
+            </li>
+          {% endif %}
+          {% if contract['end_date'] %}
+            <li>
+              <span class="gi-list-item">{{ customWidgetUtilGetLabel('end_date') }}:</span>
+              &nbsp;{{ customStringToDate(contract['end_date']) }}
+            </li>
+          {% endif %}
+          <li>
+            <span class="gi-list-item">{{ customWidgetUtilGetLabel('approved_date') }}:</span>
+            &nbsp;{{ contract['release_approved_date'] is defined ? customStringToDate(contract['release_approved_date']) : customStringToDate(contract['approved_date']) }}
+          </li>
+          <li>
+            <span class="gi-list-item">{{ customWidgetUtilGetLabel('canceled_date') }}:</span>
+            &nbsp;
+          </li>
+          <li>
+            <span class="gi-list-item">{{ customWidgetUtilGetLabel('pin') }}:</span>
+            &nbsp;{{ contract['po_header_id'] }}
+          </li>
+          <li>
+            <span class="gi-list-item">{{ customWidgetUtilGetLabel('transaction_status') }}:</span>
+            &nbsp;Approved
+          </li>
+          <li>
+            <span class="gi-list-item">{{ customWidgetUtilGetLabel('commodity_category') }}:</span>
+            &nbsp;{{ contract['category_descr'] }}
+          </li>
+        </ul>
+      </div>
+      <div class="contract-vendor-details">
+        <h4>Vendor Information</h4>
+        <ul class="left">
+          <li>
+            <span class="gi-list-item">{{ customWidgetUtilGetLabel('vendor_name') }}:</span>
+            &nbsp;<a href="{{ vendorUrl }}">{{ contract['vendor_name'] }}</a>
+          </li>
+          <li>
+            <span class="gi-list-item">{{ customWidgetUtilGetLabel('address') }}:</span>
+            &nbsp;{{ contract['address_line1'] }} {{ contract['address_line2'] }}
+            {{ contract['city'] }} {{ contract['state'] }} {{ contract['zip'] }}
+          </li>
+          <li>
+            <span class="gi-list-item">{{ customWidgetUtilGetLabel('total_number_nycha_contracts') }}:</span>
+            &nbsp;{{ node.total_number_of_contracts['sum'] }}
+          </li>
+          <li>
+            <span class="gi-list-item">M/WBE Vendor:</span>
+            &nbsp;
+          </li>
+          <li>
+            <span class="gi-list-item">M/WBE Category:</span>
+            &nbsp;
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel-separator"></div>
+
+<div class="content clearfix nycha-contract-history">
+  <div>
+    <h3>Contract History</h3>
+    <table class="outerTable nycha-c-history">
+      <thead>
+        <tr>
+          <th class="text">
+            {{ customWidgetLabel('fiscal_year') | raw }}
+          </th>
+          <th class="text">
+            {{ customWidgetLabel('no_of_modifications') | raw }}
+          </th>
+          <th class="number">
+            <div><span>{{ customWidgetUtilGetLabel('current_amount') | raw }}</span></div>
+          </th>
+          <th class="number">
+            <div><span>{{ customWidgetUtilGetLabel('original_amount') | raw }}</span></div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if node.contract_history_by_years is defined and node.contract_history_by_years is not empty %}
+          {% set hidden = 0 %}
+          {% set yi = 0 %}
+          {% for year, contract_history_by_year in node.contract_history_by_years %}
+            <tr class="outer {{ (yi % 2) ? 'odd' : '' }}">
+              <td class="text">
+                <div><a class="showHide {{ hidden ? 'open' : '' }}"></a> FY {{ year }}</div>
+              </td>
+              <td class="text">
+                <div>{{ contract_history_by_year | length }} Modifications</div>
+              </td>
+              <td class="number">
+                <div>{{ customAmount(contract_history_by_year[getKey(contract_history_by_year)]['current_amount'] ,2,'$') }}</div>
+              </td>
+              <td class="number">
+                <div>{{ customAmount(contract['original_amount'] ,2,'$') }}</div>
+              </td>
+            </tr>
+            <tr id="showHideNychaOrderRevisions{{ year }}" class="showHide {{ (yi % 2) ? 'odd' : '' }}" {{ hidden ? 'style="display:none"' : '' }} >
+              <td  colspan="4">
+                <div class="scroll">
+                  <table class="dataTable outerTable">
+                    <thead>
+                      <tr>
+                        <th class="text th1">
+                          {{ customWidgetLabel('version_number') | raw }}
+                        </th>
+                        {% if (node.contractBAPA) %}
+                          <th class="text th2">
+                            {{ customWidgetLabel('start_date') | raw }}
+                          </th>
+                          <th class="text th3">
+                            {{ customWidgetLabel('end_date') | raw }}
+                          </th>
+                        {% endif %}
+                        <th class="text th4">
+                          {{ customWidgetLabel('approved_date') | raw }}
+                        </th>
+                        <th class="text th5">
+                          {{ customWidgetLabel('last_mod_date') | raw }}
+                        </th>
+                        <th class="text th6">
+                          {{ customWidgetLabel('original_amount') | raw }}
+                        </th>
+                        <th class="text th7">
+                          {{ customWidgetLabel('current_amount') | raw }}
+                        </th>
+                        <th class="text th8">
+                          {{ customWidgetLabel('transaction_status') | raw }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% set even = 0 %}
+                      {% for revision in contract_history_by_year %}
+                        {% set even = even + 1 %}
+                        <tr class="inner {{ (even % 2) ? 'even' : 'odd' }}">
+                          <td class="number thVNum">
+                            <div>{{ revision['revision_number'] }}</div>
+                          </td>
+                          {% if (node.contractBAPA) %}
+                            <td class="text thStartDate">
+                              <div>{{ customStringToDate(contract['start_date']) }}</div>
+                            </td>
+                            <td class="text thEndDate">
+                              <div>{{ customStringToDate(contract['end_date']) }}</div>
+                            </td>
+                          {% endif %}
+                          <td class="text thRegDate">
+                            <div>{{ customStringToDate(revision['revision_approved_date'] ?? revision['approved_date']) }}</div>
+                          </td>
+                          <td class="text thLastMDate">
+                            <div>{{ customStringToDate(revision['revision_approved_date'] ?? revision['approved_date']) }}</div>
+                          </td>
+                          <td class="number thOrigAmt">
+                            <div>{{ customAmount(contract['original_amount'] ,2,'$') }}</div>
+                          </td>
+                          <td class="number thCurAmt">
+                            <div>{{ customAmount(contract['current_amount'] ,2,'$') }}</div>
+                          </td>
+                          <td class="text thVerStat">
+                            <div>Approved</div>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+            {% set hidden = hidden + 1 %}
+            {% set yi = yi + 1 %}
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td class="dataTables_empty" valign="top" colspan="4">
+              <div id="no-records-datatable" class="clearfix">
+                <span>No Matching Records Found</span>
+              </div>
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  {% if node.contract_history_by_years and node.contract_history_by_years is not empty %}
+    <script type="text/javascript">
+      contractsAddPadding(jQuery('div.nycha-contract-history'));
+    </script>
+  {% endif %}
+</div>
+
+<div class="clearfix">
+  <div class="links node-links clearfix"></div>
+</div>
+
+<div class="panel-separator"></div>
+
+{% if node.contractPO %}
+  <div class="contracts-spending-top">
+    <h3>SPENDING BY VENDOR</h3>
+    <table class="dataTable cta-spending-history outerTable">
+      <thead>
+        <tr>
+          <th>
+            {{ customWidgetLabel('vendor_name') | raw }}
+          </th>
+          <th>
+            {{ customWidgetLabel('current_amount') | raw }}
+          </th>
+          <th>
+            {{ customWidgetLabel('original_amount') | raw }}
+          </th>
+          <th>
+            {{ customWidgetLabel('invoiced_amount') | raw }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="even outer">
+          <td>
+            <div>
+              <a class="showHide  expandTwo"></a>{{ contract['vendor_name'] | raw }}
+            </div>
+          </td>
+          <td class="number-center">
+            <div>
+              {{ customAmount(contract['current_amount'] ,2,'$')  | raw }}
+            </div>
+          </td>
+          <td class="number-center">
+            <div>
+              {{ customAmount(contract['original_amount'] ,2,'$') | raw }}
+            </div>
+          </td>
+          <td class="number-center">
+            <div>
+              {{ customAmount(contract['spend_to_date'] ,2,'$') | raw }}
+            </div>
+          </td>
+        </tr>
+        <tr class="showHide">
+          <td colspan="4">
+            <div>
+              <div id="contract_history">
+                <div>
+                  <h3>Shipment and Distribution Details</h3>
+                  <div class="scroll">
+                    <table class="dataTable cta-history outerTable">
+                      <thead>
+                        <tr>
+                          <th class="text ncc-item_category_descr">
+                            {{ customWidgetLabel('item_category') | raw }}
+                          </th>
+                          <th class="text ncc-item_description">
+                            {{ customWidgetLabel('item_description') | raw }}
+                          </th>
+                          <th class="center ncc-shipment_number">
+                            {{ customWidgetLabel('shipment_number') | raw }}
+                          </th>
+                          <th class="center endcol">
+                            {{ customWidgetLabel('current_amount') | raw }}
+                          </th>
+                          <th class="center endCol">
+                            {{ customWidgetLabel('original_amount') | raw }}
+                          </th>
+                          <th class="center endCol">
+                            {{ customWidgetLabel('invoiced_amount') | raw }}
+                          </th>
+                          <th class="text endCol">
+                            {{ customWidgetLabel('responsibility_center') | raw }}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% set z = 0 %}
+                        {% for shipment in node.shipments %}
+                          <tr class="outer n_assoc_rel_shipments {{ z % 2 ? 'even' : 'odd' }}">
+                            <td class="text ncc-item_category_descr" >
+                              <div>{{ getTooltipMarkup(shipment['commodity_category_descr'], 40) | raw }}</div>
+                            </td>
+                            <td class="text ncc-item_description" >
+                              <div>{{ getTooltipMarkup(shipment['item_description'], 20) | raw }}</div>
+                            </td>
+                            <td class="number-center ncc-shipment_number">
+                              <div>{{ shipment['shipment_number'] | raw }}</div>
+                            </td>
+                            <td class="number-center endcol">
+                              <div>{{ customAmount(shipment['release_line_total_amount'] ,2,'$') | raw }}</div>
+                            </td>
+                            <td class="number-center endCol">
+                              <div>{{ customAmount(shipment['release_line_original_amount'] ,2,'$') | raw }}</div>
+                            </td>
+                            <td class="number-center endCol">
+                              <div>{{ customAmount(shipment['release_line_spend_to_date'] ,2,'$') | raw }}</div>
+                            </td>
+                            <td class="text endCol">
+                              <div>{{ getTooltipMarkup(shipment['responsibility_center_descr'], 24) | raw }}</div>
+                            </td>
+                          </tr>
+                          {% set z = z + 1 %}
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel-separator"></div>
+
+  <div>
+    <h3>Spending Transactions by Vendor</h3>
+    <table class="dataTable cta-spending-history outerTable">
+      <thead>
+        <tr>
+          <th class="text">
+            {{ customWidgetLabel('fiscal_year') | raw }}
+          </th>
+          <th class="text">
+            {{ customWidgetLabel('no_of_transactions') | raw }}
+          </th>
+          <th class="number endCol">
+            {{ customWidgetLabel('amount_spent') | raw }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% set yearList = spendingByVendor['year_list'] %}
+        {% if yearList is not empty %}
+          {% set year_cnt = 0 %}
+          {% for year in yearList %}
+            {% set yearSpending = spendingByVendor[year] %}
+            <tr class="outer {{ (year_cnt % 2) ? 'even' : 'odd' }}">
+              <td class="text">
+                <div>
+                  <a class="showHide {{ year_cnt ? 'open' : '' }}"></a>
+                  FY {{ year }}
+                </div>
+              </td>
+              <td class="text">
+                <div>{{ yearSpending|length }} Transactions</div>
+              </td>
+              <td class="number endCol">
+                <div>
+                  {% set amount_spent = 0 %}
+                  {% for key, value in yearSpending %}
+                    {% set amount_spent = amount_spent + value['amount_spent'] %}
+                  {% endfor %}
+                  {{ customAmount(amount_spent ,2,'$') }}
+                </div>
+              </td>
+            </tr>
+            <tr id="showHidectaspe{{ year }}" class="showHide odd" style="{{ year_cnt ? 'display:none' : '' }}">
+              <td colspan="3">
+                <div class="scroll">
+                  <table class="dataTable outerTable">
+                    <thead>
+                      <tr>
+                        <th class="text th1">
+                          {{ customWidgetLabel('issue_date') | raw }}
+                        </th>
+                        <th class="text th2">
+                          {{ customWidgetLabel('document_id') | raw }}
+                        </th>
+                        <th class="number th3">
+                          {{ customWidgetLabel('check_amount') | raw }}
+                        </th>
+                        <th class="number th4">
+                          {{ customWidgetLabel('amount_spent') | raw }}
+                        </th>
+                        <th>
+                          <div></div>
+                        </th>
+                        <th class="text th5">
+                          {{ customWidgetLabel('expense_category') | raw }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% set revision_cnt = 0 %}
+                      {% for i in range(0, ((yearSpending|length) - 1)) %}
+                        <tr class="{{ i % 2 ? 'odd' : 'even' }}">
+                          <td class="text td1">
+                            <div>{{ customStringToDate(yearSpending[i]['issue_date']) }}</div>
+                          </td>
+                          <td class="text td2">
+                            <div>{{ yearSpending[i]['document_id'] }}</div>
+                          </td>
+                          <td class="number td3">
+                            <div>{{ customAmount(yearSpending[i]['check_amount'] ,2,'$') }}</div>
+                          </td>
+                          <td class="number td4">
+                            <div>{{ customAmount(yearSpending[i]['amount_spent'] ,2,'$') }}</div>
+                          </td>
+                          <td>
+                            <div></div>
+                          </td>
+                          <td class="text td5">
+                            <div>{{ yearSpending[i]['expense_category'] }}</div>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+            {% set year_cnt = year_cnt + 1 %}
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td class="dataTables_empty" valign="top" colspan="3">
+              <div id="no-records-datatable" class="clearfix">
+                <span>No Matching Records Found</span>
+              </div>
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel-separator"></div>
+{% endif %}
+{#  above is end of - if node.contractPO #}
+
+{% if node.contractBAPA and node.assoc_releases_count %}
+  <div class="content clearfix nycha-assoc-releases">
+    <h3>Associated Releases</h3>
+    <div class="nycha_contract_assoc_releases"></div>
+    <div class="pager-center">
+      <div class="nycha_assoc_rel_pager"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    jQuery(document).ready(function () {
+      var callBackURL = "/widget/nycha_contract_assoc_releases/contract/{{ contract['contract_id'] }}/page/";
+
+      function loadAssocReleases(page) {
+        jQuery(".nycha_contract_assoc_releases").html("<img class='assoc-loading' src='/themes/custom/nyccheckbook/images/loading_large.gif' title='Loading Data...'/>");
+        jQuery.ajax({
+          url: callBackURL + page,
+          success: function (data) {
+            jQuery(".nycha_contract_assoc_releases").html(jQuery('.region--content', data));
+          },
+          complete: function () {
+            jQuery(".assoc-loading").remove();
+            if (jQuery('.assoc_item').length < {{ node.assoc_releases_count }} ) {
+            }
+            jQuery(".nycha_assoc_rel_pager").show();
+          }
+        });
+      }
+
+      jQuery(".nycha_assoc_rel_pager").hide();
+      loadAssocReleases(0);
+
+      jQuery('.nycha_assoc_rel_pager').pagination({
+        items: {{ node.assoc_releases_count }},
+      prevText: 'Previous',
+        itemsOnPage: 10,
+        onPageClick: function (page) {
+        loadAssocReleases(page - 1)
+      }
+    });
+    });
+  </script>
+{% endif %}

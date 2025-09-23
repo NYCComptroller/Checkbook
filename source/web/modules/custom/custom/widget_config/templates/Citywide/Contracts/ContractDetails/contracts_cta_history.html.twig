@@ -1,0 +1,20 @@
+{{ attach_library('widget_config/checkbook_project.contracts') }}
+
+<div>
+  <h3>
+    Contract History By Prime Vendor
+  </h3>
+  <table class="dataTable cta-history outerTable">
+    <thead>
+      <tr>
+        <th class="text">{{ customWidgetLabel("fiscal_year") | raw }}</th>
+        <th class="text">{{ customWidgetLabel("no_of_mod") | raw }}</th>
+        <th class="number">{{ customWidgetLabel("current_amount") | raw }}</th>
+        <th class="number endCol">{{ customWidgetLabel("original_amount") | raw }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ contracts_cta_history_table_body(node) | raw }}
+    </tbody>
+  </table>
+</div>

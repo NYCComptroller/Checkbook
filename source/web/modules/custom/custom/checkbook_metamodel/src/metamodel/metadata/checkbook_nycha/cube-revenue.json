@@ -1,0 +1,284 @@
+{
+  "datasets":{
+    "revenue":{
+      "datasourceName":"main",
+      "source":"revenue"
+    }
+  },
+  "cubes":{
+    "revenue":{
+      "sourceDatasetName":"revenue",
+      "dimensions":[
+        {
+          "name": "year",
+          "levels": [
+            {
+              "name": "year",
+              "sourceColumnName": "budget_fiscal_year"
+            }
+          ]
+        },
+        {
+          "name":"year_id",
+          "levels":[
+            {
+              "name":"year_id",
+              "sourceColumnName":"budget_fiscal_year_id"
+            }
+          ]
+        },
+        {
+          "name":"agency",
+          "levels":[
+            {
+              "name":"agency",
+              "sourceColumnName":"agency_id"
+            }
+          ]
+        },
+        {
+          "name":"agency_name",
+          "levels":[
+            {
+              "name":"agency_name",
+              "sourceColumnName":"agency_name"
+            }
+          ]
+        },
+        {
+          "name": "expenditure_type_id",
+          "levels": [
+            {
+              "name": "expenditure_type_id",
+              "sourceColumnName": "expenditure_type_id"
+            }
+          ]
+        },
+        {
+          "name": "expenditure_type_description",
+          "levels": [
+            {
+              "name": "expenditure_type_description",
+              "sourceColumnName": "expenditure_type_description"
+            }
+          ]
+        },
+        {
+          "name":"revenue_id",
+          "levels":[
+            {
+              "name":"revenue_id",
+              "sourceColumnName":"revenue_id"
+            }
+          ]
+        },
+        {
+          "name":"budget_type",
+          "levels":[
+            {
+              "name":"budget_type",
+              "sourceColumnName":"budget_type"
+            }
+          ]
+        },
+        {
+          "name":"budget_name",
+          "levels":[
+            {
+              "name":"budget_name",
+              "sourceColumnName":"budget_name"
+            }
+          ]
+        },
+        {
+          "name":"revenue_category",
+          "levels":[
+            {
+              "name":"revenue_category",
+              "sourceColumnName":"revenue_category"
+            }
+          ]
+        },
+        {
+          "name":"revenue_category_id",
+          "levels":[
+            {
+              "name":"revenue_category_id",
+              "sourceColumnName":"revenue_category_id"
+            }
+          ]
+        },
+        {
+          "name":"revenue_class",
+          "levels":[
+            {
+              "name":"revenue_class",
+              "sourceColumnName":"revenue_class"
+            }
+          ]
+        },
+        {
+          "name":"revenue_source",
+          "levels":[
+            {
+              "name":"revenue_source",
+              "sourceColumnName":"revenue_source"
+            }
+          ]
+        },
+        {
+          "name":"funding_source_id",
+          "levels":[
+            {
+              "name":"funding_source_id",
+              "sourceColumnName":"funding_source_id"
+            }
+          ]
+        },
+        {
+          "name":"display_funding_source_descr",
+          "levels":[
+            {
+              "name":"display_funding_source_descr",
+              "sourceColumnName":"display_funding_source_descr"
+            }
+          ]
+        },
+        {
+          "name":"responsibility_center_id",
+          "levels":[
+            {
+              "name":"responsibility_center_id",
+              "sourceColumnName":"responsibility_center_id"
+            }
+          ]
+        },
+        {
+          "name":"responsibility_center_description",
+          "levels":[
+            {
+              "name":"responsibility_center_description",
+              "sourceColumnName":"responsibility_center_description"
+            }
+          ]
+        },
+        {
+          "name":"responsibility_center_name",
+          "levels":[
+            {
+              "name":"responsibility_center_name",
+              "sourceColumnName":"responsibility_center_description"
+            }
+          ]
+        },
+        {
+          "name":"program_phase_id",
+          "levels":[
+            {
+              "name":"program_phase_id",
+              "sourceColumnName":"program_phase_id"
+            }
+          ]
+        },
+        {
+          "name":"program_phase_description",
+          "levels":[
+            {
+              "name":"program_phase_description",
+              "sourceColumnName":"program_phase_description"
+            }
+          ]
+        },
+        {
+          "name":"gl_project_id",
+          "levels":[
+            {
+              "name":"gl_project_id",
+              "sourceColumnName":"gl_project_id"
+            }
+          ]
+        },
+        {
+          "name":"gl_project_description",
+          "levels":[
+            {
+              "name":"gl_project_description",
+              "sourceColumnName":"gl_project_description"
+            }
+          ]
+        }
+      ],
+      "measures":{
+        "txcount": {
+          "function": "COUNT(*)"
+        },
+        "revenue_modified":{
+          "function":"SUM(COALESCE(adopted_amount,0))"
+        },
+        "revenue_funds_available":{
+          "function":"SUM(funds_available)"
+        },
+        "revenue_adopted_amount":{
+          "function":"SUM(adopted_amount)"
+        },
+        "revenue_recognized_amount":{
+          "function":"SUM(revenue_amount)"
+        },
+        "g100m_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 100000000 THEN 1 ELSE 0 END)"
+        },
+        "g50m_le100m_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 50000000 AND COALESCE(revenue_amount,0) <= 100000000 THEN 1 ELSE 0 END)"
+        },
+        "g25m_le50m_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 25000000 AND COALESCE(revenue_amount,0) <= 50000000 THEN 1 ELSE 0 END)"
+        },
+        "g10m_le25m_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 10000000 AND COALESCE(revenue_amount,0) <= 25000000 THEN 1 ELSE 0 END)"
+        },
+        "ge1m_le10m_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) >= 1000000 AND COALESCE(revenue_amount,0) <= 10000000 THEN 1 ELSE 0 END)"
+        },
+        "less1m_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) < 1000000 THEN 1 ELSE 0 END)"
+        },
+        "g5b_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 5000000000 THEN 1 ELSE 0 END)"
+        },
+        "g4b_le5b_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 4000000000 AND COALESCE(revenue_amount,0) <= 5000000000 THEN 1 ELSE 0 END)"
+        },
+        "g3b_le4b_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 3000000000 AND COALESCE(revenue_amount,0) <= 4000000000 THEN 1 ELSE 0 END)"
+        },
+        "g2b_le3b_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 2000000000 AND COALESCE(revenue_amount,0) <= 3000000000 THEN 1 ELSE 0 END)"
+        },
+        "g1b_le2b_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) >= 1000000000 AND COALESCE(revenue_amount,0) <= 2000000000 THEN 1 ELSE 0 END)"
+        },
+        "less1b_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) < 1000000000 THEN 1 ELSE 0 END)"
+        },
+        "recognized_g100m_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 100000000 THEN 1 ELSE 0 END)"
+        },
+        "recognized_g50m_le100m_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 50000000 AND COALESCE(revenue_amount,0) <= 100000000 THEN 1 ELSE 0 END)"
+        },
+        "recognized_g25m_le50m_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 25000000 AND COALESCE(revenue_amount,0) <= 50000000 THEN 1 ELSE 0 END)"
+        },
+        "recognized_g10m_le25m_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) > 10000000 AND COALESCE(revenue_amount,0) <= 25000000 THEN 1 ELSE 0 END)"
+        },
+        "recognized_ge1m_le10m_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) >= 1000000 AND COALESCE(revenue_amount,0) <= 10000000 THEN 1 ELSE 0 END)"
+        },
+        "recognized_less1m_count": {
+          "function": "SUM(CASE WHEN COALESCE(revenue_amount,0) < 1000000 THEN 1 ELSE 0 END)"
+        }
+      }
+    }
+  }
+}

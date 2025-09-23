@@ -1,0 +1,26 @@
+{
+    "widgetType":"phpparser",
+    "parentNid":714,
+    "no_results_content":"No Results Found",
+    "allowRequestParams":["contstatus"],
+    "autocomplete":false,
+    "filterName":"Amount",
+    "urlParameterName":"curamtr",
+    "urlParameterType":"rangeid",
+    "showAllRecords":true,
+    "autocompleteID":"fCurAmount",
+    "startWith":0,
+    "maxSelect":5,
+	"urlParamMap":{"doctype":"document_code.document_code.document_code"}  ,
+  	"columns":["g100m_count", "g50m_le100m_count", "g25m_le50m_count", "g10m_le25m_count", "ge1m_le10m_count", "less1m_count"],
+    "orderBy":"",
+    "adjustParameters":"
+      if(isset($parameters['vendor_type'])){
+      $parameters['vendor_type'] = \\Drupal\\checkbook_project\\MwbeUtilities\\VendorType::getVendorTypeValue($parameters['vendor_type']);
+      }
+        \\Drupal\\checkbook_project\\ContractsUtilities\\ContractUtil::_checkbook_project_adjustContractParameterFilters($node,$parameters,'pending');
+        $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+        return $adjustedParameters;
+    ",
+    "template":"individual_filter"
+}

@@ -1,0 +1,33 @@
+{
+  "serviceName":"NychaBudgetWidgetService",
+  "dataFunc":"GetResponsibilityCentersByCommittedExpense",
+  "headerTitle": "Responsibility Centers by Committed Expense Budget",
+  "headerSubTitle": "Responsibility Centers",
+  "footerUrl":"_widget_controller_footer_url($node).'/widget/wt_resp_centers/budgettype/committed'",
+  "table_columns":[
+    {"labelAlias":"responsibility_center","column":"responsibility_center", "tooltip":60, "derivedColumn":"responsibility_center_name_link"},
+    {"labelAlias":"committed","column":"committed","format":"dollar", "derivedColumn":"resp_committed_budget_link"},
+    {"labelAlias":"encumbered","column":"encumbrance_amount","format":"dollar"},
+    {"labelAlias":"actual_amount","column":"actual_amount","format":"dollar"},
+    {"label":"","column":""}
+  ],
+  "dataTableOptions":{
+    "aoColumns":[
+      {"bSortable":false,"sWidth":"250px","sClass":"text"},
+      {"bSortable":true,"sWidth":"150px","sClass":"number","asSorting":["desc","asc"]},
+      {"bSortable":true,"sWidth":"150px" ,"sClass":"number","asSorting":["desc" ,"asc"]},
+      {"bSortable":true,"sWidth":"150px","sClass":"number","asSorting":["desc","asc"]},
+      {"bSortable":false,"sWidth":"15px"}
+    ],
+    "bServerSide":true,
+    "bFilter":false,
+    "bPaginate":false,
+    "bProcessing":true,
+    "bLengthChange":false,
+    "bInfo":false,
+    "bAutoWidth":false,
+    "aaSorting":[[1,"desc"]],
+    "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+    "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+  }
+}

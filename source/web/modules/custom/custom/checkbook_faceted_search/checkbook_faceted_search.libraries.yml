@@ -1,0 +1,18 @@
+narrow-search:
+  css:
+    theme:
+      css/narrow-down-filter.css: {}
+      /modules/custom/jquery_plugins/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.css: {}
+
+narrow-search-widget:
+  header: true
+  css:
+    theme:
+      css/narrow-down-filter.css: {}
+      /modules/custom/jquery_plugins/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.css: {}
+  js:
+    js/narrow-down-filter.js: {}
+    /modules/custom/jquery_plugins/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.concat.min.js: {}
+  dependencies:
+    - core/drupalSettings
+    - core/jquery
