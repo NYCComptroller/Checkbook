@@ -216,12 +216,16 @@ function onBudgetFiscalYearChange() {
       };
       $('#edit-revenue-class').autocomplete({
         source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_class_name_code',filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-revenue-source').autocomplete({
         source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_source_name_code',filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
@@ -248,12 +252,16 @@ function onBudgetFiscalYearChange() {
       };
       $('#edit-nycha-rev-cat').autocomplete({
         source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_category',filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-nycha-rev-class').autocomplete({
         source: $.fn.autoCompleteSourceUrl(solr_datasource,'revenue_class',filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }

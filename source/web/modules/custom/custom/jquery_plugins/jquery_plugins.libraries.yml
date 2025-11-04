@@ -38,7 +38,7 @@ chosen:
     gpl-compatible: true
 custom-scrollbar:
   title: 'jQuery custom content scroller'
-  version: 2.8.1
+  version: 2.8.2
   js:
     malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.concat.min.js:
       type: file

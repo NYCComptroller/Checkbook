@@ -488,48 +488,64 @@
 
            div.ele('payee_name').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource, 'vendor_name', filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('contract_id').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource, 'contract_number', filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('capital_project').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource, 'reporting_code', filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('document_id').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource, 'expense_id', filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('commodity_line').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource, 'spending_commodity_line', filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('budget_name').autocomplete({
              source:$.fn.autoCompleteSourceUrl(solr_datasource, 'spending_budget_name', filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('entity_contract_number').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource, 'spending_entity_contract_number', filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('vendor_name').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource, 'vendor_name', filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
@@ -537,6 +553,8 @@
            //@ToDo: check which one correct below or line 510 above
            div.ele('document_id').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource, 'document_id', filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }

@@ -242,6 +242,8 @@
             };
            $('#edit-budget-code').autocomplete({
              source: $.fn.autoCompleteSourceUrl('citywide','budget_code_name_code',filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
@@ -262,7 +264,10 @@
                       fiscal_year: year,
                       event_id:event
                     };
-                   $('#edit-budget-code').autocomplete({source: $.fn.autoCompleteSourceUrl('citywide','budget_code_name_code',filters)});
+                   $('#edit-budget-code').autocomplete({
+                     source: $.fn.autoCompleteSourceUrl('citywide','budget_code_name_code',filters),
+                     delay: 500,
+                     minLength: 3});
                 });
             });
 

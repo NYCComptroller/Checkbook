@@ -746,6 +746,8 @@
       if (datasource === 'checkbook_oge') {
         $('#edit-vendor').autocomplete({
           source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name', filters),
+          delay: 500,
+          minLength: 3,
           select: function (event, ui) {
             $.fn.preventSelectionDefault(event, ui, "No Matches Found");
           }
@@ -753,6 +755,8 @@
       } else {
         $('#edit-vendor').autocomplete({
           source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name_code', filters),
+          delay: 500,
+          minLength: 3,
           select: function (event, ui) {
             $.fn.preventSelectionDefault(event, ui, "No Matches Found");
           }
@@ -760,36 +764,48 @@
       }
       $('#edit-contractno').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'contract_number', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-apt-pin').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'apt_pin', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-pin').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'pin', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-entity-contract-number').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'contract_entity_contract_number', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-commodity-line').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'contract_commodity_line', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-budget-name').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'contract_budget_name', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
@@ -813,18 +829,24 @@
 
       $('#edit-nycha-vendor').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name_code', nycha_filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-nycha-contract-id').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'contract_number', nycha_filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-nycha-apt-pin').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'pin', nycha_filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
@@ -862,6 +884,8 @@
           if (datasource === 'checkbook_oge') {
             $('#edit-vendor').autocomplete({
               source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name', filters),
+              delay: 500,
+              minLength: 3,
               select: function (event, ui) {
                 $.fn.preventSelectionDefault(event, ui, "No Matches Found");
               }
@@ -869,6 +893,8 @@
           } else {
             $('#edit-vendor').autocomplete({
               source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name_code', filters),
+              delay: 500,
+              minLength: 3,
               select: function (event, ui) {
                 $.fn.preventSelectionDefault(event, ui, "No Matches Found");
               }
@@ -876,36 +902,48 @@
           }
           $('#edit-contractno').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'contract_number', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-apt-pin').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'apt_pin', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-pin').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'pin', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-entity-contract-number').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'contract_entity_contract_number', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-commodity-line').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'contract_commodity_line', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-budget-name').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'contract_budget_name', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
@@ -929,18 +967,23 @@
 
           $('#edit-nycha-vendor').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name_code', nycha_filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-nycha-contract-id').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'contract_number', nycha_filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-nycha-apt-pin').autocomplete({
-            source: $.fn.autoCompleteSourceUrl(datasource, 'pin', nycha_filters),
+            source: $.fn.autoCompleteSourceUrl(datasource, 'pin', nycha_filters),  delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }

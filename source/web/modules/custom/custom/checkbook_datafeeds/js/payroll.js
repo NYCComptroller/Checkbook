@@ -61,6 +61,8 @@
 
           $("#edit-title").autocomplete({
             source: '/solr_options/'+dataSource+'/payroll/civil_service_title?'+filter,
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               ui.item.value = ui.item.label;
               $(this).parent().next().val(ui.item.label);
