@@ -301,7 +301,7 @@ class SmartSearchExtension extends AbstractExtension {
                  '<div class="filter-title"><span class="'.$span.'">By ' . htmlentities($facet->title) . '</span></div>'.
                  '<div class="facet-content" style="display:'.$display_facet.'" ><div class="progress"></div>';
 
-      if (isset($facet->autocomplete) && isset($facet->results) && sizeof($facet->results)>9) {
+      if (isset($facet->autocomplete) && isset($facet->results) && sizeof($facet->results)>5) {
         $autocomplete_id = "autocomplete_" . $facet_name;
         $disabled = '';
 

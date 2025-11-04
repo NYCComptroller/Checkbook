@@ -247,7 +247,7 @@
             "expression":"\\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::getMinorityCategoryById($row['minority_type_id'])"
         },
         "mwbe_category_name": {
-            "expression": " \\Drupal\\checkbook_project\\CommonUtilities\\RequestUtil::isNewWindow() || !\\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::isMWBECertified(array($row['minority_type_id'])) ? $row['mwbe_category_name_formatted']  : ('<a href=' . \\Drupal\\checkbook_project\\SpendingUtilities\\MwbeSpendingUtil::getAdvancedSearchMWBECategoryLinkUrl($node, $row) . '>'. $row['mwbe_category_name_formatted'] .'</a>') "
+            "expression": "\\Drupal\\checkbook_project\\CommonUtilities\\RequestUtil::isNewWindow() || !\\Drupal\\checkbook_project\\MwbeUtilities\\MappingUtil::isMWBECertified(array($row['minority_type_id'])) ? $row['mwbe_category_name_formatted'] : ('<a href=\"' . \\Drupal\\checkbook_project\\SpendingUtilities\\MwbeSpendingUtil::getAdvancedSearchMWBECategoryLinkUrl($node, $row) . '\">' . $row['mwbe_category_name_formatted'] . '</a>')"
         },
         "industry_name_formatted": {
             "expression": "($row['spending_category_name'] == 'Payroll' ||  $row['spending_category_name'] == 'Others') ? 'N/A' : \\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['industry_type_name'],36)"

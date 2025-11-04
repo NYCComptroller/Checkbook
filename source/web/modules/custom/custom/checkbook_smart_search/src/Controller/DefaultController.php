@@ -46,6 +46,14 @@ class DefaultController extends ControllerBase {
   public function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide') {
 
     $search_term = \Drupal::request()->query->get('search_term');
+    if ($search_term) {
+      $search_terms = explode('*!*', $search_term);
+      if (!empty($search_terms[0])) {
+        $search_terms[0] = $search_terms[0] ? $search_terms[0] . '*' : $search_terms[0];
+        $search_term = implode('*!*', $search_terms);
+      }
+    }
+
     $page = \Drupal::request()->query->get('page');
     $solr_query = new CheckbookSolrQuery($solr_datasource, $search_term, 10, $page ?: 0);
 

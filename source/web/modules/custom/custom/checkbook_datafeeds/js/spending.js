@@ -627,6 +627,8 @@
       if (data_source === 'checkbook'){
         $('#edit-payee-name', context).autocomplete({
           source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters),
+          delay: 500,
+          minLength: 3,
           select: function (event, ui) {
             $.fn.preventSelectionDefault(event, ui, "No Matches Found");
           },
@@ -635,6 +637,8 @@
       } else {
         $('#edit-payee-name', context).autocomplete({
           source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name', filters),
+          delay: 500,
+          minLength: 3,
           select: function (event, ui) {
             $.fn.preventSelectionDefault(event, ui, "No Matches Found");
           }
@@ -642,42 +646,56 @@
       }
       $('#edit-payee-name', context).autocomplete({
         source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-contractno', context).autocomplete({
         source: $.fn.autoCompleteSourceUrl(data_source, 'contract_number', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-document-id', context).autocomplete({
         source: $.fn.autoCompleteSourceUrl(data_source, 'document_id', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-capital-project', context).autocomplete({
         source: $.fn.autoCompleteSourceUrl(data_source, 'reporting_code', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-entity-contract-number', context).autocomplete({
         source: $.fn.autoCompleteSourceUrl(data_source, 'spending_entity_contract_number', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-commodity-line', context).autocomplete({
         source: $.fn.autoCompleteSourceUrl(data_source, 'spending_commodity_line', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-budget-name', context).autocomplete({
         source: $.fn.autoCompleteSourceUrl(data_source, 'spending_budget_name', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
@@ -734,6 +752,8 @@
           if (data_source === 'checkbook'){
             $('#edit-payee-name', context).autocomplete({
               source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name_code', filters),
+              delay: 500,
+              minLength: 3,
               select: function (event, ui) {
                 $.fn.preventSelectionDefault(event, ui, "No Matches Found");
               }
@@ -741,6 +761,8 @@
           } else {
             $('#edit-payee-name', context).autocomplete({
               source: $.fn.autoCompleteSourceUrl(data_source, 'vendor_name', filters),
+              delay: 500,
+              minLength: 3,
               select: function (event, ui) {
                 $.fn.preventSelectionDefault(event, ui, "No Matches Found");
               }
@@ -749,36 +771,48 @@
 
           $('#edit-contractno', context).autocomplete({
             source: $.fn.autoCompleteSourceUrl(data_source, 'contract_number', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-document-id', context).autocomplete({
             source: $.fn.autoCompleteSourceUrl(data_source, 'document_id', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-capital-project', context).autocomplete({
             source: $.fn.autoCompleteSourceUrl(data_source, 'reporting_code', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-entity-contract-number', context).autocomplete({
             source: $.fn.autoCompleteSourceUrl(data_source, 'spending_entity_contract_number', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-commodity-line', context).autocomplete({
             source: $.fn.autoCompleteSourceUrl(data_source, 'spending_commodity_line', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-budget-name', context).autocomplete({
             source: $.fn.autoCompleteSourceUrl(data_source, 'spending_budget_name', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }

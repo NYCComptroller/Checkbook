@@ -1,4 +1,5 @@
 narrow-search:
+  version: 1.0.0
   css:
     theme:
       css/narrow-down-filter.css: {}

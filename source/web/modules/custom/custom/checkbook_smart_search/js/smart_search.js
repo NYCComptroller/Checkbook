@@ -73,7 +73,8 @@
         // Attach autocomplete to smart search input
         $('#edit-search-box').smart_search_autocomplete({
           source: '/smart_search/autocomplete/' + $('#checkbook-smart-search-form input[name=domain]').val(),
-          minLength: 0,
+          delay: 500,
+          minLength: 3,
           classes: {
             "ui-autocomplete": "smart-search-autocomplete"
           },
@@ -343,6 +344,8 @@ function getCheckboxAttributes(domain, array_domains) {
 
           $(this).autocomplete({
             source: "/solr_autocomplete/" + solr_datasource + "/" + facet_name + search_term,
+            delay: 500,
+            minLength: 3,
             focus: function (event, ui) {
               if (ui.item.label.toString().toLowerCase() === 'no matches found') {
                 return false;

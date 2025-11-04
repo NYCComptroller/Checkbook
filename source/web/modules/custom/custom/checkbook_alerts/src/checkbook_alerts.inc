@@ -50,7 +50,7 @@ $sql=
 function _checkbook_alerts_transactions(){
   //Give default or option to pass this
   if(!isset($_GET['alert_theme_file'])){
-      $_GET['alert_theme_file']='checkbook_alerts_subscribe_theme';
+    $_GET['alert_theme_file']='checkbook_alerts_subscribe_theme';
   }
   if(!isset($_GET['alert_minimum_results'])){
     $_GET['alert_minimum_results']=1;

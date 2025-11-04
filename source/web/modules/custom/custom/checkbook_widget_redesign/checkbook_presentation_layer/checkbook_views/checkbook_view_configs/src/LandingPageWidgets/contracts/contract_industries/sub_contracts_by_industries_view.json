@@ -2,8 +2,8 @@
     "serviceName":"ContractsWidgetService",
     "dataFunc":"GetSubContractsByIndustries",
     "countFunc":"GetCountSubContracts",
-    "table_title":"Contracts by Industries",
-    "headerSubTitle":"Contracts",
+    "table_title":"Sub Contracts by Industries",
+    "headerSubTitle":"Sub Contracts",
     "table_columns":[
         {"labelAlias":"contract_industry","column":"industry_type_name","derivedColumn":"industry_name_link"},
         {"labelAlias":"num_sub_contracts","column":"total_contracts","format":"number"},
