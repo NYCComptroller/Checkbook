@@ -1,0 +1,15 @@
+{
+"widgetType": "phpparser",
+"cleanURLParameters":["year","expcategory","agency","dept"],
+"urlParamMap":{"year":"year_id.year_id","expcategory":"object_class_id","agency":"agency_id","dept":"department_code"},
+"defaultParameters":{"year_id.year_id":113},
+"noDataInitialLoad":true,
+"dataset": "checkbook:budget",
+"columns": ["year_id.year_id","object_class_name.object_class_name","object_class_id.object_class_id","budget_committed",
+            "pre_encumbered","encumbered","accrued_expense","cash_payments","post_adjustments"],
+  "widgetTitle":"Expense Categories by Committed Expense Budget Transactions",
+    "template":"budget_expense_transactions_summary",
+    "templateTitle":"Expense Category by Committed Expense Budget Transactions",
+    "templateLabel":"Expense Category"
+
+}

@@ -1,0 +1,43 @@
+
+{% set ytdspending = customWidgetLabel("ytd_spending") %}
+{% set totcontamnt = customWidgetLabel("total_contract_amount") %}
+{% set mwbe_category = "" %}
+{% set snmid = RequestGet("smnid") %}
+
+{% set vendorname = node.data[0]['vendor_vendor_legal_name'] %}
+{% if snmid == 717 %}
+  {% set no_of_subvendor_value = node.data[0]['sub_vendor_count'] %}
+  {% set no_of_subvendor = customWidgetLabel("num_sub_vendors") %}
+  {% set vendorname = node.data[0]['prime_vendor_prime_vendor_legal_name'] %}
+  {% set mwbe_category = '<br><b>'~ customWidgetLabel("mwbe_category") ~':</b> '~ spendingMwbeCatName( node.data[0]['prime_minority_type_prime_minority_type']) %}
+{% endif %}
+{% if snmid == 747 %}
+  {% set vendorname = node.data[0]['prime_vendor_prime_vendor_legal_name'] %}
+  {# {% set percent_spending_value = spendingSummaryTitle(node.widgetConfig.totalAggregateColumns['check_amount_sum'] ,node.data[0]['check_amount_sum'] )%} #}
+  {% set mwbe_category = '<br><b>'~ customWidgetLabel("mwbe_category") ~':</b> '~ spendingMwbeCatName( node.data[0]['prime_minority_type_prime_minority_type'])  %}
+{% endif %}
+
+<div class="contract-details-heading">
+  <div class="contract-id">
+    <h2 class="contract-title">{{customFunctionEvaluate(node.widgetConfig.templateTitleEval)}}</h2>
+    <div class="spending-tx-subtitle"><b>{{node.widgetConfig.templateLabel}}</b>: {{vendorname}} {{mwbe_category|raw}}</div>
+  </div>
+  <div class="dollar-amounts">
+    <div class="total-spending-contract-amount">
+      {{customAmount(node.data[0]['total_contract_amount_sum'],2,'$') |raw }}
+      <div class="amount-title">{{totcontamnt|raw}}</div>
+    </div>
+    <div class="ytd-spending-amount">
+      {{customAmount(node.data[0]['check_amount_sum'],2,'$') |raw }}
+      <div class="amount-title">{{ytdspending|raw}}</div>
+    </div>
+    <div class="number-of-subvendors">
+      {{no_of_subvendor_value}}
+      <div class="amount-title">{{no_of_subvendor|raw}}</div>
+    </div>
+    <div class="percent-spending-amount">
+      {{ percent_spending_value}}
+      <div class="amount-title">{{percent_spending|raw}}</div>
+    </div>
+  </div>
+</div>

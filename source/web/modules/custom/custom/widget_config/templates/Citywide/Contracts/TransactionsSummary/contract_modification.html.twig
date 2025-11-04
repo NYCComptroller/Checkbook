@@ -1,0 +1,87 @@
+{{ {'#cache': {'max-age': 0}} }}
+
+{% set originalAmount = customAmount(node.data[0]['original_amount_sum'],2,'$') %}
+{% set currentAmount = customAmount(node.data[0]['current_amount_sum'],2,'$') %}
+{% set spentToDateAmount = customAmount(node.data[0]['spending_amount_sum'],2,'$') %}
+{% set diffAmount = customAmount(node.data[0]['dollar_difference'],2,'$') %}
+{% set diffAmountPercent = customPercDiff(node.data[0]['percent_difference']) %}
+{% set cont_id = customWidgetLabel("contract_id") %}
+{% set spnttodt = customWidgetLabel("spent_to_date") %}
+{% set oamnt = customWidgetLabel("original_amount") %}
+{% set camnt = customWidgetLabel("current_amount") %}
+{% set ddiff = customWidgetLabel("dollar_diff") %}
+{% set pdiff = customWidgetLabel("percent_diff") %}
+{% set purpose = customWidgetLabel("contract_purpose") %}
+{% set agency = customWidgetLabel("contract_agency") %}
+{% set vendor= customWidgetLabel("vendor_name") %}
+{% set vendor_value = node.data[0]['vendor_vendor_legal_name'] %}
+{% set smnid = RequestGet('smnid') %}
+
+{% if smnid == 722 %}
+  {% set purpose = customWidgetLabel("sub_contract_purpose") %}
+  {% set vendor = customWidgetLabel("sub_vendor_name") %}
+  {% set vendor_value = node.data[0]['subvendor_subvendor_legal_name'] |upper %}
+{% elseif smnid == 782 %}
+  {% set vendor = customWidgetLabel("associated_prime_vendor") %}
+{% elseif smnid == 480 %}
+  {% set vendor = '' %}
+  {% set vendor_value = '' %}
+  {% set spentToDateAmount = '' %}
+{% else  %}
+  {% set vendor = customWidgetLabel("prime_vendor") %}
+{% endif %}
+
+{% set purpose_value = node.data[0]['contract_purpose_contract_purpose'] | upper  %}
+{% set agency_value = node.data[0]['agency_agency_agency_name']|upper  %}
+
+
+{% if nodeDataExists(node) %}
+  <div class="contract-details-heading">
+    <div class="contract-id">
+      <h2 class="contract-title">{{node.widgetConfig.templateTitle | replace({'<br/>': ' ',}) |raw}}  </h2>
+    </div>
+    <div class="dollar-amounts">
+      {% if spentToDateAmount %}
+      <div class="spent-to-date">
+        {{ spentToDateAmount |raw }}
+        <div class="amount-title">{{spnttodt |raw }}</div>
+      </div>
+      {% endif %}
+      <div class="original-amount">
+        {{originalAmount |raw}}
+        <div class="amount-title">{{oamnt|raw }}</div>
+      </div>
+      <div class="current-amount">
+        {{currentAmount |raw}}
+        <div class="amount-title">{{camnt |raw }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="contract-information">
+    <div class="dollar-difference">
+      {{diffAmount|raw}}
+      <div class="amount-title">{{ddiff |raw}}</div>
+    </div>
+    <div class="percent-difference">
+      {{diffAmountPercent |raw}}
+      <div class="amount-title">{{pdiff |raw }}</div>
+    </div>
+    <ul>
+      <li class="contractid">
+        <span class="gi-list-item">{{cont_id | replace({'<br/>': ' ',}) |raw}}:</span> {{node.data[0]['contract_number_contract_number'] |raw }}
+      </li>
+      <li class="contract-purpose">
+        <span class="gi-list-item">{{purpose | replace({'<br/>': ' ',}) |raw}}:</span> {{purpose_value |raw}}
+      </li>
+      <li class="agency">
+        <span class="gi-list-item">{{agency | replace({'<br/>': ' ',}) |raw }}:</span> {{agency_value |raw}}
+      </li>
+
+      {% if vendor %}
+      <li class="vendor">
+        <span class="gi-list-item">{{vendor | replace({'<br/>': ' ',}) |raw}}:</span> {{vendor_value |raw}}
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+{% endif %}

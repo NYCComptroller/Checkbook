@@ -1,0 +1,41 @@
+{
+    "serviceName":"ContractsWidgetService",
+    "dataFunc":"GetContracts",
+    "uniqueSortColumn":"original_agreement_id",
+    "defaultParameters":{"type_of_year":"B","contract_type":"child_contract"},
+    "headerTitle":"Contracts",
+    "headerSubTitle":"Stand Alone Contracts",
+    "table_columns":[
+        {"labelAlias":"contract_id","column":"contract_number","derivedColumn":"contract_id_link"},
+        {"labelAlias":"contract_purpose","column":"contract_purpose","tooltip":35},
+        {"labelAlias":"contract_agency","column":"agency_name","tooltip":25,"derivedColumn":"agency_name_link"},
+        {"labelAlias":"prime_vendor","column":"vendor_name","tooltip":25,"derivedColumn":"prime_vendor_link"},
+        {"labelAlias":"recv_date","column":"received_date"},
+        {"labelAlias":"current_amount","column":"current_amount_sum","format":"dollar"},
+        {"labelAlias":"original_amount","column":"original_amount_sum","format":"dollar"},
+        {"label":"","column":""}
+    ],
+    "skipCustomPadding":true,
+    "dataTableOptions":{
+        "aoColumns":[
+            { "bSortable": false,"sClass":"text","sWidth":"150px" },
+            { "bSortable": false,"sClass":"text","sWidth":"215px" },
+            { "bSortable": false,"sClass":"text", "sWidth":"167px" },
+            { "bSortable": false,"sClass":"text" ,"sWidth":"162px"},
+            { "bSortable": true,"sClass":"text recdate","sWidth":"75px" },
+            { "bSortable": true,"sClass":"number" ,"asSorting": [ "desc","asc" ], "sWidth":"73px"},
+            { "bSortable": true,"sClass":"number","asSorting": [ "desc","asc" ],"sWidth":"73px"},
+            { "bSortable": false,"sWidth":"15px" }
+        ],
+        "bServerSide":true,
+        "bFilter":false,
+        "bPaginate":false,
+        "bProcessing":true,
+        "bLengthChange":false,
+        "bInfo":false,
+        "bAutoWidth":false,
+        "aaSorting":[[ 5, "desc" ]],
+        "fnServerParams":"##function ( aoData ) { reloadExpandCollapseWidget(this,aoData); }##",
+         "oLanguage":{"sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"}
+   }
+}

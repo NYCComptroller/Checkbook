@@ -1,0 +1,10 @@
+{{ attach_library('checkbook_smart_search/smart_search_autocomplete') }}
+{{ attach_library('checkbook_smart_search/smart_search_results') }}
+
+<div class="position-relative clearfix">
+
+{{ FacetData(search_results.facet_counts,solr_datasource,selected_facet_results,registered_contracts,active_contracts)|raw }}
+
+{{ smartSearchResults(search_results,solr_datasource)|raw }}
+
+</div>

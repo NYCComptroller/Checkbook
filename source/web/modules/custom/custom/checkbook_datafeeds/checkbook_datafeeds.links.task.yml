@@ -1,0 +1,8 @@
+checkbook_datafeeds:
+  route_name: checkbook_datafeeds
+  title: 'Data Feeds'
+  base_route: checkbook_datafeeds
+checkbook_datafeeds.api:
+  route_name: checkbook_datafeeds.api
+  title: 'API'
+  base_route: checkbook_datafeeds

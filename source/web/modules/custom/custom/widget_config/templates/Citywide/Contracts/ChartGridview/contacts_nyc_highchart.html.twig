@@ -1,0 +1,182 @@
+{{ attach_library('widget_highcharts/grid-view') }}
+
+{{ gridPrintExport(node) |raw }}
+{% if node.widgetConfig.chartConfig.series[0].showInLegend == false %}
+  {% set hidePrevLabel = 'false' %}
+{% endif %}
+{% set SeriesPreviousYearLabel = node.widgetConfig.chartConfig.series[0].name %}
+{% set SeriesCurrentYearLabel = node.widgetConfig.chartConfig.series[1].name %}
+<div id="gridprint">
+  <h3 class="grid_title">{{ contractTitle()|raw }}</h3>
+  <h3 class="grid_chart_title">{{ node.widgetConfig.chartTitle |raw}}</h3>
+  {{ pageGridTitle('Contracts')|raw }}
+  <div>
+    <table id="table_{{ node.nid }}" class=" {{node.widgetConfig.gridConfig.html_class}} ">
+      <thead>
+      <tr>
+        <th class='text'><div><span>Month</span></div></th>
+        {% if hidePrevLabel == 'false' %}
+          <th class='number'><div><span>{{ SeriesPreviousYearLabel | raw }}</span></div></th>
+        {% endif %}
+        <th class='number'><div><span>{{ SeriesCurrentYearLabel | raw }}</span></div></th>
+        <th>&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+        {% set months = [] %}
+        {% if node.data %}
+          {% set cnt = 1 %}
+          {% for datarow in node.data %}
+            {% if datarow.month_month_month_name not in months %}
+              {% set months = months|merge([datarow.month_month_month_name]) %}
+            {% endif %}
+            <tr>
+              <td>{{ cnt }}</td>
+              {% if hidePrevLabel == 'false' %}
+                <td>{{ datarow.previous_spending | raw }}</td>
+              {% endif %}
+              <td>{{ datarow.current_spending | raw }}</td>
+              <td>&nbsp;</td>
+            </tr>
+            {% set cnt = cnt + 1 %}
+          {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+    {% set wurl = widget_url() %}
+
+    {% if hidePrevLabel == 'false' %}
+      {% set dataTableOptions = '
+                    {
+                        "bFilter":false,
+                        "bInfo":false,
+                        "bLengthChange":false,
+                        "iDisplayLength":12,
+                        "aaSorting":[[0,"asc"]],
+                        "bPaginate": false,
+                        "sAltAjaxSource":"' ~ wurl ~ '",
+            			"fnDrawCallback"  :  function( oSettings ) {
+            			addPaddingToDataCells(this);
+            			},
+                        "aoColumnDefs": [
+                            {
+                                "aTargets": [0],
+                                "mDataProp": function ( source, type, val ) {
+                                    if (type == "set") {
+                                        var monthList = ["' ~  months|join('","')  ~ '"];
+                                        source.month = val;
+                                        source.month_display = "<div>" + monthList[(val-1)] + "</div>";
+                                        return;
+                                    }else if (type == "display") {
+                                        return source.month_display;
+                                    }else if (type == "sort") {
+                                        return source.month;
+                                    }
+                                    return source.month;
+                                },
+                                "sClass":"text",
+                                "asSorting": [ "asc","desc" ],
+                                "sWidth":"180px"
+                            },
+                            {
+                                "aTargets": [1],
+                                "aExportFn":"function",
+                                "mDataProp": function ( source, type, val ) {
+                                    if (type == "set") {
+                                        source.current_spending = val;
+                                        source.current_spending_display = "<div>" + custom_number_format(val) + "</div>";
+                                        return;
+                                    }else if (type == "display") {
+                                        return source.current_spending_display;
+                                    }
+                                    return source.current_spending;
+                                },
+                                "sClass":"number",
+                                "asSorting": [ "desc", "asc" ],
+                                "sWidth":"300px"
+                            },
+                            {
+                                "aTargets": [2],
+                                "aExportFn":"function",
+                                "mDataProp": function ( source, type, val ) {
+                                    if (type == "set") {
+                                        source.previous_spending = val;
+                                        source.previous_spending_display = "<div>" + custom_number_format(val) + "</div>";
+                                        return;
+                                    }else if (type == "display") {
+                                        return source.previous_spending_display;
+                                    }
+                                    return source.previous_spending;
+                                },
+                                "sClass":"number",
+                                "asSorting": [ "desc", "asc" ]
+                            },
+                            {
+                              "aTargets": [3],
+                              "sWidth":"15px"
+                            }
+
+                        ]
+                    }
+                    ' %}
+    {% else %}
+      {% set dataTableOptions = '
+                    {
+                        "bFilter":false,
+                        "bInfo":false,
+                        "bLengthChange":false,
+                        "iDisplayLength":12,
+                        "aaSorting":[[0,"asc"]],
+                        "bPaginate": false,
+                        "sAltAjaxSource":"' ~ wurl ~ '",
+            			"fnDrawCallback"  :  function( oSettings ) {
+            			addPaddingToDataCells(this);
+            			},
+                        "aoColumnDefs": [
+                            {
+                                "aTargets": [0],
+                                "mDataProp": function ( source, type, val ) {
+                                    if (type == "set") {
+                                        var monthList = ["' ~ months|join('","')  ~ '"];
+                                        source.month = val;
+                                        source.month_display = "<div>" + monthList[(val-1)] + "</div>";
+                                        return;
+                                    }else if (type == "display") {
+                                        return source.month_display;
+                                    }else if (type == "sort") {
+                                        return source.month;
+                                    }
+                                    return source.month;
+                                },
+                                "sClass":"text",
+                                "asSorting": [ "asc","desc" ]
+                            },
+                            {
+                                "aTargets": [1],
+                                "aExportFn":"function",
+                                "mDataProp": function ( source, type, val ) {
+                                    if (type == "set") {
+                                        source.previous_spending = val;
+                                        source.previous_spending_display = "<div>" + custom_number_format(val) + "</div>";
+                                        return;
+                                    }else if (type == "display") {
+                                        return source.previous_spending_display;
+                                    }
+                                    return source.previous_spending;
+                                },
+                                "sClass":"number",
+                                "asSorting": [ "desc", "asc" ]
+                            },
+                            {
+                              "aTargets": [2]
+                            }
+
+                        ]
+                    }
+                    ' %}
+    {% endif %}
+    <script type="text/javascript">
+      {{ widget_highcharts_add_datatable_js(dataTableOptions,node) |raw}}
+    </script>
+  </div>
+</div>

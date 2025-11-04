@@ -1,0 +1,5 @@
+{
+    "defaultConfigKey":"revenue_contracts_by_agencies_view",
+    "dataFunc":"GetContractsByAgencies",
+    "defaultParameters":{"type_of_year":"B","status":"P"}
+}

@@ -1,0 +1,23 @@
+{% set percent_spending_value = spendingSummaryTitle(node.widgetConfig.totalAggregateColumns['check_amount_sum'] ,node.data[0]['check_amount_sum'] ) %}
+{% set percent_spending = customWidgetLabel("percent_spending")  %}
+
+<div class="contract-details-heading">
+  <div class="contract-id">
+    <h2 class="contract-title">{{customFunctionEvaluate(node.widgetConfig.templateTitleEval)}}</h2>
+    <div class="spending-tx-subtitle"><b>{{node.widgetConfig.templateLabel}}</b>: {{node.data[0]['vendor_vendor_legal_name']}}<br><b>{{customWidgetLabel("mwbe_category") |raw}}</b>: {{spendingMwbeCatName( node.data[0]['minority_type_minority_type']) | upper}}</div>
+  </div>
+  <div class="dollar-amounts">
+    <div class="total-spending-contract-amount">
+      {{ customAmount(node.data[0]['total_contract_amount_sum'],2,'$') }}
+      <div class="amount-title">{{customWidgetLabel("total_contract_amount") | raw}}</div>
+    </div>
+    <div class="ytd-spending-amount">
+      {{ customAmount(node.data[0]['check_amount_sum'],2,'$') }}
+      <div class="amount-title">{{customWidgetLabel("ytd_spending") |raw}}</div>
+    </div>
+    <div class="percent-spending-amount">
+      {{percent_spending_value | raw}}
+      <div class="amount-title">{{percent_spending |raw}}</div>
+    </div>
+  </div>
+</div>

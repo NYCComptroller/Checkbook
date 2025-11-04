@@ -1,0 +1,47 @@
+
+  <div id='payroll-emp-trans-name'>
+    <span class='payroll-label'>Title: </span>
+    <span class='payroll-value'>{{ payrollTitleUrl(node.data[0]['civil_service_title']) |raw }}</span>
+  </div>
+
+{%  if node.data[0]['type_of_employment'] == 'Salaried' %}
+  <tr>
+  <td><strong>{{customWidgetLabel('combined_annual_salary') | raw }}</strong>: {{total_annual_salary}}</td>
+  <td><strong>{{customWidgetLabel('payroll_type')| raw }}</strong>: {{ employment_type |raw}}"</td>
+</tr>
+  <tr>
+    <td><strong>{{customWidgetLabel('combined_gross_pay_ytd') | raw }}</strong>: {{total_gross_pay}}</td>
+    <td><strong>{{customWidgetLabel('lbl_total_number_employees') | raw }}</strong>: {{number_employees}}</td>
+  </tr>
+  <tr>
+    <td><strong>{{customWidgetLabel('combined_base_pay_ytd')| raw }}</strong>: {{total_base_pay}}</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><strong>{{customWidgetLabel('combined_other_pay_ytd') | raw }}</strong>: {{total_other_payments}}</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><strong>{{customWidgetLabel('combined_overtime_pay_ytd') | raw }}</strong>: {{total_overtime_pay}}</td>
+    <td></td>
+  </tr>
+  </table></div>
+  {% else %}
+    <tr>
+    <td><strong>{{customWidgetLabel('combined_gross_pay_ytd') | raw }}</strong>: {{total_gross_pay}}</td>
+    <td><strong>{{customWidgetLabel('payroll_type') | raw }}</strong>: {{employment_type |upper}}</td>
+  </tr>
+    <tr>
+      <td><strong>{{customWidgetLabel('combined_base_pay_ytd') | raw }}</strong>: {{total_base_pay}}</td>
+      <td><strong>{{customWidgetLabel( 'lbl_total_number_employees') | raw }}</strong>: {{number_employees}}</td>
+    </tr>
+    <tr>
+      <td><strong>{{customWidgetLabel('combined_other_pay_ytd')| raw }}</strong>: {{total_other_payments}}</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><strong>{{customWidgetLabel('combined_overtime_pay_ytd') | raw }}</strong>: {{total_overtime_pay}}</td>
+      <td></td>
+    </tr>
+    </table></div>
+{% endif %}

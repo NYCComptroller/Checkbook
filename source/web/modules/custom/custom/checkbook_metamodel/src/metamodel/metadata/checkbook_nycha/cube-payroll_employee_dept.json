@@ -1,0 +1,127 @@
+{
+    "datasets":{
+        "payroll_employee_dept":{
+            "datasourceName":"main",
+            "source":"aggregateon_payroll_employee_dept",
+            "columns": [
+                {
+                    "name": "agency_id"},
+                {
+                     "name": "department_id"},
+                {
+                    "name": "fiscal_year_id"},
+                {
+                    "name": "type_of_year"}
+            ]
+        }
+    },
+    "cubes":{
+        "payroll_employee_dept":{
+            "sourceDatasetName":"payroll_employee_dept",
+            "dimensions":[
+                {
+                    "name": "employee",
+                    "levels": [
+                                {
+                                    "name": "employee",
+                                    "datasetName": "employee",
+                                    "sourceColumnName": "employee_id"
+                                }
+                    ]
+                },
+                {
+                    "name": "agency",
+                    "levels": [
+                                {
+                                    "name": "agency",
+                                    "datasetName": "agency",
+                                    "sourceColumnName": "agency_id"
+                                }
+                    ]
+                },
+                {
+                    "name": "dept",
+                    "levels": [
+                                {
+                                "name": "dept",
+                                "datasetName": "department",
+                                "sourceColumnName": "department_id"
+                                }
+                    ]
+                },
+                {
+                    "name": "annual_salary",
+                    "levels": [
+                                {
+                                    "name": "annual_salary",
+                                    "sourceColumnName": "annual_salary"
+                                }
+                    ]
+                },
+                {
+                    "name": "start_date",
+                    "levels": [
+                                {
+                                    "name": "start_date",
+                                    "sourceColumnName": "start_date"
+                                }
+                    ]
+                },
+                {
+                    "name": "pay_frequency",
+                    "levels": [
+                        {
+                            "name": "pay_frequency",
+                            "sourceColumnName": "pay_frequency"
+                        }
+                    ]
+                },
+                {
+                    "name":"year",
+                    "levels":[
+                        {
+                            "name":"year",
+                            "datasetName":"year",
+                            "sourceColumnName":"fiscal_year_id"
+                        }
+                    ]
+                },
+                {
+                    "name":"year_type",
+                    "levels":[
+                        {
+                            "name":"year_type",
+                            "sourceColumnName":"type_of_year"
+                        }
+                    ]
+                }
+            ],
+            "measures":{
+                "total_annual_salary": {
+                    "function": "SUM(annual_salary)"
+                },
+                "min_total_annual_salary": {
+                    "function": "MIN(annual_salary)"
+                },
+                "total_gross_pay": {
+                    "function": "SUM(gross_pay)"
+                },
+                "total_base_pay": {
+                    "function": "SUM(base_pay)"
+                },
+                "total_other_payments": {
+                    "function": "SUM(other_payments)"
+                },
+                "total_overtime_pay": {
+                    "function": "SUM(overtime_pay)"
+                }
+            }
+        }
+    },
+    "references": {
+        "payroll_employee_dept__payroll_dept": [
+                {"datasetName": "payroll_employee_dept", "columnNames": ["agency_id","department_id", "fiscal_year_id", "type_of_year"]},
+                {"datasetName": "payroll_dept", "columnNames": ["agency_id","department_id", "fiscal_year_id", "type_of_year"]}
+        ]
+    }
+}

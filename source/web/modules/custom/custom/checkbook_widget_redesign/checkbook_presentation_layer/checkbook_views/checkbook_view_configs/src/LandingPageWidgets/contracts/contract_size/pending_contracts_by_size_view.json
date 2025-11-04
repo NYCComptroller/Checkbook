@@ -1,0 +1,5 @@
+{
+    "defaultConfigKey":"revenue_contracts_by_size_view",
+    "dataFunc":"GetContractsBySize",
+    "defaultParameters":{"type_of_year":"B"}
+}

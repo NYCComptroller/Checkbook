@@ -1,0 +1,14 @@
+{
+    "datasets": {
+		"minority_type": {
+            "datasourceName": "main",
+            "source": "ref_minority_type",
+            "columns": [
+                {
+                    "name": "minority_type_id",
+                    "key": true
+                }
+            ]
+        }
+    }
+}

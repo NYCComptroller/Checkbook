@@ -1,0 +1,6 @@
+checkbook_solr.checkbook_print_solr_options_json:
+  path: '/solr_options/{data_source}/{domain}/{facet}'
+  defaults:
+    _controller: '\Drupal\checkbook_solr\Controller\DefaultController::checkbook_print_solr_options_json'
+  requirements:
+    _permission: 'access content'

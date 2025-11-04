@@ -1,0 +1,19 @@
+{{ attach_library('widget_config/checkbook_project.contracts') }}
+
+<div>
+  <h3>
+    Spending Transactions By Prime Vendor
+  </h3>
+  <table class="dataTable cta-spending-history outerTable">
+    <thead>
+      <tr>
+        <th class="text">{{ customWidgetLabel("fiscal_year") | raw }}</th>
+        <th class="text">{{ customWidgetLabel("no_of_transactions") | raw }}</th>
+        <th class="number endCol">{{ customWidgetLabel("amount_spent") | raw }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ contracts_cta_spending_history_table_body(node) | raw }}
+    </tbody>
+  </table>
+</div>

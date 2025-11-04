@@ -1,0 +1,14 @@
+checkbook_api_ref.checkbook_api_load_ref_data:
+  path: '/ref_code_list/{code_list_name}'
+  defaults:
+    _title: 'Load Reference Data'
+    _controller: '\Drupal\checkbook_api_ref\Controller\DefaultController::checkbook_api_load_ref_data'
+  requirements:
+    _access: 'TRUE'
+checkbook_api_ref.checkbook_api_load_ref_data_excel:
+  path: '/ref_code_list_excel/{code_list_name}'
+  defaults:
+    _title: 'Load Reference Data'
+    _controller: '\Drupal\checkbook_api_ref\Controller\DefaultController::checkbook_api_load_ref_data_excel'
+  requirements:
+    _access: 'TRUE'

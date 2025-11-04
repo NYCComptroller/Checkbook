@@ -1,0 +1,27 @@
+{
+  "widgetType":"phpparser",
+  "parentNid":766,
+  "no_results_content":"No Results Found",
+  "limit":10,
+  "startWith":0,
+  "maxSelect":5,
+  "showAllRecords":true,
+  "allowFacetDeselect":true,
+  "autocomplete":false,
+  "filterName":"Conditional Categories",
+  "urlParameterName":"cevent",
+  "urlParameterType":"any",
+  "autocompleteID":"feventId",
+  "columns":["asylum_count","covid_count"],
+  "adjustParameters":"
+  if(isset($parameters['event_id'])){unset($parameters['event_id']);}
+  if(isset($parameters['vendor_type'])){
+    $parameters['vendor_type'] = \\Drupal\\checkbook_project\\MwbeUtilities\\VendorType::getVendorTypeValue($parameters['vendor_type']);
+    }
+    checkbook_faceted_search_adjust_param($node);
+    $parameters = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::_checkbook_project_adjust_spending_parameter_filters($node, $parameters);
+    $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
+    return $adjustedParameters;
+",
+"template":"individual_filter"
+}

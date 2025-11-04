@@ -1,0 +1,32 @@
+{
+    "serviceName":"SpendingWidgetService",
+    "dataFunc":"GetSpendingByPayrollAgencies",
+    "defaultParameters":{"type_of_year":"B","spending_category_id":2},
+    "headerTitle":"Agencies",
+    "headerSubTitle":"Agencies",
+    "footerUrl":"_widget_controller_footer_url($node).'/category/2'",
+    "table_columns": [
+        {"labelAlias":"agency_name","column":"agency_name","derivedColumn":"payroll_agency_name_link"},
+        {"labelAlias":"ytd_spending","column":"check_amount_sum","derivedColumn":"payroll_agency_ytd_spending_link","format":"dollar"},
+        {"labelAlias":"","column": ""}
+    ],
+    "dataTableOptions":{
+        "aoColumns": [
+            { "bSortable": false,"sClass":"text spagname","asSorting": [ "asc","desc"  ]  },
+            {"sClass":"number spamount","asSorting": [ "desc","asc"  ] },
+            { "bSortable": false,"sWidth":"15px" }
+        ] ,
+        "bServerSide": true,
+        "bFilter": false,
+        "bPaginate": false,
+        "bProcessing":true,
+        "bLengthChange": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "aaSorting": [[ 1, "desc" ]],
+        "fnServerParams": "##function ( aoData ) {reloadExpandCollapseWidget(this,aoData);}##",
+        "oLanguage":{
+            "sProcessing":"<img src='/sites/all/themes/checkbook/images/loading_large.gif' title='Processing...'/>"
+        }
+}
+}

@@ -1,0 +1,126 @@
+{
+  "widgetType":"highcharts",
+  "widgetSubType":"ajaxSimple",
+  "header":"
+  $header = '<h2 class=\"chart-title\" style=\"display:none;\">'. $node->widgetConfig->chartTitle . '</h2>';
+  $header .= \\Drupal\\checkbook_project\\WidgetUtilities\\ChartUtil::generateWidgetGridViewLink($node);
+  return $header;
+  ",
+  "gridConfig":{
+    "template":"highchart_nycha_revenue_fundsrc_grid_view",
+    "html_class":"chart-grid-view-table",
+    "table_columns": [
+      {
+        "labelAlias": "funding_source",
+        "column": "display_funding_source_descr_display_funding_source_descr",
+        "sortColumn": "display_funding_source_descr_display_funding_source_descr"
+      },
+      {
+        "colLabel": "recognized",
+        "column": "revenue_recognized_amount"
+      },
+      {
+        "colLabel": "remaining",
+        "column": "revenue_funds_available"
+      }
+    ]
+  },
+  "dataset":"checkbook_nycha:revenue",
+  "columns":[
+    "year_id.year_id",
+    "funding_source_id.funding_source_id",
+    "display_funding_source_descr.display_funding_source_descr",
+    "revenue_recognized_amount",
+    "revenue_funds_available"
+  ],
+  "orderBy":"-revenue_recognized_amount",
+  "limit": 10,
+  "defaultParameters":{
+    "year_id.year_id":119
+  },
+  "cleanURLParameters":[
+    "year",
+    "expcategory",
+    "project",
+    "program",
+    "respcenter"
+  ],
+  "urlParamMap":{
+    "year":"year_id.year_id",
+    "expcategory": "expenditure_type_id.expenditure_type_id",
+    "project": "gl_project_id.gl_project_id",
+    "program": "program_phase_id.program_phase_id",
+    "respcenter" : "responsibility_center_id.responsibility_center_id"
+  },
+  "transformationPHP":"
+  $landing_page =  \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getCurrentPageUrl()  ;
+  $allZero = TRUE;
+  foreach ($node->data as $row) {
+  if (abs($row['revenue_recognized_amount']) > 0){$allZero = FALSE;}
+if (abs($row['revenue_funds_available']) > 0){$allZero = FALSE;}
+$exp = $node->widgetConfig->requestParams['expenditure_type_id.expenditure_type_id'];
+
+$url = $landing_page .  '/fundsrc/' . $row['funding_source_id_funding_source_id'];
+
+$categories[] = html_entity_decode($row['display_funding_source_descr_display_funding_source_descr'],ENT_QUOTES);
+$recognized_data[] = array('name' => html_entity_decode($row['display_funding_source_descr_display_funding_source_descr'],ENT_QUOTES), 'y' => $row['revenue_recognized_amount'], 'url' => $url);
+$remaining_data[] = array('name' => html_entity_decode($row['display_funding_source_descr_display_funding_source_descr'],ENT_QUOTES), 'y' => $row['revenue_funds_available'], 'url' => $url);
+}
+if($allZero){$node->totalDataCount = 0;}
+$node->widgetConfig->chartTitle = 'Top Ten Funding Sources by Revenue';
+$node->widgetConfig->chartConfig->xAxis->categories = $categories;
+
+$node->widgetConfig->chartConfig->series = array(array('name' => 'Recognized', 'data' => $recognized_data),array('name' => 'Remaining', 'data' => $remaining_data));
+return $node->data;
+",
+"chartConfig":{
+"chart":{
+"defaultSeriesType":"column"
+},
+"legend":{
+"align":"left",
+"verticalAlign":"bottom"
+},
+"xAxis":{
+"categories":[]
+},
+"yAxis":{
+"title":{
+"text":""
+},
+"labels":{
+"function":"yAxisFormatter"
+}
+},
+"tooltip":{
+"function":"budgetTooltip"
+},
+"plotOptions":{
+"column":{
+"minPointLength":3,
+"pointWidth":17
+},
+"series":{
+"cursor":"pointer",
+"point":{
+"events":{
+"function":"clickEvent"
+}
+}
+}
+},
+"series":[],
+"title":{
+"text":""
+}
+}
+}
+<function>
+yAxisFormatter^^"formatter" : function(){return yAxisLabelFormatter(this);}##
+budgetTooltip^^"formatter" : function() {return 'Funding Source: '+this.point.name + '<br>Amount: ' + abbrNum(this.y, 2, '$')}##
+clickEvent^^"click": function(){
+if (this.options.url){
+location.href = this.options.url
+}
+}
+</function>

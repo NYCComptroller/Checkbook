@@ -1,0 +1,32 @@
+checkbook_export.forms:
+  path: 'export/transactions/forms'
+  defaults:
+    _form: 'Drupal\checkbook_export\Form\CheckbookExportForm'
+    _title: 'Checkbook Export Form'
+  requirements:
+    _permission: 'access content'
+checkbook_export.form:
+  path: '/export/transactions/form'
+  defaults:
+    _controller: '\Drupal\checkbook_export\Controller\DefaultController::checkbook_export_form'
+    _title: 'Checkbook Export Form'
+  requirements:
+    _permission: 'access content'
+checkbook_export.transactions:
+  path: 'export/transactions'
+  defaults:
+    _controller: '\Drupal\checkbook_export\Controller\DefaultController::_checkbook_export_transactions'
+  requirements:
+    _permission: 'access content'
+checkbook_export.grid_transactions:
+  path: 'export/grid/transactions/{nodeId}'
+  defaults:
+    _controller: '\Drupal\checkbook_export\Controller\DefaultController::_checkbook_export_grid_transactions'
+  requirements:
+    _permission: 'access content'
+checkbook_export.trends:
+  path: 'export/trends/download/{nodeId}'
+  defaults:
+    _controller: '\Drupal\checkbook_export\Controller\DefaultController::_checkbook_export_trends'
+  requirements:
+    _permission: 'access content'

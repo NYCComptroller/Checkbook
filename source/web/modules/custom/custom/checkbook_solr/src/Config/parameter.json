@@ -1,0 +1,14 @@
+{
+  "param_mapping": {
+    "oge_agency_names": "oge_agency_name",
+    "agency_names": "agency_name",
+    "fiscal_years": "fiscal_year",
+    "registered_fiscal_years": "registered_fiscal_year",
+    "domains": "domain",
+    "vendor_names": "vendor_name",
+    "expense_categories": "expenditure_object_name",
+    "revenue_categories": "revenue_category_name",
+    "spending_categories": "spending_category_name",
+    "contract_categories": "contract_category_name"
+  }
+}

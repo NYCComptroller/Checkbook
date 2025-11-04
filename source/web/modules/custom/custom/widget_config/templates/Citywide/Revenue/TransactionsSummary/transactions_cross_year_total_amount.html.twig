@@ -1,0 +1,13 @@
+
+<div class="dollar-amounts">
+  <div class="total-spending-amount">{{customAmount(node.data[0]['current_recognized'],2,'$')}}<div class='amount-title'>
+      Total Revenue Recognized {{ customGetYear(2)}}</div></div>
+  <div class="total-spending-amount">{{customAmount(node.data[0]['recognized_1'],2,'$')}}<div class='amount-title'>
+      Total Revenue Recognized {{ customGetYear(1)}}</div></div>
+  <div class="total-spending-amount">{{customAmount(node.data[0]['recognized_2'],2,'$')}}<div class='amount-title'>
+      Total Revenue Recognized {{ customGetYear(0)}}</div></div>
+  <div class="total-spending-amount">{{customAmount(node.data[0]['other_years'],2,'$')}}<div class='amount-title'>
+      Total Others</div></div>
+  <div class="total-spending-amount">{{customAmount(node.data[0]['remaining_amount'],2,'$')}}<div class='amount-title'>
+      Total Remaining<br />Budget</div></div>
+  </div>

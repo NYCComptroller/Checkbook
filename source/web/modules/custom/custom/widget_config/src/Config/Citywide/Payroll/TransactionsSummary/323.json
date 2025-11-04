@@ -1,0 +1,32 @@
+{
+    "widgetType": "data_tables",
+    "widgetSubType":"ajaxSimple",
+    "html_class": "vendor-table",
+    "no_results_content":"No Results Found",
+    "defaultParameters":{"year.year":"22", "type_of_year":"B"},
+    "cleanURLParameters":["year","yeartype","calyear","title","agency"],
+     "urlParamMap":{"year":"year.year","calyear":"year.year","yeartype":"type_of_year","title":"civil_service_title_code.civil_service_title_code","agency":"agency.agency"},
+    "dataset": "checkbook:payroll_employee_agency",
+    "noDataInitialLoad":true,
+    "columns": ["agency.agency.agency_name", "agency.agency.agency_short_name", "agency.agency","total_overtime_pay", "total_gross_pay", "total_employees", "total_salaried_employees", "total_non_salaried_employees", "year_type.year_type", "year.year","total_other_payments"],
+    "limit":5,
+    "transformationPHP":"
+        $employee_totals = \\Drupal\\checkbook_project\\PayrollUtilities\\PayrollUtil::getAgencyEmployeeCountByType(
+        \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('year'),
+        \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('yeartype'),
+        \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getRequestParamValue('title'));
+        foreach($node->data as &$row) {
+            $agency_id = $row['agency_agency'];
+            $row['total_salaried_employees'] = $employee_totals[$row['agency_agency']]['total_salaried_employees'];
+            $row['total_non_salaried_employees'] = $employee_totals[$row['agency_agency']]['total_non_salaried_employees'];
+        }
+        return $node->data;
+    ",
+    "widgetTitle":"Payroll Summary by Agency Title",
+    "summaryView":{
+        "template":"payroll_transactions_summary",
+        "templateTitle":"Agency by Payroll Transactions",
+        "templateLabel":"Agency",
+        "templateLabelEval":"return $node->data[0]['agency_agency_agency_name'];"
+    }
+}

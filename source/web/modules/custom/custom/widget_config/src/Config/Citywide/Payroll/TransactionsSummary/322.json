@@ -1,0 +1,20 @@
+{
+"widgetType": "data_tables",
+"widgetSubType":"ajaxSimple",
+"html_class": "vendor-table",
+"defaultParameters":{"year.year":"22", "type_of_year":"B"},
+"cleanURLParameters":["year","yeartype","calyear","title","agency"],
+ "urlParamMap":{"year":"year.year","calyear":"year.year","yeartype":"type_of_year","title":"civil_service_title_code.civil_service_title_code","agency":"agency.agency"},
+"dataset": "checkbook:payroll_employee_agency",
+"noDataInitialLoad":true,
+"columns": ["agency.agency.agency_short_name", "agency.agency", "total_gross_pay", "total_overtime_employees", "total_overtime_pay", "year_type.year_type", "year.year","agency.agency.agency_name"],
+"limit":5,
+"widgetTitle":"Payroll Summary by Agency Title",
+"summaryView":{
+    "template":"payroll_transactions_summary",
+    "templateTitle":"Agency by Overtime Payroll Transactions",
+    "templateLabel":"Agency",
+    "templateLabelEval":"return $node->data[0]['agency_agency_agency_name'];"
+}
+}
+

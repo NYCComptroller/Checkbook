@@ -1,0 +1,13 @@
+{
+    "datasets": {
+        "funding_source": {
+            "datasourceName": "main",
+            "source": "ref_funding_source",
+            "columns": [
+                {
+                    "name": "funding_source_id",
+                    "key": true}
+            ]
+        }
+    }
+}

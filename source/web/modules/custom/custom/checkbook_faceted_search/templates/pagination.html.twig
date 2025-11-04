@@ -1,0 +1,12 @@
+{{ attach_library('checkbook_faceted_search/narrow-search') }}
+Pagination template
+<div class="rows">
+  {% for unchecked in row %}
+  {% set value = row[0]|url_encode %}
+    <div class="row">
+    <div class="checkbox"><input class="styled" name="{{ autocomplete_id }}" type="checkbox" value="{{ value }}" onClick="return applyTableListFilters();"></div>
+    <div class="name">{{ row[1] }}</div>
+    <div class="number"><span>{{ row[2]|number_format }}</span></div>
+    </div>
+  {% endfor %}
+</div>
