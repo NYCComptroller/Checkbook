@@ -178,7 +178,9 @@
 "categories": [],
 "labels": {
 "enabled": false
-}
+},
+"lineColor": "#ccd6eb",
+"tickColor": "#ccd6eb"
 },
 "series": [
 {
@@ -195,7 +197,7 @@
      	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
-        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+        "labels":{"rotation": 0,"function":"yAxisFormatter","style":{"textOverflow":"none"}}
     } ,
     "legend": {
         "enabled": false

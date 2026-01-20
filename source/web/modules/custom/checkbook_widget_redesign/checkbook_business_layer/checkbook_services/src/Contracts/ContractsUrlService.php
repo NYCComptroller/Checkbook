@@ -525,21 +525,23 @@ class ContractsUrlService {
 
     $urlPath = RequestUtilities::getCurrentPageUrl();
     if (!str_contains($urlPath, 'pending')) {
-      if (!RequestUtilities::get('status')) {
+      if (!RequestUtilities::get('contstatus|status')) {
         $url .= "/status/A";
       }
     }
 
     $minority_id = MappingUtil::getTotalMinorityIds('url');
+    $category = ContractCategory::getCurrent();
+
     if ($is_mwbe_certified && isset($mwbe_amount)) {
       $url .= self::DASHBOARD . "mp" . self::MWBE . $minority_id . self::VENDOR . $vendor_id;
     }
-    elseif ($mwbe_amount == 0 && $subven_amount > 0 || !isset($mwbe_amount) && $subven_amount > 0) {
-      // if prime is zero and sub amount is not zero. change dashboard to ms
-      $url .= self::DASHBOARD . "ms" . self::MWBE . $minority_id . self::VENDOR . $vendor_id;
-    }
     elseif ($is_mwbe_certified) {
       $url .= self::DASHBOARD . "mp" . self::MWBE . $minority_id . self::VENDOR . $vendor_id;
+    }
+    elseif (($mwbe_amount == 0 && $subven_amount > 0 || !isset($mwbe_amount) && $subven_amount > 0) && $category !== ContractCategory::REVENUE) {
+      // if prime is zero and sub amount is not zero. change dashboard to ms
+      $url .= self::DASHBOARD . "ms" . self::MWBE . $minority_id . self::VENDOR . $vendor_id;
     }
     else {
       $url .= RequestUtilities::buildUrlFromParam('datasource') . self::VENDOR . $vendor_id;

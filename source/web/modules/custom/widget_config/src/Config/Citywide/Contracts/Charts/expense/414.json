@@ -76,7 +76,9 @@ return $node->data;
          },
 "title": {
          "text": ""
-         }
+         },
+"lineColor": "#ccd6eb",
+"tickColor": "#ccd6eb"
 },
 "series": [{
 "name": "Contract Amount",
@@ -88,7 +90,7 @@ return $node->data;
 "yAxis": {
 "startOnTick":true,
 "title": {"text": ""},
-"labels":{"rotation": 0,"function":"yAxisFormatter"}
+"labels":{"rotation": 0,"function":"yAxisFormatter","style":{"textOverflow":"none"}}
 },
 "colors":["#7DB7E5"],
 "legend": {

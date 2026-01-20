@@ -218,7 +218,7 @@ class QueueJob {
     $csv_headers = '"' . implode('","', $response_columns) . '"';
     $file = $this->getFullPathToFile($filename,$this->tmpFileOutputDir);
     //below replaces the following command:- " sed -i '1s;^;" . $csv_headers . "\\".PHP_EOL.";' " . $file;
-    APIUtil::prependToFile($file,$csv_headers . "\\".PHP_EOL.";");
+    APIUtil::prependToFile($file,$csv_headers . PHP_EOL);
     LogHelper::log_notice("DataFeeds :: QueueJob::addCSVHeader() calling APIUtil::prependToFile with headers: ".$csv_headers);
   }
 

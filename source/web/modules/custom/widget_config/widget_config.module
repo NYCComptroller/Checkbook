@@ -147,30 +147,32 @@ function widget_config_preprocess_contract_vendor_info(&$variables) {
 function widget_config_preprocess_pending_contract_details(&$variables) {
   if (empty(RequestUtilities::getBottomContUrl())) {
     $variables['url'] = RequestUtilities::getCurrentPageUrl();
-  } else {
+  }
+  else {
     $variables['url'] = RequestUtilities::getBottomContUrl();
   }
   $current_year_id = CheckbookDateUtil::getCurrentFiscalYearId();
   if ($variables['node']->data[0]['document_code_checkbook_ref_document_code']  == 'RCT1') {
     $variables['agency_link'] = '/contracts_pending_rev_landing/year/' . $current_year_id . '/yeartype/B/agency/'. $variables['node']->data[0]['agency_id_checkbook_agency'] . '?expandBottomCont=true';
     $variables['vendor_link'] = '/contracts_pending_rev_landing/year/' . $current_year_id . '/yeartype/B/vendor/'.$variables['node']->data[0]['vendor_vendor'] .'?expandBottomCont=true';
-  } else {
+  }
+  else {
     if (VendorType::_is_mwbe_vendor(RequestUtilities::get("agid")) || VendorType::_is_mwbe_vendor(RequestUtilities::get("magid")) || stripos($variables['url'],'/dashboard/mp')) {
       $variables['mwbe'] = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams().'/dashboard/mp';
     }
-    else{
+    else {
       $variables['mwbe']='';
     }
     $variables['agency_link'] = '/contracts_pending_exp_landing/year/' . $current_year_id . '/yeartype/B/agency/' . $variables['node']->data[0]['agency_id_checkbook_agency'] . $variables['mwbe'] . '?expandBottomCont=true';
-    $variables['vendor_link'] = '/contracts_pending_exp_landing/year/' . $current_year_id . '/yeartype/B/vendor/' .$variables['node']->data[0]['vendor_vendor'] . $variables['mwbe'] .'?expandBottomCont=true';
+    $variables['vendor_link'] = '/contracts_pending_exp_landing/year/' . $current_year_id . '/yeartype/B/vendor/' . $variables['node']->data[0]['vendor_vendor'] . $variables['mwbe'] .'?expandBottomCont=true';
   }
   $datasource = RequestUtilities::get('datasource');
-  if(isset($variables['node']->original_master_agreement_id)){
+  if (isset($variables['node']->original_master_agreement_id)) {
     if (!preg_match("/newwindow/", RequestUtilities::getCurrentPageUrl())) {
       $variables['master_link_html'] = '<span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href=/panel_html/contract_transactions/contract_details/magid/' . $variables['node']->original_master_agreement_id . '/doctype/' . $variables['node']->document_code. $datasource . ' class=\"bottomContainerReload\">' . $variables['node']->contract_number . '</a></span>';
     }
     else {
-      $variables['master_link_html'] = '<span class="master-contract-link">Parent Contract: '.  $variables['node']->contract_number . '</span>';
+      $variables['master_link_html'] = '<span class="master-contract-link">Parent Contract: ' .  $variables['node']->contract_number . '</span>';
     }
   }
 }

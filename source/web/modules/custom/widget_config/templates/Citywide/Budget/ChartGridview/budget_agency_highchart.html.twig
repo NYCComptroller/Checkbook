@@ -21,7 +21,7 @@
     {% if node.data %}
     {% for datarow in node.data %}
     <tr>
-      <td>{{ datarow.agency_name_agency_name }}</td>
+      <td>{{ datarow.agency_name_agency_name | raw }}</td>
       <td>{{ datarow.budget_committed }}</td>
       <td>{{ datarow.budget_remaining }}</td>
       <td></td>

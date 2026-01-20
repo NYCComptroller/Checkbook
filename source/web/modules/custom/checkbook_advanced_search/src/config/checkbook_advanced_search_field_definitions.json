@@ -66,7 +66,7 @@
     "status":{
         "field_type":"select",
         "field_name":"status",
-        "attributes":{"options":{"A":"Active", "R":"Registered", "P":"Pending"}, "default_value":""}
+        "attributes":{"options":{"R":"Registered", "P":"Pending"}, "default_value":""}
     },
     "vendor_name":{
         "field_type":"textfield",

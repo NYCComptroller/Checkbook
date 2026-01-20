@@ -1,5 +1,0 @@
-services:
-  checkbook_smart_search.Twig.SmartSearchExtension:
-    class: Drupal\checkbook_smart_search\Twig\SmartSearchExtension
-    tags:
-      - { name: twig.extension }

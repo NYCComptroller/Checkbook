@@ -65,7 +65,7 @@
     return $node->data;
 ",
 "chartConfig": {
-    "chart": {"defaultSeriesType": "column" },
+    "chart": {"type": "column" },
     "colors":["#7DB7E5"],
     "legend": {
         "enabled": false,
@@ -78,11 +78,13 @@
         "title": {"text": ""},
         "categories":{"ds":"agency_short"},
         "minPadding":0.1,
-        "maxPadding":0.1
+        "maxPadding":0.1,
+        "lineColor": "#ccd6eb",
+        "tickColor": "#ccd6eb"
     },
     "yAxis": {
         "title": {"text": ""},
-        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+        "labels":{"rotation": 0,"function":"yAxisFormatter","style":{"textOverflow":"none"}}
     },
     "tooltip": {
         "useHTML": true,

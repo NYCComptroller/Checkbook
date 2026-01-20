@@ -7,6 +7,22 @@
     $header .= \\Drupal\\checkbook_project\\WidgetUtilities\\ChartUtil::generateGridViewLink($node);
     return $header;
 ",
+"gridConfig":{
+  "template":"chart_grid_view",
+  "domain":"contracts",
+  "html_class":"chart-grid-view-table two-columns",
+  "table_columns": [
+    {
+      "labelAlias": "Title",
+      "columnType": "text"
+    },
+    {
+      "labelAlias": "Number of Contracts",
+      "columnType": "number",
+      "formatType": "number"
+    }
+  ]
+},
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year","subvendor"],
 "no_results_content":"No Results Found",
 "widgetDataLoader":"
@@ -48,8 +64,11 @@
                     $series[$index]['name'] = $scntrc_status_name;
                     $index += 1;
                     $total_contracts += $data[$scntrc_status_id];
+                    $node->widgetConfig->gridConfig->data[] = [$scntrc_status_name,$data[$scntrc_status_id]];
                 }
             }
+            $columns = array_column($series, 'y');
+            array_multisort($columns, SORT_DESC, $series);
             $node->widgetConfig->chartConfig->series[0]['data'] = $series;
         }else{
             $node->data = array();
@@ -60,7 +79,7 @@ $node->widgetConfig->chartSubTitle =  'Total Number of Contracts: '.number_forma
 "chartConfig": {
 "chart": {
 "marginRight": 40,
-"defaultSeriesType": "pie",
+"type": "pie",
 "plotBackgroundColor": null,
 "plotBorderWidth": null,
 "plotShadow": false

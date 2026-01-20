@@ -1,6 +1,0 @@
-name: 'Widget Controller'
-description: 'Module to provide controller support for widget views'
-core_version_requirement: ^10 || ^11
-package: 'REI Checkbook Widget Redesign'
-dependencies: {  }
-type: module

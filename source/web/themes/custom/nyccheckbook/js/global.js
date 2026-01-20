@@ -1,12 +1,16 @@
 (function ($, Drupal, drupalSettings) {
 
-  // Add isFunction.
+  // Add isFunction (removed in jQuery 4).
   $.fn.isFunction = function(fn) {
     return (typeof fn === 'function');
   };
   $.isFunction = function(item) {
     return (typeof item === 'function');
   };
+
+  // Add $.expr[":"] (removed in jQuery 4).
+  $.expr = jQuery.expr ?? {};
+  $.expr[":"] = jQuery.expr[":"] ?? {};
 
   // Show loader.
   Drupal.checkbook_advanced_search = Drupal.checkbook_advanced_search ?? {};

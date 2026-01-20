@@ -1,6 +1,0 @@
-{
-    "defaultConfigKey": "revenue_contracts_modifications_view",
-    "defaultParameters":{"is_modification":"true"},
-    "serviceName": "ContractsWidgetService",
-    "dataFunc":"GetContracts"
-}

@@ -231,7 +231,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     '#type' => 'select',
     '#title' => t('Status:'),
     '#options' => array(
-      'active' => 'Active',
+      //'active' => 'Active',
       'registered' => 'Registered',
       'pending' => 'Pending'
     ),
@@ -240,7 +240,7 @@ function checkbook_datafeeds_contracts_filter_data($form, $form_state, $data_sou
     '#suffix' => '</div>',
     '#id' => 'edit-df-contract-status',
     '#name' => 'df_contract_status',
-    '#default_value' => $form_state->getValue('df_contract_status', 'Active'),
+    '#default_value' => $form_state->getValue('df_contract_status', 'Registered'),
   );
   $form['filter']['vendor'] = array(
     '#type' => 'textfield',

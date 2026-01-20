@@ -2,13 +2,13 @@
 highcharts:
   header: true
   js:
-    Highcharts-Stock-10.0.0/code/highcharts.js: {}
-    Highcharts-Stock-10.0.0/code/modules/accessibility.js: {}
+    /modules/custom/widget_framework/widget_highcharts/Highcharts/code/highcharts.js?v=1.0.0: { type: external }
+    /modules/custom/widget_framework/widget_highcharts/Highcharts/code/modules/accessibility.js?v=1.0.0: { type: external }
 # highstock.js
 highstocks:
   header: true
   js:
-    Highcharts-Stock-10.0.0/code/highstock.js: {}
+    /modules/custom/widget_framework/widget_highcharts/Highcharts-Stock/code/highstock.js?v=1.0.0: { type: external }
     js/featured-trends.js: {}
 
 highcharts-globals-stocks:

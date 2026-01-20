@@ -61,6 +61,7 @@ class SmartSearchExtension extends AbstractExtension {
   }
 
   public function smartSearchResults($search_results, $solr_datasource) {
+    $output = '';
     $noOfResults = '';
     $output = '';
     $searchTerms = explode('*!*', \Drupal::request()->query->get('search_term'));
@@ -72,11 +73,11 @@ class SmartSearchExtension extends AbstractExtension {
     $searchTerm = urldecode($searchTerms[0]);
 
     if ($searchTerm != "") {
-      print "<div class='search-filters clearfix'><span id='filter-header'> Filters: </span><ul>";
-      print "<li><span class='search-terms'>Search Term: <strong>" . htmlentities($searchTerm) . "</strong></span><a class='clear-filter' href='" . $clearUrl . "'>
+      $output .= "<div class='search-filters clearfix'><span id='filter-header'> Filters: </span><ul>";
+      $output .= "<li><span class='search-terms'>Search Term: <strong>" . htmlentities($searchTerm) . "</strong></span><a class='clear-filter' href='" . $clearUrl . "'>
             <img src='" . $clear_icon . "'></a></li>";
-      print "<li class='clear-all'><a class='clear-all' href='/smart_search/{$solr_datasource}'><strong>Clear All</strong></a></li>";
-      print "</ul></div>";
+      $output .= "<li class='clear-all'><a class='clear-all' href='/smart_search/{$solr_datasource}'><strong>Clear All</strong></a></li>";
+      $output .= "</ul></div>";
     }
 
     //Begin of search results
@@ -86,61 +87,15 @@ class SmartSearchExtension extends AbstractExtension {
     $endIndex = (($startIndex + 9) < $noOfTotalResults) ? ($startIndex + 9) : $noOfTotalResults;
     $domain_counts = $search_results['facet_counts']['facet_fields']['domain'];
 
-    if($noOfTotalResults > 0) {
-    foreach ($domain_counts as $key => $value) {
-      $noOfResults .= $noOfResults == '' ? $key . '|' . $value : '~' . $key . '|' . $value;
-    }
-    print "<span class='export exportSmartSearch' value=" . $noOfResults . ">export</span>";
-    print "<div class=\"smart-search-left\">";
-    //Begin of Pagination at the top
-    $pager_manager = \Drupal::service('pager.manager');
-    if ($noOfTotalResults > 1000000){
-      $pager_manager->createPager(1000000, $noOfResultsPerPage);
-    }
-    else {
-      $pager_manager->createPager($noOfTotalResults, $noOfResultsPerPage);
-    }
-    $pager = [
-      '#type' => 'pager',
-      '#quantity' => 5
-    ];
-    print \Drupal::service('renderer')->render($pager);
-    //End of Pagination at the top
+    if ($noOfTotalResults > 0) {
+      foreach ($domain_counts as $key => $value) {
+        $noOfResults .= $noOfResults == '' ? $key . '|' . $value : '~' . $key . '|' . $value;
+      }
 
-    print "<div class='loading' style='display:none;'></div>";
-    print "<ol class='search-results add-list-reset'>";
-    foreach ($search_results['response']['docs'] as $key => $value) {
-      $output .= "<li>";
-      $domain_display = $value['domain'];
-      if ($domain_display == "budget") {
-        $domain_display = "Expense Budget";
-      }
-      $output .= "<h3 class='title'>Transaction #" . $transaction_no . ": " . $domain_display . "</h3>";
-      $transaction_no++;
-      switch (strtolower($value['domain'])) {
-        case 'budget':
-          $template = ($solr_datasource == Datasource::SOLR_NYCHA) ? "nycha_budget" : "budget";
-          break;
-        case 'contracts':
-          $template = ($solr_datasource == Datasource::SOLR_NYCHA) ? "nycha_contracts" : "contracts";
-          break;
-        case 'payroll':
-          $template = 'payroll';
-          break;
-        case 'revenue':
-          $template = ($solr_datasource == Datasource::SOLR_NYCHA) ? "nycha_revenue" : "revenue";
-          break;
-        case 'spending':
-          $template = ($solr_datasource == Datasource::SOLR_NYCHA) ? "nycha_spending" : "spending";
-          break;
-      }
-      $results = checkbook_smart_search_display_domain_results($value, $solr_datasource, $template);
-      $output .= $results;
-      $output .= "</li>";
-    }
-    $output .= "</ol>";
-    $output .= "<div id=\"smart-search-transactions\">Showing: " . number_format($startIndex) . " to ". number_format($endIndex) ." of ". number_format($noOfTotalResults) ." entries</div>";
-    echo $output;
+      $output .= "<span class='export exportSmartSearch' value=" . $noOfResults . ">export</span>";
+      $output .= "<div class=\"smart-search-left\">";
+
+      //Begin of Pagination at the top
       $pager_manager = \Drupal::service('pager.manager');
       if ($noOfTotalResults > 1000000){
         $pager_manager->createPager(1000000, $noOfResultsPerPage);
@@ -152,12 +107,64 @@ class SmartSearchExtension extends AbstractExtension {
         '#type' => 'pager',
         '#quantity' => 5
       ];
-    print \Drupal::service('renderer')->render($pager);
-    print "</div>";
-  }
-    else {
-      print "<strong>There are no search results found with this search criteria.</strong>";
+
+      $output .= \Drupal::service('renderer')->render($pager);
+      //End of Pagination at the top
+
+      $output .= "<div class='loading' style='display:none;'></div>";
+      $output .= "<ol class='search-results add-list-reset'>";
+      foreach ($search_results['response']['docs'] as $key => $value) {
+        $output .= "<li>";
+        $domain_display = $value['domain'];
+        if ($domain_display == "budget") {
+          $domain_display = "Expense Budget";
+        }
+        $output .= "<h3 class='title'>Transaction #" . $transaction_no . ": " . $domain_display . "</h3>";
+        $transaction_no++;
+        switch (strtolower($value['domain'])) {
+          case 'budget':
+            $template = ($solr_datasource == Datasource::SOLR_NYCHA) ? "nycha_budget" : "budget";
+            break;
+          case 'contracts':
+            $template = ($solr_datasource == Datasource::SOLR_NYCHA) ? "nycha_contracts" : "contracts";
+            break;
+          case 'payroll':
+            $template = 'payroll';
+            break;
+          case 'revenue':
+            $template = ($solr_datasource == Datasource::SOLR_NYCHA) ? "nycha_revenue" : "revenue";
+            break;
+          case 'spending':
+            $template = ($solr_datasource == Datasource::SOLR_NYCHA) ? "nycha_spending" : "spending";
+            break;
+        }
+        $results = checkbook_smart_search_display_domain_results($value, $solr_datasource, $template);
+        $output .= $results;
+        $output .= "</li>";
+      }
+
+      $output .= "</ol>";
+      $output .= "<div id=\"smart-search-transactions\">Showing: " . number_format($startIndex) . " to ". number_format($endIndex) ." of ". number_format($noOfTotalResults) ." entries</div>";
+
+      $pager_manager = \Drupal::service('pager.manager');
+      if ($noOfTotalResults > 1000000){
+        $pager_manager->createPager(1000000, $noOfResultsPerPage);
+      }
+      else {
+        $pager_manager->createPager($noOfTotalResults, $noOfResultsPerPage);
+      }
+      $pager = [
+        '#type' => 'pager',
+        '#quantity' => 5
+      ];
+      $output .= \Drupal::service('renderer')->render($pager);
+      $output .= "</div>";
     }
+    else {
+      $output .= "<strong>There are no search results found with this search criteria.</strong>";
+    }
+
+    return $output;
   }
 
   public function getDomainResults($results, $solr_datasource, $domain) {
@@ -238,16 +245,16 @@ class SmartSearchExtension extends AbstractExtension {
    *
    */
   //Call the function to generate twig based on the input parameters
-  public function FacetData($facet_counts,$solr_datasource,$selected_facet_results,$registered_contracts,$active_contracts) {
+  public function FacetData($facet_counts,$solr_datasource,$selected_facet_results,$registered_contracts) {
     if(is_countable($facet_counts) && !empty(array_filter($facet_counts))) {
-      $facetMarkup = checkbook_smart_search_facet_results($facet_counts, $solr_datasource, $selected_facet_results, $registered_contracts, $active_contracts);
+      $facetMarkup = checkbook_smart_search_facet_results($facet_counts, $solr_datasource, $selected_facet_results, $registered_contracts);
       return '<div class="smart-search-right">'. $facetMarkup . '</div>';
     }else{
       return '';
     }
   }
 
-  public function displayFacetData($facets_render,$solr_datasource,$selected_facet_results,$registered_contracts,$active_contracts) {
+  public function displayFacetData($facets_render,$solr_datasource,$selected_facet_results,$registered_contracts) {
 
     if(!isset($selected_facet_results)){
       $selected_facet_results=[];
@@ -289,19 +296,13 @@ class SmartSearchExtension extends AbstractExtension {
         if( strtolower($facet_name) == 'registered_fiscal_year'){
           continue;
         }
-
-        // Hide contract prime vendor..
-        if( strtolower($facet_name) == 'contract_prime_vendor_name'){
-          continue;
-        }
-
       }
 
       $output .= '<div class="filter-content-' . $facet_name . ' filter-content">'.
                  '<div class="filter-title"><span class="'.$span.'">By ' . htmlentities($facet->title) . '</span></div>'.
                  '<div class="facet-content" style="display:'.$display_facet.'" ><div class="progress"></div>';
 
-      if (isset($facet->autocomplete) && isset($facet->results) && sizeof($facet->results)>9) {
+      if (isset($facet->autocomplete) && isset($facet->results) && sizeof($facet->results)>5) {
         $autocomplete_id = "autocomplete_" . $facet_name;
         $disabled = '';
 
@@ -389,13 +390,13 @@ class SmartSearchExtension extends AbstractExtension {
             //Set Active and Registered Contracts Counts
             if($sub_facet_name == 'contract_status'){
               unset($sub_facet->results['registered']);
-              unset($sub_facet->results['active']);
+              //unset($sub_facet->results['active']);
               if($registered_contracts > 0 ) {
                 $sub_facet->results['registered'] = $registered_contracts;
               }
-              if($active_contracts > 0) {
+              /*if($active_contracts > 0) {
                 $sub_facet->results['active'] = $active_contracts;
-              }
+              }*/
             }
 
             foreach($sub_facet->results as $sub_facet_value => $sub_count){
@@ -450,6 +451,7 @@ class SmartSearchExtension extends AbstractExtension {
   }
 
   public function displayAjaxResults($solr_datasource, $search_results) {
+    $output = '';
     $searchTerms = explode('*!*', \Drupal::request()->query->get('search_term'));
     //Begin of search results
     $noOfTotalResults = $search_results['response']['numFound'];
@@ -470,11 +472,11 @@ class SmartSearchExtension extends AbstractExtension {
         '#type' => 'pager',
         '#quantity' => 5
       ];
-      print \Drupal::service('renderer')->render($pager);
+      $output .= \Drupal::service('renderer')->render($pager);
       //End of Pagination at the top
 
-      print "<div class=\"loading\" style=\"display:none\"></div>";
-      print "<ol class=\"search-results\">";
+      $output .= '<div class="loading" style="display:none"></div>';
+      $output .= '<ol class="search-results">';
 
       foreach($search_results['response']['docs'] as $key=>$value){
         $output .= "<li>";
@@ -512,7 +514,7 @@ class SmartSearchExtension extends AbstractExtension {
       }
       $output .= "</ol>";
       $output .= "<div id=\"smart-search-transactions\">Showing: " . number_format($startIndex) . " to ". number_format($endIndex) ." of ". number_format($noOfTotalResults) ." entries</div>";
-      echo $output;
+
       $pager_manager = \Drupal::service('pager.manager');
       if ($noOfTotalResults > 1000000){
         $pager_manager->createPager(1000000, $noOfResultsPerPage);
@@ -524,11 +526,13 @@ class SmartSearchExtension extends AbstractExtension {
         '#type' => 'pager',
         '#quantity' => 5
       ];
-      print \Drupal::service('renderer')->render($pager);
+      $output .= \Drupal::service('renderer')->render($pager);
     }
     else {
-      print "<strong>There are no search results found with this search criteria.</strong>";
+      $output .= "<strong>There are no search results found with this search criteria.</strong>";
     }
+
+    return $output;
   }
 
 } // close class

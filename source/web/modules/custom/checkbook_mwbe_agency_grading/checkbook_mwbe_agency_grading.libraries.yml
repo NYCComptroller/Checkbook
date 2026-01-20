@@ -3,12 +3,14 @@ table-view:
   css:
     theme:
       css/mwbe.css: { }
+
 checkbook_mwbe_agency_grading_jquery:
+  version: 1.0.1
   header: true
   js:
     /modules/custom/jquery_plugins/data_tables/1.13.4/js/jquery.dataTables1.13.4.min.js: {}
     /modules/custom/jquery_plugins/data_tables/1.13.4/extensions/full_numbers_no_ellipses/full_numbers_no_ellipses.js: {}
-    /modules/custom/widget_framework/widget_highcharts/Highcharts-Stock-10.0.0/code/highcharts.js: {}
+    /modules/custom/widget_framework/widget_highcharts/Highcharts/code/highcharts.js?v=1.0.0: { type: external }
     /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.jquery.js: {}
     /modules/custom/jquery_plugins/js/jquery.sticky.js: {}
     /modules/custom/widget_framework/widget_data_tables/js/transactions.js: {}

@@ -78,7 +78,7 @@ return $node->data;
 ",
 "chartConfig":{
 "chart":{
-"defaultSeriesType":"column"
+"type":"column"
 },
 "plotOptions":{
 "series": {
@@ -95,14 +95,19 @@ return $node->data;
 }
 },
 "xAxis":{
-"categories":[]
+"categories":[],
+"lineColor": "#ccd6eb",
+"tickColor": "#ccd6eb"
 },
 "yAxis":{
 "title":{
 "text":""
 },
 "labels":{
-"function":"yAxisFormat"
+"function":"yAxisFormat",
+"style": {
+"textOverflow": "none"
+}
 }
 },
 "legend":{
@@ -120,7 +125,7 @@ return $node->data;
 }
 }
 <function>
-formatTooltip^^"formatter":function(){return 'Year: ' + this.x + '<br>Amount: ' + abbrNum(this.y, 2, '$');}##
+formatTooltip^^"formatter":function(){return 'Year: ' + this.category + '<br>Amount: ' + abbrNum(this.y, 2, '$');}##
 yAxisFormat^^"formatter":function(){return yAxisLabelFormatter(this);}##
 clickEvent^^"click": function(){location.href = this.url;}
 </function>

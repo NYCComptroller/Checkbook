@@ -27,29 +27,29 @@ class ContractsUtil {
     }
 
     //For Active/Registered Expense Contracts -- CityWide
-    if (($type_of_data != "contracts_oge") && ($category == "expense" || $category == "all") && ($contract_status == "active" || $contract_status == "registered")) {
+    if (($type_of_data != "contracts_oge") && ($category == "expense" || $category == "all") && ($contract_status == "registered")) {
       self::checkbook_api_adjust_expense_contracts_params($parameters, $criteria, $contract_status, $category);
     }
     else {
       //For Active/Registered Expense Contracts -- OGE
       switch ($contract_status) {
         case "registered":
-        case "active":
+        //case "active":
           $data_controller_instance = data_controller_get_operator_factory_instance();
 
           // Either Fiscal or Calendar year is provided:
           $fy = self::checkbook_api_change_datasource($datasource, $parameters['fiscal_year@checkbook:all_contracts_coa_aggregates']);
           if (isset($fy)) {
 
-            if ($contract_status == 'registered') {
+            //if ($contract_status == 'registered') {
               if (strtolower($type_of_data) == 'contracts_oge') {
                 $parameters[self::checkbook_api_change_datasource($datasource, 'status_flag')] = 'R';
               }
               else {
                 $parameters[self::checkbook_api_change_datasource($datasource, 'status_flag@checkbook:all_contracts_coa_aggregates')] = 'R';
               }
-            }
-            else {
+            //}
+            /*else {
               if ($contract_status == 'active') {
                 if (strtolower($type_of_data) == 'contracts_oge') {
                   $parameters[self::checkbook_api_change_datasource($datasource, 'status_flag')] = 'A';
@@ -58,7 +58,7 @@ class ContractsUtil {
                   $parameters[self::checkbook_api_change_datasource($datasource, 'status_flag@checkbook:all_contracts_coa_aggregates')] = 'A';
                 }
               }
-            }
+            }*/
 
             if (strtolower($type_of_data) == 'contracts_oge') {
               // Adjust year and year type for OGE
@@ -80,26 +80,26 @@ class ContractsUtil {
             }
 
             if (isset($req_year)) {
-              $ge_condition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
-              $le_condition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
-              if (strtolower($type_of_data) == 'contracts_oge') {
+             // $ge_condition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
+              //$le_condition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
+              /*if (strtolower($type_of_data) == 'contracts_oge') {
                 $parameters['starting_year_id'] = $le_condition;
                 $parameters['ending_year_id'] = $ge_condition;
               }
               else {
                 $parameters['starting_year'] = $le_condition;
                 $parameters['ending_year'] = $ge_condition;
-              }
-              if ($contract_status == 'registered') {
+              }*/
+              //if ($contract_status == 'registered') {
                 if (strtolower($type_of_data) == 'contracts_oge') {
                   $parameters['registered_year_id'] = $req_year;
                 }
                 else {
                   $parameters['registered_year'] = $req_year;
                 }
-              }
-              else {
-                if ($contract_status == 'active') {
+              //}
+              /*else {
+                /*if ($contract_status == 'active') {
                   if (strtolower($type_of_data) == 'contracts_oge') {
                     $parameters['effective_begin_year_id'] = $le_condition;
                     $parameters['effective_end_year_id'] = $ge_condition;
@@ -108,8 +108,8 @@ class ContractsUtil {
                     $parameters['effective_begin_year'] = $le_condition;
                     $parameters['effective_end_year'] = $ge_condition;
                   }
-                }
-              }
+                }*/
+              //}
             }
           }
           else {
@@ -212,11 +212,11 @@ class ContractsUtil {
       $parameters['ending_year_id'] = $geCondition;
 
       switch ($contract_status) {
-        case "active":
+        /*case "active":
           $parameters['status_flag@checkbook:contracts_coa_aggregates_datafeeds'] = 'A';
           $parameters['effective_begin_year_id'] = $leCondition;
           $parameters['effective_end_year_id'] = $geCondition;
-          break;
+          break;*/
         case "registered":
           $parameters['status_flag@checkbook:contracts_coa_aggregates_datafeeds'] = 'R';
           $parameters['registered_year_id'] = [$req_year];

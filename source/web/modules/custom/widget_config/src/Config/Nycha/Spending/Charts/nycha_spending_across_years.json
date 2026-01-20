@@ -103,7 +103,7 @@ return $adjustedParameters;
   return $node->data;
 ",
 "chartConfig": {
-"chart": {"defaultSeriesType": "column"},
+"chart": {"type": "column"},
 "colors":["#7DB7E5"],
 "legend": {
 "enabled": false,
@@ -116,11 +116,13 @@ return $adjustedParameters;
 "labels":{"enabled":false},
 "title": {"text": ""},
 "minPadding":0.1,
-"maxPadding":0.1
+"maxPadding":0.1,
+"lineColor": "#ccd6eb",
+"tickColor": "#ccd6eb"
 },
 "yAxis": {
 "title": {"text": ""},
-"labels":{"rotation": 0,"function":"yAxisFormatter"}
+"labels":{"rotation": 0,"function":"yAxisFormatter","style":{"textOverflow":"none"}}
 },
 "tooltip": {
 "function": "tooltipformatter"

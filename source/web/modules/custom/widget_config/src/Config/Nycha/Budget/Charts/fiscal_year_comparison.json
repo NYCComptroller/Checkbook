@@ -96,21 +96,26 @@ return $node->data;
 ",
 "chartConfig":{
 "chart":{
-"defaultSeriesType":"column"
+"type":"column"
 },
 "legend":{
 "align":"left",
 "verticalAlign":"bottom"
 },
 "xAxis":{
-"categories":[]
+"categories":[],
+"lineColor": "#ccd6eb",
+"tickColor": "#ccd6eb"
 },
 "yAxis":{
 "title":{
 "text":""
 },
 "labels":{
-"function":"yAxisFormatter"
+"function":"yAxisFormatter",
+"style": {
+"textOverflow": "none"
+}
 }
 },
 "tooltip":{

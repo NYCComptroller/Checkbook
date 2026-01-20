@@ -272,9 +272,16 @@ class FormattingUtilities
    * @param mixed $string
    * @return mixed
    */
-  public static function checkbook_replaceSlash($string)
-  {
+  public static function checkbook_replaceSlash($string) {
     return str_replace('/', '__', $string);
+  }
+
+  /**
+   * @param mixed $string
+   * @return mixed
+   */
+  public static function checkbook_restoreSlash($string) {
+    return str_replace('__', '/', $string);
   }
 
   /**

@@ -66,7 +66,7 @@ function getRegisteredContractsQuery($query, $selectedFacets){
  * @param array $selectedFacets
  * @return array
  */
-function getActiveContractsQuery($query, $selectedFacets){
+/*function getActiveContractsQuery($query, $selectedFacets){
   if(isset($selectedFacets['domain']) && in_array('contracts', $selectedFacets['domain'])){
     //Active contracts count
     $query = str_replace('&fq=contract_status:"pending"','',$query);
@@ -76,7 +76,7 @@ function getActiveContractsQuery($query, $selectedFacets){
   }else{
     return;
   }
-}
+}*/
 
 /**
  * @param array $search_results
@@ -210,8 +210,8 @@ function adjustExportResults($result,$domain){
   $lines = str_replace("\,", " ", $lines);
   $lines = preg_replace("/1970-01-01T05:00:00Z/", "N/A", $lines);
   $lines = preg_replace("/(\d{4})-(\d{2})-(\d{2})...:..:.../", "$2/$3/$1", $lines);
-  $lines= str_replace("Registered,Expense", "Active,Expense", $lines);
-  $lines = str_replace("Registered,Revenue", "Active,Revenue", $lines);
+  //$lines= str_replace("Registered,Expense", "Active,Expense", $lines);
+  //$lines = str_replace("Registered,Revenue", "Active,Revenue", $lines);
   $return = '';
   foreach ($lines as $line) {
     $row = array();

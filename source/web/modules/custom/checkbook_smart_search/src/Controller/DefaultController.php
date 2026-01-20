@@ -46,6 +46,14 @@ class DefaultController extends ControllerBase {
   public function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide') {
 
     $search_term = \Drupal::request()->query->get('search_term');
+    if ($search_term) {
+      $search_terms = explode('*!*', $search_term);
+      if (!empty($search_terms[0])) {
+        $search_terms[0] = $search_terms[0] ? $search_terms[0] . '*' : $search_terms[0];
+        $search_term = implode('*!*', $search_terms);
+      }
+    }
+
     $page = \Drupal::request()->query->get('page');
     $solr_query = new CheckbookSolrQuery($solr_datasource, $search_term, 10, $page ?: 0);
 
@@ -81,27 +89,15 @@ class DefaultController extends ControllerBase {
     }
 
     //Active Contracts Count
-    $activeContractsQuery = getActiveContractsQuery($query, $selected_facets);
+    /*$activeContractsQuery = getActiveContractsQuery($query, $selected_facets);
     $activeContractsCount = 0;
     if ($activeContractsQuery) {
       $activeContracts = $solr->request_phps('select/?' . $activeContractsQuery);
       $activeContractsCount = $activeContracts['response']['numFound'];
-    }
+    }*/
 
     //Search Results
     $search_results = $solr->request_phps('select/?' . $query);
-
-    //Adjust the vendor count when subvendor is present for contracts domain
-    if (isset($selected_facets['vendor_name']) && $solr_datasource == Datasource::SOLR_CITYWIDE){
-      foreach ($search_results['facet_counts']['facet_fields']['contract_prime_vendor_name'] as $key => $value) {
-        if (!array_key_exists($key, $search_results['facet_counts']['facet_fields']['vendor_name'])) {
-          //$search_results['facet_counts']['facet_fields']['vendor_name'][$key] += $value;
-          $search_results['facet_counts']['facet_fields']['vendor_name'][$key] = 0;
-        }
-        $search_results['facet_counts']['facet_fields']['vendor_name'][$key] += $value;
-      }
-      unset($search_results['facet_counts']['facet_fields']['contract_prime_vendor_name']);
-    }
 
     _inject_smart_search_drupal_settings($search_results);
 
@@ -197,7 +193,7 @@ class DefaultController extends ControllerBase {
       '#solr_datasource' => $solr_datasource,
       '#selected_facet_results' => $selected_facets,
       '#registered_contracts' => $registeredContractsCount,
-      '#active_contracts' => $activeContractsCount,
+      //'#active_contracts' => $activeContractsCount,
     ];
 
   }
@@ -245,13 +241,6 @@ class DefaultController extends ControllerBase {
       }
     }
 
-    if (!sizeof($matches_render)) {
-      $matches_render = [
-        "url" => "",
-        "label" => '<span>' . "No matches found" . '</span>',
-        'value' => 'No matches found',
-      ];
-    }
     return new JsonResponse($matches_render);
   }
 

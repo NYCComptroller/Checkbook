@@ -93,11 +93,13 @@ $node->widgetConfig->chartConfig->xAxis->categories = $categories;
         "colors":["#D78E35","#7DB7E5","#122E46"],
         "legend": {"align": "left",  "verticalAlign": "bottom", "layout": "horizontal",
         "padding":1, "itemMarginTop": 3, "itemMarginBottom": 3},
-        "xAxis":{"labels":{"enabled":false}},
+        "xAxis":{"labels":{"enabled":false},"lineColor":"#ccd6eb","tickColor":"#ccd6eb"},
         "yAxis": {
         "allowDecimals":false,
         "min":0,
-        "title": {"text": ""}} ,
+        "title": {"text": ""},
+        "labels":{"style":{"textOverflow":"none"}}
+        } ,
         "tooltip": {
         "shared":true,
         "function":"splittooltip"
@@ -122,7 +124,7 @@ $node->widgetConfig->chartConfig->xAxis->categories = $categories;
 splittooltip^^'formatter' :
 function() {
 var s = [];
-s.push('Year: CY ' + this.x + '<br/>');
+s.push('Year: CY ' + this.category + '<br/>');
 this.points.forEach(function(point) {
 s.push('No.of ' + point.series.name + ' Employees: ' +Highcharts.numberFormat(point.y, 0, '.', ',') +'<br/>' );
 });

@@ -1,5 +1,0 @@
-services:
-  checkbook_faceted_search.Twig.CheckBookFacetExtension:
-    class: Drupal\checkbook_faceted_search\Twig\CheckBookFacetExtension
-    tags:
-      - { name: twig.extension }

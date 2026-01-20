@@ -60,7 +60,7 @@
 ",
 "chartConfig": {
     "chart": {
-        "defaultSeriesType": "column"},
+        "type": "column"},
         "colors":["#7DB7E5"],
     "legend": {
         "enabled": false,
@@ -71,11 +71,13 @@
     },
     "xAxis": {
         "title": {"text": ""},
-        "categories":{"ds":"agency_short"}
+        "categories":{"ds":"agency_short"},
+        "lineColor": "#ccd6eb",
+        "tickColor": "#ccd6eb"
     },
     "yAxis": {
         "title": {"text": ""},
-        "labels":{"function":"yAxisFormatter"}
+        "labels":{"function":"yAxisFormatter","style":{"textOverflow":"none"}}
     },
     "tooltip": {
         "function": "agencyTooltip"

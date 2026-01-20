@@ -1,7 +1,0 @@
-{
-"widgetType": "phpparser",
-"useList":true,
-"template":"contract_vendor_info",
-"no_results_content":"No Results Found",
-"noDataInitialLoad":true
-}

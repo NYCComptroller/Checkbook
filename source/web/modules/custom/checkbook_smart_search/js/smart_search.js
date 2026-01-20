@@ -42,7 +42,7 @@
               var li;
 
               if ( item.category && item.category !== currentCategory ) {
-                ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+                ul.append( '<li class="ui-autocomplete-category">' + item.category + '</li>' );
                 currentCategory = item.category;
               }
 
@@ -54,17 +54,11 @@
             });
           },
           _renderItem: function(ul, item) {
-            if(item.value === '<span>No matches found</span>') return ul;
-            if(item.value === 'No matches found') {
-              return $( "<li class='ui-autocomplete-category'>" )
-                .append(item.label)
-                .appendTo( ul );
-            }
-            // Build URL
+            // Build URL.
             item.url = item.url + encodeURIComponent(item.value);
 
-            return $( "<li>" )
-              .attr( "data-value", item.value )
+            return $( '<li>' )
+              .attr( 'data-value', item.value )
               .append('<a href="' + item.url + '">' + htmlEntities(item.label) + '</a>')
               .appendTo( ul );
           }
@@ -73,7 +67,8 @@
         // Attach autocomplete to smart search input
         $('#edit-search-box').smart_search_autocomplete({
           source: '/smart_search/autocomplete/' + $('#checkbook-smart-search-form input[name=domain]').val(),
-          minLength: 0,
+          delay: 500,
+          minLength: 3,
           classes: {
             "ui-autocomplete": "smart-search-autocomplete"
           },
@@ -343,6 +338,8 @@ function getCheckboxAttributes(domain, array_domains) {
 
           $(this).autocomplete({
             source: "/solr_autocomplete/" + solr_datasource + "/" + facet_name + search_term,
+            delay: 500,
+            minLength: 3,
             focus: function (event, ui) {
               if (ui.item.label.toString().toLowerCase() === 'no matches found') {
                 return false;
@@ -539,14 +536,14 @@ function applySearchFilters() {
 
   let fq_string = '';
   let contract_status_reg_flag = false;
-  let contract_status_active_flag = false;
+  //let contract_status_active_flag = false;
   for (let k in fq) {
     if (k === 'contract_status' && fq[k].toString().toLowerCase() === 'registered') {
       contract_status_reg_flag = true;
     }
-    if (k === 'contract_status' && fq[k].toString().toLowerCase() === 'active') {
+    /*if (k === 'contract_status' && fq[k].toString().toLowerCase() === 'active') {
       contract_status_active_flag = true;
-    }
+    }*/
   }
   for (let k in fq) {
     //Year parameter changes for Contract Status selection
@@ -554,10 +551,10 @@ function applySearchFilters() {
       fq['registered_fiscal_year'] = fq[k];
       k = 'registered_fiscal_year';
     }
-    else if (k === 'registered_fiscal_year' && contract_status_active_flag) {
+    /*else if (k === 'registered_fiscal_year' && contract_status_active_flag) {
       fq['facet_year_array'] = fq[k];
       k = 'facet_year_array';
-    }
+    }*/
     fq_string += '*!*' + k + '=' + encodeURIComponent(fq[k].join('~'));
   }
 

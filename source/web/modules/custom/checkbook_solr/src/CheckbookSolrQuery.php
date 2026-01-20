@@ -405,7 +405,7 @@ class CheckbookSolrQuery extends CheckbookSolrQueryBase
       }
       //Adjust vendor count for contracts when subvendor is present for a prime vendor
       elseif ($param == 'vendor_name' && $this->datasourcename == Datasource::SOLR_CITYWIDE){
-        $fq[] = $minus . $param . ':"' . self::escape($value) . '"OR%20contract_prime_vendor_name:"'.self::escape($value) . '"';
+        $fq[] = $minus . $param . ':"' . self::escape($value) . '"';
       }else if($param == 'event_id'){
         $fq[] = $minus . $param . ':*"' . self::escape($value) . '"*';
       } else {

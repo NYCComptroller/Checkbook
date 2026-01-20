@@ -46,6 +46,7 @@ ul {
 
 fieldset {
   position: relative;
+  padding-bottom: 10px !important;
 }
 
 fieldset[id^="edit-datafeeds-"] > legend {

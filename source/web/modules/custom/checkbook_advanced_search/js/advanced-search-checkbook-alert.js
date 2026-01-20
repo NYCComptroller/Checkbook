@@ -278,7 +278,9 @@
                 height: 80,
                 autoResize: true,
                 resizable: false,
-                dialogClass: 'noTitleDialog dialog-schedule-confirm',
+                open: function () {
+                  $(this).closest('.ui-dialog').addClass('noTitleDialog');
+                },
                 close: function () {
                   var dialog = $("#dialog_schedule_confirm");
                   $(dialog).replaceWith('<div id="dialog_schedule_confirm" style="display:none"></div>');

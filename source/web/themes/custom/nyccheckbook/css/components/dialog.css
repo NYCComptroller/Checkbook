@@ -248,6 +248,11 @@ form[action*="alert"] .form-submit {
   z-index: 1000;
 }
 
+body .ui-dialog .ui-dialog-title {
+  font-size: inherit;
+  font-family: inherit;
+}
+
 body .ui-dialog .ui-dialog-titlebar-close {
   background-color: transparent;
   border: none;

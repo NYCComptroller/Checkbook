@@ -43,6 +43,6 @@ class DefaultController extends ControllerBase {
       $node->widgetConfig->displayType = 'gridview';
     }
     widget_node_view($node);
-      return $node->content['body'];
+    return $node->content['body'];
   }
 }

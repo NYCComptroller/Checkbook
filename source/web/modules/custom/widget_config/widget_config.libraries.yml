@@ -1,34 +1,62 @@
 # year list
 year-list:
-  header: true
+  version: 1.x
   css:
     theme:
-      /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.css: { }
+      /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.css: { weight: -10 }
   js:
-    /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.jquery.js: { }
-    /modules/custom/checkbook_project/js/year_select_redirection.js: { }
+    /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.jquery.js: { weight: -5 }
+    /modules/custom/checkbook_project/js/year_select_redirection.js: {}
   dependencies:
-    - core/drupal
     - core/jquery
-toggel-pay:
-  header: true
+    - core/drupal
+    - core/drupalSettings
+
+payroll-employee:
+  version: 1.x
   js:
-    /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.jquery.js: {}
+    js/payroll-employee.js: {}
   dependencies:
-    - core/drupal
     - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+    - nyccheckbook/global-styling
+
+payroll-month-summary:
+  version: 1.x
+  js:
+    js/payroll-month-summary.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+
+payroll-agency-summary:
+  version: 1.x
+  js:
+    js/payroll-agency-summary.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once
+    - nyccheckbook/global-styling
+
 checkbook_project.contracts:
-  header: true
+  version: 1.x
   js:
     /modules/custom/checkbook_project/js/contracts.js: {}
   dependencies:
     - core/jquery
+    - core/drupal
+
 datatables_ajaxSimple:
-  header: true
+  version: 1.x
   js:
-    /modules/custom/jquery_plugins/data_tables/1.13.4/js/jquery.dataTables1.13.4.min.js: {}
+    /modules/custom/jquery_plugins/data_tables/1.13.4/js/jquery.dataTables1.13.4.min.js: { weight: -5 }
     /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.jquery.js: {}
-    /modules/custom/jquery_plugins/js/jquery.sticky.js: { }
+    /modules/custom/jquery_plugins/js/jquery.sticky.js: {}
     /modules/custom/jquery_plugins/js/jquery.jscrollpane.min.js: {}
     /modules/custom/widget_framework/widget_data_tables/js/transactions.js: {}
     /modules/custom/checkbook_export/js/checkbookexport.js: {}
@@ -37,16 +65,17 @@ datatables_ajaxSimple:
     /modules/custom/jquery_plugins/data_tables/1.13.4/extensions/fixedcolumns/4.2.2/dataTables.fixedColumns.min.js: {}
     /modules/custom/jquery_plugins/data_tables/1.13.4/extensions/full_numbers_no_ellipses/full_numbers_no_ellipses.js: {}
   dependencies:
-    - core/drupal
     - core/jquery
+    - core/drupal
     - core/once
     - jquery_ui/widget
     - jquery_ui_dialog/dialog
     - jquery_ui/position
+
 datatables_dataTableList:
-  header: true
+  version: 1.x
   js:
-    /modules/custom/jquery_plugins/data_tables/1.13.4/js/jquery.dataTables1.13.4.min.js: {}
+    /modules/custom/jquery_plugins/data_tables/1.13.4/js/jquery.dataTables1.13.4.min.js: { weight: -5 }
     /modules/custom/jquery_plugins/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.concat.min.js: {}
     /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.jquery.js: {}
     /modules/custom/jquery_plugins/js/jquery.sticky.js: {}
@@ -59,8 +88,8 @@ datatables_dataTableList:
     /modules/custom/jquery_plugins/data_tables/1.13.4/extensions/fixedcolumns/4.2.2/dataTables.fixedColumns.min.js: {}
     /modules/custom/jquery_plugins/data_tables/1.13.4/extensions/full_numbers_no_ellipses/full_numbers_no_ellipses.js: {}
   dependencies:
-    - core/drupal
     - core/jquery
+    - core/drupal
     - core/once
     - jquery_ui/widget
     - jquery_ui_dialog/dialog
@@ -68,16 +97,18 @@ datatables_dataTableList:
     - jquery_ui_autocomplete/autocomplete
 
 grid-view-with-input:
-  header: true
+  version: 1.x
   js:
-    /modules/custom/jquery_plugins/data_tables/1.13.4/js/jquery.dataTables1.13.4.min.js: {}
+    /modules/custom/jquery_plugins/data_tables/1.13.4/js/jquery.dataTables1.13.4.min.js: { weight: -5 }
     /modules/custom/jquery_plugins/data_tables/1.13.4/extensions/full_numbers_no_ellipses/full_numbers_no_ellipses.js: {}
     /modules/custom/jquery_plugins/data_tables/1.13.4/js/input1.13.4.js: {}
     /modules/custom/checkbook_project/js/contracts.js: {}
   dependencies:
     - core/jquery
+    - core/drupal
+
 simple-pagination:
-  header: true
+  version: 1.x
   css:
     theme:
       /modules/custom/jquery_plugins/simplePagination/simplePagination.css: {}
@@ -85,12 +116,20 @@ simple-pagination:
     /modules/custom/jquery_plugins/simplePagination/jquery.simplePagination.js: {}
   dependencies:
     - core/jquery
+    - core/drupal
 
 top-navigation:
+  version: 1.x
   js:
     /modules/custom/widget_config/js/top-navigation.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
 
 featured-trends:
+  version: 1.x
   js:
     /modules/custom/checkbook_project/js/featured-trends.js: {}
-
+  dependencies:
+    - core/jquery
+    - core/drupal

@@ -204,8 +204,14 @@
               funding_class_code: funding_class_code,
               event_id: conditional_category_id
             };
-            div.ele('revenue_class').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'revenue_class_name', filters)});
-            div.ele('revenue_source').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'revenue_source_name', filters)});
+            div.ele('revenue_class').autocomplete({
+              source: $.fn.autoCompleteSourceUrl(solr_datasource, 'revenue_class_name', filters),
+              delay: 500,
+              minLength: 3});
+            div.ele('revenue_source').autocomplete({
+              source: $.fn.autoCompleteSourceUrl(solr_datasource, 'revenue_source_name', filters),
+              delay: 500,
+              minLength: 3});
           } else if (data_source === 'checkbook_nycha') {
             solr_datasource = 'nycha';
             let fiscal_year_id = parseInt((div.ele('budget_fy').val()) ? div.ele('budget_fy').val() : 0);
@@ -226,8 +232,14 @@
               budget_type: budget_type,
               budget_name: budget_name
             };
-            div.ele('revenue_class').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'revenue_class', filters)});
-            div.ele('nycha_revenue_category').autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource, 'revenue_category', filters)});
+            div.ele('revenue_class').autocomplete({
+              source: $.fn.autoCompleteSourceUrl(solr_datasource, 'revenue_class', filters),
+              delay: 500,
+              minLength: 3});
+            div.ele('nycha_revenue_category').autocomplete({
+              source: $.fn.autoCompleteSourceUrl(solr_datasource, 'revenue_category', filters),
+              delay: 500,
+              minLength: 3});
           }
 
           $('.ui-autocomplete-input').bind('autocompleteselect', function (event, ui) {

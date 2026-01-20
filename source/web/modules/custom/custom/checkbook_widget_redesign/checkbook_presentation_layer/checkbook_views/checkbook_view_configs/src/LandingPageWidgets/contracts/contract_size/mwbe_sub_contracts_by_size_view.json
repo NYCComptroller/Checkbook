@@ -1,5 +1,0 @@
-{
-    "defaultConfigKey":"contracts_by_size_view",
-    "dataFunc":"GetSubContractsBySize",
-    "countFunc":"GetCountSubContracts"
-}

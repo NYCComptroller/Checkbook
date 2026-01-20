@@ -16,7 +16,7 @@ $adjustedParameters = $parameters;
 $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
 return $adjustedParameters;
 ",
-"widgetTitle":"Contracts by Size",
+"widgetTitle":"Sub Contracts by Size",
     "template":"contract_summary_expense_expense",
     "entityColumnName":"award_size_award_size_award_size_name",
     "entityColumnLabel":"Contract Size",

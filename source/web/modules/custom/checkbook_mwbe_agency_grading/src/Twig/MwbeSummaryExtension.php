@@ -89,7 +89,7 @@ class MwbeSummaryExtension extends AbstractExtension
     var chart = new Highcharts.Chart({
       chart: {
          renderTo: 'chart_container_" . $id . "',
-         defaultSeriesType: 'bar',
+         type: 'bar',
          backgroundColor:'rgba(255, 255, 255, 0.002)',
          height:50    ,
          animation: false

@@ -68,7 +68,9 @@ return $node->data;
 "colors":["#7DB7E5"],
 "xAxis": {
 "title":{"text":""},
-"labels": {"enabled":false}
+"labels": {"enabled":false},
+"lineColor": "#ccd6eb",
+"tickColor": "#ccd6eb"
 },
 "series": [{
 "name": "Contract Amount",
@@ -88,7 +90,7 @@ return $node->data;
 "yAxis": {
 "startOnTick":true,
 "title": {"text": ""},
-"labels":{"rotation": 0}
+"labels":{"rotation": 0,"style":{"textOverflow":"none"}}
 } ,
 "legend": {
 "enabled": false,

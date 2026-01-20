@@ -166,7 +166,9 @@ return $node->data;
     "xAxis": {
         "categories": {"ds":"month"},
         "title": {"text": ""},
-        "labels": {}
+        "labels": {},
+        "lineColor": "#ccd6eb",
+        "tickColor": "#ccd6eb"
     },
     "series": [
         {
@@ -186,7 +188,7 @@ return $node->data;
     "yAxis": {
         "startOnTick":true,
         "title": {"text": ""},
-        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+        "labels":{"rotation": 0,"function":"yAxisFormatter","style":{"textOverflow":"none"}}
     },
     "legend": {
         "enabled": "true",
@@ -203,7 +205,7 @@ return $node->data;
 <function>
 yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^'formatter' :
-function() {return 'Month: ' + this.x + '<br/>' + 'Year: ' + this.series.name + '<br/>' + 'Gross Pay Amount: ' + abbrNum(this.y, 2, '$') ;
+function() {return 'Month: ' + this.category + '<br/>' + 'Year: ' + this.series.name + '<br/>' + 'Gross Pay Amount: ' + abbrNum(this.y, 2, '$') ;
 }
 ##clickEvent^^"click": function(){  location.href = this.url;}
 </function>
