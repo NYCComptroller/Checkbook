@@ -27,13 +27,23 @@
       <li><span class="gi-list-item">Contracting Agency:</span> <a
           href="{{ agency_link }}">{{ node.data[0]['agency_name_checkbook_agency'] }}</a>
       </li>
-      <li><span
-          class="gi-list-item">Award Method:</span> {{ node.data[0]['award_method_name_checkbook_award_method'] }}
+      <li>
+        {% if pregMatch("/newwindow/", render_var(url('<current>'))) %}
+          <span class="gi-list-item">Award Method:</span>
+        {% else %}
+          <span class="gi-list-item"><a href='https://comptroller.nyc.gov/reports/contract-primer/#contract-categories-overview' target='_blank'>Award Method</a>:</span>
+        {% endif %}
+        {{ node.data[0]['award_method_name_checkbook_award_method'] }}
       </li>
       <li><span class="gi-list-item">OCA Number:</span> {{ node.data[0]['oca_number'] }}</li>
       <li><span class="gi-list-item">Version Number:</span> {{ node.data[0]['document_version'] }}</li>
-      <li><span
-          class="gi-list-item">FMS Document:</span> {{ node.data[0]['document_code_checkbook_ref_document_code'] }}
+      <li>
+        {% if pregMatch("/newwindow/", render_var(url('<current>'))) or node.data[0]['document_code_checkbook_ref_document_code'] not in ['MA1', 'MMA1', 'DO1', 'CTA1'] %}
+          <span class="gi-list-item">FMS Document:</span>
+        {% else %}
+          <span class="gi-list-item"><a href="https://comptroller.nyc.gov/reports/contract-primer/#master-agreements" target="_blank">FMS Document</a>:</span>
+        {% endif %}
+        {{ node.data[0]['document_code_checkbook_ref_document_code'] }}
       </li>
     </ul>
     <ul class="right">

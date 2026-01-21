@@ -5,7 +5,6 @@
 }
 
 .main-overview-section p {
-  font-family: "Georgia", serif;
   color: black;
   line-height: 18px;
 }
@@ -27,9 +26,7 @@
 
 .overview-h2-title,
 .spotlight-h2-title {
-  font-family: "Georgia", serif;
-  font-weight: normal;
-  font-size: 24px;
+  font-size: 28px;
   line-height: 24px;
   margin-bottom: 35px;
   color: #3c5e7c;

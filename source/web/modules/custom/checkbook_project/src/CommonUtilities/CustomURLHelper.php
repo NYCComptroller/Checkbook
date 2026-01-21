@@ -171,6 +171,31 @@ class CustomURLHelper
   }
 
   /**
+   * Returns the year type and year values string to be appended as tag attributes.
+   *
+   * @param bool $applySpendingYear
+   *   ApplySpendingYear.
+   * @param bool $applyPreviousYear
+   *   ApplyPreviousYear.
+   * @param bool $spendingTransactions
+   *   SpendingTransactions.
+   * @param bool $landing_page_link
+   *   Landing_page_link.
+   *
+   * @return string
+   *   URL attributes string.
+   */
+  public static function _checkbook_project_get_year_url_attributes_string($applySpendingYear = FALSE, $applyPreviousYear = FALSE, $spendingTransactions = FALSE, $landing_page_link = FALSE) {
+    $path = self::_checkbook_project_get_year_url_param_string($applySpendingYear, $applyPreviousYear, $spendingTransactions, $landing_page_link);
+    $path_params = explode('/', trim($path, '/'));
+    $attributes = '';
+    for ($i = 0; $i < count($path_params); $i = $i + 2) {
+      $attributes .= ' ' . $path_params[$i] . '="' . $path_params[$i + 1] . '"';
+    }
+    return $attributes . ' ';
+  }
+
+  /**
    * Forms the url parameter string for the fvendor param.
    * This is used to populate the vendor name facet for pages with sub and prime vendors
    *

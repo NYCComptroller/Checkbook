@@ -54,7 +54,7 @@
     return $node->data;
 ",
 "chartConfig": {
-    "chart": {"defaultSeriesType": "column"},
+    "chart": {"type": "column"},
     "colors":["#7DB7E5"],
     "legend": {
         "enabled": false,
@@ -66,11 +66,13 @@
     "xAxis": {
         "title": {"text": ""},
         "labels":{"enabled":false},
-        "categories":{"ds":"vendor"}
+        "categories":{"ds":"vendor"},
+        "lineColor": "#ccd6eb",
+        "tickColor": "#ccd6eb"
     },
     "yAxis": {
         "title": {"text": ""},
-        "labels":{"function":"yAxisFormatter"}
+        "labels":{"function":"yAxisFormatter","style":{"textOverflow":"none"}}
     },
     "tooltip": {
         "function": "budgetTooltip"

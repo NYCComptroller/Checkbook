@@ -25,6 +25,7 @@ use Drupal\checkbook_log\LogHelper;
 use Drupal\checkbook_project\WidgetUtilities\WidgetUtil;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\widget\Controller\DefaultController;
 use ParseError;
 
 /**
@@ -72,9 +73,9 @@ class WidgetFilterBlock extends BlockBase {
       //need to add widget_id infront of request as _widget_node_view_page expects it
       $request_params = $id . ':' . $request_params;
 
-      $contentController = new \Drupal\widget\Controller\DefaultController();
+      $contentController = new DefaultController();
       $result = $contentController->_widget_node_view_page($request_params);
-      if (isset($result) && !empty($result)) {
+      if (!empty($result)) {
         //adding class name for widgets so that css rule can be applied at individual widget levels
         $result['#attributes']['class'][] = 'node-widget-' . $id;
         $result['#cache']['contexts'] = ['url.path', 'url.query_args'];
@@ -109,11 +110,11 @@ class WidgetFilterBlock extends BlockBase {
 
     $ruleNo = 0;
 
-    if ((isset($paths) && !empty($paths)) || isset($paths2) && !empty($paths2) || isset($phpVisibility) && !empty($phpVisibility)) {
+    if ((!empty($paths)) || !empty($paths2) || !empty($phpVisibility)) {
       $return .= "<br>Visibility rules<br/>";
     }
 
-    if (isset($paths) && !empty($paths)) {
+    if (!empty($paths)) {
       $ruleNo++;
       $return .= "Rule $ruleNo: ";
       if ((isset($visibility_setting) && !$visibility_setting) xor (isset($not) && $not)) {
@@ -122,7 +123,7 @@ class WidgetFilterBlock extends BlockBase {
       $return .= "one of $paths<br/>";
     }
 
-    if (isset($paths2) && !empty($paths2)) {
+    if (!empty($paths2)) {
       $ruleNo++;
       $return .= "Rule $ruleNo: ";
       if ((isset($visibility_setting2) && !$visibility_setting2) xor (isset($not2) && $not2)) {
@@ -131,7 +132,7 @@ class WidgetFilterBlock extends BlockBase {
       $return .= "one of $paths2<br/>";
     }
 
-    if (isset($phpVisibility) && !empty($phpVisibility)) {
+    if (!empty($phpVisibility)) {
       $return .= "PHP Rule: ";
       if (isset($php_visibility_not) && $php_visibility_not) {
         $return .= "NOT ";
@@ -284,7 +285,7 @@ class WidgetFilterBlock extends BlockBase {
   }
 
   public function checkVisbibilityPath($paths) {
-    if (isset($paths) && !empty($paths)) {
+    if (!empty($paths)) {
       //split the values of paths by endline
       $path_values = preg_split('/\r\n|\r|\n/', $paths);
 
@@ -300,7 +301,7 @@ class WidgetFilterBlock extends BlockBase {
 
       $path_matches = false;
       foreach($path_values as $path_value) {
-        if (preg_match($path_value, $current_path)) {
+        if (!empty($path_value) && preg_match($path_value, $current_path)) {
           $path_matches = true;
           break;
         }
@@ -316,7 +317,7 @@ class WidgetFilterBlock extends BlockBase {
     $php_value = $form_state->getValue('php_visibility');
     if (!empty($php_value)) {
       try{
-        $result = eval($php_value);
+        eval($php_value);
       } catch (ParseError $e) {
         $form_state->setErrorByName('php_visibility', $this->t('Error in PHP Visibility code'));
       }
@@ -325,10 +326,9 @@ class WidgetFilterBlock extends BlockBase {
   }
 
   public function checkVisibilityPhp($php_code) {
-    if (isset($php_code) && !empty($php_code)) {
+    if (!empty($php_code)) {
       try {
-        $result = eval($php_code);
-        return $result;
+        return eval($php_code);
       } catch (ParseError $e) {
         LogHelper::log_error("Error while doing checkVisibilityPhp for WidgetFilterBlock: " . $e);
         return false;

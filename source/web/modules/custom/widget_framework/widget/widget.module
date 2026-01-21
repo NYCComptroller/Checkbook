@@ -588,8 +588,6 @@ function load_widget_data($node, $resultFormatter=null) {
           $serieColumns =  eval($serie->adjustSerieColumns);
         }
 
-        // log_debug("Serie parameters");
-        // log_debug($serieParameters);
         $serieOrderBy = $serie->orderBy ?? $orderBy;
         $serieStartWith = $serie->startWith ?? $startWith;
         $serieLimit = $serie->limit ?? $limit;

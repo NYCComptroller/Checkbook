@@ -39,15 +39,15 @@
     {% endif %}
 
     {% if node.magid is defined %}
-      {% if not pregMatch("/newwindow/", render_var(url('<current>'))) %}
-        {% set master_contract_link_href = "/contract_details/magid/" ~ node.magid ~ "/doctype/" ~ node.document_code ~ datasource  %}
-        <span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href="{{ master_contract_link_href }}">{{ node.contract_number | raw}} </a></span>
-      {% else %}
+      {% if pregMatch("/newwindow/", render_var(url('<current>'))) %}
         <span class="master-contract-link">Parent Contract: {{ node.contract_number | raw }} </span>
+      {% else %}
+        {% set master_contract_link_href = "/contract_details/magid/" ~ node.magid ~ "/doctype/" ~ node.document_code ~ datasource %}
+        <span class="master-contract-link">Parent Contract: <a class="bottomContainerReload" href="{{ master_contract_link_href }}">{{ node.contract_number | raw}} </a></span>
       {% endif %}
     {% endif %}
 
-    {% if not pregMatch("/newwindow/", render_var(url('<current>'))) %}
+    {% if pregMatch("/newwindow/", render_var(url('<current>'))) %}
       {% set newwindowclass= 'class="new_window"' %}
     {% endif %}
   </div>
@@ -101,14 +101,28 @@
             {% endif %}
           </li>
         {% endif %}
-        <li><span class="gi-list-item">Award Method:</span> {{ node.data[0]['award_method_name_checkbook_award_method'] }}</li>
+        <li>
+          {% if pregMatch("/newwindow/", render_var(url('<current>'))) %}
+            <span class="gi-list-item">Award Method:</span>
+          {% else %}
+            <span class="gi-list-item"><a href='https://comptroller.nyc.gov/reports/contract-primer/#contract-categories-overview' target='_blank'>Award Method</a>:</span>
+          {% endif %}
+          {{ node.data[0]['award_method_name_checkbook_award_method'] }}
+        </li>
         {% if RequestGet("datasource") != "checkbook_oge" %}
           <li><span class="gi-list-item">OCA Number:</span> {{ node.data[0]['oca_number'] }}</li>
           <li><span class="gi-list-item">Version Number:</span> {{ node.data[0]['document_version'] }}</li>
         {% endif %}
-        <li><span class="gi-list-item">FMS Document:</span> {{ node.data[0]['document_code_checkbook_ref_document_code'] }}</li>
+        <li>
+          {% if pregMatch("/newwindow/", render_var(url('<current>'))) or node.data[0]['document_code_checkbook_ref_document_code'] not in ['MA1', 'MMA1', 'DO1', 'CTA1'] %}
+            <span class="gi-list-item">FMS Document:</span>
+          {% else %}
+            <span class="gi-list-item"><a href="https://comptroller.nyc.gov/reports/contract-primer/#master-agreements" target="_blank">FMS Document</a>:</span>
+          {% endif %}
+          {{ node.data[0]['document_code_checkbook_ref_document_code'] }}
+        </li>
         {% if RequestGet("datasource") != "checkbook_oge" %}
-        <li><span class="gi-list-item">{{ contracts_ca_details_spending_link(node) }}</li>
+          <li><span class="gi-list-item">{{ contracts_ca_details_spending_link(node) }}</li>
         {% endif %}
       </ul>
       <ul class="right">

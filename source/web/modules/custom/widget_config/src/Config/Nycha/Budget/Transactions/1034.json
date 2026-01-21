@@ -27,7 +27,7 @@
   return $header;
   ",
   "useList":true,
-  "getTotalDataCount": true,
+  "getTotalDataCount":true,
   "limit": "35",
   "stickyHeader": true,
   "noDataInitialLoad": true,

@@ -27,7 +27,7 @@ datafeeds.contracts:
   dependencies:
     - checkbook_datafeeds/datafeeds.multi-select
 datafeeds.page:
-  version: 1.0.2
+  version: 1.0.3
   css:
     theme:
       css/data-feed.css: {}

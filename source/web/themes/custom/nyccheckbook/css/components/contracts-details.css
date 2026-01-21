@@ -350,7 +350,7 @@ div.bottomContainer{
 .oge-ca-details .contract-id .master-contract-link,
 .cb-ca-details .contract-id .master-contract-link,
 .oge-assoc-contracts-list .contractLinkNote{
-  float:left;
+  float: left;
 }
 .cb-ma-details .contract-id .contractLinkNote,
 .oge-ma-details .contract-id .contractLinkNote,
@@ -369,11 +369,11 @@ div.bottomContainer{
   width: 105px;
 }
 .page-contracts-landing #assoc_contracts_list_wrapper .contract-title,
-.page-contract-details #assoc_contracts_list_wrapper .contract-title{
+.page-contract-details #assoc_contracts_list_wrapper .contract-title {
   margin: 10px 0 -20px 0;
 }
-.contract-details-heading .contract-id .master-contract-link{
-  margin:10px 0px;
+.contract-details-heading .contract-id .master-contract-link {
+  margin: 10px 0px;
 }
 
 .oge-ma-details .contract-id .contractLinkNote a,
@@ -517,8 +517,8 @@ table#assoc_contracts_list.oge-assoc-contracts-list .assoc_item .contract-title 
 }
 
 .cb-ca-details .contract-id .master-contract-link,
-.oge-ca-details .contract-id .master-contract-link{
-  clear:both;
+.oge-ca-details .contract-id .master-contract-link {
+  clear: both;
 }
 
 .contract-vendor-details {
@@ -917,7 +917,7 @@ span.export, span.summary_export {
   color: #209AD6;
   font-weight: bold;
   text-transform: uppercase;
-  z-index: 100;
+  z-index: 29;
 }
 .information {
   background: url(/themes/custom/nyccheckbook/images/information-icon-small.png) no-repeat scroll right 0 transparent;
@@ -1339,10 +1339,6 @@ h2.contract-title {
 .node-widget-429 h2.contract-title,
 .contract-asylum-rider {
   float: left;
-}
-
-.node-widget-429 h2.contract-title {
-  width: auto;
 }
 
 .contract-asylum-rider {

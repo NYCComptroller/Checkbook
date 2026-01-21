@@ -22,6 +22,7 @@ namespace Drupal\checkbook_custom_breadcrumbs;
  */
 
 use Drupal\checkbook_infrastructure_layer\Constants\Common\PageType;
+use Drupal\checkbook_infrastructure_layer\Utilities\FormattingUtilities;
 use Drupal\checkbook_project\BudgetUtilities\NychaBudgetUtil;
 use Drupal\checkbook_project\CommonUtilities\RequestUtil;
 use Drupal\checkbook_project\WidgetUtilities\NodeSummaryUtil;
@@ -96,6 +97,10 @@ class BudgetBreadcrumbs {
 
           case 'dept':
             $title = _checkbook_project_get_name_for_argument("department_code", $value);
+            break;
+
+          case 'deptnm':
+            $title = urldecode(FormattingUtilities::checkbook_restoreSlash($value));
             break;
 
           case 'bdgcode':

@@ -2047,7 +2047,7 @@
         {
             "name":"status",
             "criteriaLevel":"value",
-            "allowedValues":["active", "pending", "registered"]
+            "allowedValues":["pending", "registered"]
         },
         {
             "name":"category",

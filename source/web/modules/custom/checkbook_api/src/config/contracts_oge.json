@@ -269,7 +269,7 @@
         {
             "name":"status",
             "criteriaLevel":"value",
-            "allowedValues":["active", "registered"]
+            "allowedValues":["registered"]
         },
         {
             "name":"category",

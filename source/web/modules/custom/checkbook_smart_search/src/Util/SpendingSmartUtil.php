@@ -21,6 +21,7 @@
 namespace Drupal\checkbook_smart_search\Util;
 
 use Drupal\checkbook_infrastructure_layer\Utilities\FormattingUtilities;
+use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
 use Drupal\checkbook_project\CommonUtilities\CheckbookDateUtil;
 use Drupal\checkbook_project\ContractsUtilities\ContractURLHelper;
 use Drupal\checkbook_project\MwbeUtilities\MappingUtil;
@@ -123,8 +124,13 @@ class SpendingSmartUtil {
       }*/
       if ($key == 'expenditure_object_name') {
         $value = $spending_results[$key][0];
-      } else {
+      }
+      else {
         $value = $spending_results[$key];
+      }
+
+      if ($key == 'is_prime_or_sub' && !preg_match("/newwindow/", RequestUtilities::getCurrentPageUrl())) {
+        $title = "<a href='https://comptroller.nyc.gov/reports/contract-primer/#subcontracts' target='_blank'>" . $title . "</a>";
       }
 
       // highlighting (italics) search term

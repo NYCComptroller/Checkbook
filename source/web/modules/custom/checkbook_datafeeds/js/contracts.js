@@ -101,7 +101,7 @@
     const category_val = jQuery("select[name=category]").val();
     if ($("input[name='datafeeds-contracts-domain-filter']:checked").val() === 'checkbook') {
       // Add asterisk fields & note
-      if ((contract_status_val === 'active' || contract_status_val === 'registered')
+      if ((contract_status_val === 'registered')
         && (category_val === 'expense' || category_val === 'all')) {
 
         jQuery("<div class='prime-and-sub-note-datafeeds'><p>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img src='/themes/custom/nyccheckbook/images/prime-and-sub.png' />).</p><br/></div>").insertAfter(jQuery("p.required-message"));
@@ -312,7 +312,7 @@
       $oge_expense.hide();
       $nycha.show();
     } else {
-      if (csval === 'active') {
+      /*if (csval === 'active') {
         if (datasource === 'checkbook') {
           if (catval === 'expense') {
             $('.form-item-column-select-expense label').html('Columns (Active Expense)<span class="form-required"></span>');
@@ -352,7 +352,7 @@
           $oge_expense.show();
           $nycha.hide();
         }
-      } else if (csval === 'registered') {
+      } else */if (csval === 'registered') {
         if (datasource === 'checkbook') {
           if (catval === 'expense') {
             $('.form-item-column-select-expense label').html('Columns (Registered Expense)<span class="form-required"></span>');
@@ -631,7 +631,7 @@
       }
 
       //Set up multiselects/option transfers
-      //Active/Registered Expense -- CityWide
+      //Registered Expense -- CityWide
       $('#edit-column-select-expense', context).multiSelect();
       if (!$('#ms-edit-column-select-expense .ms-selection', context).next().is("a")) {
         $('#ms-edit-column-select-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
@@ -644,7 +644,7 @@
         $('#edit-column-select-expense', context).multiSelect('deselect_all');
       });
 
-      //OGE Active/Registered Expense
+      //OGE Registered Expense
       $('#edit-column-select-oge-expense', context).multiSelect();
       if (!$('#ms-edit-column-select-oge-expense .ms-selection', context).next().is("a")) {
         $('#ms-edit-column-select-oge-expense .ms-selection', context).after('<a class="deselect">Remove All</a>');
@@ -656,7 +656,7 @@
       $('#ms-edit-column-select-oge-expense a.deselect', context).click(function () {
         $('#edit-column-select-oge-expense', context).multiSelect('deselect_all');
       });
-      //Active/Registered Revenue
+      //Registered Revenue
       $('#edit-column-select-revenue', context).multiSelect();
       if (!$('#ms-edit-column-select-revenue .ms-selection', context).next().is("a")) {
         $('#ms-edit-column-select-revenue .ms-selection', context).after('<a class="deselect">Remove All</a>');
@@ -746,6 +746,8 @@
       if (datasource === 'checkbook_oge') {
         $('#edit-vendor').autocomplete({
           source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name', filters),
+          delay: 500,
+          minLength: 3,
           select: function (event, ui) {
             $.fn.preventSelectionDefault(event, ui, "No Matches Found");
           }
@@ -753,6 +755,8 @@
       } else {
         $('#edit-vendor').autocomplete({
           source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name_code', filters),
+          delay: 500,
+          minLength: 3,
           select: function (event, ui) {
             $.fn.preventSelectionDefault(event, ui, "No Matches Found");
           }
@@ -760,36 +764,48 @@
       }
       $('#edit-contractno').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'contract_number', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-apt-pin').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'apt_pin', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-pin').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'pin', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-entity-contract-number').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'contract_entity_contract_number', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-commodity-line').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'contract_commodity_line', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-budget-name').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'contract_budget_name', filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
@@ -813,18 +829,24 @@
 
       $('#edit-nycha-vendor').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name_code', nycha_filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-nycha-contract-id').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'contract_number', nycha_filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
       });
       $('#edit-nycha-apt-pin').autocomplete({
         source: $.fn.autoCompleteSourceUrl(datasource, 'pin', nycha_filters),
+        delay: 500,
+        minLength: 3,
         select: function (event, ui) {
           $.fn.preventSelectionDefault(event, ui, "No Matches Found");
         }
@@ -862,6 +884,8 @@
           if (datasource === 'checkbook_oge') {
             $('#edit-vendor').autocomplete({
               source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name', filters),
+              delay: 500,
+              minLength: 3,
               select: function (event, ui) {
                 $.fn.preventSelectionDefault(event, ui, "No Matches Found");
               }
@@ -869,6 +893,8 @@
           } else {
             $('#edit-vendor').autocomplete({
               source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name_code', filters),
+              delay: 500,
+              minLength: 3,
               select: function (event, ui) {
                 $.fn.preventSelectionDefault(event, ui, "No Matches Found");
               }
@@ -876,36 +902,48 @@
           }
           $('#edit-contractno').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'contract_number', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-apt-pin').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'apt_pin', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-pin').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'pin', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-entity-contract-number').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'contract_entity_contract_number', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-commodity-line').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'contract_commodity_line', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-budget-name').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'contract_budget_name', filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
@@ -929,18 +967,23 @@
 
           $('#edit-nycha-vendor').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'vendor_name_code', nycha_filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-nycha-contract-id').autocomplete({
             source: $.fn.autoCompleteSourceUrl(datasource, 'contract_number', nycha_filters),
+            delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
           });
           $('#edit-nycha-apt-pin').autocomplete({
-            source: $.fn.autoCompleteSourceUrl(datasource, 'pin', nycha_filters),
+            source: $.fn.autoCompleteSourceUrl(datasource, 'pin', nycha_filters),  delay: 500,
+            minLength: 3,
             select: function (event, ui) {
               $.fn.preventSelectionDefault(event, ui, "No Matches Found");
             }
@@ -1085,7 +1128,7 @@
   $.fn.calculateMocsRegister = function(cevent, csval, catval) {
     cevent = $.fn.emptyToZero(cevent);
     if(cevent === 1){
-      if (csval === 'active' || csval === 'registered') {
+      if (csval === 'registered') {
         if (catval === 'expense') {
           $.fn.addColumnSelectMocsRegistered('edit-column-select-expense');
         }

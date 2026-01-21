@@ -215,7 +215,9 @@ $node->widgetConfig->html_class = '';
    		"minorGridLineWidth": 0,
    		"lineColor": "transparent",
         "title": {"text": ""},
-        "labels": {"enabled": true}
+        "labels": {"enabled": true},
+        "lineColor": "#ccd6eb",
+        "tickColor": "#ccd6eb"
     },
     "series": [
 {
@@ -247,7 +249,7 @@ $node->widgetConfig->html_class = '';
         "lineWidth": 0,
         "minorGridLineWidth": 0,
         "gridLineColor": "#ffffff",
-        "labels": {"enabled":false}
+        "labels": {"enabled":false,"style":{"textOverflow":"none"}}
     } ,
     "legend": {
         "enabled": false

@@ -118,7 +118,7 @@
         var contract_status_val = div.ele('status').val();
         var category_val = div.ele('category').val();
 
-        if ((contract_status_val === 'A' || contract_status_val === 'R') && (category_val === 'expense' || category_val === 'all')) {
+        if (contract_status_val === 'R' && (category_val === 'expense' || category_val === 'all')) {
           $("<div class='prime-and-sub-note'>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img src='/themes/custom/nyccheckbook/images/prime-and-sub.png' />).</div>").insertBefore($("#div_contracts_data_source"));
           addPrimeAndSubIcon(contract_status);
           addPrimeAndSubIcon(vendor);
@@ -253,18 +253,24 @@
 
            div.ele('vendor_name').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource,'vendor_name', nycha_filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('contract_id').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource,'contract_number', nycha_filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('pin').autocomplete({
              source:$.fn.autoCompleteSourceUrl(solr_datasource,'pin', nycha_filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
@@ -296,50 +302,60 @@
             if (contract_status === 'R') {
               filters['registered_fiscal_year'] = year;
             }
-
-            if (contract_status === 'A') {
-              filters['facet_year_array'] = year;
-            }
           }
 
            div.ele('vendor_name').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource,'vendor_name',filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('contract_id').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource,'contract_number', filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('apt_pin').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource,'apt_pin',filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('pin').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource,'pin',filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('entity_contract_number').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource,'contract_entity_contract_number',filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('commodity_line').autocomplete({
              source: $.fn.autoCompleteSourceUrl(solr_datasource,'contract_commodity_line',filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }
            });
            div.ele('budget_name').autocomplete({
              source:$.fn.autoCompleteSourceUrl(solr_datasource,'contract_budget_name',filters),
+             delay: 500,
+             minLength: 3,
              select: function (event, ui) {
                $.fn.preventSelectionDefault(event, ui, "No Matches Found");
              }

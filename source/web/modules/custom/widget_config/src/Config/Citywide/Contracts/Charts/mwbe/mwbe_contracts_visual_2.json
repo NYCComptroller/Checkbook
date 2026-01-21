@@ -185,7 +185,9 @@ $url = isset($refURL) ? $refURL: \\Drupal\\checkbook_infrastructure_layer\\Utili
     },
     "xAxis": {
         "categories": ["January","February","March","April","May","June","July","August","September","October","November","December"],
-        "labels": {"enabled": false}
+        "labels": {"enabled": false},
+        "lineColor": "#ccd6eb",
+        "tickColor": "#ccd6eb"
     },
     "series": [
     ],
@@ -195,7 +197,7 @@ $url = isset($refURL) ? $refURL: \\Drupal\\checkbook_infrastructure_layer\\Utili
      	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
-        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+        "labels":{"rotation": 0,"function":"yAxisFormatter","style":{"textOverflow":"none"}}
     } ,
     "legend": {
         "enabled": true,

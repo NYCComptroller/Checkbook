@@ -506,7 +506,9 @@ body.page-smart-search .field-label {
 }
 
 body.page-smart-search .field-content {
-  display: inline;
+  display: inline-block;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 
 body.page-smart-search .search-results li {

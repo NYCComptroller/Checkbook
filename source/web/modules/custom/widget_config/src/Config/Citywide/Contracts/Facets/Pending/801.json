@@ -44,6 +44,8 @@ array_push($data, array('minority_type_minority_type' => $ids,
 'minority_type_name_minority_type_name' => 'Asian American',
 'txcount' => $count
 ));
+$keys = array_column($data, 'txcount');
+array_multisort($keys, SORT_DESC, $data);
 }
 return $data;
 ",

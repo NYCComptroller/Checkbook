@@ -21,6 +21,7 @@
 use Drupal\checkbook_infrastructure_layer\Utilities\RequestUtilities;
 use Drupal\checkbook_project\SpendingUtilities\MwbeSpendingUtil;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\widget_services\Common\CommonService;
 
 /*************************************************************************************/
 /* Widget Hooks                                                                      */
@@ -244,8 +245,10 @@ function widget_highcharts_widget_view(&$node)
       ];
       return \Drupal::service('renderer')->render($markup);
     default:
-      if (isset($node->widgetConfig->displayType) && $node->widgetConfig->displayType == 'gridview') {
-        $twigFilePath = Drupal\widget_services\Common\CommonService::getTemplatePath($node->widgetConfig->gridConfig->template);
+      if (isset($node->widgetConfig->displayType) &&
+          $node->widgetConfig->displayType == 'gridview' &&
+          isset($node->widgetConfig->gridConfig->template)) {
+        $twigFilePath = CommonService::getTemplatePath($node->widgetConfig->gridConfig->template);
         $twigService = \Drupal::service('twig');
         $templateClass = $twigService->getTemplateClass($twigFilePath);
         $template = $twigService->loadTemplate($templateClass, $twigFilePath);
@@ -254,7 +257,8 @@ function widget_highcharts_widget_view(&$node)
           '#allowed_tags' => ['script', 'div', 'table', 'tr', 'td', 'tbody', 'thead', 'th', 'span', 'h3','br'],
           '#cache' => ['contexts' => ['url.path', 'url.query_args']],
         ];
-      } else {
+      }
+      else {
         // Grid View link display
         $gridViewLink = eval($node->widgetConfig->header);
         // Check if there is data in chart datasets,

@@ -2,6 +2,7 @@
   "table_columns": [
     {"labelAlias": "contract_id","column": "contract_number"},
     {"labelAlias": "contract_purpose","column": "description"},
+    {"labelAlias": "oca_number","column": "oca_number"},
     {"labelAlias": "version","column": "document_version"},
     {"labelAlias": "current_amount","column": "maximum_contract_amount"},
     {"labelAlias": "original_amount","column": "original_contract_amount"},

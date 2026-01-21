@@ -906,10 +906,13 @@ class RequestUtil {
     $skip_next = FALSE;
 
     if (!isset($url)) {
-      //For Gridview
+      // For Gridview.
       $refURL = RequestUtilities::getRefUrl();
-      //For Page
+      // For Page.
       $url = $refURL ?? RequestUtilities::getCurrentPageUrl();
+      if (!$refURL && substr_count($url, '/') == 2) {
+        $url = str_replace(':', '/', $url);
+      }
     }
 
     $urlPath = \Drupal::service('path_alias.manager')->getAliasByPath('/' . ltrim($url, '/'));

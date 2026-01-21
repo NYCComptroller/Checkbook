@@ -8,6 +8,22 @@
     $header .= \\Drupal\\checkbook_project\\WidgetUtilities\\ChartUtil::generateGridViewLink($node);
     return $header;
 ",
+"gridConfig":{
+  "template":"chart_grid_view",
+  "domain":"contracts",
+  "html_class":"chart-grid-view-table two-columns",
+  "table_columns": [
+    {
+      "labelAlias": "Title",
+      "columnType": "text"
+    },
+    {
+      "labelAlias": "Number of Sub Vendor Contracts Submitted",
+      "columnType": "number",
+      "formatType": "number"
+    }
+  ]
+},
 "no_results_content":"No Results Found",
 "cleanURLParameters":["agency","yeartype","awdmethod","vendor","status","csize","cindustry","mwbe","year","subvendor"],
 "widgetDataLoader":"
@@ -32,16 +48,16 @@
     $series_data = array();
     foreach($node->data as $row){
     if($row['acco_approved'] > 0){
-      $series_data[] = array('status' => 'ACCO Approved Sub Vendor', 'count' => $row['acco_approved']);
+      $series_data[] = array('status' => 'ACCO Approved Subcontract', 'count' => $row['acco_approved']);
     }
     if($row['acco_reviewing'] > 0){
-      $series_data[] = array('status' => 'ACCO Reviewing Sub Vendor', 'count' => $row['acco_reviewing']);
+      $series_data[] = array('status' => 'ACCO Reviewing Subcontract', 'count' => $row['acco_reviewing']);
     }
     if($row['acco_rejected'] > 0){
-      $series_data[] = array('status' => 'ACCO Rejected Sub Vendor', 'count' => $row['acco_rejected']);
+      $series_data[] = array('status' => 'ACCO Rejected Subcontract', 'count' => $row['acco_rejected']);
     }
     if($row['acco_cancelled'] > 0){
-      $series_data[] = array('status' => 'ACCO Canceled Sub Vendor', 'count' => $row['acco_cancelled']);
+      $series_data[] = array('status' => 'ACCO Canceled Subcontract', 'count' => $row['acco_cancelled']);
     }
     }
     $index = 0;
@@ -56,11 +72,14 @@
           $series_new[$index]['y'] = (int)$row['count'];
           $series_new[$index]['name'] = $row['status'];
           $index += 1;
+          $node->widgetConfig->gridConfig->data[] = [$row['status'],(int)$row['count']];
         }
         $total_contracts += (int)$row['count'];
       }
     }
       if(count($series_new) > 0){
+        $columns = array_column($series_new, 'y');
+        array_multisort($columns, SORT_DESC, $series_new);
         $node->widgetConfig->chartConfig->series[0]['data'] = $series_new;
       }else{
         $node->data = array();
@@ -76,7 +95,7 @@
 "chartConfig": {
 "chart": {
 "marginRight": 40,
-"defaultSeriesType": "pie",
+"type": "pie",
 "plotBackgroundColor": null,
 "plotBorderWidth": null,
 "plotShadow": false

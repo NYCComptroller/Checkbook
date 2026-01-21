@@ -207,7 +207,7 @@ class CheckbookEtlStatistics
       }
 
       $today = self::get_date('Y-m-d');
-      $current_hour = (int)self::get_date('H');
+      $current_time = self::get_date('H:i');
 
       $config = \Drupal::service('config.factory')->getEditable('variable_get_set.api');
 
@@ -216,8 +216,8 @@ class CheckbookEtlStatistics
         return false;
       }
 
-      if ($current_hour < 9 || $current_hour > 10) {
-        LogHelper::log_notice("ETL STATUS MAIL CRON skips. Reason: will run between 9 AM and 11 AM EST :: current hour: $current_hour");
+      if ($current_time < '09:35' || $current_time > '10:40') {
+        LogHelper::log_notice("ETL STATUS MAIL CRON skips. Reason: will run between 9:35 AM and 10:40 AM EST :: current time: $current_time");
         return false;
       }
 
