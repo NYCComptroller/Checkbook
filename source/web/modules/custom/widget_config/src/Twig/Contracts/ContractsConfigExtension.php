@@ -119,11 +119,11 @@ class ContractsConfigExtension extends AbstractExtension
           $_checkbook_breadcrumb_title = "Agencies by $bottomNavigation Transactions";
           break;
         case '728':
-          $title = "<h2 class='contract-title' class='title'>Contracts by Industries by {$bottomNavigation} Transactions</h2>";
+          $title = "<h2 class='contract-title' class='title'>Sub Contracts by Industries by {$bottomNavigation} Transactions</h2>";
           $_checkbook_breadcrumb_title = "$bottomNavigation Transactions";
           break;
         case '729':
-          $title = "<h2 class='contract-title' class='title'>Contracts by Size by {$bottomNavigation} Transactions</h2>";
+          $title = "<h2 class='contract-title' class='title'>Sub Contracts by Size by {$bottomNavigation} Transactions</h2>";
           $_checkbook_breadcrumb_title = "Contracts by Size by $bottomNavigation Transactions";
           break;
       }

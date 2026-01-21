@@ -78,7 +78,9 @@ $node->widgetConfig->chartConfig->series[0]->data = $series_new;
 },
 "xAxis": {
 "categories": [0,1,2,3,4,5,6,7,8,9],
-"labels": {"enabled": false}
+"labels": {"enabled": false},
+"lineColor": "#ccd6eb",
+"tickColor": "#ccd6eb"
 },
 "series": [
 {
@@ -92,7 +94,7 @@ $node->widgetConfig->chartConfig->series[0]->data = $series_new;
 "yAxis": {
 "startOnTick":true,
 "title": {"text": ""},
-"labels":{"rotation": 0,"function":"yAxisFormatter"}
+"labels":{"rotation": 0,"function":"yAxisFormatter","style":{"textOverflow":"none"}}
 } ,
 "legend": {
 "enabled": false

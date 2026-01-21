@@ -62,7 +62,7 @@ class VendorSpendingUtil
     $agency_id = RequestUtilities::get("agency");
     $dashboard = RequestUtilities::get("dashboard");
     $datasource = RequestUtilities::get("datasource");
-    return self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, '', $datasource);
+    return self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, FALSE, NULL, $datasource);
   }
 
   /**
@@ -82,10 +82,11 @@ class VendorSpendingUtil
     $dashboard = RequestUtilities::get("dashboard");
     $year_type = 'B';
     $nid = $node->nid;
+    $category_id = $row['spending_category_id'] ?? NULL;
 
     $url = $row["is_sub_vendor"] == "No"
-      ? self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true)
-      : self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, true);
+      ? self::getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, TRUE, $category_id)
+      : self::getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $dashboard, TRUE, $category_id);
 
     // Title does not display correctly for payee name link from advanced search
     // when the category filter is added in the end of the url parameters
@@ -116,11 +117,12 @@ class VendorSpendingUtil
    * @param $year_id
    * @param $year_type
    * @param $current_dashboard
-   * @param bool $payee_name
+   * @param $payee_name
+   * @param $category_id
    * @param $datasource
    * @return string
    */
-  public static function getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard, $payee_name = false, $datasource = null)
+  public static function getPrimeVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard, $payee_name = FALSE, $category_id = NULL, $datasource = NULL)
   {
     $latest_certified_minority_type_id = MwbeSpendingUtil::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, "P");
     $is_mwbe_certified = isset($latest_certified_minority_type_id);
@@ -132,19 +134,19 @@ class VendorSpendingUtil
     if ($current_dashboard != $new_dashboard) {
       $override_params = array(
         "dashboard" => $new_dashboard,
-        "mwbe" => $is_mwbe_certified ? MappingUtil::getTotalMinorityIds('url') : null,
+        "mwbe" => $is_mwbe_certified ? MappingUtil::getTotalMinorityIds('url') : NULL,
         "agency" => $agency_id,
         "vendor" => $vendor_id,
-        "subvendor" => null,
-        "category" => null,
-        "industry" => null,
+        "subvendor" => NULL,
+        "category" => $category_id,
+        "industry" => NULL,
         "year" => $year_id,
         "yeartype" => $year_type
       );
     } else {//if remaining in the same dashboard persist all filters (drill-down) except sub vendor
       $override_params = array(
         "dashboard" => $new_dashboard,
-        "subvendor" => null,
+        "subvendor" => NULL,
         "agency" => $agency_id,
         "datasource" => $datasource,
         "vendor" => $vendor_id,
@@ -153,7 +155,7 @@ class VendorSpendingUtil
       );
       //payee name will never have a drill down, this is to avoid ajax issues on drill down
       if ($payee_name) {
-        $override_params["mwbe"] = $is_mwbe_certified ? MappingUtil::getTotalMinorityIds('url') : null;
+        $override_params["mwbe"] = $is_mwbe_certified ? MappingUtil::getTotalMinorityIds('url') : NULL;
       }
     }
     return  SpendingUrlHelper::getLandingPageWidgetUrl($override_params);
@@ -176,9 +178,10 @@ class VendorSpendingUtil
    * @param $year_type
    * @param $current_dashboard
    * @param $payee_name
+   * @param $category_id
    * @return string
    */
-  public static function getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard, $payee_name = false)
+  public static function getSubVendorLink($vendor_id, $agency_id, $year_id, $year_type, $current_dashboard, $payee_name = FALSE, $category_id = NULL)
   {
     $latest_certified_minority_type_id = MwbeSpendingUtil::getLatestMwbeCategoryByVendor($vendor_id, $agency_id, $year_id, $year_type, "S");
     $is_mwbe_certified = isset($latest_certified_minority_type_id);
@@ -190,22 +193,22 @@ class VendorSpendingUtil
     if ($current_dashboard != $new_dashboard) {
       $override_params = array(
         "dashboard" => $new_dashboard,
-        "mwbe" => $is_mwbe_certified ? MappingUtil::getTotalMinorityIds('url') : null,
+        "mwbe" => $is_mwbe_certified ? MappingUtil::getTotalMinorityIds('url') : NULL,
         "agency" => $agency_id,
         "subvendor" => $vendor_id,
-        "vendor" => null,
-        "category" => null,
-        "industry" => null
+        "vendor" => NULL,
+        "category" => $category_id,
+        "industry" => NULL
       );
     } else {//if remaining in the same dashboard persist all filters (drill-down) except vendor
       $override_params = array(
         "dashboard" => $new_dashboard,
         "subvendor" => $vendor_id,
-        "vendor" => null
+        "vendor" => NULL
       );
       //payee name will never have a drill down, this is to avoid ajax issues on drill down
       if ($payee_name) {
-        $override_params["mwbe"] = $is_mwbe_certified ? MappingUtil::getTotalMinorityIds('url') : null;
+        $override_params["mwbe"] = $is_mwbe_certified ? MappingUtil::getTotalMinorityIds('url') : NULL;
       }
     }
     return SpendingUrlHelper::getLandingPageWidgetUrl($override_params);

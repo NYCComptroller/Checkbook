@@ -155,7 +155,6 @@ function addPaddingToDataCells(table) {
       if (getParameterByName("expandBottomCont") || getParameterByName("expandBottomContURL")) {
         $('.bottomContainerToggle', context).click();
       }
-
     }
   };
 
@@ -175,10 +174,10 @@ function addPaddingToDataCells(table) {
 
   // Document is ready.
   $(function() {
+    // Add spacer.
     $('.contract-information li div br,' +
       '.spending-tx-subtitle div br,' +
       '#payroll-tx-static-content div br').after('<span class="spacer"></span>');
   });
-
 
 }(jQuery));

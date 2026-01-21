@@ -21,6 +21,7 @@
         "drupal/admin_toolbar": "^3.5",
         "drupal/coder": "^8.3",
         "drupal/color": "^2.0@dev",
+        "drupal/context": "^5.0@RC",
         "drupal/core-composer-scaffold": "^11",
         "drupal/core-project-message": "^11",
         "drupal/core-recommended": "^11",
@@ -28,22 +29,24 @@
         "drupal/devel": "^5.2",
         "drupal/diff": "^2.0@beta",
         "drupal/easy_breadcrumb": "^2.0",
-        "drupal/form_options_attributes": "^2.0",
+        "drupal/form_options_attributes": "^2.1",
         "drupal/google_tag": "^2.0",
+        "drupal/jquery_ui": "^1.8",
         "drupal/jquery_ui_autocomplete": "^2.0",
         "drupal/jquery_ui_button": "^2.0",
         "drupal/jquery_ui_checkboxradio": "^2.0",
         "drupal/jquery_ui_dialog": "^2.0",
         "drupal/js_cookie": "^1.0",
         "drupal/memcache": "^2.5",
-        "drupal/mimemail": "^2.0@dev",
+        "drupal/menu_link_attributes": "^1.5",
+        "drupal/mimemail": "^2.0",
         "drupal/monolog": "*",
         "drupal/page_manager": "^4.0@beta",
         "drupal/quickedit": "^1.0",
         "drupal/rdf": "^3.0@beta",
         "drupal/seckit": "^2.0",
-        "drupal/superfish": "^1.7",
-        "drupal/token": "^1.14",
+        "drupal/superfish": "^1.11",
+        "drupal/token": "^1.16",
         "drupal/upgrade_status": "^4.3",
         "drush/drush": "^13.3"
     },
@@ -123,14 +126,8 @@
             "drupal/core": "-p2"
         },
         "patches": {
-            "drupal/core": {
-                "3162699 - Improve debugability of block plugins returning NULL in Layout Builder": "https://www.drupal.org/files/issues/2020-08-10/3162699-blockbuild-13.patch"
-            },
             "drupal/mini_layouts": {
                 "3433456 - Automated Drupal 11 compatibility fixes for mini_layouts": "https://www.drupal.org/files/issues/2024-03-24/mini_layouts.2.0.0-alpha1.rector.patch"
-            },
-            "drupal/context": {
-                "3429553 - Automated Drupal 11 compatibility fixes for context": "https://www.drupal.org/files/issues/2025-01-02/d11-3429553-15.patch"
             },
             "drupal/filelog": {
                 "Automated Drupal 11 compatibility fixes for filelog": "https://www.drupal.org/files/issues/2024-07-28/filelog.3.0.x-dev.rector.patch"

@@ -257,6 +257,11 @@ select,
   left: auto !important;
 }
 
+.fieldgroup {
+  padding: 0;
+  border-width: 0;
+}
+
 input[type="radio"] {
   accent-color: #0075ff;
 }

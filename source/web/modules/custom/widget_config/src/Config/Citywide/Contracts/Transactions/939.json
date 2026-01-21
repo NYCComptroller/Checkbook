@@ -449,9 +449,9 @@ $adjustDataTableOptions->fnInitComplete = '##function () { new $j.fn.dataTable.F
 {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"]},
 {"sClass":"number","sWidth":"100px","asSorting":["desc","asc"]},
 {"sClass":"number-center","sWidth":"100px","asSorting":["desc","asc"]},
-{"sClass":"number-center","bSortable":false,"sWidth":"90px"},
 {"sClass":"number-center","sWidth":"95px","asSorting":["desc","asc"]},
-{"sClass":"number-center","sWidth":"90px","asSorting":["desc","asc"]},
+{"bSortable":false,"sWidth":"90px"},
+{"sClass":"number-center","sWidth":"120px","asSorting":["desc","asc"]},
 {"sClass":"number-center","sWidth":"120px","asSorting":["desc","asc"]},
 {"bSortable":false,"sWidth":"50px"},
 //END PRIME
@@ -491,19 +491,22 @@ $adjustDataTableOptions->fnInitComplete = '##function () { new $j.fn.dataTable.F
 "bScrollCollapse": true
 },
 "customJS":"
-$j(document).on( 'click','#dtl_expand',function () {
-var nTr = this.parentNode.parentNode.parentNode;
-if ( $j(this).attr('class').match('loader') ){return;}
-if ( $j(this).attr('class').match('expanded') ){
-$j(this).removeClass('expanded').addClass('collapsed');
-oTable.fnClose( nTr );
-}
-else{
-$j(this).removeClass('collapsed').addClass('loader');
-fnLoadChildRecords(nTr, $j(this));
-}
+$j(document).on('click', '#dtl_expand', function () {
+  var nTr = this.parentNode.parentNode.parentNode;
+  if ( $j(this).attr('class').match('loader') ) {
+    // Ignore.
+    return;
+  }
 
-} );
+  if ( $j(this).attr('class').match('expanded') ) {
+    $j(this).removeClass('expanded').addClass('collapsed');
+    oTable.fnClose( nTr );
+  }
+  else {
+    $j(this).removeClass('collapsed').addClass('loader');
+    fnLoadChildRecords(nTr, $j(this));
+  }
+});
 ",
 "customExternalJS":"
 
@@ -622,7 +625,7 @@ sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[5] == null ? '': row[5
 sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[6] == null ? '': row[6])+'</td>';
 sOut += '<td class=\"number\" style=\"width:140px\">'+ (row[7] == null ? '': row[7])+'</td>';
 sOut += '<td class=\"number\" style=\"width:140px\">'+ (row[8] == null ? '': row[8])+'</td>';
-if (mocs) {
+if (!mocs) {
 sOut += '<td class=\"number\" style=\"width:140px\">'+ (row[9] == null ? '': row[9])+'</td>';
 }
 if (is_contract_modification) {
@@ -637,7 +640,7 @@ sOut += '<td class=\"number-center\" style=\"width:100px\">'+ (row[15] == null ?
 sOut += '<td class=\"number-center\" style=\"width:95px\">'+ (row[16] == null ? '': row[16])+'</td>';
 sOut += '<td class=\"number-center\" style=\"width:90px\"></td>';
 sOut += '<td class=\"number-center\" style=\"width:120px\">'+ (row[17] == null ? '': row[17])+'</td>';
-sOut += '<td class=\"number-center\" style=\"width:100px\">'+ (row[18] == null ? '': row[18])+'</td>';
+sOut += '<td class=\"number-center\" style=\"width:120px\">'+ (row[18] == null ? '': row[18])+'</td>';
 sOut += '<td style=\"width:50px\">'+ (row[19] == null ? '': row[19])+'</td>';
 sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[20] == null ? '': row[20])+'</td>';
 sOut += '<td style=\"width:110px\"></td>';
@@ -649,28 +652,28 @@ sOut += '<td class=\"text\" style=\"width:230px\">'+ (row[24] == null ? '': row[
 sOut += '<td class=\"text\" style=\"width:230px\">'+ (row[25] == null ? '': row[25])+'</td>';
 sOut += '<td class=\"text\" style=\"width:220px\">'+ (row[26] == null ? '': row[26])+'</td>';
 sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[27] == null ? '': row[27])+'</td>';
+//sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[28] == null ? '': row[28])+'</td>';
 sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[28] == null ? '': row[28])+'</td>';
-sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[29] == null ? '': row[29])+'</td>';
 
 //START SUB
-sOut += '<td class=\"text\" style=\"width:230px\">'+ (row[30] == null ? '': row[30])+'</td>';
-sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[31] == null ? '': row[31])+'</td>';
-sOut += '<td class=\"text\" style=\"width:250px\">'+ (row[32] == null ? '': row[32])+'</td>';
-sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[33] == null ? '': row[33])+'</td>';
-sOut += '<td class=\"text\" style=\"width:220px\">'+ (row[34] == null ? '': row[34])+'</td>';
+sOut += '<td class=\"text\" style=\"width:230px\">'+ (row[29] == null ? '': row[29])+'</td>';
+sOut += '<td class=\"text\" style=\"width:200px\">'+ (row[30] == null ? '': row[30])+'</td>';
+sOut += '<td class=\"text\" style=\"width:250px\">'+ (row[31] == null ? '': row[31])+'</td>';
+sOut += '<td class=\"text\" style=\"width:150px\">'+ (row[32] == null ? '': row[32])+'</td>';
+sOut += '<td class=\"text\" style=\"width:220px\">'+ (row[33] == null ? '': row[33])+'</td>';
+sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[34] == null ? '': row[34])+'</td>';
 sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[35] == null ? '': row[35])+'</td>';
 sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[36] == null ? '': row[36])+'</td>';
-sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[37] == null ? '': row[37])+'</td>';
 if(is_contract_modification) {
+sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[37] == null ? '': row[37])+'</td>';
 sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[38] == null ? '': row[38])+'</td>';
-sOut += '<td class=\"number\" style=\"width:120px\">'+ (row[39] == null ? '': row[39])+'</td>';
 }
 sOut += '<td style=\"width:30px\"></td>';
+sOut += '<td class=\"number\" style=\"width:110px\">'+ (row[39] == null ? '': row[39])+'</td>';
 sOut += '<td class=\"number\" style=\"width:110px\">'+ (row[40] == null ? '': row[40])+'</td>';
-sOut += '<td class=\"number\" style=\"width:110px\">'+ (row[41] == null ? '': row[41])+'</td>';
-sOut += '<td class=\"number-center\" style=\"width:120px\">'+ (row[42] == null ? '': row[42])+'</td>';
-sOut += '<td class=\"number-center\" style=\"width:160px\">'+ (row[43] == null ? '': row[43])+'</td>';
-sOut += '<td class=\"number-center\" style=\"width:130px\">'+ (row[44] == null ? '': row[44])+'</td>';
+sOut += '<td class=\"number-center\" style=\"width:120px\">'+ (row[41] == null ? '': row[41])+'</td>';
+sOut += '<td class=\"number-center\" style=\"width:160px\">'+ (row[42] == null ? '': row[42])+'</td>';
+sOut += '<td class=\"number-center\" style=\"width:130px\">'+ (row[43] == null ? '': row[43])+'</td>';
 sOut += '<td style=\"width:7px\"></td>';
 //END SUB
 sOut += '</tr>';
@@ -678,11 +681,17 @@ sOut += '</tr>';
 sOut += '</table></div>';
 oTable.fnOpen( nTr, sOut, 'childcontracts' );
 }
-
+$j('#dtl_expand.expanded', oTable).each(function() {
+  var nTr_close = this.parentNode.parentNode.parentNode;
+  $j(this).removeClass('expanded').addClass('collapsed');
+  oTable.fnClose( nTr_close );
+});
 $j(oElement).removeClass('loader').addClass('expanded');
 if($j.browser.msie && $j.browser.version == '7.0') {}
 else {
-$j('td.childcontracts div.sub-table-wrapper').jScrollPane({
+$j('td.childcontracts div.sub-table-wrapper')
+.css('min-height', Math.min(106, 53 * dataLen) + 'px')
+.jScrollPane({
 verticalDragMinHeight: 10,
 verticalDragMaxHeight: 10,
 showArrows: true,

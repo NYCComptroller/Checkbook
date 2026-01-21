@@ -592,7 +592,7 @@ abstract class AbstractAPISearchCriteria {
           $category = $this->criteria['value']['category'];
           $status = $this->criteria['value']['status'];
 
-          if ($status == 'active' || $status == 'registered') {
+          if ($status == 'registered') {
             $config_key .= "_active_{$category}";
             if (!isset($this->criteria['value']['fiscal_year'])) {
               $config_key .= "_all_years";
@@ -625,7 +625,7 @@ abstract class AbstractAPISearchCriteria {
             $this->criteria['value']['latest_flag'] = "Y";
         }
 
-        if ($status == 'active' || $status == 'registered') {
+        if ($status == 'registered') {
           $config_key .= "_active_{$category}";
           if (!isset($this->criteria['value']['fiscal_year'])) {
             $config_key .= "_all_years";

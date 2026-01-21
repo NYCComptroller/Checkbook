@@ -270,7 +270,7 @@ class MwbeSpendingUtil
       'mwbe' => $mwbe == 4 || $mwbe == 5 || $mwbe == 10? '4~5~10' : $mwbe,
       'year' => $row['check_eft_issued_nyc_year_id'] ?? CheckbookDateUtil::getCurrentFiscalYearId()
     );
-    return '/' . SpendingUrlHelper::getLandingPageWidgetUrl($custom_params);
+    return SpendingUrlHelper::getLandingPageWidgetUrl($custom_params);
   }
 
   /**

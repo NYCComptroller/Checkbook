@@ -91,15 +91,16 @@ class BudgetUrlService {
     }
 
     /**
-     * @param $department_id
+     * @param $dynamic_parameter
+     * @param $department_code
      * @return string
      */
-    static function departmentUrl($department_id) {
+    static function departmentUrl($dynamic_parameter, $department_code) {
         $url =   "/budget"
                 .RequestUtilities::buildUrlFromParam('year')
                 .RequestUtilities::buildUrlFromParam('agency')
                 .RequestUtilities::buildUrlFromParam('expcategory')
-                .'/dept/'.$department_id;
+                .'/dept/' . $department_code . $dynamic_parameter;
         return $url;
     }
 

@@ -120,7 +120,7 @@ function checkbook_smart_search_theme($existing, $type, $theme, $path) {
         'solr_datasource' => '',
         'selected_facet_results' => [],
         'registered_contracts' => 0,
-        'active_contracts' => 0,
+        //'active_contracts' => 0,
       ],
     ],
     'smart_search_filter' => [
@@ -129,7 +129,7 @@ function checkbook_smart_search_theme($existing, $type, $theme, $path) {
         'facets_render' => [],
         'selected_facet_results' => [],
         'registered_contracts' => 0,
-        'active_contracts' => 0,
+        //'active_contracts' => 0,
       ],
     ],
     'revenue' => [
@@ -226,7 +226,7 @@ function checkbook_smart_search_display_domain_results($value, $solr_datasource,
  *
  * @return array
  */
-function checkbook_smart_search_facet_results($facet_counts,$solr_datasource,$selected_facet_results,$registered_contracts,$active_contracts) {
+function checkbook_smart_search_facet_results($facet_counts,$solr_datasource,$selected_facet_results,$registered_contracts) {
   $twigFilePath = \Drupal::service('extension.list.module')->getPath('checkbook_smart_search') . "/templates/smart_search_filter.html.twig";
   $twigService = \Drupal::service('twig');
   $templateClass = $twigService->getTemplateClass($twigFilePath);
@@ -238,8 +238,8 @@ function checkbook_smart_search_facet_results($facet_counts,$solr_datasource,$se
       'solr_datasource' => $solr_datasource,
       'facets_render' => $facets_render,
       'selected_facet_results' => $selected_facet_results,
-      'registered_contracts' => $registered_contracts,
-      'active_contracts' => $active_contracts
+      'registered_contracts' => $registered_contracts
+      //'active_contracts' => $active_contracts
     ]),
     '#allowed_tags' => ['script','span','div','h2','input','label','li','ul']
   ];

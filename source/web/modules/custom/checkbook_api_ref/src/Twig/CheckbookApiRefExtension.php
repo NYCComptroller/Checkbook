@@ -22,62 +22,64 @@ class CheckbookApiRefExtension extends AbstractExtension
 
   public function CheckbookApiRefTabel($message)
   {
+    $output = '';
     if ($message['error']):
-      echo "<tr>
+      $output .= "<tr>
               <td>❌ ".  $message['error'] ." ❌</td>
             </tr>";
     else:
-      echo "<tr>
+      $output .= "<tr>
                 <th>File</th>
                 <th>Sample</th>
             </tr>";
       foreach ($message['files'] as $filename => $info):
-        echo "<tr class=" . ((empty($c) || $c == 'even') ? ($c = 'odd') : ($c = 'even')) . "><th><div class=\"ref-filename\">";
-      echo $filename . ".csv"."</div><small>";
-      echo($info['error'] ? '❌' : '');
+        $output .= "<tr class=" . ((empty($c) || $c == 'even') ? ($c = 'odd') : ($c = 'even')) . "><th><div class=\"ref-filename\">";
+      $output .= $filename . ".csv"."</div><small>";
+      $output .=($info['error'] ? '❌' : '');
       if ($info['old_timestamp']):
-        echo "<br /> Old file: " . $info['old_timestamp'];
+        $output .= "<br /> Old file: " . $info['old_timestamp'];
       endif;
       if ($info['old_filesize']):
-        echo "<br /> Old filesize(bytes): " . $info['old_filesize'];
+        $output .= "<br /> Old filesize(bytes): " . $info['old_filesize'];
       endif;
       if ($info['new_timestamp'] && ($info['old_timestamp'] !== $info['new_timestamp'])):
-        echo "<br /> New file: " . $info['new_timestamp'];
+        $output .= "<br /> New file: " . $info['new_timestamp'];
       endif;
       if ($info['new_filesize']):
-        echo "<br /> New filesize(bytes): " . $info['new_filesize'];
+        $output .= "<br /> New filesize(bytes): " . $info['new_filesize'];
       endif;
-      echo "<br />Updated: " . ($info['updated'] ? '✅' : 'No') . "</small></th><td>";
+      $output .= "<br />Updated: " . ($info['updated'] ? '✅' : 'No') . "</small></th><td>";
       if ($info['error']):
-        echo "⛔".$info['error'] . "⛔<br />";
+        $output .= "⛔".$info['error'] . "⛔<br />";
       endif;
       //if ($info['warning']):
-      //  echo "☢".$info['warning'] . " ☢<br />";
+      //  $output .= "☢".$info['warning'] . " ☢<br />";
       //endif;
       if ($info['info']):
-        echo "⚡".$info['info'] . " ⚡<br />";
+        $output .= "⚡".$info['info'] . " ⚡<br />";
       endif;
       if ($info['sample']):
         $headers = array_keys($info['sample'][0]);
-        echo "<table class=\"sample-data\"><tr>";
+        $output .= "<table class=\"sample-data\"><tr>";
         foreach ($headers as $header):
-          echo "<th>" . $header . "</th>";
+          $output .= "<th>" . $header . "</th>";
         endforeach;
-        echo "</tr>";
+        $output .= "</tr>";
         foreach ($info['sample'] as $row):
-          echo "<tr>";
+          $output .= "<tr>";
           foreach ($row as $cell):
-            echo "<td>".htmlentities($cell)."</td>";
+            $output .= "<td>".htmlentities($cell)."</td>";
           endforeach;
-          echo "</tr>";
+          $output .= "</tr>";
         endforeach;
-        echo "</table>";
+        $output .= "</table>";
       endif;
 
-      echo "</td></tr>";
+      $output .= "</td></tr>";
       endforeach;
     endif;
 
+    return $output;
   }
 
   public function CheckbookApiRefFooter()

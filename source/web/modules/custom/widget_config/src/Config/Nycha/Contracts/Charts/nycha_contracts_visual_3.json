@@ -27,7 +27,6 @@
       }
     ]
   },
-  "no_results_content":"No Results Found",
   "cleanURLParameters":["awdmethod","vendor","csize","industry","year"],
   "urlParamMap":{"year":"agreement_start_year_id","awdmethod":"award_method_id","vendor":"vendor_id", "csize":"award_size_id","industry":"industry_type_id"},
   "chartTitle":"Year Comparison by Agreement Types",
@@ -85,15 +84,15 @@ $node->widgetConfig->chartConfig->xAxis->categories = $categories;
   "colors":["#D78E35","#7DB7E5","#122E46"],
 "legend": {"align": "left",  "verticalAlign": "bottom", "layout": "horizontal",
 "padding":1, "itemMarginTop": 3, "itemMarginBottom": 3},
-"xAxis":{"labels":{"enabled":"true"}},
-"yAxis": {"title": {"text": ""}} ,
+"xAxis":{"labels":{"enabled":"true"},"lineColor":"#ccd6eb","tickColor":"#ccd6eb"},
+"yAxis": {"title": {"text": ""}, "labels": {"style":{"textOverflow":"none"}}} ,
 "tooltip": {
 "split":true,
 "function":"splittooltip"
 },
 "plotOptions": {
 "area": {
-"stacking": "normal",
+"stacking": null,
 "lineColor": "#666666",
 "lineWidth": 1,
 "marker": {
@@ -111,7 +110,7 @@ $node->widgetConfig->chartConfig->xAxis->categories = $categories;
 splittooltip^^'formatter' :
 function() {
   var s = [];
-  s.push(this.x);
+  s.push(this.category);
   this.points.forEach(function(point) {
   s.push('<b>' + point.series.name + '</b>: ' +Highcharts.numberFormat(point.y, 0, '.', ',') + ' Contracts');
   });

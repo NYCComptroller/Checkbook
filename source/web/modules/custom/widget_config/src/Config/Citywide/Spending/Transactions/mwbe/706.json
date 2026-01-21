@@ -92,7 +92,7 @@
         "industry_type_name",
         "minority_type_id",
         "is_prime_or_sub",
-        "original_agreement_id@checkbook:sub_vendor_agid",
+        "contract_original_agreement_id",
         "budget_name_code",
         "is_women_owned",
         "is_emerging",

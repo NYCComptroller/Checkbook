@@ -148,7 +148,9 @@
     "xAxis": {
         "categories": {"ds":"month"},
         "title": {"text": ""},
-        "labels": {}
+        "labels": {},
+        "lineColor": "#ccd6eb",
+        "tickColor": "#ccd6eb"
     },
     "series": [
         {
@@ -168,7 +170,7 @@
     "yAxis": {
         "startOnTick":true,
         "title": {"text": ""},
-        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+        "labels":{"rotation": 0,"function":"yAxisFormatter","style":{"textOverflow":"none"}}
     },
     "legend": {
         "enabled": "true",
@@ -185,7 +187,7 @@
 <function>
 yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
 tooltipformatter^^'formatter' :
-function() {return 'Month: ' + this.x + '<br/>Amount: ' + abbrNum(this.y, 2, '$') ;
+function() {return 'Month: ' + this.category + '<br/>Amount: ' + abbrNum(this.y, 2, '$') ;
 }
 ##clickEvent^^"click": function(){ location.href = this.options.url;}
 </function>

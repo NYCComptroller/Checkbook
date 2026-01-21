@@ -327,19 +327,19 @@
     },
     "customJS":"$j(document).on( 'click','#dtl_expand',function () {
         var nTr = this.parentNode.parentNode.parentNode;
-        if ( $j(this).attr('class').match('loader') ){
-        //ignore
-        return;
+        if ( $j(this).attr('class').match('loader') ) {
+          // Ignore.
+          return;
         }
 
-        if ( $j(this).attr('class').match('expanded') ){
-        $j(this).removeClass('expanded').addClass('collapsed');
-        oTable.fnClose( nTr );
-        }else{
-        $j(this).removeClass('collapsed').addClass('loader');
-        fnLoadChildRecords(nTr, $j(this));
+        if ( $j(this).attr('class').match('expanded') ) {
+          $j(this).removeClass('expanded').addClass('collapsed');
+          oTable.fnClose( nTr );
+        } else {
+          $j(this).removeClass('collapsed').addClass('loader');
+          fnLoadChildRecords(nTr, $j(this));
         }
-        } );",
+    });",
     "customExternalJS":"function prepareTableListFilterUrl(){
 
         var agencyIds = getNamedFilterCriteria('fagencyId');
@@ -431,11 +431,18 @@
         sOut += '</table></div>';
         oTable.fnOpen( nTr, sOut, 'childcontracts' );
         }
+        $j('#dtl_expand.expanded', oTable).each(function() {
+          var nTr_close = this.parentNode.parentNode.parentNode;
+          $j(this).removeClass('expanded').addClass('collapsed');
+          oTable.fnClose( nTr_close );
+        });
         $j(oElement).removeClass('loader').addClass('expanded');
         if($j.browser.msie && $j.browser.version == '7.0'){
         //do nothing
         } else {
-        $j('td.childcontracts div.sub-table-wrapper').jScrollPane({
+        $j('td.childcontracts div.sub-table-wrapper')
+        .css('min-height', Math.min(106, 53 * dataLen) + 'px')
+        .jScrollPane({
         verticalDragMinHeight: 10,
         verticalDragMaxHeight: 10,
         showArrows: true,

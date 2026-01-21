@@ -176,7 +176,9 @@ $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
     },
     "xAxis": {
         "categories": ["January","February","March","April","May","June","July","August","September","October","November","December"],
-        "labels": {"enabled": false}
+        "labels": {"enabled": false},
+        "lineColor": "#ccd6eb",
+        "tickColor": "#ccd6eb"
     },
     "series": [
     ],
@@ -186,7 +188,7 @@ $where_filters[] = _widget_build_sql_condition(' a1.' . $param, $value);
      	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
-        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+        "labels":{"rotation": 0,"function":"yAxisFormatter","style":{"textOverflow":"none"}}
     } ,
     "legend": {
         "enabled": true,

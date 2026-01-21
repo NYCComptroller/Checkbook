@@ -388,9 +388,7 @@ function widget_data_tables_widget_view(&$node) {
       $markup = [
         '#children' => $template->render([ 'node' => $node]),
         '#attached' => [
-          'html_head' => [
-
-          ]
+          'html_head' => [],
         ]
       ];
       return \Drupal::service('renderer')->render($markup);
@@ -530,16 +528,8 @@ function widget_data_tables_add_js($node){
         oTable" . $id  .  ".initAjaxSource = '" . (isset($node->widgetConfig->sAjaxSource) ? $node->widgetConfig->sAjaxSource . CustomURLHelper::_checkbook_append_url_params() : "") . "' ;
 
       " . stripcslashes($node->widgetConfig->customJS ?? null) .
-    ($sticky_header_js ?? '') .//append sticky header js
-    ($scroller_header_js ?? '') .//append scroller headers js
-    "\$j"."('.dataTables_scrollBody').on('scroll', function() {
-       \$j('.sub-table-wrapper').css('position', 'absolute');
-       let width = \$j('table', this).width();
-       let horizontal = \$j(this).scrollLeft();
-       \$j('.childcontracts .sub-table-wrapper').css('width', width);
-       \$j('.childcontracts .sub-table-wrapper').css('left', horizontal);
-       \$j('.childcontracts table').css('left', -1 * horizontal);
-    })" .//
+    ($sticky_header_js ?? '') . // Append sticky header js
+    ($scroller_header_js ?? '') . // Append scroller headers js
     "} );" .
     stripcslashes($node->widgetConfig->customExternalJS ?? null);
 

@@ -72,7 +72,7 @@ class SpendingConfigExtension extends AbstractExtension
     if (isset($node->data) && is_array($node->data)) {
       $output = '';
       foreach ($node->data as $datarow) {
-        $vendor_name = (isset($datarow['legal_name@checkbook:vendor']))? $datarow['legal_name@checkbook:vendor']:$datarow['legal_name@checkbook:prime_vendor'] ;
+        $vendor_name = $datarow['legal_name@checkbook:vendor'] ?? $datarow['legal_name@checkbook:prime_vendor'] ?? $datarow['prime_vendor_name'] ?? NULL;
         $output .= '<tr>
                 <td><div>' . $datarow['document_id'] . '</div></td>
                 <td>' . $datarow['total_spending_amount'] . '</td>
@@ -149,12 +149,12 @@ class SpendingConfigExtension extends AbstractExtension
         $cnt =1;
         foreach ($node->data as $datarow) {
           $months[] = $datarow['month_month_month_name'];
-          echo "<tr>";
-          echo '<td>' . $cnt . '</td>';
-          echo ( $hidePrevLabel ? '' : ('<td>' . $datarow['previous_spending'] . '</td>') );
-          echo '<td>' . $datarow['current_spending'] . '</td>';
-          echo "<td>&nbsp;</td>";
-          echo "</tr>";
+          $output .= "<tr>";
+          $output .= '<td>' . $cnt . '</td>';
+          $output .= ( $hidePrevLabel ? '' : ('<td>' . $datarow['previous_spending'] . '</td>') );
+          $output .= '<td>' . $datarow['current_spending'] . '</td>';
+          $output .= "<td>&nbsp;</td>";
+          $output .= "</tr>";
           $cnt++;
         }
       }

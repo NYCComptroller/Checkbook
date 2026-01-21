@@ -67,7 +67,8 @@ class DefaultController extends ControllerBase {
    * @param $dept
    * @param $expcategory
    * @param $budget_code
-   * @return mixed for budget name based on selected agency, department, expense category, year and budget code
+   * @param $conditional_categories
+   * @return Response|null
    */
   function checkbook_advanced_search_budget_budgetname($fiscal_year, $agency, $dept, $expcategory, $budget_code, $conditional_categories) {
     $params =  array("budget_fiscal_year_id"=>$fiscal_year);

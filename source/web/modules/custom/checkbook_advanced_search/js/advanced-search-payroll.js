@@ -77,7 +77,10 @@
           pay_frequency: pay_frequency
         };
 
-         $("input[name='payroll_employee_name']").autocomplete({source: $.fn.autoCompleteSourceUrl(solr_datasource,'civil_service_title',filters)});
+         $("input[name='payroll_employee_name']").autocomplete({
+           source: $.fn.autoCompleteSourceUrl(solr_datasource,'civil_service_title',filters),
+           delay: 500,
+           minLength: 3});
       }
       //display form depending on domain filter radiobox
       let dataSource = $('input:radio[name=payroll_advanced_search_domain_filter]:checked').val() ? $('input:radio[name=payroll_advanced_search_domain_filter]:checked').val() : "checkbook";

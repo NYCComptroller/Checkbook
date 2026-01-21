@@ -2,8 +2,8 @@
     "serviceName":"ContractsWidgetService",
     "dataFunc":"GetSubContractsBySize",
     "countFunc":"GetCountSubContracts",
-    "table_title":"Contracts by Size",
-    "headerSubTitle":"Contracts",
+    "table_title":"Sub Contracts by Size",
+    "headerSubTitle":"Sub Contracts",
     "table_columns":[
         {"labelAlias":"contract_size","column":"award_size_name","derivedColumn":"contract_size_name_link"},
         {"labelAlias":"num_sub_contracts","column":"total_contracts","format":"number"},

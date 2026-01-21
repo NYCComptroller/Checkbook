@@ -332,14 +332,22 @@ td.sub-cont-status {
   padding-right: 10px;
 }
 td.sub-cont-status div {
-  margin-left:25px !important;
-  margin-right:15px !important;
+  margin-left: 25px !important;
+  margin-right: 15px !important;
 }
 
-.dataTables_scrollBody{position:relative;}
+.dataTables_scrollBody {
+  position:relative;
+  z-index: 0;
+  overflow-y: hidden !important;
+}
 
-.dataTables_scrollBody thead {visibility: hidden;}
+.dataTables_scrollBody thead {
+  visibility: hidden;
+}
+
 /* expandable nested child table styles */
+
 .dataTable td.childcontracts div {
   margin: 0px;
 }
@@ -356,11 +364,19 @@ td.sub-cont-status div {
 .dataTable td.childcontracts .jspPane table td.text-left-padding-scroll div {
   margin: 13px 0 13px 20px;
 }
-td.vers-num div{margin-left:40px;}
+td.vers-num div {
+  padding: 40px;
+}
 .dataTable td.childcontracts .jspPane table td.vers-num div {
   margin: 13px 0px 13px 40px;
 }
-td.expander span.collapsed, td.expander span.expanded, td.expander span.loader, a.showHide, a.showHide.open, .assoc_item span.expanded , .assoc_item span.collapsed ,.assoc_item span.loader{
+td.expander span.collapsed,
+td.expander span.expanded,
+td.expander span.loader,
+a.showHide, a.showHide.open,
+.assoc_item span.expanded,
+.assoc_item span.collapsed,
+.assoc_item span.loader {
   display:block;
   height: 16px;
   width: 16px;
@@ -393,13 +409,14 @@ a.subContractViewAll {
 .dataTable td.childcontracts .jspPane {
   margin-left: 30px !important;
   padding: 0px 14px 0px 0px;
+  z-index: -1;
 }
 .jspVerticalBar {
   background: none repeat scroll 0 0 transparent;
   height: 100%;
-  position: absolute;
+  position: sticky;
   top: 0px;
-  left:0px;
+  left: 0px;
   width: 16px;
 }
 .jspTrack {
@@ -431,21 +448,24 @@ a.subContractViewAll {
 table.dataTable td.childcontracts {
   padding: 0;
   position: relative;
-  height: 100px;
-  overflow: hidden;
 }
+
 td.childcontracts div.sub-table-wrapper {
-  height: 100px;
+  min-height: 53px;
+  max-height: 106px;
   top: 0;
   position: relative;
 }
+
 td.childcontracts div.sub-table-wrapper table {
   position: relative;
 }
+
 td.childcontracts div.sub-table-wrapper table .contract_number {
   position: sticky;
   left: 30px;
 }
+
 td.childcontracts div.sub-table-wrapper table .contract_number::after {
   position: absolute;
   display: block;
@@ -456,11 +476,20 @@ td.childcontracts div.sub-table-wrapper table .contract_number::after {
   width: 30px;
   right: 100%;
 }
+
 .jspScrollable .jspContainer {
   overflow: hidden;
   position: relative;
 }
-.jspScrollable .jspPane{position: absolute;}
+
+.jspScrollable .jspPane {
+  position: absolute;
+}
+
+td.childcontracts div.sub-table-wrapper,
+td.childcontracts div.sub-table-wrapper .jspContainer {
+  overflow: initial !important;
+}
 
 /* Associated Contracts Tables*/
 #assoc_contracts_list_wrapper{

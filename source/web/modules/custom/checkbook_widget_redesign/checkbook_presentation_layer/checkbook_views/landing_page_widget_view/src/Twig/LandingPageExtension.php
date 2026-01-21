@@ -13,7 +13,7 @@ class LandingPageExtension extends AbstractExtension {
   }
 
   public function landing_page_widget_view_add_js_twig($node) {
-    print landing_page_widget_view_add_js($node);
+    return landing_page_widget_view_add_js($node);
   }
 
 }

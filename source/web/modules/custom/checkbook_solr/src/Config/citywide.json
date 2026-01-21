@@ -37,10 +37,6 @@
       "title": "Vendor",
       "autocomplete": true
     },
-    "contract_prime_vendor_name": {
-      "title": "Contract_Prime_Vendor",
-      "autocomplete": true
-    },
     "vendor_type": {
       "title": "Vendor Type",
       "prepare_results": "_checkbook_vendor_type_prepare_labels"

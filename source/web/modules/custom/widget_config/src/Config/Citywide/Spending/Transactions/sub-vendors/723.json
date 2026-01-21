@@ -65,9 +65,8 @@
         "vendor_id",
         "vendor_name",
         "vendor_type",
-        "legal_name@checkbook:sub_vendor",
         "prime_vendor_id",
-        "legal_name@checkbook:prime_vendor",
+        "prime_vendor_name",
         "check_eft_issued_date",
         "agency_name",
         "check_amount",
@@ -96,10 +95,10 @@
     },
     "derivedColumns": {
         "associated_prime_vendor_name":{
-            "expression":"\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['legal_name@checkbook:prime_vendor'], 34)"
+            "expression":"\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['prime_vendor_name'], 34)"
         },
         "associated_prime_vendor_name_export":{
-            "expression":"$row['legal_name@checkbook:prime_vendor']"
+            "expression":"$row['prime_vendor_name']"
         },
         "is_sub_vendor": {
             "expression":"'Yes'"
@@ -154,7 +153,7 @@
         {"labelAlias":"payee_name","column":"payee_name_link","sortSourceColumn":"vendor_name","exportColumn":"payee_name_export"},
         {"labelAlias":"is_sub_vendor","column":"is_sub_vendor","sortSourceColumn":"vendor_type","exportColumn":"is_sub_vendor"},
         {"label":"","column":"","export":false},
-        {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"legal_name@checkbook:prime_vendor","exportColumn":"associated_prime_vendor_name_export"},
+        {"labelAlias":"associated_prime_vendor","column":"associated_prime_vendor_name","sortSourceColumn":"prime_vendor_name","exportColumn":"associated_prime_vendor_name_export"},
         {"labelAlias":"issue_date","column":"issue_date_formatted","sortSourceColumn":"check_eft_issued_date","headerClass":"issuedate","exportColumn":"issue_date_formatted"},
         {"labelAlias":"agency_name","column":"agency_name_link","sortSourceColumn":"agency_name"},
         {"labelAlias":"check_amount","column":"formatted_check_amount","sortSourceColumn":"check_amount","headerClass":"centrig"},

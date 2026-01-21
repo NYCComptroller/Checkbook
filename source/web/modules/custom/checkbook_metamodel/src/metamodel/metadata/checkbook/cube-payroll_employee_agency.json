@@ -163,6 +163,15 @@
                             "sourceColumnName": "pay_date"
                         }
                     ]
+                },
+                {
+                  "name": "month_id",
+                  "levels": [
+                    {
+                      "name": "month_id",
+                      "sourceColumnName": "month_id"
+                    }
+                  ]
                 }
             ],
             "measures":{

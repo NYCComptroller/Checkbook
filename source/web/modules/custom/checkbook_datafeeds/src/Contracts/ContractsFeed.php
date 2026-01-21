@@ -563,10 +563,10 @@ abstract class ContractsFeed
     checkbook_datafeeds_check_ranged_amounts($form_state, 'currentamtfrom', 'currentamtto', 'Current Amount');
 
     if ($form_state->getValue('df_contract_status') != 'pending' && $form_state->getValue('recdatefrom')) {
-      $form_state->setErrorByName('recdatefrom', t('Received Date filter is not available on active or registered contracts.'));
+      $form_state->setErrorByName('recdatefrom', t('Received Date filter is not available on registered contracts.'));
     }
     else if($form_state->getValue('df_contract_status') != 'pending' && $form_state->getValue('recdateto')) {
-      $form_state->setErrorByName('recdateto', t('Received Date filter is not available on active or registered contracts.'));
+      $form_state->setErrorByName('recdateto', t('Received Date filter is not available on registered contracts.'));
     }
     else if ($form_state->getValue('df_contract_status') == 'pending' && !empty($form_state->getValue('regdatefrom'))) {
       $form_state->setErrorByName('spentto', t('Registered1 Date filter is not available on pending contracts.'));

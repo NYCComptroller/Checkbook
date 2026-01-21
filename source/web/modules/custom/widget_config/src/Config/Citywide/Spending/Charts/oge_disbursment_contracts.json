@@ -105,7 +105,9 @@ return $node->data;
 "verticalAlign": "bottom",
 "floating": "true",
 "layout": "horizontal"
-}
+},
+"lineColor": "#ccd6eb",
+"tickColor": "#ccd6eb"
 },
 "series": [{
 "name": "Contract Amount",
@@ -117,7 +119,7 @@ return $node->data;
 "yAxis": {
 "startOnTick":true,
 "title": {"text": ""},
-"labels":{"rotation": 0,"function":"yAxisFormatter"}
+"labels":{"rotation": 0,"function":"yAxisFormatter","style":{"textOverflow":"none"}}
 },
 "legend": {
 "enabled": false,

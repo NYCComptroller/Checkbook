@@ -44,6 +44,7 @@ datatables_ajaxSimple:
     - jquery_ui_dialog/dialog
     - jquery_ui/position
 datatables_dataTableList:
+  version: 1.0.0
   header: true
   js:
     /modules/custom/jquery_plugins/data_tables/1.13.4/js/jquery.dataTables1.13.4.min.js: {}

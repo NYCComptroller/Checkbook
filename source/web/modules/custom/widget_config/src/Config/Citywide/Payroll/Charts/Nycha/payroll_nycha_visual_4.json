@@ -80,7 +80,9 @@ $node->widgetConfig->chartConfig->xAxis->categories = $categories;
 }
 },
 "xAxis": {
-"labels": {"enabled": false}
+"labels": {"enabled": false},
+"lineColor": "#ccd6eb",
+"tickColor": "#ccd6eb"
 },
 "series": [
 {
@@ -95,7 +97,7 @@ $node->widgetConfig->chartConfig->xAxis->categories = $categories;
 "startOnTick":true,
 "min": 0,
 "title": {"text": ""},
-"labels":{"rotation": 0,"function":"yAxisFormatter"}
+"labels":{"rotation": 0,"function":"yAxisFormatter","style":{"textOverflow":"none"}}
 } ,
 "legend": {
 "enabled": false

@@ -120,7 +120,9 @@
     },
     "xAxis": {
         "categories": [0,1,2,3,4,5,6,7,8,9],
-        "labels": {"enabled": false}
+        "labels": {"enabled": false},
+        "lineColor": "#ccd6eb",
+        "tickColor": "#ccd6eb"
     },
     "series": [
         {
@@ -136,7 +138,7 @@
      	"minRange": 0.1,
         "startOnTick":true,
         "title": {"text": ""},
-        "labels":{"rotation": 0,"function":"yAxisFormatter"}
+        "labels":{"rotation": 0,"function":"yAxisFormatter","style":{"textOverflow":"none"}}
     } ,
     "legend": {
         "enabled": false

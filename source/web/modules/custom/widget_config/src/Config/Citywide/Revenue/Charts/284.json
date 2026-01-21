@@ -67,13 +67,15 @@
   },
   "chartConfig":{
     "chart":{
-      "defaultSeriesType":"column"
+      "type":"column"
     },
     "xAxis":{
       "categories":[],
       "title":{
         "text":""
-      }
+      },
+      "lineColor": "#ccd6eb",
+      "tickColor": "#ccd6eb"
     },
     "plotOptions":{
       "series": {
@@ -100,7 +102,10 @@
       },
       "labels":{
         "rotation":0,
-        "function":"yAxisFormatter"
+        "function":"yAxisFormatter",
+        "style": {
+          "textOverflow": "none"
+        }
       }
     },
     "legend":{
@@ -114,6 +119,6 @@
 }
 <function>
 yAxisFormatter^^'formatter' : function(){return yAxisLabelFormatter(this);}##
-tooltipformatter^^'formatter' : function(){return 'Year: ' + this.x + '<br>Amount: ' + abbrNum(this.y, 2, '$');}##
+tooltipformatter^^'formatter' : function(){return 'Year: ' + this.category + '<br>Amount: ' + abbrNum(this.y, 2, '$');}##
 clickEvent^^'click' : function(){location.href = this.url;}##
 </function>

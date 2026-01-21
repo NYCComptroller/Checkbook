@@ -649,15 +649,15 @@ abstract class AbstractSQLDataSourceQueryHandler extends AbstractSQLDataSourceHa
     // Processing prepared sql and returning data.
     LogHelper::log_notice(new StatementLogMessage('cube.query', $sql));
 
+    // Keep query.
+    StatementLogMessageKeeper::$statements['cube.query'][] = preg_replace('/\s+/', ' ', str_replace("\r","",str_replace("\n","",$sql)));
+
     $cacheKey = $cubeName . md5($sql);
     if ($return = _checkbook_dmemcache_get($cacheKey)) {
       LogHelper::log_info("Getting memcache with cachekey " . $cacheKey . " cubeName: $cubeName");
       LogHelper::log_info("Memcached getting SQL: " . $sql);
       return $return;
     }
-
-    //@ToDo
-    StatementLogMessageKeeper::$statements['cube.query'][] = preg_replace('/\s+/', ' ', str_replace("\r","",str_replace("\n","",$sql)));
 
     $return = $this->executeQuery($callcontext, $datasource, $sql, $resultFormatter);
     $cache = FALSE;
