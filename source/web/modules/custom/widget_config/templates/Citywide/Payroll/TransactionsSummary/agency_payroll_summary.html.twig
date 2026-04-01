@@ -1,2 +1,82 @@
-{{ attach_library('widget_config/toggel-pay') }}
-{{ payrollSummary(node) }}
+{{ attach_library('widget_config/payroll-agency-summary') }}
+
+{% set node = payrollSummary(node) %}
+{% set salaried_count = node.salaried_count %}
+{% set non_salaried_count = node.non_salaried_count %}
+{% set default_view = node.default_view %}
+{% set show_agency = node.show_agency %}
+{% set smnid = node.smnid %}
+
+<div class="payroll-emp-wrapper"
+     data-default-view="{{ default_view }}"
+     data-salaried-count="{{ salaried_count }}"
+     data-non-salaried-count="{{ non_salaried_count }}">
+
+  {% for employment_type, employment_data in node.all_data %}
+    {% set class = employment_type | lower %}
+
+    <div class="emp-record-{{ class }}">
+      <div id="emp-agency-detail-records-{{ class }}">
+        {% for record in employment_data %}
+          {% set agency_url = record.data_source == 'NYCHA' ? record.agency_name : record.agency_url %}
+          {% set lbl_total_employees = employment_type == 'Salaried' ? customWidgetLabelNoDiv('total_no_of_sal_employees') | raw | replace({'<br/>': " "}) : customWidgetLabelNoDiv('total_no_of_non_sal_employees') | raw | replace({'<br/>': " "}) %}
+
+          <div class="emp-agency-detail-record">
+            <table id="emp-agency-detail-record-table" class="center-align">
+              {% if show_agency %}
+                <tr>
+                  <td width="55%"><strong>{{ customWidgetLabelNoDiv('agency_name') | raw | replace({'<br/>': " "}) }}</strong>: {{ agency_url | raw }}</td>
+                  <td width="40%"><strong>{{ customWidgetLabelNoDiv('payroll_type') | raw | replace({'<br/>': " "})}}</strong>: {{ employment_type | upper }}</td>
+                </tr>
+              {% else %}
+                <tr>
+                  <td width="60%"><strong>{{ customWidgetLabelNoDiv('payroll_type') | raw | replace({'<br/>': " "})}}</strong>: {{ employment_type | upper }}</td>
+                </tr>
+              {% endif %}
+
+              {% if employment_type == 'Salaried' %}
+                <tr>
+                  <td><strong>{{ customWidgetLabelNoDiv('combined_annual_salary') | raw | replace({'<br/>': " "}) }}</strong>: {{ record.total_annual_salary_formatted }}</td>
+                  <td><strong>{{ customWidgetLabelNoDiv('total_no_of_employees') | raw | replace({'<br/>': " "}) }}</strong>: {{ node.total_employees_formatted }}</td>
+                </tr>
+              {% endif %}
+
+              <tr>
+                <td><strong>{{ customWidgetLabelNoDiv('combined_gross_pay_ytd') | raw | replace({'<br/>': " "})}}</strong>: {{ record.total_gross_pay_formatted }}</td>
+                <td><strong>{{ lbl_total_employees }}</strong>: {{ record.number_employees_formatted }}</td>
+              </tr>
+
+              <tr>
+                <td><strong>{{ customWidgetLabelNoDiv('combined_base_pay_ytd') | raw | replace({'<br/>': " "})}}</strong>: {{ record.total_base_pay_formatted }}</td>
+                <td>
+                  {% if smnid == 322 and record.total_overtime_employees > 0 %}
+                    <strong>{{ customWidgetLabelNoDiv('total_no_of_ot_employees') | raw | replace({'<br/>': " "}) }}:</strong> {{ record.total_overtime_employees_formatted }}
+                  {% endif %}
+                </td>
+              </tr>
+
+              <tr>
+                <td><strong>{{ customWidgetLabelNoDiv('combined_other_pay_ytd') | raw | replace({'<br/>': " "}) }}</strong>: {{ record.total_other_payments_formatted }}</td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td><strong>{{ customWidgetLabelNoDiv('combined_overtime_pay_ytd') | raw | replace({'<br/>': " "}) }}</strong>: {{ record.total_overtime_pay_formatted }}</td>
+                <td></td>
+              </tr>
+            </table>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+
+  {% if salaried_count > 0 and non_salaried_count > 0 %}
+    <div id="toggle-employee-salaried" class="emp-record-salaried toggleEmployee">
+      <strong>Viewing Salaried Details</strong> | <a>View Non-salaried Details</a>
+    </div>
+    <div id="toggle-employee-non-salaried" class="emp-record-non-salaried toggleEmployee">
+      <a>View Salaried Details</a> | <strong>Viewing Non-salaried Details</strong>
+    </div>
+  {% endif %}
+</div>

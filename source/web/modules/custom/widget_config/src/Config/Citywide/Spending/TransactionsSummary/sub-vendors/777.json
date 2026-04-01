@@ -35,6 +35,19 @@
         "subvendor":"vendor_id"
     },
     "defaultParameters":{"is_prime_or_sub":"S"},
+    "preProcessConfiguration":"
+    $month = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('month');
+    $title = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle();
+    $catName = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageCategoryName();
+    if($month >0){
+    $node->widgetConfig->template='spending_date_summary';
+    $node->widgetConfig->templateTitleEval= $title;
+    $node->widgetConfig->catName= $catName;
+    }
+      else{
+    $node->widgetConfig->template='spending_transaction_total_amount';
+    }
+    ",
     "paramTypeConfig":{"checkamtr":"rangeid","checkamt":"range","chkdate":"range","captprj":"like","vendornm":"like",
         "contnum":"like","bdgcodenm":"like","expdoc":"like","syear":"le","scalyear":"le",
         "budname":"like","comline":"like","entcontnum":"like","scomline":"le",

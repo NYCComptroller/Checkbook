@@ -44,8 +44,9 @@ class SpendingBottomSliderExtension extends AbstractExtension
       if (RequestUtilities::get("category") == $id || (RequestUtilities::get("category") == "" && $id == 0)) {
         $active_class = ' active';
       }
-      $link = ($categories[$id]['amount'] > 0) ? SpendingUtil::prepareSpendingBottomNavFilter("spending_landing", (($id == 0) ? null : $id)) : false;
-      $amount = FormattingUtilities::custom_number_formatter_format($categories[$id]['amount'], 1, '$');
+      $category_amount = $categories[$id]['amount'] ?? 0;
+      $link = ($category_amount > 0) ? SpendingUtil::prepareSpendingBottomNavFilter("spending_landing", (($id == 0) ? null : $id)) : false;
+      $amount = FormattingUtilities::custom_number_formatter_format($category_amount, 1, '$');
       $category_name = $name;
 
       $bottom_navigation_render[$category_name] = array(

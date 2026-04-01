@@ -70,10 +70,10 @@
     },
     "derivedColumns": {
         "current_spending": {
-            "expression": "  ($row['current_check_amount_sum']==null)?'0':$row['current_check_amount_sum']"
+            "expression": " $row['current_check_amount_sum'] ?? 0"
         },
         "previous_spending": {
-            "expression": "  ($row['previous_check_amount_sum']==null)?'0':$row['previous_check_amount_sum']"
+            "expression": " $row['previous_check_amount_sum'] ?? 0"
         }
     },
     "datasets" : [

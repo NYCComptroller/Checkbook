@@ -30,14 +30,27 @@ use Symfony\Component\HttpFoundation\Response;
  * @param $form_state
  */
 function _checkbook_smart_search_submit($form, &$form_state) {
+
   $solr_datasource = Datasource::getCurrentSolrDatasource();
   $search_term = trim($form_state->getValue('search_box'));
-  if ($search_term == 'Type ahead search') {
-    $search_term = '';
+
+  // Prevent placeholder or empty searches
+  if ($search_term === 'Type ahead search' || empty($search_term)) {
+    \Drupal::messenger()->addError(t('Search term cannot be empty.'));
+    return;
   }
-  $search_term = ($search_term) ? $search_term : '';
-  $form_state->setRedirect('checkbook_smart_search.get_results', [
-    'solr_datasource' => $solr_datasource,
+
+  // Prevent searches shorter than 3 characters
+  if (strlen($search_term) < 3) {
+    \Drupal::messenger()->addError(t('Search term must contain at least 3 characters.'));
+    return;
+  }
+
+  // Redirect if valid
+  $form_state->setRedirect(
+    'checkbook_smart_search.get_results',
+    [
+      'solr_datasource' => $solr_datasource,
       'search_term' => urlencode($search_term)
     ]
   );
@@ -465,27 +478,46 @@ function _checkbook_vendor_type_prepare_labels($results){
  * @param null $count
  * @return string
  */
-function _checkbook_smart_search_clear_url(string $solr_datasource,$facetName, $facetValue = null, $count = null){
+function _checkbook_smart_search_clear_url(string $solr_datasource, $facetName, $facetValue = null, $count = null){
 
   $searchArgs = \Drupal::request()->query->get('search_term');
+
+  // Block empty search
+  if (!$searchArgs) {
+    return "/smart_search/" . $solr_datasource;
+  }
+
+  $searchTerms = explode('*!*', $searchArgs);
+  $keyword = trim($searchTerms[0]);
+
+  // Block searches shorter than 3 characters
+  if (strlen($keyword) < 3) {
+    return "/smart_search/" . $solr_datasource;
+  }
+
   $clearArgURL = "/smart_search/".$solr_datasource."?search_term=";
   $clearURL = "";
-  $searchTerms = explode('*!*', $searchArgs);
+
   if ($facetName == 'search_term') {
     for ($i = 1; $i < count($searchTerms); $i++) {
       $search_params = explode('=', $searchTerms[$i]);
-      //$search_params[1] = urldecode($search_params[1]);
       $clearURL .= "*!*" . $search_params[0] . '=' . urlencode($search_params[1]);
     }
-
     $clearArgURL .= $clearURL;
+
   } else {
+
     $clearArgURL .= $searchTerms[0];
     $contractsFlag = false;
+
     for ($i = 1; $i < count($searchTerms); $i++) {
+
       $facets = explode('=', $searchTerms[$i]);
+
       if ($facets[0] != $facetName) {
+
         if ($facetName == 'domains' && $facetValue == 'contracts') {
+
           if ($facets[0] == 'contract_categories' || $facets[0] == 'contract_status') {
             $clearArgURL .= "";
           } else {
@@ -493,11 +525,13 @@ function _checkbook_smart_search_clear_url(string $solr_datasource,$facetName, $
           }
 
         } else if ($facetName == 'domains' && $facetValue == 'spending') {
+
           if ($facets[0] == 'spending_categories') {
             $clearArgURL .= "";
           } else {
             $clearArgURL .= '*!*' . $facets[0] . '=' . urlencode($facets[1]);
           }
+
         } else {
           $clearArgURL .= '*!*' . $facets[0] . '=' . urlencode($facets[1]);
         }
@@ -507,21 +541,25 @@ function _checkbook_smart_search_clear_url(string $solr_datasource,$facetName, $
         if ($facets[0] == $facetName)
           $remove_arg = $facets[1];
       }
+
       if ($facets[0] == 'domains' && ($facets[1] == 'contracts' || $facets[1] == 'spending')) {
         $contractsFlag = true;
       }
     }
 
     if ($contractsFlag && ($facetName != 'domains' && ($facetValue != 'contracts' || $facetName != 'spending'))) {
-      if ($facetName == 'contract_categories' || $facetName == 'contract_status' || $facetName == 'spending_categories') {
-        $contQueryString = "";
 
+      if ($facetName == 'contract_categories' || $facetName == 'contract_status' || $facetName == 'spending_categories') {
+
+        $contQueryString = "";
         $contArgs = explode('~', $remove_arg);
+
         foreach ($contArgs as $key => $value) {
           if ($value != urlencode($facetValue)) {
             $contQueryString .= urlencode($value) . "~";
           }
         }
+
         $contQueryString = substr($contQueryString, 0, -1);
         $clearArgURL .= ($count > 1) ? ('*!*' . $facetName . '=' . $contQueryString) : "";
       }

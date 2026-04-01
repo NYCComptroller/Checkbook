@@ -1,28 +1,56 @@
 # year list
 year-list:
-  header: true
+  version: 1.x
   css:
     theme:
-      /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.css: { }
+      /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.css: { weight: -10 }
   js:
-    /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.jquery.js: { }
-    /modules/custom/checkbook_project/js/year_select_redirection.js: { }
+    /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.jquery.js: { weight: -5 }
+    /modules/custom/checkbook_project/js/year_select_redirection.js: {}
   dependencies:
-    - core/drupal
     - core/jquery
-toggel-pay:
-  header: true
+    - core/drupal
+    - core/drupalSettings
+
+payroll-employee:
+  version: 1.x
   js:
-    /modules/custom/jquery_plugins/jquery.searchabledropdown/chosen.jquery.js: {}
+    js/payroll-employee.js: {}
   dependencies:
-    - core/drupal
     - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+    - nyccheckbook/global-styling
+
+payroll-month-summary:
+  version: 1.x
+  js:
+    js/payroll-month-summary.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+
+payroll-agency-summary:
+  version: 1.x
+  js:
+    js/payroll-agency-summary.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once
+    - nyccheckbook/global-styling
+
 checkbook_project.contracts:
-  header: true
+  version: 1.x
   js:
     /modules/custom/checkbook_project/js/contracts.js: {}
   dependencies:
     - core/jquery
+    - core/drupal
+
 datatables_ajaxSimple:
   header: true
   js:
@@ -43,6 +71,7 @@ datatables_ajaxSimple:
     - jquery_ui/widget
     - jquery_ui_dialog/dialog
     - jquery_ui/position
+
 datatables_dataTableList:
   version: 1.0.0
   header: true

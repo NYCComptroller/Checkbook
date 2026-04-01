@@ -47,7 +47,7 @@
     </thead>
     <tbody>
 
-    {{ uncollectedParkingViolationFee(data.table_rows, data.years) }}
+    {{ uncollectedParkingViolationFee(data.table_rows, data.years) | raw }}
 
     </tbody>
 </table>

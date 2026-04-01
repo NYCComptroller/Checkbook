@@ -28,7 +28,7 @@ use Drupal\checkbook_solr\CheckbookSolr;
 
 class ContractsSmartUtil {
 
-  public static function displayContractsResult($contracts_results, $solr_datasource) {
+  public static function displayContractsResult($contracts_results, $solr_datasource) :array {
 
     $contracts_parameter_mapping = (array) CheckbookSolr::getSearchFields($solr_datasource, 'contracts');
 
@@ -37,6 +37,39 @@ class ContractsSmartUtil {
     $isOge = $isNycha || $isEdc;
     $current_year_id = CheckbookDateUtil::getCurrentFiscalYearId();
 
+    // Safely resolve commonly used fields once
+    $contract_status_raw    = $contracts_results['contract_status']           ?? '';
+    $contract_category_name = strtolower($contracts_results['contract_category_name'] ?? '');
+    $agency_id              = $contracts_results['agency_id']                 ?? '';
+    $vendor_id              = $contracts_results['vendor_id']                 ?? '';
+    $vendor_name            = $contracts_results['vendor_name']               ?? '';
+    $is_prime_or_sub        = $contracts_results['is_prime_or_sub']           ?? '';
+    $is_minority_vendor     = $contracts_results['is_minority_vendor']        ?? '';
+    $minority_type_name     = $contracts_results['minority_type_name']        ?? '';
+    $minority_type_id       = $contracts_results['minority_type_id']          ?? '';
+    $document_code          = $contracts_results['document_code']             ?? '';
+    $original_agreement_id  = $contracts_results['original_agreement_id']    ?? '';
+    $master_agreement_id    = $contracts_results['master_agreement_id']       ?? '';
+    $contract_type_code     = $contracts_results['contract_type_code']        ?? '';
+    $oge_agency_id          = $contracts_results['oge_agency_id']             ?? '';
+    $contract_number        = $contracts_results['contract_number']           ?? '';
+    $parent_contract_number = $contracts_results['parent_contract_number']    ?? '';
+    $fms_pending_number     = $contracts_results['fms_pending_contract_number'] ?? '';
+    $document_version       = $contracts_results['document_version']          ?? '';
+    $contract_orig_agr_id   = $contracts_results['contract_original_agreement_id'] ?? '';
+    $agreement_end_year_id  = $contracts_results['agreement_end_year_id']     ?? 0;
+    $agreement_type_name    = $contracts_results['agreement_type_name']       ?? '';
+
+    $contract_status        = '';
+    $reg_fiscal_year        = '';
+    $reg_fiscal_year_id     = '';
+    $agency_link            = '';
+    $vendor_link            = '';
+    $contract_id_link       = '';
+    $master_contract_id_link = '';
+    $linkable_fields        = [];
+
+    // --- Registered contracts ---
     if (strtolower($contracts_results['contract_status']) == 'registered') {
       $contract_status = 'Registered';
       $reg_fiscal_year = $contracts_results['registered_fiscal_year'];
@@ -46,293 +79,277 @@ class ContractsSmartUtil {
       $landing_page_url =  $landing_page . "/status/R/yeartype/B/year/" . $reg_fiscal_year_id;
 
       if ($isOge) {
-        $vendor_link = $landing_page_url . '/datasource/checkbook_oge/agency/' . $contracts_results['agency_id'] . '/vendor/' . $contracts_results['vendor_id'];
-        $agency_link = $landing_page_url . '/datasource/checkbook_oge/agency/' . $contracts_results['agency_id'];
+        $vendor_link = $landing_page_url . '/datasource/checkbook_oge/agency/' . $agency_id . '/vendor/' . $vendor_id;
+        $agency_link = $landing_page_url . '/datasource/checkbook_oge/agency/' . $agency_id;
       }
       else {
-        if ($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'Yes') {
-          $vendor_link = $landing_page_url . '/subvendor/' . $contracts_results['vendor_id'] . "/dashboard/ss";
+        if ($is_minority_vendor === 'Y' && $is_prime_or_sub === 'Yes') {
+          $vendor_link = $landing_page_url . '/subvendor/' . $vendor_id . '/dashboard/ss';
+        }
+        elseif ($is_minority_vendor === 'Y' && $is_prime_or_sub === 'No') {
+          $vendor_link = $landing_page_url . '/mwbe/1~2~3~4~5~10~6~9~99/dashboard/mp/vendor/' . $vendor_id;
+        }
+        elseif ($is_minority_vendor === 'N' && $is_prime_or_sub === 'Yes') {
+          $vendor_link = $landing_page_url . '/subvendor/' . $vendor_id . '/dashboard/ss';
         }
         else {
-          if ($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'No') {
-            $vendor_link = $landing_page_url . "/mwbe/1~2~3~4~5~10~6~9~99/dashboard/mp/vendor/" . $contracts_results["vendor_id"];
-          }
-          else {
-            if ($contracts_results["is_minority_vendor"] == 'Y' && $contracts_results["is_prime_or_sub"] == 'Yes') {
-              $vendor_link = $landing_page_url . "/mwbe/1~2~3~4~5~10~6~9~99/dashboard/ms/subvendor/" . $contracts_results["vendor_id"];
-            }
-            else {
-              if ($contracts_results["is_minority_vendor"] == 'N' && $contracts_results["is_prime_or_sub"] == 'Yes') {
-                $vendor_link = $landing_page_url . "/subvendor/" . $contracts_results["vendor_id"] . "/dashboard/ss";
-              }
-              else {
-                $vendor_link = $landing_page_url . '/vendor/' . $contracts_results['vendor_id'];
-              }
-            }
-          }
+          $vendor_link = $landing_page_url . '/vendor/' . $vendor_id;
         }
-        $agency_link = $landing_page_url . '/agency/' . $contracts_results['agency_id'];
+        $agency_link = $landing_page_url . '/agency/' . $agency_id;
       }
 
-      $contract_id_link = $landing_page . "/status/R";
+      // Build contract_id_link
+      $contract_id_link      = $landing_page . '/status/R';
       $contract_id_link_year = '/year/' . $reg_fiscal_year_id;
+      $oge_agency_segment    = $isOge ? '/datasource/checkbook_oge/agency/' . $oge_agency_id : '';
 
-      if (isset($contracts_results['is_prime_or_sub']) && $contracts_results['is_prime_or_sub'] == 'Yes') {
-        $contract_id_link .= $contract_id_link_year . (($isOge) ? '/datasource/checkbook_oge/agency/' . $contracts_results['oge_agency_id'] : '') . "/dashboard/ss?expandBottomContURL=/contract_details";
+      if ($is_prime_or_sub === 'Yes') {
+        $contract_id_link .= $contract_id_link_year . $oge_agency_segment . '/dashboard/ss?expandBottomContURL=/contract_details';
       }
       else {
-        $contract_id_link .= $contract_id_link_year . (($isOge) ? '/datasource/checkbook_oge/agency/' . $contracts_results['oge_agency_id'] : '') . "?expandBottomContURL=/contract_details";
+        $contract_id_link .= $contract_id_link_year . $oge_agency_segment . '?expandBottomContURL=/contract_details';
       }
-      if ($contracts_results['document_code'] == 'MA1' || $contracts_results['document_code'] == 'MMA1' || $contracts_results['document_code'] == 'RCT1') {
-        $contract_id_link .= "/magid/" . $contracts_results['original_agreement_id'] . "/doctype/" . $contracts_results["document_code"];
+
+      if (in_array($document_code, ['MA1', 'MMA1', 'RCT1'])) {
+        $contract_id_link .= '/magid/' . $original_agreement_id . '/doctype/' . $document_code;
       }
       else {
-        if (!empty($contracts_results['master_agreement_id'])) {
-          $master_contract_id_link = $contract_id_link . "/magid/" . $contracts_results['master_agreement_id'] . "/doctype/MMA1";
+        if (!empty($master_agreement_id)) {
+          $master_contract_id_link = $contract_id_link . '/magid/' . $master_agreement_id . '/doctype/MMA1';
         }
-
-        if (isset($contracts_results['is_prime_or_sub']) && $contracts_results['is_prime_or_sub'] == 'Yes') {
-          $contract_id_link .= "/agid/" . $contracts_results['contract_original_agreement_id'] . "/doctype/" . $contracts_results["document_code"];
-        }
-        else {
-          $contract_id_link .= "/agid/" . $contracts_results['original_agreement_id'] . "/doctype/" . $contracts_results["document_code"];
-        }
-      }
-      $contract_id_link = ($isOge) ? $contract_id_link . '/datasource/checkbook_oge' : $contract_id_link;
-
-      if ($contracts_results['original_agreement_id']) {
-        if(!isset($master_contract_id_link)) {$master_contract_id_link = '';};
-        $contracts_results['contract_number'] = "<a href='" . $contract_id_link . "'>" . $contracts_results['contract_number'] . "</a>";
-        $master_contract_id_link = ($isOge) ? $master_contract_id_link . '/datasource/checkbook_oge' : $master_contract_id_link;
-        if(isset($contracts_results['parent_contract_number'])) {
-          $contracts_results['parent_contract_number'] = "<a href='" . $master_contract_id_link . "'>" . $contracts_results['parent_contract_number'] . "</a>";
-        }
+        $agid = ($is_prime_or_sub === 'Yes') ? $contract_orig_agr_id : $original_agreement_id;
+        $contract_id_link .= '/agid/' . $agid . '/doctype/' . $document_code;
       }
 
-    }
-    else {
-      if (strtolower($contracts_results['contract_status']) == 'pending') {
-        $current_year = "/yeartype/B/year/" . $current_year_id;
-        if (strtolower($contracts_results['contract_category_name']) == 'expense') {
-          $agency_link = "/contracts_pending_exp_landing" . $current_year . "/agency/" . $contracts_results['agency_id'];
-          $vendor_link = "/contracts_pending_exp_landing" . $current_year . "/vendor/" . $contracts_results['vendor_id'];
-          $contract_id_link = "/contracts_pending_exp_landing";
-
-        }
-        else {
-          $agency_link = "/contracts_pending_rev_landing" . $current_year . "/agency/" . $contracts_results['agency_id'];
-          $vendor_link = "/contracts_pending_rev_landing" . $current_year . "/vendor/" . $contracts_results['vendor_id'];
-          $contract_id_link = "/contracts_pending_rev_landing";
-        }
-
-        if ($contracts_results['original_agreement_id']) {
-          $contract_id_link .= CustomURLHelper::_checkbook_project_get_year_url_param_string() . (($isOge) ? '/datasource/checkbook_oge/agency/' . $contracts_results['agency_id'] : '') . "?expandBottomContURL=/contract_details";
-          if ($contracts_results['document_code'] == 'MA1' || $contracts_results['document_code'] == 'MMA1' || $contracts_results['document_code'] == 'RCT1') {
-            $contract_id_link .= "/magid/" . $contracts_results['original_agreement_id'] . "/doctype/" . $contracts_results["document_code"];
-          }
-          else {
-            $master_contract_id_link = $contract_id_link . "/magid/" . $contracts_results['master_agreement_id'] . "/doctype/MMA1";
-            $contract_id_link .= "/agid/" . $contracts_results['original_agreement_id'] . "/doctype/" . $contracts_results["document_code"];
-          }
-          $contracts_results['contract_number'] = "<a href='" . $contract_id_link . "'>" . $contracts_results['contract_number'] . "</a>";
-          $contracts_results['parent_contract_number'] = "<a href='" . $master_contract_id_link . "'>" . $contracts_results['parent_contract_number'] . "</a>";
-        }
-        else {
-          $contract_id_link .= CustomURLHelper::_checkbook_project_get_year_url_param_string() . "?expandBottomContURL=/minipanels/pending_contract_transactions/contract/" .
-            $contracts_results['fms_pending_contract_number'] . "/version/" . $contracts_results['document_version'];
-          $contracts_results['contract_number'] = "<a href='" . $contract_id_link . "'>" . $contracts_results['contract_number'] . "</a>";
-          $contracts_results['parent_contract_number'] = "<a href='" . ($master_contract_id_link ?? '') . "'>" . $contracts_results['parent_contract_number'] . "</a>";
-        }
-
-        $contracts_results['status'] = "Pending";
+      if ($isOge) {
+        $contract_id_link        .= '/datasource/checkbook_oge';
+        $master_contract_id_link .= '/datasource/checkbook_oge';
       }
     }
 
-    if ($isOge && !in_array($contracts_results['contract_type_code'], [
-        'MMA1',
-        'MA1'
-      ])) {
+    // --- Pending contracts ---
+    elseif (strtolower($contract_status_raw) === 'pending') {
+      $current_year = '/yeartype/B/year/' . $current_year_id;
+
+      if ($contract_category_name === 'expense') {
+        $base         = '/contracts_pending_exp_landing';
+        $agency_link  = $base . $current_year . '/agency/' . $agency_id;
+        $vendor_link  = $base . $current_year . '/vendor/' . $vendor_id;
+      }
+      else {
+        $base         = '/contracts_pending_rev_landing';
+        $agency_link  = $base . $current_year . '/agency/' . $agency_id;
+        $vendor_link  = $base . $current_year . '/vendor/' . $vendor_id;
+      }
+
+      $year_url = CustomURLHelper::_checkbook_project_get_year_url_param_string();
+      $oge_segment = $isOge ? '/datasource/checkbook_oge/agency/' . $agency_id : '';
+
+      if (!empty($original_agreement_id)) {
+        $contract_id_link = $base . $year_url . $oge_segment . '?expandBottomContURL=/contract_details';
+
+        if (in_array($document_code, ['MA1', 'MMA1', 'RCT1'])) {
+          $contract_id_link .= '/magid/' . $original_agreement_id . '/doctype/' . $document_code;
+        }
+        else {
+          $master_contract_id_link = $contract_id_link . '/magid/' . $master_agreement_id . '/doctype/MMA1';
+          $contract_id_link       .= '/agid/' . $original_agreement_id . '/doctype/' . $document_code;
+        }
+      }
+      else {
+        $contract_id_link = $base . $year_url
+          . '?expandBottomContURL=/minipanels/pending_contract_transactions/contract/'
+          . $fms_pending_number . '/version/' . $document_version;
+      }
+    }
+
+    // --- Build linkable_fields ---
+    if ($isOge && !in_array($contract_type_code, ['MMA1', 'MA1'])) {
       $linkable_fields = [
-        "oge_contracting_agency_name" => $agency_link,
-        "agency_name" => $agency_link,
-        "vendor_name" => $vendor_link,
+        'oge_contracting_agency_name' => $agency_link,
+        'agency_name'                 => $agency_link,
+        'vendor_name'                 => $vendor_link,
       ];
     }
     elseif (!$isOge) {
       $linkable_fields = [
-        "agency_name" => $agency_link,
-        "vendor_name" => $vendor_link,
+        'agency_name' => $agency_link,
+        'vendor_name' => $vendor_link,
       ];
     }
 
-    // for contracts with fiscal year 2009 and earlier, links should be disabled
-    if ($contract_status == 'Registered' && $reg_fiscal_year < 2010) {
+    // Disable links for old registered contracts
+    if ($contract_status === 'Registered' && $reg_fiscal_year < 2010) {
       $linkable_fields = [];
     }
 
+    // NYCHA overrides
     if ($isNycha) {
-      $contract_id_link = '/nycha_contracts/year/' . $current_year_id .
-        '/datasource/checkbook_nycha/agency/162?expandBottomContURL=/nycha_contract_details/contract/' . $contracts_results['contract_number'];
-      //Year logic for NYCHA Vendor link
-      if ($contracts_results['agreement_end_year_id'] > $current_year_id) {
-        $nycha_year_id = $current_year_id;
-      }
-      else {
-        $nycha_year_id = $contracts_results['agreement_end_year_id'];
-      }
-      // display '-' for start-date and end-date nycchkbk - 9264
-      if ($contracts_results['agreement_type_name'] == 'PURCHASE ORDER') {
-        $contracts_results['start_date'] = $contracts_results['agreement_start_date'];
-        $contracts_results['end_date'] = $contracts_results['agreement_end_date'];
+      $contract_id_link = '/nycha_contracts/year/' . $current_year_id
+        . '/datasource/checkbook_nycha/agency/162?expandBottomContURL=/nycha_contract_details/contract/' . $contract_number;
 
-      }
-
-      $vendor_link = '/nycha_contracts/year/' . $nycha_year_id . '/agency/162/datasource/checkbook_nycha/vendor/' . $contracts_results['vendor_id'];
-      $linkable_fields = ["vendor_name" => $vendor_link,];
-    }
-    if ($isOge && in_array($contracts_results['contract_type_code'], ['MMA1'])) {
-      $contracts_parameter_mapping['oge_contracting_agency_name'] = "Contracting Agency";
+      $nycha_year_id = ($agreement_end_year_id > $current_year_id) ? $current_year_id : $agreement_end_year_id;
+      $vendor_link   = '/nycha_contracts/year/' . $nycha_year_id . '/agency/162/datasource/checkbook_nycha/vendor/' . $vendor_id;
+      $linkable_fields = ['vendor_name' => $vendor_link];
     }
 
-    $contracts_results["registration_date"] = ($isOge) ? "N/A" : $contracts_results["registration_date"];
+    // OGE MMA1 label override
+    if ($isOge && $contract_type_code === 'MMA1') {
+      $contracts_parameter_mapping['oge_contracting_agency_name'] = 'Contracting Agency';
+    }
 
     $date_fields = [
-      "start_date_orig",
-      "end_date_orig",
-      "received_date",
-      "registration_date",
-      "start_date",
-      "end_date",
-      "release_approved_date"
+      'start_date_orig', 'end_date_orig', 'received_date', 'registration_date',
+      'start_date', 'end_date', 'release_approved_date',
     ];
 
     $amount_fields = [
-      "agreement_original_amount",
-      "agreement_total_amount",
-      "agreement_spend_to_date",
-      "release_original_amount",
-      "release_total_amount",
-      "release_spend_to_date",
-      "release_line_original_amount",
-      "release_line_total_amount",
-      "release_line_spend_to_date",
-      "current_amount",
-      "original_amount",
-      "invoiced_amount"
+      'agreement_original_amount', 'agreement_total_amount', 'agreement_spend_to_date',
+      'release_original_amount',   'release_total_amount',   'release_spend_to_date',
+      'release_line_original_amount', 'release_line_total_amount', 'release_line_spend_to_date',
+      'current_amount', 'original_amount', 'invoiced_amount',
     ];
 
-    $out = "<div class=\"search-result-fields\"><div class=\"grid-row\">";
+    // NYCHA purchase order date fix
+    if ($isNycha && $agreement_type_name === 'PURCHASE ORDER') {
+      $contracts_results['start_date'] = $contracts_results['agreement_start_date'] ?? '';
+      $contracts_results['end_date']   = $contracts_results['agreement_end_date']   ?? '';
+    }
+
+    $contracts_results['registration_date'] = $isOge ? 'N/A' : ($contracts_results['registration_date'] ?? '');
+
+    // --- Build structured fields array ---
+    $fields = [];
+    $is_in_newwindow = preg_match('/newwindow/', RequestUtilities::getCurrentPageUrl());
+
     foreach ($contracts_parameter_mapping as $key => $title) {
-      unset($value);
-      if ($key == 'expenditure_object_name') {
-        $value = "";
-        foreach ($contracts_results[$key] as $a => $b) {
-          $value .= strip_tags($b) . ',';
-        }
-        $value = substr($value, 0, -1);
+      if (!$title) {
+        continue;
+      }
+
+      $value = '';
+
+      // Safely get value
+      if ($key === 'expenditure_object_name') {
+        $parts = $contracts_results[$key] ?? [];
+        $value = implode(',', array_map('strip_tags', (array) $parts));
       }
       else {
-        if (isset($contracts_results[$key])) {
-          $value = $contracts_results[$key];
-        }
+        $value = $contracts_results[$key] ?? '';
       }
 
       if (is_array($value)) {
         $value = implode(', ', $value);
       }
 
-      $temp = '';
-      if (isset($searchTerm)) {
-        $temp = substr($value, strpos(strtoupper($value), strtoupper($searchTerm)), strlen($searchTerm));
-      }
+      $title_link    = NULL;
+      $value_link    = NULL;
+      $is_new_window = FALSE;
+      $minority_link = NULL;
 
       switch ($key) {
-        case "contract_number":
-          $value = "<a href='" . $contract_id_link . "'>" . $contracts_results['contract_number'] . "</a>";
+        case 'contract_number':
+          $value_link = $contract_id_link ?: NULL;
           break;
 
-        case "parent_contract_number":
-          $value = $master_contract_id_link ? "<a href='" . $master_contract_id_link . "'>" . $contracts_results['parent_contract_number'] . "</a>" : $contracts_results['parent_contract_number'];
-          if (!preg_match("/newwindow/", RequestUtilities::getCurrentPageUrl()) &&
-              in_array($contracts_results['document_code'], ['MA1', 'MMA1', 'DO1', 'CTA1'])) {
-            $title = "<a href='https://comptroller.nyc.gov/reports/contract-primer/#master-agreements' target='_blank'>" . $title . "</a>";
+        case 'parent_contract_number':
+          // FIX: use pre-resolved $parent_contract_number variable, not $contracts_results[]
+          $value      = $parent_contract_number ?? '';
+          $value_link = $master_contract_id_link ?: NULL;
+          if (!$is_in_newwindow && in_array($document_code, ['MA1', 'MMA1', 'DO1', 'CTA1'])) {
+            $title_link = 'https://comptroller.nyc.gov/reports/contract-primer/#master-agreements';
           }
           break;
 
-        case "award_method_name":
-          if (!preg_match("/newwindow/", RequestUtilities::getCurrentPageUrl())) {
-            $title = "<a href='https://comptroller.nyc.gov/reports/contract-primer/#contract-categories-overview' target='_blank'>" . $title . "</a>";
+        case 'award_method_name':
+          if (!$is_in_newwindow) {
+            $title_link = 'https://comptroller.nyc.gov/reports/contract-primer/#contract-categories-overview';
           }
           break;
-        default:
-          if (isset($searchTerm)) {
-            $value = str_ireplace($searchTerm, '<em>' . $temp . '</em>', $value);
-          }
       }
-
+      // Format amounts
       if (in_array($key, $amount_fields)) {
         $value = FormattingUtilities::custom_number_formatter_format($value, 2, '$');
+        $value_link = NULL; // amounts are never linked
       }
+      // Format dates
       elseif (in_array($key, $date_fields)) {
-        if ($value != NULL && $value != "N/A") {
-          $value = date("F j, Y", strtotime(substr($value, 0, 10)));
+        if ($value !== NULL && $value !== 'N/A' && $value !== '') {
+          $value = date('F j, Y', strtotime(substr($value, 0, 10)));
         }
-        elseif ($value == NULL) {
+        elseif ($value === NULL || $value === '') {
           $value = '-';
         }
+        $value_link = NULL;
       }
-      elseif (is_array($linkable_fields) && array_key_exists($key, $linkable_fields)) {
-        $value = "<a href='" . $linkable_fields[$key] . "'>" . $value . "</a>";
-      }
-
-      if (!$isOge && $key == "vendor_name") {
-        $sub_vendor_label = !str_contains(RequestUtilities::getCurrentPageUrl(), "newwindow") ? "<a href='https://comptroller.nyc.gov/reports/contract-primer/#subcontracts' target='_blank'>Sub Vendor</a>" : "Sub Vendor";
-        $title = ($contracts_results["is_prime_or_sub"] == 'Yes') ? $sub_vendor_label : "Prime Vendor";
+      // Linkable fields (agency/vendor) — only if not already set by switch
+      elseif ($value_link === NULL && array_key_exists($key, $linkable_fields)) {
+        $value_link = $linkable_fields[$key];
       }
 
-      if ($key == "minority_type_name" && !$contracts_results["minority_type_name"]) {
-        $value = 'N/A';
-      }
-      elseif ($key == "minority_type_name" && $contracts_results["minority_type_name"]) {
-        $id = $contracts_results["minority_type_id"];
-        if ($id == '4' || $id == '5' || $id == '10') {
-          $id = '4~5~10';
-        }
-        if ($contracts_results['minority_type_id'] != '7' && $contracts_results['minority_type_id'] != '11') {
-          if ($contracts_results['is_prime_or_sub'] == 'Yes') {
-            $value = "<a href='/contracts_landing/status/R/yeartype/B/year/" . $reg_fiscal_year_id . "/mwbe/" . $id . "/dashboard/ms'>" . $contracts_results["minority_type_name"] . "</a>";
-          }
-          else {
-            if (strtolower($contracts_results['contract_status']) == 'pending') {
-              $value = "<a href='/contracts_pending_exp_landing/yeartype/B/year/" . $current_year_id . "/mwbe/" . $id . "/dashboard/mp'>" . $contracts_results["minority_type_name"] . "</a>";
-            }
-            else {
-              $value = "<a href='/contracts_landing/status/R/yeartype/B/year/" . $reg_fiscal_year_id . "/mwbe/" . $id . "/dashboard/mp'>" . $contracts_results["minority_type_name"] . "</a>";
-            }
-          }
-          if ($contract_status == 'Registered' && $reg_fiscal_year < 2010) {
-            $value = $contracts_results["minority_type_name"];
+      // Vendor label override
+      $vendor_title_link = NULL;
+      if (!$isOge && $key === 'vendor_name') {
+        if ($is_prime_or_sub === 'Yes') {
+          $title = 'Sub Vendor';
+          if (!$is_in_newwindow) {
+            $vendor_title_link = 'https://comptroller.nyc.gov/reports/contract-primer/#subcontracts';
           }
         }
         else {
-          $value = $contracts_results["minority_type_name"];
+          $title = 'Prime Vendor';
         }
+        $title_link = $vendor_title_link;
       }
 
-      if ($key == "contract_class_description") {
-        $value = $value ?: 'N/A';
+      // Minority type
+      if ($key === 'minority_type_name') {
+        if (empty($minority_type_name)) {
+          $value = 'N/A';
+        }
+        else {
+          $mwbe_id = $minority_type_id;
+          if (in_array($mwbe_id, ['4', '5', '10'])) {
+            $mwbe_id = '4~5~10';
+          }
+          if (!in_array($minority_type_id, ['7', '11'])) {
+            if ($is_prime_or_sub === 'Yes') {
+              $minority_link = '/contracts_landing/status/R/yeartype/B/year/' . $reg_fiscal_year_id . '/mwbe/' . $mwbe_id . '/dashboard/ms';
+            }
+            elseif (strtolower($contract_status_raw) === 'pending') {
+              $minority_link = '/contracts_pending_exp_landing/yeartype/B/year/' . $current_year_id . '/mwbe/' . $mwbe_id . '/dashboard/mp';
+            }
+            else {
+              $minority_link = '/contracts_landing/status/R/yeartype/B/year/' . $reg_fiscal_year_id . '/mwbe/' . $mwbe_id . '/dashboard/mp';
+            }
+            // Disable for old contracts
+            if ($contract_status === 'Registered' && $reg_fiscal_year < 2010) {
+              $minority_link = NULL;
+            }
+          }
+        }
+        $value_link = NULL; // minority uses its own link slot
       }
 
-      $out .= "<div class=\"grid-col-6\">";
-
-      if ($title) {
-        $out .= '<div class="field-label">' . $title . ':</div><div class="field-content">' . $value . '</div>';
+      // contract_class_description fallback
+      if ($key === 'contract_class_description' && empty($value)) {
+        $value = 'N/A';
       }
 
-      $out .= "</div>";
+      $fields[] = [
+        'key'           => $key,
+        'title'         => $title,
+        'title_link'    => $title_link,
+        'value'         => $value,
+        'value_link'    => $value_link,
+        'minority_link' => $minority_link,
+        'is_new_window' => $is_new_window,
+      ];
     }
-    $out .= "</div></div>";
-    return $out;
-  }
 
+    return [
+      'domain' => 'contracts',
+      'fields' => $fields,
+    ];
+  }
 }

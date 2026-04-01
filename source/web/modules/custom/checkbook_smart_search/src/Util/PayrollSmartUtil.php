@@ -25,125 +25,284 @@ use Drupal\checkbook_solr\CheckbookSolr;
 
 class PayrollSmartUtil {
 
-  public static function displayPayrollResult($payroll_results, $solr_datasource) {
+  public static function displayPayrollResult($payroll_results, $solr_datasource,$searchTerm = null) {
 
     $payroll_parameter_mapping = (array) CheckbookSolr::getSearchFields($solr_datasource, 'payroll');
 
+    // Extract IDs
     $agency_id = $payroll_results['agency_id'];
     $dept_id = $payroll_results['department_id'];
     $emp_id = $payroll_results['employee_id'];
 
+    // Handle broken Solr data
     if ('<unknown department>[001]' == $emp_id && is_numeric($payroll_results['employee_name'])) {
-      //  while solr is broken
-      //  @TODO: remove when fixed
+      // @TODO: remove when fixed
       $emp_id = $payroll_results['employee_name'];
     }
 
-    $fiscal_year_id = is_array($payroll_results['calendar_fiscal_year_id']) ? $payroll_results['calendar_fiscal_year_id'][0] : $payroll_results['calendar_fiscal_year_id'];
-    // id already returned by solr
-    // $fiscal_year_id = _checkbook_get_year_id($fiscal_year_id);
+    $fiscal_year_id = is_array($payroll_results['calendar_fiscal_year_id'])
+      ? $payroll_results['calendar_fiscal_year_id'][0]
+      : $payroll_results['calendar_fiscal_year_id'];
 
     $salaried = $payroll_results['amount_basis_id'];
     $title = urlencode($payroll_results['civil_service_title']);
 
+    // Configure datasource-specific settings
+    $config = self::getDatasourceConfig($solr_datasource, $agency_id, $fiscal_year_id);
+
+    // Prepare linkable fields configuration
+    $linkable_fields = self::getLinkableFields(
+      $solr_datasource,
+      $agency_id,
+      $fiscal_year_id,
+      $config['yeartype'],
+      $payroll_results
+    );
+
+    // Process each field
+    $processed_fields = self::processFields(
+      $payroll_results,
+      $payroll_parameter_mapping,
+      $linkable_fields,
+      $searchTerm,
+      $agency_id,
+      $emp_id,
+      $fiscal_year_id,
+      $salaried,
+      $config
+    );
+
+    return [
+      'fields' => $processed_fields,
+      'datasource' => $solr_datasource,
+    ];
+  }
+
+  /**
+   * Get datasource-specific configuration.
+   */
+  private static function getDatasourceConfig($solr_datasource, $agency_id, $fiscal_year_id) {
     switch ($solr_datasource) {
       case 'nycha':
-        // This should be updated when the yeartype DB changes from C to B.
-        $yeartype = "C";
       case 'oge':
-        $linkable_fields = [
-          "oge_agency_name" => "/payroll/agency_landing/datasource/checkbook_nycha/yeartype/C/year/" . $fiscal_year_id . "/agency/" . $agency_id,
-          "agency_name" => "/payroll/agency_landing/datasource/checkbook_nycha/yeartype/C/year/" . $fiscal_year_id . "/agency/" . $agency_id,
+        return [
+          'yeartype' => 'C',
+          'agency_landing_url' => '/agency_landing',
+          'datasource_url' => '/datasource/checkbook_nycha/agency/' . $agency_id,
         ];
-        $agencyLandingUrl = "/agency_landing";
-        $dataSourceUrl = "/datasource/checkbook_nycha/agency/" . $agency_id;
-        break;
+
       default:
-        $yeartype = "B";
-        if ($payroll_results['payroll_type_text'][0] == 'NON-SALARIED' && $payroll_results['hourly_rate'] == 0) {
-          $payroll_results['hourly_rate'] = $payroll_results['daily_wage'];
-        }
-        $linkable_fields = [
+        return [
+          'yeartype' => 'B',
+          'agency_landing_url' => '',
+          'datasource_url' => '',
+        ];
+    }
+  }
+
+  /**
+   * Build linkable fields configuration.
+   */
+  private static function getLinkableFields($solr_datasource, $agency_id, $fiscal_year_id, $yeartype, $payroll_results) {
+    switch ($solr_datasource) {
+      case 'nycha':
+      case 'oge':
+        $base_url = "/payroll/agency_landing/datasource/checkbook_nycha/yeartype/C/year/" . $fiscal_year_id . "/agency/" . $agency_id;
+        return [
+          "oge_agency_name" => $base_url,
+          "agency_name" => $base_url,
+        ];
+
+      default:
+        return [
           "agency_name" => "/payroll/agency_landing/yeartype/" . $yeartype . "/year/" . $fiscal_year_id . "/agency/" . $agency_id,
         ];
-        $agencyLandingUrl = "";
-        $dataSourceUrl = "";
+    }
+  }
+
+  /**
+   * Process all fields for display.
+   */
+  private static function processFields(
+    $payroll_results,
+    $payroll_parameter_mapping,
+    $linkable_fields,
+    $searchTerm,
+    $agency_id,
+    $emp_id,
+    $fiscal_year_id,
+    $salaried,
+    $config
+  ) {
+    $date_fields = ["pay_date"];
+    $amount_fields = ["gross_pay", "base_pay", "other_payments", "overtime_pay"];
+    $salary_fields = ['Annual Salary', 'Hourly Rate', 'Daily Wage'];
+
+    // Handle non-salaried hourly rate
+    if (isset($payroll_results['payroll_type_text'][0])
+      && $payroll_results['payroll_type_text'][0] == 'NON-SALARIED'
+      && $payroll_results['hourly_rate'] == 0) {
+      $payroll_results['hourly_rate'] = $payroll_results['daily_wage'];
     }
 
+    // Disable links for years before 2010
     if ($payroll_results['fiscal_year'] < 2010) {
       $linkable_fields = [];
     }
 
-    $date_fields = ["pay_date"];
-    $amount_fields = [
-      "gross_pay",
-      "base_pay",
-      "other_payments",
-      "overtime_pay"
-    ];
+    $processed = [];
+    foreach ($payroll_parameter_mapping as $key => $field_title) {
+      $value = $payroll_results[$key] ?? '';
 
-    $count = 1;
-    $row = [];
-    $rows = [];
-    $out = "<div class=\"search-result-fields\"><div class=\"grid-row\">";
-    foreach ($payroll_parameter_mapping as $key => $title) {
-      $value = $payroll_results[$key];
-
-      if (isset($searchTerm) && $searchTerm) {
-        $temp = substr($value, strpos(strtoupper($value), strtoupper($searchTerm)), strlen($searchTerm));
-        $value = str_ireplace($searchTerm, '<em>' . $temp . '</em>', $value);
-      }
-
-      if (in_array($key, $amount_fields)) {
-        $value = FormattingUtilities::custom_number_formatter_format($value, 2, '$');
-      }
-      else {
-        if (in_array($key, $date_fields)) {
-          $value = date("F j, Y", strtotime(substr($value, 0, 10)));
-        }
-        else {
-          if (array_key_exists($key, $linkable_fields)) {
-            $value = "<a href='" . $linkable_fields[$key] . "'>" . _checkbook_smart_search_str_html_entities($value) . "</a>";
-          }
-        }
-      }
-
-      if (in_array($title, ['Annual Salary', 'Hourly Rate', 'Daily Wage'])) {
-        //    $url = PayrollUrlService::annualSalaryPerAgencyUrl($agency_id, $emp_id);
-        if (('Annual Salary' == $title && $salaried == 1)
-          || (in_array($title, [
-              'Hourly Rate',
-              'Daily Wage'
-            ]) && $salaried !== 1 && $value)) {
-          $value = "<a  href='/payroll" . $agencyLandingUrl . "/yeartype/" . $yeartype . "/year/" . $fiscal_year_id . $dataSourceUrl
-            . "?expandBottomContURL=/payroll/employee/transactions/agency/"
-            . $agency_id . $dataSourceUrl . "/abc/" . $emp_id . "/salamttype/" . $salaried . "/year/"
-            . $fiscal_year_id . "/yeartype/" . $yeartype . "'>" . FormattingUtilities::custom_number_formatter_format($value, 2, '$') . "</a>";
-        }
-        else {
-          $value = '-';
-        }
-      }
-
-      if ($count % 2 == 0) {
-        $out .= "<div class=\"grid-col-6\">";
-        if ($title) {
-          $out .= '<div class="field-label">' . $title . ':</div><div class="field-content">' . html_entity_decode($value) . '</div>';
-        }
-        $rows[] = $row;
-        $row = [];
-      }
-      else {
-        $out .= "<div class=\"grid-col-6\">";
-        if ($title) {
-          $out .= '<div class="field-label">' . $title . ':</div><div class="field-content">' . html_entity_decode($value) . '</div>';
-        }
-      }
-      $count++;
-      $out .= "</div>";
+      $processed[] = [
+        'key' => $key,
+        'label' => $field_title,
+        'value' => self::formatFieldValue(
+          $key,
+          $value,
+          $field_title,
+          $date_fields,
+          $amount_fields,
+          $salary_fields,
+          $linkable_fields,
+          $searchTerm,
+          $agency_id,
+          $emp_id,
+          $fiscal_year_id,
+          $salaried,
+          $config
+        ),
+        'raw_value' => $value,
+      ];
     }
-    $out .= "</div></div>";
-    return $out;
+
+    return $processed;
+  }
+
+  /**
+   * Format a single field value.
+   */
+  private static function formatFieldValue(
+    $key,
+    $value,
+    $title,
+    $date_fields,
+    $amount_fields,
+    $salary_fields,
+    $linkable_fields,
+    $searchTerm,
+    $agency_id,
+    $emp_id,
+    $fiscal_year_id,
+    $salaried,
+    $config
+  ) {
+    // Apply search term highlighting
+    if ($searchTerm && $value) {
+      $value = self::highlightSearchTerm($value, $searchTerm);
+    }
+
+    // Format amount fields
+    if (in_array($key, $amount_fields)) {
+      return [
+        'type' => 'amount',
+        'formatted' => FormattingUtilities::custom_number_formatter_format($value, 2, '$'),
+        'is_link' => false,
+      ];
+    }
+
+    // Format date fields
+    if (in_array($key, $date_fields)) {
+      return [
+        'type' => 'date',
+        'formatted' => date("F j, Y", strtotime(substr($value, 0, 10))),
+        'is_link' => false,
+      ];
+    }
+
+    // Format salary-related fields with special linking
+    if (in_array($title, $salary_fields)) {
+      return self::formatSalaryField(
+        $title,
+        $value,
+        $salaried,
+        $agency_id,
+        $emp_id,
+        $fiscal_year_id,
+        $config
+      );
+    }
+
+    // Format linkable fields
+    if (array_key_exists($key, $linkable_fields)) {
+      return [
+        'type' => 'link',
+        'formatted' => _checkbook_smart_search_str_html_entities($value),
+        'is_link' => true,
+        'url' => $linkable_fields[$key],
+      ];
+    }
+
+    // Default formatting
+    return [
+      'type' => 'text',
+      'formatted' => $value,
+      'is_link' => false,
+    ];
+  }
+
+  /**
+   * Format salary-related fields.
+   */
+  private static function formatSalaryField($title, $value, $salaried, $agency_id, $emp_id, $fiscal_year_id, $config) {
+    $yeartype = $config['yeartype'];
+    $agency_landing_url = $config['agency_landing_url'];
+    $datasource_url = $config['datasource_url'];
+
+    $show_value = false;
+    if ('Annual Salary' == $title && $salaried == 1) {
+      $show_value = true;
+    }
+    elseif (in_array($title, ['Hourly Rate', 'Daily Wage']) && $salaried !== 1 && $value) {
+      $show_value = true;
+    }
+
+    if ($show_value) {
+      $url = '/payroll' . $agency_landing_url . '/yeartype/' . $yeartype . '/year/' . $fiscal_year_id . $datasource_url
+        . '?expandBottomContURL=/payroll/employee/transactions/agency/'
+        . $agency_id . $datasource_url . '/abc/' . $emp_id . '/salamttype/' . $salaried . '/year/'
+        . $fiscal_year_id . '/yeartype/' . $yeartype;
+
+      return [
+        'type' => 'salary',
+        'formatted' => FormattingUtilities::custom_number_formatter_format($value, 2, '$'),
+        'is_link' => true,
+        'url' => $url,
+      ];
+    }
+
+    return [
+      'type' => 'salary',
+      'formatted' => '-',
+      'is_link' => false,
+    ];
+  }
+
+  /**
+   * Highlight search term in value.
+   */
+  private static function highlightSearchTerm($value, $searchTerm) {
+    if (!$value || !$searchTerm) {
+      return $value;
+    }
+
+    $pos = stripos($value, $searchTerm);
+    if ($pos !== false) {
+      $temp = substr($value, $pos, strlen($searchTerm));
+      $value = str_ireplace($searchTerm, '<em>' . $temp . '</em>', $value);
+    }
+
+    return $value;
   }
 
 }

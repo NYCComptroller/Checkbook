@@ -138,9 +138,6 @@ article[about="/budget"] .slider-pager{
 /*==========================================
         GRID VIEW PAGE
 ========================================== */
-.layout-container:has(.chart-grid-view-table) {
-  height: 800px;
-}
 
 h3.grid_title {
   font-size: 18px;

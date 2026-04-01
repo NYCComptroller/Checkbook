@@ -115,32 +115,61 @@
 
   Drupal.behaviors.mySearchBehaviors = {
     attach: function (context, settings) {
-      // Add keypress handler to hide autocomplete suggestions on pressing enter key
-      $("#edit-search-box", context).keypress(function (e) {
-        if (e.which === 13) {
-          $(this).autocomplete("off").autocomplete("close");
+      let $searchBox = $("#edit-search-box", context);
+      let $submitBtn = $(".checkbook-smart-search-form input[type=submit]", context);
+
+      // Add a warning container below the search box if it doesn't exist
+      if ($("#search-warning").length === 0) {
+        $searchBox.after('<div id="search-warning" style="color:red; margin-top:5px;margin-left:8px; display:none;"></div>');
+      }
+      let $warning = $("#search-warning");
+
+      // Initially disable the submit button
+      $submitBtn.prop('disabled', true).css('cursor', 'default');
+
+      // Enable/disable button and show warning on input
+      $searchBox.on('input', function () {
+        let val = $(this).val().trim();
+
+        if (val.length === 0) {
+          $submitBtn.prop('disabled', true).css('cursor', 'default');
+          $warning.hide();
+        } else if (val.length < 3) {
+          $submitBtn.prop('disabled', false).css('cursor', 'default');
+          //$warning.text('Please enter atleast 3 characters to perform search').show();
+        } else {
+          $submitBtn.prop('disabled', false).css('cursor', 'default');
+          $warning.hide();
         }
       });
 
-      // Add click handler for search button
+      // Prevent submit if input is invalid
       $(".checkbook-smart-search-form", context).submit(function (e) {
-        $("#edit-search-box").addClass('transparent')
-          .addClass('loadinggif')
-          .addClass('disabled-element')
-          .attr('readonly', 'readonly')
-          .focus();
-        // This is to fix the issue with chrome when trying to disable the search button.
-        $('input[type=submit]')
-          .addClass('disable_button')
-          .attr('disabled', 'disabled')
-          .css('cursor', 'default');
+        let searchTerm = $searchBox.val().trim();
+
+        // Reset error state
+        $searchBox.removeClass('input-error');
+
+        if (searchTerm === "" || searchTerm === "Type ahead search" || searchTerm.length < 3) {
+          e.preventDefault();
+          $searchBox.addClass('input-error').focus();
+          $warning.text('Please enter at least 3 characters to perform search').show();
+          return false;
+        }
+
+        // Disable button and show loading state on valid submission
+        $searchBox.addClass('transparent loadinggif disabled-element').attr('readonly', 'readonly');
+        $submitBtn.addClass('disable_button').attr('disabled', 'disabled').css('cursor', 'default');
+        $warning.hide();
       });
 
+
+      // 3. Dialog Title Handler
       $(window, context).on('dialogcreate', function (e, dialog, $element, settings) {
         $('form.new-checkbook-advanced-search-form .ui-dialog-title').each(function () {
           let dialog_title = this;
           $('.ui-dialog-titlebar .ui-dialog-title').replaceWith(dialog_title);
-        })
+        });
       });
     }
   };
@@ -619,3 +648,4 @@ function addCommas(nStr) {
 function htmlEntities(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
+

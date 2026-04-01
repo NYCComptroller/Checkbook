@@ -54,7 +54,7 @@
             COUNT(DISTINCT vendor_id) AS sub_vendor_count,
             prime_spending.check_amount_sum as ytd_spending_agency,
             SUM(total_spending_amount) AS check_amount_sum,
-            SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending,
+            SUM(total_spending_amount)/NULLIF(MAX(total.check_amount),0)*100 as percent_spending,
             COALESCE(SUM(total_spending_amount)/MAX(prime_spending.check_amount_sum_no_payroll)*100,0) as percent_paid_sub_vendors
             FROM aggregateon_subven_spending_coa_entities s0
             JOIN ref_agency a ON a.agency_id = s0.agency_id
@@ -127,7 +127,7 @@
             a.prime_minority_type_id,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
             SUM(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
-            SUM(COALESCE(total_spending_amount,0))/MAX(total.check_amount)*100 as percent_spending,
+            SUM(COALESCE(total_spending_amount,0))/NULLIF(MAX(total.check_amount),0)*100 as percent_spending,
             COUNT(DISTINCT a.vendor_id) AS sub_vendor_count
             FROM aggregateon_subven_spending_vendor a
             JOIN vendor b ON b.vendor_id = a.prime_vendor_id
@@ -214,7 +214,7 @@
             SUM(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
             SUM(total_sub_contracts) AS total_sub_contracts,
             SUM(total_spending_amount) AS ytd_spending_sub_vendors,
-            SUM(COALESCE(total_spending_amount,0))/MAX(total.check_amount)*100 as percent_spending
+            SUM(COALESCE(total_spending_amount,0))/NULLIF(MAX(total.check_amount),0)*100 as percent_spending
             FROM aggregateon_subven_spending_vendor a
             JOIN subvendor b ON b.vendor_id = a.vendor_id
             JOIN
@@ -273,7 +273,7 @@
             c.legal_name AS prime_vendor_name,
             SUM(COALESCE(total_spending_amount,0)) AS check_amount_sum,
             SUM(COALESCE(total_contract_amount,0)) AS total_contract_amount_sum,
-            SUM(COALESCE(total_spending_amount,0))/MAX(total.check_amount)*100 as percent_spending,
+            SUM(COALESCE(total_spending_amount,0))/NULLIF(MAX(total.check_amount),0)*100 as percent_spending,
             SUM(total_sub_contracts) AS total_sub_contracts
             FROM aggregateon_subven_spending_vendor a
             JOIN subvendor b ON b.vendor_id = a.vendor_id
@@ -461,7 +461,7 @@
                 </exp>
             </where>
             GROUP BY s0.agency_id, s0.year_id, s0.type_of_year, s0.description, s0.document_id, s0.agreement_id, s0.document_id, s0.vendor_id, s0.prime_vendor_id,
-            j1.legal_name,j2.legal_name,j3.agency_name,j4_b.original_agreement_id, s0.document_code    
+            j1.legal_name,j2.legal_name,j3.agency_name,j4_b.original_agreement_id, s0.document_code
         </sql>
     </statement>
     <!--GetCountSubVendorContracts-->
@@ -513,7 +513,7 @@
                    SUM(total_spending_amount) AS check_amount_sum,
                    i.industry_type_id,
                    i.industry_type_name,
-                   SUM(total_spending_amount)/MAX(total.check_amount)*100 as percent_spending
+                   SUM(total_spending_amount)/NULLIF(MAX(total.check_amount),0)*100 as percent_spending
             FROM aggregateon_subven_spending_coa_entities s0
             JOIN ref_industry_type i ON i.industry_type_id = s0.industry_type_id
             JOIN
@@ -549,7 +549,7 @@
                     <exp op="IS NOT" dbField="s0.industry_type_id">NULL</exp>
                 </exp>
             </where>
-            GROUP BY s0.year_id, s0.type_of_year, s0.industry_type_id, i.industry_type_id,i.industry_type_name      
+            GROUP BY s0.year_id, s0.type_of_year, s0.industry_type_id, i.industry_type_id,i.industry_type_name
         </sql>
     </statement>
 </statements>

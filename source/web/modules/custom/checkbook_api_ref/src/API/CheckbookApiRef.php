@@ -199,7 +199,6 @@ class CheckbookApiRef {
       $file_info['sample'] = _checkbook_project_execute_sql_by_data_source($php_sql, $data_source);
       $return['files'][$filename] = $file_info;
     }
-
     return $return;
   }
 

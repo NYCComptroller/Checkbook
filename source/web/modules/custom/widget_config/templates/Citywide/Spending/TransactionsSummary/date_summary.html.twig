@@ -1,5 +1,5 @@
 
-{% set title = node.widgetConfig.templateTitleEval %}
+{% set title = spendingMonthTitle() %}
 {% set yearLabel = 'FY' %}
 {% set year  = getTransactionYearVal(yearLabel) %}
 {% set amount = spendingDateAmount(node) %}

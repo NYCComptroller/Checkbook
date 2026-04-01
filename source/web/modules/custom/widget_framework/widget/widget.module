@@ -753,7 +753,7 @@ function load_widget_data($node, $resultFormatter=null) {
       }
 
     }
-    $node->data = _update_node_data($node->data,isset($node->widgetConfig->keepOriginalDatasource));
+    $node->data = _update_node_data((isset($node->data) ? $node->data : array()), isset($node->widgetConfig->keepOriginalDatasource));
     if(isset($node->widgetConfig->transformationPHP)){
       @$node->data = eval($node->widgetConfig->transformationPHP);
     }
@@ -826,7 +826,7 @@ function widget_data(&$node) {
   $originalReqParams = $config->originalRequestParams ?? null;
   if (isset($requestParams)) {
     foreach ($requestParams as $key => $value) {
-      $requestParams[$key] = pg_escape_string(htmlspecialchars_decode($value ?? ''));
+      $requestParams[$key] = htmlspecialchars_decode($value ?? '');
     }
   }
   if (isset($requestParams)) {
@@ -835,7 +835,7 @@ function widget_data(&$node) {
 
   if (isset($originalReqParams)) {
     foreach ($originalReqParams as $key => $value) {
-      $originalReqParams[$key] = pg_escape_string(htmlspecialchars_decode($value ?? ''));
+      $originalReqParams[$key] = htmlspecialchars_decode($value ?? '');
     }
     $config->originalRequestParams = $originalReqParams;
   }

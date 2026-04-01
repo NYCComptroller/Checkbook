@@ -38,7 +38,7 @@
     </h4>
     {% if request_util_doctype == "CTA1" or request_util_doctype == "CT1" %}
       <ul class="left">
-        <li><span class="gi-list-item">Contract Includes Sub Vendors: </span>{{ subVendorStatus|render|upper }}</li>
+        <li><span class="gi-list-item">Contract Includes <a href="https://comptroller.nyc.gov/reports/contract-primer/#subcontracts" target="_blank">Sub Vendors</a>: </span>{{ subVendorStatus|render|upper }}</li>
         <li><span class="gi-list-item">Total Number of Sub Vendors: </span>{{ total_subvendor_count }}</li>
       </ul>
     {% endif %}

@@ -63,6 +63,14 @@ class CheckbookSmartSearchForm extends FormBase {
     return $form;
   }
 
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $search_term = trim($form_state->getValue('search_box'));
+
+    // Enforce the 3-character rule
+    if (strlen($search_term) < 3 || $search_term == 'Type ahead search') {
+      //$form_state->setErrorByName('search_box', $this->t('Please enter at least 3 characters for your search.'));
+    }
+  }
   function submitForm(array &$form, FormStateInterface $form_state) {
 
   }

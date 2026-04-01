@@ -102,11 +102,11 @@ class WidgetFilterBlock extends BlockBase {
     $paths = $this->configuration['paths'];
     $visibility_setting = $this->configuration['visibility_setting'];
     $not = $this->configuration['not'];
-    $paths2 = $this->configuration['paths_2nd'];
-    $visibility_setting2 = $this->configuration['visibility_setting_2nd'];
-    $not2 = $this->configuration['not_2nd'];
-    $phpVisibility = $this->configuration['php_visibility'];
-    $php_visibility_not = $this->configuration['php_visibility_not'];
+    $paths2 = $this->configuration['paths_2nd'] ?? '';
+    $visibility_setting2 = $this->configuration['visibility_setting_2nd'] ?? 1;
+    $not2 = $this->configuration['not_2nd'] ?? 0;
+    $phpVisibility = $this->configuration['php_visibility'] ?? '';
+    $php_visibility_not = $this->configuration['php_visibility_not'] ?? 0;
 
     $ruleNo = 0;
 

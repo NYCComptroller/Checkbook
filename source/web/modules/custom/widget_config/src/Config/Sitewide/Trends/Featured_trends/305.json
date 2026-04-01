@@ -3,7 +3,7 @@
   "widgetSubType": "highstock",
   "html_class": "thumbnail",
   "header":"
-    print '<h2 class=\"chart-title\">Property Tax Levies and Collections</h2>
+    return '<h2 class=\"chart-title\">Property Tax Levies and Collections</h2>
           <div class=\"featured-trends-filter\" id=\"property-tax-filter\">
           <div class=\"filter-container\">
           <input type=\"text\" class=\"chartdatefrom\" maxlength=\"4\" size=\"4\">
@@ -13,7 +13,7 @@
           </div>';
   ",
   "footer":"
-    print '<div class=\"detail-page-links\">
+    return '<div class=\"detail-page-links\">
            <a class=\"show-detail-link\" href=\"/featuredtrends/node/351\">Show Details for Property Tax Levies and Collections</a>
             </div>';",
   "callback":"

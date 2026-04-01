@@ -57,11 +57,11 @@ function widget_phpparser_widget_view(&$node) {
       $class = new $customDataHandlerClass();
       $class->getData($node);
     }
+      return [
+        'template' => $node->widgetConfig->template,
+        'node' => $node
+      ];
 
-    return [
-      'template' => $node->widgetConfig->template,
-      'node' => $node
-  ];
 }
 
 function widget_phpparser_theme($existing, $type, $theme, $path) {

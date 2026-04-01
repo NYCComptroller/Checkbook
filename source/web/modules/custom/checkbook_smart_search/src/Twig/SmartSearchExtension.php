@@ -72,19 +72,27 @@ class SmartSearchExtension extends AbstractExtension {
     $clearUrl = _checkbook_smart_search_clear_url($solr_datasource, "search_term");
     $searchTerm = urldecode($searchTerms[0]);
 
+    // Remove clear icon and also the celar all button to prevent empty search.
     if ($searchTerm != "") {
       $output .= "<div class='search-filters clearfix'><span id='filter-header'> Filters: </span><ul>";
-      $output .= "<li><span class='search-terms'>Search Term: <strong>" . htmlentities($searchTerm) . "</strong></span><a class='clear-filter' href='" . $clearUrl . "'>
-            <img src='" . $clear_icon . "'></a></li>";
-      $output .= "<li class='clear-all'><a class='clear-all' href='/smart_search/{$solr_datasource}'><strong>Clear All</strong></a></li>";
+      $output .= "<li><span class='search-terms'>Search Term: <strong>" . htmlentities($searchTerm) . "</strong></span></li>";
+      //$output .= "<li class='clear-all'><a class='clear-all' href='/smart_search/{$solr_datasource}'><strong>Clear All</strong></a></li>";
       $output .= "</ul></div>";
     }
 
     //Begin of search results
     $noOfTotalResults = $search_results['response']['numFound'];
     $noOfResultsPerPage = 10;
-    $startIndex = $transaction_no = (\Drupal::request()->query->get('page')) ? (\Drupal::request()->query->get('page') * 10) + 1 : 1;
-    $endIndex = (($startIndex + 9) < $noOfTotalResults) ? ($startIndex + 9) : $noOfTotalResults;
+    // Hard limit the page check for calculation logic
+    $requested_page = \Drupal::request()->query->get('page');
+    if ($requested_page !== null && (int)$requested_page >= 5000) {
+      $requested_page = 4999;
+    }
+    $startIndex = $transaction_no = ($requested_page) ? ($requested_page * 10) + 1 : 1;
+
+    // Adjust end index to not exceed the capped results if page 4999 is reached
+    $capped_total = ($noOfTotalResults > 50000) ? 50000 : $noOfTotalResults;
+    $endIndex = (($startIndex + 9) < $capped_total) ? ($startIndex + 9) : $capped_total;
     $domain_counts = $search_results['facet_counts']['facet_fields']['domain'];
 
     if ($noOfTotalResults > 0) {
@@ -97,8 +105,8 @@ class SmartSearchExtension extends AbstractExtension {
 
       //Begin of Pagination at the top
       $pager_manager = \Drupal::service('pager.manager');
-      if ($noOfTotalResults > 1000000){
-        $pager_manager->createPager(1000000, $noOfResultsPerPage);
+      if ($noOfTotalResults > 50000){
+        $pager_manager->createPager(50000, $noOfResultsPerPage);
       }
       else {
         $pager_manager->createPager($noOfTotalResults, $noOfResultsPerPage);
@@ -147,8 +155,8 @@ class SmartSearchExtension extends AbstractExtension {
       $output .= "<div id=\"smart-search-transactions\">Showing: " . number_format($startIndex) . " to ". number_format($endIndex) ." of ". number_format($noOfTotalResults) ." entries</div>";
 
       $pager_manager = \Drupal::service('pager.manager');
-      if ($noOfTotalResults > 1000000){
-        $pager_manager->createPager(1000000, $noOfResultsPerPage);
+      if ($noOfTotalResults > 50000){
+        $pager_manager->createPager(50000, $noOfResultsPerPage);
       }
       else {
         $pager_manager->createPager($noOfTotalResults, $noOfResultsPerPage);
@@ -462,8 +470,8 @@ class SmartSearchExtension extends AbstractExtension {
     if ($noOfTotalResults > 0) {
       //Begin of Pagination at the top
       $pager_manager = \Drupal::service('pager.manager');
-      if ($noOfTotalResults > 1000000){
-        $pager_manager->createPager(1000000, $noOfResultsPerPage);
+      if ($noOfTotalResults > 50000){
+        $pager_manager->createPager(50000, $noOfResultsPerPage);
       }
       else {
         $pager_manager->createPager($noOfTotalResults, $noOfResultsPerPage);
@@ -516,8 +524,8 @@ class SmartSearchExtension extends AbstractExtension {
       $output .= "<div id=\"smart-search-transactions\">Showing: " . number_format($startIndex) . " to ". number_format($endIndex) ." of ". number_format($noOfTotalResults) ." entries</div>";
 
       $pager_manager = \Drupal::service('pager.manager');
-      if ($noOfTotalResults > 1000000){
-        $pager_manager->createPager(1000000, $noOfResultsPerPage);
+      if ($noOfTotalResults > 50000){
+        $pager_manager->createPager(50000, $noOfResultsPerPage);
       }
       else {
         $pager_manager->createPager($noOfTotalResults, $noOfResultsPerPage);

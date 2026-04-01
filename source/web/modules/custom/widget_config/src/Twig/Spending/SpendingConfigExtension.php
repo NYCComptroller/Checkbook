@@ -33,6 +33,10 @@ class SpendingConfigExtension extends AbstractExtension
         $this,
         'spendingTitle',
       ]),
+      'spendingMonthTitle' => new TwigFunction('spendingMonthTitle', [
+        $this,
+        'spendingMonthTitle',
+      ]),
       'spendingFyGrid' => new TwigFunction('spendingFyGrid', [
         $this,
         'spendingFyGrid',
@@ -96,6 +100,12 @@ class SpendingConfigExtension extends AbstractExtension
   {
     $monthDetails = CheckbookDateUtil::getMonthDetails(RequestUtilities::_getRequestParamValueBottomURL('month'));
     return $monthDetails;
+  }
+
+  public function spendingMonthTitle()
+  {
+    $title = SpendingUtil::getTransactionPageTitle();
+    return $title;
   }
 
   public function spendingFyGrid($node)

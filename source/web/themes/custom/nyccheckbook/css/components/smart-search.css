@@ -53,6 +53,20 @@
 
 }
 
+/* Styling for the box itself when validation fails */
+.input-error {
+  /* Use the site's standard border color, just slightly thicker for emphasis */
+  border: 2px solid #0056b3 !important; /* Example: NYC Checkbook Blue */
+}
+
+/* Styling for the prompt text INSIDE the box */
+.input-error::placeholder {
+  /* Matches the site's primary text or brand color */
+  color: #0056b3;
+  opacity: 1;
+  font-weight: normal; /* Changed from bold to match site style */
+  font-style: italic;  /* Adds emphasis that this is a prompt, not data */
+}
 .smart-search-form--button-submit a{
  /* margin-left: 8px;
   margin-top: 3px;
@@ -254,4 +268,13 @@ body.createalert h1 {
 
 .newwindow .contract-details-heading a:hover{
   text-decoration: none;
+}
+.checkbook-smart-search-form input[type=submit]:disabled {
+  cursor: default;   /* no cross */
+  opacity: 0.6;      /* optional visual cue */
+  pointer-events: none;
+}
+
+.checkbook-smart-search-form input[type=submit]:not(:disabled) {
+  cursor: default !important;
 }

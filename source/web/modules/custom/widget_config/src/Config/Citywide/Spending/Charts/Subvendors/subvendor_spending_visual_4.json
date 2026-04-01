@@ -38,9 +38,10 @@
         $categories=array();
         foreach ($node->data as $row){
             //$link= CustomURLHelper::prepareUrl('spending_landing', SpendingUtil::$landingPageParams, array('expandBottomCont'=>'true'), array('vendor'=>$row['prime_vendor_prime_vendor']) );
-            $link = substr(\\Drupal\\checkbook_project\\SpendingUtilities\\VendorSpendingUtil::getPrimeVendorNameLinkUrl($node, $row),1);
+            // Use the SpendingUrlService to generate prime vendor url.
+            $link = Drupal\\checkbook_services\\Spending\\SpendingUrlService::primeVendorUrl($row['prime_vendor_prime_vendor']);
             $categories[]=html_entity_decode($row['prime_vendor_prime_vendor_legal_name'],ENT_QUOTES);
-            $data[] = (object)array('year'=>$row['fiscal_year_id'],'y'=>$row['check_amount_sum'],'url'=>'/'.$link,'name'=>strtoupper(html_entity_decode($row['prime_vendor_prime_vendor_legal_name'],ENT_QUOTES)));
+            $data[] = (object)array('year'=>$row['fiscal_year_id'],'y'=>$row['check_amount_sum'],'url'=>$link,'name'=>strtoupper(html_entity_decode($row['prime_vendor_prime_vendor_legal_name'],ENT_QUOTES)));
         }
         $node->widgetConfig->chartConfig->series[0]['data'] = $data;$node->widgetConfig->chartConfig->xAxis->categories = $categories;
         $node->widgetConfig->chartConfig->series[0]['name'] = 'Disbursement Amount';

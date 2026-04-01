@@ -29,11 +29,18 @@ class RevenueSmartUtil {
   public static function displayRevenueResult($revenue_results, $solr_datasource) {
 
     $revenue_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'revenue');
+    $current_year_id = CheckbookDateUtil::getCurrentFiscalYearId();
 
-    $linkable_fields = ["agency_name" => "/agency/" . $revenue_results["agency_id"],];
+    // Safely resolve reused fields once
+    $agency_id   = $revenue_results['agency_id']     ?? '';
+    $fiscal_year = $revenue_results['fiscal_year'][0] ?? 0;
 
-    if ($revenue_results['fiscal_year'][0] < 2010) {
-      $linkable_fields = [];
+    // Disable links for old fiscal years
+    $linkable_fields = [];
+    if ($fiscal_year >= 2010) {
+      $linkable_fields = [
+        'agency_name' => '/revenue/year/' . $current_year_id . '/agency/' . $agency_id,
+      ];
     }
     $amount_fields = [
       "adopted_amount",
@@ -41,52 +48,45 @@ class RevenueSmartUtil {
       "posting_amount"
     ];
 
-    $count = 1;
-    $row = [];
-    $rows = [];
-    $out = "<div class=\"search-result-fields\"><div class=\"grid-row\">";
-    $current_year_id = CheckbookDateUtil::getCurrentFiscalYearId();
+    // --- Build structured fields array ---
+    $fields = [];
     foreach ($revenue_parameter_mapping as $key => $title) {
-      $value = $revenue_results[$key];
-      if ($key == 'fiscal_year') {
-        $value = $revenue_results[$key][0];
+      if (!$title) {
+        continue;
       }
 
-      //    highlighting $searchTerm
-      if ($searchTerm && (strpos(strtoupper($value), strtoupper($searchTerm)) !== FALSE)) {
-        $temp = substr($value, strpos(strtoupper($value), strtoupper($searchTerm)), strlen($searchTerm));
-        $value = str_ireplace($searchTerm, '<em>' . $temp . '</em>', $value);
-        $value = _checkbook_smart_search_str_html_entities($value);
+      // Safely access sparse Solr fields
+      $value = ($key === 'fiscal_year')
+        ? ($revenue_results[$key][0] ?? '')
+        : ($revenue_results[$key] ?? '');
+
+      if (is_array($value)) {
+        $value = implode(', ', $value);
       }
 
+      // Format amounts or resolve link
+      $value_link = NULL;
       if (in_array($key, $amount_fields)) {
         $value = FormattingUtilities::custom_number_formatter_format($value, 2, '$');
       }
-      else {
-        if (array_key_exists($key, $linkable_fields)) {
-          $value = "<a href='/revenue/year/" . $current_year_id . $linkable_fields[$key] . "'>" . $value . "</a>";
-        }
+      elseif (array_key_exists($key, $linkable_fields)) {
+        $value_link = $linkable_fields[$key];
       }
 
-      if ($count % 2 == 0) {
-        $out .= "<div class=\"grid-col-6\">";
-        if ($title) {
-          $out .= '<div class="field-label">' . $title . ':</div><div class="field-content">' . $value . '</div>';
-        }
-        $rows[] = $row;
-        $row = [];
-      }
-      else {
-        $out .= "<div class=\"grid-col-6\">";
-        if ($title) {
-          $out .= '<div class="field-label">' . $title . ':</div><div class="field-content">' . $value . '</div>';
-        }
-      }
-      $count++;
-      $out .= "</div>";
+      $fields[] = [
+        'key'           => $key,
+        'title'         => $title,
+        'title_link'    => NULL,
+        'value'         => $value,
+        'value_link'    => $value_link,
+        'is_new_window' => FALSE,
+        'minority_link' => NULL,
+      ];
     }
-    $out .= "</div></div>";
-    return $out;
-  }
 
+    return [
+      'domain' => 'revenue',
+      'fields' => $fields,
+    ];
+  }
 }

@@ -46,15 +46,32 @@ class DefaultController extends ControllerBase {
   public function _checkbook_smart_search_get_results(string $solr_datasource = 'citywide') {
 
     $search_term = \Drupal::request()->query->get('search_term');
+
+    // Extract the actual keyword before facets
+    $keyword = '';
     if ($search_term) {
-      $search_terms = explode('*!*', $search_term);
-      if (!empty($search_terms[0])) {
-        $search_terms[0] = $search_terms[0] ? $search_terms[0] . '*' : $search_terms[0];
-        $search_term = implode('*!*', $search_terms);
-      }
+      $parts = explode('*!*', $search_term);
+      $keyword = trim($parts[0]);
     }
 
+    // Validate search: reject if empty, only "*!*", or keyword < 3 chars without facets
+    if (trim($search_term) === '' ||
+      $search_term === '*!*' ||
+      (strlen($keyword) < 3 && strpos($search_term, '*!*') === false)) {
+      return [
+        '#theme' => 'smart_search_results',
+        '#search_results' => [],
+        '#solr_datasource' => $solr_datasource,
+        '#selected_facet_results' => [],
+        '#registered_contracts' => 0,
+        '#error_message' => 'Please enter at least 3 characters to perform a search.',
+      ];
+    }
     $page = \Drupal::request()->query->get('page');
+    // Hard limit: If page is 5000 or higher, reset it to 4999 (the last valid page)
+    if ($page !== null && (int)$page >= 5000) {
+      $page = 4999;
+    }
     $solr_query = new CheckbookSolrQuery($solr_datasource, $search_term, 10, $page ?: 0);
 
     $datasource_facets = (array) CheckbookSolr::getFacetConfigByDatasource($solr_datasource);
@@ -278,24 +295,8 @@ class DefaultController extends ControllerBase {
 
   public function _checkbook_smart_search_export_download(string $solr_datasource) {
     $domain = ucfirst(\Drupal::request()->query->get('domain'));
-    //$response = new Response();
-    //$response->setContent(_checkbook_smart_search_export_data($solr_datasource));
-    //$response->headers->set("Content-Type", "text/csv");
-    //$response->headers->set("Content-Disposition", "attachment; filename={$solr_datasource}{$domain}.csv");
-    //$response->headers->set("Pragma", "cache");
-    //$response->headers->set("Expires", "-1");
-    //$response->send();
     $response =  _checkbook_smart_search_export_data($solr_datasource);
     return $response;
-    /*$fileheaders = array(
-      'Content-Type' => 'text/csv',
-      'Content-Disposition' => "attachment; filename={$solr_datasource}{$domain}.csv",
-      'Pragma' => 'cache',
-      'Expires' => '-1',
-      //'Content-Length' => strlen($data)
-    );*/
-    //return new Response($data, 200, $fileheaders, true);
-    //return $response;
   }
 
   public function _checkbook_smart_search_ajax_results(string $solr_datasource = 'citywide') {

@@ -53,6 +53,8 @@ class TopNavigationExtension extends AbstractExtension
     $spending_amount = $node->data[2]['check_amount_sum'];
     $mwbeclass ='';
     $svclass ='';
+    $mwbe_amount_active_inc = 0;
+    $svendor_amount_active_inc = 0;
 
     /**
      *  Set Budget, Payroll & Revenue domains to "0" and disable them if a vendor was present in the URL.

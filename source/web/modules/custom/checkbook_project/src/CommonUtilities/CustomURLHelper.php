@@ -96,8 +96,8 @@ class CustomURLHelper
     if (isset($datasource)) {
       $url = "/datasource/" . $datasource;
     } else {
-      //$current_url = explode('/', $_SERVER['HTTP_REFERER']);
-      $current_url =  explode('/',\Drupal::request()->query->get('q'));
+      $referer = \Drupal::request()->query->get('q') ?? '';
+      $current_url = $referer ? explode('/', $referer) : [];
       if (count($current_url) > 3 && ($current_url[3] == 'contract' && ($current_url[4] == 'search' || $current_url[4] == 'all') && $current_url[5] == 'transactions')) {
         $advanced_search = true;
       }
@@ -134,7 +134,7 @@ class CustomURLHelper
     $urlPath = RequestUtilities::getCurrentPageUrl();
     $pathParams = explode('/', $urlPath);
     $byear = "/yeartype/B/year/";
-    $cyear = "/yeartype/C/calyear/";
+    $cyear = "/yeartype/C/year/";
     $syear = "/syear/";
 
     $calyrIndex = array_search("calyear", $pathParams);
