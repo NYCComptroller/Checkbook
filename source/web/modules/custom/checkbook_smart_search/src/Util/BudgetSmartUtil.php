@@ -31,14 +31,17 @@ class BudgetSmartUtil {
     $budget_parameter_mapping = CheckbookSolr::getSearchFields($solr_datasource, 'budget');
 
     $current_year_id = CheckbookDateUtil::getCurrentFiscalYearId();
-    $linkable_fields = [
-      "agency_name" => "/budget/year/" . $current_year_id . "/yeartype/B/agency/" . $budget_results["agency_id"],
-      "expense_category_name" => "/budget/year/" . $current_year_id . "/yeartype/B/expcategory/" . $budget_results["object_class_id"],
-    ];
-    if ($budget_results['fiscal_year'][0] < 2010) {
 
-      $linkable_fields = [];
+    // Safely resolve reused fields once
+    $agency_id       = $budget_results['agency_id']      ?? '';
+    $object_class_id = $budget_results['object_class_id'] ?? '';
+    $fiscal_year     = $budget_results['fiscal_year'][0]  ?? 0;
 
+    if ($fiscal_year >= 2010) {
+      $linkable_fields = [
+        'agency_name'           => '/budget/year/' . $current_year_id . '/yeartype/B/agency/'      . $agency_id,
+        'expense_category_name' => '/budget/year/' . $current_year_id . '/yeartype/B/expcategory/' . $object_class_id,
+      ];
     }
 
     $amount_fields = [
@@ -53,53 +56,49 @@ class BudgetSmartUtil {
       "committed"
     ];
 
-    $count = 1;
-    $row = [];
-    $rows = [];
-    $out = "<div class=\"search-result-fields\"><div class=\"grid-row\">";
+    // --- Build structured fields array ---
+    $fields = [];
     foreach ($budget_parameter_mapping as $key => $title) {
-      $value = $budget_results[$key];
-      if ($key == 'expenditure_object_name') {
-        $value = $budget_results[$key][0];
-      }
-      if ($key == 'fiscal_year') {
-        $value = $budget_results[$key][0];
+      if (!$title) {
+        continue;
       }
 
-      if ($searchTerm) {
-        $temp = substr($value, strpos(strtoupper($value), strtoupper($searchTerm)), strlen($searchTerm));
-        $value = str_ireplace($searchTerm, '<em>' . $temp . '</em>', $value);
+      // Safely access sparse Solr fields with ?? ''
+      if ($key === 'expenditure_object_name' || $key === 'fiscal_year') {
+        $value = $budget_results[$key][0] ?? '';
+      }
+      else {
+        $value = $budget_results[$key] ?? '';
       }
 
-      $value = _checkbook_smart_search_str_html_entities($value);
+      if (is_array($value)) {
+        $value = implode(', ', $value);
+      }
 
+      // Format amounts or resolve link
+      $value_link = NULL;
       if (in_array($key, $amount_fields)) {
         $value = FormattingUtilities::custom_number_formatter_format($value, 2, '$');
       }
-      else {
-        if (array_key_exists($key, $linkable_fields)) {
-          $value = "<a href='" . $linkable_fields[$key] . "'>" . $value . "</a>";
-        }
+      elseif (array_key_exists($key, $linkable_fields)) {
+        $value_link = $linkable_fields[$key];
       }
-      if ($count % 2 == 0) {
-        $out .= "<div class=\"grid-col-6\">";
-        if ($title) {
-          $out .= '<div class="field-label">' . $title . ':</div><div class="field-content">' . $value . '</div>';
-        }
-        $rows[] = $row;
-        $row = [];
-      }
-      else {
-        $out .= "<div class=\"grid-col-6\">";
-        if ($title) {
-          $out .= '<div class="field-label">' . $title . ':</div><div class="field-content">' . $value . '</div>';
-        }
-      }
-      $count++;
-      $out .= "</div>";
+
+      $fields[] = [
+        'key'           => $key,
+        'title'         => $title,
+        'title_link'    => NULL,
+        'value'         => $value,
+        'value_link'    => $value_link,
+        'is_new_window' => FALSE,
+        'minority_link' => NULL,
+      ];
     }
-    $out .= "</div></div>";
-    return $out;
+
+    return [
+      'domain' => 'budget',
+      'fields' => $fields,
+    ];
   }
 
 }

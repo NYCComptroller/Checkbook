@@ -38,10 +38,10 @@ function _checkbook_faceted_search_update_data($node) {
   $output = array();
   $output['filter_name'] = $node->widgetConfig->filterName;
   if (empty(RequestUtilities::getBottomContUrl())) {
-    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName) ?? '');
   }
   else {
-    $params = explode('~', RequestUtilities::_getRequestParamValueBottomURL($node->widgetConfig->urlParameterName));
+    $params = explode('~', RequestUtilities::_getRequestParamValueBottomURL($node->widgetConfig->urlParameterName) ?? '');
   }
 
   // The value in this facet can be 0.
@@ -95,7 +95,7 @@ function _checkbook_faceted_search_update_data($node) {
       } catch (Exception $e) {
         LogHelper::log_error($e->getMessage());
       }
-      if ($checked_items[0]['txcount']) {
+      if (isset($checked_items[0]['txcount']) && $checked_items[0]['txcount']) {
         if (count($checked_items[0]) == 2) {
           $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
           , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
@@ -106,7 +106,7 @@ function _checkbook_faceted_search_update_data($node) {
           , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[2])]);
         }
       }
-      if ($checked_items[0]['count_vendorcode']) {
+      if (isset($checked_items[0]['count_vendorcode']) && $checked_items[0]['count_vendorcode']) {
         if (count($checked_items[0]) == 2) {
           $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
           , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
@@ -118,7 +118,7 @@ function _checkbook_faceted_search_update_data($node) {
         }
 
       }
-      if ($checked_items[0]['title_count']) {
+      if (isset($checked_items[0]['title_count']) && $checked_items[0]['title_count']) {
         if (count($checked_items[0]) == 2) {
           $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
           , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
@@ -129,7 +129,7 @@ function _checkbook_faceted_search_update_data($node) {
           , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[2])]);
         }
       }
-      if ($checked_items[0]['agency_count']) {
+      if (isset($checked_items[0]['agency_count']) && $checked_items[0]['agency_count']) {
         if (count($checked_items[0]) == 2) {
           $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
           , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
@@ -140,7 +140,7 @@ function _checkbook_faceted_search_update_data($node) {
           , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[2])]);
         }
       }
-      if ($checked_items[0]['emp_count']) {
+      if (isset($checked_items[0]['emp_count']) && $checked_items[0]['emp_count']) {
         if (count($checked_items[0]) == 2) {
           $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
           , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
@@ -151,8 +151,8 @@ function _checkbook_faceted_search_update_data($node) {
           , $checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[2])]);
         }
       }
-      $custom_count = $checked_items[0]['count_prime_mwbe'] || $checked_items[0]['count_sub_mwbe'];
-      $custom_count = $custom_count || $checked_items[0]['count_prime_records'] || $checked_items[0]['count_sub_records'];
+      $custom_count = (isset($checked_items[0]['count_prime_mwbe']) && $checked_items[0]['count_prime_mwbe']) || (isset($checked_items[0]['count_sub_mwbe']) && $checked_items[0]['count_sub_mwbe']);
+      $custom_count = $custom_count || (isset($checked_items[0]['count_prime_records']) && $checked_items[0]['count_prime_records']) || (isset($checked_items[0]['count_sub_records']) && $checked_items[0]['count_sub_records']);
       if ($custom_count) {
         if (count($checked_items[0]) == 2) {
           $output['checked'][] = array($checked_items[0][str_replace('.', '_', $node->widgetConfig->columns[0])]
@@ -551,9 +551,9 @@ function _checkbook_faceted_search_update_data_range3_filter($node) {
   $output['filter_name'] = $node->widgetConfig->filterName;
   //$params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
   if (empty(RequestUtilities::getBottomContUrl())) {
-    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName));
+    $params = explode('~', RequestUtilities::get($node->widgetConfig->urlParameterName) ?? '');
   } else {
-    $params = explode('~', RequestUtilities::_getRequestParamValueBottomURL($node->widgetConfig->urlParameterName));
+    $params = explode('~', RequestUtilities::_getRequestParamValueBottomURL($node->widgetConfig->urlParameterName) ?? '');
   }
   if (!is_array($data[0])) {
     $data = array(0 => array());

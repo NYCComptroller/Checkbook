@@ -46,10 +46,10 @@ class TransactionsUtil
         print $customTitle;
       } else if (isset($dtmnid)) {
         $customTitle = NodeSummaryUtil::getInitNodeSummaryTitle($dtmnid);
-        print "<h2 class='contract-title js-breadcrumb-title' class='title'>" . $customTitle . "</h2>";
+        print "<div class='contract-id'><h2 class='contract-title js-breadcrumb-title' class='title'>" . $customTitle . "</h2></div>";
       } else {
         $customTitle = BudgetBreadcrumbs::getBudgetBreadcrumbTitle();
-        print "<h2 class='contract-title js-breadcrumb-title' class='title'>" . $customTitle . "</h2>";
+        print "<div class='contract-id'><h2 class='contract-title js-breadcrumb-title' class='title'>" . $customTitle . "</h2></div>";
       }
     }
     else{
@@ -58,7 +58,7 @@ class TransactionsUtil
       }	else {
         $customTitle = BudgetBreadcrumbs::getBudgetBreadcrumbTitle();
       }
-      echo '<h2 class="contract-title js-breadcrumb-title" class="title">'.$customTitle.'</h2>';
+      echo '<div class="contract-id"><h2 class="contract-title js-breadcrumb-title" class="title">'.$customTitle.'</h2></div>';
     }
   }
 
@@ -74,7 +74,7 @@ class TransactionsUtil
 
   public static function advancedBudgetTransactionsTitle() {
     $customTitle = 'Expense Budget Transactions';
-    print "<h2 class='contract-title js-breadcrumb-title' class='title'>{$customTitle}</h2>";
+    print "<div class='contract-id'><h2 class='contract-title js-breadcrumb-title' class='title'>{$customTitle}</h2></div>";
   }
 
   //title for /subcontract/transactions
@@ -177,39 +177,41 @@ class TransactionsUtil
     print "<h2 class='page-payroll contract-title js-breadcrumb-title' class='title'>{$customTitle}</h2>";
   }
 
-  //title for /spending/transactions page and variants
-  public static function spendingPageTitle($nid) {
-    $title = SpendingBreadcrumbs::getSpendingTransactionTitle();
-    $sumnid = RequestUtilities::getTransactionsParams('smnid');
-    $dtsmnid = RequestUtilities::getTransactionsParams('dtsmnid');
-    $month = RequestUtilities::getTransactionsParams('month');
-    if($month > 0){
-      $amount = WidgetUtil::getWidgetTemplate($nid);
-      echo $amount;
-    }
-    else {
-      if (_checkbook_project_recordsExists(757) || _checkbook_project_recordsExists(723)) {
-        if (isset($sumnid)) {
-          echo $title;
-        } else if (isset($dtsmnid)) {
-          $amount = WidgetUtil::getWidgetTemplate($nid);
-          echo "<div class='contract-id'><h2 class='contract-title js-breadcrumb-title' class='title'>{$title}</h2></div>";
-          echo $amount;
-        } else {
-          echo '<h1 class="padding-x-10px">' . SpendingUtil::getSpendingTransactionsTitle() . '</h1>';
-        }
-      }
+  public static function spendingPageTitle($nid, $is_subvendor = FALSE) {
 
-      else{
-        if (isset($sumnid) && !isset($month)) {
-          echo '<div class="contract-id"><h2 class="contract-title js-breadcrumb-title" class="title">' . NodeSummaryUtil::getInitNodeSummaryTitle($sumnid) . '</h2></div>';
-        } else if (isset($dtsmnid)) {
-          echo '<div class="contract-id"><h2 class="contract-title js-breadcrumb-title" class="title">' . NodeSummaryUtil::getInitNodeSummaryTitle($dtsmnid) . '</h2></div>';
-        }
-        else{
-          echo '<h1 class="padding-x-10px">' . SpendingUtil::getSpendingTransactionsTitle() . '</h1>';
-        }
-      }
+    // Only apply record check for subvendor version(ss/ms) (matches your old logic)
+    if ($is_subvendor && !(_checkbook_project_recordsExists(757) || _checkbook_project_recordsExists(723))) {
+      return;
+    }
+
+    $title   = SpendingBreadcrumbs::getSpendingTransactionTitle();
+    $sumnid  = RequestUtilities::getTransactionsParams('smnid');
+    $dtsmnid = RequestUtilities::getTransactionsParams('dtsmnid');
+    $month   = RequestUtilities::getTransactionsParams('month');
+    $amount  = WidgetUtil::getWidgetTemplate($nid);
+
+    // ---- Highest priority: Summary node ----
+    if (!empty($sumnid)) {
+      echo NodeSummaryUtil::getInitNodeSummaryContent($sumnid);
+      return;
+    }
+
+    // ---- DTS summary ----
+    if (!empty($dtsmnid)) {
+      echo "<div class='contract-id'><h2 class='contract-title js-breadcrumb-title' class='title'>{$title}</h2></div>";
+      echo $amount;
+      return;
+    }
+
+    // ---- Month filter ----
+    if (!empty($month) && $month > 0) {
+      echo $amount;
+      return;
+    }
+
+    // ---- Only normal spending page shows default title ----
+    if (!$is_subvendor) {
+      echo '<h1 class="padding-x-10px">' . SpendingUtil::getSpendingTransactionsTitle() . '</h1>';
     }
   }
 

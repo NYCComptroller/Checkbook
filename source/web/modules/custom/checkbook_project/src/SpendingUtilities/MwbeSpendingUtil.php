@@ -144,9 +144,12 @@ class MwbeSpendingUtil
         }
       }
     }
-    return isset($agency_id)
-      ? $spending_vendor_latest_mwbe_category[$vendor_id][$agency_id][$is_prime_or_sub]['minority_type_id']
-      : $spending_vendor_latest_mwbe_category[$vendor_id][$is_prime_or_sub]['minority_type_id'];
+    // Check if agency_id is set to determine which array path to follow
+    if (isset($agency_id)) {
+      return $spending_vendor_latest_mwbe_category[$vendor_id][$agency_id][$is_prime_or_sub]['minority_type_id'] ?? null;
+    }
+
+    return $spending_vendor_latest_mwbe_category[$vendor_id][$is_prime_or_sub]['minority_type_id'] ?? null;
   }
 
   /**

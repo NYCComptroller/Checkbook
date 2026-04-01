@@ -28,10 +28,12 @@ class CommonTrendsConfigExtension extends AbstractExtension
 
   public static function addCaption($node)
   {
+    $output = '';
     if (isset($node->widgetConfig->caption_column)) {
-      echo '<caption>' . $node->data[0][$node->widgetConfig->caption_column] . '</caption>';
+      $output .= '<caption>' . $node->data[0][$node->widgetConfig->caption_column] . '</caption>';
     } else if (isset($node->widgetConfig->caption)) {
-      echo '<caption>' . $node->widgetConfig->caption . '</caption>';
+      $output .= '<caption>' . $node->widgetConfig->caption . '</caption>';
     }
+    return $output;
   }
 }

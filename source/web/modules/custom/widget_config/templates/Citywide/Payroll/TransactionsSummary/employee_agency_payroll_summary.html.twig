@@ -1,2 +1,96 @@
-{{ attach_library('widget_config/toggel-pay') }}
-{{  payrollEmpSummary(node)|raw }}
+{{ attach_library('widget_config/payroll-agency-summary') }}
+
+{% set node =  payrollEmpSummary(node) %}
+{% set salaried_count = node.salaried_count %}
+{% set non_salaried_count = v.non_salaried_count %}
+{% set default_view = node.default_view %}
+
+<div class="payroll-emp-wrapper"
+     data-default-view="{{ default_view }}"
+     data-salaried-count="{{ salaried_count }}"
+     data-non-salaried-count="{{ non_salaried_count }}">
+
+  {% for employment_type, employment_data in node.all_data %}
+    {% set class = employment_type | lower %}
+
+    <div class='emp-record-{{ class }}'>
+
+      {% if (employment_type == 'Salaried' and salaried_count > 1) or (employment_type == 'Non-Salaried' and non_salaried_count > 1) %}
+        <div id='prev-emp-{{ class }}'></div>
+      {% endif %}
+
+      <div id='emp-agency-detail-records-{{ class }}'>
+
+        {% for record in employment_data %}
+          {% if record.data_source == 'NYCHA' %}
+            {% set agency_url = record.agency_name %}
+          {% else %}
+            {% set agency_url = record.agency_url %}
+          {% endif %}
+
+          <div class='emp-agency-detail-record'>
+            <table id='emp-agency-detail-record-table' class='center-align'>
+
+              <div id='payroll-emp-trans-name'>
+                <span class='payroll-label'>Title: </span>
+                <span class='payroll-value'>{{ node.titleLatest }}</span>
+              </div>
+
+              <tr>
+                <td width='56%'><strong>Agency</strong>: {{ agency_url | raw }}</td>
+                <td><strong>Payroll Type</strong>: {{ employment_type | upper }}</td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>
+                    {% if employment_type == 'Salaried' %}
+                      Annual Salary
+                    {% else %}
+                      Pay Rate
+                    {% endif %}
+                  </strong>: ${{ record.max_annual_salary_formatted }}
+                </td>
+                <td><strong>Pay Frequency</strong>: {{ record.pay_frequency | upper }}</td>
+              </tr>
+              <tr>
+                <td><strong>Gross Pay YTD</strong>: ${{ record.total_gross_pay_formatted }}</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><strong>Base Pay YTD</strong>: ${{ record.total_base_salary_formatted }}</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><strong>Other Payments YTD</strong>: ${{ record.total_other_payments_formatted }}</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><strong>Overtime Payments YTD</strong>: ${{ record.total_overtime_amount_formatted }}</td>
+                <td></td>
+              </tr>
+
+            </table>
+          </div>
+        {% endfor %}
+
+      </div>
+
+      {% if (employment_type == 'Salaried' and salaried_count > 1) or (employment_type == 'Non-Salaried' and non_salaried_count > 1) %}
+        <div id='next-emp-{{ class }}'></div>
+      {% endif %}
+
+    </div>
+  {% endfor %}
+
+  {% if salaried_count and non_salaried_count %}
+    <div id='toggle-employee-salaried' class='emp-record-salaried toggleEmployee'>
+      <strong>Viewing Salaried Details</strong>&nbsp;|&nbsp;
+      <a>View Non-salaried Details</a>
+    </div>
+    <div id='toggle-employee-non-salaried' class='emp-record-non-salaried toggleEmployee'>
+      <a>View Salaried Details</a>&nbsp;|&nbsp;
+      <strong>Viewing Non-salaried Details</strong>
+    </div>
+  {% endif %}
+
+</div>

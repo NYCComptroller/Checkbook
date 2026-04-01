@@ -121,20 +121,21 @@
     let data_format = $('input:hidden[name="hidden_data_format"]').val();
     let exptype = $('select[name="expense_type"]').val();
 
-    if(conditional_category.value !== "0"){
-      //Update Year list for COVID(1) and ASYLUM(2) selections
+    if (conditional_category.value !== "0") {
+      // Update Year list for COVID(1) and ASYLUM(2) selections.
       for (let i = 0; i < fiscal_year.length; i++) {
         let year = fiscal_year.options[i].text.toLowerCase();
         let include = true;
 
-        if(conditional_category.value === "1") {
+        if (conditional_category.value === "1") {
           include = (year === "all years" || removeFY(year) >= 2020);
-        } else if(conditional_category.value === "2") {
+        } else if (conditional_category.value === "2") {
           include = (year === "all years" || removeFY(year) >= 2018);
         }
         fiscal_year.options[i].style.display = include ? '':'none';
       }
-      //Add MOCS Registered column to response columns for Conditional Category selection
+
+      // Add MOCS Registered column to response columns for Conditional Category selection.
       if (exptype !== 'Others [o]' && exptype !== 'Payroll [p]') {
         if (data_format === 'xml') {
           if ($('#edit-column-select option[value="mocs_registered"]').length === 0) {
@@ -146,18 +147,19 @@
           }
         }
       }
-    } else{
+
+      $('#edit-column-select option[value="MOCS Registered"]').removeClass('hidden');
+      $('#edit-column-select option[value="mocs_registered"]').removeClass('hidden');
+    }
+    else {
       for (let i = 0; i < fiscal_year.length; i++) {
         fiscal_year.options[i].style.display = '';
       }
-    }
 
-    //MOCS Registered response column is available upon the selection of Conditional Category only
-    if((exptype === 'Others [o]' || exptype === 'Payroll [p]') && conditional_category.value === "0"){
       $('#edit-column-select').multiSelect('deselect', "MOCS Registered");
-      $('#edit-column-select option[value="MOCS Registered"]').remove();
+      $('#edit-column-select option[value="MOCS Registered"]').addClass('hidden');
       $('#edit-column-select').multiSelect('deselect', "mocs_registered");
-      $('#edit-column-select option[value="mocs_registered"]').remove();
+      $('#edit-column-select option[value="mocs_registered"]').addClass('hidden');
     }
 
     $('#edit-column-select').multiSelect('refresh');
@@ -165,9 +167,11 @@
       $('#ms-edit-column-select .ms-selection').after('<a class="deselect">Remove All</a>');
       $('#ms-edit-column-select .ms-selection').after('<a class="select">Add All</a>');
     }
+
     $('#ms-edit-column-select a.select').click(function () {
       $('#edit-column-select').multiSelect('select_all');
     });
+
     $('#ms-edit-column-select a.deselect').click(function () {
       $('#edit-column-select').multiSelect('deselect_all');
     });
@@ -394,10 +398,12 @@
         disable_input([contract_number, conditional_category]);
         conditional_category.prop("selectedIndex", 0);
         onCatastrophicEventChange();
-      } else{
+      }
+      else {
         // For every other option, enable Payee Name, ContractID, and Conditional Category field.
         enable_input([contract_number, contract_number, conditional_category]);
         onYearFilterChange();
+        onCatastrophicEventChange();
       }
     }
   };
@@ -544,7 +550,7 @@
 
       //Spending Category change event
       $('select[name="expense_type"]', context).change(function () {
-          onSpendingCategoryChange();
+        onSpendingCategoryChange();
       });
 
       $('select[name="nycedc_expense_type"]', context).change(function () {

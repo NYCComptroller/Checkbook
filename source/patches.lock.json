@@ -1,0 +1,29 @@
+{
+    "_hash": "683b5ce30e15662f74efbf0f72852f6456686a8e0f37f792e1d90f8c40b559ad",
+    "patches": {
+        "drupal/mini_layouts": [
+            {
+                "package": "drupal/mini_layouts",
+                "description": "3433456 - Automated Drupal 11 compatibility fixes for mini_layouts",
+                "url": "https://www.drupal.org/files/issues/2024-03-24/mini_layouts.2.0.0-alpha1.rector.patch",
+                "sha256": "f4ab335799b7dc01bd2f09dc1d0272967be2c22e2af70a4d3c037dadb48013b4",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ],
+        "drupal/filelog": [
+            {
+                "package": "drupal/filelog",
+                "description": "Automated Drupal 11 compatibility fixes for filelog",
+                "url": "https://www.drupal.org/files/issues/2024-07-28/filelog.3.0.x-dev.rector.patch",
+                "sha256": "6621b56135a426e4df33e6c086e9df4f60c905ab04469fea7a6d725f82eacacc",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ]
+    }
+}

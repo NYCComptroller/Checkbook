@@ -15,11 +15,8 @@
     "urlParameterName":"payrolltype",
     "autocompleteID":"fpayrollType",
     "adjustParameters":"
-    if(function_exists('_checkbook_project_applyParameterFilters')){
     $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
-    }
-    return $adjustedParameters;
-    ",
+    return $adjustedParameters;",
     "transformationPHP":"return \\Drupal\\checkbook_project\\PayrollUtilities\\PayrollUtil::updatePayrollTypeFacetData($node);",
-"template":"individual_filter"
+    "template":"individual_filter"
 }

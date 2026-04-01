@@ -17,8 +17,14 @@
   "adjustParameters":"
     $datasource = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('datasource');
     $monthId = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('month');
+
     if ($datasource=='checkbook_nycha') {
-      $node->widgetConfig->dataset='checkbook_nycha:payroll_employee_agency_basis';
+      if (!empty($monthId)) {
+        $node->widgetConfig->dataset='checkbook_nycha:payroll_employee_agency_month_basis';
+      }
+      else {
+        $node->widgetConfig->dataset='checkbook_nycha:payroll_employee_agency_basis';
+      }
     }
     $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
     return $adjustedParameters;

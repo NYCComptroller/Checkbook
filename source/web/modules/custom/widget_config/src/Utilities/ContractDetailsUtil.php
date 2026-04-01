@@ -80,15 +80,15 @@ class ContractDetailsUtil
 	                            LEFT JOIN vendor_business_type vb ON vh.vendor_history_id = vb.vendor_history_id
 	                            LEFT JOIN ref_business_type rb ON vb.business_type_id = rb.business_type_id
 	                            LEFT JOIN ref_minority_type rm ON vb.minority_type_id = rm.minority_type_id
-	                       WHERE ra.address_type_code = 'PR' AND fa.latest_flag = 'Y' AND fa.original_agreement_id = " . $ag_id. "LIMIT 1";
+	                       WHERE ra.address_type_code = 'PR' AND fa.latest_flag = 'Y' AND fa.original_agreement_id = " . $ag_id. " LIMIT 1";
     }
     return _checkbook_project_execute_sql_by_data_source($queryVendorDetails,Datasource::getCurrent());
   }
 
   public static function getVendorCountQueryResult($ag_id) {
-    $queryVendorCount = " select count(*) total_contracts_sum from {agreement_snapshot} where vendor_id =
-                        (select vendor_id from {agreement_snapshot} where original_agreement_id =". $ag_id . "limit 1)
-                           and latest_flag = 'Y'";
+    $queryVendorCount = " SELECT count(*) total_contracts_sum FROM {agreement_snapshot} WHERE vendor_id =
+                        (SELECT vendor_id FROM {agreement_snapshot} WHERE original_agreement_id =". $ag_id . " LIMIT 1)
+                           AND latest_flag = 'Y'";
     return _checkbook_project_execute_sql_by_data_source($queryVendorCount,Datasource::getCurrent());
   }
 }

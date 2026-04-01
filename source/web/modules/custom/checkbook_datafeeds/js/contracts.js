@@ -1126,44 +1126,53 @@
   };
 
   $.fn.calculateMocsRegister = function(cevent, csval, catval) {
-    cevent = $.fn.emptyToZero(cevent);
-    if(cevent === 1){
+    cevent = parseInt($.fn.emptyToZero(cevent));
+    if (cevent === 1) {
       if (csval === 'registered') {
         if (catval === 'expense') {
           $.fn.addColumnSelectMocsRegistered('edit-column-select-expense');
         }
         else if (catval === 'all'){
           $.fn.addColumnSelectMocsRegistered('edit-column-select-all');
-        } else {
+        }
+        else {
           $.fn.removeColumnSelectMocsRegistered();
         }
-      } else {
+      }
+      else {
         $.fn.removeColumnSelectMocsRegistered();
       }
-    } else {
+    }
+    else {
       $.fn.removeColumnSelectMocsRegistered();
     }
 
     $('#edit-column-select-all').multiSelect('refresh');
+
     if (!$('#ms-edit-column-select-all .ms-selection').next().is("a")) {
       $('#ms-edit-column-select-all .ms-selection').after('<a class="deselect">Remove All</a>');
       $('#ms-edit-column-select-all .ms-selection').after('<a class="select">Add All</a>');
     }
+
     $('#ms-edit-column-select-all a.select').click(function () {
       $('#edit-column-select-all').multiSelect('select_all');
     });
+
     $('#ms-edit-column-select-all a.deselect').click(function () {
       $('#edit-column-select-all').multiSelect('deselect_all');
     });
 
     $('#edit-column-select-expense').multiSelect('refresh');
+
     if (!$('#ms-edit-column-select-expense .ms-selection').next().is("a")) {
       $('#ms-edit-column-select-expense .ms-selection').after('<a class="deselect">Remove All</a>');
       $('#ms-edit-column-select-expense .ms-selection').after('<a class="select">Add All</a>');
     }
+
     $('#ms-edit-column-select-expense a.select').click(function () {
       $('#edit-column-select-expense').multiSelect('select_all');
     });
+
     $('#ms-edit-column-select-expense a.deselect').click(function () {
       $('#edit-column-select-expense').multiSelect('deselect_all');
     });
@@ -1172,27 +1181,24 @@
   $.fn.addColumnSelectMocsRegistered = function(columnSelectName) {
     let data_format = $('input:hidden[name="hidden_data_format"]').val();
     if (data_format === 'xml') {
-      if ($('#' + columnSelectName + ' option[value="mocs_registered"]').length === 0) {
-        $('#' + columnSelectName + ' option[value="document_code"]').before('<option value="mocs_registered">mocs_registered</option>');
-      }
+      $('#' + columnSelectName + ' option[value="mocs_registered"]').removeClass('hidden');
     } else {
-      if ($('#' + columnSelectName + ' option[value="MOCS Registered"]').length === 0) {
-        $('#' + columnSelectName + ' option[value="Document Code"]').before('<option value="MOCS Registered">MOCS Registered</option>');
-      }
+      $('#' + columnSelectName + ' option[value="MOCS Registered"]').removeClass('hidden');
     }
   }
 
   $.fn.removeColumnSelectMocsRegistered = function () {
-    //remove expense columns mocs for csv and xml
+    // Hide expense columns MOCS for CSV and XML.
     $('#edit-column-select-expense').multiSelect('deselect',"MOCS Registered");
-    $('#edit-column-select-expense option[value="MOCS Registered"]').remove();
+    $('#edit-column-select-expense option[value="MOCS Registered"]').addClass('hidden');
     $('#edit-column-select-expense').multiSelect('deselect',"mocs_registered");
-    $('#edit-column-select-expense option[value="mocs_registered"]').remove();
-    //remove select all columns mocs for csv and xml
+    $('#edit-column-select-expense option[value="mocs_registered"]').addClass('hidden');
+
+    // Hide select all columns MOCS for CSV and XML.
     $('#edit-column-select-all').multiSelect('deselect',"MOCS Registered");
-    $('#edit-column-select-all option[value="MOCS Registered"]').remove();
+    $('#edit-column-select-all option[value="MOCS Registered"]').addClass('hidden');
     $('#edit-column-select-all').multiSelect('deselect',"mocs_registered");
-    $('#edit-column-select-all option[value="mocs_registered"]').remove();
+    $('#edit-column-select-all option[value="mocs_registered"]').addClass('hidden');
   }
 
   //Function to retrieve values enclosed in brackets or return zero if none

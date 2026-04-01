@@ -611,7 +611,7 @@ body.page-smart-search .export.clicked {
 }
 
 .search-filters #filter-header {
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .search-filters ul {
@@ -626,7 +626,7 @@ body.page-smart-search .export.clicked {
   list-style: none outside none;
   margin-bottom: 7px;
   margin-right: 20px;
-  padding: 2px 5px;
+  padding: 5px 5px;
   text-transform: capitalize;
   display: block;
   float: left;
@@ -635,7 +635,7 @@ body.page-smart-search .export.clicked {
 
 .search-filters ul li .search-terms {
   position: relative;
-  top: -2px;
+  /*top: -2px;*/
 }
 
 .search-filters ul li.clear-all {

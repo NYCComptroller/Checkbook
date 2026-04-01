@@ -888,7 +888,7 @@ class RequestUtil {
       $query_string =$_SERVER['HTTP_REFERER'] ?? \Drupal::request()->query->get('q');
     }
     $widget = RequestUtil::getRequestKeyValueFromURL('widget', $query_string);
-    if((strpos($widget, 'wt_') !== false) || (strpos($widget, 'ytd_') !== false) || (strpos($widget, 'comm_') !== false)|| (strpos($widget, 'rec_') !== false)){
+    if((strpos($widget ?? '', 'wt_') !== false) || (strpos($widget ?? '', 'ytd_') !== false) || (strpos($widget ?? '', 'comm_') !== false)|| (strpos($widget ?? '', 'rec_') !== false)){
       $setAutoDeselect = 1;
     }
     return $setAutoDeselect;

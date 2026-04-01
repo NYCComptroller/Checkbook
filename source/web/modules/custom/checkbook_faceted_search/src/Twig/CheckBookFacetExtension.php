@@ -69,6 +69,7 @@ class CheckBookFacetExtension extends AbstractExtension
 
   function checkbook_faceted_search_auto($disabled, $pages, $node)
   {
+    $output = NULL;
     if (!isset($node->widgetConfig->autocomplete) || $node->widgetConfig->autocomplete == TRUE) {
       $output = "
       <div class=\"autocomplete\">
@@ -277,6 +278,7 @@ class CheckBookFacetExtension extends AbstractExtension
     $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
     $final_output = '';
     if (isset($checked) && $checked) {
+      $ct = 0;
       foreach ($checked as $row) {
         $output = '';
         if ($row[2] > 0) {
@@ -311,6 +313,7 @@ class CheckBookFacetExtension extends AbstractExtension
   public function checkbook_faceted_search_uncheck($unchecked, $disabled, $autocomplete_id, $filter_name) {
     $id_filter_name = str_replace(" ", "_", strtolower($filter_name));
     $ct = 0;
+    $final_output = NULL;
     if (isset($unchecked) && $unchecked) {
       foreach ($unchecked as $row) {
         if ($row[2] > 0) {
@@ -346,7 +349,7 @@ class CheckBookFacetExtension extends AbstractExtension
    */
   function checkbook_faceted_search_js($node)
   {
-    if ($node->widgetConfig->facetPager == TRUE) {
+    if (isset($node->widgetConfig->facetPager) && $node->widgetConfig->facetPager == TRUE) {
       $scroll_facet = "var page" . $node->nid . " = 0;
       $(this).next().find('.options').mCustomScrollbar('destroy');
       $(this).next().find('.options').mCustomScrollbar({

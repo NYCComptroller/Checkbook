@@ -45,9 +45,9 @@ function checkbook_smart_search_form_alter(&$form, FormStateInterface &$form_sta
   if ($form_id == 'checkbook_smart_search_form') {
     $solr_datasource = Datasource::getCurrentSolrDatasource();
     $placeholder = match (trim($solr_datasource)) {
-      'edc' => 'Search New York City Economic Development Corporation...',
-      'nycha' => 'Search New York City Housing Authority...',
-      default => 'Search New York City information...',
+      'edc' => 'Search NYC-EDC (Please enter at least 3 characters)',
+      'nycha' => 'Search New York City Housing Authority (Please enter at least 3 characters)',
+      default => 'Search New York City information (Please enter at least 3 characters)',
     };
     $form['search_box']['#attributes']['placeholder'] = $placeholder;
 
@@ -120,6 +120,7 @@ function checkbook_smart_search_theme($existing, $type, $theme, $path) {
         'solr_datasource' => '',
         'selected_facet_results' => [],
         'registered_contracts' => 0,
+        'error_message' => '',
         //'active_contracts' => 0,
       ],
     ],

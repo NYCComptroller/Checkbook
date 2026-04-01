@@ -198,18 +198,15 @@ class MappingUtil {
     {
         $isRefUrl = RequestUtilities::getRefUrl();
         $mwbe = isset( $isRefUrl) ? RequestUtilities::get('mwbe',['q'=>$isRefUrl ]) : RequestUtilities::get('mwbe');
-        $mwbe_url_params = $minority_type_ids ?? explode('~', $mwbe);
-        if($feed){
-          foreach (self::$minority_type_category_map_multi as $key => $values) {
-            if (count(array_diff($mwbe_url_params, $values)) == 0) {
-              return $key;
-            }
-          }
-        }else {
-          foreach (self::$minority_type_category_map_multi_chart as $key => $values) {
-            if (count(array_diff($mwbe_url_params, $values)) == 0) {
-              return $key;
-            }
+        $mwbe_url_params = $minority_type_ids ?? explode('~', (string)($mwbe ?? ''));
+        $mwbe_url_params = array_map('intval', $mwbe_url_params);
+        sort($mwbe_url_params);
+        $map = $feed ? self::$minority_type_category_map_multi : self::$minority_type_category_map_multi_chart;
+
+        foreach ($map as $key => $values) {
+          sort($values);
+          if ($mwbe_url_params === $values) {
+            return $key;
           }
         }
         return null;

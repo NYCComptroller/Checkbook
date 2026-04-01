@@ -24,7 +24,7 @@ class PayrollConfigExtension extends AbstractExtension
       'payrolljs' => new TwigFunction('payrolljs', [
         $this,
         'payrolljs',
-      ]),
+      ],['is_safe' => ['html']]),
       'payrollDataProcess' => new TwigFunction('payrollDataProcess', [
         $this,
         'payrollDataProcess',
@@ -32,7 +32,7 @@ class PayrollConfigExtension extends AbstractExtension
       'payrollToggle' => new TwigFunction('payrollToggle', [
         $this,
         'payrollToggle',
-      ]),
+      ],['is_safe' => ['html']]),
       'payrollAgencyUrl' => new TwigFunction('payrollAgencyUrl', [
         $this,
         'payrollAgencyUrl',
@@ -173,7 +173,7 @@ class PayrollConfigExtension extends AbstractExtension
     return $all_data;
   }
 
-  public function payrolljs($all_data)
+  /*public function payrolljs($all_data)
   {
     $salaried_count = is_array($all_data[PayrollType::$SALARIED]) ? count($all_data[PayrollType::$SALARIED]) : 0;
     $non_salaried_count = is_array($all_data[PayrollType::$NON_SALARIED]) ? count($all_data[PayrollType::$NON_SALARIED]) : 0;
@@ -243,6 +243,54 @@ class PayrollConfigExtension extends AbstractExtension
         });
     ";
     return "<script type='text/javascript'>".$js."</script>";
+  }*/
+
+  public function payrolljs($all_data)
+  {
+    $salaried_count = is_array($all_data[PayrollType::$SALARIED]) ? count($all_data[PayrollType::$SALARIED]) : 0;
+    $non_salaried_count = is_array($all_data[PayrollType::$NON_SALARIED]) ? count($all_data[PayrollType::$NON_SALARIED]) : 0;
+
+    // Default view based on salamttype in url
+    $default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
+
+    $salamttype = RequestUtilities::getTransactionsParams('salamttype');
+    $payroll_type = PayrollUtil::getPayrollType();
+
+    if (isset($salamttype)) {
+      $salamttype = explode('~', $salamttype);
+      if (!in_array(1, $salamttype)) {
+        $default_view = PayrollType::$NON_SALARIED;
+      }
+    }
+    if ($payroll_type == PayrollType::$NON_SALARIED) {
+      $default_view = PayrollType::$NON_SALARIED;
+    }
+
+    // Pass settings to Drupal.settings instead of inline JS
+    $settings = [
+      'payroll' => [
+        'defaultView' => $default_view,
+        'salariedCount' => $salaried_count,
+        'nonSalariedCount' => $non_salaried_count,
+        'hasSalaried' => $salaried_count > 0,
+        'hasNonSalaried' => $non_salaried_count > 0,
+      ],
+    ];
+
+    // Attach the settings and library
+    $build = [
+      '#attached' => [
+        'library' => [
+          'widget_config/payroll-employee',
+        ],
+        'drupalSettings' => $settings,
+      ],
+    ];
+
+    // Render the attachment
+    \Drupal::service('renderer')->render($build);
+
+    return '';
   }
 
   public function payrollToggle($all_data)
@@ -285,15 +333,12 @@ class PayrollConfigExtension extends AbstractExtension
   public function payrollMonthSummary($node)
   {
     if(is_array($node->data) && count($node->data) > 0){
-
-      print  '<div class="payroll-emp-wrapper">';
-      $employeeData = '';
-
-
+      $salaried_count = 0;
+      // Build HTML output
+      $employeeData = '<div class="payroll-emp-wrapper">';
       $employeeData .= "<div id='emp-agency-detail-records'>";
 
       foreach($node->data as $results) {
-
         $employment_type = $results['type_of_employment'];
         $class = strtolower($employment_type);
         $total_annual_salary = FormattingUtilities::custom_number_formatter_format($node->total_annual_salary,2,'$');
@@ -335,6 +380,8 @@ class PayrollConfigExtension extends AbstractExtension
           $total_overtime_employees_label = WidgetUtil::getLabel('total_no_of_ot_employees').':';
           $overtime_employees_value = number_format($results['total_overtime_employees']);
         }
+        // Build table HTML (keep your existing table code)
+        //$table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table' class='emp-record-$class'>";
         $table = "<div class='emp-agency-detail-record'><table id='emp-agency-detail-record-table' class='emp-record-$class'>
 
                 <div class='payroll-year-month emp-record-$class'>
@@ -400,7 +447,32 @@ class PayrollConfigExtension extends AbstractExtension
         $table .= "</table></div>";
         $employeeData .= $table;
       }
-      if ($default_view == PayrollType::$SALARIED) {
+
+      // Default view
+      $default_view = $salaried_count > 0 ? PayrollType::$SALARIED : PayrollType::$NON_SALARIED;
+      $array_smnid = RequestUtilities::_getRequestParamValueBottomURL('smnid') ?? RequestUtilities::get('smnid');
+
+      // Pass data to JavaScript via drupalSettings
+      $settings = [
+        'payroll' => [
+          'defaultView' => $default_view,
+          'dataCount' => count($node->data),
+          'smnid' => $array_smnid,
+        ],
+      ];
+
+      // Attach library and settings
+      $build = [
+        '#attached' => [
+          'library' => [
+            'widget_config/payroll-month-summary',
+          ],
+          'drupalSettings' => $settings,
+        ],
+      ];
+      \Drupal::service('renderer')->render($build);
+
+      /*if ($default_view == PayrollType::$SALARIED) {
         $showhide = "
         jQuery('.emp-record-salaried').show();
         jQuery('.emp-record-non-salaried').hide();
@@ -423,7 +495,7 @@ class PayrollConfigExtension extends AbstractExtension
     ";
 
 
-        print "<script type='text/javascript'>" . $js . "</script>";
+        print "<script type='text/javascript'>" . $js . "</script>";*/
 
       if (is_array($node->data)  && count($node->data) > 1) {
         $employeeData .= "<div id='toggle-employee-salaried' class='emp-record-salaried toggleEmployee'>

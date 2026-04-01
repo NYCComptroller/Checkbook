@@ -212,7 +212,7 @@ function widget_data_tables_widget_prepare($node) {
    */
   $index = 0;
   $sortDir = isset($_REQUEST['sSortDir_' . $index]) ?? '';
-  $uniqueSortColumn = $node->widgetConfig->uniqueSortColumn;
+  $uniqueSortColumn = $node->widgetConfig->uniqueSortColumn ?? NULL;
   if (isset($node->widgetConfig->orderBy) && !empty($node->widgetConfig->orderBy)) {
     if (isset($uniqueSortColumn)) {
       if (is_array($uniqueSortColumn)) {
@@ -527,11 +527,11 @@ function widget_data_tables_add_js($node){
         oTable" . $id  .  ".node_id = \"" . $node->nid . "\" ;
         oTable" . $id  .  ".initAjaxSource = '" . (isset($node->widgetConfig->sAjaxSource) ? $node->widgetConfig->sAjaxSource . CustomURLHelper::_checkbook_append_url_params() : "") . "' ;
 
-      " . stripcslashes($node->widgetConfig->customJS ?? null) .
+      " . stripcslashes($node->widgetConfig->customJS ?? '') .
     ($sticky_header_js ?? '') . // Append sticky header js
     ($scroller_header_js ?? '') . // Append scroller headers js
     "} );" .
-    stripcslashes($node->widgetConfig->customExternalJS ?? null);
+    stripcslashes($node->widgetConfig->customExternalJS ?? '');
 
   return  $js ;
 }

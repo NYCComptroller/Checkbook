@@ -18,7 +18,7 @@ datafeeds.budget:
     - core/once
     - checkbook_datafeeds/datafeeds.multi-select
 datafeeds.contracts:
-  version: 1.0.3
+  version: 1.0.4
   js:
     js/contracts.js: {}
   css:
@@ -44,7 +44,7 @@ datafeeds.revenue:
   dependencies:
     - checkbook_datafeeds/datafeeds.multi-select
 datafeeds.spending:
-  version: 1.0.3
+  version: 1.0.4
   js:
     js/spending.js: {}
   dependencies:

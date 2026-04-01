@@ -6,5 +6,9 @@
 {{ FacetData(search_results.facet_counts,solr_datasource,selected_facet_results,registered_contracts)|raw }}
 
 {{ smartSearchResults(search_results,solr_datasource)|raw }}
-
+  {% if error_message %}
+    <div class="smart-search-error">
+      {{ error_message }}
+    </div>
+  {% endif %}
 </div>

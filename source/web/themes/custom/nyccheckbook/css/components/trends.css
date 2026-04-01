@@ -792,3 +792,14 @@ body.page-featuredtrends .dataTables_scrollHead thead tr,
 body.page-featuredtrends .dataTables_wrapper thead tr {
   height: auto;
 }
+
+/* restore DataTables scrolling */
+.dataTables_wrapper {
+  float: none !important;
+  display: block !important;
+  overflow: visible !important;
+}
+
+.dataTables_scrollBody {
+  overflow: auto !important;
+}

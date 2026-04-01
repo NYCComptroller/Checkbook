@@ -40,13 +40,15 @@
   "preProcessConfiguration":"
        $month = \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::getTransactionsParams('month');
        $title = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageTitle();
+       $catName = \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageCategoryName();
        if($month >0){
        $node->widgetConfig->template='spending_date_summary';
        $node->widgetConfig->templateTitleEval= $title;
+       $node->widgetConfig->catName= $catName;
        }
-      else{
-      $node->widgetConfig->template='spending_transaction_total_amount';
-      }
+       else{
+       $node->widgetConfig->template='spending_transaction_total_amount';
+       }
   ",
   "dataset": "checkbook:spending_transactions_all",
     "adjustParameters":"
@@ -63,5 +65,6 @@
         $adjustedParameters = \\Drupal\\checkbook_project\\WidgetUtilities\\WidgetProcessor::_checkbook_project_applyParameterFilters($node,$parameters);
         return $adjustedParameters;
     ",
-    "columns": ["check_amount_sum"]
+    "columns": ["check_amount_sum"],
+    "categoryName":"return  \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getTransactionPageCategoryName();"
 }

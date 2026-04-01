@@ -3,7 +3,7 @@
   "widgetSubType": "highstock",
   "html_class": "thumbnail",
   "header":"
-    print '<h2 class=\"chart-title\">Personal Income</h2>
+    return '<h2 class=\"chart-title\">Personal Income</h2>
       <div class=\"featured-trends-filter\" id=\"personal-income-filter\">
       <div class=\"filter-container\">
       <input type=\"text\" class=\"chartdatefrom\" maxlength=\"4\" size=\"4\">
@@ -12,7 +12,7 @@
       <input type=\"submit\" value=\"Filter\" class=\"chartfilter\" name=\"3\" />
       </div>';",
   "footer":"
-    print '<div class=\"detail-page-links\">
+    return '<div class=\"detail-page-links\">
       <a class=\"show-detail-link\" href=\"/featuredtrends/node/353\">Show Details for Personal Income</a>
       </div>';",
   "callback":"

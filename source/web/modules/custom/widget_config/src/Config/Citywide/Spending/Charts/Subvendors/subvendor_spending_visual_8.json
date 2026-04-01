@@ -230,7 +230,8 @@
     },
     "colors":["#EB8E27","#B8D8ED","#99B473","#7DB8E1","#FFFC44","#E0CCFC"],
     "chart":{
-    	"height":"275"
+        "height": 275,
+        "spacingBottom": 1
     },
     "xAxis": {
         "categories": ["January","February","March","April","May","June","July","August","September","October","November","December"],
@@ -297,7 +298,7 @@
     "tooltip":{"function":"tooltipformatter"},
     "legend":{
         "align":"left",
-        "x": 48
+        "x": 50
     }
 }}
 

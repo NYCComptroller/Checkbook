@@ -1,1 +1,23 @@
-{{ getDomainResults (search_results,params.datasource,params.domain) |raw }}
+{% set domain_result = getDomainResults(search_results, params.datasource, params.domain) %}
+
+{% if domain_result.fields is defined and domain_result.fields is not empty %}
+  <div class="search-result-fields">
+    <div class="grid-row">
+      {% for field in domain_result.fields %}
+        <div class="grid-col-6">
+          {% if field.label %}
+            <div class="field-label">{{ field.label }}:</div>
+
+            <div class="field-content">
+              {% if field.value.is_link %}
+                <a href="{{ field.value.url }}">{{ field.value.formatted }}</a>
+              {% else %}
+                {{ field.value.formatted }}
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}

@@ -232,7 +232,7 @@ class RequestUtilities {
       if ($index !== FALSE) {
         $value = Xss::filter($pathParams[($index + 1)]);
       }
-      if (trim($value) == "") {
+      if (trim($value ?? '') == "") {
         return NULL;
       }
       if (isset($value) || $fromRequestPath) {
@@ -368,7 +368,9 @@ class RequestUtilities {
       $url = "/datasource/checkbook_oge";
     }
     else {
-      $current_url = explode('/', \Drupal::request()->server->get('HTTP_REFERER'));
+      $referer = \Drupal::request()->server->get('HTTP_REFERER') ?? '';
+      $current_url = $referer ? explode('/', $referer) : [];
+      //$current_url = explode('/', \Drupal::request()->server->get('HTTP_REFERER'));
       if (count($current_url) > 3 && ($current_url[3] == 'contract' && ($current_url[4] == 'search' || $current_url[4] == 'all') && $current_url[5] == 'transactions')) {
         $advanced_search = TRUE;
       }

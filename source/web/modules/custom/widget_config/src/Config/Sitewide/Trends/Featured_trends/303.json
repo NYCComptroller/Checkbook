@@ -3,7 +3,7 @@
     "widgetSubType": "highstock",
     "html_class": "thumbnail",
     "header":"
-        print '
+        return '
           <h2 class=\"chart-title\">General Fund Revenues and General Fund Expenditures</h2>
           <div class=\"featured-trends-filter\" id=\"general-fund-filter\">
           <div class=\"filter-container\">
@@ -14,7 +14,7 @@
           </div>';
     ",
     "footer":"
-        print '<div class=\"detail-page-links\">
+        return '<div class=\"detail-page-links\">
           <a class=\"show-detail-link\" href=\"/featuredtrends/node/347\">Show Details for General Fund Expenditures and Other Financing Uses</a>
           <a class=\"show-detail-link\" href=\"/featuredtrends/node/316\">Show Details for General Fund Revenues and Other Financing Sources</a>
           </div>';

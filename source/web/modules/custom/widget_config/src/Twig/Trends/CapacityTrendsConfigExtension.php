@@ -175,72 +175,79 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
   public static function ratiosOutstandingDebt($node){
     $count = 1;
+    $output = '';
     foreach( $node->data as $row){
       $dollar_sign = ($count == 1) ? self::DOLLAR_SIGN : '';
       $count++;
-      echo "<tr><td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['general_obligation_bonds']>0)?FormattingUtilities::trendsNumberDisplay($row['general_obligation_bonds']):'-') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['revenue_bonds']>0)?FormattingUtilities::trendsNumberDisplay($row['revenue_bonds']):'-') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['ecf']>0)?FormattingUtilities::trendsNumberDisplay($row['ecf']):'-') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['mac_debt']>0)?FormattingUtilities::trendsNumberDisplay($row['mac_debt']):'-') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['tfa']>0)?FormattingUtilities::trendsNumberDisplay($row['tfa']):'-') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['tsasc_debt']>0)?FormattingUtilities::trendsNumberDisplay($row['tsasc_debt']):'-') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['star']>0)?FormattingUtilities::trendsNumberDisplay($row['star']):'-') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['fsc']>0)?FormattingUtilities::trendsNumberDisplay($row['fsc']):'-') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['sfc_debt']>0)?FormattingUtilities::trendsNumberDisplay($row['sfc_debt']):'-') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['hyic_bonds_notes']>0)?FormattingUtilities::trendsNumberDisplay($row['hyic_bonds_notes']):'-') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['capital_leases_obligations']>0)?FormattingUtilities::trendsNumberDisplay($row['capital_leases_obligations']):'-') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['ida_bonds']>0)?FormattingUtilities::trendsNumberDisplay($row['ida_bonds']):'-') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['treasury_obligations']!=0)?FormattingUtilities::trendsNumberDisplay($row['treasury_obligations']):'-') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>". (($row['total_primary_government']>0)?FormattingUtilities::trendsNumberDisplay($row['total_primary_government']):'-') . "</div></td>";
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<tr><td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['general_obligation_bonds']>0)?FormattingUtilities::trendsNumberDisplay($row['general_obligation_bonds']):'-') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['revenue_bonds']>0)?FormattingUtilities::trendsNumberDisplay($row['revenue_bonds']):'-') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['ecf']>0)?FormattingUtilities::trendsNumberDisplay($row['ecf']):'-') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['mac_debt']>0)?FormattingUtilities::trendsNumberDisplay($row['mac_debt']):'-') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['tfa']>0)?FormattingUtilities::trendsNumberDisplay($row['tfa']):'-') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['tsasc_debt']>0)?FormattingUtilities::trendsNumberDisplay($row['tsasc_debt']):'-') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['star']>0)?FormattingUtilities::trendsNumberDisplay($row['star']):'-') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['fsc']>0)?FormattingUtilities::trendsNumberDisplay($row['fsc']):'-') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['sfc_debt']>0)?FormattingUtilities::trendsNumberDisplay($row['sfc_debt']):'-') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['hyic_bonds_notes']>0)?FormattingUtilities::trendsNumberDisplay($row['hyic_bonds_notes']):'-') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['capital_leases_obligations']>0)?FormattingUtilities::trendsNumberDisplay($row['capital_leases_obligations']):'-') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['ida_bonds']>0)?FormattingUtilities::trendsNumberDisplay($row['ida_bonds']):'-') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . (($row['treasury_obligations']!=0)?FormattingUtilities::trendsNumberDisplay($row['treasury_obligations']):'-') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>". (($row['total_primary_government']>0)?FormattingUtilities::trendsNumberDisplay($row['total_primary_government']):'-') . "</div></td>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
     }
+    return $output;
   }
 
   public static function ratiosGeneralBond($node){
     $count = 1;
+    $output = '';
     foreach( $node->data as $row){
       $dollar_sign = ($count == 1) ? self::DOLLAR_SIGN : '';
       $percent_sign = ($count == 1) ? '<span class="endItem">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%</span>' : '<span class="endItem" style="visibility:hidden;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%</span>';
 
-      echo "<tr><td class='number bonded'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
-      echo "<td class='number bonded' style='padding-left: 30px;'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['general_bonded_debt']) . "</div></td>";
-      echo "<td class='number bonded'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['debt_by_revenue_ot_prop_tax']) . "</div></td>";
-      echo "<td class='number bonded'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['general_obligation_bonds']) . "</div></td>";
-      echo "<td class='number bonded' style='padding-right: 30px;'><div class='tdCen'>" . number_format($row['percentage_atcual_taxable_property'],2) . $percent_sign. "</div></td>";
-      echo "<td class='number bonded' style='padding-right: 20px;'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['per_capita_general_obligations']) . "</div></td>";
-      echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<tr><td class='number bonded'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
+      $output .= "<td class='number bonded' style='padding-left: 30px;'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['general_bonded_debt']) . "</div></td>";
+      $output .= "<td class='number bonded'>" .$dollar_sign. "<div class='tdCen'>" . (isset($row['debt_by_revenue_ot_prop_tax']) ? number_format($row['debt_by_revenue_ot_prop_tax']) : '') . "</div></td>";
+      $output .= "<td class='number bonded'>" .$dollar_sign. "<div class='tdCen'>" . (isset($row['general_obligation_bonds']) ? number_format($row['general_obligation_bonds']) : '') . "</div></td>";
+      $output .= "<td class='number bonded' style='padding-right: 30px;'><div class='tdCen'>" . number_format($row['percentage_atcual_taxable_property'],2) . $percent_sign. "</div></td>";
+      $output .= "<td class='number bonded' style='padding-right: 20px;'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['per_capita_general_obligations']) . "</div></td>";
+      $output .= "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+      $output .= "</tr>";
       $count++;
     }
+    return $output;
   }
 
   public static function pledgeRevConNyc($node){
     $count = 1;
+    $output = '';
     foreach( $node->data as $row){
 
       $dollar_sign = ($count == 1)? self::DOLLAR_SIGN : '';
       $count++;
-      echo "<tr><td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
-      echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['pit_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['pit_revenue']):'-') . "</div></td>";
-      echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['sales_tax_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['sales_tax_revenue']):'-') . "</div></td>";
-      echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total_receipt']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_receipt']):'-') . "</div></td>";
-      echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['other']<>0)?FormattingUtilities::trendsNumberDisplay($row['other']):'-') . "</div></td>";
-      echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['investment_earnings']<>0)?FormattingUtilities::trendsNumberDisplay($row['investment_earnings']):'-') . "</div></td>";
-      echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_revenue']):'-') . "</div></td>";
-      echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['interest']<>0)?FormattingUtilities::trendsNumberDisplay($row['interest']):'-') . "</div></td>";
-      echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['pricipal']<>0)?FormattingUtilities::trendsNumberDisplay($row['pricipal']):'-') . "</div></td>";
-      echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total']<>0)?FormattingUtilities::trendsNumberDisplay($row['total']):'-') . "</div></td>";
-      echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['operating_expenses']<>0)?FormattingUtilities::trendsNumberDisplay($row['operating_expenses']):'-') . "</div></td>";
-      echo "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total_to_be_covered']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_to_be_covered']):'-') . "</div></td>";
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<tr><td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
+      $output .= "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['pit_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['pit_revenue']):'-') . "</div></td>";
+      $output .= "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['sales_tax_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['sales_tax_revenue']):'-') . "</div></td>";
+      $output .= "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total_receipt']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_receipt']):'-') . "</div></td>";
+      $output .= "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['other']<>0)?FormattingUtilities::trendsNumberDisplay($row['other']):'-') . "</div></td>";
+      $output .= "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['investment_earnings']<>0)?FormattingUtilities::trendsNumberDisplay($row['investment_earnings']):'-') . "</div></td>";
+      $output .= "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_revenue']):'-') . "</div></td>";
+      $output .= "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['interest']<>0)?FormattingUtilities::trendsNumberDisplay($row['interest']):'-') . "</div></td>";
+      $output .= "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['pricipal']<>0)?FormattingUtilities::trendsNumberDisplay($row['pricipal']):'-') . "</div></td>";
+      $output .= "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total']<>0)?FormattingUtilities::trendsNumberDisplay($row['total']):'-') . "</div></td>";
+      $output .= "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['operating_expenses']<>0)?FormattingUtilities::trendsNumberDisplay($row['operating_expenses']):'-') . "</div></td>";
+      $output .= "<td class='number'>" . $dollar_sign . "<div class='tdCen'>" . (($row['total_to_be_covered']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_to_be_covered']):'-') . "</div></td>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
     }
+    return $output;
   }
   public static function legalDebtMargin($node){
     $table_rows = array();
     $years = array();
+    $output = '';
     foreach( $node->data as $row){
       $length =  $row['indentation_level'];
       $spaceString = '&nbsp;';
@@ -259,10 +266,10 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
     // Display Header
     foreach ($years as $year){
-      echo "<th class='dt'><div>&nbsp;</div></th>";
-      echo "<th class='number'><div>" . $year . "</div></th>";
+      $output .= "<th class='dt'><div>&nbsp;</div></th>";
+      $output .= "<th class='number'><div>" . $year . "</div></th>";
     }
-    echo "<th>&nbsp;</th></tr></thead><tbody>";
+    $output .= "<th>&nbsp;</th></tr></thead><tbody>";
     // Display Main Content
     $count = 1;
     foreach($table_rows as $row){
@@ -320,95 +327,102 @@ class CapacityTrendsConfigExtension extends AbstractExtension
           break;
       }
 
-      echo "<tr><td class='text'>" . $conditionCategory . "</td>";
+      $output .= "<tr><td class='text'>" . $conditionCategory . "</td>";
 
       foreach ($years as $year){
         if($count == count($table_rows)){
           $amount = isset($row[$year]['amount']) ? $row[$year]['amount'] : '&nbsp;';
-          echo "<td><div>&nbsp;</div></td>"
+          $output .= "<td><div>&nbsp;</div></td>"
             ."<td class='" . $amount_class . "' ><div>" . $amount . "&nbsp;&nbsp;%</div></td>";
         }
         else{
           if($row[$year]['amount'] > 0){
             $amount = isset($row[$year]['amount']) ? number_format($row[$year]['amount']) : '&nbsp;';
-            echo "<td><div>&nbsp;</div></td>"
+            $output .= "<td><div>&nbsp;</div></td>"
               ."<td class='" . $amount_class . "' >" .$dollar_sign. "<div>" . $amount . "</div></td>";
           }else if($row[$year]['amount'] < 0){
             $amount = isset($row[$year]['amount']) ? number_format(abs($row[$year]['amount'])) : '&nbsp;';
-            echo "<td><div></div></td>"
+            $output .= "<td><div></div></td>"
               ."<td class='" . $amount_class . "' >" .$dollar_sign. "<div>(" . $amount . ")</div></td>";
           }else if($row[$year]['amount'] == 0){
             if(strpos($row['category'], ':')) {
-              echo "<td><div>&nbsp;</div></td>"."<td class='" . $amount_class . "' ><div>" . '&nbsp;' . "</div></td>";
+              $output .= "<td><div>&nbsp;</div></td>"."<td class='" . $amount_class . "' ><div>" . '&nbsp;' . "</div></td>";
             }
             else {
-              echo "<td><div>&nbsp;</div></td>"."<td class='" . $amount_class . "' ><div>" . '-' . "</div></td>";
+              $output .= "<td><div>&nbsp;</div></td>"."<td class='" . $amount_class . "' ><div>" . '-' . "</div></td>";
             }
           }
         }
       }
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
       $count++;
     }
+    return $output;
   }
 
   public static function assesedValEstdAct($node){
     $count = 1;
+    $output = '';
     foreach ($node->data as $row) {
       $dollar_sign = ($count == 1) ? self::DOLLAR_SIGN : '';
       $percent_sign = ($count == 1) ? '<span class="endItem">%</span>' : '<span class="endItem" style="visibility:hidden;">%</span>';
 
-      echo "<tr><td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['class_one'],1,'.',',') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['class_two'],1,'.',',') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['class_three'],1,'.',',') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['class_four'],1,'.',',') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['less_tax_exempt_property'],1,'.',',') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['total_taxable_assesed_value'],1,'.',',') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['total_direct_tax_1'],2) . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['estimated_actual_taxable_value'],1,'.',',') . "</div></td>";
-      echo "<td class='number'><div class='tdCen'>" . number_format($row['assesed_value_percentage'],2) .$percent_sign. "</div></td>";
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<tr><td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['class_one'],1,'.',',') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['class_two'],1,'.',',') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['class_three'],1,'.',',') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['class_four'],1,'.',',') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['less_tax_exempt_property'],1,'.',',') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['total_taxable_assesed_value'],1,'.',',') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['total_direct_tax_1'],2) . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['estimated_actual_taxable_value'],1,'.',',') . "</div></td>";
+      $output .= "<td class='number'><div class='tdCen'>" . number_format($row['assesed_value_percentage'],2) .$percent_sign. "</div></td>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
 
       $count++;
     }
+    return $output;
   }
 
   public static function propertyTaxRates($node){
     $count = 1;
+    $output = '';
     foreach( $node->data as $row){
       $dollar_sign = ($count == 1) ? self::DOLLAR_SIGN : '';
-      echo "<tr><td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['basic_rate'],2) . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  number_format($row['general_obligation_debt_service'],2) . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  number_format($row['total_direct'],2) . "</div></td>";
-      echo "</tr>";
+      $output .= "<tr><td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['basic_rate'],2) . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  number_format($row['general_obligation_debt_service'],2) . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  number_format($row['total_direct'],2) . "</div></td>";
+      $output .= "</tr>";
       $count++;
     }
+    return $output;
   }
 
   public static function propertyTaxLevies($node){
     $count = 1;
+    $output = '';
     foreach( $node->data as $row){
       $dollar_sign = ($count == 1) ? self::DOLLAR_SIGN :'';
       $percent_sign = ($count == 1) ? '<span class="endItem">%</span>' : '<span class="endItem" style="visibility:hidden;">%</span>';
 
-      echo "<tr><td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
-      echo "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" .  number_format($row['tax_levied']) . "</div></td>";
-      echo "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" .  number_format($row['amount']) . "</div></td>";
-      echo "<td class='number '><div class='tdCen'>" . number_format($row['percentage_levy'],2) .$percent_sign .  "</div></td>";
-      echo "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" .  (($row['collected_subsequent_years'] > 0) ? number_format($row['collected_subsequent_years']) :'-') . "</div></td>";
-      echo "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" .  number_format($row['levy_non_cash_adjustments']) . "</div></td>";
-      echo "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" .  number_format( $row['collected_amount']) . "</div></td>";
-      echo "<td class='number '><div class='tdCen'>" .  number_format($row['collected_percentage_levy'],2) .$percent_sign. "</div></td>";
-      echo "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" .  number_format($row['uncollected_amount']) . "</div></td>";
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<tr><td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
+      $output .= "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" .  number_format($row['tax_levied']) . "</div></td>";
+      $output .= "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" .  number_format($row['amount']) . "</div></td>";
+      $output .= "<td class='number '><div class='tdCen'>" . number_format($row['percentage_levy'],2) .$percent_sign .  "</div></td>";
+      $output .= "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" .  (($row['collected_subsequent_years'] > 0) ? number_format($row['collected_subsequent_years']) :'-') . "</div></td>";
+      $output .= "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" .  number_format($row['levy_non_cash_adjustments']) . "</div></td>";
+      $output .= "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" .  number_format( $row['collected_amount']) . "</div></td>";
+      $output .= "<td class='number '><div class='tdCen'>" .  number_format($row['collected_percentage_levy'],2) .$percent_sign. "</div></td>";
+      $output .= "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" .  number_format($row['uncollected_amount']) . "</div></td>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
 
       $count++;
     }
+    return $output;
   }
 
   public static function assesedValTaxRateClassTop($node){
@@ -440,6 +454,7 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
   public static function assesedValTaxRateClass($table_rows, $years){
     $count = 1;
+    $output = '';
     foreach( $table_rows as $row){
       $dollar_sign = ($count == 2 || $count == count($table_rows)) ? self::DOLLAR_SIGN : '';
       $percent_sign_1 = ($count == 2 || $count == count($table_rows))?'<span class="endItem">%</span>' : '<span class="endItem" style="visibility:hidden;">%</span>';
@@ -458,7 +473,7 @@ class CapacityTrendsConfigExtension extends AbstractExtension
       $sup_script = ($row['amount_display_type'] == 'G') ? "<sup class='endItem'>(1)</sup>" : "";
 
       $amount_class .= ' number';
-      echo "<tr>
+      $output .= "<tr>
 			    <td class='text " . $cat_class . "' ><div>" . (isset($row['category']) ? $row['category'] : '&nbsp;') . "</div></td>";
       foreach ($years as $year){
         if(isset($row[$year]['assesed_value_million_amount'])){
@@ -496,33 +511,36 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
         $sup_script2 = $sup_script;
 
-        echo "<td>$dollar_sign</td>"."<td class='" . $amount_class . " ' ><div class='tdCen assess'>" . $row[$year]['assesed_value_million_amount'] . "</div></td>";
-        echo "<td><div>&nbsp;</div></td>"."<td class='" . $amount_class . " ' ><div class='tdCen percent'>". $row[$year]['percentage_taxable_real_estate'] .$percent_sign_1."</div></td>";
-        echo "<td><div>&nbsp;</div></td>"."<td class='number $amount_class' ><div class='tdCen direct'>" . $row[$year]['direct_tax_rate'] . $sup_script2 ."</div></td>";
+        $output .= "<td>$dollar_sign</td>"."<td class='" . $amount_class . " ' ><div class='tdCen assess'>" . $row[$year]['assesed_value_million_amount'] . "</div></td>";
+        $output .= "<td><div>&nbsp;</div></td>"."<td class='" . $amount_class . " ' ><div class='tdCen percent'>". $row[$year]['percentage_taxable_real_estate'] .$percent_sign_1."</div></td>";
+        $output .= "<td><div>&nbsp;</div></td>"."<td class='number $amount_class' ><div class='tdCen direct'>" . $row[$year]['direct_tax_rate'] . $sup_script2 ."</div></td>";
       }
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
 
       $count++;
     }
+    return $output;
   }
 
   public static function collectionsCancellationsAbatements($node){
     $count = 1;
+    $output = '';
     foreach ($node->data as $row) {
       $dollar_sign = ($count == 1) ? self::DOLLAR_SIGN :'';
       $percent_sign = ($count == 1) ? '<span class="endItem">%</span>' : '<span class="endItem" style="visibility:hidden;">%</span>';
 
-      echo "<tr><td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
-      echo "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['tax_levy'],1,'.',',') . (($row['fiscal_year']=='2003')?"<sup class='endItem'>(2)</sup>":"<sup class='endItem' style='visibility: hidden;'>(1)</sup>") . "</div></td>";
-      echo "<td class='number'><div class='tdCen'>" .  number_format($row['collection'],1) . $percent_sign . "</div></td>";
-      echo "<td class='number'><div class='tdCen'>" .  number_format($row['cancellations'],1) . $percent_sign ."</div></td>";
-      echo "<td class='number'><div class='tdCen'>" .  number_format($row['abatement_and_discounts_1'],1) . $percent_sign ."</div></td>";
-      echo "<td class='number'><div class='tdCen'>" .  number_format($row['uncollected_balance_percent'],1) . $percent_sign ."</div></td>";
-      echo "</tr>";
+      $output .= "<tr><td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
+      $output .= "<td class='number '>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['tax_levy'],1,'.',',') . (($row['fiscal_year']=='2003')?"<sup class='endItem'>(2)</sup>":"<sup class='endItem' style='visibility: hidden;'>(1)</sup>") . "</div></td>";
+      $output .= "<td class='number'><div class='tdCen'>" .  number_format($row['collection'],1) . $percent_sign . "</div></td>";
+      $output .= "<td class='number'><div class='tdCen'>" .  number_format($row['cancellations'],1) . $percent_sign ."</div></td>";
+      $output .= "<td class='number'><div class='tdCen'>" .  number_format($row['abatement_and_discounts_1'],1) . $percent_sign ."</div></td>";
+      $output .= "<td class='number'><div class='tdCen'>" .  number_format($row['uncollected_balance_percent'],1) . $percent_sign ."</div></td>";
+      $output .= "</tr>";
 
       $count++;
     }
+    return $output;
   }
 
   public static function uncollectedParkingViolationFeeTop($node){
@@ -551,6 +569,7 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
   public static function uncollectedParkingViolationFee($table_rows, $years){
     $count = 1;
+    $output = '';
     foreach( $table_rows as $row){
       $dollar_sign = ($count == 1 || $count ==  count($table_rows)) ? self::DOLLAR_SIGN : '';
       $cat_class = "";
@@ -568,9 +587,9 @@ class CapacityTrendsConfigExtension extends AbstractExtension
       if($row['category'] == 'Allowance for Uncollectible Amounts (c)') {
         $row['category'] = 'Allowance for<br>Uncollectible Amounts (c)';
       }
-      $row['category'] = str_replace('(a)','<sup style="text-transform: lowercase;">(a)</sup>', $row['category']);
-      $row['category'] = str_replace('(b)','<sup style="text-transform: lowercase;">(b)</sup>', $row['category']);
-      $row['category'] = str_replace('(c)','<sup style="text-transform: lowercase;">(c)</sup>', $row['category']);
+      $row['category'] = str_replace('(a)','<sup style="text-transform: lowercase;">(a)</sup>', $row['category'] ?? '');
+      $row['category'] = str_replace('(b)','<sup style="text-transform: lowercase;">(b)</sup>', $row['category'] ?? '');
+      $row['category'] = str_replace('(c)','<sup style="text-transform: lowercase;">(c)</sup>', $row['category'] ?? '');
 
       $conditionCategory = ($row['category']?$row['category']:'&nbsp;');
       switch($conditionCategory){
@@ -588,41 +607,44 @@ class CapacityTrendsConfigExtension extends AbstractExtension
           break;
       }
 
-      echo "<tr><td class='text'>" . $conditionCategory . "</td>";
+      $output .= "<tr><td class='text'>" . $conditionCategory . "</td>";
       foreach ($years as $year){
-        echo "<td><div>&nbsp;</div></td>";
-        echo "<td class='" . $amount_class . "' >" . $dollar_sign . "<div>" . (($row[$year]['amount'] > 0) ? number_format($row[$year]['amount']) : '&nbsp;') . "</div></td>";
+        $output .= "<td><div>&nbsp;</div></td>";
+        $output .= "<td class='" . $amount_class . "' >" . $dollar_sign . "<div>" . (($row[$year]['amount'] > 0) ? number_format($row[$year]['amount']) : '&nbsp;') . "</div></td>";
       }
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
       $count++;
     }
+    return $output;
   }
 
   public static function hudsonYardsInfraCorp($node){
     $count = 1;
+    $output = '';
     foreach($node->data as $row){
       $dollar_sign = ($count == 1 ? self::DOLLAR_SIGN : '');
-      echo "<tr>";
-      echo "<td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['dib_revenue_1']<>0)?FormattingUtilities::trendsNumberDisplay($row['dib_revenue_1']):'-') . "</td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['tep_revenue_2']<>0)?FormattingUtilities::trendsNumberDisplay($row['tep_revenue_2']):'-') . "</td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['isp_revenue_3']<>0)?FormattingUtilities::trendsNumberDisplay($row['isp_revenue_3']):'-') . "</td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['pilomrt_payment']<>0)?FormattingUtilities::trendsNumberDisplay($row['pilomrt_payment']):'-') . "</td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['pilot']<>0)?FormattingUtilities::trendsNumberDisplay($row['pilot']):'-') . "</td>";            //PILOT DATA
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['other_4']<>0)?FormattingUtilities::trendsNumberDisplay($row['other_4']):'-') . ((in_array($row['fiscal_year'], ['2019']))? "<sup class='endItem'>(8)</sup>":"<sup class='endItem' style='visibility: hidden;'>(8)</sup>") . "</td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['investment_earnings']<>0)?FormattingUtilities::trendsNumberDisplay($row['investment_earnings']):'-') . "</td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_revenue']):'-') . "</td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['interest']<>0)?FormattingUtilities::trendsNumberDisplay($row['interest']):'-') . "</td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['principal']<>0)?FormattingUtilities::trendsNumberDisplay($row['principal']):'-') . "</td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total']<>0)?FormattingUtilities::trendsNumberDisplay($row['total']):'-') . "</td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['operating_expenses']<>0)?FormattingUtilities::trendsNumberDisplay($row['operating_expenses']):'-') . ((  $row['fiscal_year'] == '2012')? "<sup class='endItem'>(8)</sup>":"<sup class='endItem' style='visibility: hidden;'>(8)</sup>"). "</td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_to_be_covered']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_to_be_covered']):'-') . "</td>";
-      echo "<td class='number ' ><div class='tdCen'>" . (($row['coverage_on_total_revenue_5'] > 0) ? $row['coverage_on_total_revenue_5'] : "(" . $row['coverage_on_total_revenue_5'] .")") . "</div></td>";
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<tr>";
+      $output .= "<td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['dib_revenue_1']<>0)?FormattingUtilities::trendsNumberDisplay($row['dib_revenue_1']):'-') . "</td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['tep_revenue_2']<>0)?FormattingUtilities::trendsNumberDisplay($row['tep_revenue_2']):'-') . "</td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['isp_revenue_3']<>0)?FormattingUtilities::trendsNumberDisplay($row['isp_revenue_3']):'-') . "</td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['pilomrt_payment']<>0)?FormattingUtilities::trendsNumberDisplay($row['pilomrt_payment']):'-') . "</td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['pilot']<>0)?FormattingUtilities::trendsNumberDisplay($row['pilot']):'-') . "</td>";            //PILOT DATA
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['other_4']<>0)?FormattingUtilities::trendsNumberDisplay($row['other_4']):'-') . ((in_array($row['fiscal_year'], ['2019']))? "<sup class='endItem'>(8)</sup>":"<sup class='endItem' style='visibility: hidden;'>(8)</sup>") . "</td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['investment_earnings']<>0)?FormattingUtilities::trendsNumberDisplay($row['investment_earnings']):'-') . "</td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_revenue']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_revenue']):'-') . "</td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['interest']<>0)?FormattingUtilities::trendsNumberDisplay($row['interest']):'-') . "</td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['principal']<>0)?FormattingUtilities::trendsNumberDisplay($row['principal']):'-') . "</td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total']<>0)?FormattingUtilities::trendsNumberDisplay($row['total']):'-') . "</td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['operating_expenses']<>0)?FormattingUtilities::trendsNumberDisplay($row['operating_expenses']):'-') . ((  $row['fiscal_year'] == '2012')? "<sup class='endItem'>(8)</sup>":"<sup class='endItem' style='visibility: hidden;'>(8)</sup>"). "</td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" .  (($row['total_to_be_covered']<>0)?FormattingUtilities::trendsNumberDisplay($row['total_to_be_covered']):'-') . "</td>";
+      $output .= "<td class='number ' ><div class='tdCen'>" . (($row['coverage_on_total_revenue_5'] > 0) ? $row['coverage_on_total_revenue_5'] : "(" . $row['coverage_on_total_revenue_5'] .")") . "</div></td>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
       $count++;
     }
+    return $output;
   }
 
   public static function capAssetsStatsProgramTop($node){
@@ -650,6 +672,7 @@ class CapacityTrendsConfigExtension extends AbstractExtension
   }
 
   public static function capAssetsStatsProgram($table_rows, $years){
+    $output = '';
     foreach( $table_rows as $row){
       $cat_class = "";
       if( $row['highlight_yn'] == 'Y') {
@@ -692,18 +715,19 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 //                }
 //
       $conditionCategory = "<div class='" . $cat_class . "' >" . $row['category'] . "</div>";
-      echo "<tr><td class='text'>" . /*$row['category']*/ $conditionCategory . "</td>";
+      $output .= "<tr><td class='text'>" . /*$row['category']*/ $conditionCategory . "</td>";
       if(strpos($row['category'], ':')){
         $hyphen = "";
       }else{
         $hyphen = "-";
       }
       foreach ($years as $year) {
-        echo "<td><div>&nbsp;</div></td><td class='" . $amount_class . "'><div>" . (($row[$year]['amount'] > 0)?number_format($row[$year]['amount']):'&nbsp;' . $hyphen) . "</div></td>";
+        $output .= "<td><div>&nbsp;</div></td><td class='" . $amount_class . "'><div>" . (($row[$year]['amount'] > 0)?number_format($row[$year]['amount']):'&nbsp;' . $hyphen) . "</div></td>";
       }
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
     }
+    return $output;
   }
 
   public static function noCityEmployeesTop($node){
@@ -732,6 +756,7 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
   public static function noCityEmployees($table_rows, $years){
     $i = 1;
+    $output = '';
     foreach($table_rows as $row){
       $cat_class = "";
       if( $row['highlight_yn'] == 'Y') {
@@ -750,25 +775,26 @@ class CapacityTrendsConfigExtension extends AbstractExtension
         $row['category']  = "Percentage Increase (Decrease)<br><span style='padding-left:0px;'>from Prior Year</span>";
       }
 
-      echo "<tr>
+      $output .= "<tr>
 			    <td class='text' ><div class='" . $cat_class . "' >" . $row['category'] . "</div></td>";
       foreach ($years as $year){
         if($i < count($table_rows)){
-          echo "<td><div>&nbsp;</div></td><td class='" . $amount_class . "' ><div>" . (($row[$year]['amount']>0)?number_format($row[$year]['amount']):'&nbsp;') . "</div></td>";
+          $output .= "<td><div>&nbsp;</div></td><td class='" . $amount_class . "' ><div>" . (($row[$year]['amount']>0)?number_format($row[$year]['amount']):'&nbsp;') . "</div></td>";
         }
         else{
           if($row[$year]['amount'] < 0) {
-            echo "<td><div>&nbsp;</div></td><td class='" . $amount_class . "' ><div>(" . abs($row[$year]['amount']) . "%)</div></td>";
+            $output .= "<td><div>&nbsp;</div></td><td class='" . $amount_class . "' ><div>(" . abs($row[$year]['amount']) . "%)</div></td>";
           }
           else {
-            echo "<td><div>&nbsp;</div></td><td class='" . $amount_class . "' ><div>" . number_format($row[$year]['amount'],1) . "%</div></td>";
+            $output .= "<td><div>&nbsp;</div></td><td class='" . $amount_class . "' ><div>" . number_format($row[$year]['amount'],1) . "%</div></td>";
           }
         }
       }
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
       $i++;
     }
+    return $output;
   }
 
   public static function changesNetAssetsTop($node){
@@ -799,6 +825,7 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
   public static function changesNetAssets($table_rows, $years){
     $count = 0;
+    $output = '';
     foreach ($table_rows as $row) {
       $cat_class = "";
       $dollar_sign = "&nbsp;";
@@ -819,18 +846,20 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
       $row['category'] = (isset($row['category']) ? $row['category'] : '&nbsp;');
 
-      echo "<tr>
+      $output .= "<tr>
             <td class='text " . $cat_class . "' ><div style=\"width: 280px;\">" . $row['category'] . "</div></td>";
 
       foreach ($years as $year) {
-        echo "<td>&nbsp;</td>";
-        if ($row[$year]['amount'] > 0) {
-          echo "<td class='" . $amount_class . " ' >" . $dollar_sign . "<div>" . number_format($row[$year]['amount']) . "</div></td>";
-        } else if ($row[$year]['amount'] < 0) {
-          echo "<td class='" . $amount_class . " ' >" . $dollar_sign . "<div>(" . number_format(abs($row[$year]['amount'])) . ")</div></td>";
-        } else if ($row[$year]['amount'] == 0) {
+        $output .= "<td>&nbsp;</td>";
+        if ($year && $row[$year]['amount'] > 0) {
+          $output .= "<td class='" . $amount_class . " ' >" . $dollar_sign . "<div>" . number_format($row[$year]['amount']) . "</div></td>";
+        }
+        else if ($year && $row[$year]['amount'] < 0) {
+          $output .= "<td class='" . $amount_class . " ' >" . $dollar_sign . "<div>(" . number_format(abs($row[$year]['amount'])) . ")</div></td>";
+        }
+        else {
           if (strpos($row['category'], ':')) {
-            echo "<td class='" . $amount_class . " ' ><div>" . '&nbsp;' . "</div></td>";
+            $output .= "<td class='" . $amount_class . " ' ><div>" . '&nbsp;' . "</div></td>";
           }
           else {
             $val = '-';
@@ -846,13 +875,14 @@ class CapacityTrendsConfigExtension extends AbstractExtension
                 $val = 'N/A';
                 break;
             }
-            echo "<td class='" . $amount_class . " ' ><div>" . $val . "</div></td>";
+            $output .= "<td class='" . $amount_class . " ' ><div>" . $val . "</div></td>";
           }
         }
       }
-      echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+      $output .= "</tr>";
     }
+    return $output;
   }
 
   public static function fundBalGovtFundsTop($node){
@@ -881,6 +911,7 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
   public static function fundBalGovtFunds($table_rows, $years){
     $count = 0;
+    $output = '';
     foreach( $table_rows as $row){
       $cat_class = "";
       $dollar_sign = "&nbsp;";
@@ -901,26 +932,27 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
       $row['category'] = (isset($row['category'])?$row['category']:'&nbsp;');
 
-      echo "<tr>
+      $output .= "<tr>
             <td class='text " . $cat_class . "' ><div style=\"width: 332px;\">" . $row['category'] . "</div></td>";
       foreach ($years as $year){
-        echo "<td><div>&nbsp;</div></td>";
+        $output .= "<td><div>&nbsp;</div></td>";
         if($row[$year]['amount'] > 0){
-          echo "<td class='" . $amount_class . " ' >" . $dollar_sign .  "<div>" . number_format($row[$year]['amount']) . "</div></td>";
+          $output .= "<td class='" . $amount_class . " ' >" . $dollar_sign .  "<div>" . number_format($row[$year]['amount']) . "</div></td>";
         }else if($row[$year]['amount'] < 0){
-          echo "<td class='" . $amount_class . " ' >" . $dollar_sign . "<div>(" .  number_format(abs($row[$year]['amount'])) . ")</div></td>";
+          $output .= "<td class='" . $amount_class . " ' >" . $dollar_sign . "<div>(" .  number_format(abs($row[$year]['amount'])) . ")</div></td>";
         }else{
           if(strpos($row['category'], ':')) {
-            echo "<td class='" . $amount_class . " ' ><div>" . '&nbsp;' . "</div></td>";
+            $output .= "<td class='" . $amount_class . " ' ><div>" . '&nbsp;' . "</div></td>";
           }
           else {
-            echo "<td class='" . $amount_class . " ' ><div>" . '-' . "</div></td>";
+            $output .= "<td class='" . $amount_class . " ' ><div>" . '-' . "</div></td>";
           }
         }
       }
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
     }
+    return $output;
   }
 
   public static function changesFundBalTop($node){
@@ -952,6 +984,7 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
   public static function changesFundBal($table_rows, $years){
     $count = 0;
+    $output = '';
     foreach($table_rows as $row){
       $cat_class = "";
       $dollar_sign = "";
@@ -971,31 +1004,35 @@ class CapacityTrendsConfigExtension extends AbstractExtension
         $cat_class .= " cat-" . $row["amount_display_type"];
       }
 
-      echo "<tr>
+      $output .= "<tr>
             <td class='text " . $cat_class . "' ><div style=\"width: 330px;\">" . $row['category'] . "</div></td>";
 
-      foreach ($years as $year){
-        echo "<td><div></div></td>";
-        if($count == count($table_rows)){
-          echo "<td class='" . $amount_class . " ' ><div>" . $row[$year]['amount'] . "%</div></td>";
-        }else{
-          if($row[$year]['amount'] > 0){
-            echo "<td class='" . $amount_class . " ' >". $dollar_sign ."<div>". number_format($row[$year]['amount']) . "</div></td>";
-          }else if($row[$year]['amount'] < 0){
-            echo "<td class='" . $amount_class . " ' >". $dollar_sign ."<div>(" . number_format(abs($row[$year]['amount'])) . ")</div></td>";
-          }else if($row[$year]['amount'] == 0){
-            if(strpos($row['category'], ':') || strtolower($row['category']) == 'less capital outlays') {
-              echo "<td class='" . $amount_class . " ' ><div>" . '&nbsp;' . "</div></td>";
+      foreach ($years as $year) {
+        $output .= "<td><div></div></td>";
+        if ($count == count($table_rows)) {
+          $output .= "<td class='" . $amount_class . " ' ><div>" . $row[$year]['amount'] . "%</div></td>";
+        }
+        else {
+          if ($year && $row[$year]['amount'] > 0) {
+            $output .= "<td class='" . $amount_class . " ' >". $dollar_sign ."<div>". number_format($row[$year]['amount']) . "</div></td>";
+          }
+          else if ($year && $row[$year]['amount'] < 0) {
+            $output .= "<td class='" . $amount_class . " ' >". $dollar_sign ."<div>(" . number_format(abs($row[$year]['amount'])) . ")</div></td>";
+          }
+          else {
+            if (strpos($row['category'], ':') || strtolower($row['category']) == 'less capital outlays') {
+              $output .= "<td class='" . $amount_class . " ' ><div>" . '&nbsp;' . "</div></td>";
             }
             else {
-              echo "<td class='" . $amount_class . " ' ><div>" . '-' . "</div></td>";
+              $output .= "<td class='" . $amount_class . " ' ><div>" . '-' . "</div></td>";
             }
           }
         }
       }
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
     }
+    return $output;
   }
 
   public static function generalFundRevenueOtherFinSourcesTop($node){
@@ -1024,6 +1061,7 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
   public static function generalFundRevenueOtherFinSources($table_rows, $years){
     $count = 0;
+    $output = '';
     foreach( $table_rows as $row){
       $cat_class = "";
       $dollar_sign = "";
@@ -1044,26 +1082,27 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
       $row['category'] = (isset($row['category'])?$row['category']:'&nbsp;');
 
-      echo "<tr>
+      $output .= "<tr>
             <td class='text " . $cat_class . "' ><div style=\"width: 270px;\">" . $row['category'] . "</div></td>";
       foreach ($years as $year){
-        echo "<td><div></div></td>";
+        $output .= "<td><div></div></td>";
         if($row[$year]['amount'] > 0){
-          echo "<td class='" . $amount_class . " ' >" . $dollar_sign . "<div>" . number_format($row[$year]['amount']) . "</div></td>";
+          $output .= "<td class='" . $amount_class . " ' >" . $dollar_sign . "<div>" . number_format($row[$year]['amount']) . "</div></td>";
         }else if($row[$year]['amount'] < 0){
-          echo "<td class='" . $amount_class . " ' >" . $dollar_sign . "<div>(" . number_format(abs($row[$year]['amount'])) . ")</div></td>";
+          $output .= "<td class='" . $amount_class . " ' >" . $dollar_sign . "<div>(" . number_format(abs($row[$year]['amount'])) . ")</div></td>";
         }else{
           if(strpos($row['category'], ':')) {
-            echo "<td class='" . $amount_class . " ' ><div>" . '&nbsp;' . "</div></td>";
+            $output .= "<td class='" . $amount_class . " ' ><div>" . '&nbsp;' . "</div></td>";
           }
           else {
-            echo "<td class='" . $amount_class . " ' ><div>" . '-' . "</div></td>";
+            $output .= "<td class='" . $amount_class . " ' ><div>" . '-' . "</div></td>";
           }
         }
       }
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
     }
+    return $output;
   }
 
   public static function generalFundExpendOtherFinSourcesTop($node){
@@ -1092,6 +1131,7 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
   public static function generalFundExpendOtherFinSources($table_rows, $years){
     $count = 0;
+    $output = '';
     foreach( $table_rows as $row){
       $cat_class = "";
       $dollar_sign = "";
@@ -1112,26 +1152,27 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
       $row['category'] = (isset($row['category'])?$row['category']:'&nbsp;');
 
-      echo "<tr>
+      $output .= "<tr>
             <td class='text " . $cat_class . "' ><div style=\"width: 330px;\">" . $row['category'] . "</div></td>";
       foreach ($years as $year){
-        echo "<td><div></div></td>";
+        $output .= "<td><div></div></td>";
         if($row[$year]['amount'] > 0){
-          echo "<td class='" . $amount_class . " ' >" .$dollar_sign ."<div>" . number_format($row[$year]['amount']) . "</div></td>";
+          $output .= "<td class='" . $amount_class . " ' >" .$dollar_sign ."<div>" . number_format($row[$year]['amount']) . "</div></td>";
         }else if($row[$year]['amount'] < 0){
-          echo "<td class='" . $amount_class . " ' >" .$dollar_sign ."<div>(" . number_format(abs($row[$year]['amount'])) . ")</div></td>";
+          $output .= "<td class='" . $amount_class . " ' >" .$dollar_sign ."<div>(" . number_format(abs($row[$year]['amount'])) . ")</div></td>";
         }else{
           if(strpos($row['category'], ':')) {
-            echo "<td class='" . $amount_class . " ' ><div>" . '&nbsp;' . "</div></td>";
+            $output .= "<td class='" . $amount_class . " ' ><div>" . '&nbsp;' . "</div></td>";
           }
           else {
-            echo "<td class='" . $amount_class . " ' ><div>" . '-' . "</div></td>";
+            $output .= "<td class='" . $amount_class . " ' ><div>" . '-' . "</div></td>";
           }
         }
       }
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
     }
+    return $output;
   }
 
   public static function capitalProjRevAgencyTop($node){
@@ -1160,6 +1201,7 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
   public static function capitalProjRevAgency($table_rows, $years){
     $count = 0;
+    $output = '';
     foreach($table_rows as $row){
       $cat_class = "";
       $dollar_sign = "";
@@ -1233,32 +1275,34 @@ class CapacityTrendsConfigExtension extends AbstractExtension
           break;
       }
 
-      echo "<tr>
+      $output .= "<tr>
             <td class='text' >" . $conditionCategory . "</td>";
 
       foreach ($years as $year){
-        echo "<td><div>&nbsp;</div></td>";
+        $output .= "<td><div>&nbsp;</div></td>";
 
         if($row[$year]['amount'] > 0){
-          echo "<td class='" . $amount_class . " ' >".$dollar_sign. "<div>" . number_format($row[$year]['amount']) . "</div></td>";
+          $output .= "<td class='" . $amount_class . " ' >".$dollar_sign. "<div>" . number_format($row[$year]['amount']) . "</div></td>";
         }else if($row[$year]['amount'] < 0){
-          echo "<td class='" . $amount_class . " ' >".$dollar_sign. "<div>(" . number_format(abs($row[$year]['amount'])) . ")</div></td>";
+          $output .= "<td class='" . $amount_class . " ' >".$dollar_sign. "<div>(" . number_format(abs($row[$year]['amount'])) . ")</div></td>";
         }else if($row[$year]['amount'] == 0){
           if(strpos($row['category'], ':')) {
-            echo "<td class='" . $amount_class . " ' ><div>" . '&nbsp;' . "</div></td>";
+            $output .= "<td class='" . $amount_class . " ' ><div>" . '&nbsp;' . "</div></td>";
           }
           else {
-            echo "<td class='" . $amount_class . " ' ><div>" . '-' . "</div></td>";
+            $output .= "<td class='" . $amount_class . " ' ><div>" . '-' . "</div></td>";
           }
         }
       }
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
     }
+    return $output;
   }
 
   public static function nycEduConstFund($node){
     $count = 1;
+    $output = '';
     foreach( $node->data as $row){
       $dollar_sign = ($count == 1) ? self::DOLLAR_SIGN : '';
       if ($count % 2){
@@ -1266,25 +1310,27 @@ class CapacityTrendsConfigExtension extends AbstractExtension
       } else {
         $trclass = ' class="even"';
       }
-      echo "<tr$trclass>";
-      echo "<td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['rental_revenue']) . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . FormattingUtilities::trendsNumberDisplay($row['interest_revenue']) . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . ($row['other_income']?number_format($row['other_income']):'-') . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['total_revenue']) . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['interest']) . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['pricipal']) . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['total']) . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['operating_expenses']) . "</div></td>";
-      echo "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['total_to_be_covered']) . "</div></td>";
-      echo "<td class='number'><div class='tdCen'>" .  number_format($row['coverage_ratio'],2) . "</div></td>";
-      echo "</tr>";
+      $output .= "<tr$trclass>";
+      $output .= "<td class='number'><div class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['rental_revenue']) . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . FormattingUtilities::trendsNumberDisplay($row['interest_revenue']) . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . ($row['other_income']?number_format($row['other_income']):'-') . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['total_revenue']) . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['interest']) . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['pricipal']) . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['total']) . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['operating_expenses']) . "</div></td>";
+      $output .= "<td class='number'>" .$dollar_sign. "<div class='tdCen'>" . number_format($row['total_to_be_covered']) . "</div></td>";
+      $output .= "<td class='number'><div class='tdCen'>" .  number_format($row['coverage_ratio'],2) . "</div></td>";
+      $output .= "</tr>";
       $count++;
     }
+    return $output;
   }
 
   public static function nycPopulation($node){
     $count = 1;
+    $output = '';
     foreach($node->data as $row){
       $percent_sign = ($count == 1 ) ? '<span class="endItem">%</span>' : '<span class="endItem" style="visibility:hidden;">%</span>';
       $open_parentheses_col3 = "";
@@ -1304,15 +1350,16 @@ class CapacityTrendsConfigExtension extends AbstractExtension
         $row['percentage_change_prior_period'] = $row['percentage_change_prior_period']*-1;
       }
 
-      echo "<tr>";
-      echo "<td class='number '><div  class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
-      echo "<td class='number '><div  class='tdCen'>" . (($row['united_states']>0)?number_format($row['united_states']):' - ') . "</div></td>";
-      echo "<td class='number '><div  class='tdCen'>" . $open_parentheses_col3. (($row['percentage_change_from_prior_period']>0)? (number_format($row['percentage_change_from_prior_period'],2)):' - ') . $closed_parentheses_col3 . $percent_sign . "</div></td>";
-      echo "<td class='number '><div  class='tdCen'>" . (($row['city_of_new_york']>0)?number_format($row['city_of_new_york']):' - '). "</div></td>";
-      echo "<td class='number '><div  class='tdCen'>" . $open_parentheses_col5 . (($row['percentage_change_prior_period']!=0)?(number_format($row['percentage_change_prior_period'],2)):' - ') . $closed_parentheses_col5 . $percent_sign . "</div></td>";
-      echo "</tr>";
+      $output .= "<tr>";
+      $output .= "<td class='number '><div  class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
+      $output .= "<td class='number '><div  class='tdCen'>" . (($row['united_states']>0)?number_format($row['united_states']):' - ') . "</div></td>";
+      $output .= "<td class='number '><div  class='tdCen'>" . $open_parentheses_col3. (($row['percentage_change_from_prior_period']>0)? (number_format($row['percentage_change_from_prior_period'],2)):' - ') . $closed_parentheses_col3 . $percent_sign . "</div></td>";
+      $output .= "<td class='number '><div  class='tdCen'>" . (($row['city_of_new_york']>0)?number_format($row['city_of_new_york']):' - '). "</div></td>";
+      $output .= "<td class='number '><div  class='tdCen'>" . $open_parentheses_col5 . (($row['percentage_change_prior_period']!=0)?(number_format($row['percentage_change_prior_period'],2)):' - ') . $closed_parentheses_col5 . $percent_sign . "</div></td>";
+      $output .= "</tr>";
       $count++;
     }
+    return $output;
   }
 
   public static function personalIncomeTaxRevenuesTop($node){
@@ -1325,12 +1372,12 @@ class CapacityTrendsConfigExtension extends AbstractExtension
         $spaceString .= '&nbsp;';
         $length -=1;
       }
-      $table_rows[$row['display_order']]['fips'] =  $row['fips'];
-      $table_rows[$row['display_order']]['area'] =  $row['area'];
-      $table_rows[$row['display_order']]['highlight_yn'] = $row['highlight_yn'];
-      $table_rows[$row['display_order']]['indentation_level'] = $row['indentation_level'];
-      $table_rows[$row['display_order']]['amount_display_type'] = $row['amount_display_type'];
-      $table_rows[$row['display_order']][$row['fiscal_year']]['amount'] = $row['amount'];
+      $table_rows[$row['display_order']]['fips'] =  $row['fips'] ?? NULL;
+      $table_rows[$row['display_order']]['area'] =  $row['area'] ?? NULL;
+      $table_rows[$row['display_order']]['highlight_yn'] = $row['highlight_yn'] ?? NULL;
+      $table_rows[$row['display_order']]['indentation_level'] = $row['indentation_level']  ?? NULL;
+      $table_rows[$row['display_order']]['amount_display_type'] = $row['amount_display_type'] ?? NULL;
+      $table_rows[$row['display_order']][$row['fiscal_year']]['amount'] = $row['amount'] ?? NULL;
       $years[$row['fiscal_year']] = 	$row['fiscal_year'];
     }
     sort($years);
@@ -1342,6 +1389,7 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
   public static function personalIncomeTaxRevenues($table_rows, $years){
     $dollar_div = "<div class='dollarItem'>$</div>";
+    $output = '';
     foreach( $table_rows as $row){
       $cat_class = "";
       if( $row['highlight_yn'] == 'Y') {
@@ -1354,7 +1402,7 @@ class CapacityTrendsConfigExtension extends AbstractExtension
       }
       $amount_class .= " number";
 
-      switch($row['category']){
+      switch($row['category'] ?? NULL){
         case "Personal income (thousands of dollars)":
           $row['category'] = "Personal income<br/>(thousands of dollars)";
           break;
@@ -1365,16 +1413,17 @@ class CapacityTrendsConfigExtension extends AbstractExtension
           break;
       }
 
-      echo "<tr><td class='number'><div class='tdCen'>" . (isset($row['fips'])?$row['fips'] :'&nbsp;') . "</div></td>";
-      echo "<td class='text'><div>" . (isset($row['area'])?$row['area'] :'&nbsp;') . "</div></td>";
+      $output .= "<tr><td class='number'><div class='tdCen'>" . (isset($row['fips'])?$row['fips'] :'&nbsp;') . "</div></td>";
+      $output .= "<td class='text'><div>" . (isset($row['area'])?$row['area'] :'&nbsp;') . "</div></td>";
 
       foreach ($years as $year) {
-        echo "<td class='" . $amount_class . "'>$dollar_div<div>" . (isset($row[$year]['amount']) ? number_format($row[$year]['amount']) : '&nbsp;') . "</div></td>";
+        $output .= "<td class='" . $amount_class . "'>$dollar_div<div>" . (isset($row[$year]['amount']) ? number_format($row[$year]['amount']) : '&nbsp;') . "</div></td>";
       }
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
       $dollar_div = "";
     }
+    return $output;
   }
 
   public static function nonAgrEmploymentTop($node){
@@ -1404,7 +1453,7 @@ class CapacityTrendsConfigExtension extends AbstractExtension
 
   public static function nonAgrEmployment($table_rows, $years){
     $i = 0;
-
+    $output = '';
     foreach($table_rows as $row){
       $cat_class = "";
       if($row['highlight_yn'] == 'Y') {
@@ -1432,62 +1481,67 @@ class CapacityTrendsConfigExtension extends AbstractExtension
       }
 
 
-      echo "<tr><td class='text'>" . $conditionCategory . "</td>";
+      $output .= "<tr><td class='text'>" . $conditionCategory . "</td>";
 
       foreach ($years as $year){
         if($i == count($table_rows)-1){
           if($row[$year]['amount'] > 0) {
-            echo "<td><div></div></td><td class='" . $amount_class . "'><div>" . $row[$year]['amount'] . "%</div></td>";
+            $output .= "<td><div></div></td><td class='" . $amount_class . "'><div>" . $row[$year]['amount'] . "%</div></td>";
           }
           else if($row[$year]['amount'] < 0) {
-            echo "<td><div></div></td><td class='" . $amount_class . "' ><div>(" . abs($row[$year]['amount']) . "%)" . /*(($year == 2020) ? '(b)' : '') .*/ "</div></td>";
+            $output .= "<td><div></div></td><td class='" . $amount_class . "' ><div>(" . abs($row[$year]['amount']) . "%)" . /*(($year == 2020) ? '(b)' : '') .*/ "</div></td>";
           }
           else {
-            echo "<td><div></div></td><td class='" . $amount_class . "' ><div>" . "NA" . "</div></td>";
+            $output .= "<td><div></div></td><td class='" . $amount_class . "' ><div>" . "NA" . "</div></td>";
           }
         }else{
           if($row[$year]['amount'] > 0){
-            echo "<td><div></div></td><td class='" . $amount_class . "' ><div>" . number_format($row[$year]['amount']) . "</div></td>";
+            $output .= "<td><div></div></td><td class='" . $amount_class . "' ><div>" . number_format($row[$year]['amount']) . "</div></td>";
           }else if($row[$year]['amount'] < 0){
-            echo "<td><div></div></td><td class='" . $amount_class . "' ><div>(" . number_format(abs($row[$year]['amount'])) . ")</div></td>";
+            $output .= "<td><div></div></td><td class='" . $amount_class . "' ><div>(" . number_format(abs($row[$year]['amount'])) . ")</div></td>";
           }else if($row[$year]['amount'] == 0){
             if(strpos($row['category'], ':')) {
-              echo "<td><div></div></td><td class='" . $amount_class . "' ><div>" . '&nbsp;' . "</div></td>";
+              $output .= "<td><div></div></td><td class='" . $amount_class . "' ><div>" . '&nbsp;' . "</div></td>";
             }
             else {
-              echo "<td><div></div></td><td class='" . $amount_class . "' ><div>" . '-' . "</div></td>";
+              $output .= "<td><div></div></td><td class='" . $amount_class . "' ><div>" . '-' . "</div></td>";
             }
           }
         }
       }
       $i++;
-      echo "<td>&nbsp;</td>";
-      echo "</tr>";
+      $output .= "<td>&nbsp;</td>";
+      $output .= "</tr>";
     }
+    return $output;
   }
 
   public static function personsRecPubAsst($node){
+    $output = '';
     foreach( $node->data as $row){
-      echo "<tr><td class='number'><div  class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
-      echo "<td class='number'><div  class='tdCen'>" . number_format($row['public_assistance']) . "</div></td>";
-      echo "<td class='number'><div  class='tdCen'>" . (($row['ssi'])?number_format($row['ssi']) : 'NA') . "</div></td>";
-      echo "</tr>";
+      $output .= "<tr><td class='number'><div  class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
+      $output .= "<td class='number'><div  class='tdCen'>" . number_format($row['public_assistance']) . "</div></td>";
+      $output .= "<td class='number'><div  class='tdCen'>" . (($row['ssi'])?number_format($row['ssi']) : 'NA') . "</div></td>";
+      $output .= "</tr>";
     }
+    return $output;
   }
 
   public static function empStatusResidentPopulation($node){
     $count = 1;
+    $output = '';
     foreach( $node->data as $row){
       $percent_sign = ($count == 1) ? '<span class="endItem">%</span>' : '<span class="endItem" style="visibility:hidden;">%</span>';
-      echo "<tr><td class='number'><div  class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
-      echo "<td class='number'><div  class='tdCen'>" . number_format($row['civilian_labor_force_new_york_city_employed']) . "</div></td>";
-      echo "<td class='number'><div  class='tdCen'>" . number_format($row['civilian_labor_force_unemployed']) . "</div></td>";
-      echo "<td><div>&nbsp;</div></td>";
-      echo "<td class='number'><div  class='tdCen'>" . number_format($row['unemployment_rate_city_percent'],1) . $percent_sign ."</div></td>";
-      echo "<td class='number'><div class='tdCen'>" . number_format($row['unemployment_rate_united_states_percent'],1) . $percent_sign. "</div></td>";
-      echo "</tr>";
+      $output .= "<tr><td class='number'><div  class='tdCen'>" . $row['fiscal_year'] . "</div></td>";
+      $output .= "<td class='number'><div  class='tdCen'>" . number_format($row['civilian_labor_force_new_york_city_employed']) . "</div></td>";
+      $output .= "<td class='number'><div  class='tdCen'>" . number_format($row['civilian_labor_force_unemployed']) . "</div></td>";
+      $output .= "<td><div>&nbsp;</div></td>";
+      $output .= "<td class='number'><div  class='tdCen'>" . number_format($row['unemployment_rate_city_percent'],1) . $percent_sign ."</div></td>";
+      $output .= "<td class='number'><div class='tdCen'>" . number_format($row['unemployment_rate_united_states_percent'],1) . $percent_sign. "</div></td>";
+      $output .= "</tr>";
       $count++;
     }
+    return $output;
   }
 
 

@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\checkbook_log\LogHelper;
+use Drupal\Core\Render\Markup;
 
 /**
  * This file is part of the Checkbook NYC financial transparency software.
@@ -40,6 +41,9 @@ function checkbook_api_ref_mail($key, &$message, $params) {
   $CES = new \Drupal\checkbook_api_ref\API\CheckbookApiRef();
   $CES->gatherData($message);
   $message['body'] = array_merge($message['body'], $params);
+  //Declare this as HTML mail EARLY
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
+  //$message['body'] = [''];
 }
 
 /**
@@ -50,7 +54,7 @@ function checkbook_api_ref_mail($key, &$message, $params) {
  * @throws Exception
  */
 function checkbook_api_ref_mail_alter(&$message) {
-  // Apply this hook only for `checkbook_etl_status` module
+  // Apply this hook only for `checkbook_api_ref` module
   if ('checkbook_api_ref' !== $message['module']) {
     return;
   }
@@ -61,14 +65,36 @@ function checkbook_api_ref_mail_alter(&$message) {
     $message['headers']['Importance'] = 'High';
   }
 
-  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
-  $body_data = array (
-    '#theme' => 'api-ref-mail',
-    '#message' => $message['body'],
-    '#allowed_tags' => ['html','head', 'body', 'main','style', 'header', 'footer','table','tbody','tr','th','td','main','br','a','img'],
-  );
-  $message['body'] = [\Drupal::service('renderer')->render($body_data)];
-  return $message;
+  // Force HTML email.
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
+
+  // Debug: Log what we receive
+  \Drupal::logger('checkbook_api_ref')->debug('Message body before rendering: @body', [
+    '@body' => print_r($message['body'], TRUE)
+  ]);
+
+  // Check if body is already an array with our data structure
+  if (is_array($message['body']) && isset($message['body']['status'])) {
+    // Body already has the structure we need
+    $body_data = [
+      '#theme' => 'api-ref-mail',
+      '#message' => $message['body'],
+    ];
+  } else {
+    // Body might be a simple array of strings, extract from params
+    $body_data = [
+      '#theme' => 'api-ref-mail',
+      '#message' => $message['params'] ?? [],
+    ];
+  }
+
+  // Render to raw HTML string.
+  $html = \Drupal::service('renderer')->renderPlain($body_data);
+
+  // Mail body MUST be an array of safe strings.
+  $message['body'] = [
+    Markup::create($html),
+  ];
 }
 
 /**
