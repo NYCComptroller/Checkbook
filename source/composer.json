@@ -22,12 +22,12 @@
         "drupal/coder": "^8.3",
         "drupal/color": "^2.0@dev",
         "drupal/context": "^5.0@RC",
-        "drupal/core-composer-scaffold": "11.3.8",
-        "drupal/core-project-message": "11.3.8",
-        "drupal/core-recommended": "11.3.8",
+        "drupal/core-composer-scaffold": "11.3.10",
+        "drupal/core-project-message": "11.3.10",
+        "drupal/core-recommended": "11.3.10",
         "drupal/ctools": "^4.0",
         "drupal/devel": "^5.2",
-        "drupal/diff": "^2.0@beta",
+        "drupal/diff": "^2.0",
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/form_options_attributes": "^2.1",
         "drupal/google_tag": "^2.0",
@@ -48,7 +48,8 @@
         "drupal/superfish": "^1.11",
         "drupal/token": "^1.17",
         "drupal/upgrade_status": "^4.3",
-        "drush/drush": "^13.3"
+        "drush/drush": "^13.3",
+        "psy/psysh": "0.12.19"
     },
     "conflict": {
         "drupal/drupal": "*"
