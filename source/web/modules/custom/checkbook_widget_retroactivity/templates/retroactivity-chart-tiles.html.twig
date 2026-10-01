@@ -1,0 +1,17 @@
+<div class="retroactivity-tiles-container">
+  <div class="tiles-wrapper">
+    {% for tile in tiles %}
+      {# We add data-chart-id so your JS function can call updateChartWithFilters(chart_id) #}
+      <div class="chart-tile {{ tile.active ? 'is-active' : '' }}" 
+           data-tile-id="{{ tile.id }}" 
+           data-chart-id="{{ tile.chart_id }}">
+
+        <span class="tile-title">{{ tile.title }}</span>
+        <div class="tile-image-wrapper">
+          <img src="{{ tile.thumbnail }}" alt="{{ tile.title }}">
+        </div>
+       
+      </div>
+    {% endfor %}
+  </div>
+</div>

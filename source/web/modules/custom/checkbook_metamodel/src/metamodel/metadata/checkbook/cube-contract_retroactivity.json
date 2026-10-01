@@ -1,0 +1,330 @@
+{
+    "datasets": {
+        "aggregateon_contract_retroactivity": {
+            "datasourceName": "main",
+            "source": "SELECT * FROM aggregateon_contract_retroactivity WHERE agency_id NOT IN(141) AND vendor_id NOT IN(5252)"
+        },
+        "lateness_category": {
+          "datasourceName": "main",
+          "source": "ref_lateness_category",
+          "columns": [
+            {
+              "name": "lateness_category_id",
+              "key": true
+            }
+          ]
+        },
+        "aggregateon_spending_retroactivity": {
+            "datasourceName": "main",
+            "source": "SELECT * FROM aggregateon_spending_retroactivity WHERE agency_id NOT IN(141) AND vendor_id NOT IN(5252)"
+        }
+    },
+    "cubes": {
+        "aggregateon_contract_retroactivity": {
+            "sourceDatasetName": "aggregateon_contract_retroactivity",
+            "dimensions": [
+                {
+                    "name":"agency_id",
+                    "levels": [
+                        {
+                            "name":"agency_id",
+                            "sourceColumnName":"agency_id"
+                        }
+                    ]
+                },
+                {
+                  "name":"agency_code",
+                  "levels": [
+                    {
+                      "name":"agency_code",
+                      "sourceColumnName":"agency_code"
+                    }
+                  ]
+                },
+                {
+                  "name":"agency_name",
+                  "levels": [
+                    {
+                      "name":"agency_name",
+                      "sourceColumnName":"agency_name"
+                    }
+                  ]
+                },
+                {
+                  "name":"agency_short_name",
+                  "levels": [
+                    {
+                      "name":"agency_short_name",
+                      "sourceColumnName":"agency_short_name"
+                    }
+                  ]
+                },
+                {
+                  "name":"bca_agency_short_name",
+                  "levels": [
+                    {
+                      "name":"bca_agency_short_name",
+                      "sourceColumnName":"bca_agency_short_name"
+                    }
+                  ]
+                },
+                {
+                    "name":"vendor_id",
+                    "levels": [
+                        {
+                            "name":"vendor_id",
+                            "sourceColumnName":"vendor_id"
+                        }]
+                },
+                {
+                  "name":"vendor_customer_code",
+                  "levels": [
+                    {
+                      "name":"vendor_customer_code",
+                      "sourceColumnName":"vendor_customer_code"
+                    }]
+                },
+                {
+                    "name":"year",
+                    "levels": [
+                        {
+                            "name":"year",
+                            "sourceColumnName":"year_id"
+                        }]
+                },
+                {
+                    "name":"year-start",
+                    "levels": [
+                        {
+                            "name":"year",
+                            "sourceColumnName":"year_id"
+                        }]
+                },
+                {
+                    "name":"year-end",
+                    "levels": [
+                        {
+                            "name":"year",
+                            "sourceColumnName":"year_id"
+                        }]
+                },
+                {
+                    "name":"registration_date-start",
+                    "levels": [
+                        {
+                            "name":"registration_date",
+                            "sourceColumnName":"registration_date"
+                        }]
+                },
+                {
+                    "name":"registration_date-end",
+                    "levels": [
+                        {
+                            "name":"registration_date",
+                            "sourceColumnName":"registration_date"
+                        }]
+                },
+                {
+                    "name":"industry_type_id",
+                    "levels": [
+                        {
+                            "name":"industry_type_id",
+                            "sourceColumnName":"industry_type_id"
+                        }]
+                },
+                {
+                    "name":"minority_type_id",
+                    "levels": [
+                        {
+                            "name":"minority_type_id",
+                            "sourceColumnName":"minority_type_id"
+                        }]
+                },
+                {
+                    "name":"nonprofit_status",
+                    "levels": [
+                        {
+                            "name":"nonprofit_status",
+                            "sourceColumnName":"nonprofit_status"
+                        }]
+                },
+                {
+                    "name":"lateness_category",
+                    "levels": [
+                        {
+                            "name":"lateness_category",
+                            "datasetName": "lateness_category",
+                            "sourceColumnName":"lateness_category_id"
+                        }]
+                }
+            ],
+            "measures": {
+                "count_ontime_contracts": {
+                    "function": "SUM(total_ontime_contracts)"
+                },
+                "count_retroactive_contracts": {
+                    "function": "SUM(total_retroactive_contracts)"
+                },
+                "total_retroactive_amount_sum": {
+                    "function": "SUM(total_retroactive_amount)"
+                },
+                "total_ontime_amount_sum": {
+                  "function": "SUM(total_ontime_amount)"
+                },
+                "total_contract_amount_sum": {
+                  "function": "SUM(total_contract_amount)"
+                },
+                "total_contracts_sum": {
+                  "function": "SUM(total_contracts)"
+                },
+                "all_years": {
+                    "function": "DISTINCT year"
+                },
+                "avg_days_late": {
+                    "function": "round(SUM(total_days_delta) / SUM(total_contracts), 0)"
+                },
+                "lateness_label": {
+                    "function": "CASE WHEN round(SUM(total_days_delta) / SUM(total_contracts), 0) > 0 THEN 'late' ELSE 'ontime' END"
+                }
+            }
+        },
+        "aggregateon_spending_retroactivity": {
+            "sourceDatasetName": "aggregateon_spending_retroactivity",
+            "dimensions": [
+                {
+                    "name":"agency_id",
+                    "levels": [
+                        {
+                            "name":"agency_id",
+                            "sourceColumnName":"agency_id"
+                        }
+                    ]
+                },
+                {
+                  "name":"agency_code",
+                  "levels": [
+                    {
+                      "name":"agency_code",
+                      "sourceColumnName":"agency_code"
+                    }
+                  ]
+                },
+                {
+                  "name":"agency_name",
+                  "levels": [
+                    {
+                      "name":"agency_name",
+                      "sourceColumnName":"agency_name"
+                    }
+                  ]
+                },
+                {
+                    "name":"vendor_id",
+                    "levels": [
+                        {
+                            "name":"vendor_id",
+                            "sourceColumnName":"vendor_id"
+                        }]
+                },
+                {
+                  "name":"vendor_customer_code",
+                  "levels": [
+                    {
+                      "name":"vendor_customer_code",
+                      "sourceColumnName":"vendor_customer_code"
+                    }]
+                },
+                {
+                    "name":"year",
+                    "levels": [
+                        {
+                            "name":"year",
+                            "sourceColumnName":"year_id"
+                        }]
+                },
+                {
+                    "name":"industry_type_id",
+                    "levels": [
+                        {
+                            "name":"industry_type_id",
+                            "sourceColumnName":"industry_type_id"
+                        }]
+                },
+                {
+                    "name":"minority_type_id",
+                    "levels": [
+                        {
+                            "name":"minority_type_id",
+                            "sourceColumnName":"minority_type_id"
+                        }]
+                },
+                {
+                    "name":"nonprofit_status",
+                    "levels": [
+                        {
+                            "name":"nonprofit_status",
+                            "sourceColumnName":"nonprofit_status"
+                        }]
+                },
+                {
+                    "name":"lateness_category",
+                    "levels": [
+                        {
+                            "name":"lateness_category",
+                            "datasetName": "lateness_category",
+                            "sourceColumnName":"lateness_category_id"
+                        }]
+                },
+                {
+                    "name":"unique_vendor_count",
+                    "levels": [
+                        {
+                            "name":"unique_vendor_count",
+                            "sourceColumnName":"unique_vendor_count"
+                        }]
+                },
+                {
+                    "name":"total_check_amount",
+                    "levels": [
+                        {
+                            "name":"total_check_amount",
+                            "sourceColumnName":"total_check_amount"
+                        }]
+                },
+                {
+                    "name":"unique_check_count",
+                    "levels": [
+                        {
+                            "name":"unique_check_count",
+                            "sourceColumnName":"unique_check_count"
+                        }]
+                },
+                {
+                    "name":"total_delay_days",
+                    "levels": [
+                        {
+                            "name":"total_delay_days",
+                            "sourceColumnName":"total_delay_days"
+                        }]
+                }
+            ],
+            "measures": {
+                "unique_vendor_count": {
+                    "function": "count(DISTINCT vendor_id)"
+                },
+                "total_check_amount_sum": {
+                    "function": "SUM(total_check_amount)"
+                },
+                "unique_check_count_sum": {
+                    "function": "SUM(unique_check_count)"
+                }
+            }
+        }
+    },
+    "references": {
+        "aggregateon_contract_retroactivity__ref_lateness_category": [
+            {"datasetName": "aggregateon_contract_retroactivity", "columnNames": ["lateness_category_id"]},
+            {"datasetName": "lateness_category", "columnNames": ["lateness_category_id"]}
+        ]
+    }
+}

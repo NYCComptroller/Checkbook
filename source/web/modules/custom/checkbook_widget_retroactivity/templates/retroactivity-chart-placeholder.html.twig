@@ -1,0 +1,37 @@
+{# The primary wrapper for the entire chart section #}
+<div id="retroactivity-chart-outer-wrapper" class="retroactivity-chart-outer-container">
+  <div class="dashboard-headings-sub">
+    {#<h2 class="sub-title">{{ sub_heading }}</h2>#}
+    <h2 class="chart-title">{{ chart_heading }}</h2>
+  </div>
+  {# Description Area: Use this for chart-specific subtitles or info text #}
+  <div id="retroactivity-chart-description" class="retroactivity-chart-description">
+  </div>
+
+  {# Message Area: Use this to display AJAX errors or "No data found" alerts #}
+  <div id="retroactivity-chart-message" class="retroactivity_chart_message">
+    {# Initially empty or a 'Select filters' prompt #}
+  </div>
+  <div id="retroactivity-sort-container" class="retroactivity-sort-container">
+    <span id="retroactivity-sort-image"><img src="{{ base_path }}/themes/custom/nyccheckbook/images/sorting-arrows-48.png" alt="Sort" /></span>
+  </div>
+  {# The Chart Container: This is the landing pad for the Highcharts SVG #}
+  <div id="retroactivity-chart-container" class="retroactivity-chart-container">
+    {# Highcharts will be injected here via AJAX #}
+  </div>
+
+  <div id="retroactivity-legend-container" class="retroactivity-legend-container">
+   <div class="custom-legend">
+    <div id="legend-ontime" class="legend-item">
+        <span class="legend-icon icon-primary"></span>
+        <span class="legend-label">On Time</span>
+    </div>
+    <div id="legend-late" class="legend-item">
+        <span class="legend-icon icon-secondary"></span>
+        <span class="legend-label">Late</span>
+    </div>
+  </div>
+   <div class="retroactivity-agency-helper"></div>
+  </div>
+
+</div>

@@ -119,3 +119,15 @@ function nyccheckbook_preprocess_html(&$variables) {
 
   $variables['attributes']['class'][] = 'pageurl-' . trim(preg_replace('/[^a-zA-Z0-9]/', '', CustomBreadcrumbs::getCurrentPath()));
 }
+
+/**
+ * Implements hook_preprocess_region().
+ */
+function nyccheckbook_preprocess_region(&$variables) {
+  // Target specifically the primary-menu region
+  if (isset($variables['region']) && $variables['region'] === 'primary_menu') {
+    // Add role="navigation" to the region's HTML attributes wrapper
+    $variables['attributes']['role'] = 'navigation';
+  }
+}
+

@@ -1,0 +1,23 @@
+retroactivity-form:
+  header: false
+  css:
+    theme:
+      css/retroactivity-chart.css: {}
+      css/retroactivity-form.css: {}
+      css/retroactivity-overview.css: {}
+      css/retroactivity-tabs.css: {}
+      css/retroactivity-tiles.css: {}
+  js:
+    /modules/custom/widget_framework/widget_highcharts/Highcharts/code/highcharts.js?v=1.0.0: { type: external }
+    /modules/custom/widget_framework/widget_highcharts/Highcharts/code/modules/accessibility.js?v=1.0.0: { type: external }
+    /modules/custom/widget_framework/widget_highcharts/js/highcharts-globals.js: { type: external }
+    js/retroactivity-ajax.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupal.message
+    - core/drupalSettings
+    - core/jquery.once
+    - core/jquery.ui.autocomplete
+    - checkbook_widget_retroactivity/highcharts
+    - widget_highcharts/highcharts

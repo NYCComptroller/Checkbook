@@ -1,0 +1,274 @@
+{
+  "widgetType": "highcharts",
+  "widgetSubType": "ajaxSimple",
+  "gridConfig": {
+    "template": "highchart_budget_grid_view",
+    "html_class": "chart-grid-view-table",
+    "table_columns": [
+      {
+        "labelAlias": "fiscal_year",
+        "column": "year"
+      },
+      {
+        "colLabel": "On Time",
+        "column": "count_ontime_contracts"
+      },
+      {
+        "colLabel": "Retroactive",
+        "column": "count_retroactive_contracts"
+      }
+    ]
+  },
+  "dataset": "checkbook:aggregateon_contract_retroactivity",
+  "columns": [
+    "year.year",
+    "count_ontime_contracts",
+    "count_retroactive_contracts"
+  ],
+  "orderBy": "year.year",
+  "cleanURLParameters": [
+    "year-start",
+    "year-end",
+    "np-status",
+    "agency",
+    "vendor",
+    "mwbe",
+    "industry",
+    "mayoral_flag"
+  ],
+  "urlParamMap": {
+    "year-start": "year-start.year-start",
+    "year-end": "year-end.year-end",
+    "np-status": "nonprofit_status.nonprofit_status",
+    "agency": "agency_code.agency_code",
+    "vendor": "vendor_customer_code.vendor_customer_code",
+    "mwbe": "minority_type_id.minority_type_id",
+    "industry": "industry_type_id.industry_type_id",
+    "mayoral_flag": "mayoral_flag"
+  },
+  "adjustParameters": "
+  return \\Drupal::service('checkbook_widget_retroactivity.retroactivity_filter_processor')->adjustParametersFor($parameters, 'contract-volume-chart-2');
+  ",
+  "transformationPHP": "
+  return \\Drupal::service('checkbook_widget_retroactivity.retroactivity_filter_processor')->transformationPHPFor('contract-volume-chart-2', $node);
+  ",
+  "chartConfig": {
+    "chart": {
+      "type": "column",
+      "height": 450,
+      "width": 700,
+      "backgroundColor": "rgba(255,255,255,0)",
+      "margin": [
+        50,
+        75,
+        110,
+        70
+      ],
+      "spacingBottom": 10
+    },
+    "legend": {
+      "enabled": true,
+      "align": "center",
+      "verticalAlign": "bottom",
+      "layout": "horizontal",
+      "floating": false,
+      "x": -8,
+      "y": -10,
+      "borderWidth": 0,
+      "borderRadius": 8,
+      "margin": 0,
+      "backgroundColor": "rgba(255,255,255,0)",
+      "symbolWidth": 12,
+      "symbolHeight": 12,
+      "symbolRadius": 0,
+      "itemDistance": 20,
+      "itemStyle": {
+        "fontFamily": "Roboto, sans-serif",
+        "fontSize": "12px",
+        "fontWeight": "normal",
+        "color": "#000"
+      },
+      "itemHoverStyle": {
+        "color": "#333333"
+      }
+    },
+    "xAxis": {
+      "categories": [],
+      "lineColor": "#ccd6eb",
+      "tickWidth": 0,
+      "title": {
+        "text": "Fiscal Year",
+        "align": "middle",
+        "x": -10,
+        "offset": 30,
+        "y": -3,
+        "style": {
+          "fontFamily": "Roboto, sans-serif",
+          "fontSize": "12px",
+          "fontWeight": "normal",
+          "color": "#000"
+        }
+      },
+      "labels": {
+        "enabled": true,
+        "useHTML": true,
+        "y": 20,
+        "style": {
+          "fontFamily": "Roboto, sans-serif",
+          "fontSize": "12px",
+          "color": "#000"
+        }
+      }
+    },
+    "yAxis": [
+      {
+        "title": {
+          "text": "# of Contracts",
+          "style": {
+            "fontFamily": "Roboto, sans-serif",
+            "fontSize": "12px"
+          },
+          "margin": 5
+        },
+        "min": 0,
+        "max": 20,
+        "tickInterval": 4,
+        "startOnTick": false,
+        "endOnTick": false,
+        "labels": {
+          "function": "yAxisFormatter",
+          "useHTML": false,
+          "style": {
+            "fontFamily": "Roboto, sans-serif",
+            "fontSize": "12px"
+          },
+          "x": -5
+        }
+      },
+      {
+        "title": {
+          "text": "% of contracts late",
+          "style": {
+            "fontFamily": "Roboto, sans-serif",
+            "fontSize": "12px"
+          }
+        },
+        "labels": {
+          "function": "percentFormatter",
+          "style": {
+            "fontFamily": "Roboto, sans-serif",
+            "fontSize": "12px"
+          }
+        },
+        "opposite": true,
+        "min": 0,
+        "max": 100,
+        "tickInterval": 20,
+        "gridLineWidth": 0,
+        "startOnTick": false,
+        "endOnTick": false
+      }
+    ],
+    "tooltip": {
+      "function": "tooltipFormatter",
+      "shared": false,
+      "useHTML": false,
+      "shape": "rect",
+      "backgroundColor": "#FFFFFF",
+      "borderWidth": 1,
+      "borderRadius": 2,
+      "shadow": true,
+      "padding": 8,
+      "style": {
+        "fontFamily": "Roboto, sans-serif",
+        "fontSize": "12px",
+        "color": "#333333"
+      }
+    },
+    "plotOptions": {
+      "column": {
+        "stacking": null,
+        "minPointLength": 0,
+        "pointPadding": 0.12,
+        "groupPadding": 0.18,
+        "maxPointWidth": 80,
+        "dataLabels": {
+          "enabled": false
+        },
+        "borderWidth": 1,
+        "borderColor": "#FFFFFF",
+        "states": {
+          "hover": {
+            "enabled": false
+          },
+          "inactive": {
+            "opacity": 1
+          }
+        }
+      },
+      "line": {
+        "connectNulls": true,
+        "marker": {
+          "enabled": true,
+          "radius": 3,
+          "symbol": "circle",
+          "states": {
+            "hover": {
+              "enabled": false
+            }
+          }
+        },
+        "lineWidth": 2,
+        "states": {
+          "hover": {
+            "enabled": false
+          },
+          "inactive": {
+            "opacity": 1
+          }
+        }
+      },
+      "series": {
+        "cursor": "default",
+        "enableMouseTracking": true,
+        "stickyTracking": true,
+        "showInLegend": true,
+        "states": {
+          "hover": {
+            "enabled": false
+          },
+          "inactive": {
+            "opacity": 1
+          }
+        },
+        "useHTML": true,
+        "style": {
+          "fontFamily": "Roboto, sans-serif",
+          "fontSize": "12px"
+        }
+      }
+    },
+    "series": [],
+    "title": {
+      "text": ""
+    }
+  }
+}
+<function>
+yAxisFormatter^^'formatter' : function(){
+return Highcharts.numberFormat(this.value, 0, '.', ',');
+}##
+
+percentFormatter^^'formatter' : function(){
+return this.value + '%';
+}##
+
+tooltipFormatter^^'formatter' : function() {
+var year = this.point.name.replace('FY', 'FY 20');
+if (this.series.type == 'line') {
+  return 'Year: ' + year + '<br>% late: ' + Highcharts.numberFormat(this.point.tableValue, 2, '.', ',') + '%';
+}
+
+return 'Year: ' + year + '<br># of contracts: ' + Highcharts.numberFormat(this.point.y, 0, '.', ',');
+}##
+</function>

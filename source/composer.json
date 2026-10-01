@@ -12,6 +12,22 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "js-cookie/js-cookie",
+                "version": "3.0.5",
+                "type": "drupal-library",
+                "extra": {
+                    "installer-name": "js-cookie"
+                },
+                "dist": {
+                    "url": "https://registry.npmjs.org/js-cookie/-/js-cookie-3.0.5.tgz",
+                    "type": "tar"
+                },
+                "license": "MIT"
+            }
         }
     ],
     "require": {
@@ -22,12 +38,13 @@
         "drupal/coder": "^8.3",
         "drupal/color": "^2.0@dev",
         "drupal/context": "^5.0@RC",
-        "drupal/core-composer-scaffold": "11.3.10",
-        "drupal/core-project-message": "11.3.10",
-        "drupal/core-recommended": "11.3.10",
-        "drupal/ctools": "^4.0",
+        "drupal/core-composer-scaffold": "11.4.7",
+        "drupal/core-project-message": "11.4.7",
+        "drupal/core-recommended": "11.4.7",
+        "drupal/ctools": "^4.1",
+        "drupal/dblog_filter": "^4.1.0",
         "drupal/devel": "^5.2",
-        "drupal/diff": "^2.0",
+        "drupal/diff": "^2.1",
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/form_options_attributes": "^2.1",
         "drupal/google_tag": "^2.0",
@@ -40,15 +57,16 @@
         "drupal/memcache": "^2.8",
         "drupal/menu_link_attributes": "^1.7",
         "drupal/mimemail": "^2.0",
+        "drupal/mini_layouts": "2.0.x-dev@dev",
         "drupal/monolog": "*",
         "drupal/page_manager": "^4.0@RC",
         "drupal/quickedit": "^2.0",
         "drupal/rdf": "^3.0@beta",
         "drupal/seckit": "^2.0",
-        "drupal/superfish": "^1.11",
+        "drupal/superfish": "^1.14",
         "drupal/token": "^1.17",
-        "drupal/upgrade_status": "^4.3",
         "drush/drush": "^13.3",
+        "js-cookie/js-cookie": "3.0.5",
         "psy/psysh": "0.12.19"
     },
     "conflict": {
@@ -60,13 +78,22 @@
         "sort-packages": true,
         "allow-plugins": {
             "composer/installers": true,
+            "cweagans/composer-patches": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
             "drupal/core-composer-scaffold": true,
             "drupal/core-project-message": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "cweagans/composer-patches": true
+            "symfony/runtime": true
         }
     },
     "extra": {
+        "patches": {
+            "drupal/dblog_filter": [
+                {
+                    "description": "Drupal 11 - Fix missing ConfigFormBase constructor arguments (#3522073)",
+                    "url": "https://git.drupalcode.org/project/dblog_filter/-/merge_requests/13.diff"
+                }
+            ]
+        },
         "drupal-scaffold": {
             "locations": {
                 "web-root": "web/"
@@ -125,14 +152,7 @@
         "enable-patching": true,
         "patchLevel": {
             "drupal/core": "-p2"
-        },
-        "patches": {
-            "drupal/mini_layouts": {
-                "3433456 - Automated Drupal 11 compatibility fixes for mini_layouts": "https://www.drupal.org/files/issues/2024-03-24/mini_layouts.2.0.0-alpha1.rector.patch"
-            },
-            "drupal/filelog": {
-                "Automated Drupal 11 compatibility fixes for filelog": "https://www.drupal.org/files/issues/2024-07-28/filelog.3.0.x-dev.rector.patch"
-            }
         }
+
     }
 }

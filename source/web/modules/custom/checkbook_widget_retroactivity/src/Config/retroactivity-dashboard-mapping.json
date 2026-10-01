@@ -1,0 +1,126 @@
+{
+    "heading": "Late Contracts Dashboard",
+    "subHeading": "<h2>Tracking Contract Registration Delays and Their Impact on Timely Payment</h2>",
+    "retainFilters": false,
+    "defaultYearInterval": 3,
+    "defaultYearCount": 16,
+    "minBarWidth": 33,
+    "maxBarWidth": 85,
+    "yearlyProgressionRateForBar": 2,
+    "excludeAgencyAutocomplete": [
+        "health and hospitals corporation[ hhc ][ 819 ]"
+    ],
+    "excludeVendorAutocomplete": [
+        "new york city housing authority[ 0000947209 ]"
+    ],
+    "tabs": {
+        "overview": {
+            "label": "Overview",
+            "enabled": true,
+            "order": 1,
+            "tiles_enabled": false
+        },
+        "contract_volume": {
+            "label": "Contract Volume",
+            "enabled": true,
+            "tiles_enabled": true,
+            "order": 2,
+            "tiles": [
+                "contract_volume_chart_1",
+                "contract_volume_chart_2",
+                "contract_volume_chart_3",
+                "contract_volume_chart_4"
+            ]
+        },
+        "contract_value": {
+            "label": "Contract Value",
+            "enabled": true,
+            "tiles_enabled": true,
+            "order": 3,
+            "tiles": [
+                "contract_value_chart_1"
+            ]
+        },
+        "average_days_late": {
+            "label": "Average Days Late",
+            "enabled": true,
+            "tiles_enabled": true,
+            "order": 4,
+            "tiles": [
+                "average_days_late_1",
+                "average_days_late_2"
+            ]
+        },
+        "payment": {
+            "label": "Payments",
+            "enabled": false,
+            "tiles_enabled": true,
+            "order": 5,
+            "tiles": [
+                "payment_chart_1"
+            ]
+        }
+  },
+  "chart_tiles": {
+        "contract_volume_chart_1": {
+            "label": "Late vs On Time Contract Volume by Fiscal Year",
+            "enabled": true,
+            "order": 1,
+            "image": "images/contract_volume_chart_1.png",
+            "chart_id": "contract-volume-chart-1"
+        },
+        "contract_volume_chart_2": {
+            "label": "Year-Over-Year Retroactivity Trend Line",
+            "enabled": true,
+            "order": 2,
+            "image": "images/contract_volume_chart_2.png",
+            "chart_id": "contract-volume-chart-2"
+        },
+        "contract_volume_chart_3": {
+            "label": "Volume by Retroactive Category (How Late)",
+            "enabled": true,
+            "order": 3,
+            "image": "images/contract_volume_chart_3.png",
+            "chart_id": "volume-HowLate",
+            "exclude_filters": ["edit-year-from"]
+        },
+        "contract_volume_chart_4": {
+            "label": "Year-To-Date Lateness Rate Comparison",
+            "enabled": true,
+            "order": 4,
+            "image": "images/contract_volume_chart_4.png",
+            "chart_id": "ytd-lateness-rate-comparison",
+            "exclude_filters": ["edit-year-from"]
+        },
+        "contract_value_chart_1": {
+            "label": "Late vs On Time Contract Value by Fiscal Year",
+            "enabled": true,
+            "order": 1,
+            "image": "images/contract_value_chart_1.png",
+            "chart_id": "value-LateVsOntime"
+        },
+        "average_days_late_1": {
+            "label": "Average Number of Days Late by Fiscal Year",
+            "enabled": true,
+            "order": 1,
+            "image": "images/average_days_late_chart_1.png",
+            "chart_id": "average-days-late-1"
+        },
+        "average_days_late_2": {
+            "label": "Average Number of Days Late by Agency",
+            "enabled": true,
+            "order": 2,
+            "image": "images/average_days_late_chart_2.png",
+            "chart_id": "avg-days-late-by-agency",
+            "exclude_filters": ["edit-year-from"]
+        },
+        "payment_chart_1": {
+            "label": "First Check Payment Delays",
+            "enabled": true,
+            "order": 1,
+            "image": "images/contract_payment_chart_1.png",
+            "chart_id": "payment-chart-1",
+            "exclude_filters": ["edit-year-from"]
+        }
+    }
+}

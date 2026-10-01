@@ -105,7 +105,7 @@
             "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['agency_name'], 30)"
         },
         "agency_name_link": {
-            "expression": " \\Drupal\\checkbook_project\\CommonUtilities\\RequestUtil::isNewWindow() ? $row['agency_name_formatted']  : ('<a href=/spending_landing' . \\Drupal\\checkbook_project\\CommonUtilities\\CustomURLHelper::_checkbook_project_get_year_url_param_string(false,false,false,true) . \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getDataSourceParams()  . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string('category') . ($row['is_sub_vendor'] ? ('/subvendor/all') : ('/vendor/'. $row['vendor_id']) ) . '/agency/'. $row['agency_id']. $row['agency_name_formatted'] .'</a>') "
+            "expression": " \\Drupal\\checkbook_project\\CommonUtilities\\RequestUtil::isNewWindow() ? $row['agency_name_formatted']  : ('<a href=/spending_landing' . \\Drupal\\checkbook_project\\CommonUtilities\\CustomURLHelper::_checkbook_project_get_year_url_param_string(false,false,false,true) . \\Drupal\\checkbook_project\\SpendingUtilities\\SpendingUtil::getDataSourceParams()  . \\Drupal\\checkbook_infrastructure_layer\\Utilities\\RequestUtilities::_checkbook_project_get_url_param_string('category') . ($row['is_sub_vendor'] ? ('/subvendor/all') : ('/vendor/'. $row['vendor_id']) ) . '/agency/'. $row['agency_id']. '>'. $row['agency_name_formatted'] .'</a>') "
         },
         "payee_name_formatted":{
             "expression": "\\Drupal\\checkbook_infrastructure_layer\\Utilities\\FormattingUtilities::_get_tooltip_markup($row['vendor_name'], 40)"

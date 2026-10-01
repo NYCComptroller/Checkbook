@@ -33,17 +33,29 @@
 }
 
 .bottom-navigation .bottom-navigation--item.active {
-  background: url("../../images/active-tile2.png") repeat-x 0 0 #25a9dc;
+  background: #0F78A9;
+  color: #FFFFFF
 }
 
 
 /* ITEM INDICATORS
 ============================= */
 .bottom-navigation .bottom-navigation--item .indicator-active {
-  background:url("../../images/blue-carrot.png") no-repeat center 0;
-  height: 10px;
-  margin-bottom: -10px;
-  top: 0;
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+
+  width: 0;
+  height: 0;
+
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #0F78A9;
+
+  transform: translateX(-50%);
+  margin: 0;
+  background: none;
 }
 
 .bottom-navigation .bottom-navigation--item.disable_me .indicator-active {
@@ -89,4 +101,9 @@
 
 .bottom-navigation--item-label .bottom-navigation--item-dollar_amount {
   font-family: NovecentowideNormalRegular;
+  display: block;
+}
+
+.bottom-nav-domain-label {
+  display: block;
 }

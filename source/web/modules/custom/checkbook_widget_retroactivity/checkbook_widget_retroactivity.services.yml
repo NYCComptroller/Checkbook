@@ -1,0 +1,7 @@
+services:
+  checkbook_widget_retroactivity.retroactivity_config:
+    class: Drupal\checkbook_widget_retroactivity\Config\RetroactivityConfigService
+    arguments: ['@module_handler']
+  checkbook_widget_retroactivity.retroactivity_filter_processor:
+    class: Drupal\checkbook_widget_retroactivity\Service\RetroactivityFilterProcessorService
+    arguments: ['@module_handler', '@checkbook_widget_retroactivity.retroactivity_config']

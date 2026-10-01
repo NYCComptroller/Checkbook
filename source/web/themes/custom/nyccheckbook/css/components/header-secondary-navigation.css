@@ -5,7 +5,7 @@
 
 .agency-list-open {
   border-right: 1px solid #5387b7;
-  color: #d8eefc;
+  color: #ffffff;
   width: 177px;
   padding: 14px 0px 14px 16px;
   height: 40px;
@@ -43,7 +43,7 @@
 .agency_filter_highlight {
   font-weight: bold;
   font-size: 13px;
-  color: #e5f4fe;
+  color: #ffffff;
 }
 
 .agency-list-content {
@@ -101,9 +101,13 @@
 }
 
 .agency-list-pager a.activeSlide,
-.agency-list-pager a:hover {
-  background: url("../../images/agency-list-active-button.png") repeat-x;
-  color: white;
+.agency-list-pager a:hover ,
+.agency-list-pager a:focus {
+  background: #0079A8;
+  color: #FFFFFF;
+  border-radius: 50%;
+  height: 10px;
+  width: 10px;
 }
 
 .agency-list-nav #prev1,
@@ -134,7 +138,7 @@
   bottom: 8px;
   left: 10px;
   position: absolute;
-  color: #1f82c9;
+  color: #044eae;
   cursor: pointer;
 }
 

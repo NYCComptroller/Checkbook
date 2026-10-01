@@ -3,13 +3,14 @@
 ========================================== */
 .top-navigation{
   padding: 0px 10px;
+  margin-bottom: 16px;
 }
 
 .top-navigation .top-navigation--item {
   width: 131px;
   text-align: center;
-  background: url('../../images/tile-bg.png') repeat-x 0 0;
   position: relative;
+  background: url(/themes/custom/nyccheckbook/images/tile-bg.png) repeat-x 0 0;
 }
 
 .nycha.top-navigation .top-navigation--item{
@@ -17,7 +18,8 @@
 }
 
 .top-navigation .top-navigation--item.active {
-  background: url('../../images/active-tile.png') repeat-x center 0;
+  background: #0F78A9;
+  color: #FFFFFF;
 }
 
 /* Reducing the font because some of the labels in this section are long */
@@ -53,9 +55,21 @@
 /* ITEM INDICATORS
 ============================= */
 .top-navigation .top-navigation--item .indicator-active {
-  background: url("../../images/carrot.png") no-repeat scroll center 0 transparent;
-  height: 17px;
-  margin-top: -1px;
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+
+  width: 0;
+  height: 0;
+
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #0F78A9;
+
+  transform: translateX(-50%);
+  margin: 0;
+  background: none;
 }
 
 .top-navigation .top-navigation--item .indicator-menu {
@@ -104,12 +118,12 @@
 
 /* Changing border bottom color on active state because it looks weird in the secondary section */
 .top-navigation--section-second .top-navigation--item.active .top-navigation--item-label {
-  border-bottom-color: #2da7c5;
+  border-bottom-color: #0F78A9;
 }
 
 /* Changing border bottom color on active state because it looks weird in the secondary section */
 .top-navigation--section-first .top-navigation--item.active .top-navigation--item-label {
-  border-bottom-color: #2da7c5;
+  border-bottom-color: #0F78A9;
 }
 
 .top-navigation .top-navigation--item.active .top-navigation--item-label {
@@ -123,6 +137,7 @@
   padding-top: 2px;
   padding-bottom: 5px;
   font-weight: normal;
+  display: block;
 }
 
 /* ITEM ICONS
@@ -211,7 +226,7 @@
 }
 
 .top-navigation-item--menu ul li a {
-  color: #1F82C9;
+  color: #126FAE;
   padding-top: 0px;
   font-size: 11px;
   padding: 7px 5px;

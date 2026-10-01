@@ -37,13 +37,14 @@
                     "actual_amount": "actual_amount",
                     "committed": "committed",
                     "remaining": "funds_available",
+                    "expense_category_code": "expenditure_type_code",
                     "expense_category": "expenditure_type_description",
                     "funding_source": "display_funding_source_descr",
                     "responsibility_center": "responsibility_center_description",
                     "program": "program_phase_description",
                     "project": "gl_project_description"
                   },
-                  "rowElements":["fiscal_year", "budget_type", "budget_name", "expense_category", "funding_source", "responsibility_center", "program", "project"],
+                  "rowElements":["fiscal_year", "budget_type", "budget_name", "expense_category_code", "expense_category", "funding_source", "responsibility_center", "program", "project"],
                   "rowDataGroupElements":{
                       "budget_amounts":["modified", "adopted", "remaining"],
                       "expenditure_amounts":["committed","encumbered", "actual_amount"]
@@ -60,6 +61,7 @@
                     "Actual Amount": "actual_amount",
                     "Committed": "committed",
                     "Remaining": "funds_available",
+                    "Expense Category Code": "expenditure_type_code",
                     "Expense Category": "expenditure_type_description",
                     "Funding Source": "display_funding_source_descr",
                     "Responsibility Center": "responsibility_center_description",

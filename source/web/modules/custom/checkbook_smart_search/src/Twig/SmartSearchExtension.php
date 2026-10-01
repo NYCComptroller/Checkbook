@@ -288,6 +288,9 @@ class SmartSearchExtension extends AbstractExtension {
       }
 
       // If contracts selected, use register to determine facet_year display.
+      //$is_contracts_selected = !empty($selected_facet_results['domain'])
+      //  && in_array('contracts', array_map('strtolower', $selected_facet_results['domain']));
+
       if(!empty($selected_facet_results['contract_status'])){
 
         if(in_array('registered', $selected_facet_results['contract_status'])
@@ -301,6 +304,16 @@ class SmartSearchExtension extends AbstractExtension {
 
       } else {
         // If contract is not selected, hide registered_fiscal_year..
+        /*if ($is_contracts_selected) {
+          if (strtolower($facet_name) == 'facet_year_array') {
+            continue;
+          }
+        }
+        else {
+          if (strtolower($facet_name) == 'registered_fiscal_year') {
+            continue;
+          }*/
+
         if( strtolower($facet_name) == 'registered_fiscal_year'){
           continue;
         }
@@ -392,6 +405,7 @@ class SmartSearchExtension extends AbstractExtension {
               continue;
             }
 
+
             $sub_facet_name = $child;
             $output .= '<ul class="sub-category add-list-reset">'
                     .'<div class="subcat-filter-title">By '.htmlentities($sub_facet->title).'</div>';
@@ -409,6 +423,7 @@ class SmartSearchExtension extends AbstractExtension {
 
             foreach($sub_facet->results as $sub_facet_value => $sub_count){
               $facet_result_title = $sub_facet_value;
+
               if (is_array($sub_count)) {
                 [$facet_result_title, $sub_count] = $sub_count;
               }

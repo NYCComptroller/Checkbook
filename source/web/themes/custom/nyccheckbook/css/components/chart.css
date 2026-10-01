@@ -131,8 +131,11 @@ article[about="/budget"] .slider-pager{
 }
 
 .slider-pager a.activeSlide {
-  background: url("../../images/pager_on.png") no-repeat scroll 0 0 transparent;
   color: #ffffff;
+  background-color: #137AAE;
+  background-image: linear-gradient( to bottom, #1887BC 1%, #137AAE 50%, #0F6F9F 100% );
+  border-radius: 50%;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.45), inset 0 -1px 1px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.30);
 }
 
 /*==========================================

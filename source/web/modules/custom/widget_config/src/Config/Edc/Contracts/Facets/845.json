@@ -17,7 +17,6 @@
     "facetPager":true,
     "filterName":"Vendor",
     "urlParameterName":"vendor",
-    "urlParameterNameType":"eqtext",
     "autocompleteParamName":"vendor_auto",
     "autocompleteID":"fvendorId",
     "autocompleteField":"vendor_name",

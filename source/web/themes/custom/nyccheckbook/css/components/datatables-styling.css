@@ -80,14 +80,14 @@
   border: none;
 }
 .dataTables_wrapper th, .outerTable th{
-  background-color: #48759d; /* Old browsers */
-  background-image: -moz-linear-gradient(top, #48759d 0%, #3f668f 100%); /* FF3.6+ */
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #48759d), color-stop(100%, #3f668f)); /* Chrome,Safari4+ */
-  background-image: -webkit-linear-gradient(top, #48759d 0%, #3f668f 100%); /* Chrome10+,Safari5.1+ */
-  background-image: -o-linear-gradient(top, #48759d 0%, #3f668f 100%); /* Opera 11.10+ */
-  background-image: -ms-linear-gradient(top, #48759d 0%, #3f668f 100%); /* IE10+ */
-  background-image: linear-gradient(to bottom, #48759d 0%, #3f668f 100%); /* W3C */
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#48759d', endColorstr = '#3f668f', GradientType = 0)"; /* IE6-9 */
+  background-color: #073659; /* Old browsers */
+  background-image: -moz-linear-gradient(top, #073659 0%, #073659 100%); /* FF3.6+ */
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #073659), color-stop(100%, #073659)); /* Chrome,Safari4+ */
+  background-image: -webkit-linear-gradient(top, #073659 0%, #073659 100%); /* Chrome10+,Safari5.1+ */
+  background-image: -o-linear-gradient(top, #073659 0%, #073659 100%); /* Opera 11.10+ */
+  background-image: -ms-linear-gradient(top, #073659 0%, #073659 100%); /* IE10+ */
+  background-image: linear-gradient(to bottom, #073659 0%, #073659 100%); /* W3C */
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#073659', endColorstr = '#073659', GradientType = 0)"; /* IE6-9 */
   color: #ffffff;
   font-weight: bold;
   text-transform: uppercase;
@@ -538,7 +538,7 @@ table#assoc_contracts_list .assoc_item .dataTable.outerTable{
 }
 table#assoc_contracts_list .assoc_item .contract-title-text{
   font-size:14px;
-  color: #1F82C9;
+  color: #044eae;
   float:left;
 }
 table#assoc_contracts_list .assoc_item .contract-title-text a {

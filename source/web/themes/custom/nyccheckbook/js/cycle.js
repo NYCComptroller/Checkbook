@@ -766,7 +766,8 @@ function go(els, opts, manual, fwd) {
 // invoked after transition
 $.fn.cycle.updateActivePagerLink = function(pager, currSlide, clsName) {
    $(pager).each(function() {
-       $(this).children().removeClass(clsName).eq(currSlide).addClass(clsName);
+			// Assign aria attribute to the currently selected chart link.
+			$(this).children().removeClass(clsName).removeAttr('aria-current').eq(currSlide).addClass(clsName).attr('aria-current', 'true');
    });
 };
 
@@ -830,6 +831,10 @@ function advance(opts, moveForward) {
 
 function buildPager(els, opts) {
 	var $p = $(opts.pager);
+	// Assign aria attribute tablist to the pager container element.
+	if ($p[0] !== 'undefined' && $p[0]?.className == 'slider-pager') {
+		$p.attr('role', 'tablist');
+	}
 	$.each(els, function(i,o) {
 		$.fn.cycle.createPagerAnchor(i,o,$p,els,opts);
 	});
@@ -842,8 +847,11 @@ $.fn.cycle.createPagerAnchor = function(i, el, $p, els, opts) {
 		a = opts.pagerAnchorBuilder(i,el);
 		debug('pagerAnchorBuilder('+i+', el) returned: ' + a);
 	}
-	else
-		a = '<a href="#">'+(i+1)+'</a>';
+	else {
+		// Set chart title as the aria-label for pagination link.
+		let ariaLabel = $('div.slider-pane h2.chart-title:eq(' + i +')')[0]?.innerText || ('Chart ' + i);
+		a = '<a href="#" aria-label="Chart ' + (i+1)+ ' ' + ariaLabel + '" role="tab">'+ 'Chart ' + (i+1)+ ' ' + ariaLabel + '</a>';
+	}
 
 	if (!a)
 		return;

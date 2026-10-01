@@ -139,7 +139,7 @@
   font-weight: bold;
 }
 h1.title {
-  font-family: "RobotoCondensed", serif !important;
+  font-family: "RobotoCondensed", sans-serif !important;
   font-size: 28px !important;
   color: #3c5e7c !important;
   margin-top: 0 !important;

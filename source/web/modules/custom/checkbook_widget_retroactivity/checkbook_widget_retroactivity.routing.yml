@@ -1,0 +1,30 @@
+checkbook_widget_retroactivity.landing:
+  path: '/retroactivity/{params}'
+  defaults:
+    _controller: \Drupal\checkbook_widget_retroactivity\Controller\RetroactivityWidgetController::contractVolume
+    params: ''
+  requirements:
+    _permission: 'access content'
+# Endpoint for Filter processing
+checkbook_widget_retroactivity.filter_form:
+  path: '/retroactivity-filter'
+  defaults:
+    _form: '\Drupal\checkbook_widget_retroactivity\Form\RetroactivityChartFilterForm'
+    _title: 'Retroactivity Chart Filter'
+  requirements:
+    _permission: 'access content'
+# Endpoint for Tab Headings
+checkbook_widget_retroactivity.tab_header:
+  path: '/retroactivity-tabs/ajax/{tab_id}'
+  defaults:
+    _controller: '\Drupal\checkbook_widget_retroactivity\Controller\DashboardAjaxController::loadTabHeader'
+  requirements:
+    _permission: 'access content'
+
+# Endpoint for Chart Tiles
+checkbook_widget_retroactivity.load_tiles:
+  path: '/retroactivity-tiles/ajax/{tab_id}'
+  defaults:
+    _controller: '\Drupal\checkbook_widget_retroactivity\Controller\DashboardAjaxController::loadTiles'
+  requirements:
+    _permission: 'access content'

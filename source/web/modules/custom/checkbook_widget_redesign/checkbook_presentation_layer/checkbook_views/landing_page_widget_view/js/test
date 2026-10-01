@@ -1,0 +1,36 @@
+{
+  "0": {},
+  "length": 1,
+  "prevObject": {
+    "0": {},
+    "length": 1,
+    "prevObject": {
+      "0": {
+        "jQuery4000179581704699926071": {
+          "events": {
+            "click": [
+              {
+                "type": "click",
+                "origType": "click",
+                "guid": 140,
+                "namespace": ""
+              }
+            ],
+            "keydown": [
+              {
+                "type": "keydown",
+                "origType": "keydown",
+                "guid": 141,
+                "namespace": ""
+              }
+            ]
+          }
+        },
+        "jQuery4000179581704699926072": {
+          "toggled": true
+        }
+      },
+      "length": 1
+    }
+  }
+}

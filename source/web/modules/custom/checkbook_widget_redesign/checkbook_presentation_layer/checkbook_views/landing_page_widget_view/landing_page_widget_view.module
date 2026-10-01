@@ -171,7 +171,8 @@ function landing_page_widget_view_title($node) {
   elseif (isset($node->widgetConfig->headerTitle)) {
     load_widget_controller_data_count($node);
     $headerSubTitle = $node->widgetConfig->headerSubTitle ?? $node->widgetConfig->headerTitle;
-    $count = isset($node->headerCount) && $node->headerCount > 4 ? '<span class="hideOnExpand">5 </span>' : '';
+
+    $count = isset($node->headerCount) && $node->headerCount > 4 ? '5' : '';
     if (Dashboard::isNycha() && isset($node->widgetConfig->nychaTitle)) {
       $widget_title = $node->widgetConfig->nychaTitle;
     }
@@ -182,7 +183,11 @@ function landing_page_widget_view_title($node) {
   }
 
   if (isset($widget_title)) {
-    $final_title =  '<div class="tableHeader"><h2>' . $widget_title .(isset($headerSubTitle) ? ('<span class="contentCount">' . $headerSubTitle.'</span>') : '') . '</h2></div>';
+    $final_title =  '<div class="tableHeader"><h2 aria-label="' . $widget_title . '" id="h2_' . $node->nid 
+    . '">' . $widget_title 
+    . '</h2>';
+    $final_title .=  (isset($headerSubTitle) ? ('<span aria-label="' . strip_tags($headerSubTitle) . '" class="contentCount">' . $headerSubTitle.'</span>') : '');
+    $final_title .= '</div>';
   }
   $node->widgetConfig->head_title = $final_title;
 }
@@ -198,7 +203,7 @@ function landing_page_widget_view_table_header($node){
         $label = (function_exists($fn)) ? $fn($label) : "";
       }
       $headerClass = isset($row->headerClass) ? (' class="' . $row->headerClass . '"') : '';
-      $header_table .= "<th $headerClass>" . $label . "</th>";
+      $header_table .= "<th scope=\"col\" $headerClass>" . $label . "</th>";
     }
   }
   $node->widgetConfig->table_header = $header_table;
@@ -211,10 +216,18 @@ function landing_page_widget_view_table_footer($node){
     if ($node->totalDataCount > 5) {
       $simultExpandCollapseNodeIds = array();
       if (in_array($node->nid, $simultExpandCollapseNodeIds)) {
-        $collapse_button =  '<a  class="simultExpandCollapseWidget"><img src="/' . $theme_path . '/images/open.png">';
+        $collapse_button = '<a class="simultExpandCollapseWidget" aria-label="Expand' . (isset($node->widgetConfig->headerTitle) ? ' Top 5 ' . $node->widgetConfig->headerTitle : '') . '"
+                              role="button"
+                              tabindex="0">
+                              <img src="/' . $theme_path . '/images/open.png" alt="Expand' . (isset($node->widgetConfig->headerTitle) ? ' Top 5 ' . $node->widgetConfig->headerTitle : '') . '">
+                            </a>';
       }
       else {
-        $collapse_button = '<a  class="expandCollapseWidget"><img src="/' . $theme_path . '/images/open.png"></a>';
+        $collapse_button = '<a class="expandCollapseWidget" aria-label="Expand' . (isset($node->widgetConfig->headerTitle) ? ' Top 5 ' . $node->widgetConfig->headerTitle : '') . '"
+                              role="button"
+                              tabindex="0">
+                              <img src="/' . $theme_path . '/images/open.png" alt="Expand' . (isset($node->widgetConfig->headerTitle) ? ' Top 5 ' . $node->widgetConfig->headerTitle : '') . '">
+                            </a>';
       }
       $node->widgetConfig->collapseButton = $collapse_button;
     }

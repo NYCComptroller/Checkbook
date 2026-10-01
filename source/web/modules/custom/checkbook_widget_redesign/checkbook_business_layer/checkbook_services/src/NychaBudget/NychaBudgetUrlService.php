@@ -47,7 +47,7 @@ class NychaBudgetUrlService {
    */
   public static function getPercentDiffFooterUrl($footerUrl, $widget = null){
     $url = null;
-    if(isset($widget)) {
+    /*if(isset($widget)) {
       switch ($widget) {
         case "exp_details":
           $url = "/nycha_budget_percent_difference_details/nycha_budget/details/budgettype/percdiff/widget/exp_details";
@@ -65,7 +65,7 @@ class NychaBudgetUrlService {
           $url = "/nycha_budget/project_details/budgettype/percdiff/widget/proj_details";
           break;
       }
-    }
+    }*/
     if(isset($url)){
       return str_replace("/nycha_budget/transactions", $url, $footerUrl);
     }else{

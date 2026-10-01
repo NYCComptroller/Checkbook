@@ -1,0 +1,45 @@
+{% set comparisonData = node.widgetConfig.comparisonData %}
+{% set yearData = node.widgetConfig.yearData %}
+{% set currentFyId = node.widgetConfig.currentFyId %}
+{% set selectedFyId = node.widgetConfig.selectedFyId %}
+
+{% macro yearLabel(year_id, year_value, currentFyId, selectedFyId) %}
+  {% if selectedFyId == currentFyId %}
+    YTD FY{{ year_value }}
+  {% else %}
+    FY{{ year_value }}
+  {% endif %}
+{% endmacro %}
+
+{% if comparisonData.has_data %}
+<div class="report-card {% if comparisonData.is_improvement %}improvement{% elseif comparisonData.is_neutral %}neutral{% elseif comparisonData.is_degradation %}degradation{% endif %}">
+  <div class="card-header">
+    <h2>{{ node.widgetConfig.cardContext|default('Citywide') }}</h2>
+    <p>Late Registration Rates{% if selectedFyId == currentFyId %} YTD{% endif %}</p>
+  </div>
+
+  <div class="card-body">
+    <div class="delta-container">
+      {% if comparisonData.percentage_diff > 0 %}
+        <span class="arrow-up">↑</span>
+      {% elseif comparisonData.percentage_diff < 0 %}
+        <span class="arrow-down">↓</span>
+      {% endif %}
+      <span class="percentage-change">{{ comparisonData.percentage_diff|abs|number_format(2) }}</span>
+    </div>
+
+    <div class="data-grid">
+      <div class="grid-item">
+        <div class="grid-header">{{ _self.yearLabel(comparisonData.prior_year.year_id, comparisonData.prior_year.year, currentFyId, selectedFyId) }}</div>
+        <div class="grid-value">{{ comparisonData.prior_year.late_rate|number_format(2) }}%</div>
+      </div>
+      <div class="grid-item">
+        <div class="grid-header">{{ _self.yearLabel(comparisonData.current_year.year_id, comparisonData.current_year.year, currentFyId, selectedFyId) }}</div>
+        <div class="grid-value">{{ comparisonData.current_year.late_rate|number_format(2) }}%</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="clearfix" id="no-records"><span>There is no data for this visualization.</span></div>
+{% endif %}

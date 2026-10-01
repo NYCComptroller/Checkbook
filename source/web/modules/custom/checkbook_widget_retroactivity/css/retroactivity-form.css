@@ -1,0 +1,237 @@
+/**
+ * Refined Styles to match Retroactivity Template
+ */
+
+ .checkbook-widget-retroactivity-filter-form {
+  padding-bottom: 10px;
+ }
+
+ .node--type-landing-page .layout__region-filter1 {
+  margin-right: 0px;
+  border-top: 1px solid #CACACA;
+  padding-top: 2px;
+ }
+#checkbook-widget-retroactivity-filter-form {
+  max-width: 350px;
+  font-family: Roboto, sans-serif;
+  color: #333;
+}
+
+/* 1. Year Range Row - Centers the 'to' */
+#checkbook-widget-retroactivity-filter-form .container-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding-bottom: 3px;
+  width: 100%;
+}
+
+#checkbook-widget-retroactivity-filter-form select.watch {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 13px;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: #000 !important;
+  min-width: 100px;
+  background-color: #fff;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+/* 2. Agency & Vendor - Mimicking the small buttons in template */
+#checkbook-widget-retroactivity-filter-form .datafield.agency,
+#checkbook-widget-retroactivity-filter-form .datafield.vendor {
+  text-align: center;
+  margin-bottom: 3px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+#checkbook-widget-retroactivity-filter-form .datafield input.form-text {
+  border-color: #D1D1D1;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+  text-align: left; /* Centers the placeholder text like your image */
+  font-size: 12px;
+  /*font-weight: bold;
+  text-transform: uppercase;*/
+  color: #1a1a1a;
+  margin-top: 3px;
+  height:2.1em;
+}
+
+/* 3. Group Boxes (M/WBE, Industry, Non-Profit) */
+#checkbook-widget-retroactivity-filter-form fieldset {
+  margin-bottom: 2px;
+  padding: 0;
+}
+
+#checkbook-widget-retroactivity-filter-form legend {
+  background-color: #e9e9e9;
+  width: 100%;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  border: 1px solid #D1D1D1;
+  margin: 0;
+  display: block;
+}
+
+#checkbook-widget-retroactivity-filter-form legend .fieldset-legend {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  font-size: 12px;
+}
+
+#checkbook-widget-retroactivity-filter-form .fieldset-wrapper {
+  padding: 8px 12px 2px 12px;
+}
+
+/* Checkbox Alignment - Removing the 'button' look from labels */
+#checkbook-widget-retroactivity-filter-form .form-type-checkbox {
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+}
+
+/* Reset individual checkbox labels so they don't inherit button styles */
+#checkbook-widget-retroactivity-filter-form .form-type-checkbox label.option {
+  background: none !important;
+  border: none !important;
+  padding: 0 0 0 10px !important;
+  margin: 0 !important;
+  font-weight: normal !important;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #000 !important;
+  width: auto;
+  display: inline;
+  cursor: pointer;
+}
+
+#checkbook-widget-retroactivity-filter-form .form-checkbox {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Action Buttons - Pill shape */
+#checkbook-widget-retroactivity-filter-form .form-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 0px;
+}
+
+#checkbook-widget-retroactivity-filter-form .button {
+  border: 1px solid #A0A0A0;
+  border-radius: 12px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  width: 108px;
+}
+
+#checkbook-widget-retroactivity-filter-form .button:hover {
+  background: #F5F5F5;
+}
+
+#checkbook-widget-retroactivity-filter-form .container-inline .datafield {
+  display: inline-block;
+  white-space: nowrap; /* Prevents the 'to' from wrapping */
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+#checkbook-widget-retroactivity-filter-form input::placeholder {
+  color: #828282;
+  font-weight: normal;
+  /*text-transform: uppercase;*/
+  opacity: 1; /* Firefox fix */
+  font-size: 11px;
+}
+
+#checkbook-widget-retroactivity-filter-form input:placeholder-shown {
+  /* background-color: #EFEFEF; */
+  font-style: italic;
+  color: #828282;
+  font-size: 12px;
+}
+
+#checkbook-widget-retroactivity-filter-form input:focus {
+  background-color: #fff;
+  text-align: left; /* Optional: Aligns text to left when typing starts */
+}
+#checkbook-widget-retroactivity-filter-form input.button:focus {
+  text-align: center !important; /* Optional: Aligns text to left when typing starts */
+}
+#retroactivity-rotator {
+  display: none; /* Hidden by default */
+  text-align: center;
+  padding: 20px;
+
+  display: none;        /* Hidden by default */
+  position: absolute;    /*Take it out of the sidebar flow */
+  
+  /* Positioning it over the chart area */
+  /* Adjust 'left' based on your sidebar width */
+  
+  left: 75%;        
+  top: 45%;             
+  transform: translate(-50%, -50%); 
+  margin-left:380px;
+  
+  /* Perfectly centers it */
+  
+  z-index: 1000;        /* Sit on top of everything else */
+  text-align: center;
+  padding: 20px;
+  min-height: 100px;     /* Combined from .loading_bigger_gif */
+  
+  /* Optional: adds a slight background to make it visible over the chart */
+  
+  /**/
+  border-radius: 8px;
+  
+}
+
+/* Ensure the gif is visible within the rotator */
+.loading_bigger_gif {
+  min-height: 100px; 
+  min-width: 100px; 
+}
+
+#edit-submit:disabled,
+#edit-submit.is-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #ccc;
+}
+
+.node--view-mode-full .flex-3 {
+  display: none;
+}
+
+.main-overview-section {
+  display: none;
+}
+
+#checkbook-widget-retroactivity-filter-form label {
+  background-color: #e9e9e9;
+  width: 100%;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  border: 1px solid #D1D1D1;
+  margin: 0;
+  display: block;
+  text-align: left;
+  font-weight: bold;
+}
+
+#checkbook-widget-retroactivity-filter-form .loadinggif {
+  background: url(/themes/custom/nyccheckbook/images/loading_large.gif) no-repeat right;
+}

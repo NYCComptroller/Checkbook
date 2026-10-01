@@ -1,0 +1,177 @@
+{
+  "widgetType": "highcharts",
+  "widgetSubType": "ajaxSimple",
+  "header": "return '';",
+  "dataset": "checkbook:aggregateon_contract_retroactivity",
+  "columns": [
+    "agency_id.agency_id",
+    "agency_code.agency_code",
+    "agency_name.agency_name",
+    "agency_short_name.agency_short_name",
+    "bca_agency_short_name.bca_agency_short_name",
+    "avg_days_late",
+    "lateness_label"
+  ],
+  "orderBy": "avg_days_late",
+  "cleanURLParameters": [
+    "year-end", "np-status", "agency", "vendor", "mwbe", "industry", "lateness-category", "mayoral_flag", "sort-order"
+  ],
+  "urlParamMap": {
+    "year-end": "year-end.year-end",
+    "np-status": "nonprofit_status.nonprofit_status",
+    "agency": "agency_code.agency_code",
+    "vendor": "vendor_customer_code.vendor_customer_code",
+    "mwbe": "minority_type_id.minority_type_id",
+    "industry": "industry_type_id.industry_type_id",
+    "lateness-category": "lateness_category_id.lateness_category_id",
+    "mayoral_flag" : "mayoral_flag",
+    "sort-order" : "sort-order"
+  },
+  "adjustParameters":"
+    return \\Drupal::service('checkbook_widget_retroactivity.retroactivity_filter_processor')->adjustParametersFor($parameters, 'avg-days-late-by-agency');
+    ",
+  "transformationPHP": "
+    return \\Drupal::service('checkbook_widget_retroactivity.retroactivity_filter_processor')->transformationPHPFor('average-days-late-by-agency', $node);
+    ",
+  "footer":"$footer = '<span class=\"retroactivity-chart-temp-footer\">*Hover over a bar to see the full abbreviation and name of the agency it represents.</span>'; return $footer;",
+  "chartConfig": {
+    "chart": {
+      "type": "bar",
+      "width": 800,
+      "marginLeft": 50,
+      "marginRight": 150,
+      "marginBottom": 75
+    },
+    "title": { "text": ""},
+    "xAxis": {
+      "categories": [],
+      "reversed": true,
+      "lineWidth": 0,
+      "tickWidth": 0,
+      "labels": { "enabled": false },
+      "title": {
+        "text": "Prime Contracting Agency",
+        "x": -15,
+        "align": "middle",
+        "style": {
+          "fontSize": "12px",
+          "fontFamily": "Roboto, sans-serif"
+        }
+      }
+    },
+    "yAxis": {
+      "title": {
+        "text": "Average of Retroactivity",
+        "align": "middle",
+        "style": {
+          "fontSize": "12px",
+          "fontFamily": "Roboto, sans-serif"
+        },
+        "margin": 20,
+        "y": -5
+      },
+      "gridLineWidth": 0,
+      "labels": {
+        "rotation": 0,
+        "enabled": true,
+        "style": {
+            "fontSize": "12px",
+            "color": "#666",
+            "fontFamily": "Roboto, sans-serif"
+        },
+        "function": "mirrorAxisFormatter"
+      },
+      "plotLines": []
+    },
+    "legend": {
+      "enabled": false,
+      "align": "middle",
+      "verticalAlign": "bottom",
+      "borderWidth": 0,
+      "y": 15,
+      "x": -50,
+      "align": "middle",
+      "itemStyle": {
+        "fontSize": "12px",
+        "fontWeight": "normal",
+        "fontFamily": "Roboto, sans-serif",
+        "margin": 10
+      },
+      "symbolWidth": 12,
+      "symbolHeight": 12,
+      "function": "mirrorLegendClick"
+    },
+    "plotOptions": {
+      "series": {
+        "stacking": null,
+        "groupPadding": 0.1,
+        "pointPadding": 0.05,
+        "cursor": "default",
+        "dataLabels": {
+          "allowOverlap": true,
+          "crop": false,
+          "overflow": "allow"
+        },
+        "states": {
+          "inactive": {
+              "enabled": false
+          },
+          "hover": {
+            "enabled": true,
+            "halo": null
+          }
+        },
+        "events": {
+          "legendItemClick": {
+            "function": "mirrorLegendClick"
+          }
+        }
+      },
+      "bar": {
+        "grouping": false,
+        "groupPadding": 0.1,
+        "pointPadding": 0.05,
+        "minPointLength": 2,
+        "maxPointWidth": 58,
+        "borderWidth": 0,
+        "dataLabels": {
+          "allowOverlap": true,
+          "crop": false,
+          "overflow": "allow",
+          "padding": 0
+        }
+      }
+    },
+    "tooltip": {
+      "enabled": true,
+      "followPointer": true,
+      "shape": "rect",
+      "shared": false,
+      "function": "mirrorTooltip",
+      "useHTML": true,
+      "text-align": "left",
+      "style": {
+        "fontFamily": "Roboto, sans-serif",
+        "fontSize": "12px"
+      }
+    },
+    "credits": { "enabled": false }
+  }
+}
+<function>
+mirrorAxisFormatter^^'formatter' : function(){
+    // This removes the negative sign from the X-axis labels.
+    return this.value;
+}
+##
+mirrorDataLabelFormatter^^'formatter' : function(){
+    // Shows absolute positive value on the green bar ends natively.
+    return Math.abs(this.value);
+}
+##
+mirrorTooltip^^'formatter' : function() {
+    if (!this || !this.point) { return false; }
+    var name = this.point.agency || '';
+    return '<span>' + name + ' - ' + this.point.agency_name +'</span>';
+}
+</function>

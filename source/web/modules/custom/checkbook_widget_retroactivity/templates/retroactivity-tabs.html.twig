@@ -1,0 +1,18 @@
+<div class="retroactivity-dashboard-container">
+  {# The Sub-Heading and Main Heading are centered above the chart #}
+  <div class="dashboard-headings">
+    <h1 class="main-title" id="page-title">{{ main_heading }}</h1>
+    <h2 class="main-title-h2" id="main-title-h2">{{ sub_heading }}</h2>
+  </div>
+
+  {# The Tabs #}
+  <div class="retroactivity-tabs-wrapper">
+    <ul class="virtual-tabs">
+      {% for key, tab in tabs %}
+        <li class="tab-item {{ active_tab == key ? 'is-active' : '' }}">
+          <a class="js-tab-trigger" data-tab-id="{{ key }}" href="#">{{ tab.label }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>

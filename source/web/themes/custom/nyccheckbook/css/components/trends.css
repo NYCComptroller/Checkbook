@@ -241,8 +241,8 @@ body.page-featuredtrends th.number{
 body.page-trends table.fy-ait,
 body.page-trends-landing table.fy-ait,
 body.page-featuredtrends table.fy-ait{
-  background-color:#48759D;
-  background: linear-gradient(to bottom, #48759D 0%, #3F668F 100%) repeat scroll 0 0 transparent;
+  background-color:#073659;
+  background: linear-gradient(to bottom, #073659 0%, #073659 100%) repeat scroll 0 0 transparent;
   border: 1px solid #CACACA;
   border-bottom:none;
   color: #FFFFFF;

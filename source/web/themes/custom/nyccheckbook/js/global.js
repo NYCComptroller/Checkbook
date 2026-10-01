@@ -142,6 +142,31 @@
       }
     }, 100);
   })
+
+  // Update tabindex of main menu items.
+  Drupal.behaviors.menuTabIndex = {
+    attach: function (context, settings) {
+      // Assign tabindex="-1" to submenu containers so they can be focused via script
+      $('#superfish-main .menuparent', context).attr('tabindex', '0');
+    }
+  };
+
+  Drupal.behaviors.BottomNavigationHover = {
+    attach: function (context, settings) {
+      $('div.bottom-navigation--item, div.top-navigation--item').hover(
+        function() {
+          // Mouse enters: Switch role to "img"
+          $(this).attr('role', 'img');
+          console.log('Switched to img');
+        }, 
+        function() {
+          // Mouse leaves: Switch role back to "tab"
+          $(this).attr('role', 'tab');
+        }
+      );
+   }
+  };
+
 })(jQuery, Drupal, drupalSettings);
 
 
