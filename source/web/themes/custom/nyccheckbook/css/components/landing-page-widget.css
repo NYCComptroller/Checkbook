@@ -1,5 +1,6 @@
 .tableHeader {
   margin-top: 25px;
+  display: flex;
 }
 
 .tableHeader h2 {
@@ -42,8 +43,8 @@
 .outerTable th,
 .doubleHeader.doubleHeader-prime::before,
 .doubleHeader.doubleHeader-subvendor::before {
-  background-color: #48759d;
-  background-image: linear-gradient(to bottom, #48759d 0%, #3f668f 100%);
+  background-color: #073659;
+  background-image: linear-gradient(to bottom, #073659 0%, #073659 100%);
   color: #ffffff;
   font-weight: bold;
   text-transform: uppercase;

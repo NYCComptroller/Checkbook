@@ -11,9 +11,9 @@ abstract class PayrollLandingPage {
     const TITLE_LEVEL = "title_landing";
 
     public static function getCurrent() {
-      $urlPath = RequestUtilities::getCurrentPageUrl();
-      $ajaxPath = RequestUtilities::getAjaxPath();
-      $refURL = RequestUtilities::getRefUrl();
+      $urlPath = RequestUtilities::getCurrentPageUrl() ?? '';
+      $ajaxPath = RequestUtilities::getAjaxPath() ?? '';
+      $refURL = RequestUtilities::getRefUrl() ?? '';
       $page = null;
 
       if(str_contains($urlPath, 'payroll') || str_contains($ajaxPath, 'payroll') || str_contains($refURL, 'payroll')) {

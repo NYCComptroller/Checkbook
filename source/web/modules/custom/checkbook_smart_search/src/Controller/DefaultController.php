@@ -50,8 +50,12 @@ class DefaultController extends ControllerBase {
     // Extract the actual keyword before facets
     $keyword = '';
     if ($search_term) {
-      $parts = explode('*!*', $search_term);
-      $keyword = trim($parts[0]);
+      $search_terms = explode('*!*', $search_term);
+      $keyword = trim($search_terms[0]);
+      if (!empty($search_terms[0])) {
+        $search_terms[0] = $search_terms[0] ? $search_terms[0] . '*' : $search_terms[0];
+        $search_term = implode('*!*', $search_terms);
+      }
     }
 
     // Validate search: reject if empty, only "*!*", or keyword < 3 chars without facets
@@ -96,7 +100,10 @@ class DefaultController extends ControllerBase {
     $selected_facets = $solr_query->getSelectedFacets();
     $solr = CheckbookSolr::getInstance($solr_datasource);
     $query = $solr_query->buildQuery();
-
+    // Show only regeistered transactions - NYCCHKBK-16415.
+    if ($solr_datasource != 'nycha' && strpos($query, "&fq=domain:\"contracts\"")) {
+      $query = "fq=-contract_status:\"active\"&" . $query;
+    }
     //Registered Contracts Count
     $registeredContractsQuery = getRegisteredContractsQuery($query, $selected_facets);
     $registeredContractsCount = 0;
@@ -280,6 +287,74 @@ class DefaultController extends ControllerBase {
 
   public function _checkbook_advanced_search_autocomplete(string $solr_datasource, string $facet) {
     $data = _checkbook_autocomplete($solr_datasource, $facet);
+
+    // Check if request is from retroactivity page
+    $is_retroactivity = \Drupal::request()->query->get('source_form') == 'retroactivity';
+
+    // Check if search term matches "All Mayoral agencies" at word boundaries
+    $search_term = strtolower(\Drupal::request()->query->get('term') ?? '');
+    $matches_mayoral = false;
+    if ($search_term) {
+      $words = ['all', 'mayoral', 'agencies', 'all mayoral agencies'];
+      foreach ($words as $word) {
+        if (strpos($word, $search_term) === 0) {
+          $matches_mayoral = true;
+          break;
+        }
+      }
+    }
+
+    // Show mayoral filter for agency autocomplete on retroactivity pages only when search term matches
+    if ($facet === 'agency_shortname_code' && $is_retroactivity && $matches_mayoral) {
+      try {
+        // Query database for mayoral agencies using checkbook connection
+        $connection = \Drupal\Core\Database\Database::getConnection('main', 'checkbook');
+        $query = $connection->select('aggregateon_contract_retroactivity', 'acr');
+        $query->distinct();
+        $query->addField('acr', 'agency_id');
+        $query->addField('acr', 'agency_name');
+        $query->condition('acr.mayoral_flag', 1);
+        $mayoral_agencies = $query->execute()->fetchAll();
+
+        if (!empty($mayoral_agencies)) {
+          // Get unique agency IDs
+          $agency_ids = [];
+          foreach ($mayoral_agencies as $row) {
+            if (!empty($row->agency_id)) {
+              $agency_ids[$row->agency_id] = $row->agency_id;
+            }
+          }
+          $agency_codes = array_values($agency_ids);
+          if (!empty($agency_codes)) {
+            $value = 'All Mayoral agencies[' . implode('~', $agency_codes) . ']';
+            $count = count($mayoral_agencies);
+
+            // Check if the only result is "No Matches Found"
+            $only_no_matches = count($data) === 1 && isset($data[0]['label']) && $data[0]['label'] === 'No Matches Found';
+
+            if ($only_no_matches) {
+              // Replace "No Matches Found" with mayoral option
+              $data = [[
+                'url' => '',
+                'category' => $facet,
+                'label' => "All Mayoral agencies[$count]",
+                'value' => $value,
+              ]];
+            } else {
+              // Add mayoral option to existing results
+              array_unshift($data, [
+                'url' => '',
+                'category' => $facet,
+                'label' => "All Mayoral agencies[$count]",
+                'value' => $value,
+              ]);
+            }
+          }
+        }
+      } catch (\Exception $e) {
+        \Drupal::logger('checkbook_smart_search')->error('Mayoral agency query error: @error', ['@error' => $e->getMessage()]);
+      }
+    }
     return new JsonResponse($data);
   }
 

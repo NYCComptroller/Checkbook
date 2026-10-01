@@ -244,7 +244,7 @@ class CheckbookSolrQuery extends CheckbookSolrQueryBase
 //    http://sdw6.reisys.com:18983/solr/checkbook_nycha_dev.public.solr_nycha/select/?q=*:*&fq={!tag=tg0}annual_salary:[*%20TO%2025000]&facet=true&facet.mincount=1&facet.sort=count&facet.limit=30&facet.field=domain&facet.field=agreement_type_name&facet.field=payroll_type&facet.field=vendor_name&facet.field=responsibility_center_name&facet.field=funding_source_name&facet.field=grant_name&facet.field=fiscal_year&facet.field=facet_year_array&facet.field=contract_number&facet.field=release_number&facet.field=record_type&facet.field=display_industry_type_name&facet.field=civil_service_title&{!ex=tg0}facet.interval=annual_salary&f.annual_salary.facet.interval.set={!ex=tg0%20key=>200,000}(200000,*]&f.annual_salary.facet.interval.set={!ex=tg0%20key=150,000-200,000}(150000,200000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=100,000-150,000}(100000,150000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=75,000-100,000}(75000,100000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=50,000-75,000}(50000,75000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=25,000-50,000}(25000,50000]&f.annual_salary.facet.interval.set={!ex=tg0%20key=<25,000}[*,25000]&start=0&rows=0&sort=domain_ordering+asc%2Cdate_ordering+desc&wt=xml
 
     $pre_sort = '';
-    if ($this->sort) {
+    if (isset($this->sort) && $this->sort) {
       $pre_query['sort'] = $this->sort;
     }
 
@@ -426,7 +426,7 @@ class CheckbookSolrQuery extends CheckbookSolrQueryBase
   {
     $term = htmlspecialchars_decode($term, ENT_QUOTES);
     $this->mapParam($facet);
-    $autoCompleteFacet = ($this->autocompleteMapping[$facet]) ? $this->autocompleteMapping[$facet] : $facet;
+    $autoCompleteFacet = isset($this->autocompleteMapping[$facet]) ? $this->autocompleteMapping[$facet] : $facet;
     $facetPrefixValue = $this->get_facet_prefix($facet,$term);
     if (isset($facetPrefixValue)){$this->setFacetPrefix($facetPrefixValue);}
     unset($this->fq[$facet]);

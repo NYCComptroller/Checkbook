@@ -380,13 +380,14 @@ EOD;
   }
 
   public function pendingContractVendorInfo($node) {
-    //TODO temp fix move bottom code to separate custom preprocess function
-    //_getRequestParamValueBottomURL
-    $contract_num = RequestUtilities::_getRequestParamValueBottomURL('contract');
-    $contract_num = $contract_num ?? RequestUtilities::get('contract');
 
-    $version_num = RequestUtilities::_getRequestParamValueBottomURL('version');
-    $version_num = $version_num ?? RequestUtilities::get('version');
+    $contract_num = RequestUtilities::getTransactionsParams('contract');
+    $version_num = RequestUtilities::getTransactionsParams('version');
+
+    // Initialize variables (Fix undefined errors)
+    $total_cont = 0;
+    $vendor_link = '';
+    $dashboard = '';
 
     $queryVendorDetails = "SELECT
        p.minority_type_id,
@@ -423,22 +424,36 @@ EOD;
       }
     }
 
-    if($node->data[0]["vendor_id"]){
-      $queryVendorCount = "SELECT COUNT(*) AS total_contracts_sum FROM {agreement_snapshot} WHERE latest_flag= 'Y' AND vendor_id =".$node->data[0]["vendor_id"];
-      $results2 = _checkbook_project_execute_sql($queryVendorCount);
+    if(!empty($node->data) && !empty($node->data[0]["vendor_id"])){
+      $queryVendorCount = "SELECT COUNT(*) AS total_contracts_sum
+                         FROM {agreement_snapshot}
+                         WHERE latest_flag= 'Y'
+                         AND vendor_id =".$node->data[0]["vendor_id"];
 
+      $results2 = _checkbook_project_execute_sql($queryVendorCount);
       foreach($results2 as $row){
-        $total_cont +=$row['total_contracts_sum'];
+        $total_cont += $row['total_contracts_sum'];
       }
 
       if($node->data[0]["mwbe_vendor"] == "Yes"){
         $total_cont  = 0;
         $dashboard = RequestUtilities::_appendMWBESubVendorDatasourceUrlParams().'/dashboard/mp';
       }
-      if($node->data[0]['document_code'] == 'RCT1')
-        $vendor_link = '/contracts_pending_rev_landing/year/' . CheckbookDateUtil::getCurrentFiscalYearId() . '/yeartype/B'.$dashboard.'/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
-      else
-        $vendor_link = '/contracts_pending_exp_landing/year/' . CheckbookDateUtil::getCurrentFiscalYearId() . '/yeartype/B'.$dashboard.'/vendor/'.$node->data[0]['vendor_vendor'] .'?expandBottomCont=true';
+
+      if($node->data[0]['document_code'] == 'RCT1'){
+        $vendor_link = '/contracts_pending_rev_landing/year/'
+          . CheckbookDateUtil::getCurrentFiscalYearId()
+          . '/yeartype/B'.$dashboard
+          . '/vendor/'.$node->data[0]['vendor_vendor']
+          .'?expandBottomCont=true';
+      }
+      else{
+        $vendor_link = '/contracts_pending_exp_landing/year/'
+          . CheckbookDateUtil::getCurrentFiscalYearId()
+          . '/yeartype/B'.$dashboard
+          . '/vendor/'.$node->data[0]['vendor_vendor']
+          .'?expandBottomCont=true';
+      }
     }
 
     $return_value = "
@@ -473,8 +488,7 @@ EOD;
     <li><span class=\"gi-list-item\">M/WBE Category:</span> {$ethnicity}</li>
 </ul>
     ";
-
-    print $return_value;
+    return $return_value;
   }
 
   public function expenseContract($node)

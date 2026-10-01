@@ -43,7 +43,8 @@ function _checkbook_project_querydataset($dataset, $columns, $parameters = null)
     $dataset = _update_dataset_datasource($dataset);
     if(isset($parameters) && is_array($parameters)){
       foreach ($parameters as $param => $value){
-        $parameters[$param] = pg_escape_string ($value);
+        // Use Drupal database API for escaping instead of pg_escape_string
+        $parameters[$param] = addslashes($value);
       }
     }
     $data = $dataController->queryDataset($dataset, $columns, $parameters, NULL, 0, NULL, NULL);

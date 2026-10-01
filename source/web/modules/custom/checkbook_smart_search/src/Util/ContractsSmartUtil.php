@@ -100,7 +100,7 @@ class ContractsSmartUtil {
 
       // Build contract_id_link
       $contract_id_link      = $landing_page . '/status/R';
-      $contract_id_link_year = '/year/' . $reg_fiscal_year_id;
+      $contract_id_link_year = isset($reg_fiscal_year) ? "/year/" .$reg_fiscal_year_id : CustomURLHelper::_checkbook_project_get_year_url_param_string();
       $oge_agency_segment    = $isOge ? '/datasource/checkbook_oge/agency/' . $oge_agency_id : '';
 
       if ($is_prime_or_sub === 'Yes') {
@@ -115,7 +115,8 @@ class ContractsSmartUtil {
       }
       else {
         if (!empty($master_agreement_id)) {
-          $master_contract_id_link = $contract_id_link . '/magid/' . $master_agreement_id . '/doctype/MMA1';
+          $magid = str_starts_with(strtolower($parent_contract_number), 'ma1') ? "MA1" : "MMA1";
+          $master_contract_id_link = $contract_id_link . '/magid/' . $master_agreement_id . '/doctype/'.$magid;
         }
         $agid = ($is_prime_or_sub === 'Yes') ? $contract_orig_agr_id : $original_agreement_id;
         $contract_id_link .= '/agid/' . $agid . '/doctype/' . $document_code;
@@ -152,7 +153,8 @@ class ContractsSmartUtil {
           $contract_id_link .= '/magid/' . $original_agreement_id . '/doctype/' . $document_code;
         }
         else {
-          $master_contract_id_link = $contract_id_link . '/magid/' . $master_agreement_id . '/doctype/MMA1';
+          $magid = str_starts_with(strtolower($parent_contract_number), 'ma1') ? "MA1" : "MMA1";
+          $master_contract_id_link = $contract_id_link . '/magid/' . $master_agreement_id . '/doctype/'.$magid;
           $contract_id_link       .= '/agid/' . $original_agreement_id . '/doctype/' . $document_code;
         }
       }

@@ -68,10 +68,10 @@ class pendingContractDetails {
     $parent_contract_number = $node->data[0]['parent_contract_number'];
     if (!empty($parent_contract_number)) {
       $mag_details = MasterAgreementDetails::_get_master_agreement_details_by_parent_contract_number($parent_contract_number);
-      $node->original_master_agreement_id = $mag_details['original_master_agreement_id'];
-      $node->contract_number = $mag_details['contract_number'];
-      $node->document_code = $mag_details['document_code@checkbook:ref_document_code'];
-      $node->contract_number = $parent_contract_number;
+      $node->original_master_agreement_id = $mag_details['original_master_agreement_id'] ?? '';
+      $node->contract_number = $mag_details['contract_number'] ?? '';
+      $node->document_code = $mag_details['document_code@checkbook:ref_document_code'] ?? '';
+      $node->contract_number = $parent_contract_number ?? '';
     }
 
   }

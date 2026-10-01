@@ -8,7 +8,7 @@
 .smart-search-form--input input {
   border: 1px solid #d5d5d5;
   font-family: RobotoLight;
-  color: #828282;
+  color: #707070;
   font-size: 15px;
   font-style: italic;
   height: 37px;
@@ -19,6 +19,11 @@
   margin-right: 12px;
 }
 
+/* WCAG 2.2 AA - Smart Search placeholder contrast */
+#edit-search-box::placeholder {
+  color: #707070;
+  opacity: 1;
+}
 .smart-search-form--button-submit input.form-submit {
   background: linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
   border: 1px solid #dcdcdc;

@@ -5,7 +5,7 @@
 #superfish-main > li > span {
   font-weight: bold;
   font-size: 14px;
-  padding: 13px 22px 10px;
+  padding: 13px 15px 10px;
   border-right: 1px solid #cbcbcb;
   color: #4d4d4d;
   height: 40px;
@@ -20,10 +20,6 @@
 #superfish-main > li > a:hover {
   color: #2a639a;
   text-decoration: none;
-}
-
-#superfish-main > li:last-child a {
-  color: #389be2;
 }
 
 /* Child */

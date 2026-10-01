@@ -125,8 +125,10 @@ class PayrollBreadcrumbs {
                 }
                 elseif (str_starts_with($current_path, '/payroll') && preg_match('/title_landing/', $current_path)) {
                   $title_code = RequestUtil::getRequestKeyValueFromURL("title", $current_path);
-                  $title = PayrollUtil::getTitleByCode($title_code) . ' Payroll';
-                  $title = mb_convert_case($title, MB_CASE_TITLE, "UTF-8");
+                  if ($title_code) {
+                    $title = PayrollUtil::getTitleByCode($title_code) . ' Payroll';
+                    $title = mb_convert_case($title, MB_CASE_TITLE, "UTF-8");
+                  }
                 }
                 elseif (!isset($bottomURL) && str_starts_with($current_path, '/payroll') && !preg_match('/transactions/', $current_path)) {
                   $title = 'New York City Payroll';

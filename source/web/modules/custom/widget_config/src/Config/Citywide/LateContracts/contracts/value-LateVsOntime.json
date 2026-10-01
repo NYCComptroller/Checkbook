@@ -1,0 +1,183 @@
+{
+  "widgetType": "highcharts",
+  "footer":"$footer =''; return $footer;",
+  "no_results_content":"No Results Found",
+  "cleanURLParameters":["year-start",  "year-end", "np-status", "agency", "vendor",  "mwbe", "industry","mayoral_flag"],
+  "urlParamMap": {
+    "year-start": "year-start.year-start",
+    "year-end": "year-end.year-end",
+    "np-status": "nonprofit_status.nonprofit_status",
+    "agency": "agency_code.agency_code",
+    "vendor": "vendor_customer_code.vendor_customer_code",
+    "mwbe": "minority_type_id.minority_type_id",
+    "industry": "industry_type_id.industry_type_id",
+    "mayoral_flag" : "mayoral_flag"
+  },
+  "dataset": "checkbook:aggregateon_contract_retroactivity",
+  "columns": ["year.year","total_contract_amount_sum", "total_retroactive_amount_sum", "total_ontime_amount_sum"],
+  "orderBy": "year_id",
+  "adjustParameters": "
+    return \\Drupal::service('checkbook_widget_retroactivity.retroactivity_filter_processor')->adjustParametersFor($parameters, 'value-LateVsOntime');
+  ",
+"transformationPHP": "
+  return \\Drupal::service('checkbook_widget_retroactivity.retroactivity_filter_processor')->transformationPHPFor('value-LateVsOntime', $node);
+",
+"chartConfig": {
+"chart": {
+"type": "column",
+"height": 425,
+"width": 750,
+"backgroundColor": "rgba(255,255,255,0)",
+"margin": [50, 60, 90, 85],
+"spacingBottom": 5 // Added extra space at the very bottom
+},
+  "title": {"text": "", "align": "left"},
+"xAxis": {
+"categories": [],
+"lineColor": "#ccd6eb",
+"tickWidth": 0, // This removes the hanging line
+"title": {
+"text": "Fiscal Year",
+"style": {
+  "fontSize": "12px",
+  "fontFamily": "Roboto, sans-serif",
+  "color": "#000",
+  "fontWeight": "normal"
+},
+"align": "middle",
+"x": -50,
+"offset": 30
+},
+"labels": {
+"enabled": true,
+"style": {
+  "fontFamily": "Roboto, sans-serif",
+  "color": "#000",
+  "fontSize": "12px",
+  "fontWeight": "normal"
+},
+"y": 20
+}
+},
+  "yAxis": {
+    "min": 0,
+    "margin": 10,
+    "title": {
+      "text": "Contract Value",
+      "style": {
+        "fontSize": "12px",
+        "fontFamily": "Roboto, sans-serif",
+        "fontWeight": "normal",
+        "color": "#000"
+      }
+    },
+    "labels": {
+      "function": "yAxisFormatter",
+      "style":{"textOverflow":"none"}
+    }
+  },
+"legend": {
+"enabled": true,
+"reversed": true,
+"align": "center",
+"verticalAlign": "bottom",
+"layout": "horizontal",
+"borderWidth": 0,
+"borderRadius": 8,
+"margin": 0,
+"y": 5, // Positive moves it down, negative moves it up.
+"x": -33,
+"itemStyle": {
+  "color": "#000",
+  "fontWeight": "normal",
+  "fontSize": "12px",
+  "fontFamily": "Roboto, sans-serif"
+},
+"symbolWidth": 12,
+"symbolHeight": 12
+},
+  "tooltip": {
+    "shared": true,
+    "function": "tooltipformatter",
+    "outside": true
+  },
+  "plotOptions": {
+    "column": {
+      "stacking": "normal",
+      "borderWidth": 0,
+      "minPointLength": 2
+    },
+    "series": {
+      "animation": false,
+      "dataLabels": {
+        "enabled": true,
+        "inside": true,
+        "crop": false,
+        "overflow": "allow",
+        "function": "seriesLabelFormatter",
+        "style": {
+          "color": "#FFFFFF",
+          "textOutline": "none",
+          "fontWeight": "bold",
+          "fontSize": "10px"
+        }
+      }
+    }
+  },
+  "credits": {
+    "enabled": false
+  },
+  "series": [{ "name": "On Time", "data": {"ds":"ontime"}},
+    {"name": "Late","data": {"ds":"late"}},
+    {"name": "No Data", "data": {"ds":"zero"}}]
+}
+}
+
+<function>
+yAxisFormatter^^'formatter' : function() {
+var visible =
+this.axis.chart.series[0].visible ||
+this.axis.chart.series[1].visible;
+return visible ? yAxisLabelFormatter(this) : '';
+}##
+seriesLabelFormatter^^'formatter' : function () {
+
+if (this.series.name === 'No Data') {
+
+return (
+this.series.chart.series[0].visible ||
+this.series.chart.series[1].visible
+) ? '$0' : '';
+}
+
+if (this.y == null) {
+return '';
+}
+
+return abbrNum(Math.round(Math.abs(this.y)), 0, '$');
+
+}##
+tooltipformatter^^'formatter' : function() {
+if (!this.points || this.points.length === 0) return '';
+
+var category = this.points[0].point.name;
+var fiscalYear = this.points[0].point.fiscal_year;
+var onTime = 0;
+var late = 0;
+
+this.points.forEach(function (p) {
+if (p.series.name === 'On Time') {
+onTime = p.y;
+} else if (p.series.name === 'Late') {
+late = p.y;
+}
+});
+
+var total = this.points[0].point.total_amount;
+
+return 'Year: FY ' + fiscalYear + '<br/>' +
+'On Time: ' + abbrNum(onTime, 2, '$') + '<br/>' +
+'Late: ' + abbrNum(late, 2, '$') + '<br/>' +
+'Total Contract Amount: ' + abbrNum(total, 2, '$');
+}
+</function>

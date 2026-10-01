@@ -1,0 +1,94 @@
+/* Container for the whole top area */
+.retroactivity-dashboard-container {
+  text-align: center;
+  /*margin-left: 260px;*/
+  padding-top: 20px;
+}
+
+/* Headings Styling */
+.dashboard-headings {
+  margin-bottom: 28px;
+}
+/*
+.dashboard-headings .main-title {
+  font-family: "Arial Black", Gadget, sans-serif;
+  font-weight: 900;
+  font-size: 28px;
+  text-transform: uppercase;
+  margin: 0;
+}
+*/
+/*
+.dashboard-headings .sub-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 5px 0;
+}
+*/
+.dashboard-headings .chart-description {
+  color: #0071bc;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.dashboard-headings-sub {
+  margin-top: 20px;
+}
+.dashboard-headings-sub h2.chart-title {
+  font-size: 20px;;
+}
+
+/* Tabs Container with the grey line */
+.retroactivity-tabs-wrapper {
+  border-bottom: 2px solid #777;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.virtual-tabs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  position: relative;
+  top: 2px; /* Pulls them down to sit on the border */
+}
+
+.tab-item {
+  margin: 0 5px;
+}
+
+.tab-item a {
+  display: block;
+  padding: 6px 15px;
+  text-decoration: none;
+  font-size: 16px;
+  color: #0071bc;
+  background: #ccc; /* Inactive grey */
+  border: 1px solid #777;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  transition: all 0.2s ease;
+}
+
+/* Active Tab Style */
+.tab-item.is-active a {
+  background: #fff;
+  color: #333;
+  border-bottom: 2px solid #fff;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.virtual-tabs .tab-item a:hover {
+  text-decoration: none !important;
+  background: #e6e6e6; 
+}
+
+/* Ensure the active tab also doesn't show an underline if hovered */
+.virtual-tabs .tab-item.is-active a:hover {
+  text-decoration: none !important;
+  background: #fff;
+}

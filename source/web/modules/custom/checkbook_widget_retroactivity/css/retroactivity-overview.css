@@ -1,0 +1,58 @@
+.retroactivity-overview {
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.retroactivity-overview h2 {
+  font-size: 22px;
+}
+
+.retroactivity-overview p {
+  /* This color overrides the pageurl-retroactivitylanding in body. */
+  color: #000;
+  font-size: 16px;
+}
+
+/*
+.retroactivity-overview .li1 {
+  font-size: 16px;
+  width: 85%;
+  background-color: yellow;
+}
+
+.retroactivity-overview .li2 {
+  font-size: 16px;
+  width: 85%;
+  background-color: blue;
+
+}
+
+.retroactivity-overview li {
+  font-size: 16px;
+  width: 85%;
+  background-color: red;
+}
+*/
+/* Target only direct child lists (first level) */
+.retroactivity-overview > ul,
+.retroactivity-overview > ol {
+  font-size: 16px;
+  max-width: 85%;
+  color: #000;
+}
+
+/* Reset nested lists to full width of their parent */
+.retroactivity-overview ul ul,
+.retroactivity-overview ul ol,
+.retroactivity-overview ol ul,
+.retroactivity-overview ol ol {
+  max-width: 100%;
+  color: #000;
+}
+
+
+.retroactivity-overview .li1 {
+  margin-top: 2px;
+  margin-bottom: 4px;
+  color: #000;
+ }

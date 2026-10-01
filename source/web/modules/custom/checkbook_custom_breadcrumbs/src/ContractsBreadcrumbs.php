@@ -251,27 +251,27 @@ class ContractsBreadcrumbs {
     foreach ($lastReqParam as $key => $value) {
       switch ($key) {
         case 'agency':
-          $title = _checkbook_project_get_name_for_argument("agency_id", $value);
+          $title = _checkbook_project_get_name_for_argument("agency_id", $value) ?? self::NYC;
           break;
 
         case 'vendor':
-          $title = _checkbook_project_get_name_for_argument("pending_contracts_vendor_id", $value);
+          $title = _checkbook_project_get_name_for_argument("pending_contracts_vendor_id", $value) ?? self::NYC;
           if ($ethinicty) {
-            $title .= MappingUtil::getPrimeVendorEthinictyTitle($value, "contracts");
+            $title .= MappingUtil::getPrimeVendorEthinictyTitle($value, "contracts") ?? '';
           }
           break;
 
         case 'awrdmthd':
         case 'awdmethod':
-          $title = _checkbook_project_get_name_for_argument("award_method_code", $value);
+          $title = _checkbook_project_get_name_for_argument("award_method_code", $value) ?? self::NYC;
           break;
 
         case 'csize':
-          $title = _checkbook_project_get_name_for_argument("award_size_id", $value);
+          $title = _checkbook_project_get_name_for_argument("award_size_id", $value) ?? self::NYC;
           break;
 
         case 'cindustry':
-          $title = _checkbook_project_get_name_for_argument("industry_type_id", $value);
+          $title = _checkbook_project_get_name_for_argument("industry_type_id", $value) ?? self::NYC;
           break;
 
         default:

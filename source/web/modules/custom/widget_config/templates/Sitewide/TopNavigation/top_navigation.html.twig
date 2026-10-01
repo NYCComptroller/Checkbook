@@ -3,20 +3,22 @@
 {% macro item(name, dollar_amount, link, active, indicator, menu) %}
   {% set is_active = active == true ? true : isTopNavigationItemActive(name|lower) %}
   {% set indicator = indicator is null? is_active : indicator %}
-  <div class="top-navigation--item {{ name|lower|replace({' ':'', '/':'', '(':'', ')':''})  }} {{ is_active ? 'active' : ''}}">
+  <div class="top-navigation--item {{ name|lower|replace({' ':'', '/':'', '(':'', ')':''})  }} {{ is_active ? 'active' : ''}}" aria-label="{{ name | striptags }} {{ dollar_amount }} link" role="tab">
+    {% set formatted_name = name | replace({' ': '-', '/': '-'}) %}
     {% if link == false %}
-      <div class="top-navigation--item-label">
-        {{ name }}
-        <div class="top-navigation--item-dollar_amount">
+      <div aria-labelledby="top-nav-domain-{{ formatted_name }} top-nav-amount-{{ formatted_name }}" class="top-navigation--item-label">
+        <span id="top-nav-domain-{{ formatted_name }}" class="top-nav-domain-label">{{ name }}</span>
+        <span id="top-nav-amount-{{ formatted_name }}" class="top-navigation--item-dollar_amount">
           {{ dollar_amount }}
-        </div>
+        </span>
       </div>
     {% else %}
-      <a class="top-navigation--item-label display-block text-no-underline" href="{{ link }}">
-        {{ name }}
-        <div class="top-navigation--item-dollar_amount">
+
+      <a aria-labelledby="top-nav-domain-{{ formatted_name }} top-nav-amount-{{ formatted_name }}" class="top-navigation--item-label display-block text-no-underline" href="{{ link }}">
+        <span id="top-nav-domain-{{ formatted_name }}" class="top-nav-domain-label">{{ name }}</span>
+        <span id="top-nav-amount-{{ formatted_name }}" class="top-navigation--item-dollar_amount">
           {{ dollar_amount }}
-        </div>
+        </span>
       </a>
       {% if menu %}
         <div class="indicator-menu">

@@ -33,34 +33,6 @@ checkbook_transactions.nycha_budget_transactions_budgettype_remaining:
     params: ''
   requirements:
     _permission: 'access content'
-checkbook_transactions.nycha_budget_fundsrc_details_transactions:
-  path: '/nycha_budget/fundsrc_details/{params}'
-  defaults:
-    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetFundsrcDetailsTransactions
-    params: ''
-  requirements:
-    _permission: 'access content'
-checkbook_transactions.nycha_budget_project_details_transactions:
-  path: '/nycha_budget/project_details/{params}'
-  defaults:
-    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetProjectDetailsTransactions
-    params: ''
-  requirements:
-    _permission: 'access content'
-checkbook_transactions.nycha_budget_program_details_transactions:
-  path: '/nycha_budget/program_details/{params}'
-  defaults:
-    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetProgramDetailsTransactions
-    params: ''
-  requirements:
-    _permission: 'access content'
-checkbook_transactions.nycha_budget_respcenter_details_transactions:
-  path: '/nycha_budget/respcenter_details/{params}'
-  defaults:
-    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetRespcenterDetailsTransactions
-    params: ''
-  requirements:
-    _permission: 'access content'
 checkbook_transactions.nycha_contract_assoc_releases:
   path: '/nycha_contract_assoc_releases/{params}'
   defaults:

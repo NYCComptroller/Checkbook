@@ -1,0 +1,62 @@
+.retroactivity-tiles-container {
+  background-color: #e6e6e6; /* Light grey bar */
+  padding: 5px 4px 12px 4px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.tiles-wrapper {
+  display: flex;
+  gap: 35px;
+}
+
+.chart-tile {
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.tile-image-wrapper {
+  background: #fff;
+  padding: 5px;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  margin-top: -15px;
+}
+
+.chart-tile.is-active .tile-image-wrapper {
+  border-color: #1F82C9; /* The blue border from your screenshot */
+  box-shadow: 0 0 10px rgba(0,51,204,0.3);
+}
+
+.chart-tile img {
+  max-width: 180;
+  max-height: 112px;
+  /*height:auto;*/
+  display: block;
+}
+
+.tile-title {
+  display: block;
+  margin-top: 8px;
+  font-size: 8.5px;
+  font-weight: bold;
+  color: #333;
+  z-index: 2;
+  position: relative;
+}
+
+.chart-tile:hover .tile-image-wrapper {
+  border-color: #999;
+}
+
+.block-retroactivity-chart-tiles-block h2 {
+  display: none;
+}

@@ -5,33 +5,34 @@
         {{ item.tooltip }}
       </div>
     {% endif %}
+    {% set formatted_label = label|raw | striptags %}
     {% if link == false %}
-      <div class="bottom-navigation--item-label">
-        <div class="bottom-navigation--item-count">
+      <div aria-label="{{ count }} {{ formatted_label }} {{ dollar_amount }}" class="bottom-navigation--item-label">
+        <span aria-hidden="true" class="bottom-navigation--item-count">
           {{ count }}
-        </div>
-        {{ label|raw }}
-        <div class="bottom-navigation--item-dollar_amount">
+        </span>
+        <span aria-hidden="true" class="bottom-nav-domain-label">{{ label|raw }}</span>
+        <span aria-hidden="true" class="bottom-navigation--item-dollar_amount">
           {{ dollar_amount }}
-        </div>
+        </span>
       </div>
     {% else %}
-      <a class="bottom-navigation--item-label display-block text-no-underline" href="{{ link }}">
-        <div class="bottom-navigation--item-count">
+      <a aria-label="{{ count }} {{ formatted_label }} {{ dollar_amount }}" class="bottom-navigation--item-label display-block text-no-underline" href="{{ link }}">
+        <span aria-hidden="true" class="bottom-navigation--item-count">
           {% if count == false %}
             &nbsp;
           {% else %}
             {{ count }}
           {% endif %}
-        </div>
-        {{ label|raw }}
-        <div class="bottom-navigation--item-dollar_amount">
+        </span>
+        <span aria-hidden="true" class="bottom-nav-domain-label">{{ label|raw }}</span>
+       <span aria-hidden="true" class="bottom-navigation--item-dollar_amount">
           {% if dollar_amount == false %}
             &nbsp;
           {% else %}
             {{ dollar_amount }}
           {% endif %}
-        </div>
+        </span>
       </a>
     {% endif %}
 

@@ -1,0 +1,5 @@
+name: Widget Configurations for Retroactivity dashboards
+type: module
+description: 'Json Configuration files for Charts in Retroactivity dashboards'
+core_version_requirement: ^10 || ^11
+package: 'Widget Framework'

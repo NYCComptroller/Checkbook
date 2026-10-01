@@ -1,18 +1,21 @@
 {% macro item(label, dollar_amount, link, active_class, indicator) %}
-  <div class="bottom-navigation--item {{ active_class }}">
+  <div class="bottom-navigation--item {{ active_class }}" aria-label="{{label | striptags}} Spending {{ dollar_amount }} link" role="tab">
+  {% set formatted_label = label | replace({' ': '&', '/': '-'}) %}
     {% if link == false %}
-      <div class="bottom-navigation--item-label">
-        {{ label }}<br/>Spending
-        <div class="bottom-navigation--item-dollar_amount">
-          {{ dollar_amount }}
-        </div>
-      </div>
+    <div aria-labelledby="bottom-nav-spending-{{ formatted_label }}-label bottom-nav-spending-{{ formatted_label }}-domain bottom-nav-spending-{{ formatted_label }}-amount" class="bottom-navigation--item-label">
+      <span id="bottom-nav-spending-{{ formatted_label }}-label">{{ label }}</span>
+      <span id="bottom-nav-spending-{{ formatted_label }}-domain" class="bottom-nav-domain-label">Spending</span>
+      <span id="bottom-nav-spending-{{ formatted_label }}-amount" class="bottom-navigation--item-dollar_amount">
+        {{ dollar_amount }}
+      </span>
+    </div>
     {% else %}
-      <a class="bottom-navigation--item-label display-block text-no-underline" href="{{ link }}">
-        {{ label }}<br/>Spending
-        <div class="bottom-navigation--item-dollar_amount">
-          {{ dollar_amount }}
-        </div>
+      <a aria-labelledby="bottom-nav-spending-{{ formatted_label }}-label bottom-nav-spending-{{ formatted_label }}-domain bottom-nav-spending-{{ formatted_label }}-amount" class="bottom-navigation--item-label display-block text-no-underline" href="{{ link }}">
+      <span id="bottom-nav-spending-{{ formatted_label }}-label">{{ label }}</span>
+      <span id="bottom-nav-spending-{{ formatted_label }}-domain" class="bottom-nav-domain-label">Spending</span>
+      <span id="bottom-nav-spending-{{ formatted_label }}-amount" class="bottom-navigation--item-dollar_amount">
+        {{ dollar_amount }}
+      </span>
       </a>
     {% endif %}
 

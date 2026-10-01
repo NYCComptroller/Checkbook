@@ -1,0 +1,80 @@
+{
+  "widgetType": "highcharts",
+  "widgetSubType": "ajaxSimple",
+  "footer":"$footer =''; return $footer;",
+  "no_results_content":"No Results Found",
+  "cleanURLParameters":["year-end", "np-status", "agency", "vendor",  "mwbe", "industry", "mayoral_flag"],
+  "urlParamMap": {
+    "np-status": "nonprofit_status.nonprofit_status",
+    "agency": "agency_code.agency_code",
+    "vendor": "vendor_customer_code.vendor_customer_code",
+    "mwbe": "minority_type_id.minority_type_id",
+    "industry": "industry_type_id.industry_type_id",
+    "year-end": "year.year",
+    "mayoral_flag" : "mayoral_flag"
+  },
+  "dataset": "checkbook:aggregateon_contract_retroactivity",
+  "columns": ["lateness_category.lateness_category","lateness_category.lateness_category.lateness_category", "total_contracts_sum"],
+  "orderBy": "lateness_category_id",
+  "adjustParameters":"
+    return \\Drupal::service('checkbook_widget_retroactivity.retroactivity_filter_processor')->adjustParametersFor($parameters, 'volume-HowLate');
+  ",
+  "transformationPHP":"
+    return \\Drupal::service('checkbook_widget_retroactivity.retroactivity_filter_processor')->transformationPHPFor('volume-HowLate', $node);
+  ",
+"chartConfig": {
+  "chart": {
+    "type": "pie",
+    "backgroundColor": "#FFFFFF",
+    "marginTop": 36,
+    "marginLeft": 1,
+    "height": 425,
+    "width": 750
+  },
+  "title": {"text": ""},
+  "legend": {"enabled": false},
+  "tooltip": {
+    "enabled": false
+  },
+  "plotOptions": {
+    "pie": {
+      "size": "100%",        // overall donut size (bigger chart)
+      "innerSize": "70%",     // controls thickness (smaller = thicker)
+      "borderWidth": 3,
+      "borderColor": "#FFFFFF",
+      "dataLabels": {
+          "enabled": true,
+          //"allowOverlap": false,
+          "crop": false,
+          "overflow": "allow",
+          "padding": 3,
+          "connectorPadding": 0,
+          "connectorShape": "fixedOffset",
+          "connectorWidth": 1,
+          "connectorColor": "#000000",
+          "softConnector": true,
+          "style": {
+            "fontFamily": "Roboto, sans-serif",
+            "fontSize": "11px",
+            "fontWeight": "normal",
+            "color": "#000",
+            "textAlign":"center",
+            "width": "145px"
+          },
+          "borderColor": "#333",
+          "borderWidth": 1,
+          "function": "dataLabelFormatter"
+      }
+    }
+  },
+  "credits": {
+    "enabled": false
+  },
+  "series": []
+}}
+
+<function>dataLabelFormatter^^'formatter' : function(){return this.point.name + ",<br/>" +
+Highcharts.numberFormat(this.y, 0) +
+", " + Highcharts.numberFormat(this.percentage, 0) + "%";}
+</function>
+

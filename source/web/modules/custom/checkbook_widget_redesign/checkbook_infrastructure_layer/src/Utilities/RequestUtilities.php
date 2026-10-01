@@ -226,7 +226,7 @@ class RequestUtilities {
     }
     $value = NULL;
     if ($fromRequestPath) {
-      $bottomURL = \Drupal::request()->query->get('expandBottomContURL');
+      $bottomURL = \Drupal::request()->query->get('expandBottomContURL') ?? '';
       $pathParams = explode('/', $bottomURL);
       $index = array_search($paramName, $pathParams);
       if ($index !== FALSE) {

@@ -70,10 +70,12 @@ class BudgetController extends ControllerBase {
       return $output;
   }
 
+
+  // Disable all the nycha perc dfierence transactions as they are not used in UI anymore
   /**
    * @return string[]
    */
-  public function nychaBudgetFundsrcDetailsTransactions($params) {
+ /* public function nychaBudgetFundsrcDetailsTransactions($params) {
     RequestUtilities::resetUrl();
     if (_checkbook_project_recordsExists(1047)) {
       $path = \Drupal::service('path_alias.manager')->getPathByAlias('/nycha_budget/fundsrc_details/');
@@ -101,12 +103,12 @@ class BudgetController extends ControllerBase {
       ];
       return $return;
     }
-  }
+  }*/
 
   /**
    * @return string[]
    */
-  public function nychaBudgetRespcenterDetailsTransactions($params) {
+ /* public function nychaBudgetRespcenterDetailsTransactions($params) {
     RequestUtilities::resetUrl();
     if (_checkbook_project_recordsExists(1048)) {
       $path = \Drupal::service('path_alias.manager')->getPathByAlias('/nycha_budget/respcenter_details/');
@@ -134,12 +136,12 @@ class BudgetController extends ControllerBase {
       ];
       return $return;
     }
-  }
+  }*/
 
   /**
    * @return string[]
    */
-  public function nychaBudgetProgramDetailsTransactions($params) {
+ /* public function nychaBudgetProgramDetailsTransactions($params) {
     RequestUtilities::resetUrl();
     if (_checkbook_project_recordsExists(1049)) {
       $path = \Drupal::service('path_alias.manager')->getPathByAlias('/nycha_budget/program_details/');
@@ -167,12 +169,12 @@ class BudgetController extends ControllerBase {
       ];
       return $return;
     }
-  }
+  }*/
 
   /**
    * @return string[]
    */
-  public function nychaBudgetProjectDetailsTransactions($params) {
+  /*public function nychaBudgetProjectDetailsTransactions($params) {
     RequestUtilities::resetUrl();
     if (_checkbook_project_recordsExists(1050)) {
       $path = \Drupal::service('path_alias.manager')->getPathByAlias('/nycha_budget/project_details/');
@@ -200,7 +202,7 @@ class BudgetController extends ControllerBase {
       ];
       return $return;
     }
-  }
+  }*/
 
   /**
    * @return string[]

@@ -1,29 +1,30 @@
 {% macro item(label, link, dollar_amount, count, active_class, tab_style, tooltip, indicator = true) %}
   <div class="bottom-navigation--item {{ active_class }} {{ tab_style }}">
+  {% set formatted_label = label|raw | striptags %}
     {% if(item.tooltip|length > 0) %}
         <div class="activeExpenseContractNote toolTip">
           {{ item.tooltip }}
         </div>
     {% endif %}
     {% if link == false %}
-      <div class="bottom-navigation--item-label">
-        <div class="bottom-navigation--item-count">
+      <div aria-label="{{ count }} {{ formatted_label }} Contracts {{ dollar_amount }}" class="bottom-navigation--item-label">
+        <span aria-hidden="true" class="bottom-navigation--item-count">
           {{ count }}
-        </div>
-        {{ label|raw }} Contracts
-        <div class="bottom-navigation--item-dollar_amount">
+        </span>
+        <span aria-hidden="true" class="bottom-nav-domain-label">{{ label|raw }} Contracts</span>
+        <span aria-hidden="true" class="bottom-navigation--item-dollar_amount">
           {{ dollar_amount }}
-        </div>
+        </span>
       </div>
     {% else %}
-      <a class="bottom-navigation--item-label display-block text-no-underline" href="{{ link }}">
-        <div class="bottom-navigation--item-count">
+      <a aria-label="{{ count }} {{ formatted_label }} Contracts {{ dollar_amount }}" class="bottom-navigation--item-label display-block text-no-underline" href="{{ link }}">
+        <span aria-hidden="true" class="bottom-navigation--item-count">
           {{ count }}
-        </div>
-        {{ label|raw }} Contracts
-        <div class="bottom-navigation--item-dollar_amount">
+        </span>
+        <span aria-hidden="true" class="bottom-nav-domain-label">{{ label|raw }} Contracts</span>
+        <span aria-hidden="true" class="bottom-navigation--item-dollar_amount">
           {{ dollar_amount }}
-        </div>
+        </span>
       </a>
     {% endif %}
 

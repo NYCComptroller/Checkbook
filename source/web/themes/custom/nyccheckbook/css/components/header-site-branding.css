@@ -1,8 +1,8 @@
 /* TODO: Simplify markup (Markup is in a drupal block) */
 
 #zone-branding-wrapper {
-  background: url('../../images/header-bg.png') repeat-x scroll 0 0 transparent;
   height: 48px;
+  background-color: #073659;
 }
 
 .newwindow .zone-branding-wrapper a {

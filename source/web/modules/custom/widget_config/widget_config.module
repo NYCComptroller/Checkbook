@@ -178,6 +178,19 @@ function widget_config_preprocess_pending_contract_details(&$variables) {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function widget_config_theme($existing, $type, $theme, $path) {
+  return [
+    'retroactivity_ytd_comparison' => [
+      'variables' => ['node' => NULL],
+      'template' => 'retroactivity_ytd_comparison',
+      'path' => \Drupal::service('extension.list.module')->getPath('widget_config') . '/templates/Citywide/Contracts',
+    ],
+  ];
+}
+
+/**
  * Implements hook_page_attachments().
  */
 function widget_config_page_attachments(&$variables) {
