@@ -1,6 +1,0 @@
-name: 'Widget Services'
-description: 'Functionality to serve as a service layer for checkbook transactions and filters'
-package: 'REI Dashboard Platform Service'
-core_version_requirement: ^10 || ^11
-type: module
-dependencies: {  }

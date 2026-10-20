@@ -1,7 +1,0 @@
-php.block.admin:
-  version: VERSION
-  js:
-    js/php.admin.js: {}
-  dependencies:
-    - core/jquery
-    - core/drupal

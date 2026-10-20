@@ -1,6 +1,0 @@
-{
-    "defaultConfigKey":"prime_vendors_view",
-    "serviceName":"SpendingWidgetService",
-    "dataFunc":"GetOGESpendingByPrimeVendors",
-    "countFunc":"GetCountOGEPrimeVendors"
-}

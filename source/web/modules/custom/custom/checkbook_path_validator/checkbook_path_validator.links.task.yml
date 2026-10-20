@@ -1,4 +1,0 @@
-checkbook_path_validator.path_form:
-  route_name: checkbook_path_validator.form
-  title: 'Checkbook Path Settings'
-  base_route: checkbook_path_validator.form

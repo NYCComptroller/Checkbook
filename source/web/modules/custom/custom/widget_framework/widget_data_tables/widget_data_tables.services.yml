@@ -1,6 +1,0 @@
-services:
-  init_subscriber:
-    class: Drupal\widget_data_tables\EventSubscriber\InitSubscriber
-    tags:
-      -
-        name: event_subscriber

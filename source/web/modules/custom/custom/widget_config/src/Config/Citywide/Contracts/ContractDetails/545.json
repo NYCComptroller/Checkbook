@@ -1,6 +1,0 @@
-{
-"widgetType": "phpparser",
-"noDataInitialLoad":true,
-"customDataHandlerClass":"\\Drupal\\checkbook_project\\ContractsUtilities\\pendingContractDetails",
-"template":"pending_contract_details"
-}

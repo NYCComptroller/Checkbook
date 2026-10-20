@@ -1,5 +1,0 @@
-services:
-  checkbook_api.commands:
-    class: \Drupal\checkbook_api\Commands\CheckbookApiCommands
-    tags:
-      - { name: drush.command }
