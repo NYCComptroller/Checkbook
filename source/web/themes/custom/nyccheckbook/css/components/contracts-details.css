@@ -914,7 +914,7 @@ span.export, span.summary_export {
   top:17px;
   right: 0;
   padding-top:3px;
-  color: #209AD6;
+  color: #126FAE;
   font-weight: bold;
   text-transform: uppercase;
   z-index: 29;
@@ -1286,7 +1286,7 @@ table.nycha_assoc_contracts_list {
   box-shadow: none;
   background: none;
   padding: 0;
-  color: #1F82C9;
+  color: #044eae;
   min-width: 0;
   margin: 0;
   line-height: normal;

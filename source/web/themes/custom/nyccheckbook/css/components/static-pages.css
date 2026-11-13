@@ -147,7 +147,7 @@ h3.new-features {
   padding-top: 10px;
   color: black;
   font-size: 15px;
-  font-family: 'RobotoCondensed', serif
+  font-family: 'RobotoCondensed', sans-serif;
 }
 
 article[about="/new-features/newwindow"] #page-title{

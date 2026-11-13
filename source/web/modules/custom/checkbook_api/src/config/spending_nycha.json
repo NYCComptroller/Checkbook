@@ -53,6 +53,7 @@
             "industry": "display_industry_type_name",
             "funding_source": "display_funding_source_descr",
             "responsibility_center": "responsibility_center_description",
+            "expense_category_code": "expenditure_type_code",
             "expense_category": "expenditure_type_description",
             "program": "program_phase_description",
             "project": "gl_project_description"
@@ -75,6 +76,7 @@
             "industry",
             "funding_source",
             "responsibility_center",
+            "expense_category_code",
             "expense_category",
             "program",
             "project"
@@ -101,6 +103,7 @@
             "Industry": "display_industry_type_name",
             "Funding Source": "display_funding_source_descr",
             "Responsibility Center": "responsibility_center_description",
+            "Expense Category Code": "expenditure_type_code",
             "Expense Category": "expenditure_type_description",
             "Program": "program_phase_description",
             "Project": "gl_project_description"

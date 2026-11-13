@@ -1,6 +1,0 @@
-name: Checkbook Transactions
-type: module
-description: 'Checkbook transactions pages'
-core_version_requirement: ^10 || ^11
-package: 'Custom'
-

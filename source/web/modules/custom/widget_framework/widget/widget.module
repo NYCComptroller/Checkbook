@@ -290,7 +290,7 @@ function widget_prepare($node) {
     $node->widgetConfig->dataOnly = TRUE;
   }
 
-  if(isset($node->widgetConfig->widgetPreprocessJSON)){
+  if(isset($node->widgetConfig->widgetPreprocessJSON) && !empty($node->widgetConfig->widgetPreprocessJSON)){
     eval($node->widgetConfig->widgetPreprocessJSON);
   }
 
@@ -425,7 +425,6 @@ function load_widget_data($node, $resultFormatter=null) {
         }
       }
     }
-
     //update
     $ajaxRequest = RequestUtilities::get('ajax');
     if(isset($config->adjustParameters)){
@@ -497,7 +496,6 @@ function load_widget_data($node, $resultFormatter=null) {
     if(isset($config->generateDBQuery)){
       $generateDBQuery = widget_get_db_query($isList, $datasetName, $columns, $parameters, $orderBy, $startWith, $limit, $resultFormatter);
       $node->data = $generateDBQuery;
-      LogHelper::log_debug('Generate Db Query:' . $generateDBQuery);
       return;
     }
 

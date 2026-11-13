@@ -24,7 +24,6 @@
         $("#edit-df-contract-status").children("option[value='pending']").hide();
         $("#edit-category").children("option[value='all']").hide();
         $("#edit-category").children("option[value='revenue']").hide();
-        $("#edit-apt-pin").attr('disabled', 'disabled');
 
         // Moving fields to match with Advanced search form order.
         $('.default-fields .datafield.pin').insertAfter('.default-fields .datafield.purpose');
@@ -60,7 +59,6 @@
         $("#edit-df-contract-status").children("option[value='pending']").show();
         $("#edit-category").children("option[value='all']").show();
         $("#edit-category").children("option[value='revenue']").show();
-        $("#edit-apt-pin").removeAttr('disabled');
 
         // Moving fields to match with Advanced search form order.
         $('.default-fields .datafield.pin').insertAfter('.default-fields .datafield.sub_contract_status_id');

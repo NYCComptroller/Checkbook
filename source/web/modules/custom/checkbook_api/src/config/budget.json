@@ -27,6 +27,7 @@
                     "elementsColumn":{
                         "agency":"agency_name",
                         "department":"department_name",
+                        "expense_category_code":"object_class_code",
                         "expense_category":"object_class_name",
                         "budget_code":"budget_code",
                         "budget_name":"budget_code_name",
@@ -44,6 +45,7 @@
                       "agency",
                       "year",
                       "department",
+                      "expense_category_code",
                       "expense_category",
                       "budget_code",
                       "budget_name"
@@ -67,6 +69,7 @@
                     "elementsColumn":{
                         "Agency":"agency_name",
                         "Department":"department_name",
+                        "Expense Category Code":"object_class_code",
                         "Expense Category":"object_class_name",
                         "Budget Code":"budget_code",
                         "Budget Name":"budget_code_name",

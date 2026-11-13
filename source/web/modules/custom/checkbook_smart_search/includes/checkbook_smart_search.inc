@@ -24,6 +24,7 @@ use Drupal\checkbook_infrastructure_layer\Constants\Common\Datasource;
 use Drupal\checkbook_solr\CheckbookSolr;
 use Drupal\checkbook_solr\CheckbookSolrQuery;
 use Symfony\Component\HttpFoundation\Response;
+use Drupal\checkbook_widget_retroactivity\Config\RetroactivityConfigService;
 
 /** Submit handler for smart search
  * @param $form
@@ -421,12 +422,33 @@ function _checkbook_smart_search_export_data(string $solr_datasource) {
  * @param string $facet
  * @return array
  */
-function _checkbook_autocomplete(string $solr_datasource, string $facet){
-
+function _checkbook_autocomplete(string $solr_datasource, string $facet) {
   $solr_query = new CheckbookSolrQuery($solr_datasource, \Drupal::request()->query->get('search_term') ?? '');
 
   $solr_query->setFqAutocompleteTerm($facet, \Drupal::request()->query->get('term') ?? '');
 
+  // Exclude logic if autocomplete request is originated from Retroactivity.
+  if (\Drupal::request()->query->get('source_form') == 'retroactivity') {
+    // Use the Retroactivity filter service to load configured exclude items.
+    $objService = \Drupal::service('checkbook_widget_retroactivity.retroactivity_filter_processor');
+    // For agency autocomplete.
+    if ($facet == 'agency_shortname_code') {
+      foreach ($objService->getFilterAutoCompleteExcludeValues('excludeAgencyAutocomplete') as $item) {
+        if (!empty($item)) {
+          $solr_query->setFqTerm('agency_shortname_code=' . $item, true);
+        }
+      }
+    }
+    // For vendor autocomplete.
+    if ($facet == 'vendor_name_code') {
+      foreach ($objService->getFilterAutoCompleteExcludeValues('excludeVendorAutocomplete') as $item) {
+        if (!empty($item)) {
+          $solr_query->setFqTerm('vendor_name_code=' . $item, true);
+        }
+      }
+    }
+  }
+  
   $solr = new CheckbookSolr($solr_datasource);
 
   $results = $solr->request_phps('select/?' . $solr_query);
@@ -434,7 +456,7 @@ function _checkbook_autocomplete(string $solr_datasource, string $facet){
   if ($results['response']['numFound'] != 0 && ($results['facet_counts']['facet_fields'] ?? false)) {
     $facet_results = array_shift($results['facet_counts']['facet_fields']);
     //NYCCHKBK-9957 - The autocomplete displayed facets that were already selected. Hence, remove such facets.
-    $selected_facets = $solr_query->getSelectedFacets()[$facet];
+    $selected_facets = $solr_query->getSelectedFacets()[$facet] ?? [];
     $selected_facets_object = [];
     foreach($selected_facets as $key => $val) $selected_facets_object[$val] = $val;
     $facet_results = array_filter($facet_results, function($k) use ($selected_facets_object) {

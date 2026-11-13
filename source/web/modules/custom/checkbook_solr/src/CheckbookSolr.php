@@ -231,6 +231,47 @@ class CheckbookSolr {
   }
 
   /**
+   * POST version of raw_query for benchmarking
+   *
+   * @param string $query
+   *
+   * @return string
+   */
+  public function raw_query_post(string $query) {
+    $result = '';
+
+    if (!$this->solr_url) {
+      return $result;
+    }
+
+    // Parse query string into parts
+    $parts = explode('?', $query, 2);
+    $endpoint = $parts[0];
+    $query_params = $parts[1] ?? '';
+
+    $url = $this->solr_url . $endpoint;
+
+    ini_set('default_socket_timeout', 600);
+    LogHelper::log_notice("POSTing to solr: " . $url);
+    try {
+      $options = [
+        'http' => [
+          'method' => 'POST',
+          'header' => 'Content-Type: application/x-www-form-urlencoded',
+          'content' => $query_params,
+          'timeout' => 600
+        ]
+      ];
+      $context = stream_context_create($options);
+      $contents = file_get_contents($url, false, $context);
+    } catch (Exception $ex) {
+      LogHelper::log_warn("Solr POST error: " . $ex->getMessage());
+      $contents = '';
+    }
+    return $contents;
+  }
+
+  /**
    * @param string $query
    *
    * @return array

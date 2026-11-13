@@ -1,5 +1,0 @@
-services:
-  checkbook_transactions.path_processor:
-    class: Drupal\checkbook_transactions\PathProcessor\CheckbookTransactionsPathProcessor
-    tags:
-      - { name: path_processor_inbound, priority: 250 }

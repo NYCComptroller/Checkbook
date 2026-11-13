@@ -1,6 +1,0 @@
-{
-    "defaultConfigKey": "revenue_contracts_modifications_view",
-    "dataFunc":"GetContractModifications",
-    "defaultParameters":{"is_modification":"true","contract_type":"child_contract"}
-}
-

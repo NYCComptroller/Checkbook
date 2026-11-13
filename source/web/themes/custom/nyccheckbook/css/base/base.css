@@ -39,7 +39,7 @@ article[data-history-node-id="604"] {
 a,
 a:link,
 a:visited {
-  color: #1f82c9;
+  color: #044eae;
   cursor: pointer;
   text-decoration: none;
 }
@@ -65,7 +65,7 @@ input:focus-visible {
 }
 
 h1 {
-  font-family: "RobotoCondensed", serif;
+  font-family: "RobotoCondensed", sans-serif;
   font-size: 28px;
   font-weight: bold;
   color: #3c5e7c;
@@ -73,7 +73,7 @@ h1 {
 }
 
 h2 {
-  font-family: "RobotoCondensed", serif;
+  font-family: "RobotoCondensed", sans-serif;
   font-weight: bold;
   font-size: 20px;
   color: #3c5e7c;
@@ -85,7 +85,7 @@ h3 {
   font-weight: bold;
   margin-bottom: 12px;
   text-transform: uppercase;
-  font-family: 'RobotoCondensed', serif;
+  font-family: 'RobotoCondensed', sans-serif;
 }
 
 table,
@@ -154,7 +154,7 @@ article[data-history-node-id="604"] h2 + p {
 }
 
 #page-title {
-  font-family: Roboto, serif;
+  font-family: Roboto, sans-serif;
   font-size: 24px;
   color: #2E2E2E;
   margin-bottom: 0;
@@ -280,3 +280,131 @@ input[type="checkbox"]:active {
 .clearboth {
   clear: both;
 }
+
+.secondary-nav-filter-section select {
+  width: 237px;
+  height: 25px;
+  font-size: 12px;
+  z-index: 7;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  float: right;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  padding: 0 0 0 8px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  background: linear-gradient(#fff 20%, #f6f6f6 50%, #eee 52%, #f4f4f4 100%);
+  box-shadow: 0 0 3px #fff inset, 0 1px 1px rgba(0, 0, 0, 0.1);
+  line-height: 23px;
+}
+
+/* Unlocks custom styling for the select box and its dropdown popup picker menu */
+.secondary-nav-filter-section select,
+.secondary-nav-filter-section select::picker(select) {
+  appearance: base-select;
+}
+
+/* STYLE THE OPTION CONTAINER DROPDOWN BOX (Matches screenshot reference) */
+.secondary-nav-filter-section select::picker(select) {
+  background-color: #ffffff !important;
+  border: 1px solid #aaa !important;
+  border-top: 0 !important; 
+  border-radius: 0 0 5px 5px !important; 
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15) !important; 
+  padding: 4px 0 !important; 
+  max-height: 250px !important;
+  overflow-y: auto !important;
+  box-sizing: border-box !important;
+  padding: 3px 6px !important; 
+}
+
+/* Hide the built-in picker-icon arrow at the bottom left */
+.secondary-nav-filter-section select::picker-icon {
+  display: none !important;
+  content: none !important;
+  opacity: 0 !important;
+}
+
+/* Hide the shadow-root button indicator container */
+.secondary-nav-filter-section select::-webkit-select-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+}
+
+/* INDIVIDUAL OPTION ITEMS */
+.secondary-nav-filter-section select option {
+  padding: 5px 8px !important;
+  color: #333;
+  line-height: 15px;
+  display: list-item;
+  cursor: pointer;
+  font-family: Arial, sans-serif !important;
+  font-size: 12px !important;
+  border-radius: 3px !important;
+}
+
+/* OPTION CHECKMARK CONTROL */
+.secondary-nav-filter-section select option::checkmark {
+  display: none !important;
+  content: none !important;
+}
+
+/* Triggers the exact native blue outline seen in your screenshot */
+.secondary-nav-filter-section select:focus-visible {
+  outline: 2px solid #1067d9 !important;
+  outline: -webkit-focus-ring-color auto 2px !important; 
+  outline-offset: 1px !important;
+}
+
+/* Fallback for standard focus states */
+.secondary-nav-filter-section select:focus {
+  outline: -webkit-focus-ring-color auto 2px !important;
+}
+
+/* BLUE SELECTION HOVER & KEYBOARD NAVIGATION LAYOUT */
+.secondary-nav-filter-section select option:hover,
+.secondary-nav-filter-section select option:focus,
+.secondary-nav-filter-section select option:focus-visible {
+  background-color: #3875d7 !important;
+  background-image: linear-gradient(#3875d7 20%, #2a62bc 90%) !important;
+  color: #ffffff !important;
+}
+
+/* Keep these for backward/fallback browser compatibility */
+.secondary-nav-filter-section select::-webkit-select-marker {
+  display: none !important;
+}
+
+.secondary-nav-filter-section select::-ms-expand {
+  display: none !important;
+}
+
+.dropdown-arrow b {
+  background: url(/modules/custom/jquery_plugins/jquery.searchabledropdown/chosen-sprite.png) no-repeat 0px 3px !important;
+  display: block;
+  width: 20px;
+  height: 25px;
+  box-sizing: border-box;
+}
+
+.secondary-nav-filter-section .dropdown-arrow {
+  top: 0;
+  right: 0;
+  display: block;
+  width: 18px;
+  height: 100%;
+  margin-left: -18px;
+  position: relative;
+  z-index: 10;
+  pointer-events: none; 
+}
+.secondary-nav-filter-section {
+  display: flex !important;
+}
+
+#year_list {
+  display: inline !important;
+}
+

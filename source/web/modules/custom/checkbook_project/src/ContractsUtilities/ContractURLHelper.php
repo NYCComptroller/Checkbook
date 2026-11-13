@@ -548,7 +548,7 @@ class ContractURLHelper {
     widget_prepare($node);
     widget_invoke($node, 'widget_prepare');
     widget_data($node);
-    $contracts = $node->data[0]['total_contracts'];
+    $contracts = $node->data[0]['total_contracts'] ?? 0;
     if ($contracts > 0) {
       $third_bottom_slider = false;
     }

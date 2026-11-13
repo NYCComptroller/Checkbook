@@ -1,5 +1,0 @@
-services:
-  widget_controller.path_processor:
-    class: Drupal\widget_controller\PathProcessor\WidgetControllerPathProcessor
-    tags:
-      - { name: path_processor_inbound, priority: 350 }

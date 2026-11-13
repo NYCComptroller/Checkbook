@@ -142,8 +142,153 @@
       }
     }, 100);
   })
-})(jQuery, Drupal, drupalSettings);
 
+  // Update tabindex of main menu items.
+  Drupal.behaviors.menuTabIndex = {
+    attach: function (context, settings) {
+      // Assign tabindex="-1" to submenu containers so they can be focused via script
+      $('#superfish-main .menuparent', context).attr('tabindex', '0');
+    }
+  };
+
+  Drupal.behaviors.BottomNavigationHover = {
+    attach: function (context, settings) {
+      $('div.bottom-navigation--item, div.top-navigation--item').hover(
+        function() {
+          // Mouse enters: Switch role to "img"
+          $(this).attr('role', 'img');
+        },
+        function() {
+          // Mouse leaves: Switch role back to "tab"
+          $(this).removeAttr('role');
+        }
+      );
+   }
+  };
+
+  Drupal.behaviors.MainRoleAriaAttribute = {
+    attach: function (context, settings) {
+      $('main[role="main"]').removeAttr('role').attr('aria-label', 'Main content');
+      // Update title - Optional
+      if ($('h1[id="page-title"]').html() == 'New York City') {
+        $('h1[id="page-title"]').attr('aria-label', 'New York City — Checkbook 2.0');
+      }
+    }
+  };
+
+  //Global fix for toggling aria-sort=none for datable columns
+  $(document).on('init.dt draw.dt', function(e, settings) {
+    // Prevent interference from non-DataTables events
+    if (e.namespace !== 'dt') return;
+    var api = new $.fn.dataTable.Api(settings);
+    // Iterate through every column in the active table
+    api.columns().every(function() {
+        var header = $(this.header());
+        // Check the underlying DataTables configuration for sortability
+        var isSortable = this.settings()[0].aoColumns[this.index()].bSortable;
+        var currentSort = header.attr('aria-sort');
+        // Apply "none" only if the column is sortable and not actively sorting
+        if (isSortable && currentSort !== 'ascending' && currentSort !== 'descending') {
+            header.attr('aria-sort', 'none');
+        }
+    });
+  });
+
+  // Global fix for setting aria-label and description for interactive chart interface
+  // Read all the loaded charts and update aria labels.
+  
+  $('div.block-widget-data-tables').each(function () {
+      let container = $(this);
+      let chartTitle = container.find('.chart-title').html();
+
+      // Watch the container for new elements being added
+      let observer = new MutationObserver(function(mutations, obs) {
+          var objSvg = container.find('svg.highcharts-root');
+          if (objSvg.length > 0) {
+            // Stop watching once found
+              obs.disconnect();
+              var cartWrapper = objSvg.closest('div.highcharts-wrapper');
+              // Set chart title aria-label
+              cartWrapper.attr('aria-label', chartTitle);
+              objSvg.attr('aria-label', chartTitle);
+              // Create a title for svg
+              objSvg.append($('<title id="' + cartWrapper.attr('id') + '-svg-title" >').text(chartTitle));
+              // Set chart title as chart description
+              objSvg.find('desc').html(chartTitle);
+              // Set chart title as the inner H3 text
+              cartWrapper.find('h3').html(chartTitle + ' - Chart');
+          }
+      });
+      observer.observe(container[0], { childList: true, subtree: true });
+  });
+  
+
+ Drupal.behaviors.fixChosenActiveDescendant = {
+    attach: function (context, settings) {
+      $('#year_list', context).on('chosen:showing_dropdown', function () {
+      //$('#year_list', context).once('fix-activedescendant').on('chosen:showing_dropdown', function () {
+        var $select = $(this);
+        var $container = $select.next('.chosen-container');
+        var $combobox = $container.find('[role="combobox"]');
+        var $results = $container.find('.chosen-results');
+
+        // Ensure listbox has an ID matching aria-controls
+        var listId = $combobox.attr('aria-controls');
+        if (!$results.attr('id')) {
+          $results.attr('id', listId);
+        }
+
+        // Give each option a unique ID if it doesn't have one
+        $results.find('li').each(function (index) {
+          if (!this.id) {
+            this.id = 'year-option-' + index;
+          }
+        });
+
+        // Helper to sync NVDA's active descendant state
+        function updateActiveDescendant() {
+          var $active = $results.find('li.active-result.result-selected, li.active-result').first();
+          if ($active.length) {
+            $combobox.attr('aria-activedescendant', $active[0].id);
+          }
+        }
+
+        // Update on open
+        updateActiveDescendant();
+
+        // Update when user uses arrow keys or hovers over options
+        $results.on('mouseenter mousemove keydown', 'li', function () {
+          $combobox.attr('aria-activedescendant', this.id);
+        });
+      });
+    }
+  };
+
+  // Fixes for NVDA screen reader to identify the column header as single block
+  Drupal.behaviors.fixDataTableSortThAriaLabel = {
+    attach: function (context, settings) {
+      if (/Win/i.test(navigator.userAgent)) {
+        $(document).ajaxStop(function() {          
+          $('table.dataTable th > div:first-child').each(
+            function() {
+              let parentArialabel = $(this).parent().attr('aria-label');
+              if (parentArialabel) {
+                $(this).attr('role', 'img');
+                $(this).attr('aria-label', parentArialabel);
+                $(this).parent().removeAttr('aria-label');
+                $(this).parent().removeAttr('tabindex');
+                if ('0' == $(this).parent().attr('tabindex')) {
+                  $(this).attr('tabindex', 0);
+                }
+              }
+            }
+          );
+        });
+      }
+    }
+  };
+
+})(jQuery, Drupal, drupalSettings);
 
 if (typeof jQuery != 'undefined' && !jQuery.browser) {
   jQuery.uaMatch = function (ua) {

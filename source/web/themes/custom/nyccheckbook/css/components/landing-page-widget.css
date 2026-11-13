@@ -1,5 +1,6 @@
 .tableHeader {
   margin-top: 25px;
+  display: flex;
 }
 
 .tableHeader h2 {
@@ -42,8 +43,8 @@
 .outerTable th,
 .doubleHeader.doubleHeader-prime::before,
 .doubleHeader.doubleHeader-subvendor::before {
-  background-color: #48759d;
-  background-image: linear-gradient(to bottom, #48759d 0%, #3f668f 100%);
+  background-color: #073659;
+  background-image: linear-gradient(to bottom, #073659 0%, #073659 100%);
   color: #ffffff;
   font-weight: bold;
   text-transform: uppercase;
@@ -106,7 +107,7 @@ table.outerTable.ma-history tr.even td {
 .plus-or {
   margin: 0px 7px;
 }
-table.dataTable th.sorting span,
+table.dataTable th.sorting span, 
 table.dataTable th.sorting_asc span,
 table.dataTable th.sorting_desc span {
   padding-left: 15px;
@@ -180,4 +181,185 @@ article[about="/contract/transactions/contcat/expense"] h2.contract-title {
   color: #3c5e7c;
   position: absolute;
   top:5px;
+}
+
+.datatable-col-label-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center; 
+  gap: 4px;
+  text-align: center;
+}
+
+/* Force ONLY the last word (span) to drop to a second line */
+.datatable-col-label-wrapper span:last-child:not(:first-child) {
+  flex-basis: 100%;
+  text-align: center; 
+}
+
+.datatable-col-label {
+  display: block;
+}
+
+table.dataTable thead th .datatable-col-label-wrapper span:not(:first-child) {
+  background-image: none !important;
+  padding-right: 0 !important;
+}
+
+/* Remove the outline from the individual spans */
+table.dataTable thead th.sorting:focus-visible div span,
+table.dataTable thead th.sorting_asc:focus-visible div span,
+table.dataTable thead th.sorting_desc:focus-visible div span {
+    outline: none !important;
+}
+
+/* Apply the outline to the parent wrapper so it creates one large box */
+table.dataTable thead th.sorting:focus-visible .datatable-col-label-wrapper,
+table.dataTable thead th.sorting_asc:focus-visible .datatable-col-label-wrapper,
+table.dataTable thead th.sorting_desc:focus-visible .datatable-col-label-wrapper {
+  outline: 1px solid #ffffff; 
+  outline-offset: 4px; 
+  border-radius: 1px; 
+}
+
+/* --- Fallback for older browsers that do not support :focus-visible --- */
+table.dataTable thead th.sorting:focus .datatable-col-label-wrapper,
+table.dataTable thead th.sorting_asc:focus .datatable-col-label-wrapper,
+table.dataTable thead th.sorting_desc:focus .datatable-col-label-wrapper {
+  outline: 1px solid #ffffff;
+  outline-offset: 4px;
+}
+
+table.dataTable thead th.sorting:focus:not(:focus-visible) .datatable-col-label-wrapper,
+table.dataTable thead th.sorting_asc:focus:not(:focus-visible) .datatable-col-label-wrapper,
+table.dataTable thead th.sorting_desc:focus:not(:focus-visible) .datatable-col-label-wrapper {
+  outline: none;
+}
+
+/* Remove any existing hover effects on individual spans to prevent conflicts */
+table.dataTable thead th .datatable-col-label-wrapper span:hover {
+  text-decoration: none; 
+}
+
+/* Trigger the underline on all child spans when the parent header is hovered */
+table.dataTable thead th.sorting:hover .datatable-col-label-wrapper span {
+  text-decoration: underline;
+}
+
+.dataTable th:first-child div.datatable-col-label-wrapper, 
+.dataTable th div.datatable-col-label-wrapper {
+  margin: 0 0 0 0 !important;
+}
+
+.datatable-col-label-part-2 {
+  padding-left: 0px !important;
+}
+
+th.sorting .datatable-col-label-part-2 {
+  padding-left: 15px !important;
+}
+
+table.dataTable thead th.text .datatable-col-label-wrapper {
+  justify-content: flex-start;
+}
+
+table.dataTable thead th.text .datatable-col-label-wrapper span {
+  text-align: left !important;
+}
+
+table.dataTable thead th.text .datatable-col-label-wrapper span:last-child:not(:first-child) {
+  text-align: left;
+}
+
+table.dataTable thead th.number .datatable-col-label-parts-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  padding-right: 5px;
+}
+
+table.dataTable thead th.number .datatable-col-label-wrapper span {
+  text-align: right !important;
+}
+
+table.dataTable thead th.number .datatable-col-label-wrapper span:last-child:not(:first-child) {
+  text-align: right;
+}
+
+.datatable-col-label-parts-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+table.dataTable thead th.number .datatable-col-label-parts-wrapper span {
+  text-align: right !important;
+}
+
+.datatable-col-label-part-arrow {
+  text-align: left !important;
+}
+
+table.dataTable th.sorting span, 
+table.dataTable th.sorting_asc span.datatable-col-label-parts-wrapper, 
+table.dataTable th.sorting_desc span.datatable-col-label-parts-wrapper {
+  padding-left: 8px !important;
+}
+
+table.dataTable thead th.text .datatable-col-label-parts-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  padding-right: 5px;
+}
+
+table.dataTable thead th.text .datatable-col-label-parts-wrapper span {
+  text-align: left !important;
+}
+
+table.dataTable thead th.sorting span,
+table.dataTable thead th.sorting_asc span,
+table.dataTable thead th.sorting_desc span {
+  background-image: none !important;
+}
+
+/* Assign the ascending arrow background exclusively to the arrow element */
+table.dataTable thead th.sorting_asc .datatable-col-label-part-arrow {
+  background: url("../../images/arrow-asc.png") no-repeat scroll center center transparent !important;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+}
+
+/* Assign the descending arrow background exclusively to the arrow element */
+table.dataTable thead th.sorting_desc .datatable-col-label-part-arrow {
+  background: url("../../images/arrow-desc.png") no-repeat scroll center center transparent !important;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+}
+
+/* Make the sorting arrow closer to the text label */
+table.dataTable thead th .datatable-col-label-part-arrow {
+  margin-right: -16px !important;
+  position: relative;
+  top: 5px;
+}
+
+/* Ensure the wrapper maintains inline spacing without forcing block behavior */
+.datatable-col-label-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  width: auto !important;
+}
+.datatable-col-label-container {
+  width: auto !important;
+}
+
+table.dataTable thead th.sorting .datatable-col-label-parts-wrapper {
+  align-items: center;
+  display: inline-flex;
 }

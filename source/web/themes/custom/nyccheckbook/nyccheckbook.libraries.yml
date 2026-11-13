@@ -38,6 +38,7 @@ global-styling:
     js/secondary-navigation.js: {}
     js/chart.js: {}
     js/landing-page-widget.js: {}
+    js/superfish-accessibility.js: {}
   dependencies:
     - jquery_ui_autocomplete/autocomplete
     - jquery_ui_dialog/dialog

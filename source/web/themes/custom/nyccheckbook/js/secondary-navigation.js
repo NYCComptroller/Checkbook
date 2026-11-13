@@ -15,6 +15,7 @@
             .slideToggle(300);
           $(this).toggleClass("open");
           $(this).parent().find(" div b").toggleClass("open");
+          $(this).attr("aria-expanded", "true");
         });
       });
 
@@ -22,6 +23,7 @@
         $(this).on('click', function () {
           $(".agency-list-content").slideUp(300);
           $(".agency-list-open div b").removeClass("open");
+          $(this).attr("aria-expanded", "false");
         });
       });
 
@@ -29,7 +31,7 @@
         if ($("#allAgenciesList").length > 0) {
           $("#allAgenciesList")
             .after(
-              '<div id="agency-list-pager1" class="agency-list-pager"></div>'
+              '<div id="agency-list-pager1" class="agency-list-pager" role="tablist"></div>'
             )
             .cycle({
               fx: "none",
@@ -47,7 +49,7 @@
         if ($("#otherAgenciesList").length > 0) {
           $("#otherAgenciesList")
             .after(
-              '<div id="agency-list-pager2" class="agency-list-pager"></div>'
+              '<div id="agency-list-pager2" class="agency-list-pager" role="tablist"></div>'
             )
             .cycle({
               fx: "none",

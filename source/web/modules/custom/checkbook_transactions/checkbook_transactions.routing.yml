@@ -2,6 +2,7 @@ checkbook_transactions.budget_transactions:
   path: '/budget/transactions/budget_transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\BudgetController::budgetTransactions
+    _title: 'Budget Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -9,6 +10,7 @@ checkbook_transactions.advanced_budget_transactions:
   path: '/budget/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\BudgetController::advancedBudgetTransactions
+    _title: 'Budget Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -16,6 +18,7 @@ checkbook_transactions.nycha_budget_transactions:
   path: '/nycha_budget/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetTransactions
+    _title: 'Budget Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -23,6 +26,7 @@ checkbook_transactions.nycha_budget_transactions_budgettype_committed:
   path: '/nycha_budget/transactions/budgettype/committed/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetTransactions
+    _title: 'Budget Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -30,34 +34,7 @@ checkbook_transactions.nycha_budget_transactions_budgettype_remaining:
   path: '/nycha_budget/transactions/budgettype/remaining/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetTransactions
-    params: ''
-  requirements:
-    _permission: 'access content'
-checkbook_transactions.nycha_budget_fundsrc_details_transactions:
-  path: '/nycha_budget/fundsrc_details/{params}'
-  defaults:
-    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetFundsrcDetailsTransactions
-    params: ''
-  requirements:
-    _permission: 'access content'
-checkbook_transactions.nycha_budget_project_details_transactions:
-  path: '/nycha_budget/project_details/{params}'
-  defaults:
-    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetProjectDetailsTransactions
-    params: ''
-  requirements:
-    _permission: 'access content'
-checkbook_transactions.nycha_budget_program_details_transactions:
-  path: '/nycha_budget/program_details/{params}'
-  defaults:
-    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetProgramDetailsTransactions
-    params: ''
-  requirements:
-    _permission: 'access content'
-checkbook_transactions.nycha_budget_respcenter_details_transactions:
-  path: '/nycha_budget/respcenter_details/{params}'
-  defaults:
-    _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetRespcenterDetailsTransactions
+    _title: 'Budget Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -72,6 +49,7 @@ checkbook_transactions.nycha_contract_details:
   path: '/nycha_contract_details/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::nychaContractDetails
+    _title: 'Contract Details'
     params: ''
   requirements:
     _permission: 'access content'
@@ -79,6 +57,7 @@ checkbook_transactions.nycha_revenue_transactions:
   path: '/nycha_revenue/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\RevenueController::nychaRevenueTransactions
+    _title: 'Revenue Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -86,6 +65,7 @@ checkbook_transactions.revenue_transactions:
   path: '/revenue/transactions/revenue_transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\RevenueController::revenueTransactions
+    _title: 'Revenue Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -93,6 +73,7 @@ checkbook_transactions.payroll_transactions:
   path: '/payroll/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\PayrollController::payrollTransactions
+    _title: 'Payroll Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -100,6 +81,7 @@ checkbook_transactions.payroll_title_transactions:
   path: '/payroll/payroll_title/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\PayrollController::payrollTitleTransactions
+    _title: 'Payroll Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -107,6 +89,7 @@ checkbook_transactions.payroll_monthly_transactions:
   path: '/payroll/monthly/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\PayrollController::payrollMonthlyTransactions
+    _title: 'Monthly Transactions - Payroll'
     params: ''
   requirements:
     _permission: 'access content'
@@ -114,6 +97,7 @@ checkbook_transactions.payroll_agencywide_monthly_transactions:
   path: '/payroll/agencywide/monthly/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\PayrollController::payrollAgencywideMonthlyTransactions
+    _title: 'Monthly Transactions - Payroll'
     params: ''
   requirements:
     _permission: 'access content'
@@ -121,6 +105,7 @@ checkbook_transactions.payroll_agencywide_transactions:
   path: '/payroll/agencywide/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\PayrollController::payrollAgencywideTransactions
+    _title: 'Agency Transactions - Payroll'
     params: ''
   requirements:
     _permission: 'access content'
@@ -128,6 +113,7 @@ checkbook_transactions.payroll_employee_transactions_fy:
   path: '/payroll/employee/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\PayrollController::payrollEmployeeFYTransactions
+    _title: 'Agency Transactions - Payroll'
     params: ''
   requirements:
     _permission: 'access content'
@@ -135,6 +121,7 @@ checkbook_transactions.payroll_employee_transactions_cy:
   path: '/payroll/employee/transactions/cy/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\PayrollController::payrollEmployeeCYTransactions
+    _title: 'Employee Transactions - Payroll'
     params: ''
   requirements:
     _permission: 'access content'
@@ -142,6 +129,7 @@ checkbook_transactions.spending_transactions_dashboard_ms:
   path: '/spending/transactions/dashboard/ms/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\SpendingController::spendingDashboardMsTransactions
+    _title: 'Spending Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -149,6 +137,7 @@ checkbook_transactions.spending_transactions_dashboard_ss:
   path: '/spending/transactions/dashboard/ss/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\SpendingController::spendingDashboardSPTransactions
+    _title: 'Spending Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -156,6 +145,7 @@ checkbook_transactions.spending_transactions_dashboard_sp:
   path: '/spending/transactions/dashboard/sp/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\SpendingController::spendingDashboardSPTransactions
+    _title: 'Spending Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -163,6 +153,7 @@ checkbook_transactions.spending_transactions_datasource:
   path: '/spending/transactions/datasource/checkbook_oge/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\SpendingController::spendingDatasourceTransactions
+    _title: 'Spending Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -170,6 +161,7 @@ checkbook_transactions.spending_transactions:
   path: '/spending/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\SpendingController::spendingTransactions
+    _title: 'Spending Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -177,6 +169,7 @@ checkbook_transactions.nycha_spending_transactions:
   path: '/nycha_spending/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\SpendingController::nychaSpendingTransactions
+    _title: 'Spending Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -184,6 +177,7 @@ checkbook_transactions.contract_details:
   path: '/contract_details/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::contractDetails
+    _title: 'Contract Details'
     params: ''
   requirements:
     _permission: 'access content'
@@ -191,6 +185,7 @@ checkbook_transactions.contract_transactions_citywide_expense:
   path: '/contract/transactions/contcat/expense/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideExpenseContractTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -198,6 +193,7 @@ checkbook_transactions.contract_transactions_citywide_revenue:
   path: '/contract/transactions/contcat/revenue/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideRevenueContractTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -205,6 +201,7 @@ checkbook_transactions.contract_transactions_mwbe_mp_expense:
   path: '/contract/transactions/contcat/expense/dashboard/mp/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeExpenseContractTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -212,6 +209,7 @@ checkbook_transactions.contract_transactions_mwbe_ms_expense:
   path: '/contract/transactions/contcat/expense/dashboard/ms/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeExpenseContractTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -219,6 +217,7 @@ checkbook_transactions.contract_transactions_mwbe_sp_expense:
   path: '/contract/transactions/contcat/expense/dashboard/sp/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeExpenseContractTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -226,6 +225,7 @@ checkbook_transactions.contract_transactions_mwbe_ss_expense:
   path: '/contract/transactions/contcat/expense/dashboard/ss/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeExpenseContractTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -233,6 +233,7 @@ checkbook_transactions.contract_transactions_mwbe_sp_revenue:
   path: '/contract/transactions/contcat/revenue/dashboard/sp/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeRevenueContractTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -240,6 +241,7 @@ checkbook_transactions.contract_transactions_mwbe_ms_revenue:
   path: '/contract/transactions/contcat/revenue/dashboard/ms/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeRevenueContractTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -247,6 +249,7 @@ checkbook_transactions.contract_transactions_mwbe_ss_revenue:
   path: '/contract/transactions/contcat/revenue/dashboard/ss/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeRevenueContractTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -254,6 +257,7 @@ checkbook_transactions.contract_transactions_mwbe_mp_revenue:
   path: '/contract/transactions/contcat/revenue/dashboard/mp/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbeRevenueContractTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -261,6 +265,7 @@ checkbook_transactions.subcontract_transactions:
   path: '/subcontract/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::subcontractTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -268,6 +273,7 @@ checkbook_transactions.nycha_contracts_transactions:
   path: '/nycha_contracts/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::nychaContractsTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -276,12 +282,14 @@ checkbook_transactions.contracts_spending_transactions:
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::contractSpendingTransactions
     params: ''
+  _title: 'Spending Transactions - Contract'
   requirements:
     _permission: 'access content'
 checkbook_transactions.subvendor_ss_contracts_spending_transactions:
   path: '/contract/spending/transactions/dashboard/ss/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::subvendorContractSpendingTransactions
+    _title: 'Spending Transactions - Contract'
     params: ''
   requirements:
     _permission: 'access content'
@@ -289,6 +297,7 @@ checkbook_transactions.mwbe_subvendor_contracts_spending_transactions:
   path: '/contract/spending/transactions/dashboard/ms/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::subvendorContractSpendingTransactions
+    _title: 'Spending Transactions - Contract'
     params: ''
   requirements:
     _permission: 'access content'
@@ -296,6 +305,7 @@ checkbook_transactions.subvendor_sp_contracts_spending_transactions:
   path: '/contract/spending/transactions/dashboard/sp/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::subvendorContractSpendingTransactions
+    _title: 'Spending Transactions - Contract'
     params: ''
   requirements:
     _permission: 'access content'
@@ -303,6 +313,7 @@ checkbook_transactions.oge_contracts_spending_transactions:
   path: '/contract/spending/transactions/datasource/checkbook_oge/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::ogeContractSpendingTransactions
+    _title: 'Spending Transactions - Contract'
     params: ''
   requirements:
     _permission: 'access content'
@@ -310,6 +321,7 @@ checkbook_transactions.contract_transactions_citywide_pending:
   path: '/contract/transactions/contstatus/P/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywidePendingContractTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -317,6 +329,7 @@ checkbook_transactions.contract_transactions_mwbe_pending:
   path: '/contract/transactions/mwbe_pending_contracts/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::mwbePendingContractTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -324,6 +337,7 @@ checkbook_transactions.contract_transactions_edc:
   path: '/contract/transactions/contcat/expense/datasource/checkbook_oge/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::EdcContractTransactions
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -331,6 +345,7 @@ checkbook_transactions.nychaBudget_advanced_search:
   path: '/nycha_budget/search/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\BudgetController::nychaBudgetSearchTransactions
+    _title: 'Budget Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -338,6 +353,7 @@ checkbook_transactions.revenue_agency_details_transactions:
   path: '/revenue/agency_details/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\RevenueController::revenueAgencyDetails
+    _title: 'Agency Details - Revenue'
     params: ''
   requirements:
     _permission: 'access content'
@@ -345,6 +361,7 @@ checkbook_transactions.revenue_revcat_details_transactions:
   path: '/revenue/revcat_details/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\RevenueController::revenueRevcatDetails
+    _title: 'Revenue Details'
     params: ''
   requirements:
     _permission: 'access content'
@@ -352,6 +369,7 @@ checkbook_transactions.revenue_funding_details_transactions:
   path: '/revenue/fundsrc_details/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\RevenueController::revenueFundSrcDetails
+    _title: 'Revenue Details'
     params: ''
   requirements:
     _permission: 'access content'
@@ -359,6 +377,7 @@ checkbook_transactions.revenue_advanced_search_transactions:
   path: '/revenue/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\RevenueController::AdvancedSearchRevenueTransactions
+    _title: 'Revenue Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -366,6 +385,7 @@ checkbook_transactions.nycha_revenue_advanced_search_transactions:
   path: '/nycha_revenue/search/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\RevenueController::NychaRevenueAdvancedSearchTransactions
+    _title: 'Revenue Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -374,6 +394,7 @@ checkbook_transactions.contracts_advanced_search_expense:
   path: '/contract/search/transactions/contcat/expense/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideContractsAdvancedSearchExpense
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -382,6 +403,7 @@ checkbook_transactions.contracts_advanced_search_status_all:
   path: '/contract/search/transactions/contcat/all/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideContractsAdvancedSearchStatusAll
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -390,6 +412,7 @@ checkbook_transactions.contracts_advanced_search_revenue:
   path: '/contract/search/transactions/contcat/revenue/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideContractsAdvancedSearchRevenue
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -398,6 +421,7 @@ checkbook_transactions.contracts_advanced_search_expense_all_years:
   path: '/contract/search/all/transactions/contcat/expense/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideContractsAdvancedSearchExpenseAllYears
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -406,6 +430,7 @@ checkbook_transactions.contracts_advanced_search_all_years:
   path: '/contract/search/all/transactions/contcat/all/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideContractsAdvancedSearchExpenseAllYears
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -414,6 +439,7 @@ checkbook_transactions.contracts_advanced_search_revenue_all_years:
   path: '/contract/search/all/transactions/contcat/revenue/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::citywideContractsAdvancedSearchRevenueAllYears
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -422,6 +448,7 @@ checkbook_transactions.edc_contracts_expense_advanced_search:
   path: '/contract/search/transactions/datasource/checkbook_oge/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::EdcContractsExpenseAdvancedSearch
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -429,6 +456,7 @@ checkbook_transactions.edc_contracts_expense_advanced_search_all_years:
   path: '/contract/all/transactions/datasource/chkeckbook_oge/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::EdcContractsExpenseAdvancedSearchAllYears
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -436,6 +464,7 @@ checkbook_transactions.contracts_pending_advanced_search:
   path: '/contract/search/transactions/contstatus/P/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::ContractsPendingAdvancedSearch
+    _title: 'Contract Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -443,6 +472,7 @@ checkbook_transactions.contracts_pending_transaction_mini_panel:
   path: '/pending_contract_transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::ContractsPendingTransactionsMiniPanel
+    _title: 'Pending Transactions - Contracts'
     params: ''
   requirements:
     _permission: 'access content'
@@ -450,6 +480,7 @@ checkbook_transactions.spending_search_advanced_search:
   path: '/spending/search/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\SpendingController::SpendingAdvancedSearch
+    _title: 'Search Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -457,6 +488,7 @@ checkbook_transactions.spending_edc_search_advanced_search:
   path: '/spending/search/transactions/datasource/checkbook_oge/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\SpendingController::SpendingEDCAdvancedSearch
+    _title: 'Spending Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -464,6 +496,7 @@ checkbook_transactions.nycha_contracts_search_advanced_search:
   path: '/nycha_contracts/search/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::ContractsNychaAdvancedSearch
+    _title: 'Contracts Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -471,6 +504,7 @@ checkbook_transactions.nycha_contracts_search_all_advanced_search:
   path: '/nycha_contracts/all/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\ContractController::ContractsNychaAllAdvancedSearch
+    _title: 'Contracts Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -478,6 +512,7 @@ checkbook_transactions.payroll_fy_search_advanced_search:
   path: '/payroll/search/transactionsFY/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\PayrollController::PayrollFyAdvancedSearch
+    _title: 'Payroll Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -485,6 +520,7 @@ checkbook_transactions.payroll_cy_search_advanced_search:
   path: '/payroll/search/transactionsCY/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\PayrollController::PayrollCyAdvancedSearch
+    _title: 'Payroll Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -492,6 +528,7 @@ checkbook_transactions.nycha_spending_advanced_search_transactions:
   path: '/nycha_spending/search/transactions/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\SpendingController::NychSpendingAdvancedSearchTransactions
+    _title: 'Spending Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -499,6 +536,7 @@ checkbook_transactions.budget_agency_percent_transactions:
   path: '/budget_agency_perecent_difference_transactions/budget/agency_details/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\BudgetController::BudgetAgencyPercentTransactions
+    _title: 'Budget Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -506,6 +544,7 @@ checkbook_transactions.budget_dept_percent_transactions:
   path: '/department_budget_details/budget/dept_details/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\BudgetController::BudgetDeptPercentTransactions
+    _title: 'Budget Transactions'
     params: ''
   requirements:
     _permission: 'access content'
@@ -513,6 +552,7 @@ checkbook_transactions.budget_expense_percent_transactions:
   path: '/expense_category_budget_details/budget/expcategory_details/{params}'
   defaults:
     _controller: \Drupal\checkbook_transactions\Controller\BudgetController::BudgetExpCatPercentTransactions
+    _title: 'Budget Transactions'
     params: ''
   requirements:
     _permission: 'access content'

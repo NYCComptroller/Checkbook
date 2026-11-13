@@ -1,18 +1,19 @@
 {% macro item(label, dollar_amount, link, active_class, indicator) %}
+{% set formatted_label = label | striptags %}
   <div class="bottom-navigation--item {{ active_class }}">
     {% if link == false %}
-      <div class="bottom-navigation--item-label">
-        {{ label }}
-        <div class="bottom-navigation--item-dollar_amount">
+      <div aria-label="{{ formatted_label }} {{ dollar_amount }}" class="bottom-navigation--item-label">
+        <span aria-hidden="true">{{ label }}</span>
+        <span aria-hidden="true" class="bottom-navigation--item-dollar_amount">
           {{ dollar_amount }}
-        </div>
+        </span>
       </div>
     {% else %}
-      <a class="bottom-navigation--item-label display-block text-no-underline" href="{{ link }}">
-        {{ label }}<br/>Spending
-        <div class="bottom-navigation--item-dollar_amount">
+      <a aria-label="{{ formatted_label }} {{ dollar_amount }}" class="bottom-navigation--item-label display-block text-no-underline" href="{{ link }}">
+        <span aria-hidden="true">{{ label }}<br/>Spending</span>
+        <span aria-hidden="true" class="bottom-navigation--item-dollar_amount">
           {{ dollar_amount }}
-        </div>
+        </span>
       </a>
     {% endif %}
 

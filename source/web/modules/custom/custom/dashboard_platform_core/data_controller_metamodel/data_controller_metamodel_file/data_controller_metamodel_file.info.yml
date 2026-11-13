@@ -1,7 +1,0 @@
-name: 'Meta Model in json files'
-description: 'Loads meta model configuration from json files'
-package: 'REI Dashboard Platform (Adapter)'
-core_version_requirement: ^10 || ^11
-dependencies:
-  data_controller: 'data_controller:data_controller'
-type: module

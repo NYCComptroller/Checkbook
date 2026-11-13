@@ -55,7 +55,6 @@ $.fn.cycle = function(options, arg2) {
 		log('terminating; zero elements found by selector' + ($.isReady ? '' : ' (DOM not ready)'));
 		return this;
 	}
-
 	// iterate the matched nodeset
 	return this.each(function() {
 		var opts = handleArguments(this, options, arg2);
@@ -68,7 +67,6 @@ $.fn.cycle = function(options, arg2) {
 		if (this.cycleTimeout)
 			clearTimeout(this.cycleTimeout);
 		this.cycleTimeout = this.cyclePause = 0;
-
 		var $cont = $(this);
 		var $slides = opts.slideExpr ? $(opts.slideExpr, this) : $cont.children();
 		var els = $slides.get();
@@ -81,7 +79,6 @@ $.fn.cycle = function(options, arg2) {
 			log('terminating; too few slides: ' + els.length);
 			return;
 		}
-
 		var startTime = opts2.continuous ? 10 : getTimeout(els[opts2.currSlide], els[opts2.nextSlide], opts2, !opts2.backwards);
 
 		// if it's an auto slideshow, kick it off
@@ -92,6 +89,10 @@ $.fn.cycle = function(options, arg2) {
 			debug('first timeout: ' + startTime);
 			this.cycleTimeout = setTimeout(function(){go(els,opts2,0,!opts.backwards)}, startTime);
 		}
+
+		// Update aria-labels and tabindex of the visible and hidden charts accordingly.
+		// This works for the initial load
+		updateAriaLabels(opts2.elements, opts2.currSlide);
 	});
 };
 
@@ -693,6 +694,9 @@ function go(els, opts, manual, fwd) {
 		};
 
 		debug('tx firing('+fx+'); currSlide: ' + opts.currSlide + '; nextSlide: ' + opts.nextSlide);
+		// Update aria-labels and tabindex of the visible and hidden charts accordingly.
+		//This works during the transition
+		updateAriaLabels(opts.elements, opts.nextSlide);
 
 		// get ready to perform the transition
 		opts.busy = 1;
@@ -745,8 +749,9 @@ function go(els, opts, manual, fwd) {
 			}
 		}
 	}
-	if (changed && opts.pager)
+	if (changed && opts.pager) {
 		opts.updateActivePagerLink(opts.pager, opts.currSlide, opts.activePagerClass);
+	}
 
 	function queueNext() {
 		// stage the next transition
@@ -766,7 +771,8 @@ function go(els, opts, manual, fwd) {
 // invoked after transition
 $.fn.cycle.updateActivePagerLink = function(pager, currSlide, clsName) {
    $(pager).each(function() {
-       $(this).children().removeClass(clsName).eq(currSlide).addClass(clsName);
+			// Assign aria attribute to the currently selected chart link.
+			$(this).children().removeClass(clsName).removeAttr('aria-current').eq(currSlide).addClass(clsName).attr('aria-current', 'true');
    });
 };
 
@@ -830,11 +836,27 @@ function advance(opts, moveForward) {
 
 function buildPager(els, opts) {
 	var $p = $(opts.pager);
+	// Assign aria attribute tablist to the pager container element.
+	if ($p[0] !== 'undefined' && $p[0]?.className == 'slider-pager') {
+		// Disable tablist assignment. Remove completely if there is no impact on NVDA testing.
+		$p.attr('role', 'tablist');
+	}
 	$.each(els, function(i,o) {
 		$.fn.cycle.createPagerAnchor(i,o,$p,els,opts);
 	});
 	opts.updateActivePagerLink(opts.pager, opts.startingSlide, opts.activePagerClass);
 };
+
+// Toggle aria-labels and tabindex of current and hidden chart slides
+function updateAriaLabels(elements, current) {
+	elements.forEach((element, index) => {
+		$(elements[index]).find('.highcharts-container').attr('tabindex', current == index ? '0' : '-1');
+		/*
+		$(elements[index]).find('.highcharts-container').attr('aria-hidden', current == index ? 'false': 'true');
+		$(elements[index]).find('.highcharts-wrapper').attr('aria-hidden', current == index ? 'false': 'true');
+		*/
+	});
+}
 
 $.fn.cycle.createPagerAnchor = function(i, el, $p, els, opts) {
 	var a;
@@ -842,8 +864,13 @@ $.fn.cycle.createPagerAnchor = function(i, el, $p, els, opts) {
 		a = opts.pagerAnchorBuilder(i,el);
 		debug('pagerAnchorBuilder('+i+', el) returned: ' + a);
 	}
-	else
-		a = '<a href="#">'+(i+1)+'</a>';
+	else {
+		// Set chart title as the aria-label for pagination link.
+		let ariaLabel = $('div.slider-pane h2.chart-title:eq(' + i +')')[0]?.innerText || ('Chart ' + i);
+		// Disable tab assignment. Remove completely if there is no impact on NVDA testing.
+		a = '<a href="#" aria-label="Chart ' + (i+1)+ ' ' + ariaLabel + '" role="tab">'+ 'Chart ' + (i+1)+ ' ' + ariaLabel + '</a>';
+		//a = '<a href="#" aria-label="Chart ' + (i+1)+ ' ' + ariaLabel + '">'+ 'Chart ' + (i+1)+ ' ' + ariaLabel + '</a>';
+	}
 
 	if (!a)
 		return;

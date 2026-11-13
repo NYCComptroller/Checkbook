@@ -2,18 +2,18 @@
   {% set is_active = isNychaTopNavigationItemActive(domain|raw) %}
   <div class="top-navigation--item {{ label|lower|replace({' ':'', '/':'', '(':'', ')':''})  }} {{ is_active ? 'active' : ''}}">
     {% if link == false %}
-      <div class="top-navigation--item-label">
-        {{ label }}
-        <div class="top-navigation--item-dollar_amount">
+      <div aria-label="{{ label }} {{ dollar_amount }}" class="top-navigation--item-label">
+        <span aria-hidden="true" class="top-nav-domain-label">{{ label }}</span>
+        <span aria-hidden="true"class="top-navigation--item-dollar_amount">
           {{ dollar_amount }}
-        </div>
+        </span>
       </div>
     {% else %}
-      <a class="top-navigation--item-label display-block text-no-underline" href="{{ link }}">
-        {{ label }}
-        <div class="top-navigation--item-dollar_amount">
+      <a aria-label="{{ label }} {{ dollar_amount }}" class="top-navigation--item-label display-block text-no-underline" href="{{ link }}">
+        <span aria-hidden="true" class="top-nav-domain-label">{{ label }}</span>
+        <span aria-hidden="true" class="top-navigation--item-dollar_amount">
           {{ dollar_amount }}
-        </div>
+        </span>
       </a>
     {% endif %}
 

@@ -139,7 +139,7 @@
   font-weight: bold;
 }
 h1.title {
-  font-family: "RobotoCondensed", serif !important;
+  font-family: "RobotoCondensed", sans-serif !important;
   font-size: 28px !important;
   color: #3c5e7c !important;
   margin-top: 0 !important;
@@ -181,7 +181,7 @@ h1.title {
 
 .checkbook-grading-right input[type=checkbox]:checked:enabled + label:before {
   color: white;
-  background-color: #209AD6;
+  background-color: #0F78A9;
   background-image: url(/themes/custom/nyccheckbook/images/check_white.png);
   background-position: center center;
   background-repeat: no-repeat;

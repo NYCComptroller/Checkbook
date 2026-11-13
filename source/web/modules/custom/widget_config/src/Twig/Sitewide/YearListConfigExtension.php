@@ -164,11 +164,19 @@ public function getFunctions()
     }
 
     // HTML for Date Filter.
-    $year_list = "<span class='filter' >Filter: </span><select id='year_list'>";
+    $year_list = "<select tabindex='0' id='year_list' name='year_list' aria-labelledby='year_list_label'>";
+
     foreach ($yearListOptions as $year) {
-      $year_list .= "<option ".$year['selected']." value=".$year['value']." link='" . str_replace(["'", '"'], ['%27', '%22'], Xss::filter($year['link'])) . "'  >".$year['display_text']."</option>";
+      $year_list .= "<option "
+        . $year['selected']
+        . " value=" . $year['value']
+        . " link='" . str_replace(["'", '"'], ['%27', '%22'], Xss::filter($year['link']))
+        . "'>" . $year['display_text'] . "</option>";
     }
+
     $year_list .= "</select>";
+
+    $year_list .= "<div class='dropdown-arrow'><b>&nbsp;</b></div>";
 
     return $year_list;
   }

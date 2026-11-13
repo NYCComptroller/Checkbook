@@ -206,7 +206,7 @@ function widget_highcharts_widget_data(&$node)
   }
   $node->widgetConfig->chartConfig->credits->enabled = false;
 
-  //LogHelper::log_debug(json_encode($node->widgetConfig->chartConfig));// use for debugging
+  //Drupal\checkbook_log\LogHelper::log_debug(json_encode($node->widgetConfig->chartConfig));// use for debugging
 }
 
 function widget_highcharts_widget_footer(&$node)

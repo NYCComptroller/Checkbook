@@ -4,18 +4,18 @@
   {% set is_active = active == true ? true : isEdcTopNavigationItemActive(name|lower) %}
   <div class="top-navigation--item {{ name|lower|replace({' ':'', '/':'', '(':'', ')':''})  }} {{ is_active ? 'active' : ''}}">
     {% if link == false %}
-      <div class="top-navigation--item-label">
-        {{ name }}
-        <div class="top-navigation--item-dollar_amount">
+      <div aria-label="{{ name }} {{ dollar_amount }}" class="top-navigation--item-label">
+        <span aria-hidden="true" class="top-nav-domain-label">{{ name }}</span>
+        <span aria-hidden="true" class="top-navigation--item-dollar_amount">
           {{ dollar_amount }}
-        </div>
+        </span>
       </div>
     {% else %}
-      <a class="top-navigation--item-label display-block text-no-underline" href="{{ link }}">
-        {{ name }}
-        <div class="top-navigation--item-dollar_amount">
+      <a aria-label="{{ name }} {{ dollar_amount }}" class="top-navigation--item-label display-block text-no-underline" href="{{ link }}">
+        <span aria-hidden="true" class="top-nav-domain-label">{{ name }}</span>
+        <span aria-hidden="true" class="top-navigation--item-dollar_amount">
           {{ dollar_amount }}
-        </div>
+        </span>
       </a>
       {% if menu %}
         <div class="indicator-menu">

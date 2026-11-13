@@ -54,7 +54,7 @@ class DemographicTrendsCSV  {
       $count++;
     }
 
-    $output .= "\n"."\n"."Source: Bureau of Economic Analysis and US Census Bureau."."\n".'"'."*Figures as of July 2022".'"';
+    $output .= "\n"."\n"."Source: Bureau of Economic Analysis and US Census Bureau.";
     return $output;
   }
 
@@ -121,7 +121,7 @@ class DemographicTrendsCSV  {
     $header .= ',,,,,,(average annual employment in thousands),,,,,'."\n";
 
     foreach ($years as $year){
-      if($year == 2021 || $year == 2022 || $year == 2023) {
+      if($year == 2021 || $year == 2022 || $year == 2023 || $year == 2024 || $year == 2025) {
         $header = $header .  "," . $year .'(b)' ;
       }
       else {

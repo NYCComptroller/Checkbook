@@ -104,7 +104,7 @@ class PayrollUtil {
                 WHERE civil_service_title_code = {$civil_service_title_code}";
         try {
             $result = _checkbook_project_execute_sql_by_data_source($sql,$data_source);
-            $title = $result[0]['civil_service_title'];
+            $title = $result[0]['civil_service_title'] ?? "";
         }
         catch (\Exception $e) {
             LogHelper::log_error("Error in function getTitleByCode() \nError getting data from controller: \n" . $e->getMessage());

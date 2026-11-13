@@ -40,10 +40,10 @@ class CheckbookLandingPagePathProcessor implements InboundPathProcessorInterface
     // Need to see if path is not a NYCHA Budget transaction page. see CheckbookTransactionsPathProcessor.
     if (!str_contains($path, '/nycha_budget/transactions') &&
         !str_contains($path, '/nycha_budget/details') &&
-        !str_contains($path, '/nycha_budget/fundsrc_details') &&
-        !str_contains($path, '/nycha_budget/project_details') &&
-        !str_contains($path, '/nycha_budget/program_details') &&
-        !str_contains($path, '/nycha_budget/respcenter_details') &&
+        //!str_contains($path, '/nycha_budget/fundsrc_details') &&
+        //!str_contains($path, '/nycha_budget/project_details') &&
+        //!str_contains($path, '/nycha_budget/program_details') &&
+        //!str_contains($path, '/nycha_budget/respcenter_details') &&
         !str_contains($path, '/nycha_budget/search/transactions')) {
       // Now checking NYCHA budget landing page paths.
       if (str_starts_with($path, '/nycha_budget/')) {

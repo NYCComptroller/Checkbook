@@ -182,13 +182,13 @@ article[about="/all-trends"] li {
 body.page-trends .dataTables_scrollHead,
 body.page-trends-landing .dataTables_scrollHead,
 body.page-featuredtrends .dataTables_scrollHead{
-  background-color: #48759d; /* Old browsers */
-  background-image: -moz-linear-gradient(top, #48759d 0%, #3f668f 100%); /* FF3.6+ */
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #48759d), color-stop(100%, #3f668f)); /* Chrome,Safari4+ */
-  background-image: -webkit-linear-gradient(top, #48759d 0%, #3f668f 100%); /* Chrome10+,Safari5.1+ */
-  background-image: -o-linear-gradient(top, #48759d 0%, #3f668f 100%); /* Opera 11.10+ */
-  background-image: -ms-linear-gradient(top, #48759d 0%, #3f668f 100%); /* IE10+ */
-  background-image: linear-gradient(to bottom, #48759d 0%, #3f668f 100%); /* W3C */
+  background-color: #073659; /* Old browsers */
+  background-image: -moz-linear-gradient(top, #073659 0%, #073659 100%); /* FF3.6+ */
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #073659), color-stop(100%, #073659)); /* Chrome,Safari4+ */
+  background-image: -webkit-linear-gradient(top, #073659 0%, #073659 100%); /* Chrome10+,Safari5.1+ */
+  background-image: -o-linear-gradient(top, #073659 0%, #073659 100%); /* Opera 11.10+ */
+  background-image: -ms-linear-gradient(top, #073659 0%, #073659 100%); /* IE10+ */
+  background-image: linear-gradient(to bottom, #073659 0%, #073659 100%); /* W3C */
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#48759d', endColorstr = '#3f668f', GradientType = 0)"; /* IE6-9 */
 }
 body.page-trends .node-widget h3,
@@ -241,8 +241,8 @@ body.page-featuredtrends th.number{
 body.page-trends table.fy-ait,
 body.page-trends-landing table.fy-ait,
 body.page-featuredtrends table.fy-ait{
-  background-color:#48759D;
-  background: linear-gradient(to bottom, #48759D 0%, #3F668F 100%) repeat scroll 0 0 transparent;
+  background-color:#073659;
+  background: linear-gradient(to bottom, #073659 0%, #073659 100%) repeat scroll 0 0 transparent;
   border: 1px solid #CACACA;
   border-bottom:none;
   color: #FFFFFF;
@@ -290,7 +290,7 @@ a.trends-export {
   position: absolute;
   right: 0px;
   padding-top:4px;
-  color: #209AD6;
+  color: #126FAE;
   font-weight: bold;
   text-transform: uppercase;
   top: -25px;

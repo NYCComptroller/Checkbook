@@ -35,7 +35,8 @@ use Drupal\Component\Utility\Html;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class SmartSearchExtension extends AbstractExtension {
+class SmartSearchExtension extends AbstractExtension
+{
 
   /**
    * Generates a list of all Twig functions that this extension defines.
@@ -49,7 +50,8 @@ class SmartSearchExtension extends AbstractExtension {
    *
    *   The value is a standard PHP callback that defines what the function does.
    */
-  public function getFunctions() {
+  public function getFunctions()
+  {
     return [
       'smartSearchResults' => new TwigFunction('smartSearchResults', [$this, 'smartSearchResults',]),
       'getDomainResults' => new TwigFunction('getDomainResults', [$this, 'getDomainResults',]),
@@ -60,7 +62,8 @@ class SmartSearchExtension extends AbstractExtension {
     ];
   }
 
-  public function smartSearchResults($search_results, $solr_datasource) {
+  public function smartSearchResults($search_results, $solr_datasource)
+  {
     $output = '';
     $noOfResults = '';
     $output = '';
@@ -105,10 +108,9 @@ class SmartSearchExtension extends AbstractExtension {
 
       //Begin of Pagination at the top
       $pager_manager = \Drupal::service('pager.manager');
-      if ($noOfTotalResults > 50000){
+      if ($noOfTotalResults > 50000) {
         $pager_manager->createPager(50000, $noOfResultsPerPage);
-      }
-      else {
+      } else {
         $pager_manager->createPager($noOfTotalResults, $noOfResultsPerPage);
       }
       $pager = [
@@ -152,13 +154,12 @@ class SmartSearchExtension extends AbstractExtension {
       }
 
       $output .= "</ol>";
-      $output .= "<div id=\"smart-search-transactions\">Showing: " . number_format($startIndex) . " to ". number_format($endIndex) ." of ". number_format($noOfTotalResults) ." entries</div>";
+      $output .= "<div id=\"smart-search-transactions\">Showing: " . number_format($startIndex) . " to " . number_format($endIndex) . " of " . number_format($noOfTotalResults) . " entries</div>";
 
       $pager_manager = \Drupal::service('pager.manager');
-      if ($noOfTotalResults > 50000){
+      if ($noOfTotalResults > 50000) {
         $pager_manager->createPager(50000, $noOfResultsPerPage);
-      }
-      else {
+      } else {
         $pager_manager->createPager($noOfTotalResults, $noOfResultsPerPage);
       }
       $pager = [
@@ -167,15 +168,15 @@ class SmartSearchExtension extends AbstractExtension {
       ];
       $output .= \Drupal::service('renderer')->render($pager);
       $output .= "</div>";
-    }
-    else {
+    } else {
       $output .= "<strong>There are no search results found with this search criteria.</strong>";
     }
 
     return $output;
   }
 
-  public function getDomainResults($results, $solr_datasource, $domain) {
+  public function getDomainResults($results, $solr_datasource, $domain)
+  {
     switch ($domain) {
       case "budget":
         $final_result = BudgetSmartUtil::displayBudgetResult($results, $solr_datasource);
@@ -208,7 +209,8 @@ class SmartSearchExtension extends AbstractExtension {
     return $final_result;
   }
 
-  public function runExportDialog() {
+  public function runExportDialog()
+  {
     $max_records = 200000;
     $search_terms = explode('*!*', \Drupal::request()->query->get('searchTerm'));
     $domains = explode("~", \Drupal::request()->query->get('resultsdomains'));
@@ -218,21 +220,16 @@ class SmartSearchExtension extends AbstractExtension {
     if (count($domains) == 0) {
       $checked = "spending";
       $all_domains = TRUE;
-    }
-    else {
+    } else {
       if (in_array("spending", $domains)) {
         $checked = "spending";
-      }
-      elseif (in_array("payroll", $domains)) {
+      } elseif (in_array("payroll", $domains)) {
         $checked = "payroll";
-      }
-      elseif (in_array("contracts", $domains)) {
+      } elseif (in_array("contracts", $domains)) {
         $checked = "contracts";
-      }
-      elseif (in_array("budget", $domains)) {
+      } elseif (in_array("budget", $domains)) {
         $checked = "budget";
-      }
-      elseif (in_array("revenue", $domains)) {
+      } elseif (in_array("revenue", $domains)) {
         $checked = "revenue";
       }
     }
@@ -253,64 +250,67 @@ class SmartSearchExtension extends AbstractExtension {
    *
    */
   //Call the function to generate twig based on the input parameters
-  public function FacetData($facet_counts,$solr_datasource,$selected_facet_results,$registered_contracts) {
-    if(is_countable($facet_counts) && !empty(array_filter($facet_counts))) {
+  public function FacetData($facet_counts, $solr_datasource, $selected_facet_results, $registered_contracts)
+  {
+    if (is_countable($facet_counts) && !empty(array_filter($facet_counts))) {
       $facetMarkup = checkbook_smart_search_facet_results($facet_counts, $solr_datasource, $selected_facet_results, $registered_contracts);
-      return '<div class="smart-search-right">'. $facetMarkup . '</div>';
-    }else{
+      return '<div class="smart-search-right">' . $facetMarkup . '</div>';
+    } else {
       return '';
     }
   }
 
-  public function displayFacetData($facets_render,$solr_datasource,$selected_facet_results,$registered_contracts) {
+  public function displayFacetData($facets_render, $solr_datasource, $selected_facet_results, $registered_contracts)
+  {
 
-    if(!isset($selected_facet_results)){
-      $selected_facet_results=[];
+    if (!isset($selected_facet_results)) {
+      $selected_facet_results = [];
     }
     $output = '';
-    $no_of_selected_options = '0';
 
     //ticket NYCCHKBK-13156 - moving below line out of inner for loop (line 334) - foe slowness issue
     $current_year = CheckbookDateUtil::getCurrentDatasourceFiscalYear(Datasource::getCurrent());
 
-    foreach ($facets_render??[] as $facet_name => $facet) {
+    foreach ($facets_render ?? [] as $facet_name => $facet) {
       // skipping children (sub facets)
-      if ($facet->child??false){
+      if ($facet->child ?? false) {
         continue;
       }
-      $span='';
+      $span = '';
       $display_facet = 'none';
 
       // keep domain facet always open
-      if (isset($facet->selected) || in_array($facet_name,['domain'])) {
+      if (isset($facet->selected) || in_array($facet_name, ['domain'])) {
         $span = 'open';
         $display_facet = 'block';
       }
 
       // If contracts selected, use register to determine facet_year display.
-      if(!empty($selected_facet_results['contract_status'])){
+      //$is_contracts_selected = !empty($selected_facet_results['domain'])
+      //  && in_array('contracts', array_map('strtolower', $selected_facet_results['domain']));
 
-        if(in_array('registered', $selected_facet_results['contract_status'])
-          && strtolower($facet_name) == 'facet_year_array'){
+      if (!empty($selected_facet_results['contract_status'])) {
+
+        if (in_array('registered', $selected_facet_results['contract_status'])
+          && strtolower($facet_name) == 'facet_year_array') {
           continue;
         }
-        if(!in_array('registered', $selected_facet_results['contract_status'])
-          && strtolower($facet_name) == 'registered_fiscal_year'){
+        if (!in_array('registered', $selected_facet_results['contract_status'])
+          && strtolower($facet_name) == 'registered_fiscal_year') {
           continue;
         }
 
       } else {
-        // If contract is not selected, hide registered_fiscal_year..
-        if( strtolower($facet_name) == 'registered_fiscal_year'){
+        if (strtolower($facet_name) == 'registered_fiscal_year') {
           continue;
         }
       }
 
-      $output .= '<div class="filter-content-' . $facet_name . ' filter-content">'.
-                 '<div class="filter-title"><span class="'.$span.'">By ' . htmlentities($facet->title) . '</span></div>'.
-                 '<div class="facet-content" style="display:'.$display_facet.'" ><div class="progress"></div>';
+      $output .= '<div class="filter-content-' . $facet_name . ' filter-content">' .
+        '<div class="filter-title"><span tabindex="0" class="' . $span . '">By ' . htmlentities($facet->title) . '</span></div>' .
+        '<div class="facet-content" style="display:' . $display_facet . '" ><div class="progress"></div>';
 
-      if (isset($facet->autocomplete) && isset($facet->results) && sizeof($facet->results)>5) {
+      if (isset($facet->autocomplete) && isset($facet->results) && sizeof($facet->results) > 5) {
         $autocomplete_id = "autocomplete_" . $facet_name;
         $disabled = '';
 
@@ -318,32 +318,46 @@ class SmartSearchExtension extends AbstractExtension {
         // thereby counting an option twice. Hence, removing duplicates
         // The below threw: Undefined property: stdClass::$selected
         // $facet->selected  = array_unique($facet->selected? $facet->selected:[]);
-        if(isset($facet->selected)) {
+        if (isset($facet->selected)) {
           $facet->selected = array_unique($facet->selected);
         } else {
           $facet->selected = [];
         };
 
         //NYCCHKBK-9957 : Disable autocomplete search box if 5 or more options are selected
-        $no_of_selected_options = count($facet->selected ? $facet->selected: []);
-        if($no_of_selected_options >= 5) $disabled = " DISABLED=true";
+        $no_of_selected_options = count($facet->selected ? $facet->selected : []);
+        if ($no_of_selected_options >= 5) $disabled = " DISABLED=true";
+        // WCAG 4.1.2: Provide an accessible name for facet autocomplete inputs.
+        $facet_label = trim((string)($facet->title ?? ''));
+
+        if ($facet_label === '') {
+          $facet_label = ucwords(str_replace('_', ' ', $facet_name));
+        }
+
+        $accessible_label = htmlspecialchars('Search ' . $facet_label, ENT_QUOTES, 'UTF-8');
+        $autocomplete_id_escaped = htmlspecialchars($autocomplete_id, ENT_QUOTES, 'UTF-8');
+        $facet_name_escaped = htmlspecialchars($facet_name, ENT_QUOTES, 'UTF-8');
 
         $output .= '<div class="autocomplete">
-              <input id="' . $autocomplete_id . '" ' . $disabled . ' type="text" class="solr_autocomplete" facet="'.$facet_name.'" />
-            </div>';
+  <label for="' . $autocomplete_id_escaped . '" class="visually-hidden">'
+          . $accessible_label .
+          '</label>
+  <input tabindex="0" id="' . $autocomplete_id_escaped . '" ' . $disabled .
+          ' type="text" class="solr_autocomplete" facet="' . $facet_name_escaped . '" autocomplete="off" />
+</div>';
       }
       $output .= '<div class="options">';
       $output .= '<ul class="add-list-reset rows">';
       $index = 0;
       $lowercase_selected = [];
-      if(!empty($facet->selected)){
-        foreach($facet->selected as $facet_val){
+      if (!empty($facet->selected)) {
+        foreach ($facet->selected as $facet_val) {
           $lowercase_selected[strtolower($facet_val)] = strtolower($facet_val);
         }
       }
 
       /* Populate the facet checkboxes. */
-      foreach($facet->results as $facet_value => $count) {
+      foreach ($facet->results as $facet_value => $count) {
 
         if ($facet_name == 'facet_year_array') {
 
@@ -356,50 +370,53 @@ class SmartSearchExtension extends AbstractExtension {
           [$facet_result_title, $count] = $count;
         }
 
-        $id = 'facet_'.$facet_name.$index;
-        $active='';
-        $output .= '<li class="row">
-               <label for="'.$id.'">
-             <div class="checkbox">';
+        $id = 'facet_' . $facet_name . $index;
+        $output .= '<li class="row"><div class="checkbox">';
         if ($lowercase_selected && isset($lowercase_selected[strtolower($facet_value)])) {
           $checked = ' checked="checked" ';
           $active = ' class="active" ';
           $disabled = '';
-        }
-        else{
+        } else {
           $checked = '';
           $active = '';
           $disabled = '';
         }
 
         //Disable unchecked options if 5 or more options from the same category are already selected
-        if((!$checked || $checked == '')  && (count($lowercase_selected) >= 5)){
+        if ((!$checked || $checked == '') && (count($lowercase_selected) >= 5)) {
           $disabled = " DISABLED=true";
         }
 
-        $output .= '<input type="checkbox" onclick="return applySearchFilters();" id="'.$id.'" '.$checked . $disabled.' facet="'.$facet_name.'" value="'.
-          htmlentities(urlencode($facet_value)).'" />';
-        $output .= '<label for="'.$id.'" /></div>'
-                  .'<div class="number"><span' . $active . '>' . number_format($count) . '</span></div>'
-                  .'<div class="name">' . htmlentities($facet_result_title) . '</div>'
-                  .'</label></li>';
+        $output .= '<input class="smartsearch-filter-checkboxes" type="checkbox" onclick="return applySearchFilters();" id="' . $id . '" ' . $checked . $disabled . ' facet="' . $facet_name . '" value="' .
+          htmlentities(urlencode($facet_value)) . '" />';
+        $output .= '<label tabindex="0" class="label-filter-checkbox" for="' . $id . '">'
+          . '<span class="visually-hidden">' . htmlspecialchars((string)$facet_result_title, ENT_QUOTES, 'UTF-8') . '</span>'
+          . '</label></div>'
+          . '<div class="number"><span' . $active . '>' . number_format($count) . '</span></div>'
+          . '<div class="name">' . htmlentities($facet_result_title) . '</div>'
+          . '</li>';
 
-        if (($checked) && ($children = $facet->sub->$facet_value??false)){
-          $sub_index=0;
-          foreach($children as $child){
+        if (($checked) && ($children = $facet->sub->$facet_value ?? false)) {
+          $sub_index = 0;
+          foreach ($children as $child) {
             $sub_facet = $facets_render[$child];
             if (!$sub_facet) {
               continue;
             }
 
+
             $sub_facet_name = $child;
-            $output .= '<ul class="sub-category add-list-reset">'
-                    .'<div class="subcat-filter-title">By '.htmlentities($sub_facet->title).'</div>';
+            // WCAG 1.3.1: Wrap subcategory in a valid LI.
+            $output .= '<li class="sub-category-wrapper">'
+              . '<div class="subcat-filter-title">By '
+              . htmlentities($sub_facet->title)
+              . '</div>'
+              . '<ul class="sub-category add-list-reset">';
             //Set Active and Registered Contracts Counts
-            if($sub_facet_name == 'contract_status'){
+            if ($sub_facet_name == 'contract_status') {
               unset($sub_facet->results['registered']);
               //unset($sub_facet->results['active']);
-              if($registered_contracts > 0 ) {
+              if ($registered_contracts > 0) {
                 $sub_facet->results['registered'] = $registered_contracts;
               }
               /*if($active_contracts > 0) {
@@ -407,17 +424,16 @@ class SmartSearchExtension extends AbstractExtension {
               }*/
             }
 
-            foreach($sub_facet->results as $sub_facet_value => $sub_count){
+            foreach ($sub_facet->results as $sub_facet_value => $sub_count) {
               $facet_result_title = $sub_facet_value;
+
               if (is_array($sub_count)) {
                 [$facet_result_title, $sub_count] = $sub_count;
               }
 
-              $id = 'facet_'.$sub_facet_name.$sub_index;
-              $active='';
+              $id = 'facet_' . $sub_facet_name . $sub_index;
               $output .= '<li class="row">'
-                      ."<label for=\"$id\">"
-                      .'<div class="checkbox">';
+                . '<div class="checkbox">';
               $checked = '';
               if (isset($sub_facet->selected) && is_array($sub_facet->selected)) {
                 $checked = in_array($sub_facet_value, $sub_facet->selected);
@@ -426,22 +442,23 @@ class SmartSearchExtension extends AbstractExtension {
               $checked = $checked ? ' checked="checked" ' : '';
               $active = $checked ? ' class="active" ' : '';
 
-              if(isset($sub_facet->input) && $sub_facet->input == 'radio'){
+              if (isset($sub_facet->input) && $sub_facet->input == 'radio') {
                 $output .= '<input type="radio" name="' . htmlentities($sub_facet->title) . '" ' . 'id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
                   htmlentities(urlencode($sub_facet_value)) . '" />';
-              }else{
+              } else {
                 $output .= '<input type="checkbox" onclick="return applySearchFilters();" id="' . $id . '" ' . $checked . ' facet="' . $sub_facet_name . '" value="' .
                   htmlentities(urlencode($sub_facet_value)) . '" />';
               }
-              $output .= "<label for=\"$id\" />"
-                      .'</div>'
-                      .'<div class="number"><span' . $active . '>' . number_format($sub_count) . '</span></div>'
-                      .'<div class="name">' . htmlentities($facet_result_title) . '</div>'
-                      .'</label>'
-                      .'</li>';
+              $output .= '<label for="' . $id . '">'
+                . '<span class="visually-hidden">' . htmlspecialchars((string)$facet_result_title, ENT_QUOTES, 'UTF-8') . '</span>'
+                . '</label>'
+                . '</div>'
+                . '<div class="number"><span' . $active . '>' . number_format($sub_count) . '</span></div>'
+                . '<div class="name">' . htmlentities($facet_result_title) . '</div>'
+                . '</li>';
               $sub_index++;
             }
-            $output .= '</ul>';
+            $output .= '</ul></li>';
           }
         }
 
@@ -449,31 +466,31 @@ class SmartSearchExtension extends AbstractExtension {
       }
       $output .= '</ul></div></div></div>';
     }
-    if(strlen($output) > 0){
+    if (strlen($output) > 0) {
       $output = '<div class="narrow-down-filter">
                     <div class="narrow-down-title">Narrow Down Your Search:</div>'
-                    . $output .
-                '</div>';
+        . $output .
+        '</div>';
     }
     return $output;
   }
 
-  public function displayAjaxResults($solr_datasource, $search_results) {
+  public function displayAjaxResults($solr_datasource, $search_results)
+  {
     $output = '';
     $searchTerms = explode('*!*', \Drupal::request()->query->get('search_term'));
     //Begin of search results
     $noOfTotalResults = $search_results['response']['numFound'];
     $noOfResultsPerPage = 10;
-    $startIndex = $transaction_no = ( \Drupal::request()->query->get('page') ) ? ( \Drupal::request()->query->get('page') * 10) + 1 : 1;
-    $endIndex = (($startIndex+9) < $noOfTotalResults)? ($startIndex+9) : $noOfTotalResults;
+    $startIndex = $transaction_no = (\Drupal::request()->query->get('page')) ? (\Drupal::request()->query->get('page') * 10) + 1 : 1;
+    $endIndex = (($startIndex + 9) < $noOfTotalResults) ? ($startIndex + 9) : $noOfTotalResults;
 
     if ($noOfTotalResults > 0) {
       //Begin of Pagination at the top
       $pager_manager = \Drupal::service('pager.manager');
-      if ($noOfTotalResults > 50000){
+      if ($noOfTotalResults > 50000) {
         $pager_manager->createPager(50000, $noOfResultsPerPage);
-      }
-      else {
+      } else {
         $pager_manager->createPager($noOfTotalResults, $noOfResultsPerPage);
       }
       $pager = [
@@ -486,15 +503,15 @@ class SmartSearchExtension extends AbstractExtension {
       $output .= '<div class="loading" style="display:none"></div>';
       $output .= '<ol class="search-results">';
 
-      foreach($search_results['response']['docs'] as $key=>$value){
+      foreach ($search_results['response']['docs'] as $key => $value) {
         $output .= "<li>";
         $domain_display = $value['domain'];
-        if ($domain_display == "budget"){
+        if ($domain_display == "budget") {
           $domain_display = "Expense Budget";
         }
-        $output .= "<h3 class=\"title\">Transaction #". $transaction_no .": ". $domain_display ."</h3>";
+        $output .= "<h3 class=\"title\">Transaction #" . $transaction_no . ": " . $domain_display . "</h3>";
         $transaction_no++;
-        switch(strtolower($value['domain'])){
+        switch (strtolower($value['domain'])) {
           case "revenue":
             $template = ($solr_datasource == Datasource::SOLR_NYCHA) ? "nycha_revenue" : "revenue";
             $results = 'revenue_results';
@@ -521,13 +538,12 @@ class SmartSearchExtension extends AbstractExtension {
         $output .= "</li>";
       }
       $output .= "</ol>";
-      $output .= "<div id=\"smart-search-transactions\">Showing: " . number_format($startIndex) . " to ". number_format($endIndex) ." of ". number_format($noOfTotalResults) ." entries</div>";
+      $output .= "<div id=\"smart-search-transactions\">Showing: " . number_format($startIndex) . " to " . number_format($endIndex) . " of " . number_format($noOfTotalResults) . " entries</div>";
 
       $pager_manager = \Drupal::service('pager.manager');
-      if ($noOfTotalResults > 50000){
+      if ($noOfTotalResults > 50000) {
         $pager_manager->createPager(50000, $noOfResultsPerPage);
-      }
-      else {
+      } else {
         $pager_manager->createPager($noOfTotalResults, $noOfResultsPerPage);
       }
       $pager = [
@@ -535,8 +551,7 @@ class SmartSearchExtension extends AbstractExtension {
         '#quantity' => 5
       ];
       $output .= \Drupal::service('renderer')->render($pager);
-    }
-    else {
+    } else {
       $output .= "<strong>There are no search results found with this search criteria.</strong>";
     }
 

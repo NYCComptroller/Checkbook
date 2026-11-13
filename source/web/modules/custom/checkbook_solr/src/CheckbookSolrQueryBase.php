@@ -338,6 +338,7 @@ class CheckbookSolrQueryBase
   {
     // Add array fields which need facet.prefix to be set
     $prefix_fields = array("contract_entity_contract_number","contract_commodity_line","facet_year_array");
+    $fPrefix = null;
     if(in_array($param, $prefix_fields)){
       $fPrefix = $value;
     }

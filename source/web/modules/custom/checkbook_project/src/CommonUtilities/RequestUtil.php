@@ -942,7 +942,9 @@ class RequestUtil {
       }
       $replacedPathParams[] = $key;
     }
-
+    if (count($replacedPathParams) < 2) {
+      return [];
+    }
     if ($param == null) {
       $paramName = $replacedPathParams[count($replacedPathParams) - 2];
     }
@@ -952,7 +954,7 @@ class RequestUtil {
 
     $index = array_search($paramName, $replacedPathParams);
 
-    if ($index != FALSE) {
+    if ($index != FALSE && isset($replacedPathParams[$index + 1])) {
       $value = Xss::filter($replacedPathParams[($index + 1)]);
     }
 

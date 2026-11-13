@@ -7,9 +7,9 @@
   {{ node.widgetConfig.head_title | raw}}
   </div>
 <div>
-  <table id="table_{{ node.nid }}" >
+  <table id="table_{{ node.nid }}" aria-labelledby="h2_{{ node.nid }}">
     <thead>
-    <tr>
+    <tr scope="row">
      {{ node.widgetConfig.table_header|raw }}
     </tr>
     </thead>

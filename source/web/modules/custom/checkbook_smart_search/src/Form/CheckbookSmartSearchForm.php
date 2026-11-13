@@ -46,6 +46,8 @@ class CheckbookSmartSearchForm extends FormBase {
       '#type' => 'textfield',
       '#size' => 30,
       '#maxlength' => 100,
+      '#title' => t('Smart Search'),
+      '#title_display' => 'invisible'
     ];
     $form['domain'] = [
       '#type' => 'hidden',
@@ -54,7 +56,11 @@ class CheckbookSmartSearchForm extends FormBase {
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => t('Search'),
-      '#submit' => ['_checkbook_smart_search_submit']
+      '#submit' => ['_checkbook_smart_search_submit'],
+      '#attributes' => [
+        'disabled' => 'disabled', // <--- To prevent the flicker
+        'class' => ['smart-search-submit'],
+      ],
     ];
 
     $form['#theme'] = 'smart_search_form';
@@ -63,14 +69,6 @@ class CheckbookSmartSearchForm extends FormBase {
     return $form;
   }
 
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    $search_term = trim($form_state->getValue('search_box'));
-
-    // Enforce the 3-character rule
-    if (strlen($search_term) < 3 || $search_term == 'Type ahead search') {
-      //$form_state->setErrorByName('search_box', $this->t('Please enter at least 3 characters for your search.'));
-    }
-  }
   function submitForm(array &$form, FormStateInterface $form_state) {
 
   }

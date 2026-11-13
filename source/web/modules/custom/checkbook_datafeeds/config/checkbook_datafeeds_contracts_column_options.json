@@ -315,6 +315,7 @@
             "default":{
               "data_type":{
                 "csv":{
+                  "APT PIN":"APT PIN",
                   "Award Method":"Award Method",
                   "Budget Name":"Budget Name",
                   "Commodity Line":"Commodity Line",
@@ -338,6 +339,7 @@
                   "Year":"Year"
                 },
                 "xml":{
+                  "apt_pin":"apt_pin",
                   "award_method":"award_method",
                   "budget_name":"budget_name",
                   "commodity_line":"commodity_line",

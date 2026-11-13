@@ -1,6 +1,8 @@
 {
   "autocomplete_mapping": {
     "agency_name": "agency_name_autocomplete",
+    "agency_name_code": "agency_name_code_autocomplete",
+    "agency_shortname_code": "agency_shortname_code_autocomplete",
     "oge_agency_name": "oge_agency_name_autocomplete",
     "vendor_name": "vendor_name_autocomplete",
     "vendor_name_search": "vendor_name_autocomplete",

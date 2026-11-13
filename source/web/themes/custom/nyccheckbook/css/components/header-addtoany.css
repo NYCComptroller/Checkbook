@@ -1,6 +1,9 @@
+/* WCAG - AddToAny touch targets */
 .addtoany_list {
-  display: inline-block;
-  width: 100px;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  width: auto;
   margin-top: 12px;
   margin-right: 3px;
 }
@@ -10,7 +13,14 @@
 }
 
 .addtoany_list > a {
-  padding: 0 2px 0 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 2px;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .a2a_svg {
