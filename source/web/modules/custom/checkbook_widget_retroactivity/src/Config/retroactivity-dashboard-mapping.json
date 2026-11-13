@@ -53,7 +53,7 @@
         },
         "payment": {
             "label": "Payments",
-            "enabled": false,
+            "enabled": true,
             "tiles_enabled": true,
             "order": 5,
             "tiles": [

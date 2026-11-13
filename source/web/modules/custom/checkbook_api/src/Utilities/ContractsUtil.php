@@ -34,32 +34,15 @@ class ContractsUtil {
       //For Active/Registered Expense Contracts -- OGE
       switch ($contract_status) {
         case "registered":
-        //case "active":
-          $data_controller_instance = data_controller_get_operator_factory_instance();
-
           // Either Fiscal or Calendar year is provided:
           $fy = self::checkbook_api_change_datasource($datasource, $parameters['fiscal_year@checkbook:all_contracts_coa_aggregates']);
           if (isset($fy)) {
-
-            //if ($contract_status == 'registered') {
-              if (strtolower($type_of_data) == 'contracts_oge') {
+             if (strtolower($type_of_data) == 'contracts_oge') {
                 $parameters[self::checkbook_api_change_datasource($datasource, 'status_flag')] = 'R';
               }
               else {
                 $parameters[self::checkbook_api_change_datasource($datasource, 'status_flag@checkbook:all_contracts_coa_aggregates')] = 'R';
               }
-            //}
-            /*else {
-              if ($contract_status == 'active') {
-                if (strtolower($type_of_data) == 'contracts_oge') {
-                  $parameters[self::checkbook_api_change_datasource($datasource, 'status_flag')] = 'A';
-                }
-                else {
-                  $parameters[self::checkbook_api_change_datasource($datasource, 'status_flag@checkbook:all_contracts_coa_aggregates')] = 'A';
-                }
-              }
-            }*/
-
             if (strtolower($type_of_data) == 'contracts_oge') {
               // Adjust year and year type for OGE
               $req_year = $parameters[self::checkbook_api_change_datasource($datasource, 'fiscal_year')];
@@ -80,16 +63,6 @@ class ContractsUtil {
             }
 
             if (isset($req_year)) {
-             // $ge_condition = $data_controller_instance->initiateHandler(GreaterOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
-              //$le_condition = $data_controller_instance->initiateHandler(LessOrEqualOperatorHandler::$OPERATOR__NAME, $req_year);
-              /*if (strtolower($type_of_data) == 'contracts_oge') {
-                $parameters['starting_year_id'] = $le_condition;
-                $parameters['ending_year_id'] = $ge_condition;
-              }
-              else {
-                $parameters['starting_year'] = $le_condition;
-                $parameters['ending_year'] = $ge_condition;
-              }*/
               //if ($contract_status == 'registered') {
                 if (strtolower($type_of_data) == 'contracts_oge') {
                   $parameters['registered_year_id'] = $req_year;
@@ -97,19 +70,6 @@ class ContractsUtil {
                 else {
                   $parameters['registered_year'] = $req_year;
                 }
-              //}
-              /*else {
-                /*if ($contract_status == 'active') {
-                  if (strtolower($type_of_data) == 'contracts_oge') {
-                    $parameters['effective_begin_year_id'] = $le_condition;
-                    $parameters['effective_end_year_id'] = $ge_condition;
-                  }
-                  else {
-                    $parameters['effective_begin_year'] = $le_condition;
-                    $parameters['effective_end_year'] = $ge_condition;
-                  }
-                }*/
-              //}
             }
           }
           else {
@@ -174,13 +134,6 @@ class ContractsUtil {
         $parameters['agency_id'] = $agency_id[0]['agency_id'];
         unset($parameters['agency_code@checkbook_oge:oge_agency']);
       }
-
-      //Set Award method id for the selected OGE Award method code
-      //if (isset($parameters['award_method_code@checkbook_oge:award_method'])) {
-        /*$award_method_id = _checkbook_project_querydataset('checkbook_oge:award_method', ['award_method_id'], ['award_method_code' => $parameters['award_method_code@checkbook_oge:award_method']]);
-        $parameters['award_method_id'] = $award_method_id[0]['award_method_id'];
-        unset($parameters['award_method_code@checkbook_oge:award_method']);*/
-      //}
     }
   }
 
@@ -212,11 +165,6 @@ class ContractsUtil {
       $parameters['ending_year_id'] = $geCondition;
 
       switch ($contract_status) {
-        /*case "active":
-          $parameters['status_flag@checkbook:contracts_coa_aggregates_datafeeds'] = 'A';
-          $parameters['effective_begin_year_id'] = $leCondition;
-          $parameters['effective_end_year_id'] = $geCondition;
-          break;*/
         case "registered":
           $parameters['status_flag@checkbook:contracts_coa_aggregates_datafeeds'] = 'R';
           $parameters['registered_year_id'] = [$req_year];
@@ -328,65 +276,109 @@ class ContractsUtil {
    *
    * @return string
    */
-  public static function checkbook_api_adjustContractSql(&$sql_query) {
-    $sql_parts = explode("WHERE", $sql_query);
+  public static function checkbook_api_adjustContractSql(&$sql_query, $category = null) {
+
+    // Separate SELECT and WHERE clauses.
+    $sql_parts = preg_split('/\bWHERE\b/i', $sql_query, 2);
+
     $select_part = $sql_parts[0];
-    $order_by = explode("ORDER BY", $sql_parts[1]);
-    $order_by_part = $order_by[1];
-    if (strpos($select_part, 'l1.') !== FALSE) {
-      $select_part = str_replace("l1.prime_vendor_name", "CASE WHEN l1.is_prime_or_sub = 'S' THEN l1.prime_vendor_name ELSE 'N/A' END AS prime_vendor_name", $select_part);
-      $select_part = str_replace("l1.vendor_type", "CASE WHEN l1.is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type", $select_part);
-      $select_part = str_replace("l1.expenditure_object_names", "CASE WHEN l1.is_prime_or_sub = 'P' THEN l1.expenditure_object_names ELSE 'N/A' END AS expenditure_object_name", $select_part);
-    }
-    else {
-      if (strpos($select_part, 'l4.') !== FALSE) {
-        $select_part = str_replace("l4.prime_vendor_name", "CASE WHEN l4.is_prime_or_sub = 'S' THEN l4.prime_vendor_name ELSE 'N/A' END AS prime_vendor_name", $select_part);
-        $select_part = str_replace("l4.vendor_type", "CASE WHEN l4.is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type", $select_part);
-        $select_part = str_replace("l4.expenditure_object_names", "CASE WHEN l4.is_prime_or_sub = 'P' THEN l4.expenditure_object_names ELSE 'N/A' END AS expenditure_object_name", $select_part);
-      }
-      else {
-        $select_part = str_replace("prime_vendor_name", "CASE WHEN is_prime_or_sub = 'S' THEN prime_vendor_name ELSE 'N/A' END AS prime_vendor_name", $select_part);
-        $select_part = str_replace("vendor_type", "CASE WHEN is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type", $select_part);
-        $select_part = str_replace("expenditure_object_names", "CASE WHEN is_prime_or_sub = 'P' THEN expenditure_object_names ELSE 'N/A' END AS expenditure_object_name", $select_part);
-      }
+    $where_part = $sql_parts[1] ?? '';
+
+    // Identify the table alias used for subcontractor fields.
+    $alias = '';
+    if (preg_match('/\b([a-z_][a-z0-9_]*)\.prime_vendor_name\b/i', $select_part, $matches)) {
+      $alias = $matches[1] . '.';
     }
 
-    // When fiscal year is set make sure order by contract_number is l4.contract_number
-    if (strpos($sql_parts[1], 'fiscal_year') !== FALSE) {
-      if (strpos($order_by_part, 'contract_number') !== FALSE) {
-        $order_by_part = str_replace("contract_number", "l4.contract_number", $order_by_part);
-      }
-      $where_part = $order_by[0] . ' ORDER BY ' . $order_by_part;
+    // Return an empty Contract Class for Revenue Contracts.
+    if ($category === 'revenue') {
+      $select_part = preg_replace(
+        '/(?<![\w.])(?:[a-z_][a-z0-9_]*\.)?contract_class_description\b/i',
+        "'' AS contract_class_description",
+        $select_part
+      );
     }
-    else {
-      $where_part = $sql_parts[1];
+
+    // Apply subcontractor-specific display rules.
+    $replacements = [
+      'prime_vendor_name' =>
+        "CASE WHEN {$alias}is_prime_or_sub = 'S' THEN {$alias}prime_vendor_name ELSE 'N/A' END AS prime_vendor_name",
+
+      'vendor_type' =>
+        "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN 'No' ELSE 'Yes' END AS vendor_type",
+
+      'expenditure_object_names' =>
+        "CASE WHEN {$alias}is_prime_or_sub = 'P' THEN {$alias}expenditure_object_names ELSE 'N/A' END AS expenditure_object_name",
+    ];
+
+    foreach ($replacements as $column => $expression) {
+      $select_part = preg_replace(
+        '/(?<![\w.])' . preg_quote($alias . $column, '/') . '\b/i',
+        $expression,
+        $select_part
+      );
     }
-    $sql_query = (count($sql_parts) > 1) ? implode(' WHERE ', [
-      $select_part,
-      $where_part
-    ]) : $select_part;
+
+    if (preg_match('/\bFROM\s+\w+\s+(?:AS\s+)?(\w+)\b/i', $select_part, $matches)) {
+      $from_alias = $matches[1];
+    }
+
+// Add the main table alias to contract_number in ORDER BY.
+    if ($from_alias !== '' &&
+      $where_part !== '' &&
+      preg_match('/\bORDER\s+BY\b/i', $where_part)) {
+
+      $order_parts = preg_split('/\bORDER\s+BY\b/i', $where_part, 2);
+
+      $order_parts[1] = preg_replace(
+        '/(?<![\w.])contract_number\b/i',
+        $from_alias . '.contract_number',
+        $order_parts[1]
+      );
+
+      $where_part = $order_parts[0] . ' ORDER BY ' . $order_parts[1];
+    }
+
+    // Reconstruct SQL.
+    $sql_query = count($sql_parts) > 1
+      ? $select_part . ' WHERE ' . $where_part
+      : $select_part;
   }
 
-  /***
-   * @param $sql_query
+
+  /**
+   * Adjusts the ORDER BY clause for active contract SQL queries.
    *
-   * @return string
+   * Identifies the table alias associated with contract_number in the SELECT
+   * clause and applies it to unqualified contract_number references in the
+   * ORDER BY clause to prevent ambiguous column references.
+   *
+   * @param string $sql_query
+   *   The SQL query to modify, passed by reference.
    */
   public static function checkbook_api_adjustContractActiveSql(&$sql_query) {
-    $sql_parts = explode("ORDER BY", $sql_query);
-    $select_part = $sql_parts[0];
-    $order_by_part = $sql_parts[1];
-    if (strpos($select_part, 'l1.') !== FALSE) {
-      $order_by_part = str_replace("contract_number", "l1.contract_number", $order_by_part);
-    }
-    else {
-      $order_by_part = str_replace("contract_number", "l4.contract_number", $order_by_part);
+    $sql_parts = preg_split('/\bORDER\s+BY\b/i', $sql_query, 2);
+
+    if (count($sql_parts) < 2) {
+      return;
     }
 
-    $sql_query = (count($sql_parts) > 1) ? implode(' ORDER BY ', [
-      $select_part,
-      $order_by_part
-    ]) : $select_part;
+    $select_part = $sql_parts[0];
+    $order_by_part = $sql_parts[1];
+
+    // Identify the alias used for contract_number.
+    if (preg_match('/\b(l\d+)\.contract_number\b/i', $select_part, $matches)) {
+      $alias = $matches[1];
+
+      // Replace only contract_number without an existing table alias.
+      $order_by_part = preg_replace(
+        '/(?<![\w.])contract_number\b/i',
+        $alias . '.contract_number',
+        $order_by_part
+      );
+    }
+
+    $sql_query = $select_part . ' ORDER BY ' . $order_by_part;
   }
 
   /***

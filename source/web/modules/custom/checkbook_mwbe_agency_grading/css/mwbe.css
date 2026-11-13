@@ -181,7 +181,7 @@ h1.title {
 
 .checkbook-grading-right input[type=checkbox]:checked:enabled + label:before {
   color: white;
-  background-color: #209AD6;
+  background-color: #0F78A9;
   background-image: url(/themes/custom/nyccheckbook/images/check_white.png);
   background-position: center center;
   background-repeat: no-repeat;

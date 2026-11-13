@@ -1,3 +1,47 @@
+jQuery(document).ready(function ($) {
+  // WCAG - Ensure Smart Search page has an H1 heading
+  if ($('body.page-smart-search').length && $('h1').length === 0) {
+
+    $('<h1>', {
+      class: 'visually-hidden',
+      text: 'Smart Search Results'
+    }).prependTo('main');
+
+  }
+  // WCAG - Fix Smart Search result heading order
+  $('body.page-smart-search li > h3.title').each(function () {
+    $(this).replaceWith(
+      $('<h2>', {
+        class: this.className,
+        html: $(this).html()
+      })
+    );
+  });
+
+  $('nav[aria-labelledby^="pagination-heading"], nav.pager[aria-label^="Search results pagination"]').each(function (index) {
+    var $nav = $(this);
+
+    // Fix invalid list item roles
+    $nav.find('ul.pager__items > li[role="presentation"], ' +
+      'ul.pager__items > li[role="none"]')
+      .removeAttr('role');
+
+    // Assign unique pagination landmark labels
+    $nav.attr(
+      'aria-label',
+      index === 0
+        ? 'Search results pagination - Top'
+        : index === 1
+          ? 'Search results pagination - Bottom'
+          : 'Search results pagination - ' + (index + 1)
+    ).removeAttr('aria-labelledby');
+
+    // Remove unnecessary pagination heading
+    $nav.children('h4[id^="pagination-heading"]').remove();
+  });
+
+});
+
 /**
  *  Outputs the auto suggestions for the entered text in the search textbox.
  */
@@ -89,7 +133,23 @@
   Drupal.behaviors.faceted_seach = {
     attach: function(context, settings) {
       once('faceted_seach', 'body').forEach(function(el){
-        $('.smart-search-right .filter-title').click(function(event) {
+        //$('.smart-search-right .filter-title').click(function(event) {
+
+        $('.smart-search-right .filter-title').on('click keydown', function(event) {
+          // If the event is a keyboard press, only proceed if the key is Enter or Space
+          // Handle keyboard events specifically
+          if (event.type === 'keydown') {
+            // 13 is Enter, 32 is Space. If it is neither, exit early.
+            if (event.which !== 13 && event.which !== 32) {
+              return;
+            }
+
+            // Immediately prevent the default page down scroll if Space (32) is pressed
+            if (event.which === 32) {
+              event.preventDefault();
+            }
+          }
+          
           if ($(this).next().css('display') === 'block') {
             $(this).next().css('display', 'none');
             $(this).children('span').removeClass('open');
@@ -104,81 +164,159 @@
               scrollButtons: {
                 enable: false
               },
-              theme: 'dark'
+              theme: 'dark',
+              callbacks: {
+                onInit: function() {
+                  var $scrollBox = $(this).find('.mCustomScrollBox');
+                  var scrollBoxNode = $scrollBox.get(0);
+                  
+                  if (!scrollBoxNode) return;
+                  $scrollBox.attr('tabindex', '-1');
+                  var observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                      // If the plugin changes the tabindex to anything other than -1, change it right back
+                      if (mutation.attributeName === 'tabindex' && $scrollBox.attr('tabindex') !== '-1') {
+                        $scrollBox.attr('tabindex', '-1');
+                      }
+                    });
+                  });
+                  observer.observe(scrollBoxNode, { 
+                    attributes: true, 
+                    attributeFilter: ['tabindex'] 
+                  });
+                }
+              }
             });
-          }
-        });
 
+          }
+          var $scrollBoxes = $('.mCustomScrollBox');
+          $scrollBoxes.removeAttr('tabindex');
+        });
+         
       });
     }
   }
+
 
   Drupal.behaviors.mySearchBehaviors = {
     attach: function (context, settings) {
       let $searchBox = $("#edit-search-box", context);
       let $submitBtn = $(".checkbook-smart-search-form input[type=submit]", context);
 
-      // Add a warning container below the search box if it doesn't exist
-      if ($("#search-warning").length === 0) {
-        $searchBox.after('<div id="search-warning" style="color:red; margin-top:5px;margin-left:8px; display:none;"></div>');
+      if (!$searchBox.length) {
+        return;
       }
+
+      // WCAG: Create an accessible error message for JAWS.
+      if ($("#search-warning").length === 0) {
+        $searchBox.after(
+          //'<div id="search-warning" aria-atomic="true" ' +
+          '<div id="search-warning" ' +
+          'style="color:#cc0000; margin-top:5px; margin-left:8px;"></div>'
+        );
+      }
+
       let $warning = $("#search-warning");
 
-      // Initially disable the submit button
+      $warning.empty().show();
+
+      $searchBox.attr({
+        'aria-invalid': 'false',
+        'aria-describedby': 'search-warning'
+      });
+
+      // Initially disable the submit button.
       $submitBtn.prop('disabled', true).css('cursor', 'default');
 
-      // Enable/disable button and show warning on input
-      $searchBox.on('input', function () {
-        let val = $(this).val().trim();
+      // Enable/disable button and clear errors on input.
+      $searchBox.off('input.smartSearchValidation')
+        .on('input.smartSearchValidation', function () {
+          let val = $(this).val().trim();
 
-        if (val.length === 0) {
-          $submitBtn.prop('disabled', true).css('cursor', 'default');
-          $warning.hide();
-        } else if (val.length < 3) {
-          $submitBtn.prop('disabled', false).css('cursor', 'default');
-          //$warning.text('Please enter atleast 3 characters to perform search').show();
-        } else {
-          $submitBtn.prop('disabled', false).css('cursor', 'default');
-          $warning.hide();
-        }
-      });
+          if (val.length === 0) {
+            $submitBtn.prop('disabled', true).css('cursor', 'default');
+          } else {
+            $submitBtn.prop('disabled', false).css('cursor', 'default');
+          }
 
-      // Prevent submit if input is invalid
-      $(".checkbook-smart-search-form", context).submit(function (e) {
-        let searchTerm = $searchBox.val().trim();
+          // Clear previous validation error.
+          $(this).removeClass('input-error')
+            .attr('aria-invalid', 'false');
 
-        // Reset error state
-        $searchBox.removeClass('input-error');
-
-        if (searchTerm === "" || searchTerm === "Type ahead search" || searchTerm.length < 3) {
-          e.preventDefault();
-          $searchBox.addClass('input-error').focus();
-          $warning.text('Please enter at least 3 characters to perform search').show();
-          return false;
-        }
-
-        // Disable button and show loading state on valid submission
-        $searchBox.addClass('transparent loadinggif disabled-element').attr('readonly', 'readonly');
-        $submitBtn.addClass('disable_button').attr('disabled', 'disabled').css('cursor', 'default');
-        $warning.hide();
-      });
-
-
-      // 3. Dialog Title Handler
-      $(window, context).on('dialogcreate', function (e, dialog, $element, settings) {
-        $('form.new-checkbook-advanced-search-form .ui-dialog-title').each(function () {
-          let dialog_title = this;
-          $('.ui-dialog-titlebar .ui-dialog-title').replaceWith(dialog_title);
+          $warning.empty();
         });
-      });
+
+      // Prevent submission if input is invalid.
+      $(".checkbook-smart-search-form", context)
+        .off('submit.smartSearchValidation')
+        .on('submit.smartSearchValidation', function (e) {
+          let searchTerm = $searchBox.val().trim();
+
+          // Reset error state.
+          $searchBox.removeClass('input-error')
+            .attr('aria-invalid', 'false');
+
+          if (searchTerm === "" ||
+            searchTerm === "Type ahead search" ||
+            searchTerm.length < 3) {
+
+            e.preventDefault();
+
+            $searchBox.addClass('input-error')
+              .attr('aria-invalid', 'true');
+
+            $warning.text(
+              'Please enter at least 3 characters to perform search'
+            );
+
+            $searchBox.focus();
+
+            return false;
+          }
+
+          // Valid submission.
+          $warning.empty();
+
+          $searchBox
+            .addClass('transparent loadinggif disabled-element')
+            .attr('readonly', 'readonly');
+
+          $submitBtn
+            .addClass('disable_button')
+            .attr('disabled', 'disabled')
+            .css('cursor', 'default');
+        });
+
+      // Existing dialog title handler.
+      $(window).off('dialogcreate.smartSearchValidation')
+        .on('dialogcreate.smartSearchValidation',
+          function (e, dialog, $element, settings) {
+            $('form.new-checkbook-advanced-search-form .ui-dialog-title')
+              .each(function () {
+                let dialog_title = this;
+                $('.ui-dialog-titlebar .ui-dialog-title')
+                  .replaceWith(dialog_title);
+              });
+          });
     }
   };
 
+
   Drupal.behaviors.exportSmartSearchTransactions = {
     attach: function (context, settings) {
-
-      $(once('exportSmartSearch', 'span.exportSmartSearch')).each(function () {
-        $("span.exportSmartSearch").on("click", function () {
+      $(once('exportSmartSearch', 'span.exportSmartSearch', context))
+        .attr({
+          'role': 'button',
+          'tabindex': '0'
+        })
+        .on('keydown', function (event) {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            $(this).trigger('click');
+          }
+        })
+        .on('click', function (event) {
+          event.preventDefault();
           let $that = $(this);
           let dialog = $("#dialog");
           if (!dialog.length) {
@@ -257,6 +395,9 @@
               $("#dialog").html(dialog_html);
               $that.removeClass('clicked').removeAttr('disabled');
             },
+            close: function () {
+              $that.trigger('focus');
+            },
             buttons: {
               "Download Data": function () {
                 let solr_datasource = drupalSettings.solr_datasource || 'citywide';
@@ -333,7 +474,6 @@
 
           return false;
         });
-      });
 
 function getCheckboxAttributes(domain, array_domains) {
   let checked_domain = array_domains[0];
@@ -435,7 +575,33 @@ function getCheckboxAttributes(domain, array_domains) {
             scrollButtons: {
               enable: false
             },
-            theme: 'dark'
+            theme: 'dark',
+            callbacks: {
+              onInit: function() {
+                var $scrollBox = $(this).find('.mCustomScrollBox');
+                var scrollBoxNode = $scrollBox.get(0);
+                
+                if (!scrollBoxNode) return;
+                
+                $scrollBox.attr('tabindex', '-1');
+
+                // 2. Create the observer to watch for the plugin fighting back
+                var observer = new MutationObserver(function(mutations) {
+                  mutations.forEach(function(mutation) {
+                    // If the plugin changes the tabindex to anything other than -1, change it right back
+                    if (mutation.attributeName === 'tabindex' && $scrollBox.attr('tabindex') !== '-1') {
+                      $scrollBox.attr('tabindex', '-1');
+                    }
+                  });
+                });
+
+                // 3. Instruct the observer to only watch for changes to the 'tabindex' attribute on this specific container
+                observer.observe(scrollBoxNode, { 
+                  attributes: true, 
+                  attributeFilter: ['tabindex'] 
+                });
+              }
+            }
           };
           $('.smart-search-right div.facet-content .options').mCustomScrollbar(opts);
         }
@@ -504,6 +670,35 @@ function getCheckboxAttributes(domain, array_domains) {
       });
     }
   };
+
+  Drupal.behaviors.filterBoxAccessibility = {
+    attach: function (context, settings) {
+    
+    //Remove tabindex from the checkbox filter container
+    setTimeout(function () {
+      $('.mCustomScrollBox').removeAttr('tabindex');
+    }, 50);
+    // Eanble checkbox selection using space/enter keys.
+    $('.label-filter-checkbox').on('keydown', function(event) {
+      // Allow both Enter and Space keys to toggle checkboxes
+      if (event.key === 'Enter' || event.key === ' ') {
+        // Prevent the default behavior (like page scrolling when pressing Space)
+        event.preventDefault();
+        // Find the associated checkbox using the label's 'for' attribute
+        const inputId = $(this).attr('for');
+        const $associatedInput = $('#' + inputId);
+        
+        if ($associatedInput.length) {
+          // Programmatically click the hidden input to toggle state and trigger change events
+          $associatedInput[0].click(); 
+        }
+      }
+    });
+    }
+  }
+
+  
+
 })(jQuery, Drupal, once, drupalSettings);
 
 /**

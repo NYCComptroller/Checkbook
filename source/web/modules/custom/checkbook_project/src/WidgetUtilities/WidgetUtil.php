@@ -73,9 +73,10 @@ class WidgetUtil
   /**
    * @param $labelAlias
    * @param false $labelOnly
+   * @param false $formatLabel
    * @return array|string|string[]
    */
-    public static function generateLabelMapping($labelAlias, bool $labelOnly = false){
+    public static function generateLabelMapping($labelAlias, bool $labelOnly = false, bool $formatLabel = true){
         $dynamic_labelAlias = array("current_modified","previous_modified","previous_1_modified","previous_2_modified",
                                     "recognized_current","recognized_1","recognized_2","recognized_3");
         if(in_array($labelAlias,$dynamic_labelAlias)){
@@ -89,8 +90,7 @@ class WidgetUtil
                                     "recognized_2" => self::RECOGNIZED.($year+2),
                                     "recognized_3" => self::RECOGNIZED.($year+3));
 
-            $label = "<div><span>". $dynamic_labels[$labelAlias] ."</span></div>";
-
+          $label = "<div><span>". $dynamic_labels[$labelAlias] ."</span></div>";
         }else{
             if($labelOnly){
                 $label = self::getLabel($labelAlias);
@@ -98,7 +98,24 @@ class WidgetUtil
                 $label  = "<div><span>". (strlen($labelAlias) > 0 ? self::$labels[$labelAlias] : "" )."</span></div>";
             }
         }
-        return $label;
+        // Return label as maintained without wrapper HTMLs
+        if (!$formatLabel) {
+          return $label;
+        }
+
+        $formatted_label = "";
+        if ($label) {
+          // Make the column header label HTML accessibility compliant.
+          $plain_label = strip_tags(str_ireplace(["<br/>", "<br>"], "|||", $label));
+          $formatted_label = "<span class='datatable-col-label-parts-wrapper'>";
+          foreach(explode("|||", $plain_label) as $key => $lvalue) {
+            $formatted_label .= "<span aria-hidden='true' class='datatable-col-label datatable-col-label-part-". ($key + 1) ."'>" . $lvalue . "</span>";
+          }
+          $formatted_label .= "</span>";
+          // role='img' aria-label='" . strip_tags($label) ."' 
+          $formatted_label = "<div class='datatable-col-label-container'><div class='datatable-col-label-wrapper'><span aria-hidden='true' class='datatable-col-label datatable-col-label-part-arrow'></span>" . $formatted_label . "</div></div>";
+        }
+        return $formatted_label;
     }
 
   /**

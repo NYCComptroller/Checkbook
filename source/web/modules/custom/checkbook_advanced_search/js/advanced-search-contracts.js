@@ -119,7 +119,7 @@
         var category_val = div.ele('category').val();
 
         if (contract_status_val === 'R' && (category_val === 'expense' || category_val === 'all')) {
-          $("<div class='prime-and-sub-note'>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img src='/themes/custom/nyccheckbook/images/prime-and-sub.png' />).</div>").insertBefore($("#div_contracts_data_source"));
+          $("<div class='prime-and-sub-note'>All Fields are searchable by Prime data, unless designated as Prime & Sub (<img alt='Prime and Sub' src='/themes/custom/nyccheckbook/images/prime-and-sub.png' />).</div>").insertBefore($("#div_contracts_data_source"));
           addPrimeAndSubIcon(contract_status);
           addPrimeAndSubIcon(vendor);
           addPrimeAndSubIcon(mwbe_category);
@@ -147,7 +147,7 @@
        * @param ele
        */
       function addPrimeAndSubIcon(ele) {
-        var primeAndSubIcon = "<img class='prime-and-sub' src='/themes/custom/nyccheckbook/images/prime-and-sub.png' />";
+        var primeAndSubIcon = "<img alt='Prime and Sub' class='prime-and-sub' src='/themes/custom/nyccheckbook/images/prime-and-sub.png' />";
         $(ele).find('label').first().prepend(primeAndSubIcon);
         ele.addClass('asterisk-style');
       }
@@ -174,7 +174,7 @@
             div_checkbook_contracts_oge.ele('status').find('option[value=P]').remove();
             div_checkbook_contracts_oge.ele('category').find('option[value=revenue]').remove();
             div_checkbook_contracts_oge.ele('category').find('option[value=all]').remove();
-            disable_input(div_checkbook_contracts_oge.ele('apt_pin'));
+            //disable_input(div_checkbook_contracts_oge.ele('apt_pin'));
             disable_input(div_checkbook_contracts_oge.ele('received_date_from'));
             disable_input(div_checkbook_contracts_oge.ele('received_date_to'));
             disable_input(div_checkbook_contracts_oge.ele('registration_date_from'));
