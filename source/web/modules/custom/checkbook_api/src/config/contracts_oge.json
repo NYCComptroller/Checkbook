@@ -45,7 +45,8 @@
                 "description":"contains",
                 "display_vendor_name":"like",
                 "maximum_contract_amount": "range",
-                "tracking_number": "like"
+                "tracking_number": "like",
+                "brd_awd_no": "like"
             },
             "displayConfiguration":{
                 "xml":{
@@ -68,6 +69,7 @@
                         "start_date":"effective_begin_date",
                         "end_date":"effective_end_date",
                         "pin":"tracking_number",
+                        "apt_pin":"brd_awd_no",
                         "document_code":"document_code",
                         "contract_industry":"industry_type_name",
                         "commodity_line":"fms_commodity_line",
@@ -96,7 +98,7 @@
                         "Start Date":"effective_begin_date",
                         "End Date":"effective_end_date",
                         "PIN":"tracking_number",
-                        "APT":"brd_awd_no",
+                        "APT PIN":"brd_awd_no",
                         "Document Code":"document_code",
                         "Contract Industry":"industry_type_name",
                         "Commodity Line":"fms_commodity_line",
@@ -177,7 +179,8 @@
                 "description":"contains",
                 "display_vendor_name":"like",
                 "maximum_contract_amount": "range",
-                "tracking_number": "like"
+                "tracking_number": "like",
+                "brd_awd_no": "like"
             },
             "displayConfiguration":{
                 "xml":{
@@ -230,7 +233,7 @@
                         "Start Date":"effective_begin_date",
                         "End Date":"effective_end_date",
                         "PIN":"tracking_number",
-                        "APT":"brd_awd_no",
+                        "APT PIN":"brd_awd_no",
                         "Document Code":"document_code",
                         "Contract Industry":"industry_type_name",
                         "Commodity Line":"fms_commodity_line",

@@ -56,7 +56,7 @@ function _widget_add_padding_data($node){
             $colDataTableOptions->sClass = $row->type;
           }
           if (preg_match("/number/", $colDataTableOptions->sClass)) {
-            $label = (isset($row->labelAlias)) ? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
+            $label = (isset($row->labelAlias)) ? (WidgetUtil::generateLabelMapping($row->labelAlias, false, false)) : $row->label;
             $labelWords = explode("<br/>", $label);
             $maxlength = 0;
             foreach ($labelWords as $word) {
@@ -69,7 +69,7 @@ function _widget_add_padding_data($node){
             $paddings[$row->column] = (($maxlength - $maxColumnDataLength) / 2 > 0) ? ($maxlength - $maxColumnDataLength) / 2 : 0;
           }
           if (preg_match("/number-center/", $colDataTableOptions->sClass) || preg_match("/number-center-scroll/", $colDataTableOptions->sClass)) {
-            $label = (isset($row->labelAlias)) ? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
+            $label = (isset($row->labelAlias)) ? (WidgetUtil::generateLabelMapping($row->labelAlias, false, false)) : $row->label;
             $labelWords = explode("<br/>", $label);
             $maxlength = 0;
             foreach ($labelWords as $word) {

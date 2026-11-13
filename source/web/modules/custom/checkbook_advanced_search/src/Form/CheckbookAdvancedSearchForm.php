@@ -285,6 +285,7 @@ class CheckbookAdvancedSearchForm extends FormBase
         '#size' => 30,
         '#maxlength' => 32,
         '#prefix' => Markup::create('<div class="form-item form-item-payroll-other-payments"><label>Other Payments</label><div class="ranges">'),
+        '#attributes' => ['aria-label' => t('Other Payments FROM')],
       ];
       $form['payroll']['payroll_other_payments_to'] = [
         '#type' => 'textfield',
@@ -292,12 +293,14 @@ class CheckbookAdvancedSearchForm extends FormBase
         '#size' => 30,
         '#maxlength' => 32,
         '#suffix' => '</div></div>',
+        '#attributes' => ['aria-label' => t('Other Payments TO')],
       ];
       $form['payroll']['payroll_gross_pay_amount_from'] = [
         '#type' => 'textfield',
         '#size' => 30,
         '#maxlength' => 32,
         '#prefix' => Markup::create('<div class="form-item form-item-payroll-pay-amount"><label>Gross Pay</label><div class="ranges">'),
+        '#attributes' => ['aria-label' => t('Gross Pay FROM')],
       ];
       $form['payroll']['payroll_gross_pay_amount_to'] = [
         '#type' => 'textfield',
@@ -305,12 +308,14 @@ class CheckbookAdvancedSearchForm extends FormBase
         '#size' => 30,
         '#maxlength' => 32,
         '#suffix' => '</div></div>',
+        '#attributes' => ['aria-label' => t('Gross Pay TO')],
       ];
       $form['payroll']['payroll_total_gross_pay_from'] = [
         '#type' => 'textfield',
         '#size' => 30,
         '#maxlength' => 32,
         '#prefix' => Markup::create('<div class="form-item form-item-payroll-total-gross-pay"><label>Gross Pay YTD</label><div class="ranges">'),
+        '#attributes' => ['aria-label' => t('Gross Pay YTD FROM')],
       ];
       $form['payroll']['payroll_total_gross_pay_to'] = [
         '#type' => 'textfield',
@@ -318,12 +323,14 @@ class CheckbookAdvancedSearchForm extends FormBase
         '#size' => 30,
         '#maxlength' => 32,
         '#suffix' => '</div></div>',
+        '#attributes' => ['aria-label' => t('Gross Pay YTD TO')],
       ];
       $form['payroll']['payroll_amount_from'] = [
         '#type' => 'textfield',
         '#size' => 30,
         '#maxlength' => 32,
         '#prefix' => Markup::create('<div class="form-item form-item-payroll-amount"><label>Amount</label><div class="ranges">'),
+        '#attributes' => ['aria-label' => t('Amount FROM')],
       ];
       $form['payroll']['payroll_amount_to'] = [
         '#type' => 'textfield',
@@ -331,6 +338,7 @@ class CheckbookAdvancedSearchForm extends FormBase
         '#size' => 30,
         '#maxlength' => 32,
         '#suffix' => '</div></div>',
+        '#attributes' => ['aria-label' => t('Amount TO')],
       ];
       $form['payroll']['payroll_amount_type'] = [
         '#type' => 'radios',
@@ -343,6 +351,7 @@ class CheckbookAdvancedSearchForm extends FormBase
         '#size' => 30,
         '#maxlength' => 32,
         '#prefix' => Markup::create('<div class="column column-right"><div class="form-item form-item-payroll-base-salary"><label>Base Pay</label><div class="ranges">'),
+        '#attributes' => ['aria-label' => t('Base Pay FROM')],
       ];
       $form['payroll']['payroll_base_salary_to'] = [
         '#type' => 'textfield',
@@ -350,12 +359,14 @@ class CheckbookAdvancedSearchForm extends FormBase
         '#size' => 30,
         '#maxlength' => 32,
         '#suffix' => '</div></div>',
+        '#attributes' => ['aria-label' => t('Base Pay TO')],
       ];
       $form['payroll']['payroll_overtime_amount_from'] = [
         '#type' => 'textfield',
         '#size' => 30,
         '#maxlength' => 32,
         '#prefix' => Markup::create('<div class="form-item form-item-payroll-overtime-amount"><label>Overtime Payments</label><div class="ranges">'),
+        '#attributes' => ['aria-label' => t('Overtime Payments FROM')],
       ];
       $form['payroll']['payroll_overtime_amount_to'] = [
         '#type' => 'textfield',
@@ -363,6 +374,7 @@ class CheckbookAdvancedSearchForm extends FormBase
         '#size' => 30,
         '#maxlength' => 32,
         '#suffix' => '</div></div>',
+        '#attributes' => ['aria-label' => t('Overtime Payments TO')],
       ];
       $form['payroll']['payroll_pay_frequency'] = [
         '#type' => 'select',
@@ -381,6 +393,7 @@ class CheckbookAdvancedSearchForm extends FormBase
         '#date_format' => 'Y-m-d',
         '#date_year_range' => "'-" . (date("Y") - 1900) . ":+" . (2500 - date("Y")) . "'",
         '#prefix' => Markup::create('<div class="form-item form-item-payroll-pay-date"><label>Pay Date</label><div class="ranges">'),
+        '#attributes' => ['aria-label' => t('Pay Date FROM')],
       ];
       $form['payroll']['payroll_pay_date_to'] = [
         '#type' => 'date',
@@ -389,6 +402,7 @@ class CheckbookAdvancedSearchForm extends FormBase
         '#date_year_range' => "'-" . (date("Y") - 1900) . ":+" . (2500 - date("Y")) . "'",
         '#title' => t('TO'),
         '#suffix' => '</div></div></div>',
+        '#attributes' => ['aria-label' => t('Pay Date TO')],
       ];
       $next_visible = ($isAlert) ? '' : $display_none_style;
       $submit_visible = ($isAlert) ? $display_none_style : '';

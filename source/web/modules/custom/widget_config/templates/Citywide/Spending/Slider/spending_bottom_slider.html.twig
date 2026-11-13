@@ -1,5 +1,5 @@
 {% macro item(label, dollar_amount, link, active_class, indicator) %}
-  <div class="bottom-navigation--item {{ active_class }}" aria-label="{{label | striptags}} Spending {{ dollar_amount }} link" role="tab">
+  <div class="bottom-navigation--item {{ active_class }}" aria-label="{{label | striptags}} Spending {{ dollar_amount }}">
   {% set formatted_label = label | replace({' ': '&', '/': '-'}) %}
     {% if link == false %}
     <div aria-labelledby="bottom-nav-spending-{{ formatted_label }}-label bottom-nav-spending-{{ formatted_label }}-domain bottom-nav-spending-{{ formatted_label }}-amount" class="bottom-navigation--item-label">

@@ -585,7 +585,8 @@ function __landing_page_widget_add_padding_data($node){
       }
 
       if (isset($colDataTableOptions->sClass)) {
-        $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias)) : $row->label;
+        $label = (isset($row->labelAlias))? (WidgetUtil::generateLabelMapping($row->labelAlias, false, false)) : $row->label;
+        
         $labelWords =  explode("<br/>",$label);
         $maxlength = 0;
         $maxColumnDataLength = 0;

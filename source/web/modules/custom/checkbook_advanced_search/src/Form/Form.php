@@ -132,6 +132,7 @@ class Form{
             $form[$domain][$domain_field]['#date_year_range'] = $year_range;
             $form[$domain][$domain_field]['#prefix'] = '<div class="datafield datarange issueddate"><div class="ranges">';
             $form[$domain][$domain_field]['#default_value'] = '';
+            $form[$domain][$domain_field]['#attributes'] = array('aria-label' => 'Issue Date FROM');
 
             //issue_date_to
             $domain_field = "{$data_source}_{$this->domain_name}_issue_date_to";
@@ -143,6 +144,7 @@ class Form{
             $form[$domain][$domain_field]['#date_year_range'] = $year_range;
             $form[$domain][$domain_field]['#suffix'] = '</div></div>';
             $form[$domain][$domain_field]['#default_value'] = '';
+            $form[$domain][$domain_field]['#attributes'] = array('aria-label' => 'Issue Date TO');
 
             //fiscal_year
             $domain_field = "{$data_source}_{$this->domain_name}_fiscal_year";
@@ -150,7 +152,7 @@ class Form{
             $form[$domain][$domain_field]['#type'] = FieldType::DROP_DOWN;
             $form[$domain][$domain_field]['#options'] = _checkbook_advanced_search_get_year($this->domain_name, null, $data_source);
             $form[$domain][$domain_field]['#default_value'] = 'fy~all' ;
-            $form[$domain][$domain_field]['#attributes'] = array('class' => array('watch'), 'default_selected_value' => 'fy~all');
+            $form[$domain][$domain_field]['#attributes'] = array('class' => array('watch'), 'default_selected_value' => 'fy~all', 'aria-label' => 'Fiscal Year');
             $form[$domain][$domain_field]['#prefix'] = '<div class="datafield year">';
             $form[$domain][$domain_field]['#suffix'] = '</div>';
 
@@ -229,6 +231,8 @@ class Form{
               $form[$domain][$domain_field]['#prefix'] = Markup::create('<div class="form-item form-item-' . $css_name . '"><label>' . $field->getFieldTitle() . '</label><div class="ranges">');
             }
 
+            $form[$domain][$domain_field]['#attributes']['aria-label'] = $field->getFieldTitle() . ' ' . t('FROM');
+
             //To
             $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_to";
             $form[$domain][$domain_field]['#type'] = FieldType::TEXT_FIELD;
@@ -252,6 +256,8 @@ class Form{
               $form[$domain][$domain_field]['#suffix'] = '</div></div>';
             }
 
+            $form[$domain][$domain_field]['#attributes']['aria-label'] = $field->getFieldTitle() . ' ' . t('TO');
+
             break;
 
           case FieldType::RANGE_DATE_FIELD:
@@ -269,6 +275,8 @@ class Form{
               $form[$domain][$domain_field]['#prefix'] = Markup::create('<div class="form-item form-item-' . $css_name . '"><label>' . $field->getFieldTitle() . '</label><div class="ranges">');
             }
 
+            $form[$domain][$domain_field]['#attributes']['aria-label'] = $field->getFieldTitle() . ' ' . t('FROM');
+
             //To
             $domain_field = "{$data_source}_{$this->domain_name}_{$field->field_name}_to";
             $form[$domain][$domain_field]['#type'] = FieldType::DATE_POPUP;
@@ -281,6 +289,8 @@ class Form{
             }else {
               $form[$domain][$domain_field]['#suffix'] = '</div></div>';
             }
+
+            $form[$domain][$domain_field]['#attributes']['aria-label'] = $field->getFieldTitle() . ' ' . t('TO');
 
             break;
 

@@ -71,7 +71,7 @@ class AgenciesListConfigExtension extends AbstractExtension {
     $agencies = array_chunk($city_agencies, 10);
 
     $agency_list = "<div id='agency-list' class='agency-nav-dropdowns'>";
-    $agency_list .= "<div class='agency-list-open'><span id='all-agency-list-open' class='".$city_filter_highlight."'>$selected_text</span></div>";
+    $agency_list .= "<div class='agency-list-open'><span id='all-agency-list-open' role='button' tabindex='0' aria-label='$selected_text' aria-expanded='false' class='".$city_filter_highlight."'>$selected_text</span></div>";
     $agency_list .= "<div class='agency-list-content all-agency-list-content'>";
     $agency_list .= "<div class='listContainer1' id='allAgenciesList'>";
 
@@ -98,7 +98,7 @@ class AgenciesListConfigExtension extends AbstractExtension {
     $agency_list .= "</div>";
     $agency_list .= "<div class='agency-list-nav'><a id='prev1'>Prev</a><a  id='next1'>Next</a>";
     $agency_list .= "<a href='/".$all_agency_url."' id='citywide_all_agencies'>CITYWIDE ALL AGENCIES</a></div>";
-    $agency_list .= "<div class='agency-list-close'><a>x Close</a></div>";
+    $agency_list .= "<div class='agency-list-close'><a role='button'>x Close</a></div>";
     $agency_list .= "</div></div>";
 
 //$edc_agencies
@@ -113,7 +113,7 @@ class AgenciesListConfigExtension extends AbstractExtension {
     $nychaUrl = "nycha_spending/year/". $nychaFY ."/datasource/checkbook_nycha";
 
     $agency_list_other = "<div id='agency-list-other' class='agency-nav-dropdowns'>
-  <div class='agency-list-open'><span id='other-agency-list-open' class='".$oge_filter_highlight."'>Other Government Entities</span></div>
+  <div class='agency-list-open'><span id='other-agency-list-open' class='".$oge_filter_highlight."' role='button' tabindex='0' aria-label='Other Government Entities' aria-expanded='false'>Other Government Entities</span></div>
   <div class='agency-list-content other-agency-list-content'>
     <div class='listContainer1' id='otherAgenciesList'>
         <div class='agency-slide'>
@@ -130,7 +130,7 @@ class AgenciesListConfigExtension extends AbstractExtension {
         <div class='agency-list-nav'><a id='prev2'>Prev</a><a  id='next2'>Next</a>
         <a href='/spending_landing" . '/yeartype/B/year/'.$current_fy_year ."/datasource/checkbook_oge/agency/9000"."' id='citywide_all_agencies'>OTHER GOVERNMENT ENTITIES</a>
         </div>
-    <div class='agency-list-close'><a>x Close</a></div>
+    <div class='agency-list-close'><a role='button'>x Close</a></div>
   </div>
 </div>";
 

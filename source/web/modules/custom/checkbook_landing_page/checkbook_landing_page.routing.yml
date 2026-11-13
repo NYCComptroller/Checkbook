@@ -2,6 +2,7 @@ checkbook_landing_page.nyc_budget:
   path: '/budget/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\BudgetLandingController::nycBudget
+    _title: 'Budget'
     params: ''
   requirements:
     _permission: 'access content'
@@ -9,6 +10,7 @@ checkbook_landing_page.nycha_budget:
   path: '/nycha_budget/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\BudgetLandingController::nychaBudget
+    _title: 'Budget'
     params: ''
   requirements:
     _permission: 'access content'
@@ -16,6 +18,7 @@ checkbook_landing_page.nyc_revenue:
   path: '/revenue/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\RevenueLandingController::nycRevenue
+    _title: 'Revenue'
     params: ''
   requirements:
     _permission: 'access content'
@@ -23,6 +26,7 @@ checkbook_landing_page.nycha_revenue:
   path: '/nycha_revenue/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\RevenueLandingController::nychaRevenue
+    _title: 'Revenue'
     params: ''
   requirements:
     _permission: 'access content'
@@ -30,6 +34,7 @@ checkbook_landing_page.nycha_spending:
   path: '/nycha_spending/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\SpendingLandingController::nychaSpending
+    _title: 'Spending'
     params: ''
   requirements:
     _permission: 'access content'
@@ -37,6 +42,7 @@ checkbook_landing_page.spending_landing:
   path: '/spending_landing/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\SpendingLandingController::nycSpending
+    _title: 'Spending'
     params: ''
   requirements:
     _permission: 'access content'
@@ -44,6 +50,7 @@ checkbook_landing_page.citywide_nycha_payroll_landing:
   path: '/payroll/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\PayrollLandingController::citywideNychaPayroll
+    _title: 'Payroll'
     params: ''
   requirements:
     _permission: 'access content'
@@ -51,6 +58,7 @@ checkbook_landing_page.subvendor_spending_landing:
   path: '/spending_landing/dashboard/ss/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\SpendingLandingController::subvendorSpending
+    _title: 'Spending'
     params: ''
   requirements:
     _permission: 'access content'
@@ -58,6 +66,7 @@ checkbook_landing_page.subvendor_prime_spending_landing:
   path: '/spending_landing/dashboard/sp/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\SpendingLandingController::subvendorSpending
+    _title: 'Spending'
     params: ''
   requirements:
     _permission: 'access content'
@@ -65,6 +74,7 @@ checkbook_landing_page.mwbe_spending_landing:
   path: '/spending_landing/dashboard/mp/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\SpendingLandingController::mwbeSpending
+    _title: 'Spending'
     params: ''
   requirements:
     _permission: 'access content'
@@ -72,6 +82,7 @@ checkbook_landing_page.mwbe_subvendor_spending_landing:
   path: '/spending_landing/dashboard/ms/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\SpendingLandingController::mwbesubSpending
+    _title: 'Spending'
     params: ''
   requirements:
     _permission: 'access content'
@@ -79,6 +90,7 @@ checkbook_landing_page.nycha_contracts_landing:
   path: '/nycha_contracts/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\ContractLandingController::nychaContracts
+    _title: 'Contracts'
     params: ''
   requirements:
     _permission: 'access content'
@@ -86,6 +98,7 @@ checkbook_landing_page.contracts_revenue_landing:
   path: '/contracts_revenue_landing/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\ContractLandingController::contractsRevenue
+    _title: 'Contracts'
     params: ''
   requirements:
     _permission: 'access content'
@@ -93,6 +106,7 @@ checkbook_landing_page.nyc_contracts_landing:
   path: '/contracts_landing/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\ContractLandingController::nycContracts
+    _title: 'Contracts'
     params: ''
   requirements:
     _permission: 'access content'
@@ -100,6 +114,7 @@ checkbook_landing_page.nyc_mwbe_contracts_landing:
   path: '/contracts_landing/mwbe_landing/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\ContractLandingController::nycMwbeContracts
+    _title: 'Contracts'
     params: ''
   requirements:
     _permission: 'access content'
@@ -107,6 +122,7 @@ checkbook_landing_page.nyc_subvendor_contracts_landing:
   path: '/contracts_landing/subvendor_landing/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\ContractLandingController::nycSubvendorContracts
+    _title: 'Contracts'
     params: ''
   requirements:
     _permission: 'access content'
@@ -114,6 +130,7 @@ checkbook_landing_page.nyc_mwbe_subvendor_contracts_landing:
   path: '/contracts_landing/mwbe_subvendor/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\ContractLandingController::nycMwbeSubvendorContracts
+    _title: 'Contracts'
     params: ''
   requirements:
     _permission: 'access content'
@@ -121,6 +138,7 @@ checkbook_landing_page.contract_pending_exp_landing:
   path: '/contracts_pending_exp_landing/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\ContractLandingController::ContractsPendingExpense
+    _title: 'Contracts'
     params: ''
   requirements:
     _permission: 'access content'
@@ -128,6 +146,7 @@ checkbook_landing_page.contract_pending_rev_landing:
   path: '/contracts_pending_rev_landing/{params}'
   defaults:
     _controller: \Drupal\checkbook_landing_page\Controller\ContractLandingController::ContractsPendingRevenue
+    _title: 'Contracts'
     params: ''
   requirements:
     _permission: 'access content'

@@ -31,7 +31,7 @@ checkbook_datafeeds.api:
   path: '/data-feeds/api'
   defaults:
     _controller: '\Drupal\checkbook_datafeeds\Controller\DefaultController::checkbook_datafeeds_api_page'
-    _title: 'Data Feeds'
+    _title: 'Data Feeds - API'
   requirements:
     _permission: 'access content'
 
